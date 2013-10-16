@@ -12,7 +12,7 @@ int main()
 	srand(time(NULL));
 	
 	double addjoe = 0.5;
-	double addceleb = 0.1;
+	double addceleb = 0.005;
 	double joefollow = 0.1;
 	double celebfollow = 0.5;
 
@@ -50,12 +50,7 @@ int main()
 		}
 		
 		cout << "At t = " << t << ".\nThere are " << nmembers << " members. " << ncelebs << " are celebs and " << njoes << " are average people." << endl;
-		
-		if (rand_prob < celebfollow)
-		{
-			
-
-		t ++;
+	t ++;		
 	}
 return 0;
 }
