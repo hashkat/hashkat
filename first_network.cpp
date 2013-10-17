@@ -3,6 +3,7 @@
 #include <time.h>      // for rand functions
 #include <vector>      // for dynamic array allocations
 #include <cmath>       // for log function	
+#include <stdlib.h>    // for rand function
 
 using namespace std;    // use the above libraries
 
