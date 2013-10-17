@@ -16,7 +16,7 @@ int main()    // this is the main function, returns 0 always
 
 	double t_final = 100000000.0; // 100 million minutes
 	double t = 0.0;    // the initial time is 0 minutes
-	double n_users = 2; // There are two nodes initially
+	int n_users = 2; // There are two nodes initially
 	
 	//define the rates
 	double add_node_rate = 1/86400.0; // one day
@@ -25,10 +25,10 @@ int main()    // this is the main function, returns 0 always
 
 	
 	// define the cumulative variables
-	double r_add = add_node_rate, r_bond = bond_node_rate*n_users, r_tweet = tweet_rate*n_users;
+	double r_add = add_node_rate, r_follow = bond_node_rate*n_users, r_tweet = tweet_rate*n_users;
 
 	// define the cumulative function and cumulative bin
-	double r_total =  r_add + r_bond + r_tweet;
+	double r_total =  r_add + r_follow + r_tweet;
 	
 	vector <char> node_type; // All we have right now is joes denoted as A
 				 // A = joe, B = corporation, C = celeb --> future plans :)
@@ -58,25 +58,40 @@ int main()    // this is the main function, returns 0 always
 			// get the first uniform number
 			double u_1 = (rand() % 100) / 100.0;
 		
-			if ( u_1 < add_node_rate)
-			{
-					
+			cout << "Time = " << t << endl;
 
+			if ( u_1 < r_add)
+			{
+				n_users ++;
+				cout << "Number of users = " << n_users << endl;
+			}
+			
+			if ( u_1 > r_add && u_1 < r_follow)
+			{
+				double bond_incr = r_follow / n_users;  // same as bond_node_rate, but just keeping it consistent with other histogram codes
+					int choose_user = u_1 / bond_incr;
+					NETWORK[choose_user][NFOLLOWING[choose_user]] = rand() % n_users;				
+					cout << "User " << choose_user << " followed someone\n";
+				
+			}
+			if ( u_1 > r_follow )
+			{
+				double tweet_incr = r_tweet / n_users; // see the comment above regarding bond_incr
+
+					int choose_user = u_1 / tweet_incr;
+					cout << "User " << choose_user << " Tweeted\n";
+			}
 			//get second uniform number
 			double u_2 = (rand() % 100) / 100.0;
-			
 			// increment by random time
-			t += -log(u_2)/R_3;
-		}
-	}
+			t += -log(u_2)/r_total;
+			
+			//update the rates if n_users has changed
+			r_add = add_node_rate;
+			r_follow = bond_node_rate*n_users;
+			r_tweet = tweet_rate*n_users;
 		
-
-
-
-
-
-
-
-	
+	}
+			
 return 0;
 }
