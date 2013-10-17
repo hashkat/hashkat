@@ -6,7 +6,33 @@
 
 using namespace std;    // use the above libraries
 
+// this finds the first 0 value in the following column
+int first_zero(int val, int array[][3000])
+{
+	int i = 0;
+	while( i < 1000 )
+	{
+		if (array[i] == 0)
+		{
+			break;
+		}
+	}
+return i;
+}
 
+// This function is so one cant follow themselves
+int not_same_index(int value, int nodes)
+{
+	srand(time(NULL));
+
+	int rand_val = rand() % nodes;
+	while (rand_val == value)
+	{
+		rand_val = rand() % nodes;
+	}
+return rand_val;
+}	
+	
 
 int main()    // this is the main function, returns 0 always
 {
@@ -18,7 +44,7 @@ int main()    // this is the main function, returns 0 always
 
 	//define the rates
 	double add_node = 1/86400.0;
-	double bond_note = 1/604800.0; 
+	double bond_node = 1/604800.0; 
 	double tweet = 1/3600.0;
 
 	
@@ -33,7 +59,7 @@ int main()    // this is the main function, returns 0 always
 
 	int n_nodes = 2; // start out with 2 members
 	
-	long int network[1000][300 000]; // This is the main network array
+	int network[1000][3000] = {}; // This is the main network array
 
 	while ( t < t_final )
 	{
@@ -48,17 +74,29 @@ int main()    // this is the main function, returns 0 always
 				// if true add node
 				n_nodes ++;
 				node_type.push_back('A');
+				cout << "Time = " << t << ". Number of nodes = " << n_nodes << endl;
 			}
 
 			if ( R_2 > u_1*R_3 && R_1 < u_1*R_3 )
 			{
 				// if true create bond between with random node
-				
-					
+				int zero = first_zero(i, network);
+				int follow = not_same_index(i, n_nodes);						   network[zero][i] = follow;
+				cout << "Time = " << t << ". Bond formed.\n";		
 			}
+
 			if ( R_3 > u_1*R_3 && R_1 < u_1*R_3 && u_1*R_3 )
 			{
+				// if true, then user tweets but will take up alot of space
+				cout << "Time = " << t << ". Someone tweeted.\n";
 			}
+
+			//get second uniform number
+			double u_2 = (rand() % 100) / 100.0;
+			
+			// increment by random time
+			t += -log(u_2)/R_3;
+		}
 	}
 		
 
