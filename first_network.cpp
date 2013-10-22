@@ -20,7 +20,7 @@ int main()    // this is the main function, returns 0 always
 	
 	//define the rates
 	double add_node_rate = 1/86400.0; // one day
-	double bond_node_rate = 1/604800.0; // one week
+	double bond_node_rate = 1/7200.0; // one day
 	double tweet_rate = 1/3600.0; // one hour
 
 	
@@ -29,6 +29,9 @@ int main()    // this is the main function, returns 0 always
 
 	// define the cumulative function and cumulative bin
 	double r_total =  r_add + r_follow + r_tweet;
+	double r_1 = r_add / r_total;
+	double r_2 = r_follow / r_total;
+	double r_3 = r_tweet / r_total;
 	
 	vector <char> node_type; // All we have right now is joes denoted as A
 				 // A = joe, B = corporation, C = celeb --> future plans :)
@@ -60,26 +63,26 @@ int main()    // this is the main function, returns 0 always
 		
 			cout << "Time = " << t << endl;
 
-			if ( u_1 < r_add)
+			if (u_1 - r_1 <= 0.0)
 			{
 				n_users ++;
-				cout << "Number of users = " << n_users << endl;
+				cout << "There are " << n_users << " users\n";
+			}
+
+			if (u_1 - r_1 - r_2 <= 0.0 && u_1 - r_1 > 0.0)
+			{
+				double val = u_1 - r_1;
+				int user = val/(r_2/n_users);
+				NETWORK[user][NFOLLOWING[user]] = rand() % n_users;
+				NFOLLOWING[user] ++;
+				cout << "User " << user << " followed someone\n"; 
 			}
 			
-			if ( u_1 > r_add && u_1 < r_follow)
+			if (u_1 - r_1 - r_2 > 0.0)
 			{
-				double bond_incr = r_follow / n_users;  // same as bond_node_rate, but just keeping it consistent with other histogram codes
-					int choose_user = u_1 / bond_incr;
-					NETWORK[choose_user][NFOLLOWING[choose_user]] = rand() % n_users;				
-					cout << "User " << choose_user << " followed someone\n";
-				
-			}
-			if ( u_1 > r_follow )
-			{
-				double tweet_incr = r_tweet / n_users; // see the comment above regarding bond_incr
-
-					int choose_user = u_1 / tweet_incr;
-					cout << "User " << choose_user << " Tweeted\n";
+				double val = u_1 - r_1 - r_2;
+				int user = val/(r_3/n_users);
+				cout << "User " << user << " tweeted\n";
 			}
 			//get second uniform number
 			double u_2 = (rand() % 100) / 100.0;
@@ -90,6 +93,10 @@ int main()    // this is the main function, returns 0 always
 			r_add = add_node_rate;
 			r_follow = bond_node_rate*n_users;
 			r_tweet = tweet_rate*n_users;
+			r_total = r_add + r_follow + r_tweet;
+			r_1 = (r_add / r_total);
+			r_2 = (r_follow / r_total);
+			r_3 = (r_tweet / r_total);
 		
 	}
 			
