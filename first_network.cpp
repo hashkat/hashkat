@@ -56,38 +56,47 @@ int main()    // this is the main function, returns 0 always
 		}
 	}
 
+	// lets look at the number of steps the program makes
+	int steps = 0;
+
 	while ( t < t_final )
 	{
 			// get the first uniform number
 			double u_1 = (rand() % 100) / 100.0;
 		
+			// Display the time
 			cout << "Time = " << t << endl;
 
+			// If we find ourselves in the add user chuck of our cumuative function
 			if (u_1 - r_1 <= 0.0)
 			{
 				n_users ++;
 				cout << "There are " << n_users << " users\n";
 			}
 
+			// If we find ourselves in the bond node chunk of our cumulative function
 			if (u_1 - r_1 - r_2 <= 0.0 && u_1 - r_1 > 0.0)
 			{
 				double val = u_1 - r_1;
-				int user = val/(r_2/n_users);
+				int user = val/(r_2/n_users);  // this finds the user
 				NETWORK[user][NFOLLOWING[user]] = rand() % n_users;
 				NFOLLOWING[user] ++;
 				cout << "User " << user << " followed someone\n"; 
 			}
 			
+			// if we find ourselves in the tweet chuck of the cumulative function
 			if (u_1 - r_1 - r_2 > 0.0)
 			{
 				double val = u_1 - r_1 - r_2;
-				int user = val/(r_3/n_users);
+				int user = val/(r_3/n_users); // this finds the user
 				cout << "User " << user << " tweeted\n";
 			}
 			//get second uniform number
 			double u_2 = (rand() % 100) / 100.0;
 			// increment by random time
 			t += -log(u_2)/r_total;
+			
+			steps ++;
 			
 			//update the rates if n_users has changed
 			r_add = add_node_rate;
