@@ -65,7 +65,7 @@ int main()    // this is the main function, returns 0 always
 			double u_1 = (rand() % 100) / 100.0;
 		
 			// Display the time
-			cout << "Time = " << t << endl;
+			cout << "Time = " << t << "; incr = " << steps << endl;
 
 			// If we find ourselves in the add user chuck of our cumuative function
 			if (u_1 - r_1 <= 0.0)
@@ -106,7 +106,7 @@ int main()    // this is the main function, returns 0 always
 			r_1 = (r_add / r_total);
 			r_2 = (r_follow / r_total);
 			r_3 = (r_tweet / r_total);
-		
+			
 	}
 			
 return 0;
