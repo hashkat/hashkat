@@ -19,8 +19,8 @@ int main()    // this is the main function, returns 0 always
 	int n_users = 2; // There are two nodes initially
 	
 	//define the rates
-	double add_node_rate = 1/86400.0; // one day
-	double bond_node_rate = 1/7200.0; // one day
+	double add_node_rate = 1/3600.0; // one hour
+	double bond_node_rate = 1/7200.0; // two hours
 	double tweet_rate = 1/3600.0; // one hour
 
 	
