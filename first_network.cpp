@@ -62,7 +62,7 @@ int main()    // this is the main function, returns 0 always
 	while ( t < t_final )
 	{
 			// get the first uniform number
-			double u_1 = (rand() % 100) / 100.0;
+			double u_1 = (rand() % 100 + 1) / 100.0;
 		
 			// Display the time
 			cout << "Time = " << t << "; incr = " << steps << endl;
@@ -91,8 +91,9 @@ int main()    // this is the main function, returns 0 always
 				int user = val/(r_3/n_users); // this finds the user
 				cout << "User " << user << " tweeted\n";
 			}
+			
 			//get second uniform number
-			double u_2 = (rand() % 100) / 100.0;
+			double u_2 = (rand() % 100 + 1) / 100.0;
 			// increment by random time
 			t += -log(u_2)/r_total;
 			
