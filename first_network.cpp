@@ -20,8 +20,8 @@ int main()    // this is the main function, returns 0 always
 	
 	//define the rates
 	double add_node_rate = 1/3600.0; // one hour
-	double bond_node_rate = 1/7200.0; // two hours
-	double tweet_rate = 1/3600.0; // one hour
+	double bond_node_rate = 1/720000.0; // two hundred hours
+	double tweet_rate = 1/360000.0; // one hundred hours
 
 	
 	// define the cumulative variables
