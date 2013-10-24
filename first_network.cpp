@@ -20,11 +20,15 @@ int main()    // this is the main function, returns 0 always
 	
 	//define the rates
 	double add_node_rate = 1/3600.0; // one hour
-	double bond_node_rate = 1/720000.0; // two hundred hours
-	double tweet_rate = 1/360000.0; // one hundred hours
+	double bond_node_rate = 1/7200.0; // two hours
+	double tweet_rate = 1/3600.0; // one hundred hours
 
 	
 	// define the cumulative variables
+
+        // IT change the name of bond_node_rate to follow_rate, or something like that
+        // bond implies it is bidirectional, which it is not
+
 	double r_add = add_node_rate, r_follow = bond_node_rate*n_users, r_tweet = tweet_rate*n_users;
 
 	// define the cumulative function and cumulative bin
@@ -65,6 +69,8 @@ int main()    // this is the main function, returns 0 always
 			double u_1 = (rand() % 100 + 1) / 100.0;
 		
 			// Display the time
+                        // IT printing every time step will slow down your execution A LOT
+
 			cout << "Time = " << t << "; incr = " << steps << endl;
 
 			// If we find ourselves in the add user chuck of our cumuative function
@@ -79,6 +85,9 @@ int main()    // this is the main function, returns 0 always
 			{
 				double val = u_1 - r_1;
 				int user = val/(r_2/n_users);  // this finds the user
+                        // IT Rather than use a random number here, you should do a call to a function which 
+                        // decides who to follow. One of those scenerios could be random obviously, but dont hard code here
+
 				NETWORK[user][NFOLLOWING[user]] = rand() % n_users;
 				NFOLLOWING[user] ++;
 				cout << "User " << user << " followed someone\n"; 
@@ -89,6 +98,7 @@ int main()    // this is the main function, returns 0 always
 			{
 				double val = u_1 - r_1 - r_2;
 				int user = val/(r_3/n_users); // this finds the user
+                        // IT track the number of tweets for sanity checks
 				cout << "User " << user << " tweeted\n";
 			}
 			
