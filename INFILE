@@ -3,7 +3,7 @@ ADJUST YOUR VARIABLES ACCORDINGLY FOR THE NETWORK
 #################################################
 
 N_USERS = 2 -> 2 initial users
-MAX_USERS = 30000 -> small for now
+MAX_USERS = 300 -> small for now
 MAX_FOLLOWING = 1000 -> max number a user can follow
 
 T_FINAL = 5256000.0 -> 10 years

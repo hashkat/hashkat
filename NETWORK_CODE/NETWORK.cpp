@@ -1,20 +1,17 @@
 #include <iostream>    // input/output
 #include <fstream>     // input/output files
-#include <time.h>      // for rand functions
 #include <vector>      // for dynamic array allocations
-#include <cmath>       // for log function	
-#include <stdlib.h>    // for rand function
+#include <cmath>       // for log function
+#include <time.h>
+#include <stdlib.h>	
 #include "INFILE.h"
 
 using namespace std;    // use the above libraries
 
 
-
-
-
 int main()    // this is the main function, returns 0 always
 {
-	//Get info from INFILE
+	//GET INFO FROM INFILE
     //#####################################################
 	int N_USERS = INFILE("N_USERS");
 	int MAX_USERS = INFILE("MAX_USERS");
@@ -23,95 +20,119 @@ int main()    // this is the main function, returns 0 always
 	double T_FINAL = INFILE("T_FINAL");
 	
 	double R_ADD = INFILE("R_ADD");
-	double R_FOLLOW = INFILE("R_FOLLOW")*N_USERS;
-	double R_TWEET = INFILE("R_TWEET")*N_USERS;	
+	double R_FOLLOW = INFILE("R_FOLLOW");
+	double R_TWEET = INFILE("R_TWEET");	
 	//#####################################################
 
-	//DEFINE SOME
-	double INITIAL_TIME = 0.0;    // the initial time is 0 minutes
+	//DEFINE SOME VARIABLES NEEDED
+	//#############################################################
+	double TIME = 0.0;    // the initial time is 0 minutes
 	
-	// define the cumulative function and cumulative bin
-	double r_total =  r_add + r_follow + r_tweet;
-	double r_1 = r_add / r_total;
-	double r_2 = r_follow / r_total;
-	double r_3 = r_tweet / r_total;
+	double R_TOTAL =  R_ADD + R_FOLLOW * N_USERS + R_TWEET * N_USERS; //Normalize the rates
+	double R_ADD_NORM = R_ADD / R_TOTAL;
+	double R_FOLLOW_NORM = R_FOLLOW * N_USERS / R_TOTAL;
+	double R_TWEET_NORM = R_TWEET * N_USERS / R_TOTAL;
+	//#############################################################
 	
+	//FUTURE PLAN IDEAS
+	//#####################################################################
 	vector <char> node_type; // All we have right now is joes denoted as A
-				 // A = joe, B = corporation, C = celeb --> future plans :)
+				 // A = joe, B = corporation, C = celeb --> future plans 
 	node_type.push_back('A');
 	node_type.push_back('A');	
-
-	// defining our network arrays
-	int max_users = 300;  // max number of users -> small for now
-	int max_following = 1000; // max number of followers per user --> seemed reasonable after being discussed 
-
-	int NETWORK[max_users][max_following]; // This is the main network array
-
-	int NFOLLOWING[max_users];
-
-	//Initialize these above arrays
-	for (int i = 0; i < max_users; i ++)
+	//#####################################################################
+	
+	//DECLARE THE MAIN NETWORK ARRAY
+	//######################################################################
+	int NETWORK[MAX_USERS][MAX_FOLLOWING]; // This is the main network array
+	ofstream NETWORK_ARRAY;
+	NETWORK_ARRAY.open("NETWORK_ARRAY");
+	
+	int NFOLLOWING[MAX_USERS];
+	ofstream NFOLLOWING_DATA;
+	NFOLLOWING_DATA.open("NFOLLOWING");
+	
+	// INITIALIZE THE ABOVE ARRAYS
+	for (int i = 0; i < MAX_USERS; i ++)
 	{
 		NFOLLOWING[i] = 0;
-		for (int j = 0; j < max_following; j ++)
+		for (int j = 0; j < MAX_FOLLOWING; j ++)
 		{
 			NETWORK[i][j] = -1; // Used instead of 0, -1 shows no action in the array
 		}
 	}
+	//#######################################################################
 
-	// lets look at the number of steps the program makes
-	int steps = 0;
+	//DECLARE OUTPUT FILE TO PLOT DATA
+	//################################################
+	ofstream DATA_TIME;
+	DATA_TIME.open("DATA_vs_TIME");
+	DATA_TIME << "#Time (min)\tN_USERS\tN_FOLLOWS\tN_TWEETS\n";
+	//###############################################
 
-	while ( t < t_final )
+	//CHECK OUR NUMBER OF STEPS, TWEETS and FOLLOWS
+	int NSTEPS = 0, N_TWEETS = 0, N_FOLLOWS = 0;
+
+	//RANDOM SEED
+	srand(time(NULL));
+	
+	
+	while ( TIME < T_FINAL )
 	{
+		
 			// get the first uniform number
-			double u_1 = (rand() % 100 + 1) / 100.0;
+			double u_1 = (rand() % 1000 + 1) / 1000.0;
+			cout << u_1 << endl;
 		
 			// Display the time
-			cout << "Time = " << t << "; incr = " << steps << endl;
+			cout << "Time = " << TIME << "; incr = " << NSTEPS << endl;
 
 			// If we find ourselves in the add user chuck of our cumuative function
-			if (u_1 - r_1 <= 0.0)
+			if (u_1 - R_ADD_NORM <= 0.0)
 			{
-				n_users ++;
-				cout << "There are " << n_users << " users\n";
+				N_USERS ++;
+				cout << "There are " << N_USERS << " users\n";
 			}
 
 			// If we find ourselves in the bond node chunk of our cumulative function
-			if (u_1 - r_1 - r_2 <= 0.0 && u_1 - r_1 > 0.0)
+			if (u_1 - R_ADD_NORM - R_FOLLOW_NORM <= 0.0 && u_1 - R_ADD_NORM > 0.0)
 			{
-				double val = u_1 - r_1;
-				int user = val/(r_2/n_users);  // this finds the user
-				NETWORK[user][NFOLLOWING[user]] = rand() % n_users;
+				N_FOLLOWS ++;
+				double val = u_1 - R_ADD_NORM;
+				int user = val / (R_FOLLOW_NORM / N_USERS);  // this finds the user
+				NETWORK[user][NFOLLOWING[user]] = rand() % N_USERS;
 				NFOLLOWING[user] ++;
 				cout << "User " << user << " followed someone\n"; 
 			}
 			
 			// if we find ourselves in the tweet chuck of the cumulative function
-			if (u_1 - r_1 - r_2 > 0.0)
+			if (u_1 - R_ADD_NORM - R_FOLLOW_NORM > 0.0)
 			{
-				double val = u_1 - r_1 - r_2;
-				int user = val/(r_3/n_users); // this finds the user
+				N_TWEETS ++;
+				double val = u_1 - R_ADD_NORM - R_FOLLOW_NORM;
+				int user = val/(R_TWEET_NORM/N_USERS); // this finds the user
 				cout << "User " << user << " tweeted\n";
 			}
 			
-			//get second uniform number
-			double u_2 = (rand() % 100 + 1) / 100.0;
-			// increment by random time
-			t += -log(u_2)/r_total;
 			
-			steps ++;
+			DATA_TIME << TIME << "\t\t" << N_USERS << "\t\t" << N_FOLLOWS << "\t\t" << N_TWEETS << endl;
+			
+			//get second uniform number
+			double u_2 = (rand() % 1000 + 1) / 1000.0;
+			// increment by random time
+			cout << u_2 << endl;
+			TIME += -log(u_2)/R_TOTAL;
+			
+			NSTEPS ++;
 			
 			//update the rates if n_users has changed
-			r_add = add_node_rate;
-			r_follow = bond_node_rate*n_users;
-			r_tweet = tweet_rate*n_users;
-			r_total = r_add + r_follow + r_tweet;
-			r_1 = (r_add / r_total);
-			r_2 = (r_follow / r_total);
-			r_3 = (r_tweet / r_total);
+			R_TOTAL = R_ADD + R_FOLLOW * N_USERS + R_TWEET * N_USERS; 
+			R_FOLLOW_NORM = R_FOLLOW * N_USERS / R_TOTAL;
+			R_TWEET_NORM = R_TWEET * N_USERS / R_TOTAL;
 			
 	}
+
+	DATA_TIME.close();
 			
 return 0;
 }

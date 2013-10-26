@@ -28,6 +28,6 @@ double INFILE(string demand)
 				value = atof(input[i+2].c_str());
 			}
 		}
-	
+	INCAR.close();
 return value;
 }
