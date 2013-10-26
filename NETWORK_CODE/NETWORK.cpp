@@ -82,7 +82,6 @@ int main()    // this is the main function, returns 0 always
 		
 			// get the first uniform number
 			double u_1 = (rand() % 1000 + 1) / 1000.0;
-			cout << u_1 << endl;
 		
 
 			// If we find ourselves in the add user chuck of our cumuative function
