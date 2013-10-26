@@ -77,21 +77,18 @@ int main()    // this is the main function, returns 0 always
 	srand(time(NULL));
 	
 	
-	while ( TIME < T_FINAL )
+	while ( TIME < T_FINAL && N_USERS < MAX_USERS )
 	{
 		
 			// get the first uniform number
 			double u_1 = (rand() % 1000 + 1) / 1000.0;
 			cout << u_1 << endl;
 		
-			// Display the time
-			cout << "Time = " << TIME << "; incr = " << NSTEPS << endl;
 
 			// If we find ourselves in the add user chuck of our cumuative function
 			if (u_1 - R_ADD_NORM <= 0.0)
 			{
 				N_USERS ++;
-				cout << "There are " << N_USERS << " users\n";
 			}
 
 			// If we find ourselves in the bond node chunk of our cumulative function
@@ -102,7 +99,6 @@ int main()    // this is the main function, returns 0 always
 				int user = val / (R_FOLLOW_NORM / N_USERS);  // this finds the user
 				NETWORK[user][NFOLLOWING[user]] = rand() % N_USERS;
 				NFOLLOWING[user] ++;
-				cout << "User " << user << " followed someone\n"; 
 			}
 			
 			// if we find ourselves in the tweet chuck of the cumulative function
@@ -111,7 +107,6 @@ int main()    // this is the main function, returns 0 always
 				N_TWEETS ++;
 				double val = u_1 - R_ADD_NORM - R_FOLLOW_NORM;
 				int user = val/(R_TWEET_NORM/N_USERS); // this finds the user
-				cout << "User " << user << " tweeted\n";
 			}
 			
 			
@@ -120,7 +115,6 @@ int main()    // this is the main function, returns 0 always
 			//get second uniform number
 			double u_2 = (rand() % 1000 + 1) / 1000.0;
 			// increment by random time
-			cout << u_2 << endl;
 			TIME += -log(u_2)/R_TOTAL;
 			
 			NSTEPS ++;
