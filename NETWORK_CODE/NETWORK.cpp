@@ -6,6 +6,7 @@
 #include <stdlib.h>	
 #include "INFILE.h"
 #include "ADDUSER.h"
+#include "FOLLOW.h"
 
 using namespace std;    // use the above libraries
 
