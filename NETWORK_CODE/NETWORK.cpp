@@ -5,8 +5,6 @@
 #include <time.h>
 #include <stdlib.h>	
 #include "INFILE.h"
-#include "ADDUSER.h"
-#include "FOLLOW.h"
 
 using namespace std;    // use the above libraries
 
@@ -16,41 +14,33 @@ int main()    // this is the main function, returns 0 always
 	//GET INFO FROM INFILE
     //#####################################################
 
-	int N_JOES = INFILE("N_JOES");
-	int N_CELEBS = INFILE("N_CELEB");
-	int N_ORGS = INFILE("N_ORG");
+	int N_USERS = INFILE("N_USERS");
 	int MAX_USERS = INFILE("MAX_USERS");
 	int MAX_FOLLOWING = INFILE("MAX_FOLLOWING");
 	
-	int N_USERS = N_JOES + N_CELEBS + N_ORGS;
 	
 	double T_FINAL = INFILE("T_FINAL");
 	
-	double R_ADD_JOE = INFILE("R_ADD_JOE");
-	double R_ADD_CELEB = INFILE("R_ADD_CELEB");
-	double R_ADD_ORG = INFILE("R_ADD_ORG");
-	double R_FOLLOW_JOE = INFILE("R_FOLLOW_JOE");
-	double R_FOLLOW_CELEB = INFILE("R_FOLLOW_CELEB");
-	double R_FOLLOW_ORG = INFILE("R_FOLLOW_ORG");
-	double R_TWEET_JOE = INFILE("R_TWEET_JOE");
-	double R_TWEET_CELEB = INFILE("R_TWEET_CELEB");
-	double R_TWEET_ORG = INFILE("R_TWEET_ORG");	
+	double R_FOLLOW = INFILE("R_FOLLOW");
+	double R_TWEET = INFILE("R_TWEET");
+	double R_ADD = INFILE("R_ADD");
+	
 	//#####################################################
 
 	//DEFINE SOME VARIABLES NEEDED
 	//#############################################################
 	double TIME = 0.0;    // the initial time is 0 minutes
 	
-	double R_TOTAL =  R_ADD_JOE + R_ADD_CELEB + R_ADD_ORG + (R_FOLLOW_JOE + R_TWEET_JOE) * N_JOES + (R_FOLLOW_CELEB + R_TWEET_CELEB) * N_CELEBS + (R_FOLLOW_ORG + R_TWEET_ORG) * N_ORG; 
+	double R_TOTAL =  R_ADD + R_FOLLOW*N_USERS + R_TWEET*N_USERS; 
 	
 	//Normalize the rates
 	
-	double R_ADD_NORM = (R_ADD_JOE + R_ADD_CELEB + R_ADD_ORG) / R_TOTAL;
-	double R_FOLLOW_NORM = ((R_FOLLOW_JOE + R_FOLLOW_CELEB + R_FOLLOW_ORG) * N_USERS) / R_TOTAL;
-	double R_TWEET_NORM = ((R_TWEET_JOE + R_TWEET_CELEB + R_TWEET_ORG) * N_USERS) / R_TOTAL;
+	double R_ADD_NORM = R_ADD / R_TOTAL;
+	double R_FOLLOW_NORM = R_FOLLOW * N_USERS  / R_TOTAL;
+	double R_TWEET_NORM = R_TWEET * N_USERS / R_TOTAL;
 	//#############################################################
 	
-	//FUTURE PLAN IDEAS
+	/*FUTURE PLAN IDEAS
 	//#####################################################################
 	vector <char> PEOPLE_TYPE; // All we have right now is joes denoted as A
 				 // A = joe, B = corporation, C = celeb --> future plans 
@@ -66,7 +56,7 @@ int main()    // this is the main function, returns 0 always
 	{
 		PEOPLE_TYPE.push_back('B');
 		
-	}
+	}*/
 	//#####################################################################
 	
 	//DECLARE THE MAIN NETWORK ARRAY
@@ -114,8 +104,7 @@ int main()    // this is the main function, returns 0 always
 			// If we find ourselves in the add user chuck of our cumuative function
 			if (u_1 - R_ADD_NORM <= 0.0)
 			{
-				PEOPLE_TYPE.push_back(CHOOSE_USER(u_1,R_ADD_JOE,R_ADD_CELEB,R_ADD_ORG, N_JOES, N_CELEBS, N_ORGS));
-				N_USERS = N_JOES + N_CELEBS + N_ORGS;
+				N_USERS ++;
 				//call to function to decide which user to add
 			}
 
@@ -148,7 +137,8 @@ int main()    // this is the main function, returns 0 always
 			NSTEPS ++;
 			
 			//update the rates if n_users has changed
-			R_TOTAL = R_ADD + R_FOLLOW * N_USERS + R_TWEET * N_USERS; 
+			R_TOTAL = R_ADD + R_FOLLOW * N_USERS + R_TWEET * N_USERS;
+			R_ADD_NORM = R_ADD / R_TOTAL; 
 			R_FOLLOW_NORM = R_FOLLOW * N_USERS / R_TOTAL;
 			R_TWEET_NORM = R_TWEET * N_USERS / R_TOTAL;
 			
