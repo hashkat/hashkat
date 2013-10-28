@@ -2,20 +2,13 @@
 ADJUST YOUR VARIABLES ACCORDINGLY FOR THE NETWORK
 #################################################
 
-N_JOES = 2                    -> 2 initial joes
-N_CELEB = 1                  -> 1 famous person
-N_ORG = 3                     -> 3 organizations
 MAX_USERS = 30000             -> small for now
 MAX_FOLLOWING = 1000          -> max number a user can follow
 
 T_FINAL = 5256000.0           -> 10 years
 
-R_ADD_JOE = 0.0006944         -> once a day
-R_ADD_CELEB = 0.000069440     -> once every 10 days 
-R_ADD_ORG = 0.0001389         -> once every 5 days
-R_FOLLOW_JOE = 0.00001389     -> once every 50 days
-R_FOLLOW_CELEB = 0.0002315    -> once 3 days
-R_FOLLOW_ORG = 0.0001389      -> once every 5 days
-R_TWEET_JOE = 0.0006944       -> once a day
-R_TWEET_CELEB = 0.002083      -> 3 times a day
-R_TWEET_ORG = 0.003472        -> 5 times a day
+R_ADD = 0.0
+R_FOLLOW = 0.0
+R_TWEET = 0.0167
+
+N_USERS = 2
