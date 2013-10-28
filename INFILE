@@ -11,4 +11,4 @@ R_ADD = 0.0
 R_FOLLOW = 0.0
 R_TWEET = 0.0167
 
-N_USERS = 2
+N_USERS = 1
