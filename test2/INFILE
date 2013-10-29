@@ -1,0 +1,14 @@
+#################################################
+ADJUST YOUR VARIABLES ACCORDINGLY FOR THE NETWORK
+#################################################
+
+MAX_USERS = 300000             -> small for now
+MAX_FOLLOWING = 1000          -> max number a user can follow
+
+T_FINAL = 24000.0           -> 
+
+R_ADD = 0.00167      ->    1/ 10 hours
+R_FOLLOW = 0.0   ->    1/6 min
+R_TWEET = 0.167      ->    1/6 min
+
+N_USERS = 2

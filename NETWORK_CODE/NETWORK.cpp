@@ -109,7 +109,7 @@ int main()    // this is the main function, returns 0 always
 			}
 
 			// If we find ourselves in the bond node chunk of our cumulative function
-			if (u_1 - R_ADD_NORM - R_FOLLOW_NORM <= 0.0 && u_1 - R_ADD_NORM > 0.0)
+			else if (u_1 - (R_ADD_NORM + R_FOLLOW_NORM) <= 0.0 )
 			{
 				N_FOLLOWS ++;
 				double val = u_1 - R_ADD_NORM;
@@ -119,20 +119,25 @@ int main()    // this is the main function, returns 0 always
 			}
 			
 			// if we find ourselves in the tweet chuck of the cumulative function
-			if (u_1 - R_ADD_NORM - R_FOLLOW_NORM > 0.0)
+			else if (u_1 - (R_ADD_NORM + R_FOLLOW_NORM + R_TWEET_NORM) <= 1e-15)
 			{
 				N_TWEETS ++;
 				double val = u_1 - R_ADD_NORM - R_FOLLOW_NORM;
 				int user = val/(R_TWEET_NORM/N_USERS); // this finds the user
 			}
 			
+                        else
+                        {
+                        cout << "Disaster, event out of bounds" << endl;
+                        }
 			
 			DATA_TIME << TIME << "\t\t" << N_USERS << "\t\t" << N_FOLLOWS << "\t\t" << N_TWEETS << endl;
 			
 			//get second uniform number
 			double u_2 = (rand() % 1000 + 1) / 1000.0;
 			// increment by random time
-			TIME += -log(u_2)/R_TOTAL;
+			//TIME += -log(u_2)/R_TOTAL;
+			TIME += 1/R_TOTAL;
 			
 			NSTEPS ++;
 			
@@ -143,7 +148,7 @@ int main()    // this is the main function, returns 0 always
 			R_TWEET_NORM = R_TWEET * N_USERS / R_TOTAL;
 			
 	}
-
+	cout << NSTEPS << endl;
 	DATA_TIME.close();
 			
 return 0;
