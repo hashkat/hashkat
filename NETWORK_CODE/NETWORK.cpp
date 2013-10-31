@@ -150,6 +150,7 @@ int main()    // this is the main function, returns 0 always
 			
 	}
 	cout << NSTEPS << "    " << endl;
+        // IT print the reason for stopping (i.e. max user, or max time)
 	DATA_TIME.close();
 			
 return 0;
