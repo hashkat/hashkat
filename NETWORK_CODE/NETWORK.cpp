@@ -98,6 +98,7 @@ int main()    // this is the main function, returns 0 always
 	{
 		
 			// get the first uniform number
+                        // IT confirm that you have enough precision here
 			double u_1 = (rand() % 1000000000 + 1) / 1000000000.0;	
 
 			// If we find ourselves in the add user chuck of our cumuative function
@@ -129,12 +130,13 @@ int main()    // this is the main function, returns 0 always
                         {
                         cout << "Disaster, event out of bounds" << endl;
                         }
-			
+			// IT there should be different levels of verbosity. 0=debug, 1=normal, 2=no data writing at all
 			DATA_TIME << "Increment: " << NSTEPS <<  "     Time: " << TIME << "     Random Number 1: " << u_1 << "     N_Users: " << N_USERS << "     N_Follows: " << N_FOLLOWS << "     N_Tweets: " << N_TWEETS << "     R_Add_Norm: " << R_ADD_NORM << "     R_Follow_Norm: " << R_FOLLOW_NORM << "     R_Tweet_Norm: " << R_TWEET_NORM << endl;
 			
 			//get second uniform number
 			double u_2 = (rand() % 1000 + 1) / 1000.0;
 			// increment by random time
+                        // IT make it an option to incriment the clock either through random number or 1/R. If you choose 1/R, don't bother with the random number
 			//TIME += -log(u_2)/R_TOTAL;
 			TIME += 1/R_TOTAL;
 			
