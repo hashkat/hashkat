@@ -142,11 +142,11 @@ int main()    // this is the main function, returns 0 always
 			// LEVELS OF VERBOSITY
 			// ##################################################################################################
 			if (VERBOSE == 0)
-			{ DATA_TIME << fixed << setprecision(10) << "Increment: " << NSTEPS <<  "     Time: " << TIME << "     Random Number 1: " << u_1 << "     N_Users: " << N_USERS << "     N_Follows: " << N_FOLLOWS << "     N_Tweets: " << N_TWEETS << "     R_Add_Norm: " << R_ADD_NORM << "     R_Follow_Norm: " << R_FOLLOW_NORM << "     R_Tweet_Norm: " << R_TWEET_NORM << endl;
+			{ DATA_TIME << fixed << setprecision(10) << "INCREMENT: " << NSTEPS << "\t" << "TIME_(min): " << TIME << "\t" << "RANDOM_NUM1: " << u_1 << "\t" << "N_USERS: " << N_USERS << "\t" << "N_FOLLOWS: " << N_FOLLOWS << "\t" << "N_TWEETS: " << N_TWEETS << "\t" << "R_ADD_NORM: " << R_ADD_NORM << "\t" << "R_FOLLOW_NORM: " << R_FOLLOW_NORM << "\t" << "R_TWEET_NORM: " << R_TWEET_NORM << "\t" << "DYNAMIC_ADD_RATE: " << N_USERS/TIME << "\t" << "DYNAMIC_FOLLOW_RATE: " << N_FOLLOWS/(N_USERS*TIME) << "\t" << "DYNAMIC_TWEET_RATE: " << "\t" << N_TWEETS/(N_USERS*TIME) << endl;
 			}
 			else if (VERBOSE == 1)
 			{
-				DATA_TIME << fixed << setprecision(5) << "TIME (min):" << "\t" << TIME << "\t" << "NUMBER OF USERS:" << "\t" << N_USERS << "\t" << "NUMBER OF FOLLOWS:" << "\t" << N_FOLLOWS << "\t" << "NUMBER OF TWEETS:" << "\t" << N_TWEETS << endl;
+				DATA_TIME << fixed << setprecision(5) << "TIME_(min):" << "\t" << TIME << "\t" << "NUMBER_OF_USERS:" << "\t" << N_USERS << "\t" << "NUMBER_OF_FOLLOWS:" << "\t" << N_FOLLOWS << "\t" << "NUMBER_OF_TWEETS:" << "\t" << N_TWEETS << "\t" <<  endl;
 			}
 			//SP else -> no output is written : There needs to be a more efficient way to do this. i.e. outside the main loop
 			//##################################################################################################
