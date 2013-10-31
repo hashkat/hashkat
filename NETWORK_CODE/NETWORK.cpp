@@ -131,7 +131,7 @@ int main()    // this is the main function, returns 0 always
                         cout << "Disaster, event out of bounds" << endl;
                         }
 			// IT there should be different levels of verbosity. 0=debug, 1=normal, 2=no data writing at all
-			DATA_TIME << "Increment: " << NSTEPS <<  "     Time: " << TIME << "     Random Number 1: " << u_1 << "     N_Users: " << N_USERS << "     N_Follows: " << N_FOLLOWS << "     N_Tweets: " << N_TWEETS << "     R_Add_Norm: " << R_ADD_NORM << "     R_Follow_Norm: " << R_FOLLOW_NORM << "     R_Tweet_Norm: " << R_TWEET_NORM << endl;
+			// DATA_TIME << "Increment: " << NSTEPS <<  "     Time: " << TIME << "     Random Number 1: " << u_1 << "     N_Users: " << N_USERS << "     N_Follows: " << N_FOLLOWS << "     N_Tweets: " << N_TWEETS << "     R_Add_Norm: " << R_ADD_NORM << "     R_Follow_Norm: " << R_FOLLOW_NORM << "     R_Tweet_Norm: " << R_TWEET_NORM << endl;
 			
 			//get second uniform number
 			double u_2 = (rand() % 1000 + 1) / 1000.0;
@@ -149,6 +149,7 @@ int main()    // this is the main function, returns 0 always
 			R_TWEET_NORM = R_TWEET * N_USERS / R_TOTAL;
 			
 	}
+        // IT It looks like you may have issues with long vs short ints. NSTEPS went negative for one of my test cases. 
 	cout << NSTEPS << "    " << endl;
         // IT print the reason for stopping (i.e. max user, or max time)
 	DATA_TIME.close();

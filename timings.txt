@@ -1,0 +1,24 @@
+in debug mode, it takes 4m15s to get to 3K users.
+
+R_ADD = 0.00167  ->    1/10 hours    
+R_FOLLOW = 0.0   ->    1/6 min
+R_TWEET = 0.0167      ->    1/60 mi
+
+If you don't write to file, it takes about _2 seconds_.
+
+To get to 30K users
+
+real	0m25.087s
+
+To get to 300K users
+
+~ 2.5 minutes
+
+To get to 3M users
+
+~ 50 minutes
+
+(Don't forget it is logarithmic!!!)
+
+To get to 30 M users...?
+ 
