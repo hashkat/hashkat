@@ -84,7 +84,8 @@ int main()    // this is the main function, returns 0 always
 	//################################################
 	ofstream DATA_TIME;
 	DATA_TIME.open("DATA_vs_TIME");
-	DATA_TIME << "#Time (min)\tN_USERS\tN_FOLLOWS\tN_TWEETS\n";
+	
+	
 	//###############################################
 
 	//CHECK OUR NUMBER OF STEPS, TWEETS and FOLLOWS
@@ -93,13 +94,11 @@ int main()    // this is the main function, returns 0 always
 	//RANDOM SEED
 	srand(time(NULL));
 	
-	
 	while ( TIME < T_FINAL && N_USERS < MAX_USERS )
 	{
 		
 			// get the first uniform number
-			double u_1 = (rand() % 1000 + 1) / 1000.0;
-		
+			double u_1 = (rand() % 1000000000 + 1) / 1000000000.0;	
 
 			// If we find ourselves in the add user chuck of our cumuative function
 			if (u_1 - R_ADD_NORM <= 0.0)
@@ -131,7 +130,7 @@ int main()    // this is the main function, returns 0 always
                         cout << "Disaster, event out of bounds" << endl;
                         }
 			
-			DATA_TIME << TIME << "\t\t" << N_USERS << "\t\t" << N_FOLLOWS << "\t\t" << N_TWEETS << endl;
+			DATA_TIME << "Increment: " << NSTEPS <<  "     Time: " << TIME << "     Random Number 1: " << u_1 << "     N_Users: " << N_USERS << "     N_Follows: " << N_FOLLOWS << "     N_Tweets: " << N_TWEETS << "     R_Add_Norm: " << R_ADD_NORM << "     R_Follow_Norm: " << R_FOLLOW_NORM << "     R_Tweet_Norm: " << R_TWEET_NORM << endl;
 			
 			//get second uniform number
 			double u_2 = (rand() % 1000 + 1) / 1000.0;
@@ -148,7 +147,7 @@ int main()    // this is the main function, returns 0 always
 			R_TWEET_NORM = R_TWEET * N_USERS / R_TOTAL;
 			
 	}
-	cout << NSTEPS << endl;
+	cout << NSTEPS << "    " << endl;
 	DATA_TIME.close();
 			
 return 0;
