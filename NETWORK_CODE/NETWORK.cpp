@@ -33,13 +33,13 @@ int main()    // this is the main function, returns 0 always
 	//#############################################################
 	double TIME = 0.0;    // the initial time is 0 minutes
 	
-	double R_TOTAL =  R_ADD + R_FOLLOW + R_TWEET; 
+	double R_TOTAL =  R_ADD + R_FOLLOW*N_USERS + R_TWEET*N_USERS; 
 	
 	//Normalize the rates
 	
 	double R_ADD_NORM = R_ADD / R_TOTAL;
-	double R_FOLLOW_NORM = R_FOLLOW   / R_TOTAL;
-	double R_TWEET_NORM = R_TWEET  / R_TOTAL;
+	double R_FOLLOW_NORM = R_FOLLOW *N_USERS  / R_TOTAL;
+	double R_TWEET_NORM = R_TWEET *N_USERS / R_TOTAL;
 	//#############################################################
 	
 	/*FUTURE PLAN IDEAS
@@ -103,7 +103,7 @@ int main()    // this is the main function, returns 0 always
 		
 			// get the first uniform number
                         // IT confirm that you have enough precision here - confirmed
-			 double u_1 = (( long) rand() % 1000000000 + 1) / 1000000000.0;	
+			 double u_1 = ((long) rand() % 10000000 + 1) / 10000000.0;	
 
 			// DECIDE WHAT TO DO
 			//##############################################################################
@@ -138,7 +138,7 @@ int main()    // this is the main function, returns 0 always
                         }
 			//##############################################################################
 			
-			double DYNAMIC_ADD_RATE = N_USERS / TIME, DYNAMIC_FOLLOW_RATE = N_FOLLOWS / ( TIME), DYNAMIC_TWEET_RATE = N_TWEETS / ( TIME);
+			double DYNAMIC_ADD_RATE = N_USERS / TIME, DYNAMIC_FOLLOW_RATE = N_FOLLOWS / (N_USERS*TIME), DYNAMIC_TWEET_RATE = N_TWEETS / (N_USERS*TIME);
 			
 			// IT there should be different levels of verbosity. 0=debug, 1=normal, 2=no data writing at all
 			// LEVELS OF VERBOSITY
@@ -171,10 +171,10 @@ int main()    // this is the main function, returns 0 always
 			//##################################################
 			
 			//update the rates if n_users has changed
-			R_TOTAL = R_ADD + R_FOLLOW + R_TWEET ;
+			R_TOTAL = R_ADD + N_USERS*R_FOLLOW + N_USERS*R_TWEET ;
 			R_ADD_NORM = R_ADD / R_TOTAL; 
-			R_FOLLOW_NORM = R_FOLLOW  / R_TOTAL;
-			R_TWEET_NORM = R_TWEET  / R_TOTAL;
+			R_FOLLOW_NORM = R_FOLLOW*N_USERS  / R_TOTAL;
+			R_TWEET_NORM = R_TWEET*N_USERS  / R_TOTAL;
 			
 	}
         // IT It looks like you may have issues with long vs short ints. NSTEPS went negative for one of my test cases. -> FIXED - NSTEPS is now of type 'long int' 
