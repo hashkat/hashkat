@@ -108,14 +108,14 @@ int main()    // this is the main function, returns 0 always
 			// DECIDE WHAT TO DO
 			//##############################################################################
 			// If we find ourselves in the add user chuck of our cumuative function
-			if (u_1 - R_ADD_NORM <= 0.0 )
+			if (u_1 - R_ADD_NORM <= 1e-15 )
 			{
 				N_USERS ++;
 				//call to function to decide which user to add
 			}
 
 			// If we find ourselves in the bond node chunk of our cumulative function
-			else if (u_1 - (R_ADD_NORM + R_FOLLOW_NORM) <= 0.0 )
+			else if (u_1 - (R_ADD_NORM + R_FOLLOW_NORM) <= 1e-15 )
 			{
 				N_FOLLOWS ++;
 				double val = u_1 - R_ADD_NORM;
@@ -137,8 +137,9 @@ int main()    // this is the main function, returns 0 always
                         cout << "Disaster, event out of bounds" << endl;
                         }
 			//##############################################################################
-			
-			double DYNAMIC_ADD_RATE = N_USERS / TIME, DYNAMIC_FOLLOW_RATE = N_FOLLOWS / (N_USERS*TIME), DYNAMIC_TWEET_RATE = N_TWEETS / (N_USERS*TIME);
+			// SP something wierd is going on here -- when n_users changes dynamically
+			// we need that 2, but when n_users is fixed we dont need the 2			
+			double DYNAMIC_ADD_RATE = N_USERS / TIME, DYNAMIC_FOLLOW_RATE = 2*N_FOLLOWS / (N_USERS*TIME), DYNAMIC_TWEET_RATE = 2*N_TWEETS / (N_USERS*TIME);
 			
 			// IT there should be different levels of verbosity. 0=debug, 1=normal, 2=no data writing at all
 			// LEVELS OF VERBOSITY
