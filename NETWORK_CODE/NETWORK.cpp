@@ -91,7 +91,7 @@ int main()    // this is the main function, returns 0 always
 	//###############################################
 
 	//CHECK OUR NUMBER OF STEPS, TWEETS and FOLLOWS
-	long int NSTEPS = 0, N_TWEETS = 0, N_FOLLOWS = 0;
+	long int N_STEPS = 0, N_TWEETS = 0, N_FOLLOWS = 0;
 
 	//RANDOM SEED
 	srand(time(NULL));
@@ -145,7 +145,7 @@ int main()    // this is the main function, returns 0 always
 			// LEVELS OF VERBOSITY
 			// ##################################################################################################
 			if (VERBOSE == 0)
-			{ DATA_TIME << fixed << setprecision(10) << "INCREMENT: " << NSTEPS << "\t" << "TIME_(min): " << TIME << "\t" << "RANDOM_NUM1: " << u_1 << "\t" << "N_USERS: " << N_USERS << "\t" << "N_FOLLOWS: " << N_FOLLOWS << "\t" << "N_TWEETS: " << N_TWEETS << "\t" << "R_ADD_NORM: " << R_ADD_NORM << "\t" << "R_FOLLOW_NORM: " << R_FOLLOW_NORM << "\t" << "R_TWEET_NORM: " << R_TWEET_NORM << "\t" << "DYNAMIC_ADD_RATE: " << DYNAMIC_ADD_RATE << "\t" << "DYNAMIC_FOLLOW_RATE: " << DYNAMIC_FOLLOW_RATE << "\t" << "DYNAMIC_TWEET_RATE: " << "\t" << DYNAMIC_TWEET_RATE << endl;
+			{ DATA_TIME << fixed << setprecision(10) << "INCREMENT: " << N_STEPS << "\t" << "TIME_(min): " << TIME << "\t" << "RANDOM_NUM1: " << u_1 << "\t" << "N_USERS: " << N_USERS << "\t" << "N_FOLLOWS: " << N_FOLLOWS << "\t" << "N_TWEETS: " << N_TWEETS << "\t" << "R_ADD_NORM: " << R_ADD_NORM << "\t" << "R_FOLLOW_NORM: " << R_FOLLOW_NORM << "\t" << "R_TWEET_NORM: " << R_TWEET_NORM << "\t" << "DYNAMIC_ADD_RATE: " << DYNAMIC_ADD_RATE << "\t" << "DYNAMIC_FOLLOW_RATE: " << DYNAMIC_FOLLOW_RATE << "\t" << "DYNAMIC_TWEET_RATE: " << "\t" << DYNAMIC_TWEET_RATE << endl;
 			}
 			else if (VERBOSE == 1)
 			{
@@ -171,6 +171,7 @@ int main()    // this is the main function, returns 0 always
 			}
 			//##################################################
 			
+			N_STEPS ++;			
 			//update the rates if n_users has changed
 			R_TOTAL = R_ADD + N_USERS*R_FOLLOW + N_USERS*R_TWEET ;
 			R_ADD_NORM = R_ADD / R_TOTAL; 
