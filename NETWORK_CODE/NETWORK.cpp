@@ -33,13 +33,13 @@ int main()    // this is the main function, returns 0 always
 	//#############################################################
 	double TIME = 0.0;    // the initial time is 0 minutes
 	
-	double R_TOTAL =  R_ADD + R_FOLLOW*N_USERS + R_TWEET*N_USERS; 
+	double R_TOTAL =  R_ADD + R_FOLLOW + R_TWEET; 
 	
 	//Normalize the rates
 	
 	double R_ADD_NORM = R_ADD / R_TOTAL;
-	double R_FOLLOW_NORM = R_FOLLOW * N_USERS  / R_TOTAL;
-	double R_TWEET_NORM = R_TWEET * N_USERS / R_TOTAL;
+	double R_FOLLOW_NORM = R_FOLLOW   / R_TOTAL;
+	double R_TWEET_NORM = R_TWEET  / R_TOTAL;
 	//#############################################################
 	
 	/*FUTURE PLAN IDEAS
@@ -103,19 +103,19 @@ int main()    // this is the main function, returns 0 always
 		
 			// get the first uniform number
                         // IT confirm that you have enough precision here - confirmed
-			 double u_1 = ((unsigned long long) rand() % 1000000000 + 1) / 1000000000.0;	
+			 double u_1 = (( long) rand() % 1000000000 + 1) / 1000000000.0;	
 
 			// DECIDE WHAT TO DO
 			//##############################################################################
 			// If we find ourselves in the add user chuck of our cumuative function
-			if (u_1 - R_ADD_NORM <= 1e-15)
+			if (u_1 - R_ADD_NORM <= 0.0 )
 			{
 				N_USERS ++;
 				//call to function to decide which user to add
 			}
 
 			// If we find ourselves in the bond node chunk of our cumulative function
-			else if (u_1 - (R_ADD_NORM + R_FOLLOW_NORM) <= 1e-15 )
+			else if (u_1 - (R_ADD_NORM + R_FOLLOW_NORM) <= 0.0 )
 			{
 				N_FOLLOWS ++;
 				double val = u_1 - R_ADD_NORM;
@@ -137,12 +137,14 @@ int main()    // this is the main function, returns 0 always
                         cout << "Disaster, event out of bounds" << endl;
                         }
 			//##############################################################################
-
+			
+			double DYNAMIC_ADD_RATE = N_USERS / TIME, DYNAMIC_FOLLOW_RATE = N_FOLLOWS / ( TIME), DYNAMIC_TWEET_RATE = N_TWEETS / ( TIME);
+			
 			// IT there should be different levels of verbosity. 0=debug, 1=normal, 2=no data writing at all
 			// LEVELS OF VERBOSITY
 			// ##################################################################################################
 			if (VERBOSE == 0)
-			{ DATA_TIME << fixed << setprecision(10) << "INCREMENT: " << NSTEPS << "\t" << "TIME_(min): " << TIME << "\t" << "RANDOM_NUM1: " << u_1 << "\t" << "N_USERS: " << N_USERS << "\t" << "N_FOLLOWS: " << N_FOLLOWS << "\t" << "N_TWEETS: " << N_TWEETS << "\t" << "R_ADD_NORM: " << R_ADD_NORM << "\t" << "R_FOLLOW_NORM: " << R_FOLLOW_NORM << "\t" << "R_TWEET_NORM: " << R_TWEET_NORM << "\t" << "DYNAMIC_ADD_RATE: " << N_USERS/TIME << "\t" << "DYNAMIC_FOLLOW_RATE: " << N_FOLLOWS/(N_USERS*TIME) << "\t" << "DYNAMIC_TWEET_RATE: " << "\t" << N_TWEETS/(N_USERS*TIME) << endl;
+			{ DATA_TIME << fixed << setprecision(10) << "INCREMENT: " << NSTEPS << "\t" << "TIME_(min): " << TIME << "\t" << "RANDOM_NUM1: " << u_1 << "\t" << "N_USERS: " << N_USERS << "\t" << "N_FOLLOWS: " << N_FOLLOWS << "\t" << "N_TWEETS: " << N_TWEETS << "\t" << "R_ADD_NORM: " << R_ADD_NORM << "\t" << "R_FOLLOW_NORM: " << R_FOLLOW_NORM << "\t" << "R_TWEET_NORM: " << R_TWEET_NORM << "\t" << "DYNAMIC_ADD_RATE: " << DYNAMIC_ADD_RATE << "\t" << "DYNAMIC_FOLLOW_RATE: " << DYNAMIC_FOLLOW_RATE << "\t" << "DYNAMIC_TWEET_RATE: " << "\t" << DYNAMIC_TWEET_RATE << endl;
 			}
 			else if (VERBOSE == 1)
 			{
@@ -169,10 +171,10 @@ int main()    // this is the main function, returns 0 always
 			//##################################################
 			
 			//update the rates if n_users has changed
-			R_TOTAL = R_ADD + R_FOLLOW * N_USERS + R_TWEET * N_USERS;
+			R_TOTAL = R_ADD + R_FOLLOW + R_TWEET ;
 			R_ADD_NORM = R_ADD / R_TOTAL; 
-			R_FOLLOW_NORM = R_FOLLOW * N_USERS / R_TOTAL;
-			R_TWEET_NORM = R_TWEET * N_USERS / R_TOTAL;
+			R_FOLLOW_NORM = R_FOLLOW  / R_TOTAL;
+			R_TWEET_NORM = R_TWEET  / R_TOTAL;
 			
 	}
         // IT It looks like you may have issues with long vs short ints. NSTEPS went negative for one of my test cases. -> FIXED - NSTEPS is now of type 'long int' 
