@@ -64,12 +64,8 @@ int main()    // this is the main function, returns 0 always
 	//DECLARE THE MAIN NETWORK ARRAY
 	//######################################################################
 	int NETWORK[MAX_USERS][MAX_FOLLOWING]; // This is the main network array
-	ofstream NETWORK_ARRAY;
-	NETWORK_ARRAY.open("NETWORK_ARRAY");
 	
 	int NFOLLOWING[MAX_USERS];
-	ofstream NFOLLOWING_DATA;
-	NFOLLOWING_DATA.open("NFOLLOWING");
 	
 	// INITIALIZE THE ABOVE ARRAYS
 	for (int i = 0; i < MAX_USERS; i ++)
