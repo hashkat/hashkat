@@ -32,7 +32,7 @@ int main()    // this is the main function, returns 0 always
 	//DEFINE SOME VARIABLES NEEDED
 	//#############################################################
 	double TIME = 0.0;    // the initial time is 0 minutes
-        double zerotol = 1e-16;	
+        double zerotol = 1e-16; // enough precision for really really low add rate	
 	double R_TOTAL =  R_ADD + R_FOLLOW*N_USERS + R_TWEET*N_USERS; 
 	
 	//Normalize the rates
@@ -43,6 +43,7 @@ int main()    // this is the main function, returns 0 always
 	
 	//DECLARE THE MAIN NETWORK ARRAY
 	//######################################################################
+	// SP is there a way to delcare these using a function?
 	int NETWORK[MAX_USERS][MAX_FOLLOWING]; // This is the main network array
 	
 	int NFOLLOWING[MAX_USERS];
@@ -73,11 +74,12 @@ int main()    // this is the main function, returns 0 always
 	long int N_STEPS = 0, N_TWEETS = 0, N_FOLLOWS = 0;
 
 	//RANDOM SEED
+	// If we try the same seeds, we should expect to get the same answer.
 	srand(time(NULL));
 	
 	//THIS IS THE MAIN LOOP
 	//###############################################################################################
-	while ( TIME < T_FINAL && N_USERS < MAX_USERS )
+	while ( TIME < T_FINAL || N_USERS < MAX_USERS )
 	{
 		
 			// get the first uniform number [0,1). This selects a number from a long int (default RAND_MAX)
@@ -89,8 +91,6 @@ int main()    // this is the main function, returns 0 always
 			// DECIDE WHAT TO DO
 			//##############################################################################
 			// If we find ourselves in the add user chuck of our cumuative function
-
-                        // IT are we happy with this value of zerotol???
 			if (u_1 - R_ADD_NORM <= zerotol )
 			{
 				N_USERS ++;
@@ -144,6 +144,8 @@ int main()    // this is the main function, returns 0 always
 
 			// TIME INCREMENTATION
 			//####################################################
+			
+			//SP again we need to do this outside of the main loop.
 			if (RANDOM_INCR == 1)
 			{
 				// get second random number
@@ -152,7 +154,6 @@ int main()    // this is the main function, returns 0 always
 				// increment by random time
 				TIME += -log(u_2)/R_TOTAL;
 			}
-                        // SP this if else on every timestep is silly
 			else
 			{
 				TIME += 1/R_TOTAL;
