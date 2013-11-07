@@ -6,6 +6,7 @@
 #include <stdlib.h>	
 #include "INFILE.h"
 #include <iomanip>
+#include "POUT.h"
 
 using namespace std;    // use the above libraries
 
@@ -20,6 +21,7 @@ int main()    // this is the main function, returns 0 always
 	int MAX_FOLLOWING = INFILE("MAX_FOLLOWING");
 	int VERBOSE = INFILE("VERBOSE");	
 	int RANDOM_INCR = INFILE("RANDOM_INCR");
+	int P_OUT = INFILE("P_OUT");
 	
 	double T_FINAL = INFILE("T_FINAL");
 	
@@ -91,7 +93,7 @@ int main()    // this is the main function, returns 0 always
 			// DECIDE WHAT TO DO
 			//##############################################################################
 			// If we find ourselves in the add user chuck of our cumuative function
-			if (u_1 - R_ADD_NORM <= zerotol )
+			if (u_1 - (R_ADD_NORM) <= zerotol )
 			{
 				N_USERS ++;
 				//call to function to decide which user to add
@@ -99,8 +101,7 @@ int main()    // this is the main function, returns 0 always
 
 			// If we find ourselves in the bond node chunk of our cumulative function
 
-                        // IT do we have enough precision to deal with the case of 30 million users???
-			else if (u_1 - (R_ADD_NORM + R_FOLLOW_NORM) <= zerotol )
+			else if (u_1 - (R_ADD_NORM + R_FOLLOW_NORM) <= zerotol)
 			{
 				N_FOLLOWS ++;
 				double val = u_1 - R_ADD_NORM;
@@ -126,8 +127,10 @@ int main()    // this is the main function, returns 0 always
                         cout << "Disaster, event out of bounds" << endl;
                         }
 			//##############################################################################
-			// SP something wierd is going on here -- when n_users changes dynamically
+		
+			// something wierd is going on here -- when n_users changes dynamically
 			// we need that 2, but when n_users is fixed we dont need the 2			
+			
 			double DYNAMIC_ADD_RATE = N_USERS / TIME, DYNAMIC_FOLLOW_RATE = 2*N_FOLLOWS / (N_USERS*TIME), DYNAMIC_TWEET_RATE = 2*N_TWEETS / (N_USERS*TIME);
 			
 			// ##################################################################################################
@@ -169,7 +172,7 @@ int main()    // this is the main function, returns 0 always
 			
 	}
 
-	//PRINT WHY PROGRAM STOPPED - SP needs to be more efficient as well, these if loops will slow down code
+	//PRINT WHY PROGRAM STOPPED
 	//#######################################################################################
 	if (TIME < T_FINAL)
 	{
@@ -182,5 +185,14 @@ int main()    // this is the main function, returns 0 always
 	DATA_TIME.close();
 	//###################################################################################################
 			
+	if (P_OUT == 1)
+	{
+		P_OUT(NFOLLOWING, N_USERS, MAX_FOLLOWING);
+	}
+	else
+	{
+		// nothing is done here
+	}
+
 return 0;
 }
