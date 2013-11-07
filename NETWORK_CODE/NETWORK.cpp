@@ -6,7 +6,7 @@
 #include <stdlib.h>	
 #include "INFILE.h"
 #include <iomanip>
-//#include "POUT.h"
+#include "POUT.h"
 
 using namespace std;    // use the above libraries
 
@@ -81,7 +81,7 @@ int main()    // this is the main function, returns 0 always
 	
 	//THIS IS THE MAIN LOOP
 	//###############################################################################################
-	while ( TIME < T_FINAL || N_USERS < MAX_USERS )
+	while ( TIME < T_FINAL && N_USERS < MAX_USERS )
 	{
 		
 			// get the first uniform number [0,1). This selects a number from a long int (default RAND_MAX)
@@ -185,7 +185,7 @@ int main()    // this is the main function, returns 0 always
 	DATA_TIME.close();
 	//###################################################################################################
 			
-/*	if (P_OUT == 1)
+	if (P_OUT == 1)
 	{
 		POUT(NFOLLOWING, MAX_USERS, MAX_FOLLOWING);
 	}
@@ -193,6 +193,6 @@ int main()    // this is the main function, returns 0 always
 	{
 		// nothing is done here
 	}
-*/
+
 return 0;
 }
