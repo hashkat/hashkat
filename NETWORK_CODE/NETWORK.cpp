@@ -6,7 +6,7 @@
 #include <stdlib.h>	
 #include "INFILE.h"
 #include <iomanip>
-#include "POUT.h"
+//#include "POUT.h"
 
 using namespace std;    // use the above libraries
 
@@ -185,14 +185,14 @@ int main()    // this is the main function, returns 0 always
 	DATA_TIME.close();
 	//###################################################################################################
 			
-	if (P_OUT == 1)
+/*	if (P_OUT == 1)
 	{
-		P_OUT(NFOLLOWING, N_USERS, MAX_FOLLOWING);
+		POUT(NFOLLOWING, MAX_USERS, MAX_FOLLOWING);
 	}
 	else
 	{
 		// nothing is done here
 	}
-
+*/
 return 0;
 }

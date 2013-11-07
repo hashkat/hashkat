@@ -3,16 +3,20 @@
 
 using namespace std;
 
-void P_OUT(int NFOLLOWING[], int N_USERS, int MAX_FOLLOWING)
+void POUT(int NFOLLOWING[], int MAX_USERS, int MAX_FOLLOWING)
 {
-	int N_FOLLOW_DATA[MAX_FOLLOWING] = 0;
+	int N_FOLLOW_DATA[MAX_FOLLOWING];
+	for (int i = 0; i < MAX_FOLLOWING; i ++)
+	{
+		N_FOLLOW_DATA[i] = 0;
+	}
 
 	ofstream OUTPUT;
 	OUTPUT.open("P_OUT.dat");
 	
 	OUTPUT << "##### THIS IS THE P_OUT(K) FUNCTION DATA #####\n\n"; 
 	
-	for (int i = 0; i < N_USERS; i ++)
+	for (int i = 0; i < MAX_USERS; i ++)
 	{
 		N_FOLLOW_DATA[NFOLLOWING[i]] ++;
 	}
