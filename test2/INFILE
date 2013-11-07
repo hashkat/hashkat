@@ -2,7 +2,7 @@
 ADJUST YOUR VARIABLES ACCORDINGLY FOR THE NETWORK
 #################################################
 
-MAX_USERS = 3000          -> small for now
+MAX_USERS = 30000          -> small for now
 MAX_FOLLOWING = 1000         -> max number a user can follow
 RANDOM_INCR = 1              -> 0 - increment by 1/R_total
 			     -> 1 - increment by random time based on R_total
@@ -11,7 +11,7 @@ VERBOSE = 1                   -> 0 - debugging
 			     -> 1 - write normally
 			     -> 2 - no output 
 			     
-T_FINAL = 52560.0           ->  1/10 year 
+T_FINAL = 525.0           ->  1/10 year 
 
 R_ADD = 0.00167              ->    1/ 10 hours
 R_FOLLOW = 0.0000167           ->    1/6 min
