@@ -1,0 +1,23 @@
+#include <stdlib.h>
+#include <fstream>
+
+using namespace std;
+
+void P_OUT(int NFOLLOWING[], int N_USERS, int MAX_FOLLOWING)
+{
+	int N_FOLLOW_DATA[MAX_FOLLOWING] = 0;
+
+	ofstream OUTPUT;
+	OUTPUT.open("P_OUT.dat");
+	
+	OUTPUT << "##### THIS IS THE P_OUT(K) FUNCTION DATA #####\n\n"; 
+	
+	for (int i = 0; i < N_USERS; i ++)
+	{
+		N_FOLLOW_DATA[NFOLLOWING[i]] ++;
+	}
+	for (int i = 0; i < MAX_FOLLOWING; i ++)
+	{
+		OUTPUT << i << "\t" << N_FOLLOW_DATA[i] << endl;
+	}
+}
