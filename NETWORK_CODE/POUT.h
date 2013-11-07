@@ -22,6 +22,9 @@ void POUT(int NFOLLOWING[], int MAX_USERS, int MAX_FOLLOWING)
 	}
 	for (int i = 0; i < MAX_FOLLOWING; i ++)
 	{
-		OUTPUT << i << "\t" << N_FOLLOW_DATA[i] << endl;
+		OUTPUT << i - 0.5 << "\t" << N_FOLLOW_DATA[i] << endl;
+		OUTPUT << i + 0.5 << "\t" << N_FOLLOW_DATA[i] << endl;
 	}
+
+OUTPUT.close();
 }
