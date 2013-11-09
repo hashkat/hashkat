@@ -86,7 +86,6 @@ int main()    // this is the main function, returns 0 always
 	{
 		
 			// get the first uniform number [0,1). This selects a number from a long int (default RAND_MAX)
-                        // IT confirm this is still uniform
  
 			 double u_1 = (rand()+1) / (double(RAND_MAX)+1);
                         // IT it seems like u_1 has more than 16 digits...what's with that?
@@ -109,7 +108,6 @@ int main()    // this is the main function, returns 0 always
 				int user = val / (R_FOLLOW_NORM / N_USERS);  // this finds the user
 
                                 // IT do a call to the follow function, i.e.
-                                // IT confirm the user selection for random is correct (check to make sure boundaries work!)
  
 				NETWORK[user][NFOLLOWING[user]] = int((rand()/double(RAND_MAX))*N_USERS);
 				NFOLLOWING[user] ++;
