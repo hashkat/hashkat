@@ -7,11 +7,9 @@
 #include "INFILE.h"
 #include <iomanip>
 #include "POUT.h"
-#include "PIN.h"
 
 using namespace std;    // use the above libraries
 
-const int MAX_FOLLOWING = INFILE("MAX_FOLLOWING");
 
 int main()    // this is the main function, returns 0 always
 {
@@ -20,6 +18,7 @@ int main()    // this is the main function, returns 0 always
 
 	int N_USERS = INFILE("N_USERS");
 	int MAX_USERS = INFILE("MAX_USERS");
+	int MAX_FOLLOWING = INFILE("MAX_FOLLOWING");
 	int VERBOSE = INFILE("VERBOSE");	
 	int RANDOM_INCR = INFILE("RANDOM_INCR");
 	int P_OUT = INFILE("P_OUT");
@@ -190,14 +189,6 @@ int main()    // this is the main function, returns 0 always
 	if (P_OUT == 1)
 	{
 		POUT(NFOLLOWING, MAX_USERS, MAX_FOLLOWING);
-	}
-	else
-	{
-		// nothing is done here
-	}
-	if (P_IN == 1)
-	{
-		PIN(NETWORK, MAX_USERS)
 	}
 	else
 	{

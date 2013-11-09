@@ -1,5 +1,5 @@
 #!/bin/bash
 
 date > time.dat
-./NETWORK
+./NETWORK > log
 date >> time.dat
