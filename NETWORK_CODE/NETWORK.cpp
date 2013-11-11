@@ -108,8 +108,8 @@ int main()    // this is the main function, returns 0 always
 				int user = val / (R_FOLLOW_NORM / N_USERS);  // this finds the user
 
                                 // IT do a call to the follow function, i.e.
- 
-				NETWORK[user][NFOLLOWING[user]] = int((rand()/double(RAND_MAX))*N_USERS);
+ 				// the round() function gives an equal probability to follow any present user
+				NETWORK[user][NFOLLOWING[user]] = int(round((rand()/double(RAND_MAX))*N_USERS));
 				NFOLLOWING[user] ++;
 			}
 			
