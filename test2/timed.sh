@@ -1,5 +1,5 @@
 #!/bin/bash
 
 date > time.dat
-./NETWORK > log
+./PROTOTYPE > log
 date >> time.dat
