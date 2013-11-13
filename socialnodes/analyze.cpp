@@ -148,9 +148,7 @@ void Analyzer::run() {
         // something wierd is going on here -- when n_users changes dynamically
         // we need that 2, but when n_users is fixed we dont need the 2
 
-        double DYNAMIC_ADD_RATE = N_USERS / TIME, DYNAMIC_FOLLOW_RATE =
-                N_FOLLOWS / (R_ADD * TIME * TIME), DYNAMIC_TWEET_RATE = N_TWEETS
-                / (R_ADD * TIME * TIME);
+        double DYNAMIC_ADD_RATE = N_USERS / TIME, DYNAMIC_FOLLOW_RATE = (R_ADD*TIME*R_FOLLOW + R_FOLLOW/2)/ N_USERS, DYNAMIC_TWEET_RATE = (R_ADD*TIME*R_TWEET + R_TWEET/2) / N_USERS;
 
         // ##################################################################################################
         if (VERBOSE == 0) {

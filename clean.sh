@@ -1,3 +1,4 @@
 #!/bin/bash
 
-rm NETWORK_* NFOLLOWING DATA*
+rm DATA_* CMake* cmake* time.dat P_*
+rm -r CMake*
