@@ -8,7 +8,7 @@
 
 // Dirt simple error handling, exits the program:
 static inline void panic(const char* msg) {
-    fprintf(stderr, msg);
+    fprintf(stderr, "%s\n", msg);
     exit(2); // Return with error code
 }
 
