@@ -1,5 +1,5 @@
-all:    NETWORK.cpp
-	g++ NETWORK.cpp -o NETWORK
+all:    PROTOTYPE.cpp
+	g++ PROTOTYPE.cpp -o PROTOTYPE
 
 clean:
-	rm NETWORK 
+	rm PROTOTYPE
