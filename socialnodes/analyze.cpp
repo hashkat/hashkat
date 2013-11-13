@@ -1,4 +1,5 @@
 #include <string>
+#include <cassert>
 #include <iostream>
 #include <fstream>
 #include <vector>
@@ -53,6 +54,13 @@ void Analyzer::init_from_file() {
     R_ADD = INFILE("R_ADD");
 }
 
+/* Check that nothing has gone horribly wrong. Expensive. */
+static void full_sanity_check(Network& network, int MAX_USERS) {
+    for (int i = 0; i < MAX_USERS; i++) {
+        DEBUG_CHECK(network[i].n_following <= MAX_FOLLOWING, "Cannot have more followers than MAX_FOLLOWING!");
+    }
+}
+
 void POUT(Network& network, int MAX_USERS) {
     int N_FOLLOW_DATA[MAX_FOLLOWING];
     for (int i = 0; i < MAX_FOLLOWING; i++) {
@@ -65,6 +73,7 @@ void POUT(Network& network, int MAX_USERS) {
     OUTPUT << "##### THIS IS THE P_OUT(K) FUNCTION DATA #####\n\n";
 
     for (int i = 0; i < MAX_USERS; i++) {
+        DEBUG_CHECK(network[i].n_following <= MAX_FOLLOWING, "Cannot have more followers than MAX_FOLLOWING!");
         N_FOLLOW_DATA[network[i].n_following]++;
     }
     for (int i = 0; i < MAX_FOLLOWING; i++) {
@@ -116,7 +125,7 @@ void Analyzer::run() {
 
         // DECIDE WHAT TO DO
         //##############################################################################
-        // If we find ourselves in the add user chuck of our cumuative function
+        // If we find ourselves in the add user chuck of our cumulative function
         if (u_1 - (R_ADD_NORM) <= zerotol) {
             N_USERS++;
             //call to function to decide which user to add
@@ -125,12 +134,14 @@ void Analyzer::run() {
         // If we find ourselves in the bond node chunk of our cumulative function
 
         else if (u_1 - (R_ADD_NORM + R_FOLLOW_NORM) <= zerotol) {
-            N_FOLLOWS++;
             double val = u_1 - R_ADD_NORM;
             int user = val / (R_FOLLOW_NORM / N_USERS);  // this finds the user
             Person& p = network[user];
-            p.follows[user] = int(round((rand() / double(RAND_MAX)) * N_USERS));
-            p.n_following++;
+            if (p.n_following < MAX_FOLLOWING) {
+                N_FOLLOWS++;
+                p.follows[p.n_following] = int(round((rand() / double(RAND_MAX)) * N_USERS));
+                p.n_following++;
+            }
         }
 
         // if we find ourselves in the tweet chuck of the cumulative function
@@ -198,6 +209,8 @@ void Analyzer::run() {
         R_TWEET_NORM = R_TWEET * N_USERS / R_TOTAL;
 
     }
+
+    full_sanity_check(network, MAX_USERS);
 
     //PRINT WHY PROGRAM STOPPED
     //#######################################################################################
