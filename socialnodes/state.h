@@ -39,6 +39,9 @@ struct Network {
         if (persons == NULL) {
             panic("Network::preallocate failed");
         }
+        for (int i = 0; i < n_persons; i++) {
+            persons[i].initialize();
+        }
     }
 };
 
