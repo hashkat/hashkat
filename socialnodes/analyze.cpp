@@ -209,8 +209,8 @@ struct Analyzer {
                 DYNAMIC_TWEET_RATE = (R_ADD * TIME * R_TWEET + R_TWEET / 2)
                         / N_USERS;
 
-        if (n_outputs % 50 == 0) {
-            DATA_TIME << "\nTime\t\tUsers\t\tFollows\t\tTweets\n\n";
+        if (n_outputs % 500 == 0) {
+            DATA_TIME << "\n#Time\t\tUsers\t\tFollows\t\tTweets\n\n";
         }
 //        if (VERBOSE == 0) {
 //            cout << fixed << setprecision(10) << "INCREMENT: " << N_STEPS << "\t"
@@ -227,7 +227,7 @@ struct Analyzer {
 //                    << "\n";
 //        } else if (VERBOSE == 1) {
         DATA_TIME << fixed << setprecision(2) << TIME << "\t\t" << N_USERS << "\t\t"
-                << N_FOLLOWS << "\t" << N_TWEETS << "\t\n";
+                << N_FOLLOWS << "\t\t" << N_TWEETS << "\t\n";
         n_outputs++;
     }
 };
