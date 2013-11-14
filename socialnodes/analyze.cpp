@@ -56,7 +56,7 @@ struct Analyzer {
     double R_FOLLOW_NORM;
     double R_TWEET_NORM;
 
-    double N_STEPS, N_FOLLOWS, N_TWEETS;
+    long int  N_STEPS, N_FOLLOWS, N_TWEETS;
 
     ofstream DATA_TIME; // Output file to plot data
 
@@ -203,8 +203,6 @@ struct Analyzer {
     void output(double TIME) {
         static int n_outputs = 0;
 
-        // something wierd is going on here -- when n_users changes dynamically
-        // we need that 2, but when n_users is fixed we dont need the 2
 
         double DYNAMIC_ADD_RATE = N_USERS / TIME, DYNAMIC_FOLLOW_RATE = (R_ADD
                 * TIME * R_FOLLOW + R_FOLLOW / 2) / N_USERS,
@@ -212,7 +210,7 @@ struct Analyzer {
                         / N_USERS;
 
         if (n_outputs % 50 == 0) {
-            cout << "Time\t\tUsers\t\tFollows\t\tTweets\n";
+            DATA_TIME << "\nTime\t\tUsers\t\tFollows\t\tTweets\n\n";
         }
 //        if (VERBOSE == 0) {
 //            cout << fixed << setprecision(10) << "INCREMENT: " << N_STEPS << "\t"
