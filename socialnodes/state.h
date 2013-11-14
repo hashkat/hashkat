@@ -1,7 +1,7 @@
 /* Configuration and state structures */
 
-#ifndef __STATE_H_
-#define __STATE_H_
+#ifndef __STATE_H_ //** Header guards are necessary because C++ has a very low-level include syntax.
+#define __STATE_H_ //** Without them, you can get strange multiple-definition errors due to text duplication.
 
 #include <cstdlib>
 #include "util.h"
@@ -9,11 +9,11 @@
 // Hardcoded maxes:
 const int MAX_FOLLOWING = 1000;
 
-typedef int FollowArray[MAX_FOLLOWING];
+typedef int FollowArray[MAX_FOLLOWING]; //** The typedef syntax allows us to assign a convenient name to an array of size MAX_FOLLOWING
 
 struct Person {
     int n_following;
-    FollowArray follows;
+    FollowArray follows; //** This is the same as int follows[MAX_FOLLOWING];
     void initialize() {
         n_following = 0;
         for (int i = 0; i < MAX_FOLLOWING; i++){
@@ -23,17 +23,18 @@ struct Person {
 };
 
 struct Network {
-    Person* persons;
+    Person* persons; //** This is a pointer - used to create a dynamic array
     Network() {
         persons = NULL;
     }
-    ~Network() {
+    ~Network() { //** This defines how to clean-up our Network object; we free the dynamic array
         free(persons);
     }
-    inline Person& operator[](int index) {
+    inline Person& operator[](int index) { //** This allows us to index our Network struct as if it were an array.
         return persons[index];
     }
     void preallocate(int n_persons) {
+        //** This is low-level array allocation, used to be sure we allocate the network array as efficiently as possible:
         persons = (Person*)malloc(sizeof(Person) * n_persons);
         // This is very likely to be a large allocation, check for failures:
         if (persons == NULL) {
