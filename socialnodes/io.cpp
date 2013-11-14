@@ -33,7 +33,7 @@ double load_config_var(string input_file, string demand) {
     return value;
 }
 
-void POUT(Network& network, int MAX_USERS) {
+void POUT(Network& network, int MAX_USERS, int N_USERS) {
     int N_FOLLOW_DATA[MAX_FOLLOWING];
     for (int i = 0; i < MAX_FOLLOWING; i++) {
         N_FOLLOW_DATA[i] = 0;
@@ -50,9 +50,9 @@ void POUT(Network& network, int MAX_USERS) {
         N_FOLLOW_DATA[network[i].n_following]++;
     }
     for (int i = 0; i < MAX_FOLLOWING; i++) {
-        OUTPUT << i - 0.5 << "\t" << N_FOLLOW_DATA[i] / double(MAX_USERS)
+        OUTPUT << i - 0.5 << "\t" << N_FOLLOW_DATA[i] / double(N_USERS)
                 << endl;
-        OUTPUT << i + 0.5 << "\t" << N_FOLLOW_DATA[i] / double(MAX_USERS)
+        OUTPUT << i + 0.5 << "\t" << N_FOLLOW_DATA[i] / double(N_USERS)
                 << endl;
     }
 

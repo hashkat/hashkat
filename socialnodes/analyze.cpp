@@ -120,7 +120,7 @@ struct Analyzer {
                 << ".\n\n- - Program terminated - -\n\n";
 
         if (P_OUT == 1) {
-            POUT(network, MAX_USERS);
+            POUT(network, MAX_USERS, N_USERS);
         } else {
             // nothing is done here
         }
