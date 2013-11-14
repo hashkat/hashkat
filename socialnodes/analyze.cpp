@@ -23,7 +23,7 @@ static void full_sanity_check(Network& network, int MAX_USERS) {
     }
 }
 
-/* The Analyze struct encapsulates the many-parameter analyze function, and it's state. */
+/* The Analyze struct encapsulates the many-parameter analyze function, and its state. */
 struct Analyzer {
 
     /***************************************************************************
@@ -132,7 +132,7 @@ struct Analyzer {
         double prev_floor = floor(TIME);
         if (RANDOM_INCR == 1) {
             // increment by random time
-            TIME += -log(rand_real()) / R_TOTAL;
+            TIME += -log(rand_real_not0()) / R_TOTAL;
         } else {
             TIME += 1 / R_TOTAL;
         }
@@ -145,7 +145,7 @@ struct Analyzer {
     // Performs one step of the analysis routine.
     // Takes old time, returns new time
     double step_analysis(double TIME) {
-        double u_1 = random_gen_state.genrand_real2(); // get the first number with-in [0,1).
+        double u_1 = rand_real_not1(); // get the first number with-in [0,1).
 
         // DECIDE WHAT TO DO
         //##############################################################################
@@ -195,9 +195,13 @@ struct Analyzer {
     int rand_int(int max) {
         return random_gen_state.genrand_int32() % max;
     }
-    /* Using Mersenne-twister, grab a real number within [0,1) */
-    double rand_real() {
-        return random_gen_state.genrand_real2();
+    /* Using Mersenne-twister, grab a real number within [0,1) with 53-bit resolution */
+    double rand_real_not1() {
+        return random_gen_state.genrand_res53();
+    }
+    /* Using Mersenne-twister, grab a real number within (0,1] with 53-bit resolution */
+    double rand_real_not0() {
+        return 1.0 - rand_real_not1();
     }
 
     void output(double TIME) {
