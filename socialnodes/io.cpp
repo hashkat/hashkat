@@ -49,6 +49,8 @@ void POUT(Network& network, int MAX_USERS, int N_USERS) {
                 "Cannot have more followers than MAX_FOLLOWING!");
         N_FOLLOW_DATA[network[i].n_following]++;
     }
+   
+    N_FOLLOW_DATA[0] -= (MAX_USERS - N_USERS);
     for (int i = 0; i < MAX_FOLLOWING; i++) {
         OUTPUT << i - 0.5 << "\t" << N_FOLLOW_DATA[i] / double(N_USERS)
                 << endl;
