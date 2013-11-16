@@ -124,6 +124,12 @@ struct Analyzer {
         } else {
             // nothing is done here
         }
+	if (P_IN == 1) {
+            PIN(network, MAX_USERS, N_USERS);
+        } else {
+            // nothing is done here
+        }
+
 
         DATA_TIME.close();
     }

@@ -9,5 +9,6 @@
 double load_config_var(std::string input_file, std::string demand);
 
 void POUT(Network& network, int MAX_USERS, int N_USERS);
+void PIN(Network& network, int MAX_USERS, int N_USERS);
 
 #endif

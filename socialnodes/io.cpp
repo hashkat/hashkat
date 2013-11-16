@@ -53,10 +53,51 @@ void POUT(Network& network, int MAX_USERS, int N_USERS) {
     N_FOLLOW_DATA[0] -= (MAX_USERS - N_USERS);
     for (int i = 0; i < MAX_FOLLOWING; i++) {
         OUTPUT << i - 0.5 << "\t" << N_FOLLOW_DATA[i] / double(N_USERS)
-                << endl;
+                << "\n" ;
         OUTPUT << i + 0.5 << "\t" << N_FOLLOW_DATA[i] / double(N_USERS)
-                << endl;
+                << "\n";
     }
 
     OUTPUT.close();
 }
+
+void PIN(Network& network, int MAX_USERS, int N_USERS)
+{	
+	int N_FOLLOWERS_DATA[N_USERS];
+	for (int i = 0; i < N_USERS; i ++)
+	{
+		N_FOLLOWERS_DATA[i] = 0;
+	}
+
+	for (int i = 0; i < N_USERS; i ++)
+	{
+		Person& p = network[i];
+		for (int j = 0; j < p.n_following; j ++)
+		{
+			N_FOLLOWERS_DATA[p.follows[j]] ++;
+		}
+	}
+
+	ofstream output;
+	output.open("P_IN.dat");
+	
+	output << "##### THIS IS THE P_IN(K) FUNCTION DATA #####\n\n";
+
+	int N_FOLLOWERS_DISTRO[MAX_USERS];
+	for (int i = 0; i < MAX_USERS; i ++)
+	{
+		N_FOLLOWERS_DISTRO[i] = 0;
+	}
+	
+	for (int i = 0; i < N_USERS; i ++)
+	{
+		N_FOLLOWERS_DISTRO[N_FOLLOWERS_DATA[i]] ++;
+	}
+	for (int i = 0; i < MAX_USERS; i ++)
+	{
+		output << i - 0.5 << "\t" << N_FOLLOWERS_DISTRO[i] / double(N_USERS) << "\n";
+		output << i + 0.5 << "\t" << N_FOLLOWERS_DISTRO[i] / double(N_USERS) << "\n";
+	}
+}	
+	
+
