@@ -2,10 +2,11 @@
 #define __ANALYZE_H_
 
 #include <string>
+#include <map>
 #include "dependencies/mtwist.h"
 #include "state.h"
 
 // Run a network simulation using the given input file's parameters
-void analyze_network(std::string input_file, int seed);
+void analyze_network(std::map<std::string, double>& config, int seed);
 
 #endif
