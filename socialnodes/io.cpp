@@ -33,6 +33,11 @@ double load_config_var(string input_file, string demand) {
     return value;
 }
 
+/* This is a function that gives you the probability of a user following a 
+   a given number of people. If you want to use this function, simply put
+   P_OUT = 1 in the INFILE. This function will generate an output file that
+   can be plotted using gnuplot. */
+
 void POUT(Network& network, int MAX_USERS, int N_USERS) {
     int N_FOLLOW_DATA[MAX_FOLLOWING];
     for (int i = 0; i < MAX_FOLLOWING; i++) {
@@ -60,6 +65,12 @@ void POUT(Network& network, int MAX_USERS, int N_USERS) {
 
     OUTPUT.close();
 }
+
+
+/* This is a function that goes through the network and finds the probability
+   of how many followers a given user will have. If you would like to use this
+   function simply put P_IN = 1 in the INFILE. This program will produce an 
+   output file that can be plotted using gnuplot. */
 
 void PIN(Network& network, int MAX_USERS, int N_USERS)
 {	
@@ -98,6 +109,7 @@ void PIN(Network& network, int MAX_USERS, int N_USERS)
 		output << i - 0.5 << "\t" << N_FOLLOWERS_DISTRO[i] / double(N_USERS) << "\n";
 		output << i + 0.5 << "\t" << N_FOLLOWERS_DISTRO[i] / double(N_USERS) << "\n";
 	}
+output.close();
 }	
 	
 
