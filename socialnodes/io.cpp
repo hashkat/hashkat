@@ -1,6 +1,7 @@
 #include <fstream>
 #include <vector>
 #include <string>
+#include <cmath>
 
 #include "io.h"
 #include "util.h"
@@ -48,19 +49,21 @@ void POUT(Network& network, int MAX_USERS, int N_USERS) {
     OUTPUT.open("P_OUT.dat");
 
     OUTPUT << "##### THIS IS THE P_OUT(K) FUNCTION DATA #####\n\n";
-
+    OUTPUT << "#N_FOLLOWS\tP(K)\tln(N_FOLLOWS)\tln(P(K))\n";
+	
     for (int i = 0; i < MAX_USERS; i++) {
         DEBUG_CHECK(network[i].n_following <= MAX_FOLLOWING,
                 "Cannot have more followers than MAX_FOLLOWING!");
         N_FOLLOW_DATA[network[i].n_following]++;
     }
    
+
     N_FOLLOW_DATA[0] -= (MAX_USERS - N_USERS);
-    for (int i = 0; i < MAX_FOLLOWING; i++) {
+    for (int i = 1; i < MAX_FOLLOWING; i++) {
         OUTPUT << i - 0.5 << "\t" << N_FOLLOW_DATA[i] / double(N_USERS)
-                << "\n" ;
+                << "\t" << log(i) << "\t" << log(N_FOLLOW_DATA[i] / double(N_USERS)) << "\n" ;
         OUTPUT << i + 0.5 << "\t" << N_FOLLOW_DATA[i] / double(N_USERS)
-                << "\n";
+                << "\t" << "\n";
     }
 
     OUTPUT.close();
@@ -93,7 +96,7 @@ void PIN(Network& network, int MAX_USERS, int N_USERS)
 	output.open("P_IN.dat");
 	
 	output << "##### THIS IS THE P_IN(K) FUNCTION DATA #####\n\n";
-
+        output << "#N_FOLLOWERS\tP(K)\tln(N_FOLLOWERS)\tln(P(K))\n";
 	int N_FOLLOWERS_DISTRO[MAX_USERS];
 	for (int i = 0; i < MAX_USERS; i ++)
 	{
@@ -104,10 +107,10 @@ void PIN(Network& network, int MAX_USERS, int N_USERS)
 	{
 		N_FOLLOWERS_DISTRO[N_FOLLOWERS_DATA[i]] ++;
 	}
-	for (int i = 0; i < MAX_USERS; i ++)
+	for (int i = 1; i < MAX_USERS; i ++)
 	{
-		output << i - 0.5 << "\t" << N_FOLLOWERS_DISTRO[i] / double(N_USERS) << "\n";
-		output << i + 0.5 << "\t" << N_FOLLOWERS_DISTRO[i] / double(N_USERS) << "\n";
+		output << i - 0.5 << "\t" << N_FOLLOWERS_DISTRO[i] / double(N_USERS) << "\t" << log(i) << "\t" << log(N_FOLLOWERS_DISTRO[i] / double(N_USERS)) << "\n";
+		output << i + 0.5 << "\t" << N_FOLLOWERS_DISTRO[i] / double(N_USERS) << "\t" << "\n" ;
 	}
 output.close();
 }	
