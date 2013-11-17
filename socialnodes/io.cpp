@@ -7,32 +7,6 @@
 
 using namespace std;
 
-// Read the variable from the given 'input_file' and 'demand'ed variable
-double load_config_var(string input_file, string demand) {
-    ifstream file;
-
-    file.open(input_file.c_str()); //** We must call c_str() because 'ifstream' expects a C-style pointer
-    if (!file) {
-        panic("Input file could not be found!\n");
-    }
-
-    vector<string> input;
-    string text;
-    double value;
-
-    while (!file.eof()) {
-        file >> text;
-        input.push_back(text);
-    }
-    for (int i = 0; i < input.size(); i++) {
-        if (input[i] == demand) {
-            value = atof(input[i + 2].c_str());
-        }
-    }
-    file.close();
-    return value;
-}
-
 /* This is a function that gives you the probability of a user following a 
    a given number of people. If you want to use this function, simply put
    P_OUT = 1 in the INFILE. This function will generate an output file that

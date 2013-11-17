@@ -56,7 +56,7 @@ struct Analyzer {
     double R_FOLLOW_NORM;
     double R_TWEET_NORM;
 
-    long int  N_STEPS, N_FOLLOWS, N_TWEETS;
+    long int N_STEPS, N_FOLLOWS, N_TWEETS;
 
     ofstream DATA_TIME; // Output file to plot data
 
@@ -66,20 +66,20 @@ struct Analyzer {
 
     /* Initialization and loading of configuration.
      * Reads configuration from the given input file. */
-    Analyzer(string input_file, int seed) :
+    Analyzer(map<string, double>& config, int seed) :
             random_gen_state(seed) {
-        N_USERS = load_config_var(input_file, "N_USERS");
-        MAX_USERS = load_config_var(input_file, "MAX_USERS");
-        VERBOSE = load_config_var(input_file, "VERBOSE");
-        RANDOM_INCR = load_config_var(input_file, "RANDOM_INCR");
-        P_OUT = load_config_var(input_file, "P_OUT");
-        P_IN = load_config_var(input_file, "P_IN");
+        N_USERS = config["N_USERS"];
+        MAX_USERS = config["MAX_USERS"];
+        VERBOSE = config["VERBOSE"];
+        RANDOM_INCR = config["RANDOM_INCR"];
+        P_OUT = config["P_OUT"];
+        P_IN = config["P_IN"];
 
-        T_FINAL = load_config_var(input_file, "T_FINAL");
+        T_FINAL = config["T_FINAL"];
 
-        R_FOLLOW = load_config_var(input_file, "R_FOLLOW");
-        R_TWEET = load_config_var(input_file, "R_TWEET");
-        R_ADD = load_config_var(input_file, "R_ADD");
+        R_FOLLOW = config["R_FOLLOW"];
+        R_TWEET = config["R_TWEET"];
+        R_ADD = config["R_ADD"];
 
         N_STEPS = 0, N_FOLLOWS = 0, N_TWEETS = 0;
         set_rates();
@@ -124,12 +124,11 @@ struct Analyzer {
         } else {
             // nothing is done here
         }
-	if (P_IN == 1) {
+        if (P_IN == 1) {
             PIN(network, MAX_USERS, N_USERS);
         } else {
             // nothing is done here
         }
-
 
         DATA_TIME.close();
     }
@@ -213,7 +212,6 @@ struct Analyzer {
     void output(double TIME) {
         static int n_outputs = 0;
 
-
         double DYNAMIC_ADD_RATE = N_USERS / TIME, DYNAMIC_FOLLOW_RATE = (R_ADD
                 * TIME * R_FOLLOW + R_FOLLOW / 2) / N_USERS,
                 DYNAMIC_TWEET_RATE = (R_ADD * TIME * R_TWEET + R_TWEET / 2)
@@ -236,14 +234,14 @@ struct Analyzer {
 //                    << "DYNAMIC_TWEET_RATE: " << "\t" << DYNAMIC_TWEET_RATE
 //                    << "\n";
 //        } else if (VERBOSE == 1) {
-        DATA_TIME << fixed << setprecision(2) << TIME << "\t\t" << N_USERS << "\t\t"
-                << N_FOLLOWS << "\t\t" << N_TWEETS << "\t\n";
+        DATA_TIME << fixed << setprecision(2) << TIME << "\t\t" << N_USERS
+                << "\t\t" << N_FOLLOWS << "\t\t" << N_TWEETS << "\t\n";
         n_outputs++;
     }
 };
 
 // Run a network simulation using the given input file's parameters
-void analyze_network(std::string input_file, int seed) {
-    Analyzer analyzer(input_file, seed);
+void analyze_network(map<string, double>& config, int seed) {
+    Analyzer analyzer(config, seed);
     analyzer.run_analysis();
 }
