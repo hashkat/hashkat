@@ -16,8 +16,10 @@ typedef int FollowArray[MAX_FOLLOWING]; //** The typedef syntax allows us to ass
 struct Person {
     int n_following;
     double add_in_time;
+    double x_location, y_location; // the x and y locations of the node in the network
     FollowArray follows; //** This is the same as int follows[MAX_FOLLOWING];
     void initialize() {
+    	double add_in_time = 0; // the time when users are added into the network
         n_following = 0;
         for (int i = 0; i < MAX_FOLLOWING; i++){
             follows[i] = -1; // Used instead of 0, -1 shows no action in the array

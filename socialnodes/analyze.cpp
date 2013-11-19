@@ -99,14 +99,14 @@ struct Analyzer {
         R_FOLLOW_NORM = R_FOLLOW * N_USERS / R_TOTAL;
         R_TWEET_NORM = R_TWEET * N_USERS / R_TOTAL;
     }
-    void set_times()
+    void set_initial_position()
     {
-	// set the initial users to time = 0
-        for (int i = 0; i < N_USERS; i ++)
-        {
-                Person& p = network[i];
-                p.add_in_time  = 0.0;
-        }
+	for (int i = 0; i < N_USERS; i ++)
+	{
+		Person& p = network[i];
+		p.x_location = rand_real_with01();
+		p.y_location = rand_real_with01();
+	}
     }
 
     /***************************************************************************
@@ -169,6 +169,8 @@ struct Analyzer {
             N_USERS++;
             Person& p = network[N_USERS];
 	    p.add_in_time = TIME;
+            p.x_location = rand_real_with01();
+	    p.y_location = rand_real_with01();
 	    //call to function to decide which user to add
         }
 
@@ -220,6 +222,11 @@ struct Analyzer {
     double rand_real_not0() {
         return 1.0 - rand_real_not1();
     }
+    /* Using Mersenne-twister, grab a real number within [0,1] */
+    double rand_real_with01() 
+    {
+	return random_gen_state.genrand_real1();
+    }	
 
     void output(double TIME) {
         static int n_outputs = 0;
