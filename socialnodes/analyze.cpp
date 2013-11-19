@@ -90,6 +90,7 @@ struct Analyzer {
         DATA_TIME.open("DATA_vs_TIME");
     }
 
+
     void set_rates() {
         R_TOTAL = R_ADD + R_FOLLOW * N_USERS + R_TWEET * N_USERS;
 
@@ -97,6 +98,15 @@ struct Analyzer {
         R_ADD_NORM = R_ADD / R_TOTAL;
         R_FOLLOW_NORM = R_FOLLOW * N_USERS / R_TOTAL;
         R_TWEET_NORM = R_TWEET * N_USERS / R_TOTAL;
+    }
+    void set_times()
+    {
+	// set the initial users to time = 0
+        for (int i = 0; i < N_USERS; i ++)
+        {
+                Person& p = network[i];
+                p.add_in_time  = 0.0;
+        }
     }
 
     /***************************************************************************
@@ -129,8 +139,8 @@ struct Analyzer {
         } else {
             // nothing is done here
         }
-
-        DATA_TIME.close();
+        
+	DATA_TIME.close();
     }
 
     void step_time(double& TIME) {
@@ -157,7 +167,9 @@ struct Analyzer {
         // If we find ourselves in the add user chuck of our cumulative function
         if (u_1 - (R_ADD_NORM) <= ZEROTOL) {
             N_USERS++;
-            //call to function to decide which user to add
+            Person& p = network[N_USERS];
+	    p.add_in_time = TIME;
+	    //call to function to decide which user to add
         }
 
         // If we find ourselves in the bond node chunk of our cumulative function

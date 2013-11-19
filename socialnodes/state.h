@@ -11,8 +11,11 @@ const int MAX_FOLLOWING = 1000;
 
 typedef int FollowArray[MAX_FOLLOWING]; //** The typedef syntax allows us to assign a convenient name to an array of size MAX_FOLLOWING
 
+
+
 struct Person {
     int n_following;
+    double add_in_time;
     FollowArray follows; //** This is the same as int follows[MAX_FOLLOWING];
     void initialize() {
         n_following = 0;
