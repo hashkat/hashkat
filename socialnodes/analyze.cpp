@@ -44,6 +44,7 @@ struct Analyzer {
     int RANDOM_INCR;
     int P_OUT;
     int P_IN;
+    int VISUALIZE;
 
     double T_FINAL;
 
@@ -74,7 +75,7 @@ struct Analyzer {
         RANDOM_INCR = config["RANDOM_INCR"];
         P_OUT = config["P_OUT"];
         P_IN = config["P_IN"];
-
+	VISUALIZE = config["VISUALIZE"];
         T_FINAL = config["T_FINAL"];
 
         R_FOLLOW = config["R_FOLLOW"];
@@ -139,6 +140,10 @@ struct Analyzer {
         } else {
             // nothing is done here
         }
+	if (VISUALIZE == 1)
+	{
+		output_position(network, N_USERS);
+	}
         
 	DATA_TIME.close();
     }

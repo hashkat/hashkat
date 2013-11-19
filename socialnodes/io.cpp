@@ -2,11 +2,30 @@
 #include <vector>
 #include <string>
 #include <cmath>
-
+#include <iostream>
 #include "io.h"
 #include "util.h"
 
 using namespace std;
+
+void output_position(Network& network, int n_users)
+{
+	ofstream output;
+	output.open("POSITIONS.xyz");
+	output << n_users << "\n\n";
+
+	for (int i = 0; i < n_users; i ++)
+	{
+		Person& p = network[i];
+		output << "X"          << "   "
+		       << p.x_location << "   " 
+		       << p.y_location << "   "
+		       << 0.0 << "\n";
+	}
+output.close();
+} 
+
+
 
 /* This is a function that gives you the probability of a user following a 
    a given number of people. If you want to use this function, simply put
