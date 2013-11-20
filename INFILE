@@ -18,6 +18,16 @@ R_ADD = 4.7                  ; ->    1 / hour
 R_FOLLOW = 0.00139           ; ->    1/week
 R_TWEET = 0.00139            ; ->      2/day
 
+R_ADD_NORMAL = 100
+R_ADD_CELEB = 90
+R_ADD_BOT = 40
+R_ADD_ORG = 10
+
+R_FOLLOW_NORMAL = 100
+R_FOLLOW_CELEB = 100
+R_FOLLOW_BOT = 100
+R_FOLLOW_ORG = 100
+
 P_OUT = 1		     ; -> print p_out file (1)
 			     ; -> dont print (0)
 P_IN = 1

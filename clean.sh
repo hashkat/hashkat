@@ -1,4 +1,3 @@
 #!/bin/bash
 
-rm DATA_* CMake* cmake* time.dat P_*
-rm -r CMake*
+rm DATA_* P_* time.dat

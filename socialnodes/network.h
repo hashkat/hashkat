@@ -9,7 +9,8 @@
 #include "follow_set.h"
 
 struct Person {
-	FollowSet follow_set;
+    int type;
+    FollowSet follow_set;
     double creation_time;
     double x_location, y_location;
     void initialize() {

@@ -1,6 +1,9 @@
 CMakeCache.txt
 CMakeFiles/
 Makefile
+DATA_vs_TIME
 cmake_install.cmake
 socialnodes/main
 *.a
+*.dat
+*.xyz

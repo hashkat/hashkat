@@ -16,6 +16,21 @@ using namespace std;
 
 static const double ZEROTOL = 1e-16; // enough precision for really really low add rate
 
+struct UserType {
+	double R_ADD; // When a user is added, how likely is it that it is this user type ?
+	double R_FOLLOW; // When a user is followed, how likely is it that it is this user type ?
+};
+
+
+// different user types
+enum {
+	UT_NORMAL_INDEX = 0,
+	UT_CELEB_INDEX = 1,
+	UT_BOT_INDEX = 2,
+	UT_ORG_INDEX = 3,
+	N_USERTYPES = 4
+};
+
 /* The Analyze struct encapsulates the many-parameter analyze function, and its state. */
 struct Analyzer {
 
@@ -43,10 +58,6 @@ struct Analyzer {
 
     double T_FINAL;
 
-    double R_FOLLOW;
-    double R_TWEET;
-    double R_ADD;
-
     double R_TOTAL;
     double R_ADD_NORM;
     double R_FOLLOW_NORM;
@@ -54,7 +65,11 @@ struct Analyzer {
 
     long int N_STEPS, N_FOLLOWS, N_TWEETS;
 
+    UserType user_types[N_USERTYPES];
+
     ofstream DATA_TIME; // Output file to plot data
+
+    map<string, double> config; // Contents of INFILE
 
     /***************************************************************************
      * Initialization functions
@@ -62,10 +77,12 @@ struct Analyzer {
 
     /* Initialization and loading of configuration.
      * Reads configuration from the given input file. */
-    Analyzer(map<string, double>& config, int seed) :
+    Analyzer(map<string, double>& conf, int seed) :
             random_gen_state(seed) {
+    	config = conf;
         N_USERS = config["N_USERS"];
         MAX_USERS = config["MAX_USERS"];
+        MAX_USERS = config["MAX_"];
         VERBOSE = config["VERBOSE"];
         RANDOM_INCR = config["RANDOM_INCR"];
         P_OUT = config["P_OUT"];
@@ -74,33 +91,49 @@ struct Analyzer {
         VISUALIZE = config["VISUALIZE"];
         T_FINAL = config["T_FINAL"];
 
-        R_FOLLOW = config["R_FOLLOW"];
-        R_TWEET = config["R_TWEET"];
-        R_ADD = config["R_ADD"];
-
         N_STEPS = 0, N_FOLLOWS = 0, N_TWEETS = 0;
         set_rates();
 
         // The following allocates a memory chunk proportional to MAX_USERS:
         network.preallocate(MAX_USERS);
+        follow_set_grower.preallocate(FOLLOW_SET_MEM_PER_USER * MAX_USERS);
         // Open our output file
         if (VISUALIZE == 1) {
             output_position(network, N_USERS);
         }
         DATA_TIME.open("DATA_vs_TIME");
+
+        set_usertype_probabilities();
     }
 
-    void set_initial_position() {
-        for (int i = 0; i < N_USERS; i++) {
-            Person& p = network[i];
-            p.x_location = rand_real_with01();
-            p.y_location = rand_real_with01();
+    void set_usertype_probabilities() {
+        user_types[UT_NORMAL_INDEX].R_ADD = config["R_ADD_NORMAL"];
+        user_types[UT_CELEB_INDEX].R_ADD = config["R_ADD_CELEB"];
+        user_types[UT_ORG_INDEX].R_ADD = config["R_ADD_ORG"];
+        user_types[UT_BOT_INDEX].R_ADD = config["R_ADD_BOT"];
+
+        user_types[UT_NORMAL_INDEX].R_FOLLOW = config["R_FOLLOW_NORMAL"];
+        user_types[UT_CELEB_INDEX].R_FOLLOW = config["R_FOLLOW_CELEB"];
+        user_types[UT_ORG_INDEX].R_FOLLOW = config["R_FOLLOW_ORG"];
+        user_types[UT_BOT_INDEX].R_FOLLOW = config["R_FOLLOW_BOT"];
+
+        double add_total = 0, follow_total = 0;
+        for (int i = 0; i < N_USERTYPES; i++) {
+            add_total += user_types[i].R_ADD;
+            follow_total += user_types[i].R_FOLLOW;
+        }
+        for (int i = 0; i < N_USERTYPES; i++) {
+            user_types[i].R_ADD /= add_total;
+            user_types[i].R_FOLLOW /= follow_total;
         }
     }
 
     void set_rates() {
-        R_TOTAL = R_ADD + R_FOLLOW * N_USERS + R_TWEET * N_USERS;
+        double R_FOLLOW = config["R_FOLLOW"];
+        double R_TWEET = config["R_TWEET"];
+        double R_ADD = config["R_ADD"];
 
+        R_TOTAL = R_ADD + R_FOLLOW * N_USERS + R_TWEET * N_USERS;
         //Normalize the rates
         R_ADD_NORM = R_ADD / R_TOTAL;
         R_FOLLOW_NORM = R_FOLLOW * N_USERS / R_TOTAL;
@@ -160,6 +193,23 @@ struct Analyzer {
             output(TIME);
         }
     }
+
+    /* Create a person at the given index.
+     * The index should be an empty user slot. */
+    void create_person(double creation_time, int index) {
+		Person& p = network[index];
+		p.creation_time = creation_time;
+		double rand_num = rand_real_not0();
+		for (int i = 0; i < N_USERTYPES; i++) {
+			if (rand_num < user_types[i].R_ADD || i == N_USERTYPES - 1) {
+				p.type = i;
+				break;
+			}
+			rand_num -= user_types[i].R_ADD;
+		}
+		p.x_location = rand_real_with01();
+		p.y_location = rand_real_with01();
+	}
 
     // Performs one step of the analysis routine.
     // Takes old time, returns new time
@@ -230,9 +280,9 @@ struct Analyzer {
     void output(double TIME) {
         static int n_outputs = 0;
 
-        double DYNAMIC_ADD_RATE = N_USERS / TIME, DYNAMIC_FOLLOW_RATE = (R_ADD
-                * TIME * R_FOLLOW + R_FOLLOW / 2) / N_USERS,
-                DYNAMIC_TWEET_RATE = (R_ADD * TIME * R_TWEET + R_TWEET / 2)
+        double DYNAMIC_ADD_RATE = N_USERS / TIME, DYNAMIC_FOLLOW_RATE = (config["R_ADD"]
+                * TIME * config["R_FOLLOW"] + config["R_FOLLOW"] / 2) / N_USERS,
+                DYNAMIC_TWEET_RATE = (config["R_ADD"] * TIME * config["R_TWEET"] + config["R_TWEET"] / 2)
                         / N_USERS;
 
         if (n_outputs % 500 == 0) {
