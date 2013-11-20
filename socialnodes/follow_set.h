@@ -1,0 +1,134 @@
+/* Defines structures necessarily for handling follow sets. */
+
+#ifndef FOLLOW_SETS_H_
+#define FOLLOW_SETS_H_
+
+#include <vector>
+#include "util.h"
+#include "constants.h"
+
+/* Follow sets are lists of unique users that a given user is following.
+ *
+ * We optimize for the case n_following <= FOLLOW_LIMIT1 by placing the
+ * elements directly in the array.
+ *
+ * For n_following > FOLLOW_LIMIT1, FollowSetGrower provides a new follow
+ * set to point to, when n_following == FOLLOW_LIMIT1, and grow() is used.
+ *
+ * To use a follow set, simply use
+ */
+struct FollowSet {
+    int n_following, capacity;
+    int* location;
+
+	// Define follow_set1 as an array of fixed-length 'FOLLOW_LIMIT1'
+    // When n_following <= FOLLOW_LIMIT1, location points to this array
+    int follow_buffer1[FOLLOW_LIMIT1]; // (Short-object-optimization)
+
+    void copy(int* source, int len) {
+        for (int i = 0; i < len; i++) {
+        	location[i] = source[i];
+        }
+        for (int i = len; i < capacity; i++){
+            location[i] = -1; // Fill rest with -1 to show no action in the array
+        }
+    }
+    void initialize() {
+        n_following = 0;
+        location = follow_buffer1;
+        capacity = FOLLOW_LIMIT1;
+        copy(NULL, 0);
+    }
+
+    int& operator[](int index) { //** This allows us to index our FollowSet struct as if it were an array.
+    	DEBUG_CHECK(within_range(index, 0, n_following), "Operator out of bounds");
+    	return location[index];
+    }
+};
+
+struct DeletedFollowSet {
+	// A follow set buffer that overgrew its boundary, and can be used by another user.
+	int* location;
+	int capacity;
+	DeletedFollowSet(int* loc, int cap) {
+		location = loc, capacity = cap;
+	}
+};
+
+typedef std::vector<DeletedFollowSet> DeletedList;
+
+/* Handles growing follow sets, and allocating buffers when n_following > FOLLOW_LIMIT1. */
+struct FollowSetGrower {
+	int* memory;
+	int used, capacity;
+	DeletedList deletions;
+
+	FollowSetGrower() {
+		memory = NULL;
+		used = 0, capacity = 0;
+	}
+	void preallocate(int max_bytes) {
+		capacity = max_bytes / sizeof(int);
+		memory = new int[capacity];
+	}
+	~FollowSetGrower() {
+		delete[] memory;
+	}
+
+	// Add a follower to the follow set, potentially growing the array.
+	// If we had to grow AND we have run out of allocated memory, we do nothing and return false.
+	// Otherwise, we return true.
+	bool add_follow(FollowSet& f, int follow) {
+    	DEBUG_CHECK(f.n_following <= f.capacity, "Logic error, array should have been grown!");
+		if (f.n_following == f.capacity) {
+			if (!grow_follow_set(f)) {
+				// Not enough room for this FollowSet allocation; this is actually fine. Do nothing here.
+				// Virtually all other users will still have a long way to go before hitting their cap.
+				return false;
+			}
+		}
+    	DEBUG_CHECK(f.n_following < f.capacity, "Logic error");
+		f.follow_buffer1[f.n_following] = follow;
+		f.n_following++;
+		return true;
+	}
+
+private:
+	bool grow_follow_set(FollowSet& f) {
+		if (f.location != f.follow_buffer1) {
+			// If we are not pointing to our embedded 'follow_set1', we must be pointing within the 'memory' array
+			DEBUG_CHECK(within_range(f.location, memory, memory + capacity), "Logic error");
+			deletions.push_back(DeletedFollowSet(f.location, f.capacity));
+		}
+		int* old_location = f.location;
+		f.capacity *= FOLLOW_SET_GROWTH_MULTIPLE;
+		for (DeletedList::iterator candidate = deletions.begin(); candidate != deletions.end(); ++candidate) {
+			// Compatible deleted buffer, recycle it:
+			if (candidate->capacity == f.capacity) {
+				deletions.erase(candidate);
+				f.location = candidate->location;
+				f.copy(old_location, f.n_following);
+				return true; // We're done
+			}
+		}
+		// Go into our block of memory and allocate a follow set:
+		int* new_location = allocate(f.capacity);
+		if (new_location == NULL) {
+			f.capacity /= FOLLOW_SET_GROWTH_MULTIPLE; // Backtrack!
+			return false; // Not enough room!
+		}
+		f.location = new_location;
+		f.copy(old_location, f.n_following);
+		return true;
+	}
+	int* allocate(int cap) {
+		if (used + cap > capacity) {
+			return NULL; // Not enough room!
+		}
+		used += cap;
+		printf("Used %d cap %d\n", used, capacity);
+		return &memory[used - cap];
+	}
+};
+
+#endif

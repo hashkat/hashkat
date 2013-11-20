@@ -1,4 +1,5 @@
 set -e
 cmake .
-make -j2
-time ./main
+cores=$(grep -c ^processor /proc/cpuinfo)
+make -j$((cores+1))
+./socialnodes/main $@

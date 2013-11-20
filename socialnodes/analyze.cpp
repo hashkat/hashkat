@@ -9,19 +9,12 @@
 // Local includes:
 #include "analyze.h"
 #include "util.h"
+#include "follow_set.h"
 #include "io.h"
 
 using namespace std;
 
 static const double ZEROTOL = 1e-16; // enough precision for really really low add rate
-
-/* Check that nothing has gone horribly wrong. Expensive. */
-static void full_sanity_check(Network& network, int MAX_USERS) {
-    for (int i = 0; i < MAX_USERS; i++) {
-        DEBUG_CHECK(network[i].n_following <= MAX_FOLLOWING,
-                "Cannot have more followers than MAX_FOLLOWING!");
-    }
-}
 
 /* The Analyze struct encapsulates the many-parameter analyze function, and its state. */
 struct Analyzer {
@@ -35,6 +28,8 @@ struct Analyzer {
     //** In this struct -- greatly reduce tedious parameter-passing
     // The network state
     Network network;
+    // Helper struct that
+    FollowSetGrower follow_set_grower;
     /* Mersenne-twister random number generator */
     MTwist random_gen_state;
     /* Analysis parameters */
@@ -75,7 +70,8 @@ struct Analyzer {
         RANDOM_INCR = config["RANDOM_INCR"];
         P_OUT = config["P_OUT"];
         P_IN = config["P_IN"];
-	VISUALIZE = config["VISUALIZE"];
+
+        VISUALIZE = config["VISUALIZE"];
         T_FINAL = config["T_FINAL"];
 
         R_FOLLOW = config["R_FOLLOW"];
@@ -85,12 +81,22 @@ struct Analyzer {
         N_STEPS = 0, N_FOLLOWS = 0, N_TWEETS = 0;
         set_rates();
 
-        // The following allocates the (large) memory chunk proportional to MAX_USERS:
+        // The following allocates a memory chunk proportional to MAX_USERS:
         network.preallocate(MAX_USERS);
         // Open our output file
+        if (VISUALIZE == 1) {
+            output_position(network, N_USERS);
+        }
         DATA_TIME.open("DATA_vs_TIME");
     }
 
+    void set_initial_position() {
+        for (int i = 0; i < N_USERS; i++) {
+            Person& p = network[i];
+            p.x_location = rand_real_with01();
+            p.y_location = rand_real_with01();
+        }
+    }
 
     void set_rates() {
         R_TOTAL = R_ADD + R_FOLLOW * N_USERS + R_TWEET * N_USERS;
@@ -100,14 +106,13 @@ struct Analyzer {
         R_FOLLOW_NORM = R_FOLLOW * N_USERS / R_TOTAL;
         R_TWEET_NORM = R_TWEET * N_USERS / R_TOTAL;
     }
-    void set_initial_position()
-    {
-	for (int i = 0; i < N_USERS; i ++)
-	{
-		Person& p = network[i];
-		p.x_location = rand_real_with01();
-		p.y_location = rand_real_with01();
-	}
+
+    /***************************************************************************
+     * Person mutation routines
+     ***************************************************************************/
+    // Return whether the follow could be added, or if we have run out of buffer room.
+    bool add_follow(Person& person, int follow) {
+        return follow_set_grower.add_follow(person.follow_set, follow);
     }
 
     /***************************************************************************
@@ -121,8 +126,6 @@ struct Analyzer {
         while (time < T_FINAL && N_USERS < MAX_USERS) {
             time = step_analysis(time);
         }
-
-        full_sanity_check(network, MAX_USERS);
 
         // Print why program stopped
         string maximum_what =
@@ -140,12 +143,8 @@ struct Analyzer {
         } else {
             // nothing is done here
         }
-	if (VISUALIZE == 1)
-	{
-		output_position(network, N_USERS);
-	}
-        
-	DATA_TIME.close();
+
+        DATA_TIME.close();
     }
 
     void step_time(double& TIME) {
@@ -173,10 +172,8 @@ struct Analyzer {
         if (u_1 - (R_ADD_NORM) <= ZEROTOL) {
             N_USERS++;
             Person& p = network[N_USERS];
-	    p.add_in_time = TIME;
-            p.x_location = rand_real_with01();
-	    p.y_location = rand_real_with01();
-	    //call to function to decide which user to add
+            p.creation_time = TIME;
+            //call to function to decide which user to add
         }
 
         // If we find ourselves in the bond node chunk of our cumulative function
@@ -185,10 +182,8 @@ struct Analyzer {
             double val = u_1 - R_ADD_NORM;
             int user = val / (R_FOLLOW_NORM / N_USERS); // this finds the user
             Person& p = network[user];
-            if (p.n_following < MAX_FOLLOWING) {
-                N_FOLLOWS++;
-                p.follows[p.n_following] = rand_int(N_USERS);
-                p.n_following++;
+            if (add_follow(p, user)) {
+                N_FOLLOWS++; // We were able to add the follow; almost always the case.
             }
         }
 
@@ -228,10 +223,9 @@ struct Analyzer {
         return 1.0 - rand_real_not1();
     }
     /* Using Mersenne-twister, grab a real number within [0,1] */
-    double rand_real_with01() 
-    {
-	return random_gen_state.genrand_real1();
-    }	
+    double rand_real_with01() {
+        return random_gen_state.genrand_real1();
+    }
 
     void output(double TIME) {
         static int n_outputs = 0;

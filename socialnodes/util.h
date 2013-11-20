@@ -8,7 +8,7 @@
 #include <cstdlib>
 
 // Dirt simple error handling, exits the program:
-static inline void panic(const char* msg) {
+inline void panic(const char* msg) {
     fprintf(stderr, "%s\n", msg);
     exit(2); // Return with error code
 }
@@ -16,8 +16,14 @@ static inline void panic(const char* msg) {
 // Checks that are turned off in release mode:
 #define DEBUG_CHECK(expr, msg) \
     if (!(expr)) { \
-        printf("%s:%d %s\n", __FILE__, __LINE__, msg); \
-        exit(2); \
+        printf("FAILED CHECK: %s (%s:%d)\n", msg, __FILE__, __LINE__); \
+        throw msg; \
     }
+
+template <typename T>
+inline bool within_range(T val, T a, T b) {
+	// Is val within [a,b) ?
+	return val >= a && val < b;
+}
 
 #endif

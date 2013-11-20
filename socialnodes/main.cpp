@@ -1,9 +1,14 @@
-#include "analyze.h"
-#include "dependencies/ini.h"
 #include <cstdio>
 #include <cstring>
+#include <string>
 #include <map>
 #include <sstream>
+
+#include "dependencies/ini.h"
+#include "dependencies/UnitTest++.h"
+#include "dependencies/lcommon.h"
+
+#include "analyze.h"
 
 using namespace std;
 
@@ -32,9 +37,19 @@ bool load_config(string name) {
     return true;
 }
 
-int main() {
-    if (load_config("INFILE")) {
+int main(int argc, char** argv) {
+	if (argc >= 2 && string(argv[1]) == "--tests" ) {
+		// running tests:
+		return UnitTest::RunAllTests();
+	}
+	else if (load_config("INFILE")) {
+		// or running analysis:
+		Timer t;
         analyze_network(CONFIG, /*Seed*/1);
+		printf("Analysis took %.2fms.\n", t.get_microseconds() / 1000.0);
+		return 0;
     }
-    return 0;
+
+	// Abnormal execution path
+	return 2;
 }
