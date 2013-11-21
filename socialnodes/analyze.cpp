@@ -212,12 +212,16 @@ struct Analyzer {
 
     void follow_person(int index) {
         Person& p = network[index];
-        
+        int user_to_follow;
         double rand_num = rand_real_not0();
         for (int i = 0; i < N_USERTYPES; i ++) {
             if (rand_num < user_types[i].R_FOLLOW || i == N_USERTYPES - 1) {
-                add_follow(p, user_types[i].user_list[user_types[i].user_list.size() * rand_real_with01()] );
+				user_to_follow = user_types[i].user_list[user_types[i].user_list.size() * rand_real_with01()];
+                add_follow(p, user_to_follow);
             }
+        }
+        if (add_follow(p, user_to_follow)) {
+            N_FOLLOWS++; // We were able to add the follow; almost always the case.
         }
     }
     // Performs one step of the analysis routine.
@@ -240,9 +244,8 @@ struct Analyzer {
             double val = u_1 - R_ADD_NORM;
             int user = val / (R_FOLLOW_NORM / N_USERS); // this finds the user
             Person& p = network[user];
-            if (add_follow(p, user)) {
-                N_FOLLOWS++; // We were able to add the follow; almost always the case.
-            }
+			follow_person(user);
+            
         }
 
         // if we find ourselves in the tweet chuck of the cumulative function
