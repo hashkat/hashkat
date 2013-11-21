@@ -220,11 +220,8 @@ struct Analyzer {
 		int user_to_follow;
 		double first_rand_num = rand_real_not0();
 		for (int i = 0; i < N_USERTYPES; i++) {
-			if (first_rand_num < user_types[i].R_FOLLOW
-					|| i == N_USERTYPES - 1) {
-				double second_rand_num = rand_real_not1();
-				int user_list_length = user_types[i].user_list.size();
-				user_to_follow = user_list_length * second_rand_num;
+			if (first_rand_num < user_types[i].R_FOLLOW || i == N_USERTYPES - 1) {
+				user_to_follow = rand_int(user_types[i].user_list.size());
 				break;
 			}
 			first_rand_num -= user_types[i].R_FOLLOW;
