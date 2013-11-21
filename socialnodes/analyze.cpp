@@ -82,7 +82,6 @@ struct Analyzer {
     	config = conf;
         N_USERS = config["N_USERS"];
         MAX_USERS = config["MAX_USERS"];
-        MAX_USERS = config["MAX_"];
         VERBOSE = config["VERBOSE"];
         RANDOM_INCR = config["RANDOM_INCR"];
         P_OUT = config["P_OUT"];
@@ -157,7 +156,7 @@ struct Analyzer {
     void run_analysis() {
         double time = 0;
         while (time < T_FINAL && N_USERS < MAX_USERS) {
-            time = step_analysis(time);
+        	time = step_analysis(time);
         }
 
         // Print why program stopped
