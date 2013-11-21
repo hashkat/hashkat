@@ -1,6 +1,8 @@
 # Compile everything under 'dependencies'
 add_subdirectory(dependencies)
 
+add_definitions(-Wuninitialized -Werror)
+
 # Find source files
 aux_source_directory(
 	"." 
