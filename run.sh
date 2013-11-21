@@ -15,7 +15,7 @@ function colorify {
 function handle_flag() {
     flag=$1
     if [[ "$args" == *"$flag"* ]] ; then
-        args="${args/flag/}"
+        args="${args/$flag/}"
         return 0 # True!
     fi
     return 1 # False!
@@ -31,8 +31,8 @@ fi
 # Wrap the gdb around the program with -g:
 if handle_flag "-g" ; then
     echo "Wrapping in GDB:" | colorify '1;35'
-    gdb -silent -ex=r --args socialnodes/main $@
+    gdb -silent -ex=r --args socialnodes/main $args
 else
     # Normal execution
-    socialnodes/main $@
+    socialnodes/main $args
 fi
