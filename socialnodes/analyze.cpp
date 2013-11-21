@@ -217,7 +217,7 @@ struct Analyzer {
     /* decides which user to follow based on the rates in the INFILE */
     void follow_person(int index) {
 		Person& p = network[index];
-		int user_to_follow;
+		int user_to_follow = -1;
 		double first_rand_num = rand_real_not0();
 		for (int i = 0; i < N_USERTYPES; i++) {
 			if (first_rand_num < user_types[i].R_FOLLOW || i == N_USERTYPES - 1) {
@@ -226,6 +226,7 @@ struct Analyzer {
 			}
 			first_rand_num -= user_types[i].R_FOLLOW;
 		}
+		DEBUG_CHECK(user_to_follow != -1, "Logic error");
 		if (add_follow(p, user_to_follow)) {
 			N_FOLLOWS++; // We were able to add the follow; almost always the case.
 		}
