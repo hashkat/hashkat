@@ -210,6 +210,16 @@ struct Analyzer {
 		p.y_location = rand_real_with01();
 	}
 
+    void follow_person(int index) {
+        Person& p = network[index];
+        
+        double rand_num = rand_real_not0();
+        for (int i = 0; i < N_USERTYPES; i ++) {
+            if (rand_num < user_types[i].R_FOLLOW || i == N_USERTYPES - 1) {
+                add_follow(p, user_types[i].user_list[user_types[i].user_list.size() * rand_real_with01()] );
+            }
+        }
+    }
     // Performs one step of the analysis routine.
     // Takes old time, returns new time
     double step_analysis(double TIME) {
