@@ -1,9 +1,9 @@
 # Compile everything under 'dependencies'
 add_subdirectory(dependencies)
 
-add_definitions(-Wuninitialized -fsanitize=address)
-SET (CMAKE_EXE_LINKER_FLAGS -fsanitize=address)
-SET (CMAKE_MODULE_LINKER_FLAGS -fsanitize=address)
+add_definitions(-Wuninitialized)# -fsanitize=address)
+#SET (CMAKE_EXE_LINKER_FLAGS -fsanitize=address)
+#SET (CMAKE_MODULE_LINKER_FLAGS -fsanitize=address)
 
 # Find source files
 aux_source_directory(
