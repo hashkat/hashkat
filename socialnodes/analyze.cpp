@@ -84,7 +84,7 @@ struct Analyzer {
         follow_set_grower.preallocate(FOLLOW_SET_MEM_PER_USER * MAX_USERS);
 
         DATA_TIME.open("DATA_vs_TIME");
-
+        set_initial_usertypes();
         set_usertype_probabilities();
     }
 
@@ -129,7 +129,13 @@ struct Analyzer {
             p.y_location = rand_real_with01();
         }
     }
-    
+    void set_initial_usertypes() {
+        for (int i = 0; i < N_USERS; i ++) {
+             create_person(0.0, i);
+        }
+    }
+
+
     /***************************************************************************
      * Person mutation routines
      ***************************************************************************/
@@ -168,8 +174,6 @@ struct Analyzer {
         }
         if (VISUALIZE == 1)
         {
-            set_initial_positions();
-            output_position(network, N_USERS);
         }
         else
         {
