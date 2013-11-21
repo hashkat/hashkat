@@ -11,25 +11,11 @@
 #include "util.h"
 #include "follow_set.h"
 #include "io.h"
+#include "network.h"
 
 using namespace std;
 
 static const double ZEROTOL = 1e-16; // enough precision for really really low add rate
-
-struct UserType {
-	double R_ADD; // When a user is added, how likely is it that it is this user type ?
-	double R_FOLLOW; // When a user is followed, how likely is it that it is this user type ?
-};
-
-
-// different user types
-enum {
-	UT_NORMAL_INDEX = 0,
-	UT_CELEB_INDEX = 1,
-	UT_BOT_INDEX = 2,
-	UT_ORG_INDEX = 3,
-	N_USERTYPES = 4
-};
 
 /* The Analyze struct encapsulates the many-parameter analyze function, and its state. */
 struct Analyzer {
@@ -96,10 +82,7 @@ struct Analyzer {
         // The following allocates a memory chunk proportional to MAX_USERS:
         network.preallocate(MAX_USERS);
         follow_set_grower.preallocate(FOLLOW_SET_MEM_PER_USER * MAX_USERS);
-        // Open our output file
-        if (VISUALIZE == 1) {
-            output_position(network, N_USERS);
-        }
+
         DATA_TIME.open("DATA_vs_TIME");
 
         set_usertype_probabilities();
@@ -139,6 +122,14 @@ struct Analyzer {
         R_TWEET_NORM = R_TWEET * N_USERS / R_TOTAL;
     }
 
+    void set_initial_positions() {
+        for (int i = 0; i < N_USERS; i ++) {
+            Person& p = network[i];
+            p.x_location = rand_real_with01();
+            p.y_location = rand_real_with01();
+        }
+    }
+    
     /***************************************************************************
      * Person mutation routines
      ***************************************************************************/
@@ -175,10 +166,18 @@ struct Analyzer {
         } else {
             // nothing is done here
         }
-
+        if (VISUALIZE == 1)
+        {
+            set_initial_positions();
+            output_position(network, N_USERS);
+        }
+        else
+        {
+            // nothing is done here
+        }
         DATA_TIME.close();
     }
-
+    
     void step_time(double& TIME) {
         double prev_floor = floor(TIME);
         if (RANDOM_INCR == 1) {
@@ -202,6 +201,7 @@ struct Analyzer {
 		for (int i = 0; i < N_USERTYPES; i++) {
 			if (rand_num < user_types[i].R_ADD || i == N_USERTYPES - 1) {
 				p.type = i;
+                                user_types[i].user_list.push_back(index);
 				break;
 			}
 			rand_num -= user_types[i].R_ADD;
@@ -219,9 +219,8 @@ struct Analyzer {
         //##############################################################################
         // If we find ourselves in the add user chuck of our cumulative function
         if (u_1 - (R_ADD_NORM) <= ZEROTOL) {
-            N_USERS++;
-            Person& p = network[N_USERS];
-            p.creation_time = TIME;
+            create_person(TIME, N_USERS);
+            N_USERS ++;
             //call to function to decide which user to add
         }
 

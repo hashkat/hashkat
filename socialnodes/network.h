@@ -4,6 +4,7 @@
 #define __NETWORK_H_ //** Without them, you can get strange multiple-definition errors due to text duplication.
 
 #include <cstdlib>
+#include <vector>
 #include "util.h"
 
 #include "follow_set.h"
@@ -52,5 +53,23 @@ struct Network {
     	return persons[person_id].follow_set[follow_index];
     }
 };
+
+struct UserType {
+            double R_ADD; // When a user is added, how likely is it that it is this user type ?
+            double R_FOLLOW; // When a user is followed, how likely is it that it is this user type ?
+            std::vector <int> user_list; 
+
+};
+
+
+// different user types
+enum {
+            UT_NORMAL_INDEX = 0,
+            UT_CELEB_INDEX = 1,
+            UT_BOT_INDEX = 2,
+            UT_ORG_INDEX = 3,
+            N_USERTYPES = 4
+};
+
 
 #endif
