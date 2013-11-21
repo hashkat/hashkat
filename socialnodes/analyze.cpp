@@ -220,9 +220,10 @@ struct Analyzer {
 		double second_rand_num = rand_real_not1();
 		int user_list_length = user_types[i].user_list.size();
 		int user_to_follow = user_list_length * second_rand_num;
-
                 add_follow(p, user_to_follow);
+                break;
             }
+            first_rand_num -= user_types[i].R_FOLLOW;
         }
         if (add_follow(p, user_to_follow)) {
             N_FOLLOWS++; // We were able to add the follow; almost always the case.
