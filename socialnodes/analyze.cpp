@@ -210,13 +210,17 @@ struct Analyzer {
 		p.y_location = rand_real_with01();
 	}
 
+    /* decides which user to follow based on the rates in the INFILE */
     void follow_person(int index) {
         Person& p = network[index];
         int user_to_follow;
-        double rand_num = rand_real_not0();
+        double first_rand_num = rand_real_not0();
         for (int i = 0; i < N_USERTYPES; i ++) {
-            if (rand_num < user_types[i].R_FOLLOW || i == N_USERTYPES - 1) {
-				user_to_follow = user_types[i].user_list[user_types[i].user_list.size() * rand_real_with01()];
+            if (first_rand_num < user_types[i].R_FOLLOW || i == N_USERTYPES - 1) {
+		double second_rand_num = rand_real_not1();
+		int user_list_length = user_types[i].user_list.size();
+		int user_to_follow = user_list_length * second_rand_num;
+
                 add_follow(p, user_to_follow);
             }
         }
@@ -244,7 +248,7 @@ struct Analyzer {
             double val = u_1 - R_ADD_NORM;
             int user = val / (R_FOLLOW_NORM / N_USERS); // this finds the user
             Person& p = network[user];
-			follow_person(user);
+	    follow_person(user);
             
         }
 
