@@ -32,11 +32,7 @@ SUITE(FollowSet) {
 		f.initialize();
 
 		for (int i = 0; i < FIRST_ALLOC; i++) {
-			printf("Statt %d\n", i);
-			if (!grower.add_follow(f, 0)) {
-				printf("Done at %d\n", i);
-				break;
-			}
+			CHECK(grower.add_follow(f, 0));
 		}
 		CHECK(!grower.add_follow(f,0)); // We should NOT have room!
 		CHECK(f.capacity == FIRST_ALLOC);

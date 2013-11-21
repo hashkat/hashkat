@@ -81,9 +81,7 @@ struct FollowSetGrower {
 	bool add_follow(FollowSet& f, int follow) {
     	DEBUG_CHECK(f.n_following <= f.capacity, "Logic error, array should have been grown!");
 		if (f.n_following == f.capacity) {
-			printf("%d == %d\n", f.n_following, f.capacity);
 			if (!grow_follow_set(f)) {
-				printf("Happened\n");
 				// Not enough room for this FollowSet allocation; this is actually fine. Do nothing here.
 				// Virtually all other users will still have a long way to go before hitting their cap.
 				return false;
@@ -125,11 +123,9 @@ private:
 	}
 	int* allocate(int cap) {
 		if (used + cap > capacity) {
-			printf("U %d + c %d > C %d\n", used, cap, capacity);
 			return NULL; // Not enough room!
 		}
 		used += cap;
-		printf("Used %d cap %d\n", used, capacity);
 		return &memory[used - cap];
 	}
 };
