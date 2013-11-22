@@ -8,10 +8,6 @@
 
 #include "Timer.h"
 
-#ifdef __unix__
-#include <sys/time.h>
-#endif
-
 #ifdef _WIN32
 #include <windows.h>
 const long long DELTA_EPOCH_IN_MICROSECS= 11644473600000000LL;
@@ -43,6 +39,8 @@ int gettimeofday(struct timeval *tv, void* notused) {
 
 	return 0;
 }
+#else
+#include <sys/time.h>
 #endif
 
 Timer::Timer() {
