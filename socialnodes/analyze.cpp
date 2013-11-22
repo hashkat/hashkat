@@ -174,6 +174,7 @@ struct Analyzer {
         }
         if (VISUALIZE == 1)
         {
+            output_position(network, N_USERS);
         }
         else
         {
@@ -218,16 +219,23 @@ struct Analyzer {
     void follow_person(int index) {
 		Person& p = network[index];
 		int user_to_follow = -1;
+                bool follow_user = true;
 		double first_rand_num = rand_real_not0();
 		for (int i = 0; i < N_USERTYPES; i++) {
 			if (first_rand_num < user_types[i].R_FOLLOW || i == N_USERTYPES - 1) {
-				user_to_follow = rand_int(user_types[i].user_list.size());
-				break;
+				if (user_types[i].user_list.size() == 0) {
+                                    follow_user = false;
+                                    break;
+                                }
+                                else {
+                                    user_to_follow = rand_int(user_types[i].user_list.size());
+	     			    break;
+                                }
 			}
 			first_rand_num -= user_types[i].R_FOLLOW;
 		}
 		DEBUG_CHECK(user_to_follow != -1, "Logic error");
-		if (add_follow(p, user_to_follow)) {
+		if (add_follow(p, user_to_follow) && follow_user == true) {
 			N_FOLLOWS++; // We were able to add the follow; almost always the case.
 		}
 	}
