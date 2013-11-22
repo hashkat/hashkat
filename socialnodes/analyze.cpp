@@ -224,8 +224,7 @@ struct Analyzer {
 		for (int i = 0; i < N_USERTYPES; i++) {
 			if (first_rand_num < user_types[i].R_FOLLOW || i == N_USERTYPES - 1) {
 				if (user_types[i].user_list.size() == 0) {
-                                    follow_user = false;
-                                    break;
+					return;
                                 }
                                 else {
                                     user_to_follow = rand_int(user_types[i].user_list.size());
@@ -235,7 +234,7 @@ struct Analyzer {
 			first_rand_num -= user_types[i].R_FOLLOW;
 		}
 		DEBUG_CHECK(user_to_follow != -1, "Logic error");
-		if (add_follow(p, user_to_follow) && follow_user == true) {
+		if (add_follow(p, user_to_follow)) {
 			N_FOLLOWS++; // We were able to add the follow; almost always the case.
 		}
 	}
