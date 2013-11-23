@@ -29,8 +29,8 @@ struct Analyzer {
     //** In this struct -- greatly reduce tedious parameter-passing
     // The network state
     Network network;
-    // Helper struct that
     FollowSetGrower follow_set_grower;
+    CategoryGroup tweet_ranks;
     /* Mersenne-twister random number generator */
     MTwist random_gen_state;
     /* Analysis parameters */
@@ -55,6 +55,7 @@ struct Analyzer {
 
     ofstream DATA_TIME; // Output file to plot data
 
+    map<string, string> raw_config; // Contents of INFILE
     map<string, double> config; // Contents of INFILE
 
     /***************************************************************************
@@ -63,8 +64,9 @@ struct Analyzer {
 
     /* Initialization and loading of configuration.
      * Reads configuration from the given input file. */
-    Analyzer(map<string, double>& conf, int seed) :
+    Analyzer(map<string, string>& raw_conf, map<string, double>& conf, int seed) :
             random_gen_state(seed) {
+    	raw_config = raw_conf;
     	config = conf;
         N_USERS = config["N_USERS"];
         MAX_USERS = config["MAX_USERS"];
@@ -86,6 +88,16 @@ struct Analyzer {
         DATA_TIME.open("DATA_vs_TIME");
         set_initial_usertypes();
         set_usertype_probabilities();
+        set_initial_categories();
+    }
+
+    void set_initial_categories() {
+    	vector<double> thresholds = parse_numlist(raw_config["TWEET_THRESHOLDS"]);
+    	for (int i = 0; i < thresholds.size(); i++) {
+    		tweet_ranks.categories.push_back(Category(thresholds[i]));
+    	}
+    	// Sentinel of sorts, swallows everything else:
+    	tweet_ranks.categories.push_back(Category(HUGE_VAL));
     }
 
     void set_usertype_probabilities() {
@@ -131,7 +143,7 @@ struct Analyzer {
     }
     void set_initial_usertypes() {
         for (int i = 0; i < N_USERS; i ++) {
-             create_person(0.0, i);
+             action_create_person(0.0, i);
         }
     }
 
@@ -199,7 +211,7 @@ struct Analyzer {
 
     /* Create a person at the given index.
      * The index should be an empty user slot. */
-    void create_person(double creation_time, int index) {
+    void action_create_person(double creation_time, int index) {
 		Person& p = network[index];
 		p.creation_time = creation_time;
 		double rand_num = rand_real_not0();
@@ -216,7 +228,7 @@ struct Analyzer {
 	}
 
     /* decides which user to follow based on the rates in the INFILE */
-	void follow_person(int index) {
+	void action_follow_person(int index) {
 		Person& p = network[index];
 		int user_to_follow = -1;
 		bool follow_user = true;
@@ -237,37 +249,37 @@ struct Analyzer {
 			N_FOLLOWS++; // We were able to add the follow; almost always the case.
 		}
 	}
+
+	void action_tweet(int user) {
+		Person& p = network[user];
+		p.n_tweets++;
+		tweet_ranks.categorize(user, p.n_tweets);
+	}
+
     // Performs one step of the analysis routine.
     // Takes old time, returns new time
     double step_analysis(double TIME) {
         double u_1 = rand_real_not1(); // get the first number with-in [0,1).
 
-        // DECIDE WHAT TO DO
-        //##############################################################################
-        // If we find ourselves in the add user chuck of our cumulative function
+        // DECIDE WHAT TO DO:
         if (u_1 - (R_ADD_NORM) <= ZEROTOL) {
-            create_person(TIME, N_USERS);
+			// If we find ourselves in the add user chuck of our cumulative function:
+            action_create_person(TIME, N_USERS);
             N_USERS ++;
-            //call to function to decide which user to add
-        }
-
-        // If we find ourselves in the bond node chunk of our cumulative function
-
-        else if (u_1 - (R_ADD_NORM + R_FOLLOW_NORM) <= ZEROTOL) {
+            //TODO: call to function to decide which user to add
+        } else if (u_1 - (R_ADD_NORM + R_FOLLOW_NORM) <= ZEROTOL) {
+        	// If we find ourselves in the bond node chunk of our cumulative function:
             double val = u_1 - R_ADD_NORM;
 			int user = val / (R_FOLLOW_NORM / N_USERS); // this finds the user
 			Person& p = network[user];
-			follow_person(user);
-        }
-
-        // if we find ourselves in the tweet chuck of the cumulative function
-        else if (u_1 - (R_ADD_NORM + R_FOLLOW_NORM + R_TWEET_NORM) <= ZEROTOL) {
+			action_follow_person(user);
+        } else if (u_1 - (R_ADD_NORM + R_FOLLOW_NORM + R_TWEET_NORM) <= ZEROTOL) {
+        	// If we find ourselves in the tweet chuck of the cumulative function:
             N_TWEETS++;
-            double val = u_1 - R_ADD_NORM - R_FOLLOW_NORM;
-            int user = val / (R_TWEET_NORM / N_USERS); // this finds the user
-        }
-
-        else {
+            // User to send the tweet:
+            int user = rand_int(network.n_persons);
+            action_tweet(user);
+        } else {
             cout << "Disaster, event out of bounds" << endl;
         }
 
@@ -275,6 +287,7 @@ struct Analyzer {
         N_STEPS++;
         //update the rates if n_users has changed
         set_rates();
+
 #ifdef SLOW_DEBUG_CHECKS
         static int i = 0;
         if ((i%1000)==0) {
@@ -332,7 +345,7 @@ struct Analyzer {
 };
 
 // Run a network simulation using the given input file's parameters
-void analyze_network(map<string, double>& config, int seed) {
-    Analyzer analyzer(config, seed);
+void analyze_network(map<string, string>& raw_config, map<string, double>& num_config, int seed) {
+    Analyzer analyzer(raw_config, num_config, seed);
     analyzer.run_analysis();
 }

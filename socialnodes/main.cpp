@@ -13,7 +13,8 @@
 
 using namespace std;
 
-static map<string, double> CONFIG;
+static map<string, string> RAW_CONFIG;
+static map<string, double> NUM_CONFIG;
 
 // Called using a function pointer by the ini-loading library.
 // We do not care about ini file sections or users.
@@ -21,7 +22,8 @@ static map<string, double> CONFIG;
 static int loader_callback(void* unused_user, const char* unused_section,
         const char* name, const char* value) {
     stringstream string_converter(value); //** Think of this like 'cin', but instead of standard input its an arbitrary string.
-    string_converter >> CONFIG[name]; //** Will adapt to the appropriate type! also like 'cin' would.
+    string_converter >> NUM_CONFIG[name]; //** Will adapt to the appropriate type! also like 'cin' would.
+    RAW_CONFIG[name] = value;
     return 1;
 }
 
@@ -61,7 +63,7 @@ int main(int argc, char** argv) {
 			time(&t);
 			seed = (int)t;
 		}
-        analyze_network(CONFIG, seed);
+        analyze_network(RAW_CONFIG, NUM_CONFIG, seed);
 		printf("Analysis took %.2fms.\n", t.get_microseconds() / 1000.0);
 		return 0;
     }

@@ -15,7 +15,7 @@ T_FINAL = 525600.0           ; ->  1/10 year
 R_ADD = 4.7                  ; ->    1 / hour
 			     ; twitter users / 8 years
 R_FOLLOW = 0.00139           ; ->    1/week
-R_TWEET = 0.00139            ; ->      2/day
+R_TWEET = 0.0139            ; ->      2/day
 
 R_ADD_NORMAL = 100
 R_ADD_CELEB = 90
@@ -26,6 +26,8 @@ R_FOLLOW_NORMAL = 100
 R_FOLLOW_CELEB = 100
 R_FOLLOW_BOT = 100
 R_FOLLOW_ORG = 100
+
+TWEET_THRESHOLDS = 1 10 20 2000 3000
 
 P_OUT = 1		     ; -> print p_out file (1)
 			     ; -> dont print (0)

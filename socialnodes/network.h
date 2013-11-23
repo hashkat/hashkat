@@ -8,9 +8,11 @@
 #include "util.h"
 
 #include "follow_set.h"
+#include "category.h"
 
 struct Person {
 	int type;
+	int n_tweets;
 	FollowSet follow_set;
 	double creation_time;
 	double x_location, y_location;
@@ -19,6 +21,7 @@ struct Person {
 		follow_set.initialize();
 		creation_time = 0.0;
 		x_location = -1, y_location = -1;
+		n_tweets = 0;
 	}
 
 	void sanity_check() {

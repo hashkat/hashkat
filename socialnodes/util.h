@@ -6,6 +6,9 @@
 #include <cassert>
 #include <cstdio>
 #include <cstdlib>
+#include <vector>
+#include <string>
+#include <sstream>
 
 // Dirt simple error handling, exits the program:
 inline void panic(const char* msg) {
@@ -24,6 +27,17 @@ template <typename T>
 inline bool within_range(T val, T a, T b) {
 	// Is val within [a,b) ?
 	return val >= a && val < b;
+}
+
+inline std::vector<double> parse_numlist(std::string s) {
+	std::vector<double> ret;
+	std::stringstream sstream(s);
+	while (!sstream.eof()) {
+		double val;
+		sstream >> val;
+		ret.push_back(val);
+	}
+	return ret;
 }
 
 #endif
