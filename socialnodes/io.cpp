@@ -8,32 +8,29 @@
 
 using namespace std;
 
-void output_position(Network& network, int n_users)
-{
+void output_position(Network& network, int n_users) {
 	ofstream output;
 	output.open("POSITIONS.gexf");
-        output << "<gexf version=\"1.2\">\n"
-	       << "<meta lastmodifieddate=\"2013-11-21\">\n"
-               << "<creator> Kevin Ryczko </creator>\n"
-               << "<description> Social Network Visualization </description>\n"
-               << "</meta>\n"
-               << "<graph mode=\"static\" defaultedgetype=\"directed\">\n"
-               << "<nodes>\n";
-	for (int i = 0; i < n_users; i ++) {
-            Person& p = network[i];
-	    output << "<node id=\"" << i << "\" label=\"" << p.type << "\" />\n";
+	output << "<gexf version=\"1.2\">\n"
+			<< "<meta lastmodifieddate=\"2013-11-21\">\n"
+			<< "<creator> Kevin Ryczko </creator>\n"
+			<< "<description> Social Network Visualization </description>\n"
+			<< "</meta>\n"
+			<< "<graph mode=\"static\" defaultedgetype=\"directed\">\n"
+			<< "<nodes>\n";
+	for (int i = 0; i < n_users; i++) {
+		Person& p = network[i];
+		output << "<node id=\"" << i << "\" label=\"" << p.type << "\" />\n";
 	}
-        output << "</nodes>\n"
-               << "<edges>\n";
-        for (int i = 0; i < n_users; i ++) {
-            for (int j = 0; j < network.n_following(i); j ++) {
-                output << "<edge id=\"" << i << "\" source=\"" << i << "\" target=\"" << network.follow_i(i,j) << "\"/>\n";
-            }
-        }
-        output << "</edges>\n"
-               << "</graph>\n"
-               << "</gexf>";
-output.close();
+	output << "</nodes>\n" << "<edges>\n";
+	for (int i = 0; i < n_users; i++) {
+		for (int j = 0; j < network.n_following(i); j++) {
+			output << "<edge id=\"" << i << "\" source=\"" << i
+					<< "\" target=\"" << network.follow_i(i, j) << "\"/>\n";
+		}
+	}
+	output << "</edges>\n" << "</graph>\n" << "</gexf>";
+	output.close();
 } 
 
 

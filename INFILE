@@ -2,8 +2,7 @@
 ; ADJUST YOUR VARIABLES ACCORDINGLY FOR THE NETWORK
 ;#################################################
 
-MAX_USERS = 100            
-MAX_FOLLOWING = 1000         ; -> max number a user can follow
+MAX_USERS = 100000
 RANDOM_INCR = 1              ; -> 0 - increment by 1/R_total
 			     ; -> 1 - increment by random time based on R_total
 

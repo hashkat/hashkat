@@ -3,6 +3,7 @@
 #include <string>
 #include <map>
 #include <sstream>
+#include <iostream>
 
 #include "dependencies/ini.h"
 #include "dependencies/UnitTest++.h"
@@ -37,15 +38,30 @@ bool load_config(string name) {
     return true;
 }
 
+static bool has_arg(int argc, char** argv, std::string test) {
+	for (int i = 1; i < argc; i++) {
+		cout << argv[i] << " vs " << test << endl;
+		if (argv[i] == test) {
+			return true;
+		}
+	}
+	return false;
+}
+
 int main(int argc, char** argv) {
-	if (argc >= 2 && string(argv[1]) == "--tests" ) {
+	if (has_arg(argc, argv, "--tests")) {
 		// running tests:
 		return UnitTest::RunAllTests();
-	}
-	else if (load_config("INFILE")) {
+	} else if (load_config("INFILE")) {
 		// or running analysis:
 		Timer t;
-        analyze_network(CONFIG, /*Seed*/1);
+		int seed = 1;
+		if (has_arg(argc, argv, "--rand")) {
+			time_t t;
+			time(&t);
+			seed = (int)t;
+		}
+        analyze_network(CONFIG, seed);
 		printf("Analysis took %.2fms.\n", t.get_microseconds() / 1000.0);
 		return 0;
     }

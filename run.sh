@@ -25,7 +25,7 @@ function handle_flag() {
 if ! handle_flag "-f" ; then
     cmake . | colorify '1;33'
     cores=$(grep -c ^processor /proc/cpuinfo)
-    make -j$((cores+1)) | colorify '1;32'
+    make -j$((cores+1))
 fi
 
 # Wrap the gdb around the program with -g:

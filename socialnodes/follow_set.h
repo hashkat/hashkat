@@ -4,6 +4,7 @@
 #define FOLLOW_SETS_H_
 
 #include <vector>
+#include <map>
 #include "util.h"
 #include "constants.h"
 
@@ -44,6 +45,14 @@ struct FollowSet {
     	DEBUG_CHECK(within_range(index, 0, n_following), "Operator out of bounds");
     	return location[index];
     }
+
+    // Slow, for debugging/testing purposes:
+    void sanity_check() {
+    	DEBUG_CHECK(n_following <= capacity, "Capacity bug");
+    	for (int i = 0; i < n_following; i++) {
+    		DEBUG_CHECK(location[i] != -1, "Invalid follow content");
+    	}
+    }
 };
 
 struct DeletedFollowSet {
@@ -56,6 +65,7 @@ struct DeletedFollowSet {
 };
 
 typedef std::vector<DeletedFollowSet> DeletedList;
+
 
 /* Handles growing follow sets, and allocating buffers when n_following > FOLLOW_LIMIT1. */
 struct FollowSetGrower {
@@ -95,30 +105,46 @@ struct FollowSetGrower {
 
 private:
 	bool grow_follow_set(FollowSet& f) {
+		static std::map<void*, void*> allocs;
+
+		int new_capacity = f.capacity * FOLLOW_SET_GROWTH_MULTIPLE;
+		int* new_location = NULL;
+		// Search recycled buffers
+		for (DeletedList::iterator candidate = deletions.begin(); candidate != deletions.end(); ++candidate) {
+			// Compatible deleted buffer, recycle it:
+			if (candidate->capacity == new_capacity) {
+				new_location = candidate->location;
+				deletions.erase(candidate);
+				break;
+			}
+		}
+
+		// Go into our block of memory and allocate a follow set:
+		if (new_location == NULL) {
+			new_location = allocate(new_capacity);
+		}
+		if (new_location == NULL) {
+			return false; // Not enough room!
+		}
+
+		// Recycle our old buffer
 		if (f.location != f.follow_buffer1) {
 			// If we are not pointing to our embedded 'follow_set1', we must be pointing within the 'memory' array
 			DEBUG_CHECK(within_range(f.location, memory, memory + capacity), "Logic error");
 			deletions.push_back(DeletedFollowSet(f.location, f.capacity));
+#ifdef SLOW_DEBUG_CHECKS
+			allocs[f.location] = NULL;
+#endif
 		}
-		int* old_location = f.location;
-		f.capacity *= FOLLOW_SET_GROWTH_MULTIPLE;
-		for (DeletedList::iterator candidate = deletions.begin(); candidate != deletions.end(); ++candidate) {
-			// Compatible deleted buffer, recycle it:
-			if (candidate->capacity == f.capacity) {
-				deletions.erase(candidate);
-				f.location = candidate->location;
-				f.copy(old_location, f.n_following);
-				return true; // We're done
-			}
-		}
-		// Go into our block of memory and allocate a follow set:
-		int* new_location = allocate(f.capacity);
-		if (new_location == NULL) {
-			f.capacity /= FOLLOW_SET_GROWTH_MULTIPLE; // Backtrack!
-			return false; // Not enough room!
-		}
+		int* old_loc = f.location;
 		f.location = new_location;
-		f.copy(old_location, f.n_following);
+		f.capacity = new_capacity;
+		f.copy(old_loc, f.n_following);
+#ifdef SLOW_DEBUG_CHECKS
+		DEBUG_CHECK(allocs[f.location] == NULL, "Logic error!");
+		allocs[f.location] = (void*)&f;
+		f.sanity_check();
+#endif
 		return true;
 	}
 	int* allocate(int cap) {

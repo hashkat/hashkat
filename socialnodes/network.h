@@ -20,6 +20,10 @@ struct Person {
 		creation_time = 0.0;
 		x_location = -1, y_location = -1;
 	}
+
+	void sanity_check() {
+		follow_set.sanity_check();
+	}
 };
 
 struct Network {
@@ -54,6 +58,12 @@ struct Network {
 	}
 	int follow_i(int person_id, int follow_index) {
 		return persons[person_id].follow_set[follow_index];
+	}
+
+	void sanity_check() {
+		for (int i = 0; i < n_persons; i++) {
+			persons[i].sanity_check();
+		}
 	}
 };
 

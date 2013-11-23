@@ -184,7 +184,7 @@ struct Analyzer {
     }
     
     void step_time(double& TIME) {
-        double prev_floor = floor(TIME);
+        double prev_floor = floor(TIME / FILE_OUTPUT_RATE);
         if (RANDOM_INCR == 1) {
             // increment by random time
             TIME += -log(rand_real_not0()) / R_TOTAL;
@@ -192,7 +192,7 @@ struct Analyzer {
             TIME += 1 / R_TOTAL;
         }
         // Output on every new integral time milestone:
-        if (floor(TIME) > prev_floor) {
+        if (floor(TIME / FILE_OUTPUT_RATE) > prev_floor) {
             output(TIME);
         }
     }
@@ -216,20 +216,19 @@ struct Analyzer {
 	}
 
     /* decides which user to follow based on the rates in the INFILE */
-    void follow_person(int index) {
+	void follow_person(int index) {
 		Person& p = network[index];
 		int user_to_follow = -1;
-                bool follow_user = true;
+		bool follow_user = true;
 		double first_rand_num = rand_real_not0();
 		for (int i = 0; i < N_USERTYPES; i++) {
-			if (first_rand_num < user_types[i].R_FOLLOW || i == N_USERTYPES - 1) {
+			if (first_rand_num < user_types[i].R_FOLLOW
+					|| i == N_USERTYPES - 1) {
 				if (user_types[i].user_list.size() == 0) {
 					return;
-                                }
-                                else {
-                                    user_to_follow = rand_int(user_types[i].user_list.size());
-	     			    break;
-                                }
+				}
+				user_to_follow = rand_int(user_types[i].user_list.size());
+				break;
 			}
 			first_rand_num -= user_types[i].R_FOLLOW;
 		}
@@ -276,6 +275,13 @@ struct Analyzer {
         N_STEPS++;
         //update the rates if n_users has changed
         set_rates();
+#ifdef SLOW_DEBUG_CHECKS
+        static int i = 0;
+        if ((i%1000)==0) {
+        network.sanity_check();
+        }
+        i++;
+#endif
 
         return TIME;
     }
@@ -301,33 +307,26 @@ struct Analyzer {
         return random_gen_state.genrand_real1();
     }
 
+    void output(ostream& stream, double TIME) {
+    	stream  << fixed << setprecision(2) << TIME << "\t\t" << N_USERS
+                << "\t\t" << N_FOLLOWS << "\t\t" << N_TWEETS << "\t\n";
+    }
     void output(double TIME) {
         static int n_outputs = 0;
 
-        double DYNAMIC_ADD_RATE = N_USERS / TIME, DYNAMIC_FOLLOW_RATE = (config["R_ADD"]
-                * TIME * config["R_FOLLOW"] + config["R_FOLLOW"] / 2) / N_USERS,
-                DYNAMIC_TWEET_RATE = (config["R_ADD"] * TIME * config["R_TWEET"] + config["R_TWEET"] / 2)
-                        / N_USERS;
-
-        if (n_outputs % 500 == 0) {
-            DATA_TIME << "\n#Time\t\tUsers\t\tFollows\t\tTweets\n\n";
+		const char* HEADER = "\n#Time\t\tUsers\t\tFollows\t\tTweets\n\n";
+        if (n_outputs % (25 * STDOUT_OUTPUT_RATE) == 0) {
+        	cout << HEADER;
         }
-//        if (VERBOSE == 0) {
-//            cout << fixed << setprecision(10) << "INCREMENT: " << N_STEPS << "\t"
-//                    << "TIME_(min): " << TIME << "\t"
-//                    << "N_USERS: " << N_USERS << "\t"
-//                    << "N_FOLLOWS: " << N_FOLLOWS << "\t"
-//                    << "N_TWEETS: " << N_TWEETS << "\t"
-//                    << "R_ADD_NORM: " << R_ADD_NORM << "\t"
-//                    << "R_FOLLOW_NORM: " << R_FOLLOW_NORM << "\t"
-//                    << "R_TWEET_NORM: " << R_TWEET_NORM << "\t"
-//                    << "DYNAMIC_ADD_RATE: " << DYNAMIC_ADD_RATE << "\t"
-//                    << "DYNAMIC_FOLLOW_RATE: " << DYNAMIC_FOLLOW_RATE << "\t"
-//                    << "DYNAMIC_TWEET_RATE: " << "\t" << DYNAMIC_TWEET_RATE
-//                    << "\n";
-//        } else if (VERBOSE == 1) {
-        DATA_TIME << fixed << setprecision(2) << TIME << "\t\t" << N_USERS
-                << "\t\t" << N_FOLLOWS << "\t\t" << N_TWEETS << "\t\n";
+        if (n_outputs % 500 == 0) {
+            DATA_TIME << HEADER;
+        }
+
+        output(DATA_TIME, TIME);
+        if (n_outputs % STDOUT_OUTPUT_RATE == 0) {
+        	output(cout, TIME);
+        }
+
         n_outputs++;
     }
 };
