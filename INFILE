@@ -28,6 +28,7 @@ R_FOLLOW_BOT = 100
 R_FOLLOW_ORG = 100
 
 TWEET_THRESHOLDS = 1 10 20 2000 3000
+FOLLOW_THRESHOLDS = 1 10 20 2000 3000
 
 P_OUT = 1		     ; -> print p_out file (1)
 			     ; -> dont print (0)

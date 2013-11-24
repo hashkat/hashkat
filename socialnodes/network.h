@@ -62,7 +62,6 @@ struct Network {
 	int follow_i(int person_id, int follow_index) {
 		return persons[person_id].follow_set[follow_index];
 	}
-
 	void sanity_check() {
 		for (int i = 0; i < n_persons; i++) {
 			persons[i].sanity_check();

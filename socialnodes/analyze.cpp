@@ -30,7 +30,7 @@ struct Analyzer {
     // The network state
     Network network;
     FollowSetGrower follow_set_grower;
-    CategoryGroup tweet_ranks;
+    CategoryGroup tweet_ranks, follow_ranks;
     /* Mersenne-twister random number generator */
     MTwist random_gen_state;
     /* Analysis parameters */
@@ -91,13 +91,17 @@ struct Analyzer {
         set_initial_categories();
     }
 
+    void initialize_category(CategoryGroup& group, const char* parameter) {
+    	vector<double> thresholds = parse_numlist(raw_config[parameter]);
+		for (int i = 0; i < thresholds.size(); i++) {
+			group.categories.push_back(Category(thresholds[i]));
+		}
+		// Sentinel of sorts, swallows everything else:
+		group.categories.push_back(Category(HUGE_VAL));
+    }
     void set_initial_categories() {
-    	vector<double> thresholds = parse_numlist(raw_config["TWEET_THRESHOLDS"]);
-    	for (int i = 0; i < thresholds.size(); i++) {
-    		tweet_ranks.categories.push_back(Category(thresholds[i]));
-    	}
-    	// Sentinel of sorts, swallows everything else:
-    	tweet_ranks.categories.push_back(Category(HUGE_VAL));
+    	initialize_category(tweet_ranks, "TWEET_THRESHOLDS");
+    	initialize_category(follow_ranks, "FOLLOW_THRESHOLDS");
     }
 
     void set_usertype_probabilities() {
@@ -219,8 +223,8 @@ struct Analyzer {
 	}
 
     /* decides which user to follow based on the rates in the INFILE */
-	void action_follow_person(int index) {
-		Person& p = network[index];
+	void action_follow_person(int user) {
+		Person& p = network[user];
 		int user_to_follow = -1;
 		double first_rand_num = rand_real_not0();
 		for (int i = 0; i < N_USERTYPES; i++) {
@@ -236,6 +240,7 @@ struct Analyzer {
 		}
 		DEBUG_CHECK(user_to_follow != -1, "Logic error");
 		if (add_follow(p, user_to_follow)) {
+			follow_ranks.categorize(user, network.n_following(user));
 			N_FOLLOWS++; // We were able to add the follow; almost always the case.
 		}
 	}
