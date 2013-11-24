@@ -14,11 +14,7 @@ T_FINAL = 525600.0           ; ->  1/10 year
 
 R_ADD = 4.7                  ; ->    1 / hour
 			     ; twitter users / 8 years
-<<<<<<< HEAD
 R_FOLLOW = 0.139           ; ->    1/week
-=======
-R_FOLLOW = 0.99139           ; ->    1/week
->>>>>>> a73c50d37c16b396d35eeac1e59f80792132b180
 R_TWEET = 0.0139            ; ->      2/day
 
 R_ADD_NORMAL = 100
@@ -33,10 +29,7 @@ R_FOLLOW_ORG = 300
 
 TWEET_THRESHOLDS = 1 10 20 2000 3000
 FOLLOW_THRESHOLDS = 1 10 20 2000 3000
-<<<<<<< HEAD
 FOLLOW_THRESHOLDS_PROBABILITIES = 0.1 0.3 0.5 0.7 0.9
-=======
->>>>>>> a73c50d37c16b396d35eeac1e59f80792132b180
 
 P_OUT = 1		     ; -> print p_out file (1)
 			     ; -> dont print (0)

@@ -30,13 +30,8 @@ struct Analyzer {
     // The network state
     Network network;
     FollowSetGrower follow_set_grower;
-<<<<<<< HEAD
     CategoryGroup tweet_ranks;
 	CategoryGroup follow_ranks;
-	
-=======
-    CategoryGroup tweet_ranks, follow_ranks;
->>>>>>> a73c50d37c16b396d35eeac1e59f80792132b180
     /* Mersenne-twister random number generator */
     MTwist random_gen_state;
     /* Analysis parameters */
@@ -276,12 +271,7 @@ struct Analyzer {
 		}
 		
 		//if we want to follow someone based on the number of followers a user has
-		for (int i = 0; i < follow_ranks.categories.size(); i ++) {
-			Category& C = follow_ranks.categories[i];
-			for (int j = 0; j < C.users.size(); j ++) {
-				cout << i << "\t" << C.users[j] << endl;
-			}
-		}
+		
 	}
 
 	void action_tweet(int user) {
