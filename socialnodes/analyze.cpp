@@ -134,13 +134,6 @@ struct Analyzer {
         R_TWEET_NORM = R_TWEET * N_USERS / R_TOTAL;
     }
 
-    void set_initial_positions() {
-        for (int i = 0; i < N_USERS; i ++) {
-            Person& p = network[i];
-            p.x_location = rand_real_with01();
-            p.y_location = rand_real_with01();
-        }
-    }
     void set_initial_usertypes() {
         for (int i = 0; i < N_USERS; i ++) {
              action_create_person(0.0, i);
@@ -223,15 +216,12 @@ struct Analyzer {
 			}
 			rand_num -= user_types[i].R_ADD;
 		}
-		p.x_location = rand_real_with01();
-		p.y_location = rand_real_with01();
 	}
 
     /* decides which user to follow based on the rates in the INFILE */
 	void action_follow_person(int index) {
 		Person& p = network[index];
 		int user_to_follow = -1;
-		bool follow_user = true;
 		double first_rand_num = rand_real_not0();
 		for (int i = 0; i < N_USERTYPES; i++) {
 			if (first_rand_num < user_types[i].R_FOLLOW
