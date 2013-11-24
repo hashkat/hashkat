@@ -31,6 +31,8 @@ struct Analyzer {
     Network network;
     FollowSetGrower follow_set_grower;
     CategoryGroup tweet_ranks;
+	CategoryGroup follow_ranks;
+	
     /* Mersenne-twister random number generator */
     MTwist random_gen_state;
     /* Analysis parameters */
@@ -89,6 +91,8 @@ struct Analyzer {
         set_initial_usertypes();
         set_usertype_probabilities();
         set_initial_categories();
+		set_initial_follow_categories();
+		set_initial_follow_categories_probabilities();
     }
 
     void set_initial_categories() {
@@ -98,6 +102,23 @@ struct Analyzer {
     	}
     	// Sentinel of sorts, swallows everything else:
     	tweet_ranks.categories.push_back(Category(HUGE_VAL));
+    }
+	
+    void set_initial_follow_categories() {
+    	vector<double> follow_thresholds = parse_numlist(raw_config["FOLLOW_THRESHOLDS"]);
+    	for (int i = 0; i < follow_thresholds.size(); i++) {
+    		follow_ranks.categories.push_back(Category(follow_thresholds[i]));
+    	}
+    	// Sentinel of sorts, swallows everything else:
+    	follow_ranks.categories.push_back(Category(HUGE_VAL));
+    }
+	
+	vector<double> follow_popular_probabilities; 
+    void set_initial_follow_categories_probabilities() {
+    	vector<double> follow_probabilities = parse_numlist(raw_config["FOLLOW_THRESHOLDS_PROBABILITIES"]);
+    	for (int i = 0; i < follow_probabilities.size(); i++) {
+    		follow_popular_probabilities.push_back(follow_probabilities[i]);
+    	}
     }
 
     void set_usertype_probabilities() {
@@ -223,6 +244,9 @@ struct Analyzer {
 		Person& p = network[index];
 		int user_to_follow = -1;
 		double first_rand_num = rand_real_not0();
+	
+	
+	    // if we want to follow someone based on their title
 		for (int i = 0; i < N_USERTYPES; i++) {
 			if (first_rand_num < user_types[i].R_FOLLOW
 					|| i == N_USERTYPES - 1) {
@@ -237,6 +261,17 @@ struct Analyzer {
 		DEBUG_CHECK(user_to_follow != -1, "Logic error");
 		if (add_follow(p, user_to_follow)) {
 			N_FOLLOWS++; // We were able to add the follow; almost always the case.
+			p = network[user_to_follow];
+			p.n_followers ++;
+			follow_ranks.categorize(user_to_follow, p.n_followers);
+		}
+		
+		//if we want to follow someone based on the number of followers a user has
+		for (int i = 0; i < follow_ranks.categories.size(); i ++) {
+			Category& C = follow_ranks.categories[i];
+			for (int j = 0; j < C.users.size(); j ++) {
+				cout << i << "\t" << C.users[j] << endl;
+			}
 		}
 	}
 
