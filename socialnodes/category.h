@@ -30,7 +30,7 @@ struct CategoryGroup {
 	std::vector<Category> categories;
 	// Incrementally update a categorization
 	void categorize(int user, double parameter) {
-		if (categorizations.size() < user) {
+		if (categorizations.size() <= user) {
 			// Make sure 'user' is a valid index
 			categorizations.resize(user + 1);
 		}

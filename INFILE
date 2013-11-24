@@ -14,7 +14,7 @@ T_FINAL = 525600.0           ; ->  1/10 year
 
 R_ADD = 4.7                  ; ->    1 / hour
 			     ; twitter users / 8 years
-R_FOLLOW = 0.00139           ; ->    1/week
+R_FOLLOW = 0.99139           ; ->    1/week
 R_TWEET = 0.0139            ; ->      2/day
 
 R_ADD_NORMAL = 100
