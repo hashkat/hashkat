@@ -13,6 +13,7 @@
 struct Person {
 	int type;
 	int n_tweets;
+	int n_followers;
 	FollowSet follow_set;
 	double creation_time;
 	double x_location, y_location;
@@ -22,6 +23,7 @@ struct Person {
 		creation_time = 0.0;
 		x_location = -1, y_location = -1;
 		n_tweets = 0;
+		n_followers = 0;
 	}
 
 	void sanity_check() {
@@ -62,7 +64,6 @@ struct Network {
 	int follow_i(int person_id, int follow_index) {
 		return persons[person_id].follow_set[follow_index];
 	}
-
 	void sanity_check() {
 		for (int i = 0; i < n_persons; i++) {
 			persons[i].sanity_check();
