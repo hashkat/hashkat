@@ -251,12 +251,14 @@ struct Analyzer {
 		
 		// ADAM -- is this what you mean by we should not be scared of conditionals?
 		
+		// this is very likely
 		if (user != user_to_follow) {
 			DEBUG_CHECK(user_to_follow != -1, "Logic error");
 			if (add_follow(p, user_to_follow)) {
 				N_FOLLOWS++; // We were able to add the follow; almost always the case.
 			}
 		}
+		// less likely
 		else
 		{
 			return;
