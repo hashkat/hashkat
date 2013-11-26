@@ -248,6 +248,19 @@ struct Analyzer {
 		int user_to_follow = -1;
 		
 		user_to_follow = rand_int(n_users);
+		
+		// ADAM -- is this what you mean by we should not be scared of conditionals?
+		
+		if (user != user_to_follow) {
+			DEBUG_CHECK(user_to_follow != -1, "Logic error");
+			if (add_follow(p, user_to_follow)) {
+				N_FOLLOWS++; // We were able to add the follow; almost always the case.
+			}
+		}
+		else
+		{
+			return;
+		}
 		/*
 		double first_rand_num = rand_real_not0();
 	
@@ -265,10 +278,7 @@ struct Analyzer {
 			}
 			first_rand_num -= user_types[i].R_FOLLOW;
 		}*/
-		DEBUG_CHECK(user_to_follow != -1, "Logic error");
-		if (add_follow(p, user_to_follow)) {
-			N_FOLLOWS++; // We were able to add the follow; almost always the case.
-		}
+		
 		
 		//if we want to follow someone based on the number of followers a user has
 		
