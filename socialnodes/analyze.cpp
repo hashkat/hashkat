@@ -243,9 +243,12 @@ struct Analyzer {
 	}
 
     /* decides which user to follow based on the rates in the INFILE */
-	void action_follow_person(int user) {
+	void action_follow_person(int user, int n_users) {
 		Person& p = network[user];
 		int user_to_follow = -1;
+		
+		user_to_follow = rand_int(n_users);
+		/*
 		double first_rand_num = rand_real_not0();
 	
 	
@@ -256,10 +259,12 @@ struct Analyzer {
 					return;
 				}
 				user_to_follow = rand_int(user_types[i].user_list.size());
+				Person& p2 = network[user_to_follow];
+				p2.n_followers ++;
 				break;
 			}
 			first_rand_num -= user_types[i].R_FOLLOW;
-		}
+		}*/
 		DEBUG_CHECK(user_to_follow != -1, "Logic error");
 		if (add_follow(p, user_to_follow)) {
 			N_FOLLOWS++; // We were able to add the follow; almost always the case.
@@ -291,7 +296,7 @@ struct Analyzer {
             double val = u_1 - R_ADD_NORM;
 			int user = val / (R_FOLLOW_NORM / N_USERS); // this finds the user
 			Person& p = network[user];
-			action_follow_person(user);
+			action_follow_person(user, N_USERS);
         } else if (u_1 - (R_ADD_NORM + R_FOLLOW_NORM + R_TWEET_NORM) <= ZEROTOL) {
         	// If we find ourselves in the tweet chuck of the cumulative function:
             N_TWEETS++;
