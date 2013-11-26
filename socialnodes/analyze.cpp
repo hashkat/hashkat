@@ -233,7 +233,7 @@ struct Analyzer {
 		p.creation_time = creation_time;
 		double rand_num = rand_real_not0();
 		for (int i = 0; i < N_USERTYPES; i++) {
-			if (rand_num < user_types[i].R_ADD || i == N_USERTYPES - 1) {
+			if (rand_num <= user_types[i].R_ADD) {
 				p.type = i;
                                 user_types[i].user_list.push_back(index);
 				break;
@@ -251,8 +251,7 @@ struct Analyzer {
 	
 	    // if we want to follow someone based on their title
 		for (int i = 0; i < N_USERTYPES; i++) {
-			if (first_rand_num < user_types[i].R_FOLLOW
-					|| i == N_USERTYPES - 1) {
+			if (first_rand_num <= user_types[i].R_FOLLOW) {
 				if (user_types[i].user_list.size() == 0) {
 					return;
 				}
@@ -263,11 +262,7 @@ struct Analyzer {
 		}
 		DEBUG_CHECK(user_to_follow != -1, "Logic error");
 		if (add_follow(p, user_to_follow)) {
-			follow_ranks.categorize(user, network.n_following(user));
 			N_FOLLOWS++; // We were able to add the follow; almost always the case.
-			p = network[user_to_follow];
-			p.n_followers ++;
-			follow_ranks.categorize(user_to_follow, p.n_followers);
 		}
 		
 		//if we want to follow someone based on the number of followers a user has
