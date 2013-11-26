@@ -103,7 +103,7 @@ void PIN(Network& network, int MAX_USERS, int N_USERS) {
 
 	for (int i = 0; i < N_USERS; i++) {
 		Person& p = network[i];
-		N_FOLLOWERS_DISTRO[network.n_following(i)]++;
+		N_FOLLOWERS_DISTRO[N_FOLLOWERS_DATA[i]]++;
 	}
 	for (int i = 1; i < MAX_USERS; i++) {
 		output << i - 0.5 << "\t" << N_FOLLOWERS_DISTRO[i] / double(N_USERS)
