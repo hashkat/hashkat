@@ -1,4 +1,5 @@
 #include <cstdio>
+#include <string>
 #include <stdexcept>
 #include <cassert>
 
