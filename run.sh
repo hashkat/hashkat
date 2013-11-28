@@ -2,11 +2,23 @@ set -e # Good practice -- exit completely on any bad exit code
 
 args="$@"
 
+function is_mac() {
+    if [ "$(uname)" == "Darwin" ]; then
+        return 0 # True!
+    else
+        return 1 # False!
+    fi
+}
+
 # Bash function to apply a color to a piece of text.
-function colorify {
-    local words;
-    words=$(cat)
-    echo -e "\e[$1m$words\e[0m"
+function colorify() {
+    if is_mac ; then
+        cat
+    else
+        local words;
+        words=$(cat)
+        echo -e "\e[$1m$words\e[0m"
+    fi 
 }
 
 # Bash function to check for a flag in 'args' and remove it.
@@ -21,10 +33,19 @@ function handle_flag() {
     return 1 # False!
 }
 
+if [[ -e /proc/cpuinfo ]] ; then
+    cores=$(grep -c ^processor /proc/cpuinfo)
+else
+    cores=4 
+fi
+
+
 # Pass the -f flag to avoid building:
 if ! handle_flag "-f" ; then
     cmake . | colorify '1;33'
-    cores=$(grep -c ^processor /proc/cpuinfo)
+    if handle_flag "--clean" ; then
+        make clean
+    fi
     make -j$((cores+1))
 fi
 
@@ -34,5 +55,5 @@ if handle_flag "-g" ; then
     gdb -silent -ex=r --args socialnodes/main $args
 else
     # Normal execution
-    socialnodes/main $args
+    src/main $args
 fi

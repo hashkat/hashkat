@@ -8,4 +8,4 @@ set(CMAKE_BUILD_TYPE Debug)
 
 add_definitions( -std=c++98)
 
-add_subdirectory(socialnodes)
+add_subdirectory(src)
