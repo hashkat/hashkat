@@ -11,7 +11,7 @@
 #include "category.h"
 
 struct Person {
-	int type;
+	int entity;
 	int n_tweets;
 	int n_followers;
 	FollowSet follow_set;
@@ -83,7 +83,7 @@ enum {
 	UT_CELEB_INDEX = 1,
 	UT_BOT_INDEX = 2,
 	UT_ORG_INDEX = 3,
-	N_USERTYPES = 4
+	N_ENTITIES = 4
 };
 
 #endif

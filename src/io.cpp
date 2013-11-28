@@ -8,6 +8,8 @@
 
 using namespace std;
 
+// ### Output file --> Gephi xml file POSITIONS.gexf
+// visualization going to change eventually
 void output_position(Network& network, int n_users) {
 	ofstream output;
 	output.open("POSITIONS.gexf");
@@ -20,7 +22,7 @@ void output_position(Network& network, int n_users) {
 			<< "<nodes>\n";
 	for (int i = 0; i < n_users; i++) {
 		Person& p = network[i];
-		output << "<node id=\"" << i << "\" label=\"" << p.type << "\" />\n";
+		output << "<node id=\"" << i << "\" label=\"" << p.entity << "\" />\n";
 	}
 	output << "</nodes>\n" << "<edges>\n";
 	for (int i = 0; i < n_users; i++) {
@@ -61,19 +63,37 @@ void POUT(Network& network, int MAX_USERS, int N_USERS) {
 			N_FOLLOW_DATA[n_following]++;
 		}
 	}
+	
+	
 
 	N_FOLLOW_DATA[0] -= (MAX_USERS - N_USERS);
 	for (int i = 1; i <= POUT_CAP; i++) {
-		OUTPUT << i - 0.5 << "\t" << N_FOLLOW_DATA[i] / double(N_USERS) << "\t"
-				<< log(i) << "\t" << log(N_FOLLOW_DATA[i] / double(N_USERS))
-				<< "\n";
-		OUTPUT << i + 0.5 << "\t" << N_FOLLOW_DATA[i] / double(N_USERS) << "\t"
-				<< "\n";
+		OUTPUT << i - 0.5 
+			   << "\t" 
+			   << N_FOLLOW_DATA[i] / double(N_USERS) 
+			   << "\t"
+			   << log(i) 
+			   << "\t" 
+			   << log(N_FOLLOW_DATA[i] / double(N_USERS))
+				   << "\t"
+					   << exp(-0.2)*pow(0.2, i)/factorial(i)
+			   << "\n"
+			   << i + 0.5 
+			   << "\t" 
+			   << N_FOLLOW_DATA[i] / double(N_USERS) 
+			   << "\n";
+			   
 	}
 
 	OUTPUT.close();
 }
-
+int factorial(int input_number) {
+	int value = 1;
+	for (int i = 1; i <= input_number; i ++) {
+		value *= i;
+	}
+	return value;
+}
 /* This is a function that goes through the network and finds the probability
  of how many followers a given user will have. If you would like to use this
  function simply put P_IN = 1 in the INFILE. This program will produce an

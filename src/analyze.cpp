@@ -50,7 +50,7 @@ struct Analyzer {
 
     long int N_STEPS, N_FOLLOWS, N_TWEETS;
 
-    UserType user_types[N_USERTYPES];
+    UserType user_entities[N_ENTITIES];
 
     ofstream DATA_TIME; // Output file to plot data
 
@@ -88,8 +88,8 @@ struct Analyzer {
         follow_set_grower.preallocate(FOLLOW_SET_MEM_PER_USER * MAX_USERS);
 
         DATA_TIME.open("DATA_vs_TIME");
-        set_initial_usertypes();
-        set_usertype_probabilities();
+        set_initial_entities();
+        set_entity_probabilities();
         set_initial_categories();
 		set_initial_follow_categories();
 		set_initial_follow_categories_probabilities();
@@ -125,25 +125,25 @@ struct Analyzer {
     	}
     }
 
-    void set_usertype_probabilities() {
-        user_types[UT_NORMAL_INDEX].R_ADD = config["R_ADD_NORMAL"];
-        user_types[UT_CELEB_INDEX].R_ADD = config["R_ADD_CELEB"];
-        user_types[UT_ORG_INDEX].R_ADD = config["R_ADD_ORG"];
-        user_types[UT_BOT_INDEX].R_ADD = config["R_ADD_BOT"];
+    void set_entity_probabilities() {
+        user_entities[UT_NORMAL_INDEX].R_ADD = config["R_ADD_NORMAL"];
+        user_entities[UT_CELEB_INDEX].R_ADD = config["R_ADD_CELEB"];
+        user_entities[UT_ORG_INDEX].R_ADD = config["R_ADD_ORG"];
+        user_entities[UT_BOT_INDEX].R_ADD = config["R_ADD_BOT"];
 
-        user_types[UT_NORMAL_INDEX].R_FOLLOW = config["R_FOLLOW_NORMAL"];
-        user_types[UT_CELEB_INDEX].R_FOLLOW = config["R_FOLLOW_CELEB"];
-        user_types[UT_ORG_INDEX].R_FOLLOW = config["R_FOLLOW_ORG"];
-        user_types[UT_BOT_INDEX].R_FOLLOW = config["R_FOLLOW_BOT"];
+        user_entities[UT_NORMAL_INDEX].R_FOLLOW = config["R_FOLLOW_NORMAL"];
+        user_entities[UT_CELEB_INDEX].R_FOLLOW = config["R_FOLLOW_CELEB"];
+        user_entities[UT_ORG_INDEX].R_FOLLOW = config["R_FOLLOW_ORG"];
+        user_entities[UT_BOT_INDEX].R_FOLLOW = config["R_FOLLOW_BOT"];
 
         double add_total = 0, follow_total = 0;
-        for (int i = 0; i < N_USERTYPES; i++) {
-            add_total += user_types[i].R_ADD;
-            follow_total += user_types[i].R_FOLLOW;
+        for (int i = 0; i < N_ENTITIES; i++) {
+            add_total += user_entities[i].R_ADD;
+            follow_total += user_entities[i].R_FOLLOW;
         }
-        for (int i = 0; i < N_USERTYPES; i++) {
-            user_types[i].R_ADD /= add_total;
-            user_types[i].R_FOLLOW /= follow_total;
+        for (int i = 0; i < N_ENTITIES; i++) {
+            user_entities[i].R_ADD /= add_total;
+            user_entities[i].R_FOLLOW /= follow_total;
         }
     }
 
@@ -159,7 +159,7 @@ struct Analyzer {
         R_TWEET_NORM = R_TWEET * N_USERS / R_TOTAL;
     }
 
-    void set_initial_usertypes() {
+    void set_initial_entities() {
         for (int i = 0; i < N_USERS; i ++) {
              action_create_person(0.0, i);
         }
@@ -242,13 +242,13 @@ struct Analyzer {
 		Person& p = network[index];
 		p.creation_time = creation_time;
 		double rand_num = rand_real_not0();
-		for (int i = 0; i < N_USERTYPES; i++) {
-			if (rand_num <= user_types[i].R_ADD) {
-				p.type = i;
-                                user_types[i].user_list.push_back(index);
+		for (int i = 0; i < N_ENTITIES; i++) {
+			if (rand_num <= user_entities[i].R_ADD) {
+				p.entity = i;
+                                user_entities[i].user_list.push_back(index);
 				break;
 			}
-			rand_num -= user_types[i].R_ADD;
+			rand_num -= user_entities[i].R_ADD;
 		}
 	}
 
