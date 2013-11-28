@@ -4,7 +4,7 @@
 
 static const int FIRST_ALLOC = FOLLOW_SET_GROWTH_MULTIPLE * FOLLOW_LIMIT1;
 
-SUITE(FollowSet) {
+SUITE(FollowSets) {
 	static void check_content(FollowSet& f) {
 		for (int i = 0; i < f.n_following; i++) {
 			CHECK(f.location[i] == 0);

@@ -40,4 +40,15 @@ inline std::vector<double> parse_numlist(std::string s) {
 	return ret;
 }
 
+inline double parse_num(std::string s) {
+    double ret = 0.0;
+    std::stringstream string_converter(s); //** Think of this like 'cin', but instead of standard input its an arbitrary string.
+    string_converter >> ret; //** Will adapt to the appropriate type! also like 'cin' would.
+    return ret;
+}
+
+//** AD: This is what I was talking about with giving the compiler hints about the path the a conditional will take.
+// Usage: if (likely(rarely failing checks) ) { ... } else { .. error routine ... }
+#define LIKELY(x) __builtin_expect((x), 1)
+
 #endif

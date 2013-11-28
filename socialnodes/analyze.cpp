@@ -39,9 +39,6 @@ struct Analyzer {
     int MAX_USERS;
     int VERBOSE;
     int RANDOM_INCR;
-    int P_OUT;
-    int P_IN;
-    int VISUALIZE;
 
     double T_FINAL;
 
@@ -49,6 +46,7 @@ struct Analyzer {
     double R_ADD_NORM;
     double R_FOLLOW_NORM;
     double R_TWEET_NORM;
+
 
     long int N_STEPS, N_FOLLOWS, N_TWEETS;
 
@@ -58,6 +56,8 @@ struct Analyzer {
 
     map<string, string> raw_config; // Contents of INFILE
     map<string, double> config; // Contents of INFILE
+    // Cached config variables, for performance:
+    bool config_output_summary_stats;
 
     /***************************************************************************
      * Initialization functions
@@ -65,19 +65,20 @@ struct Analyzer {
 
     /* Initialization and loading of configuration.
      * Reads configuration from the given input file. */
-    Analyzer(map<string, string>& raw_conf, map<string, double>& conf, int seed) :
+    Analyzer(map<string, string>& conf , int seed) :
             random_gen_state(seed) {
-    	raw_config = raw_conf;
-    	config = conf;
+    	raw_config = conf;
+    	// For convenience, have all numbers preparsed as if they were numbers (errors result in 0):
+    	for (map<string, string>::iterator it = conf.begin(); it != conf.end(); ++it) {
+    	    config[it->first] = parse_num(it->second);
+    	}
         N_USERS = config["N_USERS"];
         MAX_USERS = config["MAX_USERS"];
         VERBOSE = config["VERBOSE"];
         RANDOM_INCR = config["RANDOM_INCR"];
-        P_OUT = config["P_OUT"];
-        P_IN = config["P_IN"];
 
-        VISUALIZE = config["VISUALIZE"];
         T_FINAL = config["T_FINAL"];
+        config_output_summary_stats = (config["OUTPUT_SUMMARY"] != 0);
 
         N_STEPS = 0, N_FOLLOWS = 0, N_TWEETS = 0;
         set_rates();
@@ -106,7 +107,7 @@ struct Analyzer {
     	initialize_category(tweet_ranks, "TWEET_THRESHOLDS");
     	initialize_category(follow_ranks, "FOLLOW_THRESHOLDS");
     }
-	
+
     void set_initial_follow_categories() {
     	vector<double> follow_thresholds = parse_numlist(raw_config["FOLLOW_THRESHOLDS"]);
     	for (int i = 0; i < follow_thresholds.size(); i++) {
@@ -115,8 +116,8 @@ struct Analyzer {
     	// Sentinel of sorts, swallows everything else:
     	follow_ranks.categories.push_back(Category(HUGE_VAL));
     }
-	
-	vector<double> follow_popular_probabilities; 
+
+	vector<double> follow_popular_probabilities;
     void set_initial_follow_categories_probabilities() {
     	vector<double> follow_probabilities = parse_numlist(raw_config["FOLLOW_THRESHOLDS_PROBABILITIES"]);
     	for (int i = 0; i < follow_probabilities.size(); i++) {
@@ -164,7 +165,6 @@ struct Analyzer {
         }
     }
 
-
     /***************************************************************************
      * Person mutation routines
      ***************************************************************************/
@@ -177,41 +177,49 @@ struct Analyzer {
      * Analysis routines
      ***************************************************************************/
 
-    // MAIN ANALYSIS ROUTINE
+    // Entry point to all analysis:
+    /* Conceptually this is the true entry point to our program,
+     * after the messy configuration and allocation is done. */
+    void main() {
+        double end_time = run_network_simulation();
+        output_network_statistics(end_time);
+    }
+
+    // ROOT ANALYSIS ROUTINE
     /* Run the main analysis routine using this config. */
-    void run_analysis() {
+    double run_network_simulation() {
         double time = 0;
         while (time < T_FINAL && N_USERS < MAX_USERS) {
         	time = step_analysis(time);
         }
+        return time;
 
+    }
+    // ROOT OUTPUT ROUTINE
+    /* After 'analyze', print the results of the computations. */
+    void output_network_statistics(double end_time) {
         // Print why program stopped
-        string maximum_what =
-                time < T_FINAL ? "number of users" : "amount of time steps";
-        cout << "\nReached maximum " << maximum_what
-                << ".\n\n- - Program terminated - -\n\n";
+        if (!config["SILENT"]) {
+            string maximum_what =
+                    end_time < T_FINAL ? "number of users" : "amount of time steps";
+            cout << "\nReached maximum " << maximum_what
+                    << ".\n\n- - Program terminated - -\n\n";
+        }
 
-        if (P_OUT == 1) {
+        // Depending on our INFILE/configuration, we may output various analyhsis
+        if (config["P_OUT"]) {
             POUT(network, MAX_USERS, N_USERS);
-        } else {
-            // nothing is done here
         }
-        if (P_IN == 1) {
+        if (config["P_IN"]) {
             PIN(network, MAX_USERS, N_USERS);
-        } else {
-            // nothing is done here
         }
-        if (VISUALIZE == 1)
-        {
+        if (config["VISUALIZE"]) {
             output_position(network, N_USERS);
-        }
-        else
-        {
-            // nothing is done here
         }
         DATA_TIME.close();
     }
-    
+
+
     void step_time(double& TIME) {
         double prev_floor = floor(TIME / FILE_OUTPUT_RATE);
         if (RANDOM_INCR == 1) {
@@ -222,7 +230,9 @@ struct Analyzer {
         }
         // Output on every new integral time milestone:
         if (floor(TIME / FILE_OUTPUT_RATE) > prev_floor) {
-            output(TIME);
+            if (config_output_summary_stats) {
+                output_summary_stats(TIME);
+            }
         }
     }
 
@@ -246,27 +256,23 @@ struct Analyzer {
 	void action_follow_person(int user, int n_users) {
 		Person& p = network[user];
 		int user_to_follow = -1;
-		
+
 		user_to_follow = rand_int(n_users);
-		
+
 		// ADAM -- is this what you mean by we should not be scared of conditionals?
-		
-		// this is very likely
-		if (user != user_to_follow) {
+		// AD: No, it wasn't. Look at util.h for reference:
+		if (LIKELY(user != user_to_follow)) {
 			DEBUG_CHECK(user_to_follow != -1, "Logic error");
 			if (add_follow(p, user_to_follow)) {
-				N_FOLLOWS++; // We were able to add the follow; almost always the case.
-			}
-		}
-		// less likely
-		else
-		{
-			return;
-		}
+                N_FOLLOWS++; // We were able to add the follow; almost always the case.
+            }
+        } else {
+            return;
+        }
 		/*
 		double first_rand_num = rand_real_not0();
-	
-	
+
+
 	    // if we want to follow someone based on their title
 		for (int i = 0; i < N_USERTYPES; i++) {
 			if (first_rand_num <= user_types[i].R_FOLLOW) {
@@ -280,10 +286,10 @@ struct Analyzer {
 			}
 			first_rand_num -= user_types[i].R_FOLLOW;
 		}*/
-		
-		
+
+
 		//if we want to follow someone based on the number of followers a user has
-		
+
 	}
 
 	void action_tweet(int user) {
@@ -356,11 +362,11 @@ struct Analyzer {
         return random_gen_state.genrand_real1();
     }
 
-    void output(ostream& stream, double TIME) {
+    void output_summary_stats(ostream& stream, double TIME) {
     	stream  << fixed << setprecision(2) << TIME << "\t\t" << N_USERS
                 << "\t\t" << N_FOLLOWS << "\t\t" << N_TWEETS << "\t\n";
     }
-    void output(double TIME) {
+    void output_summary_stats(double TIME) {
         static int n_outputs = 0;
 
 		const char* HEADER = "\n#Time\t\tUsers\t\tFollows\t\tTweets\n\n";
@@ -371,9 +377,9 @@ struct Analyzer {
             DATA_TIME << HEADER;
         }
 
-        output(DATA_TIME, TIME);
+        output_summary_stats(DATA_TIME, TIME);
         if (n_outputs % STDOUT_OUTPUT_RATE == 0) {
-        	output(cout, TIME);
+        	output_summary_stats(cout, TIME);
         }
 
         n_outputs++;
@@ -381,7 +387,7 @@ struct Analyzer {
 };
 
 // Run a network simulation using the given input file's parameters
-void analyze_network(map<string, string>& raw_config, map<string, double>& num_config, int seed) {
-    Analyzer analyzer(raw_config, num_config, seed);
-    analyzer.run_analysis();
+void analyze_network(map<string, string>& config, int seed) {
+    Analyzer analyzer(config, seed);
+    analyzer.main();
 }

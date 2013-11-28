@@ -6,10 +6,6 @@ MAX_USERS = 100000
 RANDOM_INCR = 1              ; -> 0 - increment by 1/R_total
 			     ; -> 1 - increment by random time based on R_total
 
-VERBOSE = 0                  ; -> 0 - debugging
-			     ; -> 1 - write normally
-			     ; -> 2 - no output 
-			     
 T_FINAL = 525600.0           ; ->  1/10 year 
 
 R_ADD = 4.7                  ; ->    1 / hour
@@ -34,5 +30,15 @@ FOLLOW_THRESHOLDS_PROBABILITIES = 0.1 0.3 0.5 0.7 0.9
 P_OUT = 1		     ; -> print p_out file (1)
 			     ; -> dont print (0)
 P_IN = 1
+
+; Information output flags:
+
+VERBOSE = 0                  ; -> 0 - debugging
+			     ; -> 1 - write normally
+			     ; -> 2 - no output 
+OUTPUT_SUMMARY = 1 ; Output summary such as number of tweets etc in a file called DATA_vs_TIME (as well as occassionally to the console)			     
 VISUALIZE = 1
+
+; Initial network contents:
 N_USERS = 10                  ; -> number of initial users
+
