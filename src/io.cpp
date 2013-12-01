@@ -44,7 +44,7 @@ const int POUT_CAP = 1000; // AD: Rough work
  P_OUT = 1 in the INFILE. This function will generate an output file that
  can be plotted using gnuplot. */
 
-void POUT(Network& network, int MAX_USERS, int N_USERS) {
+void POUT(Network& network, int MAX_USERS, int N_USERS, int N_FOLLOWS) {
 	int N_FOLLOW_DATA[POUT_CAP + 1];
 	for (int i = 0; i <= POUT_CAP; i++) {
 		N_FOLLOW_DATA[i] = 0;
@@ -52,8 +52,9 @@ void POUT(Network& network, int MAX_USERS, int N_USERS) {
 
 	ofstream OUTPUT;
 	OUTPUT.open("P_OUT.dat");
-
+	
 	OUTPUT << "##### THIS IS THE P_OUT(K) FUNCTION DATA #####\n\n";
+	OUTPUT << "#The mean of the distribution: " << double (N_FOLLOWS) / N_USERS << "\n\n";
 	OUTPUT << "#N_FOLLOWS\tP(K)\tln(N_FOLLOWS)\tln(P(K))\n";
 
 	for (int i = 0; i < MAX_USERS; i++) {
@@ -63,8 +64,6 @@ void POUT(Network& network, int MAX_USERS, int N_USERS) {
 			N_FOLLOW_DATA[n_following]++;
 		}
 	}
-	
-	
 
 	N_FOLLOW_DATA[0] -= (MAX_USERS - N_USERS);
 	for (int i = 1; i <= POUT_CAP; i++) {
@@ -75,8 +74,6 @@ void POUT(Network& network, int MAX_USERS, int N_USERS) {
 			   << log(i) 
 			   << "\t" 
 			   << log(N_FOLLOW_DATA[i] / double(N_USERS))
-				   << "\t"
-					   << exp(-0.2)*pow(0.2, i)/factorial(i)
 			   << "\n"
 			   << i + 0.5 
 			   << "\t" 
@@ -99,7 +96,7 @@ int factorial(int input_number) {
  function simply put P_IN = 1 in the INFILE. This program will produce an
  output file that can be plotted using gnuplot. */
 
-void PIN(Network& network, int MAX_USERS, int N_USERS) {
+void PIN(Network& network, int MAX_USERS, int N_USERS, double r_follow_norm) {
 	int N_FOLLOWERS_DATA[N_USERS];
 	for (int i = 0; i < N_USERS; i++) {
 		N_FOLLOWERS_DATA[i] = 0;
@@ -110,7 +107,6 @@ void PIN(Network& network, int MAX_USERS, int N_USERS) {
 			N_FOLLOWERS_DATA[network.follow_i(user, i)]++;
 		}
 	}
-
 	ofstream output;
 	output.open("P_IN.dat");
 

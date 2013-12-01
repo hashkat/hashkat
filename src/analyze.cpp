@@ -91,8 +91,8 @@ struct Analyzer {
         set_initial_entities();
         set_entity_probabilities();
         set_initial_categories();
+		set_follow_rank_probabilities();
 		set_initial_follow_categories();
-		set_initial_follow_categories_probabilities();
     }
 
     void initialize_category(CategoryGroup& group, const char* parameter) {
@@ -107,23 +107,26 @@ struct Analyzer {
     	initialize_category(tweet_ranks, "TWEET_THRESHOLDS");
     	initialize_category(follow_ranks, "FOLLOW_THRESHOLDS");
     }
-
-    void set_initial_follow_categories() {
-    	vector<double> follow_thresholds = parse_numlist(raw_config["FOLLOW_THRESHOLDS"]);
-    	for (int i = 0; i < follow_thresholds.size(); i++) {
-    		follow_ranks.categories.push_back(Category(follow_thresholds[i]));
-    	}
-    	// Sentinel of sorts, swallows everything else:
-    	follow_ranks.categories.push_back(Category(HUGE_VAL));
-    }
-
-	vector<double> follow_popular_probabilities;
-    void set_initial_follow_categories_probabilities() {
-    	vector<double> follow_probabilities = parse_numlist(raw_config["FOLLOW_THRESHOLDS_PROBABILITIES"]);
-    	for (int i = 0; i < follow_probabilities.size(); i++) {
-    		follow_popular_probabilities.push_back(follow_probabilities[i]);
-    	}
-    }
+	
+	vector <double> follow_probabilities;
+	void set_follow_rank_probabilities() {
+		vector<double> set_probabilities = parse_numlist(raw_config["FOLLOW_THRESHOLDS_PROBABILITIES"]);
+		double probability_total = 0;
+		for (int i = 0; i < set_probabilities.size(); i ++) {
+			probability_total += set_probabilities[i];
+		}
+		for (int i = 0; i < set_probabilities.size(); i ++) {
+			follow_probabilities.push_back(set_probabilities[i]/probability_total);
+		}
+	}
+	
+	void set_initial_follow_categories() {
+		for (int i = 0; i < N_USERS; i ++) {
+			Person& p = network[i];
+			follow_ranks.categorize(i, p.n_followers);
+			
+		}
+	}
 
     void set_entity_probabilities() {
         user_entities[UT_NORMAL_INDEX].R_ADD = config["R_ADD_NORMAL"];
@@ -208,10 +211,10 @@ struct Analyzer {
 
         // Depending on our INFILE/configuration, we may output various analyhsis
         if (config["P_OUT"]) {
-            POUT(network, MAX_USERS, N_USERS);
+            POUT(network, MAX_USERS, N_USERS, N_FOLLOWS);
         }
         if (config["P_IN"]) {
-            PIN(network, MAX_USERS, N_USERS);
+            PIN(network, MAX_USERS, N_USERS, R_FOLLOW_NORM);
         }
         if (config["VISUALIZE"]) {
             output_position(network, N_USERS);
@@ -254,42 +257,43 @@ struct Analyzer {
 
     /* decides which user to follow based on the rates in the INFILE */
 	void action_follow_person(int user, int n_users) {
-		Person& p = network[user];
+		Person& p1 = network[user];
 		int user_to_follow = -1;
-
-		user_to_follow = rand_int(n_users);
-
+		double rand_num = rand_real_not0();
+				
+		// if we want to use a preferential follow method
+		if (config["PREF_FOLLOW"] == 1) {
+			for (int i = 0; i < follow_probabilities.size(); i ++) {
+				if (rand_num - follow_probabilities[i] <= ZEROTOL) {
+					Category& C = follow_ranks.categories[i];
+					if (C.users.size() != 0) {
+						user_to_follow = C.users[rand_int(C.users.size())];
+						cout << C.users.size() << "\t" << user_to_follow << "\n";
+						Person& p2 = network[user_to_follow];
+	            		p2.n_followers ++;
+						follow_ranks.categorize(user_to_follow, p2.n_followers);
+					}
+				}
+				rand_num -= follow_probabilities[i];
+			}
+		}
+		// if we want to do random follows
+		if (config["PREF_FOLLOW"] == 0) {
+			user_to_follow = rand_int(n_users);
+			Person& p2 = network[user_to_follow];
+		}
+		
 		// ADAM -- is this what you mean by we should not be scared of conditionals?
 		// AD: No, it wasn't. Look at util.h for reference:
-		if (LIKELY(user != user_to_follow)) {
-			DEBUG_CHECK(user_to_follow != -1, "Logic error");
-			if (add_follow(p, user_to_follow)) {
+		if (LIKELY(user != user_to_follow) && user_to_follow != -1) {
+			//DEBUG_CHECK(user_to_follow != -1, "Logic error");
+			if (add_follow(p1, user_to_follow)) {
                 N_FOLLOWS++; // We were able to add the follow; almost always the case.
-            }
-        } else {
+			}
+        } 
+		else {
             return;
         }
-		/*
-		double first_rand_num = rand_real_not0();
-
-
-	    // if we want to follow someone based on their title
-		for (int i = 0; i < N_USERTYPES; i++) {
-			if (first_rand_num <= user_types[i].R_FOLLOW) {
-				if (user_types[i].user_list.size() == 0) {
-					return;
-				}
-				user_to_follow = rand_int(user_types[i].user_list.size());
-				Person& p2 = network[user_to_follow];
-				p2.n_followers ++;
-				break;
-			}
-			first_rand_num -= user_types[i].R_FOLLOW;
-		}*/
-
-
-		//if we want to follow someone based on the number of followers a user has
-
 	}
 
 	void action_tweet(int user) {
