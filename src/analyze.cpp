@@ -268,7 +268,6 @@ struct Analyzer {
 					Category& C = follow_ranks.categories[i];
 					if (C.users.size() != 0) {
 						user_to_follow = C.users[rand_int(C.users.size())];
-						cout << C.users.size() << "\t" << user_to_follow << "\n";
 						Person& p2 = network[user_to_follow];
 	            		p2.n_followers ++;
 						follow_ranks.categorize(user_to_follow, p2.n_followers);
