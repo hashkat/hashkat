@@ -248,7 +248,8 @@ struct Analyzer {
 		for (int i = 0; i < N_ENTITIES; i++) {
 			if (rand_num <= user_entities[i].R_ADD) {
 				p.entity = i;
-                                user_entities[i].user_list.push_back(index);
+                user_entities[i].user_list.push_back(index);
+				follow_ranks.categorize(index, p.n_followers);
 				break;
 			}
 			rand_num -= user_entities[i].R_ADD;
@@ -281,10 +282,7 @@ struct Analyzer {
 			user_to_follow = rand_int(n_users);
 			Person& p2 = network[user_to_follow];
 		}
-		
-		// ADAM -- is this what you mean by we should not be scared of conditionals?
-		// AD: No, it wasn't. Look at util.h for reference:
-		if (LIKELY(user != user_to_follow) && user_to_follow != -1) {
+		if (LIKELY(user != user_to_follow)) {
 			//DEBUG_CHECK(user_to_follow != -1, "Logic error");
 			if (add_follow(p1, user_to_follow)) {
                 N_FOLLOWS++; // We were able to add the follow; almost always the case.
