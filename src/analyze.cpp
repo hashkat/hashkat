@@ -347,7 +347,7 @@ struct Analyzer {
             int user = rand_int(network.n_persons);
             action_tweet(user);
         } else if (u_1 - (R_ADD_NORM + R_FOLLOW_NORM + R_TWEET_NORM + R_RETWEET_NORM) <= ZEROTOL ) {
-			double val = u_1 - R_ADD_NORM + R_FOLLOW_NORM + R_TWEET_NORM;
+			double val = u_1 - (R_ADD_NORM + R_FOLLOW_NORM + R_TWEET_NORM);
 			int user = val / (R_RETWEET_NORM / N_USERS);
 			action_retweet(user, TIME);
         } else {
@@ -393,12 +393,12 @@ struct Analyzer {
 
     void output_summary_stats(ostream& stream, double TIME) {
     	stream  << fixed << setprecision(2) << TIME << "\t\t" << N_USERS
-                << "\t\t" << N_FOLLOWS << "\t\t" << N_TWEETS << "\t\n";
+                << "\t\t" << N_FOLLOWS << "\t\t" << N_TWEETS << "\t\t" << N_RETWEETS << "\t\n";
     }
     void output_summary_stats(double TIME) {
         static int n_outputs = 0;
 
-		const char* HEADER = "\n#Time\t\tUsers\t\tFollows\t\tTweets\n\n";
+		const char* HEADER = "\n#Time\t\tUsers\t\tFollows\t\tTweets\t\tRetweets\n\n";
         if (n_outputs % (25 * STDOUT_OUTPUT_RATE) == 0) {
         	cout << HEADER;
         }
