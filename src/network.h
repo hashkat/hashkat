@@ -11,6 +11,8 @@
 #include "category.h"
 
 struct Person {
+	std::vector<int> retweet_userlist;
+	std::vector<double> retweet_userlist_time;
 	int entity;
 	int n_tweets;
 	int n_followers;

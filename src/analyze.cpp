@@ -46,9 +46,10 @@ struct Analyzer {
     double R_ADD_NORM;
     double R_FOLLOW_NORM;
     double R_TWEET_NORM;
+	double R_RETWEET_NORM;
 
 
-    long int N_STEPS, N_FOLLOWS, N_TWEETS;
+    long int N_STEPS, N_FOLLOWS, N_TWEETS, N_RETWEETS;
 
     UserType user_entities[N_ENTITIES];
 
@@ -80,7 +81,7 @@ struct Analyzer {
         T_FINAL = config["T_FINAL"];
         config_output_summary_stats = (config["OUTPUT_SUMMARY"] != 0);
 
-        N_STEPS = 0, N_FOLLOWS = 0, N_TWEETS = 0;
+        N_STEPS = 0, N_FOLLOWS = 0, N_TWEETS = 0, N_RETWEETS = 0;
         set_rates();
 
         // The following allocates a memory chunk proportional to MAX_USERS:
@@ -154,12 +155,14 @@ struct Analyzer {
         double R_FOLLOW = config["R_FOLLOW"];
         double R_TWEET = config["R_TWEET"];
         double R_ADD = config["R_ADD"];
+		double R_RETWEET = config["R_RETWEET"];
 
-        R_TOTAL = R_ADD + R_FOLLOW * N_USERS + R_TWEET * N_USERS;
+        R_TOTAL = R_ADD + R_FOLLOW * N_USERS + R_TWEET * N_USERS + R_RETWEET * N_USERS;
         //Normalize the rates
         R_ADD_NORM = R_ADD / R_TOTAL;
         R_FOLLOW_NORM = R_FOLLOW * N_USERS / R_TOTAL;
         R_TWEET_NORM = R_TWEET * N_USERS / R_TOTAL;
+		R_RETWEET_NORM = R_RETWEET * N_USERS / R_TOTAL;
     }
 
     void set_initial_entities() {
@@ -277,13 +280,14 @@ struct Analyzer {
 				rand_num -= follow_probabilities[i];
 			}
 		}
+		
 		// if we want to do random follows
 		if (config["PREF_FOLLOW"] == 0) {
 			user_to_follow = rand_int(n_users);
 			Person& p2 = network[user_to_follow];
 		}
-		if (LIKELY(user != user_to_follow)) {
-			//DEBUG_CHECK(user_to_follow != -1, "Logic error");
+		if (LIKELY(user != user_to_follow) && user_to_follow != -1) {
+			DEBUG_CHECK(user_to_follow != -1, "Logic error");
 			if (add_follow(p1, user_to_follow)) {
                 N_FOLLOWS++; // We were able to add the follow; almost always the case.
 			}
@@ -297,6 +301,26 @@ struct Analyzer {
 		Person& p = network[user];
 		p.n_tweets++;
 		tweet_ranks.categorize(user, p.n_tweets);
+	}
+	
+	void action_retweet(int user, double time_of_retweet) {
+		double rand_num = rand_real_not0();
+		Person& p_retweeting = network[user];
+		if (network.n_following(user) != 0) {
+			int find_user = rand_int(network.n_following(user));
+			int user_to_be_retweeted = network.follow_i(user,0);
+			Person& p_retweeted = network[user_to_be_retweeted]; // random for now
+		
+			for (int i = 0; i < network.n_following(user); i ++) {
+				Person& p_add_userlist = network[network.follow_i(user, i)];
+				p_add_userlist.retweet_userlist.push_back(user_to_be_retweeted);
+				p_add_userlist.retweet_userlist_time.push_back(time_of_retweet);
+			}
+			N_RETWEETS ++;
+		}
+		else {
+			// no retweet happens
+		}	
 	}
 
     // Performs one step of the analysis routine.
@@ -322,6 +346,10 @@ struct Analyzer {
             // User to send the tweet:
             int user = rand_int(network.n_persons);
             action_tweet(user);
+        } else if (u_1 - (R_ADD_NORM + R_FOLLOW_NORM + R_TWEET_NORM + R_RETWEET_NORM) <= ZEROTOL ) {
+			double val = u_1 - R_ADD_NORM + R_FOLLOW_NORM + R_TWEET_NORM;
+			int user = val / (R_RETWEET_NORM / N_USERS);
+			action_retweet(user, TIME);
         } else {
             cout << "Disaster, event out of bounds" << endl;
         }
