@@ -260,32 +260,47 @@ struct Analyzer {
 	}
 
     /* decides which user to follow based on the rates in the INFILE */
-	void action_follow_person(int user, int n_users) {
+	void action_follow_person(int user, int n_users, double time) {
 		Person& p1 = network[user];
 		int user_to_follow = -1;
 		double rand_num = rand_real_not0();
 				
 		// if we want to use a preferential follow method
 		if (config["PREF_FOLLOW"] == 1) {
-			for (int i = 0; i < follow_probabilities.size(); i ++) {
-				if (rand_num - follow_probabilities[i] <= ZEROTOL) {
-					Category& C = follow_ranks.categories[i];
-					if (C.users.size() != 0) {
-						user_to_follow = C.users[rand_int(C.users.size())];
-						Person& p2 = network[user_to_follow];
-	            		p2.n_followers ++;
-						follow_ranks.categorize(user_to_follow, p2.n_followers);
+			if (rand_num < 0.5 /* this can be changed */) {
+				for (int i = 0; i < follow_probabilities.size(); i ++) {
+					if (rand_num - follow_probabilities[i] <= ZEROTOL) {
+						Category& C = follow_ranks.categories[i];
+						if (C.users.size() != 0) {
+							user_to_follow = C.users[rand_int(C.users.size())];
+							Person& p2 = network[user_to_follow];
+	            			p2.n_followers ++;
+							follow_ranks.categorize(user_to_follow, p2.n_followers);
+						}
 					}
+					rand_num -= follow_probabilities[i];
 				}
-				rand_num -= follow_probabilities[i];
+			}
+			else /* The retweet process */ {
+				if (p1.retweet_userlist.size() != 0 && time - p1.retweet_userlist_time[p1.retweet_userlist.size() - 1] >= 1440.0 /*24 hours */) {
+					user_to_follow = p1.retweet_userlist[p1.retweet_userlist.size() - 1]; // last user to be added to the list
+				}
 			}
 		}
 		
 		// if we want to do random follows
 		if (config["PREF_FOLLOW"] == 0) {
-			user_to_follow = rand_int(n_users);
-			Person& p2 = network[user_to_follow];
+			if (rand_num < 0.5 /* this can be changed */) {
+				user_to_follow = rand_int(n_users);
+				Person& p2 = network[user_to_follow];
+			}
+			else /* follow via retweet process */ {
+				if (p1.retweet_userlist.size() != 0 && time - p1.retweet_userlist_time[p1.retweet_userlist.size() - 1] >= 1440.0 /*24 hours */) {
+					user_to_follow = p1.retweet_userlist[p1.retweet_userlist.size() - 1]; // last user to be added to the list
+				}
+			}
 		}
+		
 		if (LIKELY(user != user_to_follow) && user_to_follow != -1) {
 			DEBUG_CHECK(user_to_follow != -1, "Logic error");
 			if (add_follow(p1, user_to_follow)) {
@@ -339,7 +354,7 @@ struct Analyzer {
             double val = u_1 - R_ADD_NORM;
 			int user = val / (R_FOLLOW_NORM / N_USERS); // this finds the user
 			Person& p = network[user];
-			action_follow_person(user, N_USERS);
+			action_follow_person(user, N_USERS, TIME);
         } else if (u_1 - (R_ADD_NORM + R_FOLLOW_NORM + R_TWEET_NORM) <= ZEROTOL) {
         	// If we find ourselves in the tweet chuck of the cumulative function:
             N_TWEETS++;
