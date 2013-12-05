@@ -265,6 +265,19 @@ struct Analyzer {
 		int user_to_follow = -1;
 		double rand_num = rand_real_not0();
 				
+		// if we want to do random follows
+		if (config["PREF_FOLLOW"] == 0) {
+			if (rand_num < 0.5 /* this can be changed */) {
+				user_to_follow = rand_int(n_users);
+				Person& p2 = network[user_to_follow];
+			}
+			else /* follow via retweet process */ {
+				if (p1.retweet_userlist.size() != 0 && time - p1.retweet_userlist_time[p1.retweet_userlist.size() - 1] >= 1440.0 /*24 hours */) {
+					user_to_follow = p1.retweet_userlist[p1.retweet_userlist.size() - 1]; // last user to be added to the list
+				}
+			}
+		}
+		
 		// if we want to use a preferential follow method
 		if (config["PREF_FOLLOW"] == 1) {
 			if (rand_num < 0.5 /* this can be changed */) {
@@ -288,13 +301,19 @@ struct Analyzer {
 			}
 		}
 		
-		// if we want to do random follows
-		if (config["PREF_FOLLOW"] == 0) {
-			if (rand_num < 0.5 /* this can be changed */) {
-				user_to_follow = rand_int(n_users);
-				Person& p2 = network[user_to_follow];
+		// if we want to follow by user class
+		if (config["PREF_FOLLOW"] == 2) {
+			if (rand_num < 0.5 /* condition for now */) {
+				for (int i = 0; i < N_ENTITIES; i++) {
+					if (rand_num <= user_entities[i].R_FOLLOW) {
+						if (LIKELY(user_entities[i].user_list.size() != 0)) {
+							user_to_follow = user_entities[i].user_list[rand_int(user_entities[i].user_list.size())];
+						}
+					}
+					rand_num -= user_entities[i].R_FOLLOW;
+				}	
 			}
-			else /* follow via retweet process */ {
+			else /* the retweet process */ {
 				if (p1.retweet_userlist.size() != 0 && time - p1.retweet_userlist_time[p1.retweet_userlist.size() - 1] >= 1440.0 /*24 hours */) {
 					user_to_follow = p1.retweet_userlist[p1.retweet_userlist.size() - 1]; // last user to be added to the list
 				}

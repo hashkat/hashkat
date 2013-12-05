@@ -19,9 +19,14 @@ R_ADD_CELEB = 10
 R_ADD_BOT = 0
 R_ADD_ORG = 0
 
+R_FOLLOW_NORMAL = 90
+R_FOLLOW_CELEB = 10
+R_FOLLOW_BOT = 0
+R_FOLLOW_ORG = 0
+
 TWEET_THRESHOLDS = 1 10 20 2000 3000
 
-PREF_FOLLOW = 1              ; 1 - preferential follow
+PREF_FOLLOW = 2              ; 1 - preferential follow
 			     ; 0 - random follow
 
 FOLLOW_THRESHOLDS = 1 10 20 2000 3000 
