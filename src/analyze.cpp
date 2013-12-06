@@ -39,6 +39,7 @@ struct Analyzer {
     int MAX_USERS;
     int VERBOSE;
     int RANDOM_INCR;
+	int FOLLOW_METHOD;
 
     double T_FINAL;
 
@@ -77,6 +78,7 @@ struct Analyzer {
         MAX_USERS = config["MAX_USERS"];
         VERBOSE = config["VERBOSE"];
         RANDOM_INCR = config["RANDOM_INCR"];
+		FOLLOW_METHOD = config["FOLLOW_METHOD"];
 
         T_FINAL = config["T_FINAL"];
         config_output_summary_stats = (config["OUTPUT_SUMMARY"] != 0);
@@ -266,7 +268,7 @@ struct Analyzer {
 		double rand_num = rand_real_not0();
 				
 		// if we want to do random follows
-		if (config["PREF_FOLLOW"] == 0) {
+		if (FOLLOW_METHOD == 0) {
 			if (rand_num < 0.5 /* this can be changed */) {
 				user_to_follow = rand_int(n_users);
 				Person& p2 = network[user_to_follow];
@@ -279,7 +281,7 @@ struct Analyzer {
 		}
 		
 		// if we want to use a preferential follow method
-		if (config["PREF_FOLLOW"] == 1) {
+		if (FOLLOW_METHOD == 1) {
 			if (rand_num < 0.5 /* this can be changed */) {
 				for (int i = 0; i < follow_probabilities.size(); i ++) {
 					if (rand_num - follow_probabilities[i] <= ZEROTOL) {
@@ -302,7 +304,7 @@ struct Analyzer {
 		}
 		
 		// if we want to follow by user class
-		if (config["PREF_FOLLOW"] == 2) {
+		if (FOLLOW_METHOD == 2) {
 			if (rand_num < 0.5 /* condition for now */) {
 				for (int i = 0; i < N_ENTITIES; i++) {
 					if (rand_num <= user_entities[i].R_FOLLOW) {
