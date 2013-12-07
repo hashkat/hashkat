@@ -131,3 +131,19 @@ void PIN(Network& network, int MAX_USERS, int N_USERS, double r_follow_norm) {
 	output.close();
 }
 
+void Categories_Check(CategoryGroup& tweeting, CategoryGroup& following, CategoryGroup& retweeting) {
+	ofstream output;
+	output.open("Categories_Distro.dat");
+	output << "\t\tFollowing\tTweeting\tRetweeting\n\n";
+	
+	for (int i = 0; i < following.categories.size(); i ++) {
+		Category& C_follows = following.categories[i];
+		Category& C_tweets = tweeting.categories[i];
+		Category& C_retweets = retweeting.categories[i];
+		output << "Thresholds:\t" << C_follows.threshold << "\t\t" << C_tweets.threshold << "\t\t" << C_retweets.threshold << "\n";
+		output << "# Users:\t" << C_follows.users.size() << "\t\t" << C_tweets.users.size() << "\t\t" << C_retweets.users.size() << "\n\n";
+		
+	}
+	output.close();
+}
+

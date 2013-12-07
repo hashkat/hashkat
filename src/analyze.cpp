@@ -129,7 +129,7 @@ struct Analyzer {
 	void set_initial_follow_categories() {
 		for (int i = 0; i < N_USERS; i ++) {
 			Person& p = network[i];
-			follow_ranks.categorize(i, p.n_followers);
+			follow_ranks.categorize(i, 0);
 			
 		}
 	}
@@ -227,6 +227,7 @@ struct Analyzer {
         if (config["VISUALIZE"]) {
             output_position(network, N_USERS);
         }
+		Categories_Check(tweet_ranks, follow_ranks, retweet_ranks);
         DATA_TIME.close();
     }
 
@@ -272,17 +273,8 @@ struct Analyzer {
 				
 		// if we want to do random follows
 		if (FOLLOW_METHOD == 0) {
-			if (rand_num < 0.5 /* this can be changed */) {
 				user_to_follow = rand_int(n_users);
 				Person& p2 = network[user_to_follow];
-			}
-			else /* follow via retweet process */ {
-				if (p1.retweet_userlist.size() != 0 && time - p1.retweet_userlist_time[p1.retweet_userlist.size() - 1] >= 1440.0 /*24 hours */) {
-					user_to_follow = p1.retweet_userlist[p1.retweet_userlist.size() - 1]; // last user to be added to the list
-					Person& p2 = network[user_to_follow];
-					p2.n_retweets ++;
-				}
-			}
 		}
 		
 		// if we want to use a preferential follow method
@@ -306,6 +298,7 @@ struct Analyzer {
 					user_to_follow = p1.retweet_userlist[p1.retweet_userlist.size() - 1]; // last user to be added to the list
 					Person& p2 = network[user_to_follow];
 					p2.n_retweets ++;
+					retweet_ranks.categorize(user_to_follow, p2.n_retweets);
 				}
 			}
 		}
@@ -327,6 +320,7 @@ struct Analyzer {
 					user_to_follow = p1.retweet_userlist[p1.retweet_userlist.size() - 1]; // last user to be added to the list
 					Person& p2 = network[user_to_follow];
 					p2.n_retweets ++;
+					retweet_ranks.categorize(user_to_follow, p2.n_retweets);
 				}
 			}
 		}
