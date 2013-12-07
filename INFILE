@@ -25,8 +25,9 @@ R_FOLLOW_BOT = 0
 R_FOLLOW_ORG = 0
 
 TWEET_THRESHOLDS = 1 10 20 2000 3000
+RETWEET_THRESHOLDS = 1 10 20 2000 3000
 
-FOLLOW_METHOD = 2              ; 1 - preferential follow
+FOLLOW_METHOD = 1              ; 1 - preferential follow
 			     ; 0 - random follow
 
 FOLLOW_THRESHOLDS = 1 10 20 2000 3000 

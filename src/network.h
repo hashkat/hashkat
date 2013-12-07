@@ -15,6 +15,7 @@ struct Person {
 	std::vector<double> retweet_userlist_time;
 	int entity;
 	int n_tweets;
+	int n_retweets;
 	int n_followers;
 	FollowSet follow_set;
 	double creation_time;
@@ -26,6 +27,7 @@ struct Person {
 		x_location = -1, y_location = -1;
 		n_tweets = 0;
 		n_followers = 0;
+		n_retweets=0;
 	}
 
 	void sanity_check() {
