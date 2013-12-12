@@ -93,8 +93,9 @@ struct Analyzer {
         follow_set_grower.preallocate(FOLLOW_SET_MEM_PER_USER * MAX_USERS);
 
         DATA_TIME.open("DATA_vs_TIME");
-        set_initial_entities();
+       
         set_entity_probabilities();
+		set_initial_entities();
         set_initial_categories();
 		set_follow_rank_probabilities();
 		set_initial_follow_categories();
@@ -228,6 +229,8 @@ struct Analyzer {
             output_position(network, N_USERS);
         }
 		Categories_Check(tweet_ranks, follow_ranks, retweet_ranks);
+		Cumulative_Distro(network, MAX_USERS, N_USERS, N_FOLLOWS);
+		
         DATA_TIME.close();
     }
 
@@ -258,7 +261,7 @@ struct Analyzer {
 			if (rand_num <= user_entities[i].R_ADD) {
 				p.entity = i;
                 user_entities[i].user_list.push_back(index);
-				follow_ranks.categorize(index, p.n_followers);
+				//follow_ranks.categorize(index, p.n_followers);
 				break;
 			}
 			rand_num -= user_entities[i].R_ADD;
@@ -279,7 +282,6 @@ struct Analyzer {
 		
 		// if we want to use a preferential follow method
 		if (FOLLOW_METHOD == 1) {
-			if (rand_num < 0.8 /* this can be changed */) {
 				for (int i = 0; i < follow_probabilities.size(); i ++) {
 					if (rand_num - follow_probabilities[i] <= ZEROTOL) {
 						Category& C = follow_ranks.categories[i];
@@ -293,41 +295,24 @@ struct Analyzer {
 					rand_num -= follow_probabilities[i];
 				}
 			}
-			else /* The retweet process */ {
-				if (p1.retweet_userlist.size() != 0 && time - p1.retweet_userlist_time[p1.retweet_userlist.size() - 1] >= 1440.0 /*24 hours */) {
-					user_to_follow = p1.retweet_userlist[p1.retweet_userlist.size() - 1]; // last user to be added to the list
-					Person& p2 = network[user_to_follow];
-					p2.n_retweets ++;
-					retweet_ranks.categorize(user_to_follow, p2.n_retweets);
-				}
-			}
-		}
-
 		// if we want to follow by user class
 		if (FOLLOW_METHOD == 2) {
-			if (rand_num < 0.5 /* condition for now */) {
 				for (int i = 0; i < N_ENTITIES; i++) {
 					if (rand_num <= user_entities[i].R_FOLLOW) {
-						if (LIKELY(user_entities[i].user_list.size() != 0)) {
+						if (user_entities[i].user_list.size() != 0) {
 							user_to_follow = user_entities[i].user_list[rand_int(user_entities[i].user_list.size())];
 						}
 					}
 					rand_num -= user_entities[i].R_FOLLOW;
-				}	
-			}
-			else /* the retweet process */ {
-				if (p1.retweet_userlist.size() != 0 && time - p1.retweet_userlist_time[p1.retweet_userlist.size() - 1] <= 1440.0 /*24 hours */) {
-					user_to_follow = p1.retweet_userlist[p1.retweet_userlist.size() - 1]; // last user to be added to the list
-					Person& p2 = network[user_to_follow];
-					p2.n_retweets ++;
-					retweet_ranks.categorize(user_to_follow, p2.n_retweets);
-				}
-			}
+				}					
 		}
 		
-		if (LIKELY(user != user_to_follow) && user_to_follow != -1) {
+		if (LIKELY(user != user_to_follow && user_to_follow != -1)) {
 			DEBUG_CHECK(user_to_follow != -1, "Logic error");
 			if (add_follow(p1, user_to_follow)) {
+				Person& p2 = network[user_to_follow];
+				p2.n_followers ++;
+				
                 N_FOLLOWS++; // We were able to add the follow; almost always the case.
 			}
         } 

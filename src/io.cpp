@@ -11,8 +11,10 @@ using namespace std;
 // ### Output file --> Gephi xml file POSITIONS.gexf
 // visualization going to change eventually
 void output_position(Network& network, int n_users) {
+	
 	ofstream output;
 	output.open("POSITIONS.gexf");
+	
 	output << "<gexf version=\"1.2\">\n"
 			<< "<meta lastmodifieddate=\"2013-11-21\">\n"
 			<< "<creator> Kevin Ryczko </creator>\n"
@@ -147,3 +149,39 @@ void Categories_Check(CategoryGroup& tweeting, CategoryGroup& following, Categor
 	output.close();
 }
 
+void Cumulative_Distro(Network& network, int MAX_USERS, int N_USERS, int N_FOLLOWS) {
+	int cumulative_distro[N_USERS];
+	int n_followers_data[N_USERS];
+	int n_followers_distro[N_USERS];
+	int n_following_distro[N_USERS];
+	
+	for (int i = 0; i < N_USERS; i ++) {
+		cumulative_distro[i] = 0;
+		n_followers_distro[i] = 0;
+		n_followers_data[i] = 0;
+		n_following_distro[i] = 0;
+	}
+	for (int i = 0; i < N_USERS; i ++) {
+		for (int j = 0; j < network.n_following(i); j ++) {
+			n_followers_data[network.follow_i(i,j)] ++;
+		}
+	}
+	for (int i = 0; i < N_USERS; i ++) {
+		n_followers_distro[n_followers_data[i]] ++;
+	}
+	for (int i = 0; i < N_USERS; i ++) {
+		n_following_distro[network.n_following(i)] ++;
+	}
+	for (int i = 0; i < N_USERS; i ++) {
+		cumulative_distro[i] = n_followers_distro[i] + n_following_distro[i];
+	}
+	
+	ofstream output;
+	output.open("cumulative_distro.csv");
+	
+	for (int i = 0; i < N_USERS; i ++) {
+		output << i - 0.5 << "," << cumulative_distro[i]/double(2*N_USERS) << "\n";
+		output << i + 0.5 << "," << cumulative_distro[i]/double(2*N_USERS) << "\n";
+	}
+	output.close();
+}

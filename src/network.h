@@ -27,7 +27,7 @@ struct Person {
 		x_location = -1, y_location = -1;
 		n_tweets = 0;
 		n_followers = 0;
-		n_retweets=0;
+		n_retweets= 0;
 	}
 
 	void sanity_check() {
