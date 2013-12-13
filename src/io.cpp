@@ -8,36 +8,18 @@
 
 using namespace std;
 
-// ### Output file --> Gephi xml file POSITIONS.gexf
-// visualization going to change eventually
+// edgelist created for R (analysis) and python executable (drawing)
 void output_position(Network& network, int n_users) {
 	
 	ofstream output;
-	output.open("POSITIONS.gexf");
-	
-	output << "<gexf version=\"1.2\">\n"
-			<< "<meta lastmodifieddate=\"2013-11-21\">\n"
-			<< "<creator> Kevin Ryczko </creator>\n"
-			<< "<description> Social Network Visualization </description>\n"
-			<< "</meta>\n"
-			<< "<graph mode=\"static\" defaultedgetype=\"directed\">\n"
-			<< "<nodes>\n";
-	for (int i = 0; i < n_users; i++) {
-		Person& p = network[i];
-		output << "<node id=\"" << i << "\" label=\"" << p.entity << "\" />\n";
-	}
-	output << "</nodes>\n" << "<edges>\n";
-	for (int i = 0; i < n_users; i++) {
-		for (int j = 0; j < network.n_following(i); j++) {
-			output << "<edge id=\"" << i << "\" source=\"" << i
-					<< "\" target=\"" << network.follow_i(i, j) << "\"/>\n";
+	output.open("network.dat");
+	for (int i = 0; i < n_users; i ++) {
+		for (int j = 0; j < network.n_following(i); j ++) {
+			output << i << "\t" << network.follow_i(i,j) << "\n";
 		}
 	}
-	output << "</edges>\n" << "</graph>\n" << "</gexf>";
 	output.close();
 } 
-
-
 
 const int POUT_CAP = 1000; // AD: Rough work
 
@@ -149,6 +131,7 @@ void Categories_Check(CategoryGroup& tweeting, CategoryGroup& following, Categor
 	output.close();
 }
 
+// this function is simply the P_OUT and P_IN function added together
 void Cumulative_Distro(Network& network, int MAX_USERS, int N_USERS, int N_FOLLOWS) {
 	int cumulative_distro[N_USERS];
 	int n_followers_data[N_USERS];
