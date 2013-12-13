@@ -30,6 +30,7 @@ struct Analyzer {
     // The network state
     Network network;
     FollowSetGrower follow_set_grower;
+	// categories for tweeting, following and retweeting
     CategoryGroup tweet_ranks;
 	CategoryGroup follow_ranks;
 	CategoryGroup retweet_ranks;
@@ -44,16 +45,17 @@ struct Analyzer {
 	int FOLLOW_METHOD;
 
     double T_FINAL;
-
+	// the are the rates we need to run the program
     double R_TOTAL;
     double R_ADD_NORM;
     double R_FOLLOW_NORM;
     double R_TWEET_NORM;
 	double R_RETWEET_NORM;
 
-
+	// these values may get large, hence the long int
     long int N_STEPS, N_FOLLOWS, N_TWEETS, N_RETWEETS;
 
+	// struct for the user classes, see network.h for specifications
     UserType user_entities[N_ENTITIES];
 
     ofstream DATA_TIME; // Output file to plot data
@@ -100,7 +102,8 @@ struct Analyzer {
 		set_follow_rank_probabilities();
 		set_initial_follow_categories();
     }
-
+	// this is a helper function for the function below, essentially it takes the thresholds
+	// and sets up the categories based on the INFILE
     void initialize_category(CategoryGroup& group, const char* parameter) {
     	vector<double> thresholds = parse_numlist(raw_config[parameter]);
 		for (int i = 0; i < thresholds.size(); i++) {
@@ -109,12 +112,15 @@ struct Analyzer {
 		// Sentinel of sorts, swallows everything else:
 		group.categories.push_back(Category(HUGE_VAL));
     }
+	
+	// calls above function for the different category types
     void set_initial_categories() {
     	initialize_category(tweet_ranks, "TWEET_THRESHOLDS");
     	initialize_category(follow_ranks, "FOLLOW_THRESHOLDS");
 		initialize_category(retweet_ranks, "RETWEET_THRESHOLDS");
     }
 	
+	// function for follow probabilities, this is used for a preferential follow method
 	vector <double> follow_probabilities;
 	void set_follow_rank_probabilities() {
 		vector<double> set_probabilities = parse_numlist(raw_config["FOLLOW_THRESHOLDS_PROBABILITIES"]);
@@ -127,6 +133,8 @@ struct Analyzer {
 		}
 	}
 	
+	// this makes sure that any initial users are categorized properly before simulation is even run
+	// ???????? does this need to be done for tweeting and retweeting ???????????
 	void set_initial_follow_categories() {
 		for (int i = 0; i < N_USERS; i ++) {
 			Person& p = network[i];
@@ -134,7 +142,8 @@ struct Analyzer {
 			
 		}
 	}
-
+	
+	// this gets the probabilities for the 'follow user by class' method
     void set_entity_probabilities() {
         user_entities[UT_NORMAL_INDEX].R_ADD = config["R_ADD_NORMAL"];
         user_entities[UT_CELEB_INDEX].R_ADD = config["R_ADD_CELEB"];
@@ -146,6 +155,7 @@ struct Analyzer {
         user_entities[UT_ORG_INDEX].R_FOLLOW = config["R_FOLLOW_ORG"];
         user_entities[UT_BOT_INDEX].R_FOLLOW = config["R_FOLLOW_BOT"];
 
+		// normalize the different user probabilities
         double add_total = 0, follow_total = 0;
         for (int i = 0; i < N_ENTITIES; i++) {
             add_total += user_entities[i].R_ADD;
@@ -157,6 +167,7 @@ struct Analyzer {
         }
     }
 
+	// after every iteration, make sure the rates are updated accordingly
     void set_rates() {
         double R_FOLLOW = config["R_FOLLOW"];
         double R_TWEET = config["R_TWEET"];
@@ -170,7 +181,8 @@ struct Analyzer {
         R_TWEET_NORM = R_TWEET * N_USERS / R_TOTAL;
 		R_RETWEET_NORM = R_RETWEET * N_USERS / R_TOTAL;
     }
-
+	
+	// make sure any initial users are given a title based on the respective probabilities
     void set_initial_entities() {
         for (int i = 0; i < N_USERS; i ++) {
              action_create_person(0.0, i);
@@ -234,7 +246,6 @@ struct Analyzer {
         DATA_TIME.close();
     }
 
-
     void step_time(double& TIME) {
         double prev_floor = floor(TIME / FILE_OUTPUT_RATE);
         if (RANDOM_INCR == 1) {
@@ -261,8 +272,8 @@ struct Analyzer {
 			if (rand_num <= user_entities[i].R_ADD) {
 				p.entity = i;
                 user_entities[i].user_list.push_back(index);
-				//follow_ranks.categorize(index, p.n_followers);
-				break;
+				follow_ranks.categorize(index, p.n_followers);
+				return;
 			}
 			rand_num -= user_entities[i].R_ADD;
 		}
@@ -276,75 +287,75 @@ struct Analyzer {
 				
 		// if we want to do random follows
 		if (FOLLOW_METHOD == 0) {
-				user_to_follow = rand_int(n_users);
-				Person& p2 = network[user_to_follow];
+			// find a random user within [0:number of users - 1]	
+			user_to_follow = rand_int(n_users);
 		}
 		
 		// if we want to use a preferential follow method
 		if (FOLLOW_METHOD == 1) {
-				for (int i = 0; i < follow_probabilities.size(); i ++) {
-					if (rand_num - follow_probabilities[i] <= ZEROTOL) {
-						Category& C = follow_ranks.categories[i];
-						if (C.users.size() != 0) {
-							user_to_follow = C.users[rand_int(C.users.size())];
-							Person& p2 = network[user_to_follow];
-	            			p2.n_followers ++;
-							follow_ranks.categorize(user_to_follow, p2.n_followers);
-						}
+			/* search through the probabilites for each threshold and find
+			   the right bin to land in */
+			for (int i = 0; i < follow_probabilities.size(); i ++) {
+				if (rand_num - follow_probabilities[i] <= ZEROTOL) {
+					// point to the category we landed in
+					Category& C = follow_ranks.categories[i];
+					// make sure we're not pulling a user from an empty list
+					if (C.users.size() != 0) {
+						// pull a random user from whatever bin we landed in and break so we do not continue this loop
+						user_to_follow = C.users[rand_int(C.users.size())];
+						break;
 					}
-					rand_num -= follow_probabilities[i];
 				}
+				// part of the above search
+				rand_num -= follow_probabilities[i];
 			}
+		}
 		// if we want to follow by user class
 		if (FOLLOW_METHOD == 2) {
-				for (int i = 0; i < N_ENTITIES; i++) {
-					if (rand_num <= user_entities[i].R_FOLLOW) {
-						if (user_entities[i].user_list.size() != 0) {
-							user_to_follow = user_entities[i].user_list[rand_int(user_entities[i].user_list.size())];
-						}
+			/* search through the probabilities for each entity and find the right bin to land in */
+			for (int i = 0; i < N_ENTITIES; i++) {
+				if (rand_num <= user_entities[i].R_FOLLOW) {
+					// make sure we're not pulling from an empty list
+					if (user_entities[i].user_list.size() != 0) {
+						// pull the user from whatever bin we landed in and break so we dont continue this loop
+						user_to_follow = user_entities[i].user_list[rand_int(user_entities[i].user_list.size())];
+						break;
 					}
-					rand_num -= user_entities[i].R_FOLLOW;
-				}					
+				}
+				// part of the above search
+				rand_num -= user_entities[i].R_FOLLOW;
+			}					
 		}
-		
+		// check and make sure we are not following ourself, or we are following user -1
 		if (LIKELY(user != user_to_follow && user_to_follow != -1)) {
 			DEBUG_CHECK(user_to_follow != -1, "Logic error");
 			if (add_follow(p1, user_to_follow)) {
+				// point to the person we selected to follow i.e. user_to_follow
 				Person& p2 = network[user_to_follow];
+				// increment the number of followers p2 has
 				p2.n_followers ++;
-				
-                N_FOLLOWS++; // We were able to add the follow; almost always the case.
+				// based on the number of followers p2 has, check to make sure we're still categorized properly
+				follow_ranks.categorize(user_to_follow, p2.n_followers);
+				N_FOLLOWS++; // We were able to add the follow; almost always the case.
 			}
         } 
 		else {
+			// no follow is added, this is unlikely
             return;
         }
 	}
 
+	// function to handle the tweeting
 	void action_tweet(int user) {
+		// This is the person tweeting
 		Person& p = network[user];
+		// increase the number of tweets the user had by one
 		p.n_tweets++;
 		tweet_ranks.categorize(user, p.n_tweets);
 	}
 	
 	void action_retweet(int user, double time_of_retweet) {
-		double rand_num = rand_real_not0();
-		Person& p_retweeting = network[user];
-		if (network.n_following(user) != 0) {
-			int find_user = rand_int(network.n_following(user));
-			int user_to_be_retweeted = network.follow_i(user,0);
-			Person& p_retweeted = network[user_to_be_retweeted]; // random for now
-		
-			for (int i = 0; i < network.n_following(user); i ++) {
-				Person& p_add_userlist = network[network.follow_i(user, i)];
-				p_add_userlist.retweet_userlist.push_back(user_to_be_retweeted);
-				p_add_userlist.retweet_userlist_time.push_back(time_of_retweet);
-			}
-			N_RETWEETS ++;
-		}
-		else {
-			// no retweet happens
-		}	
+		N_RETWEETS ++;
 	}
 
     // Performs one step of the analysis routine.
