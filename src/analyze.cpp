@@ -138,7 +138,7 @@ struct Analyzer {
 	void set_initial_follow_categories() {
 		for (int i = 0; i < N_USERS; i ++) {
 			Person& p = network[i];
-			follow_ranks.categorize(i, 0);
+			follow_ranks.categorize(i, p.n_followers);
 			
 		}
 	}
@@ -236,7 +236,7 @@ struct Analyzer {
         }
         if (config["P_IN"]) {
             PIN(network, MAX_USERS, N_USERS, R_FOLLOW_NORM);
-        }
+        }		
         if (config["VISUALIZE"]) {
             output_position(network, N_USERS);
         }
@@ -293,6 +293,9 @@ struct Analyzer {
 		
 		// if we want to use a preferential follow method
 		if (FOLLOW_METHOD == 1) {
+			bool follow = false;
+			while (follow == false) {
+				rand_num = rand_real_not0();
 			/* search through the probabilites for each threshold and find
 			   the right bin to land in */
 			for (int i = 0; i < follow_probabilities.size(); i ++) {
@@ -309,7 +312,12 @@ struct Analyzer {
 				// part of the above search
 				rand_num -= follow_probabilities[i];
 			}
+			if (user_to_follow != -1) {
+				follow = true;
+			}
 		}
+		}
+		
 		// if we want to follow by user class
 		if (FOLLOW_METHOD == 2) {
 			/* search through the probabilities for each entity and find the right bin to land in */
