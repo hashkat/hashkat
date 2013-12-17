@@ -43,6 +43,7 @@ struct Analyzer {
     int VERBOSE;
     int RANDOM_INCR;
 	int FOLLOW_METHOD;
+	int BARABASI;
 
     double T_FINAL;
 	// the are the rates we need to run the program
@@ -83,6 +84,7 @@ struct Analyzer {
         VERBOSE = config["VERBOSE"];
         RANDOM_INCR = config["RANDOM_INCR"];
 		FOLLOW_METHOD = config["FOLLOW_METHOD"];
+		BARABASI = config["BARABASI"];
 
         T_FINAL = config["T_FINAL"];
         config_output_summary_stats = (config["OUTPUT_SUMMARY"] != 0);
@@ -124,12 +126,9 @@ struct Analyzer {
 	vector <double> follow_probabilities;
 	void set_follow_rank_probabilities() {
 		vector<double> set_probabilities = parse_numlist(raw_config["FOLLOW_THRESHOLDS_PROBABILITIES"]);
-		double probability_total = 0;
 		for (int i = 0; i < set_probabilities.size(); i ++) {
-			probability_total += set_probabilities[i];
-		}
-		for (int i = 0; i < set_probabilities.size(); i ++) {
-			follow_probabilities.push_back(set_probabilities[i]/probability_total);
+			Category& C = follow_ranks.categories[i];
+			follow_probabilities.push_back(set_probabilities[i]);
 		}
 	}
 	
@@ -277,6 +276,12 @@ struct Analyzer {
 			}
 			rand_num -= user_entities[i].R_ADD;
 		}
+		cout << BARABASI << "\n";
+		if (BARABASI != 1){
+			cout << "in here\n";
+			action_follow_person(index, index, creation_time);
+		}
+		N_USERS ++;
 	}
 
     /* decides which user to follow based on the rates in the INFILE */
@@ -293,13 +298,22 @@ struct Analyzer {
 		
 		// if we want to use a preferential follow method
 		if (FOLLOW_METHOD == 1) {
-			bool follow = false;
-			while (follow == false) {
-				rand_num = rand_real_not0();
+			double sum_of_weights = 0;
+			double updating_follow_probabilities[follow_probabilities.size()];
 			/* search through the probabilites for each threshold and find
 			   the right bin to land in */
+			for (int i = 0; i < follow_probabilities.size(); i ++){
+				// look at each category
+				Category& C = follow_ranks.categories[i];
+				updating_follow_probabilities[i] = follow_probabilities[i]*C.users.size();
+				sum_of_weights += C.users.size()*follow_probabilities[i];				
+			}
+			for (int i = 0; i < follow_probabilities.size(); i ++ ){
+				Category& C = follow_ranks.categories[i];
+	 		   	updating_follow_probabilities[i] /= sum_of_weights;
+			} 
 			for (int i = 0; i < follow_probabilities.size(); i ++) {
-				if (rand_num - follow_probabilities[i] <= ZEROTOL) {
+				if (rand_num - updating_follow_probabilities[i] <= ZEROTOL) {
 					// point to the category we landed in
 					Category& C = follow_ranks.categories[i];
 					// make sure we're not pulling a user from an empty list
@@ -310,12 +324,8 @@ struct Analyzer {
 					}
 				}
 				// part of the above search
-				rand_num -= follow_probabilities[i];
+				rand_num -= updating_follow_probabilities[i];
 			}
-			if (user_to_follow != -1) {
-				follow = true;
-			}
-		}
 		}
 		
 		// if we want to follow by user class
@@ -375,7 +385,6 @@ struct Analyzer {
         if (u_1 - (R_ADD_NORM) <= ZEROTOL) {
 			// If we find ourselves in the add user chuck of our cumulative function:
             action_create_person(TIME, N_USERS);
-            N_USERS ++;
             //TODO: call to function to decide which user to add
         } else if (u_1 - (R_ADD_NORM + R_FOLLOW_NORM) <= ZEROTOL) {
         	// If we find ourselves in the bond node chunk of our cumulative function:
