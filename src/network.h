@@ -13,6 +13,7 @@
 struct Person {
 	std::vector<int> retweet_userlist;
 	std::vector<double> retweet_userlist_time;
+	std::vector<double> follower_list;
 	int entity;
 	int n_tweets;
 	int n_retweets;

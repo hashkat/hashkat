@@ -357,6 +357,8 @@ struct Analyzer {
 			if (add_follow(p1, user_to_follow)) {
 				// point to the person we selected to follow i.e. user_to_follow
 				Person& p2 = network[user_to_follow];
+				// add the user who followed to the user_to_follow's follower array
+				p2.follower_list.push_back(user);
 				// increment the number of followers p2 has
 				p2.n_followers ++;
 				// based on the number of followers p2 has, check to make sure we're still categorized properly
@@ -380,7 +382,16 @@ struct Analyzer {
 	}
 	
 	void action_retweet(int user, double time_of_retweet) {
-		N_RETWEETS ++;
+		Person& retweetee = network[user];
+		if (retweetee.follower_list.size() != 0){
+			int user_retweeted = retweetee.follower_list[rand_int(retweetee.follower_list.size())];
+			for (int i = 0; i < network.n_following(user); i ++){
+				Person& reciever = network[network.follow_i(user,i)];
+				reciever.retweet_userlist.push_back(user_retweeted);
+				reciever.retweet_userlist_time.push_back(time_of_retweet);
+			}
+			N_RETWEETS ++;
+		}
 	}
 
     // Performs one step of the analysis routine.
