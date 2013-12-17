@@ -276,10 +276,9 @@ struct Analyzer {
 			}
 			rand_num -= user_entities[i].R_ADD;
 		}
-		/*if (BARABASI != 1){
+		if (BARABASI == 1){
 			action_follow_person(index, index, creation_time);
-		}*/
-		N_USERS ++;
+		}
 	}
 
     /* decides which user to follow based on the rates in the INFILE */
@@ -383,6 +382,7 @@ struct Analyzer {
         if (u_1 - (R_ADD_NORM) <= ZEROTOL) {
 			// If we find ourselves in the add user chuck of our cumulative function:
             action_create_person(TIME, N_USERS);
+			N_USERS ++;
             //TODO: call to function to decide which user to add
         } else if (u_1 - (R_ADD_NORM + R_FOLLOW_NORM) <= ZEROTOL) {
         	// If we find ourselves in the bond node chunk of our cumulative function:

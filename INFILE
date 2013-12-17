@@ -8,7 +8,7 @@ RANDOM_INCR = 0              ; -> 0 - increment by 1/R_total
 
 T_FINAL = 10000000000.0           ; ->  1/10 year 
 
-R_ADD = 0.1                  ; ->    1 / hour
+R_ADD = 1.0                 ; ->    1 / hour
 			     ; twitter users / 8 years
 R_FOLLOW  = 0           ; ->    1/week
 R_TWEET = 0.00278          ; ->      2/day
