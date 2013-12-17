@@ -272,15 +272,13 @@ struct Analyzer {
 				p.entity = i;
                 user_entities[i].user_list.push_back(index);
 				follow_ranks.categorize(index, p.n_followers);
-				return;
+				break;
 			}
 			rand_num -= user_entities[i].R_ADD;
 		}
-		cout << BARABASI << "\n";
-		if (BARABASI != 1){
-			cout << "in here\n";
+		/*if (BARABASI != 1){
 			action_follow_person(index, index, creation_time);
-		}
+		}*/
 		N_USERS ++;
 	}
 
