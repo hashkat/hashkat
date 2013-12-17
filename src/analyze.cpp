@@ -118,17 +118,27 @@ struct Analyzer {
 	// calls above function for the different category types
     void set_initial_categories() {
     	initialize_category(tweet_ranks, "TWEET_THRESHOLDS");
-    	initialize_category(follow_ranks, "FOLLOW_THRESHOLDS");
+		if (BARABASI != 1) {
+    		initialize_category(follow_ranks, "FOLLOW_THRESHOLDS");
+		}
 		initialize_category(retweet_ranks, "RETWEET_THRESHOLDS");
     }
 	
 	// function for follow probabilities, this is used for a preferential follow method
 	vector <double> follow_probabilities;
 	void set_follow_rank_probabilities() {
-		vector<double> set_probabilities = parse_numlist(raw_config["FOLLOW_THRESHOLDS_PROBABILITIES"]);
-		for (int i = 0; i < set_probabilities.size(); i ++) {
-			Category& C = follow_ranks.categories[i];
-			follow_probabilities.push_back(set_probabilities[i]);
+		if (BARABASI == 1){
+			for (int i = 1; i < MAX_USERS; i ++) {
+				follow_probabilities.push_back(i);
+				follow_ranks.categories.push_back(Category(i-1));
+			}
+		}
+		else {
+			vector<double> set_probabilities = parse_numlist(raw_config["FOLLOW_THRESHOLDS_PROBABILITIES"]);
+			for (int i = 0; i < set_probabilities.size(); i ++) {
+				Category& C = follow_ranks.categories[i];
+				follow_probabilities.push_back(set_probabilities[i]);
+			}
 		}
 	}
 	

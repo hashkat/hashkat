@@ -2,7 +2,7 @@
 ; ADJUST YOUR VARIABLES ACCORDINGLY FOR THE NETWORK
 ;#################################################
 
-MAX_USERS = 1000
+MAX_USERS = 100000
 RANDOM_INCR = 0              ; -> 0 - increment by 1/R_total
 			     ; -> 1 - increment by random time based on R_total
 
@@ -14,7 +14,8 @@ R_FOLLOW  = 0           ; ->    1/week
 R_TWEET = 0.00278          ; ->      2/day
 R_RETWEET = 0.00278
 
-BARABASI = 1
+BARABASI = 1    ; if this is set to 1, make R_FOLLOW = 0
+		; also you do not need to set follow thresholds
 
 R_ADD_NORMAL = 90
 R_ADD_CELEB = 10 
@@ -32,8 +33,8 @@ RETWEET_THRESHOLDS = 1 10 20 2000 3000
 FOLLOW_METHOD = 1              ; 1 - preferential follow
 			     ; 0 - random follow
 
-FOLLOW_THRESHOLDS = 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20
-FOLLOW_THRESHOLDS_PROBABILITIES = 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21
+FOLLOW_THRESHOLDS = 0 100 200 300 400 
+FOLLOW_THRESHOLDS_PROBABILITIES = 1 100 200 300 400 
 
 P_OUT = 1		     ; -> print p_out file (1)
 			     ; -> dont print (0)
