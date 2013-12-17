@@ -292,7 +292,7 @@ struct Analyzer {
 	}
 
     /* decides which user to follow based on the rates in the INFILE */
-	void action_follow_person(int user, int n_users, double time) {
+	void action_follow_person(int user, int n_users, double time_of_follow) {
 		Person& p1 = network[user];
 		int user_to_follow = -1;
 		double rand_num = rand_real_not0();
@@ -350,6 +350,24 @@ struct Analyzer {
 				// part of the above search
 				rand_num -= user_entities[i].R_FOLLOW;
 			}					
+		}
+		//Retweet follow method
+		if (FOLLOW_METHOD == 3) {
+			if (rand_num > 0.5) {
+				// grab the latest user
+				if (p1.retweet_userlist.size() != 0) {
+					// get the last user in the list and see when the retweet happened
+					double last_time = p1.retweet_userlist_time[p1.retweet_userlist_time.size() - 1];
+					int last_user = p1.retweet_userlist[p1.retweet_userlist.size() - 1];
+					// if the retweet happened in the last 48 hours
+					if (time_of_follow - last_time < 2880) {
+						user_to_follow = p1.retweet_userlist[p1.retweet_userlist.size() - 1];
+					}
+				}
+			}
+			else {
+				user_to_follow = rand_int(n_users);
+			}
 		}
 		// check and make sure we are not following ourself, or we are following user -1
 		if (LIKELY(user != user_to_follow && user_to_follow != -1)) {
