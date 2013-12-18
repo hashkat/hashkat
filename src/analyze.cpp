@@ -374,7 +374,7 @@ struct Analyzer {
 			DEBUG_CHECK(user_to_follow != -1, "Logic error");
 			// point to the person who is being followed
 			Person& p2 = network[user_to_follow];
-			if (add_follow(p1, user_to_follow) && add_follow(p2, user)) {
+			if (add_follow(p1, user_to_follow) /*&& add_follow(p2, user)*/) {
 				// based on the number of followers p2 has, check to make sure we're still categorized properly
 				follow_ranks.categorize(user_to_follow, p2.n_followers);
 				N_FOLLOWS++; // We were able to add the follow; almost always the case.

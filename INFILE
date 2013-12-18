@@ -6,15 +6,15 @@ MAX_USERS = 100000
 RANDOM_INCR = 0              ; -> 0 - increment by 1/R_total
 			     ; -> 1 - increment by random time based on R_total
 
-T_FINAL = 10000.0           ; ->  1/10 year 
+T_FINAL = 1000.0           ; ->  1/10 year 
 
-R_ADD = 0.0                 ; ->    1 / hour
+R_ADD = 1.0                 ; ->    1 / hour
 			     ; twitter users / 8 years
-R_FOLLOW  = 0.001           ; ->    1/week
+R_FOLLOW  = 0.0           ; ->    1/week
 R_TWEET = 0.002          ; ->      2/day
 R_RETWEET = 0.002
 
-BARABASI = 0    ; if this is set to 1, make R_FOLLOW = 0
+BARABASI = 1    ; if this is set to 1, make R_FOLLOW = 0
 		; also you do not need to set follow thresholds
 
 R_ADD_NORMAL = 90
@@ -30,7 +30,7 @@ R_FOLLOW_ORG = 0
 TWEET_THRESHOLDS = 1 10 20 2000 3000
 RETWEET_THRESHOLDS = 1 10 20 2000 3000
 
-FOLLOW_METHOD = 0              ; 1 - preferential follow
+FOLLOW_METHOD = 1              ; 1 - preferential follow
 			     ; 0 - random follow
 
 FOLLOW_THRESHOLDS = 0 100 200 300 400 
@@ -49,5 +49,5 @@ OUTPUT_SUMMARY = 1 ; Output summary such as number of tweets etc in a file calle
 VISUALIZE = 1
 
 ; Initial network contents:
-N_USERS = 1000               ; -> number of initial users
+N_USERS = 1               ; -> number of initial users
 
