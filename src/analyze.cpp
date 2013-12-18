@@ -375,10 +375,10 @@ struct Analyzer {
 			if (add_follow(p1, user_to_follow)) {
 				// point to the person we selected to follow i.e. user_to_follow
 				Person& p2 = network[user_to_follow];
-				// add the user who followed to the user_to_follow's follower array
-				p2.follower_list.push_back(user);
+				FollowSet& f = p2.follower_set;
 				// increment the number of followers p2 has
-				p2.n_followers ++;
+				f.location[f.n_followers] = user;
+				f.n_followers ++;
 				// based on the number of followers p2 has, check to make sure we're still categorized properly
 				follow_ranks.categorize(user_to_follow, p2.n_followers);
 				N_FOLLOWS++; // We were able to add the follow; almost always the case.
@@ -401,15 +401,23 @@ struct Analyzer {
 	
 	void action_retweet(int user, double time_of_retweet) {
 		Person& retweetee = network[user];
-		if (retweetee.follower_list.size() != 0){
-			int user_retweeted = retweetee.follower_list[rand_int(retweetee.follower_list.size())];
+		FollowSet& f = retweetee.follow_set;
+		if (f.n_following != 0){
+			int user_retweeted = f.location[rand_int(f.n_following)];
 			for (int i = 0; i < network.n_following(user); i ++){
 				Person& reciever = network[network.follow_i(user,i)];
 				reciever.retweet_userlist.push_back(user_retweeted);
 				reciever.retweet_userlist_time.push_back(time_of_retweet);
+				/* if the retweet list has more than 5 user ID's, lets make sure they only have 5*/
+				if (reciever.retweet_userlist.size() > 5) {
+					reciever.retweet_userlist.erase(reciever.retweet_userlist.begin());
+					reciever.retweet_userlist_time.erase(reciever.retweet_userlist_time.begin());
+					reciever.retweet_userlist.shrink_to_fit();
+					reciever.retweet_userlist_time.shrink_to_fit();
+				}
 			}
-			N_RETWEETS ++;
 		}
+		N_RETWEETS ++;
 	}
 
     // Performs one step of the analysis routine.
@@ -499,7 +507,7 @@ struct Analyzer {
         output_summary_stats(DATA_TIME, TIME);
         if (n_outputs % STDOUT_OUTPUT_RATE == 0) {
         	output_summary_stats(cout, TIME);
-        	// In standard output only, print the follow lists of the top 10 users (by follows):
+        	/*// In standard output only, print the follow lists of the top 10 users (by follows):
         	int capped_len = std::min(10, network.n_persons);
         	for (int i = 0; i < capped_len; i++) {
         		FollowSet& follow_set = network[i].follow_set;
@@ -508,7 +516,7 @@ struct Analyzer {
         			cout << ' ' << follow_set[i];
         		}
         		cout << '\n';
-        	}
+        	}*/
         }
 
         n_outputs++;

@@ -20,7 +20,7 @@
  * To use a follow set, simply use
  */
 struct FollowSet {
-    int n_following, capacity;
+    int n_following, n_followers, capacity;
     int* location;
 
 	// Define follow_set1 as an array of fixed-length 'FOLLOW_LIMIT1'
@@ -37,6 +37,7 @@ struct FollowSet {
     }
     void initialize() {
         n_following = 0;
+		n_followers = 0;
         location = follow_buffer1;
         capacity = FOLLOW_LIMIT1;
         copy(NULL, 0);

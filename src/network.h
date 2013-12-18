@@ -13,17 +13,18 @@
 struct Person {
 	std::vector<int> retweet_userlist;
 	std::vector<double> retweet_userlist_time;
-	std::vector<double> follower_list;
 	int entity;
 	int n_tweets;
 	int n_retweets;
 	int n_followers;
 	FollowSet follow_set;
+	FollowSet follower_set;
 	double creation_time;
 	double x_location, y_location;
 	void initialize() {
 		// Initialize a user slot - without a user, yet
 		follow_set.initialize();
+		follower_set.initialize();
 		creation_time = 0.0;
 		x_location = -1, y_location = -1;
 		n_tweets = 0;
@@ -33,6 +34,7 @@ struct Person {
 
 	void sanity_check() {
 		follow_set.sanity_check();
+		follower_set.sanity_check();
 	}
 };
 
