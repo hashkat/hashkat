@@ -2,35 +2,35 @@
 ; ADJUST YOUR VARIABLES ACCORDINGLY FOR THE NETWORK
 ;#################################################
 
-MAX_USERS = 100000
+MAX_USERS = 10000
 RANDOM_INCR = 0              ; -> 0 - increment by 1/R_total
 			     ; -> 1 - increment by random time based on R_total
 
-T_FINAL = 1000.0           ; ->  1/10 year 
+T_FINAL = 100000.0           ; ->  1/10 year 
 
-R_ADD = 0.1                 ; ->    1 / hour
+R_ADD = 1.0                 ; ->    1 / hour
 			     ; twitter users / 8 years
-R_FOLLOW  = 0.0           ; ->    1/week
-R_TWEET = 0.00          ; ->      2/day
-R_RETWEET = 0.00
+R_FOLLOW  = 0.002           ; ->    1/week
+R_TWEET = 0.002          ; ->      2/day
+R_RETWEET = 0.002
 
-BARABASI = 1    ; if this is set to 1, make R_FOLLOW = 0
+BARABASI = 0    ; if this is set to 1, make R_FOLLOW = 0
 		; also you do not need to set follow thresholds
 
-R_ADD_NORMAL = 90
-R_ADD_CELEB = 10 
-R_ADD_BOT = 0
-R_ADD_ORG = 0
+R_ADD_NORMAL = 50
+R_ADD_CELEB = 5 
+R_ADD_BOT = 5
+R_ADD_ORG = 5
 
-R_FOLLOW_NORMAL = 90
-R_FOLLOW_CELEB = 10
-R_FOLLOW_BOT = 0
-R_FOLLOW_ORG = 0
+R_FOLLOW_NORMAL = 5
+R_FOLLOW_CELEB = 5
+R_FOLLOW_BOT = 5
+R_FOLLOW_ORG = 5
 
 TWEET_THRESHOLDS = 1 10 20 2000 3000
 RETWEET_THRESHOLDS = 1 10 20 2000 3000
 
-FOLLOW_METHOD = 1              ; 1 - preferential follow
+FOLLOW_METHOD = 2              ; 1 - preferential follow
 			     ; 0 - random follow
 
 FOLLOW_THRESHOLDS = 0 100 200 300 400 

@@ -160,11 +160,68 @@ void Cumulative_Distro(Network& network, int MAX_USERS, int N_USERS, int N_FOLLO
 	}
 	
 	ofstream output;
-	output.open("cumulative_distro.csv");
+	output.open("cumulative_distro.dat");
 	
 	for (int i = 0; i < N_USERS; i ++) {
-		output << i - 0.5 << "," << cumulative_distro[i]/double(2*N_USERS) << "\n";
-		output << i + 0.5 << "," << cumulative_distro[i]/double(2*N_USERS) << "\n";
+		output << i - 0.5 << "\t" << cumulative_distro[i]/double(2*N_USERS) << "\n";
+		output << i + 0.5 << "\t" << cumulative_distro[i]/double(2*N_USERS) << "\n";
+	}
+	output.close();
+}
+// produces an output file with user type statistics, makes sure things are working properly
+void entity_statistics(Network& network, int n_follows, int n_users, int n_entities, UserType* usertype) {
+	ofstream output;
+	output.open("entity_percentages.dat");
+	int user_counts[n_entities];
+	int average_followers_from_network[n_entities];
+	int average_followers_from_lists[n_entities];
+	for (int i = 0 ; i < n_entities; i ++) {
+		user_counts[i] = 0;
+		average_followers_from_network[i] = 0;
+		average_followers_from_lists[i] = 0;
+	}
+	for (int i = 0 ; i < n_users; i ++) {
+		Person& p = network[i];
+		for (int j = 0; j < n_entities; j ++) {
+			if (p.entity == j) {
+				user_counts[j] ++;
+				average_followers_from_network[j] += p.n_followers;
+			}
+		}
+	} 
+	output << "\n ****** Info regarding numbers of user types - BASED ON NETWORK ARRAY ****** \n\n";
+	for (int i = 0; i < n_entities; i ++) {
+		output << "Number of entity " << i << " : " << user_counts[i] << "    Fraction: " << user_counts[i]/double(n_users) << "\n";
+	}
+	output << "\n ****** Info regarding numbers of user types - BASED ON USER_LISTS ****** \n THIS SHOULD BE THE SAME AS ABOVE \n\n";
+	for (int i = 0; i < n_entities; i ++) {
+		output << "Number of entity " << i << " : " << usertype[i].user_list.size() << "    Fraction: " << usertype[i].user_list.size()/double(n_users) << "\n";
+	}
+	output << "\n\n ****** Info regarding following certain user types - BASED ON NETWORK ARRAY ****** \n\n";
+	double sum = 0;
+	for (int i = 0; i < n_entities; i ++) {
+		sum += average_followers_from_network[i]/double(user_counts[i]);
+	}
+	for (int i = 0; i < n_entities; i ++) {
+		output << "Average number of follows for entity " 
+			   << i << ": " << average_followers_from_network[i]/double(user_counts[i]) 
+			   << "     Fraction: " << average_followers_from_network[i]/double(n_follows) << "\n";
+	}
+	for (int i = 0; i < n_entities; i ++){
+		for (int j = 0; j < usertype[i].user_list.size(); j++) {
+			Person& p = network[usertype[i].user_list[j]];
+			average_followers_from_lists[i] += p.n_followers;
+		}
+	}
+	output << "\n\n ****** Info regarding following certain user types - BASED ON USER_LISTS ****** \n      SHOULD BE THE SAME AS ABOVE\n\n";
+	double sum1 = 0;
+	for (int i = 0; i < n_entities; i ++) {
+		sum1 += average_followers_from_lists[i] / double(usertype[i].user_list.size());
+	}
+	for (int i = 0; i < n_entities; i ++) {
+		output << "Average number of follows for entity " 
+			   << i << ": " << average_followers_from_lists[i]/double(usertype[i].user_list.size()) 
+			   << "     Fraction: " << average_followers_from_network[i]/double(n_follows) << "\n"; 
 	}
 	output.close();
 }

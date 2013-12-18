@@ -249,8 +249,12 @@ struct Analyzer {
         if (config["VISUALIZE"]) {
             output_position(network, N_USERS);
         }
+		/* ADD FUNCTIONS THAT RUN AFTER NETWORK IS BUILT HERE */
+		if (BARABASI != 1) {
 		Categories_Check(tweet_ranks, follow_ranks, retweet_ranks);
+		}
 		Cumulative_Distro(network, MAX_USERS, N_USERS, N_FOLLOWS);
+		entity_statistics(network, N_FOLLOWS, N_USERS, N_ENTITIES, user_entities);
 		
         DATA_TIME.close();
     }
