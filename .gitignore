@@ -3,7 +3,7 @@ CMakeFiles/
 Makefile
 DATA_vs_TIME
 cmake_install.cmake
-socialnodes/main
+main
 *.a
 *.dat
 *.xyz
