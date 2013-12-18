@@ -5,6 +5,7 @@
 
 #include <vector>
 #include <map>
+#include <algorithm>
 #include "util.h"
 #include "constants.h"
 
@@ -41,6 +42,11 @@ struct FollowSet {
         copy(NULL, 0);
     }
 
+    void cleanup(int user) {
+    	std::sort(location, location + n_following);
+    	int* new_end = std::unique(location, location + n_following);
+    	n_following = (new_end - location); // Where we start minus the new end
+    }
     int& operator[](int index) { //** This allows us to index our FollowSet struct as if it were an array.
     	DEBUG_CHECK(within_range(index, 0, n_following), "Operator out of bounds");
     	return location[index];

@@ -485,9 +485,6 @@ struct Analyzer {
                 << "\t\t" << N_FOLLOWS << "\t\t" << N_TWEETS << "\t\t" << N_RETWEETS << "\t\n";
     }
 
-    void determine_top_followed(int n_top) {
-
-    }
     void output_summary_stats(double TIME) {
         static int n_outputs = 0;
 
