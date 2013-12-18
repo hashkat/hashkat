@@ -376,6 +376,7 @@ struct Analyzer {
 			Person& p2 = network[user_to_follow];
 			if (add_follow(p1, user_to_follow) /*&& add_follow(p2, user)*/) {
 				// based on the number of followers p2 has, check to make sure we're still categorized properly
+				p2.n_followers ++;
 				follow_ranks.categorize(user_to_follow, p2.n_followers);
 				N_FOLLOWS++; // We were able to add the follow; almost always the case.
 			}
@@ -408,8 +409,6 @@ struct Analyzer {
 				if (reciever.retweet_userlist.size() > 5) {
 					reciever.retweet_userlist.erase(reciever.retweet_userlist.begin());
 					reciever.retweet_userlist_time.erase(reciever.retweet_userlist_time.begin());
-					reciever.retweet_userlist.shrink_to_fit();
-					reciever.retweet_userlist_time.shrink_to_fit();
 				}
 			}
 		}

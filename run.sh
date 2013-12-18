@@ -52,7 +52,7 @@ fi
 # Wrap the gdb around the program with -g:
 if handle_flag "-g" ; then
     echo "Wrapping in GDB:" | colorify '1;35'
-    gdb -silent -ex=r --args socialnodes/main $args
+    gdb -silent -ex=r --args src/main $args
 else
     # Normal execution
     src/main $args

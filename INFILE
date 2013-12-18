@@ -8,11 +8,11 @@ RANDOM_INCR = 0              ; -> 0 - increment by 1/R_total
 
 T_FINAL = 1000.0           ; ->  1/10 year 
 
-R_ADD = 1.0                 ; ->    1 / hour
+R_ADD = 0.1                 ; ->    1 / hour
 			     ; twitter users / 8 years
 R_FOLLOW  = 0.0           ; ->    1/week
-R_TWEET = 0.002          ; ->      2/day
-R_RETWEET = 0.002
+R_TWEET = 0.00          ; ->      2/day
+R_RETWEET = 0.00
 
 BARABASI = 1    ; if this is set to 1, make R_FOLLOW = 0
 		; also you do not need to set follow thresholds
