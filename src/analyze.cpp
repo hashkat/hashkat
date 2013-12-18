@@ -484,6 +484,10 @@ struct Analyzer {
     	stream  << fixed << setprecision(2) << TIME << "\t\t" << N_USERS
                 << "\t\t" << N_FOLLOWS << "\t\t" << N_TWEETS << "\t\t" << N_RETWEETS << "\t\n";
     }
+
+    void determine_top_followed(int n_top) {
+
+    }
     void output_summary_stats(double TIME) {
         static int n_outputs = 0;
 
@@ -498,6 +502,16 @@ struct Analyzer {
         output_summary_stats(DATA_TIME, TIME);
         if (n_outputs % STDOUT_OUTPUT_RATE == 0) {
         	output_summary_stats(cout, TIME);
+        	// In standard output only, print the follow lists of the top 10 users (by follows):
+        	int capped_len = std::min(10, network.n_persons);
+        	for (int i = 0; i < capped_len; i++) {
+        		FollowSet& follow_set = network[i].follow_set;
+        		cout << (i+1) << ": ";
+        		for (int i = 0; i < follow_set.n_following; i++) {
+        			cout << ' ' << follow_set[i];
+        		}
+        		cout << '\n';
+        	}
         }
 
         n_outputs++;
