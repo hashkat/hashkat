@@ -372,13 +372,9 @@ struct Analyzer {
 		// check and make sure we are not following ourself, or we are following user -1
 		if (LIKELY(user != user_to_follow && user_to_follow != -1)) {
 			DEBUG_CHECK(user_to_follow != -1, "Logic error");
-			if (add_follow(p1, user_to_follow)) {
-				// point to the person we selected to follow i.e. user_to_follow
-				Person& p2 = network[user_to_follow];
-				FollowSet& f = p2.follower_set;
-				// increment the number of followers p2 has
-				f.location[f.n_followers] = user;
-				f.n_followers ++;
+			// point to the person who is being followed
+			Person& p2 = network[user_to_follow];
+			if (add_follow(p1, user_to_follow) && add_follow(p2, user)) {
 				// based on the number of followers p2 has, check to make sure we're still categorized properly
 				follow_ranks.categorize(user_to_follow, p2.n_followers);
 				N_FOLLOWS++; // We were able to add the follow; almost always the case.
