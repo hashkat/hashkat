@@ -13,6 +13,6 @@ for line in f.readlines():
 
 
 G = nx.Graph(edgelist)
-pos=nx.spring_layout(G,k=0.1,scale=2,iterations=50)
+pos=nx.spring_layout(G,k=0.1,scale=5,iterations=50)
 nx.draw(G,pos, node_size=30, alpha=0.5,node_color="blue", with_labels=False, width=0.1)
 plt.show()

@@ -95,7 +95,7 @@ struct FollowSetGrower {
 	// Add a follower to the follow set, potentially growing the array.
 	// If we had to grow AND we have run out of allocated memory, we do nothing and return false.
 	// Otherwise, we return true.
-	bool add_follow(FollowSet& f, int follow) {
+	bool add_following(FollowSet& f, int follow) {
     	DEBUG_CHECK(f.n_following <= f.capacity, "Logic error, array should have been grown!");
 		if (f.n_following == f.capacity) {
 			if (!grow_follow_set(f)) {
@@ -110,6 +110,20 @@ struct FollowSetGrower {
 		return true;
 	}
 
+	bool add_follower(FollowSet& f, int follower) {
+    	DEBUG_CHECK(f.n_followers <= f.capacity, "Logic error, array should have been grown!");
+		if (f.n_followers == f.capacity) {
+			if (!grow_follow_set(f)) {
+				// Not enough room for this FollowSet allocation; this is actually fine. Do nothing here.
+				// Virtually all other users will still have a long way to go before hitting their cap.
+				return false;
+			}
+		}
+    	DEBUG_CHECK(f.n_followers < f.capacity, "Logic error");
+		f.location[f.n_followers] = follower;
+		f.n_followers++;
+		return true;
+	}
 private:
 	bool grow_follow_set(FollowSet& f) {
 		static std::map<void*, void*> allocs;

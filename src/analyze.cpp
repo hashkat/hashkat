@@ -202,10 +202,12 @@ struct Analyzer {
      * Person mutation routines
      ***************************************************************************/
     // Return whether the follow could be added, or if we have run out of buffer room.
-    bool add_follow(Person& person, int follow) {
-        return follow_set_grower.add_follow(person.follow_set, follow);
+    bool add_following(Person& person, int follow) {
+        return follow_set_grower.add_following(person.follow_set, follow);
     }
-
+    bool add_follower(Person& person, int follower) {
+        return follow_set_grower.add_follower(person.follower_set, follower);
+    }
     /***************************************************************************
      * Analysis routines
      ***************************************************************************/
@@ -254,7 +256,7 @@ struct Analyzer {
 		Categories_Check(tweet_ranks, follow_ranks, retweet_ranks);
 		}
 		Cumulative_Distro(network, MAX_USERS, N_USERS, N_FOLLOWS);
-		entity_statistics(network, N_FOLLOWS, N_USERS, N_ENTITIES, user_entities);
+		entity_statistics(network, N_FOLLOWS,N_USERS, N_ENTITIES, user_entities);
 		
         DATA_TIME.close();
     }
@@ -378,7 +380,7 @@ struct Analyzer {
 			DEBUG_CHECK(user_to_follow != -1, "Logic error");
 			// point to the person who is being followed
 			Person& p2 = network[user_to_follow];
-			if (add_follow(p1, user_to_follow) /*&& add_follow(p2, user)*/) {
+			if (add_following(p1, user_to_follow) && add_follower(p2, user)) {
 				// based on the number of followers p2 has, check to make sure we're still categorized properly
 				p2.n_followers ++;
 				follow_ranks.categorize(user_to_follow, p2.n_followers);
