@@ -2,7 +2,7 @@
 ; ADJUST YOUR VARIABLES ACCORDINGLY FOR THE NETWORK
 ;#################################################
 
-MAX_USERS = 5000
+MAX_USERS = 1000
 RANDOM_INCR = 0              ; -> 0 - increment by 1/R_total
 			     ; -> 1 - increment by random time based on R_total
 

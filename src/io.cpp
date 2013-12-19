@@ -14,8 +14,8 @@ void output_position(Network& network, int n_users) {
 	ofstream output;
 	output.open("network.dat");
 	for (int i = 0; i < n_users; i ++) {
-		for (int j = 0; j < network.n_following(i); j ++) {
-			output << i << "\t" << network.follow_i(i,j) << "\n";
+		for (int j = 0; j < network.n_followers(i); j ++) {
+			output << i << "\t" << network.following_i(i,j) << "\n";
 		}
 	}
 	output.close();
