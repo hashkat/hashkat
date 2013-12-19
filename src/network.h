@@ -7,7 +7,7 @@
 #include <vector>
 #include "util.h"
 
-#include "follow_set.h"
+#include "MemPoolVector.h"
 #include "category.h"
 
 struct Person {
@@ -17,8 +17,8 @@ struct Person {
 	int n_tweets;
 	int n_retweets;
 	int n_followers;
-	FollowSet follow_set;
-	FollowSet follower_set;
+	MemPoolVector follow_set;
+	MemPoolVector follower_set;
 	double creation_time;
 	double x_location, y_location;
 	void initialize() {
@@ -66,10 +66,10 @@ struct Network {
 
 	// Convenient network queries:
 	int n_following(int person_id) {
-		return persons[person_id].follow_set.n_following;
+		return persons[person_id].follow_set.size;
 	}
 	int n_followers(int person_id) {
-		return persons[person_id].follower_set.n_followers;
+		return persons[person_id].follower_set.size;
 	}
 	int follow_i(int person_id, int follow_index) {
 		return persons[person_id].follow_set[follow_index];

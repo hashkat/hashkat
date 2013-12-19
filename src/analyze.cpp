@@ -9,7 +9,7 @@
 // Local includes:
 #include "analyze.h"
 #include "util.h"
-#include "follow_set.h"
+#include "MemPoolVector.h"
 #include "io.h"
 #include "network.h"
 
@@ -29,7 +29,7 @@ struct Analyzer {
     //** In this struct -- greatly reduce tedious parameter-passing
     // The network state
     Network network;
-    FollowSetGrower follow_set_grower;
+    MemPoolVectorGrower follow_set_grower;
 	// categories for tweeting, following and retweeting
     CategoryGroup tweet_ranks;
 	CategoryGroup follow_ranks;
@@ -202,11 +202,15 @@ struct Analyzer {
      * Person mutation routines
      ***************************************************************************/
     // Return whether the follow could be added, or if we have run out of buffer room.
-    bool add_following(Person& person, int follow) {
-        return follow_set_grower.add_following(person.follow_set, follow);
-    }
-    bool add_follower(Person& person, int follower) {
-        return follow_set_grower.add_follower(person.follower_set, follower);
+    bool handle_follow(int actor, int target) {
+        Person& A = network[actor];
+        Person& T = network[target];
+        bool was_added = follow_set_grower.add_if_possible(A.follow_set, target);
+        if (was_added) {
+            was_added = follow_set_grower.add_if_possible(T.follower_set, actor);
+            return true;
+        }
+        return false;
     }
     /***************************************************************************
      * Analysis routines
@@ -379,11 +383,10 @@ struct Analyzer {
 		if (LIKELY(user != user_to_follow && user_to_follow != -1)) {
 			DEBUG_CHECK(user_to_follow != -1, "Logic error");
 			// point to the person who is being followed
-			Person& p2 = network[user_to_follow];
-			if (add_following(p1, user_to_follow) && add_follower(p2, user)) {
-				// based on the number of followers p2 has, check to make sure we're still categorized properly
-				p2.n_followers ++;
-				follow_ranks.categorize(user_to_follow, p2.n_followers);
+			if (handle_follow(user, user_to_follow)) {
+				// based on the number of followers the followed-user has, check to make sure we're still categorized properly
+				Person& target = network[user_to_follow];
+				follow_ranks.categorize(user_to_follow, target.follower_set.size);
 				N_FOLLOWS++; // We were able to add the follow; almost always the case.
 			}
         } 
@@ -404,9 +407,9 @@ struct Analyzer {
 	
 	void action_retweet(int user, double time_of_retweet) {
 		Person& retweetee = network[user];
-		FollowSet& f = retweetee.follow_set;
-		if (f.n_following != 0){
-			int user_retweeted = f.location[rand_int(f.n_following)];
+		MemPoolVector& f = retweetee.follow_set;
+		if (f.size != 0){
+			int user_retweeted = f.location[rand_int(f.size)];
 			for (int i = 0; i < network.n_following(user); i ++){
 				Person& reciever = network[network.follow_i(user,i)];
 				reciever.retweet_userlist.push_back(user_retweeted);
@@ -511,7 +514,7 @@ struct Analyzer {
         	/*// In standard output only, print the follow lists of the top 10 users (by follows):
         	int capped_len = std::min(10, network.n_persons);
         	for (int i = 0; i < capped_len; i++) {
-        		FollowSet& follow_set = network[i].follow_set;
+        		MemPoolVector& follow_set = network[i].follow_set;
         		cout << (i+1) << ": ";
         		for (int i = 0; i < follow_set.n_following; i++) {
         			cout << ' ' << follow_set[i];

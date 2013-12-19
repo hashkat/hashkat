@@ -19,7 +19,7 @@ static map<string, string> make_test_defaults() {
    config["T_FINAL"] = "525600.0";
 
    config["R_ADD"] = "4.7";
-   config["SILENT"] = "1"; // Avoid noise in test
+   config["SILENT"] = "1"; // Avoid verbosity in test
 
    config["R_FOLLOW"] = "0.139";
    config["R_TWEET"] = "0.0139";
