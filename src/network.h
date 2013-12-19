@@ -16,7 +16,6 @@ struct Person {
 	int entity;
 	int n_tweets;
 	int n_retweets;
-	int n_followers;
 	MemPoolVector follow_set;
 	MemPoolVector follower_set;
 	double creation_time;
@@ -28,7 +27,6 @@ struct Person {
 		creation_time = 0.0;
 		x_location = -1, y_location = -1;
 		n_tweets = 0;
-		n_followers = 0;
 		n_retweets= 0;
 	}
 

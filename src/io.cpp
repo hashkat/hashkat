@@ -185,7 +185,7 @@ void entity_statistics(Network& network, int n_follows, int n_users, int n_entit
 		for (int j = 0; j < n_entities; j ++) {
 			if (p.entity == j) {
 				user_counts[j] ++;
-				average_followers_from_network[j] += p.n_followers;
+				average_followers_from_network[j] += p.follower_set.size;
 			}
 		}
 	} 
@@ -210,7 +210,7 @@ void entity_statistics(Network& network, int n_follows, int n_users, int n_entit
 	for (int i = 0; i < n_entities; i ++){
 		for (int j = 0; j < usertype[i].user_list.size(); j++) {
 			Person& p = network[usertype[i].user_list[j]];
-			average_followers_from_lists[i] += p.n_followers;
+			average_followers_from_lists[i] += p.follower_set.size;
 		}
 	}
 	output << "\n\n ****** Info regarding following certain user types - BASED ON USER_LISTS ****** \n      SHOULD BE THE SAME AS ABOVE\n\n";
