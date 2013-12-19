@@ -147,7 +147,7 @@ struct Analyzer {
 	void set_initial_follow_categories() {
 		for (int i = 0; i < N_USERS; i ++) {
 			Person& p = network[i];
-			follow_ranks.categorize(i, p.n_followers);
+			follow_ranks.categorize(i, p.follower_set.size);
 			
 		}
 	}
@@ -291,7 +291,7 @@ struct Analyzer {
 			if (rand_num <= user_entities[i].R_ADD) {
 				p.entity = i;
                 user_entities[i].user_list.push_back(index);
-				follow_ranks.categorize(index, p.n_followers);
+				follow_ranks.categorize(index, p.follower_set.size);
 				break;
 			}
 			rand_num -= user_entities[i].R_ADD;
