@@ -257,9 +257,7 @@ struct Analyzer {
     }
 
     void step_time(double& TIME) {
-        const int MILESTONE_FREQUENCY = 50000;
-
-        double prev_milestone = floor(TIME / MILESTONE_FREQUENCY);
+        double prev_milestone = floor(TIME / TIME_CATEGORIZATION_FREQUENCY);
         double prev_integer = floor(TIME);
         if (RANDOM_INCR == 1) {
             // increment by random time
@@ -269,7 +267,7 @@ struct Analyzer {
         }
 
         // Categorize all users based on time, on every new time milestone.
-        bool at_milestone = (floor(TIME / MILESTONE_FREQUENCY) > prev_milestone);
+        bool at_milestone = (floor(TIME / TIME_CATEGORIZATION_FREQUENCY) > prev_milestone);
         if (at_milestone) {
             for (int i = 0; i < network.n_entities; i++) {
                 age_ranks.categorize(i, TIME);

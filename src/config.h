@@ -11,6 +11,8 @@ const int FOLLOW_SET_MEM_PER_USER = 512 * 4 * 8; // Allocate enough space for 51
 
 const int RETWEETS_STORED = 4;
 
+const int TIME_CATEGORIZATION_FREQUENCY = 43200;
+
 // Output frequency:
 const int STDOUT_OUTPUT_RATE = 1000; // Once per X file outputs
 
