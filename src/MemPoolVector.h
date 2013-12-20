@@ -2,7 +2,7 @@
  * This class is necessary for implementing follow sets.
  *
  * Follow sets are lists of (hopefully, but in practice not always)
- * unique users that a given user is following.
+ * unique entities that a given entity is following.
  *
  * We optimize for the case size <= MEMPOOL_THRESHOLD by placing the
  * elements directly in the array.
@@ -68,7 +68,7 @@ struct MemPoolVector {
 };
 
 struct DeletedMemPoolVector {
-	// A buffer in our pool that overgrew its boundary, and can be used by another user.
+	// A buffer in our pool that overgrew its boundary, and can be used by another entity.
 	int* location;
 	int capacity;
 	DeletedMemPoolVector(int* loc, int cap) {
@@ -105,7 +105,7 @@ struct MemPoolVectorGrower {
 		if (f.size == f.capacity) {
 			if (!grow_follow_set(f)) {
 				// Not enough room for this MemPoolVector allocation; this is actually fine. Do nothing here.
-				// Virtually all other users will still have a long way to go before hitting their cap.
+				// Virtually all other entities will still have a long way to go before hitting their cap.
 				return false;
 			}
 		}

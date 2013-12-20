@@ -19,7 +19,7 @@ struct Categorization {
 struct Category {
 	// Upper bound that fits into this category
 	double threshold;
-	std::vector<int> users;
+	std::vector<int> entities;
 	Category(double thresh) {
 		threshold = thresh;
 	}
@@ -29,19 +29,19 @@ struct CategoryGroup {
 	std::vector<Categorization> categorizations;
 	std::vector<Category> categories;
 	// Incrementally update a categorization
-	void categorize(int user, double parameter) {
-		if (categorizations.size() <= user) {
-			// Make sure 'user' is a valid index
-			categorizations.resize(user + 1);
+	void categorize(int entity, double parameter) {
+		if (categorizations.size() <= entity) {
+			// Make sure 'entity' is a valid index
+			categorizations.resize(entity + 1);
 		}
-		Categorization& c = categorizations.at(user);
+		Categorization& c = categorizations.at(entity);
 		for (int i = 0; i < categories.size(); i++) {
 			Category& C = categories[i];
 			if (parameter <= C.threshold) {
 				if (i != c.category) {
 					// We have to move ourselves into the new list
 					remove(c);
-					c = add(user, i);
+					c = add(entity, i);
 				}
 				return; // Categorized, done.
 			}
@@ -52,21 +52,21 @@ struct CategoryGroup {
 	void remove(Categorization& c) {
 		if (c.category != -1) {
 			Category& C = categories.at(c.category);
-			DEBUG_CHECK(within_range(c.index, 0, (int)C.users.size()), "Logic error");
+			DEBUG_CHECK(within_range(c.index, 0, (int)C.entities.size()), "Logic error");
 			// Move the element at the top to our index:
-			Categorization& c_top = categorizations[C.users.back()];
+			Categorization& c_top = categorizations[C.entities.back()];
 			c_top.index = c.index;
-			C.users[c.index] = C.users.back();
-			C.users.pop_back();
+			C.entities[c.index] = C.entities.back();
+			C.entities.pop_back();
 			// Reset:
 			c = Categorization();
 		}
 	}
 
-	Categorization add(int user, int new_cat) {
+	Categorization add(int entity, int new_cat) {
 		Category& C = categories.at(new_cat);
-		C.users.push_back(user);
-		return Categorization(new_cat, C.users.size() - 1);
+		C.entities.push_back(entity);
+		return Categorization(new_cat, C.entities.size() - 1);
 	}
 };
 

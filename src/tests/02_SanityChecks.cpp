@@ -13,7 +13,7 @@ using namespace std;
 // Note: Relies on unspecified values evaluating to 0
 static map<string, string> make_test_defaults() {
     map<string, string> config;
-   config["MAX_USERS"] = "1000";
+   config["MAX_ENTITIES"] = "1000";
    config["RANDOM_INCR"] = "1";
 
    config["T_FINAL"] = "525600.0";
@@ -39,7 +39,7 @@ static map<string, string> make_test_defaults() {
    config["FOLLOW_THRESHOLDS_PROBABILITIES"] = "0.1 0.3 0.5 0.7 0.9";
 
 
-   config["N_USERS"] = "10";
+   config["N_ENTITIES"] = "10";
    return config;
 }
 

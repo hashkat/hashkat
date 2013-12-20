@@ -14,7 +14,7 @@
 using namespace std;
 
 // Called using a function pointer by the ini-loading library.
-// We do not care about ini file sections or users.
+// We do not care about ini file sections or entities.
 // Stores arbitrary configuration in CONFIG.
 static int loader_callback(void* vCONFIG, const char* unused_section,
         const char* name, const char* value) {

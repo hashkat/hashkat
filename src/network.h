@@ -51,10 +51,10 @@ struct Entity {
 
 struct Network {
     Entity* entities; //** This is a pointer - used to create a dynamic array
-    int n_entities;
+    int max_entities;
     Network() {
         entities = NULL;
-        n_entities = 0;
+        max_entities = 0;
     }
     ~Network() { //** This defines how to clean-up our Network object; we free the dynamic array
         free(entities);
@@ -63,46 +63,46 @@ struct Network {
         return entities[index];
     }
     void preallocate(int n) {
-        n_entities = n;
-        entities = (Entity*)malloc(sizeof(Entity) * n_entities);
+        max_entities = n;
+        entities = (Entity*)malloc(sizeof(Entity) * max_entities);
         // This is very likely to be a large allocation, check for failures:
         if (entities == NULL) {
             panic("Network::preallocate failed");
         }
-        for (int i = 0; i < n_entities; i++) {
+        for (int i = 0; i < max_entities; i++) {
             // Placement new due to use of malloc
             new (&entities[i]) Entity();
         }
     }
 
     // Convenient network queries:
-    int n_following(int person_id) {
-        return entities[person_id].follow_set.size;
+    int n_following(int id) {
+        return entities[id].follow_set.size;
     }
-    int n_followers(int person_id) {
-        return entities[person_id].follower_set.size;
+    int n_followers(int id) {
+        return entities[id].follower_set.size;
     }
-    int follow_i(int person_id, int follow_index) {
-        return entities[person_id].follow_set[follow_index];
+    int follow_i(int id, int follow_index) {
+        return entities[id].follow_set[follow_index];
     }
-    int following_i(int person_id, int follow_index) {
-        return entities[person_id].follower_set[follow_index];
+    int following_i(int id, int follow_index) {
+        return entities[id].follower_set[follow_index];
     }
 };
 
-struct UserType {
-    double R_ADD; // When a user is added, how likely is it that it is this user type ?
-    double R_FOLLOW; // When a user is followed, how likely is it that it is this user type ?
-    std::vector<int> user_list;
+struct EntityType {
+    double R_ADD; // When a entity is added, how likely is it that it is this entity type ?
+    double R_FOLLOW; // When a entity is followed, how likely is it that it is this entity type ?
+    std::vector<int> entity_list;
 };
 
-// different user types
+// different entity types
 enum {
     UT_NORMAL_INDEX = 0,
     UT_CELEB_INDEX = 1,
     UT_BOT_INDEX = 2,
     UT_ORG_INDEX = 3,
-    N_ENTITIES = 4
+    UT_AMOUNT = 4
 };
 
 #endif
