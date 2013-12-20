@@ -1,7 +1,7 @@
 # Compile everything under 'dependencies'
 add_subdirectory(dependencies)
 
-add_definitions(-Wuninitialized)# -fsanitize=address)
+add_definitions(-Wuninitialized -std=c++98)# -fsanitize=address)
 #SET (CMAKE_EXE_LINKER_FLAGS -fsanitize=address)
 #SET (CMAKE_MODULE_LINKER_FLAGS -fsanitize=address)
 
@@ -20,6 +20,7 @@ aux_source_directory(
 	"dependencies" 
 	dependencies_src
 )
+
 # Workaround for problem with compiling C with -std=c++98:
 set_source_files_properties(
 	dependencies/ini.c 

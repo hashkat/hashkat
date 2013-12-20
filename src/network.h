@@ -5,96 +5,105 @@
 
 #include <cstdlib>
 #include <vector>
+#include <exception>
 #include "util.h"
 
+#include "CircularBuffer.h"
 #include "MemPoolVector.h"
 #include "category.h"
 
-struct Person {
-	std::vector<int> retweet_userlist;
-	std::vector<double> retweet_userlist_time;
-	int entity;
-	int n_tweets;
-	int n_retweets;
-	MemPoolVector follow_set;
-	MemPoolVector follower_set;
-	double creation_time;
-	double x_location, y_location;
-	void initialize() {
-		// Initialize a user slot - without a user, yet
-		follow_set.initialize();
-		follower_set.initialize();
-		creation_time = 0.0;
-		x_location = -1, y_location = -1;
-		n_tweets = 0;
-		n_retweets= 0;
-	}
 
-	void sanity_check() {
-		follow_set.sanity_check();
-		follower_set.sanity_check();
-	}
+typedef MemPoolVector<FOLLOW_LIST_THRESHOLD1> FollowList;
+typedef MemPoolVector<FOLLOWER_LIST_THRESHOLD1> FollowerList;
+
+struct Retweet {
+    int original_tweeter;
+    double time;
+    Retweet() {
+    }
+    Retweet(int tweet, double time) :
+            original_tweeter(tweet), time(time) {
+    }
+};
+
+// Store the last 'RETWEETS_STORED' tweets, discarding old ones.
+typedef CircularBuffer<Retweet, RETWEETS_STORED> RetweetBuffer;
+
+struct Entity {
+    int entity;
+    int n_tweets, n_retweets;
+    double creation_time;
+    float x_location, y_location;
+
+    // Store the two directions of the follow relationship
+    FollowList follow_set;
+    FollowerList follower_set;
+
+    RetweetBuffer retweets;
+
+    Entity() {
+        entity = 0;
+        creation_time = 0.0;
+        x_location = -1, y_location = -1;
+        n_tweets = 0;
+        n_retweets = 0;
+    }
 };
 
 struct Network {
-	Person* persons; //** This is a pointer - used to create a dynamic array
-	int n_persons;
-	Network() {
-		persons = NULL;
-		n_persons = 0;
-	}
-	~Network() { //** This defines how to clean-up our Network object; we free the dynamic array
-		free(persons);
-	}
-	Person& operator[](int index) { //** This allows us to index our Network struct as if it were an array.
-		return persons[index];
-	}
-	void preallocate(int n) {
-		//** This is low-level array allocation, used to be sure we allocate the network array as efficiently as possible:
-		n_persons = n;
-		persons = (Person*) malloc(sizeof(Person) * n_persons);
-		// This is very likely to be a large allocation, check for failures:
-		if (persons == NULL) {
-			panic("Network::preallocate failed");
-		}
-		for (int i = 0; i < n_persons; i++) {
-			persons[i].initialize();
-		}
-	}
+    Entity* entities; //** This is a pointer - used to create a dynamic array
+    int n_entities;
+    Network() {
+        entities = NULL;
+        n_entities = 0;
+    }
+    ~Network() { //** This defines how to clean-up our Network object; we free the dynamic array
+        free(entities);
+    }
+    Entity& operator[](int index) { //** This allows us to index our Network struct as if it were an array.
+        return entities[index];
+    }
+    void preallocate(int n) {
+        n_entities = n;
+        entities = (Entity*)malloc(sizeof(Entity) * n_entities);
+        // This is very likely to be a large allocation, check for failures:
+        if (entities == NULL) {
+            panic("Network::preallocate failed");
+        }
+        for (int i = 0; i < n_entities; i++) {
+            // Placement new due to use of malloc
+            new (&entities[i]) Entity();
+        }
+    }
 
-	// Convenient network queries:
-	int n_following(int person_id) {
-		return persons[person_id].follow_set.size;
-	}
-	int n_followers(int person_id) {
-		return persons[person_id].follower_set.size;
-	}
-	int follow_i(int person_id, int follow_index) {
-		return persons[person_id].follow_set[follow_index];
-	}
-	int following_i(int person_id, int follow_index) {
-		return persons[person_id].follower_set[follow_index];
-	}
-	void sanity_check() {
-		for (int i = 0; i < n_persons; i++) {
-			persons[i].sanity_check();
-		}
-	}
+    // Convenient network queries:
+    int n_following(int person_id) {
+        return entities[person_id].follow_set.size;
+    }
+    int n_followers(int person_id) {
+        return entities[person_id].follower_set.size;
+    }
+    int follow_i(int person_id, int follow_index) {
+        return entities[person_id].follow_set[follow_index];
+    }
+    int following_i(int person_id, int follow_index) {
+        return entities[person_id].follower_set[follow_index];
+    }
 };
 
 struct UserType {
-	double R_ADD; // When a user is added, how likely is it that it is this user type ?
-	double R_FOLLOW; // When a user is followed, how likely is it that it is this user type ?
-	std::vector<int> user_list;
+    double R_ADD; // When a user is added, how likely is it that it is this user type ?
+    double R_FOLLOW; // When a user is followed, how likely is it that it is this user type ?
+    std::vector<int> user_list;
 };
 
 // different user types
 enum {
-	UT_NORMAL_INDEX = 0,
-	UT_CELEB_INDEX = 1,
-	UT_BOT_INDEX = 2,
-	UT_ORG_INDEX = 3,
-	N_ENTITIES = 4
+    UT_NORMAL_INDEX = 0,
+    UT_CELEB_INDEX = 1,
+    UT_BOT_INDEX = 2,
+    UT_ORG_INDEX = 3,
+    N_ENTITIES = 4
 };
 
 #endif

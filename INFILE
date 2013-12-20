@@ -2,7 +2,7 @@
 ; ADJUST YOUR VARIABLES ACCORDINGLY FOR THE NETWORK
 ;#################################################
 
-MAX_USERS = 1000
+MAX_USERS = 900000
 RANDOM_INCR = 0              ; -> 0 - increment by 1/R_total
 			     ; -> 1 - increment by random time based on R_total
 
@@ -49,5 +49,5 @@ OUTPUT_SUMMARY = 1 ; Output summary such as number of tweets etc in a file calle
 VISUALIZE = 1
 
 ; Initial network contents:
-N_USERS = 1               ; -> number of initial users
+N_USERS = 1              ; -> number of initial users
 

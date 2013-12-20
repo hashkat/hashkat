@@ -1,5 +1,5 @@
-/* Defines a fixed-memory-vector and its grower.
- * This class is necessary for handling follow sets.
+/* Defines a pooled-memory integer vector and its grower.
+ * This class is necessary for implementing follow sets.
  *
  * Follow sets are lists of (hopefully, but in practice not always)
  * unique users that a given user is following.
@@ -19,9 +19,18 @@
 #include <map>
 #include <algorithm>
 #include "util.h"
-#include "constants.h"
+#include "config.h"
 
+// Above a certain threshold,
+template <int MEMPOOL_THRESHOLD>
 struct MemPoolVector {
+    MemPoolVector() {
+        size = 0;
+        location = buffer1;
+        capacity = MEMPOOL_THRESHOLD;
+        copy(NULL, 0);
+    }
+
     int size, capacity;
     int* location;
 
@@ -36,12 +45,6 @@ struct MemPoolVector {
         for (int i = len; i < capacity; i++){
             location[i] = -1; // Fill rest with -1 to show no action in the array
         }
-    }
-    void initialize() {
-        size = 0;
-        location = buffer1;
-        capacity = MEMPOOL_THRESHOLD;
-        copy(NULL, 0);
     }
 
     void sort_and_remove_duplicates() {
@@ -75,7 +78,6 @@ struct DeletedMemPoolVector {
 
 typedef std::vector<DeletedMemPoolVector> DeletedList;
 
-
 /* Handles growing follow sets, and allocating buffers when size > MEMPOOL_THRESHOLD. */
 struct MemPoolVectorGrower {
 	int* memory;
@@ -97,7 +99,8 @@ struct MemPoolVectorGrower {
 	// Add an element to the pooled vector, potentially growing (reallocating) the array.
 	// If we had to grow AND we have run out of allocated memory, we do nothing and return false.
 	// Otherwise, we return true.
-	bool add_if_possible(MemPoolVector& f, int element) {
+    template <int MEMPOOL_THRESHOLD>
+	bool add_if_possible(MemPoolVector<MEMPOOL_THRESHOLD>& f, int element) {
     	DEBUG_CHECK(f.size <= f.capacity, "Logic error, array should have been grown!");
 		if (f.size == f.capacity) {
 			if (!grow_follow_set(f)) {
@@ -112,7 +115,8 @@ struct MemPoolVectorGrower {
 		return true;
 	}
 private:
-	bool grow_follow_set(MemPoolVector& f) {
+	template <int MEMPOOL_THRESHOLD>
+	bool grow_follow_set(MemPoolVector<MEMPOOL_THRESHOLD>& f) {
 		static std::map<void*, void*> allocs;
 
 		int new_capacity = f.capacity * FOLLOW_SET_GROWTH_MULTIPLE;

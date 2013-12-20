@@ -49,6 +49,7 @@ inline double parse_num(std::string s) {
 
 //** AD: This is what I was talking about with giving the compiler hints about the path the a conditional will take.
 // Usage: if (likely(rarely failing checks) ) { ... } else { .. error routine ... }
-#define LIKELY(x) __builtin_expect((x), 1)
+#define LIKELY(x) __builtin_expect(!!(x), 1)
+#define UNLIKELY(x) __builtin_expect(!!(x), 0)
 
 #endif

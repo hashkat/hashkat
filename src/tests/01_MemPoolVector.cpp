@@ -2,10 +2,13 @@
 
 #include "../MemPoolVector.h"
 
+const int MEMPOOL_THRESHOLD = 96;
+
 static const int FIRST_ALLOC = FOLLOW_SET_GROWTH_MULTIPLE * MEMPOOL_THRESHOLD;
 
+
 SUITE(MemPoolVectors) {
-	static void check_content(MemPoolVector& f) {
+	static void check_content(MemPoolVector<MEMPOOL_THRESHOLD>& f) {
 		for (int i = 0; i < f.size; i++) {
 			CHECK(f.location[i] == 0);
 		}
@@ -14,8 +17,7 @@ SUITE(MemPoolVectors) {
 		MemPoolVectorGrower grower;
 		grower.preallocate(1024 /* bytes*/);
 
-		MemPoolVector f;
-		f.initialize();
+		MemPoolVector<MEMPOOL_THRESHOLD> f;
 
 		for (int i = 0; i < MEMPOOL_THRESHOLD; i++) {
 			CHECK(f.capacity == MEMPOOL_THRESHOLD);
@@ -34,8 +36,7 @@ SUITE(MemPoolVectors) {
 		MemPoolVectorGrower grower;
 		grower.preallocate(FIRST_ALLOC * sizeof(int) /* bytes*/);
 
-		MemPoolVector f;
-		f.initialize();
+		MemPoolVector<MEMPOOL_THRESHOLD> f;
 
 		for (int i = 0; i < FIRST_ALLOC; i++) {
 			CHECK(grower.add_if_possible(f, 0));

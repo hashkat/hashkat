@@ -364,12 +364,14 @@ struct Analyzer {
 		//Retweet follow method
 		if (FOLLOW_METHOD == 3) {
 			if (rand_num > 0.5) {
-			    Retweet retweet;
-			    if (p1.retweets.check_recent(retweet)) {
-			        // grab the latest retweet
+				// grab the latest user
+				if (p1.retweet_userlist.size() != 0) {
+					// get the last user in the list and see when the retweet happened
+					double last_time = p1.retweet_userlist_time[p1.retweet_userlist_time.size() - 1];
+					int last_user = p1.retweet_userlist[p1.retweet_userlist.size() - 1];
 					// if the retweet happened in the last 48 hours
-					if (time_of_follow - retweet.time < 2880) {
-						user_to_follow = retweet.original_tweeter;
+					if (time_of_follow - last_time < 2880) {
+						user_to_follow = p1.retweet_userlist[p1.retweet_userlist.size() - 1];
 					}
 				}
 			}
@@ -405,15 +407,18 @@ struct Analyzer {
 	
 	void action_retweet(int user, double time_of_retweet) {
 		Entity& retweetee = network[user];
-		FollowList& f = retweetee.follow_set;
+		MemPoolVector& f = retweetee.follow_set;
 		if (f.size != 0){
 			int user_retweeted = f.location[rand_int(f.size)];
-			int n_following = network.n_following(user);
-            // Loop over all the entities that witness the event:
-			for (int i = 0; i < n_following; i ++){
-				Entity& audience = network[network.follow_i(user,i)];
-				Retweet retweet(user_retweeted, time_of_retweet);
-				audience.retweets.add(retweet);
+			for (int i = 0; i < network.n_following(user); i ++){
+				Entity& reciever = network[network.follow_i(user,i)];
+				reciever.retweet_userlist.push_back(user_retweeted);
+				reciever.retweet_userlist_time.push_back(time_of_retweet);
+				/* if the retweet list has more than 5 user ID's, lets make sure they only have 5*/
+				if (reciever.retweet_userlist.size() > 5) {
+					reciever.retweet_userlist.erase(reciever.retweet_userlist.begin());
+					reciever.retweet_userlist_time.erase(reciever.retweet_userlist_time.begin());
+				}
 			}
 		}
 		N_RETWEETS ++;
@@ -440,7 +445,7 @@ struct Analyzer {
         	// If we find ourselves in the tweet chuck of the cumulative function:
             N_TWEETS++;
             // User to send the tweet:
-            int user = rand_int(network.n_entities);
+            int user = rand_int(network.n_persons);
             action_tweet(user);
         } else if (u_1 - (R_ADD_NORM + R_FOLLOW_NORM + R_TWEET_NORM + R_RETWEET_NORM) <= ZEROTOL ) {
 			double val = u_1 - (R_ADD_NORM + R_FOLLOW_NORM + R_TWEET_NORM);

@@ -102,7 +102,7 @@ void PIN(Network& network, int MAX_USERS, int N_USERS, double r_follow_norm) {
 	}
 
 	for (int i = 0; i < N_USERS; i++) {
-		Person& p = network[i];
+		Entity& p = network[i];
 		N_FOLLOWERS_DISTRO[N_FOLLOWERS_DATA[i]]++;
 	}
 	for (int i = 1; i < MAX_USERS; i++) {
@@ -181,7 +181,7 @@ void entity_statistics(Network& network, int n_follows, int n_users, int n_entit
 		average_followers_from_lists[i] = 0;
 	}
 	for (int i = 0 ; i < n_users; i ++) {
-		Person& p = network[i];
+		Entity& p = network[i];
 		for (int j = 0; j < n_entities; j ++) {
 			if (p.entity == j) {
 				user_counts[j] ++;
@@ -209,7 +209,7 @@ void entity_statistics(Network& network, int n_follows, int n_users, int n_entit
 	}
 	for (int i = 0; i < n_entities; i ++){
 		for (int j = 0; j < usertype[i].user_list.size(); j++) {
-			Person& p = network[usertype[i].user_list[j]];
+			Entity& p = network[usertype[i].user_list[j]];
 			average_followers_from_lists[i] += p.follower_set.size;
 		}
 	}
