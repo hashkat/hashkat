@@ -12,7 +12,6 @@ const int FOLLOW_SET_MEM_PER_USER = 512 * 4 * 8; // Allocate enough space for 51
 const int RETWEETS_STORED = 4;
 
 // Output frequency:
-const double FILE_OUTPUT_RATE = 1; // Once per X virtual minutes
 const int STDOUT_OUTPUT_RATE = 1000; // Once per X file outputs
 
 // Uncomment this to run expensive but informative checks:

@@ -29,6 +29,7 @@ R_FOLLOW_ORG = 15
 
 TWEET_THRESHOLDS = 1 10 20 2000 3000
 RETWEET_THRESHOLDS = 1 10 20 2000 3000
+AGE_THRESHOLDS = 9000 ; AD: Arbitrary for now
 
 FOLLOW_METHOD = 2              ; 1 - preferential follow
 			     ; 0 - random follow

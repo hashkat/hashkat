@@ -46,8 +46,7 @@ struct CategoryGroup {
 				return; // Categorized, done.
 			}
 		}
-		// for some reason, preferential follow does not work when this is active ????????
-		//DEBUG_CHECK(false, "Logic error");
+		DEBUG_CHECK(false, "Logic error");
 	}
 
 	void remove(Categorization& c) {

@@ -12,7 +12,6 @@
 #include "MemPoolVector.h"
 #include "category.h"
 
-
 typedef MemPoolVector<FOLLOW_LIST_THRESHOLD1> FollowList;
 typedef MemPoolVector<FOLLOWER_LIST_THRESHOLD1> FollowerList;
 

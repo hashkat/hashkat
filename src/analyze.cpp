@@ -30,11 +30,13 @@ struct Analyzer {
     // The network state
     Network network;
     MemPoolVectorGrower follow_set_grower;
-	// categories for tweeting, following and retweeting
+	// categories for tweeting, following, retweeting, and age
     CategoryGroup tweet_ranks;
 	CategoryGroup follow_ranks;
+	vector <double> follow_probabilities;
 	CategoryGroup retweet_ranks;
-	
+	CategoryGroup age_ranks;
+
     /* Mersenne-twister random number generator */
     MTwist random_gen_state;
     /* Analysis parameters */
@@ -99,10 +101,9 @@ struct Analyzer {
         DATA_TIME.open("DATA_vs_TIME");
        
         set_entity_probabilities();
-		set_initial_entities();
         set_initial_categories();
+		set_initial_entities();
 		set_follow_rank_probabilities();
-		set_initial_follow_categories();
     }
 	// this is a helper function for the function below, essentially it takes the thresholds
 	// and sets up the categories based on the INFILE
@@ -122,10 +123,10 @@ struct Analyzer {
     		initialize_category(follow_ranks, "FOLLOW_THRESHOLDS");
 		}
 		initialize_category(retweet_ranks, "RETWEET_THRESHOLDS");
+		initialize_category(age_ranks, "AGE_THRESHOLDS");
     }
 	
 	// function for follow probabilities, this is used for a preferential follow method
-	vector <double> follow_probabilities;
 	void set_follow_rank_probabilities() {
 		if (BARABASI == 1){
 			for (int i = 1; i < MAX_USERS; i ++) {
@@ -139,16 +140,6 @@ struct Analyzer {
 				Category& C = follow_ranks.categories[i];
 				follow_probabilities.push_back(set_probabilities[i]);
 			}
-		}
-	}
-	
-	// this makes sure that any initial users are categorized properly before simulation is even run
-	// ???????? does this need to be done for tweeting and retweeting ???????????
-	void set_initial_follow_categories() {
-		for (int i = 0; i < N_USERS; i ++) {
-			Entity& p = network[i];
-			follow_ranks.categorize(i, p.follower_set.size);
-			
 		}
 	}
 	
@@ -266,18 +257,27 @@ struct Analyzer {
     }
 
     void step_time(double& TIME) {
-        double prev_floor = floor(TIME / FILE_OUTPUT_RATE);
+        const int MILESTONE_FREQUENCY = 50000;
+
+        double prev_milestone = floor(TIME / MILESTONE_FREQUENCY);
+        double prev_integer = floor(TIME);
         if (RANDOM_INCR == 1) {
             // increment by random time
             TIME += -log(rand_real_not0()) / R_TOTAL;
         } else {
             TIME += 1 / R_TOTAL;
         }
-        // Output on every new integral time milestone:
-        if (floor(TIME / FILE_OUTPUT_RATE) > prev_floor) {
-            if (config_output_summary_stats) {
-                output_summary_stats(TIME);
+
+        // Categorize all users based on time, on every new time milestone.
+        bool at_milestone = (floor(TIME / MILESTONE_FREQUENCY) > prev_milestone);
+        if (at_milestone) {
+            for (int i = 0; i < network.n_entities; i++) {
+                age_ranks.categorize(i, TIME);
             }
+        }
+
+        if (config_output_summary_stats && (floor(TIME) > prev_integer)) {
+            output_summary_stats(TIME);
         }
     }
 
@@ -379,7 +379,6 @@ struct Analyzer {
 		}
 		// check and make sure we are not following ourself, or we are following user -1
 		if (LIKELY(user != user_to_follow && user_to_follow != -1)) {
-			DEBUG_CHECK(user_to_follow != -1, "Logic error");
 			// point to the person who is being followed
 			if (handle_follow(user, user_to_follow)) {
 				// based on the number of followers the followed-user has, check to make sure we're still categorized properly
