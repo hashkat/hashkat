@@ -34,8 +34,8 @@ struct Analyzer {
     CategoryGroup tweet_ranks;
 	CategoryGroup follow_ranks;
 	vector <double> follow_probabilities;
+	vector <int> last_entity_ID;
 	CategoryGroup retweet_ranks;
-	CategoryGroup age_ranks;
 
     /* Mersenne-twister random number generator */
     MTwist random_gen_state;
@@ -123,7 +123,6 @@ struct Analyzer {
     		initialize_category(follow_ranks, "FOLLOW_THRESHOLDS");
 		}
 		initialize_category(retweet_ranks, "RETWEET_THRESHOLDS");
-		initialize_category(age_ranks, "AGE_THRESHOLDS");
     }
 	
 	// function for follow probabilities, this is used for a preferential follow method
@@ -169,17 +168,17 @@ struct Analyzer {
 
 	// after every iteration, make sure the rates are updated accordingly
     void set_rates() {
-        double R_FOLLOW = config["R_FOLLOW"];
-        double R_TWEET = config["R_TWEET"];
-        double R_ADD = config["R_ADD"];
-		double R_RETWEET = config["R_RETWEET"];
+        double R_FOLLOW_INI = config["R_FOLLOW"];
+        double R_TWEET_INI = config["R_TWEET"];
+        double R_ADD_INI = config["R_ADD"];
+		double R_RETWEET_INI = config["R_RETWEET"];
 
-        R_TOTAL = R_ADD + R_FOLLOW * N_ENTITIES + R_TWEET * N_ENTITIES + R_RETWEET * N_ENTITIES;
+        R_TOTAL = R_ADD_INI + R_FOLLOW_INI * N_ENTITIES + R_TWEET_INI * N_ENTITIES + R_RETWEET_INI * N_ENTITIES;
         //Normalize the rates
-        R_ADD_NORM = R_ADD / R_TOTAL;
-        R_FOLLOW_NORM = R_FOLLOW * N_ENTITIES / R_TOTAL;
-        R_TWEET_NORM = R_TWEET * N_ENTITIES / R_TOTAL;
-		R_RETWEET_NORM = R_RETWEET * N_ENTITIES / R_TOTAL;
+        R_ADD_NORM = R_ADD_INI / R_TOTAL;
+        R_FOLLOW_NORM = R_FOLLOW_INI * N_ENTITIES / R_TOTAL;
+        R_TWEET_NORM = R_TWEET_INI * N_ENTITIES / R_TOTAL;
+		R_RETWEET_NORM = R_RETWEET_INI * N_ENTITIES / R_TOTAL;
     }
 	
 	// make sure any initial entities are given a title based on the respective probabilities
@@ -251,12 +250,12 @@ struct Analyzer {
 		Categories_Check(tweet_ranks, follow_ranks, retweet_ranks);
 		}
 		Cumulative_Distro(network, MAX_ENTITIES, N_ENTITIES, N_FOLLOWS);
-		entity_statistics(network, N_FOLLOWS,N_ENTITIES, N_ENTITIES, entity_entities);
+		//entity_statistics(network, N_FOLLOWS,N_ENTITIES, N_ENTITIES, entity_entities);
 		
         DATA_TIME.close();
     }
 
-    void step_time(double& TIME) {
+    void step_time(double& TIME, int n_entities) {
         double prev_milestone = floor(TIME / TIME_CATEGORIZATION_FREQUENCY);
         double prev_integer = floor(TIME);
         if (RANDOM_INCR == 1) {
@@ -268,10 +267,8 @@ struct Analyzer {
 
         // Categorize all entities based on time, on every new time milestone.
         bool at_milestone = (floor(TIME / TIME_CATEGORIZATION_FREQUENCY) > prev_milestone);
-        if (at_milestone) {
-            for (int i = 0; i < network.max_entities; i++) {
-                age_ranks.categorize(i, TIME);
-            }
+        if (at_milestone){
+        	last_entity_ID.push_back(n_entities);
         }
 
         if (config_output_summary_stats && (floor(TIME) > prev_integer)) {
@@ -446,7 +443,7 @@ struct Analyzer {
             cout << "Disaster, event out of bounds" << endl;
         }
 
-        step_time(TIME);
+        step_time(TIME, N_ENTITIES);
         N_STEPS++;
         //update the rates if n_entities has changed
         set_rates();
