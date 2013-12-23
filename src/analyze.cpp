@@ -13,9 +13,24 @@
 #include "io.h"
 #include "network.h"
 
+#include <signal.h>
+
 using namespace std;
 
 static const double ZEROTOL = 1e-16; // enough precision for really really low add rate
+
+static volatile int CTRL_C_ATTEMPTS = 0;
+static const int CTRL_C_ATTEMPTS_TO_ABORT = 4;
+// Handler for SIGINT -- sent by Ctrl-C on command-line. Allows us to stop our program gracefully!
+static void ctrl_C_handler(int __dummy) {
+    CTRL_C_ATTEMPTS++;
+    if (CTRL_C_ATTEMPTS > CTRL_C_ATTEMPTS_TO_ABORT) {
+        panic("User demands abort!");
+    }
+}
+static void ctrl_C_handler_install() {
+   signal(SIGINT, ctrl_C_handler);
+}
 
 /* The Analyze struct encapsulates the many-parameter analyze function, and its state. */
 struct Analyzer {
@@ -59,7 +74,7 @@ struct Analyzer {
     long int N_STEPS, N_FOLLOWS, N_TWEETS, N_RETWEETS;
 
 	// struct for the entity classes, see network.h for specifications
-    EntityType entity_entities[UT_AMOUNT];
+    EntityType entity_types[ET_AMOUNT];
 
     ofstream DATA_TIME; // Output file to plot data
 
@@ -109,6 +124,7 @@ struct Analyzer {
 	// and sets up the categories based on the INFILE
     void initialize_category(CategoryGroup& group, const char* parameter) {
     	vector<double> thresholds = parse_numlist(raw_config[parameter]);
+
 		for (int i = 0; i < thresholds.size(); i++) {
 			group.categories.push_back(Category(thresholds[i]));
 		}
@@ -144,25 +160,25 @@ struct Analyzer {
 	
 	// this gets the probabilities for the 'follow entity by class' method
     void set_entity_probabilities() {
-        entity_entities[UT_NORMAL_INDEX].R_ADD = config["R_ADD_NORMAL"];
-        entity_entities[UT_CELEB_INDEX].R_ADD = config["R_ADD_CELEB"];
-        entity_entities[UT_ORG_INDEX].R_ADD = config["R_ADD_ORG"];
-        entity_entities[UT_BOT_INDEX].R_ADD = config["R_ADD_BOT"];
+        entity_types[ET_NORMAL_INDEX].R_ADD = config["R_ADD_NORMAL"];
+        entity_types[ET_CELEB_INDEX].R_ADD = config["R_ADD_CELEB"];
+        entity_types[ET_ORG_INDEX].R_ADD = config["R_ADD_ORG"];
+        entity_types[ET_BOT_INDEX].R_ADD = config["R_ADD_BOT"];
 
-        entity_entities[UT_NORMAL_INDEX].R_FOLLOW = config["R_FOLLOW_NORMAL"];
-        entity_entities[UT_CELEB_INDEX].R_FOLLOW = config["R_FOLLOW_CELEB"];
-        entity_entities[UT_ORG_INDEX].R_FOLLOW = config["R_FOLLOW_ORG"];
-        entity_entities[UT_BOT_INDEX].R_FOLLOW = config["R_FOLLOW_BOT"];
+        entity_types[ET_NORMAL_INDEX].R_FOLLOW = config["R_FOLLOW_NORMAL"];
+        entity_types[ET_CELEB_INDEX].R_FOLLOW = config["R_FOLLOW_CELEB"];
+        entity_types[ET_ORG_INDEX].R_FOLLOW = config["R_FOLLOW_ORG"];
+        entity_types[ET_BOT_INDEX].R_FOLLOW = config["R_FOLLOW_BOT"];
 
 		// normalize the different entity probabilities
         double add_total = 0, follow_total = 0;
         for (int i = 0; i < N_ENTITIES; i++) {
-            add_total += entity_entities[i].R_ADD;
-            follow_total += entity_entities[i].R_FOLLOW;
+            add_total += entity_types[i].R_ADD;
+            follow_total += entity_types[i].R_FOLLOW;
         }
         for (int i = 0; i < N_ENTITIES; i++) {
-            entity_entities[i].R_ADD /= add_total;
-            entity_entities[i].R_FOLLOW /= follow_total;
+            entity_types[i].R_ADD /= add_total;
+            entity_types[i].R_FOLLOW /= follow_total;
         }
     }
 
@@ -217,8 +233,9 @@ struct Analyzer {
     // ROOT ANALYSIS ROUTINE
     /* Run the main analysis routine using this config. */
     double run_network_simulation() {
+        ctrl_C_handler_install();
         double time = 0;
-        while (time < T_FINAL && N_ENTITIES < MAX_ENTITIES) {
+        while ( LIKELY(time < T_FINAL && N_ENTITIES < MAX_ENTITIES && CTRL_C_ATTEMPTS == 0) ) {
         	time = step_analysis(time);
         }
         return time;
@@ -229,12 +246,16 @@ struct Analyzer {
     void output_network_statistics(double end_time) {
         // Print why program stopped
         if (!config["SILENT"]) {
-            string maximum_what =
-                    end_time < T_FINAL ? "number of entities" : "amount of time steps";
-            cout << "\nReached maximum " << maximum_what
-                    << ".\n\n- - Program terminated - -\n\n";
+            if (CTRL_C_ATTEMPTS > 0) {
+                cout << "\nSimulation (Gracefully) Interrupted: ctrl-c was pressed\n";
+            } else if (end_time >= T_FINAL) {
+                cout << "\nSimulation Completed: desired duration reached\n";
+            } else {
+                cout << "\nSimulation Completed: desired entity amount reached\n";
+            }
         }
 
+        cout << "\nCreating analysis files -- press ctrl-c multiple times to abort ... \n";
         // Depending on our INFILE/configuration, we may output various analysis
         if (config["P_OUT"]) {
             POUT(network, MAX_ENTITIES, N_ENTITIES, N_FOLLOWS);
@@ -252,7 +273,8 @@ struct Analyzer {
 		Cumulative_Distro(network, MAX_ENTITIES, N_ENTITIES, N_FOLLOWS);
 		//entity_statistics(network, N_FOLLOWS,N_ENTITIES, N_ENTITIES, entity_entities);
 		
-        DATA_TIME.close();
+        cout << "Analysis complete!\n";
+//        DATA_TIME.close();
     }
 
     void step_time(double& TIME, int n_entities) {
@@ -283,13 +305,13 @@ struct Analyzer {
 		e.creation_time = creation_time;
 		double rand_num = rand_real_not0();
 		for (int i = 0; i < N_ENTITIES; i++) {
-			if (rand_num <= entity_entities[i].R_ADD) {
+			if (rand_num <= entity_types[i].R_ADD) {
 				e.entity = i;
-                entity_entities[i].entity_list.push_back(index);
+                entity_types[i].entity_list.push_back(index);
 				follow_ranks.categorize(index, e.follower_set.size);
 				break;
 			}
-			rand_num -= entity_entities[i].R_ADD;
+			rand_num -= entity_types[i].R_ADD;
 		}
 		if (BARABASI == 1){
 			action_follow_entity(index, index, creation_time);
@@ -343,16 +365,16 @@ struct Analyzer {
 		if (FOLLOW_METHOD == 2) {
 			/* search through the probabilities for each entity and find the right bin to land in */
 			for (int i = 0; i < N_ENTITIES; i++) {
-				if (rand_num <= entity_entities[i].R_FOLLOW) {
+				if (rand_num <= entity_types[i].R_FOLLOW) {
 					// make sure we're not pulling from an empty list
-					if (entity_entities[i].entity_list.size() != 0) {
+					if (entity_types[i].entity_list.size() != 0) {
 						// pull the entity from whatever bin we landed in and break so we dont continue this loop
-						entity_to_follow = entity_entities[i].entity_list[rand_int(entity_entities[i].entity_list.size())];
+						entity_to_follow = entity_types[i].entity_list[rand_int(entity_types[i].entity_list.size())];
 						break;
 					}
 				}
 				// part of the above search
-				rand_num -= entity_entities[i].R_FOLLOW;
+				rand_num -= entity_types[i].R_FOLLOW;
 			}					
 		}
 		//Retweet follow method
@@ -516,7 +538,7 @@ struct Analyzer {
 };
 
 // Run a network simulation using the given input file's parameters
-void analyze_network(map<string, string>& config, int seed) {
+void simulate_network(map<string, string>& config, int seed) {
     Analyzer analyzer(config, seed);
     analyzer.main();
 }

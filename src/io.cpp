@@ -115,19 +115,21 @@ void PIN(Network& network, int MAX_ENTITIES, int N_ENTITIES, double r_follow_nor
 	output.close();
 }
 
+
+static void category_print(ofstream& output, const char* name, CategoryGroup& group) {
+    output << name << ": ";
+    for (int i = 0; i < group.categories.size(); i ++) {
+        Category& c = group.categories[i];
+        output << c.entities.size() << " at " << c.threshold << '\t';
+    }
+}
+
 void Categories_Check(CategoryGroup& tweeting, CategoryGroup& following, CategoryGroup& retweeting) {
 	ofstream output;
 	output.open("Categories_Distro.dat");
-	output << "\t\tFollowing\tTweeting\tRetweeting\n\n";
-	
-	for (int i = 0; i < following.categories.size(); i ++) {
-		Category& C_follows = following.categories[i];
-		Category& C_tweets = tweeting.categories[i];
-		Category& C_retweets = retweeting.categories[i];
-		output << "Thresholds:\t" << C_follows.threshold << "\t\t" << C_tweets.threshold << "\t\t" << C_retweets.threshold << "\n";
-		output << "# Users:\t" << C_follows.entities.size() << "\t\t" << C_tweets.entities.size() << "\t\t" << C_retweets.entities.size() << "\n\n";
-		
-	}
+	category_print(output, "Tweeting", tweeting);
+	category_print(output, "Following", following);
+	category_print(output, "Retweeting", retweeting);
 	output.close();
 }
 

@@ -1,18 +1,19 @@
+/*
+ * tests.h:
+ *  Main header for unit tests. Provides convenience methods.
+ */
+
+#ifndef TESTS_H_
+#define TESTS_H_
+
+#include <dependencies/UnitTest++.h>
 #include <map>
 #include <string>
-#include <dependencies/UnitTest++.h>
-
-#include "../analyze.h"
-
-using namespace std;
-
-// Test the system in edge cases
-// UnitTest++ will catch any segfaults, and report them as test errors
 
 // Specify tests in terms of differences from these default values
 // Note: Relies on unspecified values evaluating to 0
-static map<string, string> make_test_defaults() {
-    map<string, string> config;
+inline std::map<std::string, std::string> make_test_defaults() {
+   std::map<std::string, std::string> config;
    config["MAX_ENTITIES"] = "1000";
    config["RANDOM_INCR"] = "1";
 
@@ -38,16 +39,8 @@ static map<string, string> make_test_defaults() {
    config["FOLLOW_THRESHOLDS"] = "1 10 20 2000 3000";
    config["FOLLOW_THRESHOLDS_PROBABILITIES"] = "0.1 0.3 0.5 0.7 0.9";
 
-
    config["N_ENTITIES"] = "10";
    return config;
 }
 
-SUITE(SanityChecks) {
-    const int TEST_SEED = 0xDEADBEEF;
-
-    TEST(simple_config) {
-        map<string, string> CONFIG = make_test_defaults();
-        analyze_network(CONFIG, TEST_SEED);
-    }
-}
+#endif

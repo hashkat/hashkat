@@ -1,4 +1,4 @@
-#include <dependencies/UnitTest++.h>
+#include "tests.h"
 
 #include "../CircularBuffer.h"
 

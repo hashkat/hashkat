@@ -1,11 +1,10 @@
-#include <dependencies/UnitTest++.h>
+#include "tests.h"
 
 #include "../MemPoolVector.h"
 
 const int MEMPOOL_THRESHOLD = 96;
 
 static const int FIRST_ALLOC = FOLLOW_SET_GROWTH_MULTIPLE * MEMPOOL_THRESHOLD;
-
 
 SUITE(MemPoolVectors) {
 	static void check_content(MemPoolVector<MEMPOOL_THRESHOLD>& f) {

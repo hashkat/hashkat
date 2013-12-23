@@ -6,6 +6,6 @@
 #include "dependencies/mtwist.h"
 
 // Run a network simulation using the given input file's parameters
-void analyze_network(std::map<std::string, std::string>& config, int seed);
+void simulate_network(std::map<std::string, std::string>& config, int seed);
 
 #endif

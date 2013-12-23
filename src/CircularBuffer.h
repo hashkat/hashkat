@@ -15,6 +15,10 @@
 //** **Creating** templates has a cost model that is only beneficial if you understand them
 //** completely & they are definitely not an easy feature to learn.
 //** **Using** them however is very easy and convenient.
+
+//** HOWEVER -- I strongly recommend eventually learning simple usages of templates because
+//** they are an *excellent code reuse tool*
+
 //** Usage comments follow.
 
 // CircularBuffer implements a buffer that deletes the oldest element

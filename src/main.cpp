@@ -47,9 +47,8 @@ static bool has_arg(int argc, char** argv, std::string test) {
 	return false;
 }
 
-
-// Defined in tests/main.cpp
-int test_main(int argc, char** argv); //** we avoid creating a header by pasting the prototype here:
+//** we avoid creating a header by pasting the 'test_main' prototype here:
+int test_main(int argc, char** argv); // Defined in tests/main.cpp
 
 int main(int argc, char** argv) {
     std::map<string, string> config;
@@ -65,7 +64,7 @@ int main(int argc, char** argv) {
 			time(&t);
 			seed = (int)t;
 		}
-        analyze_network(config, seed);
+        simulate_network(config, seed);
 		printf("Analysis took %.2fms.\n", t.get_microseconds() / 1000.0);
 		return 0;
     }

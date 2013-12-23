@@ -96,13 +96,13 @@ struct EntityType {
     std::vector<int> entity_list;
 };
 
-// different entity types
+// The different entity types
 enum {
-    UT_NORMAL_INDEX = 0,
-    UT_CELEB_INDEX = 1,
-    UT_BOT_INDEX = 2,
-    UT_ORG_INDEX = 3,
-    UT_AMOUNT = 4
+    ET_NORMAL_INDEX = 0,
+    ET_CELEB_INDEX = 1,
+    ET_BOT_INDEX = 2,
+    ET_ORG_INDEX = 3,
+    ET_AMOUNT = 4
 };
 
 #endif
