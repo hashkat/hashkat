@@ -5,6 +5,7 @@ DATA_vs_TIME
 cmake_install.cmake
 main
 src/main
+POSITIONS*
 *.a
 *.dat
 *.xyz

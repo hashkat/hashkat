@@ -2,15 +2,15 @@
 ; ADJUST YOUR VARIABLES ACCORDINGLY FOR THE NETWORK
 ;#################################################
 
-MAX_ENTITIES = 10001
+MAX_ENTITIES = 1000
 RANDOM_INCR = 1              ; -> 0 - increment by 1/R_total
 			     ; -> 1 - increment by random time based on R_total
 
 T_FINAL = 100000.0           ; ->  1/10 year 
 
-R_ADD = 0.0                 ; ->    1 / hour
+R_ADD = 1.0                 ; ->    1 / hour
 			     ; twitter users / 8 years
-R_FOLLOW  = 0.0138           ; ->    1/week
+R_FOLLOW  = 0.138           ; ->    1/week
 R_TWEET = 0.00278          ; ->      2/day
 R_RETWEET = 0.00278
 
@@ -30,7 +30,7 @@ R_FOLLOW_ORG = 15
 TWEET_THRESHOLDS = 1 10 20 2000 3000
 RETWEET_THRESHOLDS = 1 10 20 2000 3000
 
-FOLLOW_METHOD = 0              ; 1 - preferential follow
+FOLLOW_METHOD = 2              ; 1 - preferential follow
 			     ; 0 - random follow
 
 FOLLOW_THRESHOLDS = 0 10 50 100 200 
@@ -49,5 +49,5 @@ OUTPUT_SUMMARY = 1 ; Output summary such as number of tweets etc in a file calle
 VISUALIZE = 1
 
 ; Initial network contents:
-N_ENTITIES = 1000              ; -> number of initial users
+N_ENTITIES = 1              ; -> number of initial users
 

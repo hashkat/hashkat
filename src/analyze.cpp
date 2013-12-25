@@ -172,11 +172,11 @@ struct Analyzer {
 
 		// normalize the different entity probabilities
         double add_total = 0, follow_total = 0;
-        for (int i = 0; i < N_ENTITIES; i++) {
+        for (int i = 0; i < ET_AMOUNT; i++) {
             add_total += entity_types[i].R_ADD;
             follow_total += entity_types[i].R_FOLLOW;
         }
-        for (int i = 0; i < N_ENTITIES; i++) {
+        for (int i = 0; i < ET_AMOUNT; i++) {
             entity_types[i].R_ADD /= add_total;
             entity_types[i].R_FOLLOW /= follow_total;
         }
@@ -364,7 +364,7 @@ struct Analyzer {
 		// if we want to follow by entity class
 		if (FOLLOW_METHOD == 2) {
 			/* search through the probabilities for each entity and find the right bin to land in */
-			for (int i = 0; i < N_ENTITIES; i++) {
+			for (int i = 0; i < ET_AMOUNT; i++) {
 				if (rand_num <= entity_types[i].R_FOLLOW) {
 					// make sure we're not pulling from an empty list
 					if (entity_types[i].entity_list.size() != 0) {

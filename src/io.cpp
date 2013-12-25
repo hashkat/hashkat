@@ -11,14 +11,38 @@ using namespace std;
 // edgelist created for R (analysis) and python executable (drawing)
 void output_position(Network& network, int n_entities) {
 	
-	ofstream output;
+	        ofstream output;
+	        output.open("POSITIONS.gexf");
+	        output << "<gexf version=\"1.2\">\n"
+	                        << "<meta lastmodifieddate=\"2013-11-21\">\n"
+	                        << "<creator> Kevin Ryczko </creator>\n"
+	                        << "<description> Social Network Visualization </description>\n"
+	                        << "</meta>\n"
+	                        << "<graph mode=\"static\" defaultedgetype=\"directed\">\n"
+	                        << "<nodes>\n";
+	        for (int i = 0; i < n_entities; i++) {
+	                Entity& p = network[i];
+	                output << "<node id=\"" << i << "\" label=\"" << p.entity << "\" />\n";
+	        }
+	        output << "</nodes>\n" << "<edges>\n";
+	        for (int i = 0; i < n_entities; i++) {
+	                for (int j = 0; j < network.n_following(i); j++) {
+	                        output << "<edge id=\"" << i << "\" source=\"" << i
+	                                        << "\" target=\"" << network.follow_i(i, j) << "\"/>\n";
+	                }
+	        }
+	        output << "</edges>\n" << "</graph>\n" << "</gexf>";
+	        output.close();
+	
+	
+	/*ofstream output;
 	output.open("network.dat");
 	for (int i = 0; i < n_entities; i ++) {
 		for (int j = 0; j < network.n_followers(i); j ++) {
 			output << i << "\t" << network.following_i(i,j) << "\n";
 		}
 	}
-	output.close();
+	output.close();*/
 } 
 
 const int POUT_CAP = 1000; // AD: Rough work
