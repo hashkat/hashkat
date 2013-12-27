@@ -36,7 +36,7 @@ function handle_flag() {
 if [[ -e /proc/cpuinfo ]] ; then
     cores=$(grep -c ^processor /proc/cpuinfo)
 else
-    cores=4 
+    cores=4 # Guess -- may want to manually edit if above fails.
 fi
 
 

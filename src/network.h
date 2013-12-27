@@ -62,6 +62,7 @@ struct Network {
     Entity& operator[](int index) { //** This allows us to index our Network struct as if it were an array.
         return entities[index];
     }
+
     void preallocate(int n) {
         max_entities = n;
         entities = (Entity*)malloc(sizeof(Entity) * max_entities);
@@ -72,6 +73,15 @@ struct Network {
         for (int i = 0; i < max_entities; i++) {
             // Placement new due to use of malloc
             new (&entities[i]) Entity();
+        }
+    }
+
+    // Cleanup method. Remove duplicates from everyone's follow lists.
+    void perform_cleanup() {
+        for (int i = 0 ; i < max_entities; i++) {
+            Entity& e = entities[i];
+            e.follow_set.sort_and_remove_duplicates();
+            e.follower_set.sort_and_remove_duplicates();
         }
     }
 
@@ -88,6 +98,7 @@ struct Network {
     int following_i(int id, int follow_index) {
         return entities[id].follower_set[follow_index];
     }
+
 };
 
 struct EntityType {

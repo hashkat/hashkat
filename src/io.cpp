@@ -53,7 +53,7 @@ const int POUT_CAP = 1000; // AD: Rough work
  can be plotted using gnuplot. */
 
 void POUT(Network& network, int MAX_ENTITIES, int N_ENTITIES, int N_FOLLOWS) {
-	int N_FOLLOW_DATA[POUT_CAP + 1];
+    vector<int> N_FOLLOW_DATA(POUT_CAP + 1);
 	for (int i = 0; i <= POUT_CAP; i++) {
 		N_FOLLOW_DATA[i] = 0;
 	}
@@ -105,14 +105,17 @@ int factorial(int input_number) {
  output file that can be plotted using gnuplot. */
 
 void PIN(Network& network, int MAX_ENTITIES, int N_ENTITIES, double r_follow_norm) {
-	int N_FOLLOWERS_DATA[N_ENTITIES];
+    // Ensure follow-lists do not contain duplicates.
+    network.perform_cleanup();
+
+    vector<int> N_FOLLOWERS_DATA(N_ENTITIES);
 	for (int i = 0; i < N_ENTITIES; i++) {
-		N_FOLLOWERS_DATA[i] = 0;
+		N_FOLLOWERS_DATA.at(i) = 0;
 	}
 
 	for (int entity = 0; entity < N_ENTITIES; entity++) {
 		for (int i = 0; i < network.n_following(entity); i++) {
-			N_FOLLOWERS_DATA[network.follow_i(entity, i)]++;
+			N_FOLLOWERS_DATA.at(network.follow_i(entity, i))++;
 		}
 	}
 	ofstream output;
@@ -120,20 +123,23 @@ void PIN(Network& network, int MAX_ENTITIES, int N_ENTITIES, double r_follow_nor
 
 	output << "##### THIS IS THE P_IN(K) FUNCTION DATA #####\n\n";
 	output << "#N_FOLLOWERS\tP(K)\tln(N_FOLLOWERS)\tln(P(K))\n";
-	int N_FOLLOWERS_DISTRO[MAX_ENTITIES];
+	vector<int> N_FOLLOWERS_DISTRO(MAX_ENTITIES);
 	for (int i = 0; i < MAX_ENTITIES; i++) {
-		N_FOLLOWERS_DISTRO[i] = 0;
+		N_FOLLOWERS_DISTRO.at(i) = 0;
 	}
 
 	for (int i = 0; i < N_ENTITIES; i++) {
 		Entity& p = network[i];
-		N_FOLLOWERS_DISTRO[N_FOLLOWERS_DATA[i]]++;
+		int n_followers = N_FOLLOWERS_DATA.at(i);
+		DEBUG_CHECK(n_followers < N_FOLLOWERS_DISTRO.size(),
+		        "More followers than 'MAX_ENTITIES'. (Did you clean-up the follow lists?)");
+		N_FOLLOWERS_DISTRO.at(N_FOLLOWERS_DATA.at(i))++;
 	}
 	for (int i = 1; i < MAX_ENTITIES; i++) {
-		output << i - 0.5 << "\t" << N_FOLLOWERS_DISTRO[i] / double(N_ENTITIES)
+		output << i - 0.5 << "\t" << N_FOLLOWERS_DISTRO.at(i) / double(N_ENTITIES)
 				<< "\t" << log(i) << "\t"
 				<< log(N_FOLLOWERS_DISTRO[i] / double(N_ENTITIES)) << "\n";
-		output << i + 0.5 << "\t" << N_FOLLOWERS_DISTRO[i] / double(N_ENTITIES)
+		output << i + 0.5 << "\t" << N_FOLLOWERS_DISTRO.at(i) / double(N_ENTITIES)
 				<< "\t" << "\n";
 	}
 	output.close();
@@ -141,11 +147,12 @@ void PIN(Network& network, int MAX_ENTITIES, int N_ENTITIES, double r_follow_nor
 
 
 static void category_print(ofstream& output, const char* name, CategoryGroup& group) {
-    output << name << ": ";
+    output << name << " | ";
     for (int i = 0; i < group.categories.size(); i ++) {
         Category& c = group.categories[i];
-        output << c.entities.size() << " at " << c.threshold << '\t';
+        output << c.entities.size() << " at " << c.threshold << "|\t";
     }
+    output << '\n';
 }
 
 void Categories_Check(CategoryGroup& tweeting, CategoryGroup& following, CategoryGroup& retweeting) {
@@ -159,11 +166,11 @@ void Categories_Check(CategoryGroup& tweeting, CategoryGroup& following, Categor
 
 // this function is simply the P_OUT and P_IN function added together
 void Cumulative_Distro(Network& network, int MAX_ENTITIES, int N_ENTITIES, int N_FOLLOWS) {
-	int cumulative_distro[N_ENTITIES];
-	int n_followers_data[N_ENTITIES];
-	int n_followers_distro[N_ENTITIES];
-	int n_following_distro[N_ENTITIES];
-	
+	vector<int> cumulative_distro(N_ENTITIES);
+	vector<int> n_followers_data(N_ENTITIES);
+	vector<int> n_followers_distro(N_ENTITIES);
+	vector<int> n_following_distro(N_ENTITIES);
+
 	for (int i = 0; i < N_ENTITIES; i ++) {
 		cumulative_distro[i] = 0;
 		n_followers_distro[i] = 0;
@@ -198,9 +205,9 @@ void Cumulative_Distro(Network& network, int MAX_ENTITIES, int N_ENTITIES, int N
 void entity_statistics(Network& network, int n_follows, int n_entities, int max_entities, EntityType* entitytype) {
 	ofstream output;
 	output.open("entity_percentages.dat");
-	int entity_counts[max_entities];
-	int average_followers_from_network[max_entities];
-	int average_followers_from_lists[max_entities];
+	vector<int> entity_counts(max_entities);
+	vector<int> average_followers_from_network(max_entities);
+	vector<int> average_followers_from_lists(max_entities);
 	for (int i = 0 ; i < max_entities; i ++) {
 		entity_counts[i] = 0;
 		average_followers_from_network[i] = 0;

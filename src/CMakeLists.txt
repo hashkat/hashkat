@@ -1,19 +1,19 @@
 # Compile everything under 'dependencies'
 add_subdirectory(dependencies)
 
-add_definitions(-Wuninitialized -std=c++98)# -fsanitize=address)
+add_definitions(-Wuninitialized -std=c++98)
 #SET (CMAKE_EXE_LINKER_FLAGS -fsanitize=address)
 #SET (CMAKE_MODULE_LINKER_FLAGS -fsanitize=address)
 
 # Find source files
 aux_source_directory(
 	"." 
-	socialnodes_src
+	networksim_src
 )
 
 aux_source_directory(
 	"tests" 
-	socialnodes_tests
+	networksim_tests
 )
 
 aux_source_directory(
@@ -27,6 +27,13 @@ set_source_files_properties(
 	PROPERTIES LANGUAGE CXX
 )
 
+set_source_files_properties(
+        ${networksim_src}
+        PROPERTIES COMPILE_FLAGS 
+        "-pedantic-errors -Wno-long-long"
+)
+
+
 aux_source_directory(
 	"dependencies/lcommon" 
 	lcommon_src
@@ -39,8 +46,8 @@ include_directories(".")
 # Add compilation target
 add_executable( 
 	main 
-	${socialnodes_src} 
-	${socialnodes_tests} 
+	${networksim_src} 
+	${networksim_tests} 
 	${lcommon_src} 
 	${dependencies_src}
 )

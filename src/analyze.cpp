@@ -48,7 +48,7 @@ struct Analyzer {
 	// categories for tweeting, following, retweeting, and age
     CategoryGroup tweet_ranks;
 	CategoryGroup follow_ranks;
-	vector <double> follow_probabilities;
+	vector <double> follow_probabilities, updating_follow_probabilities;
 	vector <int> last_entity_ID;
 	CategoryGroup retweet_ranks;
 
@@ -328,11 +328,11 @@ struct Analyzer {
 			// find a random entity within [0:number of entities - 1]	
 			entity_to_follow = rand_int(n_entities);
 		}
-		
+
 		// if we want to use a preferential follow method
 		if (FOLLOW_METHOD == 1) {
 			double sum_of_weights = 0;
-			double updating_follow_probabilities[follow_probabilities.size()];
+			updating_follow_probabilities.resize(follow_probabilities.size());
 			/* search through the probabilites for each threshold and find
 			   the right bin to land in */
 			for (int i = 0; i < follow_probabilities.size(); i ++){

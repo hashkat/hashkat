@@ -16,9 +16,14 @@ inline void panic(const char* msg) {
     exit(2); // Return with error code
 }
 
+//** AD: This is what I was talking about with giving the compiler hints about the path the a conditional will take.
+// Usage: if (likely(rarely failing checks) ) { ... } else { .. error routine ... }
+#define LIKELY(x) __builtin_expect(!!(x), 1)
+#define UNLIKELY(x) __builtin_expect(!!(x), 0)
+
 // Checks that are turned off in release mode:
 #define DEBUG_CHECK(expr, msg) \
-    if (!(expr)) { \
+    if (LIKELY(!(expr))) { \
         printf("FAILED CHECK: %s (%s:%d)\n", msg, __FILE__, __LINE__); \
         throw msg; \
     }
@@ -46,10 +51,5 @@ inline double parse_num(std::string s) {
     string_converter >> ret; //** Will adapt to the appropriate type! also like 'cin' would.
     return ret;
 }
-
-//** AD: This is what I was talking about with giving the compiler hints about the path the a conditional will take.
-// Usage: if (likely(rarely failing checks) ) { ... } else { .. error routine ... }
-#define LIKELY(x) __builtin_expect(!!(x), 1)
-#define UNLIKELY(x) __builtin_expect(!!(x), 0)
 
 #endif
