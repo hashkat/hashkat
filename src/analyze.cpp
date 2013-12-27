@@ -453,13 +453,14 @@ struct Analyzer {
 	}
 	
 	void action_unfollow(int entity_id) {
-		Entity& e1 = network[entity_id];
-		int unfollowing_location = rand_int(network.n_followers(entity_id));
-		Entity& e2 = network[unfollowing_location];
-		FollowerList& f1 = e1.follower_set;
-		FollowList& f2 = e2.follow_set;
+	    // Broken, commented out -- AD
+//		Entity& e1 = network[entity_id];
+//		int unfollowing_location = rand_int(network.n_followers(entity_id));
+//		Entity& e2 = network[unfollowing_location];
+//		FollowerList& f1 = e1.follower_set;
+//		FollowList& f2 = e2.follow_set;
 		// remove unfollowing location from follower_list
-		// remove entity id from follow_list	
+		// remove entity id from follow_list
 		
 	}
 

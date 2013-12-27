@@ -278,7 +278,7 @@ void tweets_distribution(Network& network, int n_users) {
 		}
 	}
 	cout << max_tweets << "\t" << max_retweets << "\n";
-	vector<int> tweets_distro (max_tweets), retweets_distro (max_retweets);
+	vector<int> tweets_distro (max_tweets + 1), retweets_distro (max_retweets + 1);
 	for (int i = 0; i < max_tweets; i ++) {
 		tweets_distro[i] = 0;
 	}
@@ -287,16 +287,16 @@ void tweets_distribution(Network& network, int n_users) {
 	}
 	for (int i = 0; i < n_users; i ++) {
 		Entity& e = network[i];
-		tweets_distro[e.n_tweets] ++;
-		retweets_distro[e.n_retweets] ++;	
+		tweets_distro.at(e.n_tweets) ++;
+		retweets_distro.at(e.n_retweets) ++;
 	}
 	tweet_output << "# n_tweets\tdistro\n\n";
 	for (int i = 0; i < max_tweets; i ++) {
-		tweet_output << i << "\t" << tweets_distro[i] / tweets_sum << "\n";
+		tweet_output << i << "\t" << tweets_distro.at(i) / tweets_sum << "\n";
 	}
 	retweet_output << "# n_retweets\tdistro\n\n";
 	for (int i = 0; i < max_retweets; i ++) {
-		retweet_output << i << "\t" << retweets_distro[i] / retweets_sum << "\n";
+		retweet_output << i << "\t" << retweets_distro.at(i) / retweets_sum << "\n";
 	}
 	tweet_output.close();
 	retweet_output.close();
