@@ -257,3 +257,47 @@ void entity_statistics(Network& network, int n_follows, int n_entities, int max_
 	}
 	output.close();
 }
+
+// function to see the distribution of tweets and retweets
+void tweets_distribution(Network& network, int n_users) {
+	ofstream tweet_output, retweet_output;
+	tweet_output.open("tweets_distro.dat");
+	retweet_output.open("retweets_distro.dat");
+	
+	int max_tweets = 0, max_retweets = 0;
+	double tweets_sum = 0, retweets_sum = 0;
+	for (int i = 0; i < n_users; i ++) {
+		Entity& e = network[i];
+		tweets_sum += e.n_tweets;
+		retweets_sum += e.n_retweets;
+		if (e.n_tweets > max_tweets) {
+			max_tweets = e.n_tweets;
+		}
+		if (e.n_retweets > max_retweets) {
+			max_retweets = e.n_retweets;
+		}
+	}
+	cout << max_tweets << "\t" << max_retweets << "\n";
+	vector<int> tweets_distro (max_tweets), retweets_distro (max_retweets);
+	for (int i = 0; i < max_tweets; i ++) {
+		tweets_distro[i] = 0;
+	}
+	for (int i = 0; i < max_retweets; i ++) {
+		retweets_distro[i] = 0;
+	}
+	for (int i = 0; i < n_users; i ++) {
+		Entity& e = network[i];
+		tweets_distro[e.n_tweets] ++;
+		retweets_distro[e.n_retweets] ++;	
+	}
+	tweet_output << "# n_tweets\tdistro\n\n";
+	for (int i = 0; i < max_tweets; i ++) {
+		tweet_output << i << "\t" << tweets_distro[i] / tweets_sum << "\n";
+	}
+	retweet_output << "# n_retweets\tdistro\n\n";
+	for (int i = 0; i < max_retweets; i ++) {
+		retweet_output << i << "\t" << retweets_distro[i] / retweets_sum << "\n";
+	}
+	tweet_output.close();
+	retweet_output.close();
+}

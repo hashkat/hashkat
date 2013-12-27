@@ -104,6 +104,7 @@ struct Network {
 struct EntityType {
     double R_ADD; // When a entity is added, how likely is it that it is this entity type ?
     double R_FOLLOW; // When a entity is followed, how likely is it that it is this entity type ?
+	double followback_probability;
     std::vector<int> entity_list;
 };
 

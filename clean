@@ -1,1 +1,1 @@
-rm Categories_* P_* DATA_* cumul* network.dat 
+rm *.dat POS* DATA_* 

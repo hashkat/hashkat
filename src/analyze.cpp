@@ -271,6 +271,8 @@ struct Analyzer {
 		Categories_Check(tweet_ranks, follow_ranks, retweet_ranks);
 		}
 		Cumulative_Distro(network, MAX_ENTITIES, N_ENTITIES, N_FOLLOWS);
+		tweets_distribution(network, N_ENTITIES);
+		
 		//entity_statistics(network, N_FOLLOWS,N_ENTITIES, N_ENTITIES, entity_entities);
 		
         cout << "Analysis complete!\n";
@@ -434,6 +436,7 @@ struct Analyzer {
 				audience.retweets.add(retweet);
 			}
 		}
+		retweetee.n_retweets ++;
 		N_RETWEETS ++;
 	}
 	
