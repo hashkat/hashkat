@@ -416,6 +416,9 @@ struct Analyzer {
 		// increase the number of tweets the entity had by one
 		e.n_tweets++;
 		tweet_ranks.categorize(entity, e.n_tweets);
+		if (e.n_tweets > 1000) {
+			action_unfollow(entity);
+		}
 	}
 	
 	void action_retweet(int entity, double time_of_retweet) {
@@ -432,6 +435,29 @@ struct Analyzer {
 			}
 		}
 		N_RETWEETS ++;
+	}
+	
+	void action_followback(int follower, int followee) {
+		// now the followee will follow the follower back
+		if (handle_follow(followee, follower)) {
+				Entity& target = network[follower];
+				follow_ranks.categorize(follower, target.follower_set.size);
+				N_FOLLOWS++; // We were able to add the follow; almost always the case.
+		} 
+		else {
+            return;
+        }
+	}
+	
+	void action_unfollow(int entity_id) {
+		Entity& e1 = network[entity_id];
+		int unfollowing_location = rand_int(network.n_followers(entity_id));
+		Entity& e2 = network[unfollowing_location];
+		FollowerList& f1 = e1.follower_set;
+		FollowList& f2 = e2.follow_set;
+		// remove unfollowing location from follower_list
+		// remove entity id from follow_list	
+		
 	}
 
     // Performs one step of the analysis routine.
