@@ -253,9 +253,9 @@ struct Analyzer {
             } else {
                 cout << "\nSimulation Completed: desired entity amount reached\n";
             }
+            cout << "\nCreating analysis files -- press ctrl-c multiple times to abort ... \n";
         }
 
-        cout << "\nCreating analysis files -- press ctrl-c multiple times to abort ... \n";
         // Depending on our INFILE/configuration, we may output various analysis
         if (config["P_OUT"]) {
             POUT(network, MAX_ENTITIES, N_ENTITIES, N_FOLLOWS);
@@ -266,16 +266,23 @@ struct Analyzer {
         if (config["VISUALIZE"]) {
             output_position(network, N_ENTITIES);
         }
-		/* ADD FUNCTIONS THAT RUN AFTER NETWORK IS BUILT HERE */
-		if (BARABASI != 1) {
-		Categories_Check(tweet_ranks, follow_ranks, retweet_ranks);
-		}
-		Cumulative_Distro(network, MAX_ENTITIES, N_ENTITIES, N_FOLLOWS);
-		tweets_distribution(network, N_ENTITIES);
+        /* ADD FUNCTIONS THAT RUN AFTER NETWORK IS BUILT HERE */
+        if (BARABASI != 1) {
+            Categories_Check(tweet_ranks, follow_ranks, retweet_ranks);
+        }
+        if (config["ANALYZE_CULMULATIVE"]) {
+            Cumulative_Distro(network, MAX_ENTITIES, N_ENTITIES, N_FOLLOWS);
+        }
+
+        if (config["ANALYZE_TWEETS"]) {
+            tweets_distribution(network, N_ENTITIES);
+        }
 		
 		//entity_statistics(network, N_FOLLOWS,N_ENTITIES, N_ENTITIES, entity_entities);
-		
-        cout << "Analysis complete!\n";
+
+        if (!config["SILENT"]) {
+            cout << "Analysis complete!\n";
+        }
 //        DATA_TIME.close();
     }
 

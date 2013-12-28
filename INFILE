@@ -51,3 +51,5 @@ VISUALIZE = 1
 ; Initial network contents:
 N_ENTITIES = 1              ; -> number of initial users
 
+ANALYZE_CULMULATIVE = 1
+ANALYZE_TWEETS = 1

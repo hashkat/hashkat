@@ -277,7 +277,6 @@ void tweets_distribution(Network& network, int n_users) {
 			max_retweets = e.n_retweets;
 		}
 	}
-	cout << max_tweets << "\t" << max_retweets << "\n";
 	vector<int> tweets_distro (max_tweets + 1), retweets_distro (max_retweets + 1);
 	for (int i = 0; i < max_tweets; i ++) {
 		tweets_distro[i] = 0;
