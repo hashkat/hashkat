@@ -51,9 +51,10 @@ struct Entity {
 
 struct Network {
     Entity* entities; //** This is a pointer - used to create a dynamic array
-    int max_entities;
+    int n_entities, max_entities;
     Network() {
         entities = NULL;
+        n_entities = 0;
         max_entities = 0;
     }
     ~Network() { //** This defines how to clean-up our Network object; we free the dynamic array

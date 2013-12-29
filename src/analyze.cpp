@@ -10,7 +10,6 @@
 #include "analyze.h"
 #include "util.h"
 #include "MemPoolVector.h"
-#include "io.h"
 #include "network.h"
 
 #include <signal.h>
@@ -19,7 +18,8 @@ using namespace std;
 
 static const double ZEROTOL = 1e-16; // enough precision for really really low add rate
 
-static volatile int CTRL_C_ATTEMPTS = 0;
+volatile int CTRL_C_ATTEMPTS = 0;
+
 static const int CTRL_C_ATTEMPTS_TO_ABORT = 4;
 // Handler for SIGINT -- sent by Ctrl-C on command-line. Allows us to stop our program gracefully!
 static void ctrl_C_handler(int __dummy) {
@@ -42,20 +42,26 @@ struct Analyzer {
     //** These can be accessed by any of the below functions
     //** This is the principle convenience of encapsulating all the related functions
     //** In this struct -- greatly reduce tedious parameter-passing
+
+    InfileConfig& config;
+
+    // struct for the entity classes, see network.h for specifications
+    EntityType* entity_types;
+
     // The network state
-    Network network;
-    MemPoolVectorGrower follow_set_grower;
+    Network& network;
+    MemPoolVectorGrower& follow_set_grower;
 	// categories for tweeting, following, retweeting, and age
-    CategoryGroup tweet_ranks;
-	CategoryGroup follow_ranks;
+    CategoryGroup& tweet_ranks;
+	CategoryGroup& follow_ranks;
+	CategoryGroup& retweet_ranks;
+
 	vector <double> follow_probabilities, updating_follow_probabilities;
 	vector <int> last_entity_ID;
-	CategoryGroup retweet_ranks;
 
     /* Mersenne-twister random number generator */
     MTwist random_gen_state;
     /* Analysis parameters */
-    int N_ENTITIES;
     int MAX_ENTITIES;
     int VERBOSE;
     int RANDOM_INCR;
@@ -73,13 +79,8 @@ struct Analyzer {
 	// these values may get large, hence the long int
     long int N_STEPS, N_FOLLOWS, N_TWEETS, N_RETWEETS;
 
-	// struct for the entity classes, see network.h for specifications
-    EntityType entity_types[ET_AMOUNT];
-
     ofstream DATA_TIME; // Output file to plot data
 
-    map<string, string> raw_config; // Contents of INFILE
-    map<string, double> config; // Contents of INFILE
     // Cached config variables, for performance:
     bool config_output_summary_stats;
 
@@ -89,14 +90,14 @@ struct Analyzer {
 
     /* Initialization and loading of configuration.
      * Reads configuration from the given input file. */
-    Analyzer(map<string, string>& conf , int seed) :
-            random_gen_state(seed) {
-    	raw_config = conf;
-    	// For convenience, have all numbers preparsed as if they were numbers (errors result in 0):
-    	for (map<string, string>::iterator it = conf.begin(); it != conf.end(); ++it) {
-    	    config[it->first] = parse_num(it->second);
-    	}
-        N_ENTITIES = config["N_ENTITIES"];
+    Analyzer(AnalysisState& state, int seed) :
+        //** Here, we initialize REFERENCES to the various analysis pieces.
+        //** The only way to initialize references is through this construct -- called an 'initializer list'.
+        //** This ensures that updates are witnessed in the caller's AnalysisState object.
+            network(state.network), follow_set_grower(state.follow_set_grower),
+            tweet_ranks(state.tweet_ranks), follow_ranks(state.follow_ranks),
+            retweet_ranks(state.retweet_ranks), config(state.config), random_gen_state(seed) {
+        network.n_entities = config["N_ENTITIES"];
         MAX_ENTITIES = config["MAX_ENTITIES"];
         VERBOSE = config["VERBOSE"];
         RANDOM_INCR = config["RANDOM_INCR"];
@@ -120,10 +121,16 @@ struct Analyzer {
 		set_initial_entities();
 		set_follow_rank_probabilities();
     }
+    // make sure any initial entities are given a title based on the respective probabilities
+    void set_initial_entities() {
+        for (int i = 0; i < config["N_ENTITIES"]; i++) {
+             action_create_entity(0.0, i);
+        }
+    }
 	// this is a helper function for the function below, essentially it takes the thresholds
 	// and sets up the categories based on the INFILE
     void initialize_category(CategoryGroup& group, const char* parameter) {
-    	vector<double> thresholds = parse_numlist(raw_config[parameter]);
+    	vector<double> thresholds = parse_numlist(config.raw_get(parameter));
 
 		for (int i = 0; i < thresholds.size(); i++) {
 			group.categories.push_back(Category(thresholds[i]));
@@ -150,7 +157,7 @@ struct Analyzer {
 			}
 		}
 		else {
-			vector<double> set_probabilities = parse_numlist(raw_config["FOLLOW_THRESHOLDS_PROBABILITIES"]);
+			vector<double> set_probabilities = parse_numlist(config.raw_get("FOLLOW_THRESHOLDS_PROBABILITIES"));
 			for (int i = 0; i < set_probabilities.size(); i ++) {
 				Category& C = follow_ranks.categories[i];
 				follow_probabilities.push_back(set_probabilities[i]);
@@ -189,19 +196,14 @@ struct Analyzer {
         double R_ADD_INI = config["R_ADD"];
 		double R_RETWEET_INI = config["R_RETWEET"];
 
-        R_TOTAL = R_ADD_INI + R_FOLLOW_INI * N_ENTITIES + R_TWEET_INI * N_ENTITIES + R_RETWEET_INI * N_ENTITIES;
+		int N = network.n_entities;
+
+        R_TOTAL = R_ADD_INI + R_FOLLOW_INI * N + R_TWEET_INI * N + R_RETWEET_INI * N;
         //Normalize the rates
         R_ADD_NORM = R_ADD_INI / R_TOTAL;
-        R_FOLLOW_NORM = R_FOLLOW_INI * N_ENTITIES / R_TOTAL;
-        R_TWEET_NORM = R_TWEET_INI * N_ENTITIES / R_TOTAL;
-		R_RETWEET_NORM = R_RETWEET_INI * N_ENTITIES / R_TOTAL;
-    }
-	
-	// make sure any initial entities are given a title based on the respective probabilities
-    void set_initial_entities() {
-        for (int i = 0; i < N_ENTITIES; i ++) {
-             action_create_entity(0.0, i);
-        }
+        R_FOLLOW_NORM = R_FOLLOW_INI * N / R_TOTAL;
+        R_TWEET_NORM = R_TWEET_INI * N / R_TOTAL;
+		R_RETWEET_NORM = R_RETWEET_INI * N / R_TOTAL;
     }
 
     /***************************************************************************
@@ -225,9 +227,9 @@ struct Analyzer {
     // Entry point to all analysis:
     /* Conceptually this is the true entry point to our program,
      * after the messy configuration and allocation is done. */
-    void main() {
+    double main() {
         double end_time = run_network_simulation();
-        output_network_statistics(end_time);
+        return end_time;
     }
 
     // ROOT ANALYSIS ROUTINE
@@ -235,55 +237,10 @@ struct Analyzer {
     double run_network_simulation() {
         ctrl_C_handler_install();
         double time = 0;
-        while ( LIKELY(time < T_FINAL && N_ENTITIES < MAX_ENTITIES && CTRL_C_ATTEMPTS == 0) ) {
+        while ( LIKELY(time < T_FINAL && network.n_entities < MAX_ENTITIES && CTRL_C_ATTEMPTS == 0) ) {
         	time = step_analysis(time);
         }
         return time;
-
-    }
-    // ROOT OUTPUT ROUTINE
-    /* After 'analyze', print the results of the computations. */
-    void output_network_statistics(double end_time) {
-        // Print why program stopped
-        if (!config["SILENT"]) {
-            if (CTRL_C_ATTEMPTS > 0) {
-                cout << "\nSimulation (Gracefully) Interrupted: ctrl-c was pressed\n";
-            } else if (end_time >= T_FINAL) {
-                cout << "\nSimulation Completed: desired duration reached\n";
-            } else {
-                cout << "\nSimulation Completed: desired entity amount reached\n";
-            }
-            cout << "\nCreating analysis files -- press ctrl-c multiple times to abort ... \n";
-        }
-
-        // Depending on our INFILE/configuration, we may output various analysis
-        if (config["P_OUT"]) {
-            POUT(network, MAX_ENTITIES, N_ENTITIES, N_FOLLOWS);
-        }
-        if (config["P_IN"]) {
-            PIN(network, MAX_ENTITIES, N_ENTITIES, R_FOLLOW_NORM);
-        }		
-        if (config["VISUALIZE"]) {
-            output_position(network, N_ENTITIES);
-        }
-        /* ADD FUNCTIONS THAT RUN AFTER NETWORK IS BUILT HERE */
-        if (BARABASI != 1) {
-            Categories_Check(tweet_ranks, follow_ranks, retweet_ranks);
-        }
-        if (config["ANALYZE_CULMULATIVE"]) {
-            Cumulative_Distro(network, MAX_ENTITIES, N_ENTITIES, N_FOLLOWS);
-        }
-
-        if (config["ANALYZE_TWEETS"]) {
-            tweets_distribution(network, N_ENTITIES);
-        }
-		
-		//entity_statistics(network, N_FOLLOWS,N_ENTITIES, N_ENTITIES, entity_entities);
-
-        if (!config["SILENT"]) {
-            cout << "Analysis complete!\n";
-        }
-//        DATA_TIME.close();
     }
 
     void step_time(double& TIME, int n_entities) {
@@ -313,18 +270,19 @@ struct Analyzer {
 		Entity& e = network[index];
 		e.creation_time = creation_time;
 		double rand_num = rand_real_not0();
-		for (int i = 0; i < N_ENTITIES; i++) {
-			if (rand_num <= entity_types[i].R_ADD) {
-				e.entity = i;
-                entity_types[i].entity_list.push_back(index);
+		for (int et = 0; et < ET_AMOUNT; et++) {
+			if (rand_num <= entity_types[et].R_ADD) {
+				e.entity = et;
+                entity_types[et].entity_list.push_back(index);
 				follow_ranks.categorize(index, e.follower_set.size);
 				break;
 			}
-			rand_num -= entity_types[i].R_ADD;
+			rand_num -= entity_types[et].R_ADD;
 		}
 		if (BARABASI == 1){
 			action_follow_entity(index, index, creation_time);
 		}
+		network.n_entities++;
 	}
 
     /* decides which entity to follow based on the rates in the INFILE */
@@ -476,18 +434,18 @@ struct Analyzer {
     double step_analysis(double TIME) {
         double u_1 = rand_real_not1(); // get the first number with-in [0,1).
 
+        int N = network.n_entities;
+
         // DECIDE WHAT TO DO:
         if (u_1 - (R_ADD_NORM) <= ZEROTOL) {
 			// If we find ourselves in the add entity chuck of our cumulative function:
-            action_create_entity(TIME, N_ENTITIES);
-			N_ENTITIES ++;
-            //TODO: call to function to decide which entity to add
+            action_create_entity(TIME, N);
         } else if (u_1 - (R_ADD_NORM + R_FOLLOW_NORM) <= ZEROTOL) {
         	// If we find ourselves in the bond node chunk of our cumulative function:
             double val = u_1 - R_ADD_NORM;
-			int entity = val / (R_FOLLOW_NORM / N_ENTITIES); // this finds the entity
+			int entity = val / (R_FOLLOW_NORM / N); // this finds the entity
 			Entity& p = network[entity];
-			action_follow_entity(entity, N_ENTITIES, TIME);
+			action_follow_entity(entity, N, TIME);
         } else if (u_1 - (R_ADD_NORM + R_FOLLOW_NORM + R_TWEET_NORM) <= ZEROTOL) {
         	// If we find ourselves in the tweet chuck of the cumulative function:
             N_TWEETS++;
@@ -496,13 +454,13 @@ struct Analyzer {
             action_tweet(entity);
         } else if (u_1 - (R_ADD_NORM + R_FOLLOW_NORM + R_TWEET_NORM + R_RETWEET_NORM) <= ZEROTOL ) {
 			double val = u_1 - (R_ADD_NORM + R_FOLLOW_NORM + R_TWEET_NORM);
-			int entity = val / (R_RETWEET_NORM / N_ENTITIES);
+			int entity = val / (R_RETWEET_NORM / N);
 			action_retweet(entity, TIME);
         } else {
             cout << "Disaster, event out of bounds" << endl;
         }
 
-        step_time(TIME, N_ENTITIES);
+        step_time(TIME, N);
         N_STEPS++;
         //update the rates if n_entities has changed
         set_rates();
@@ -540,8 +498,12 @@ struct Analyzer {
     }
 
     void output_summary_stats(ostream& stream, double TIME) {
-    	stream  << fixed << setprecision(2) << TIME << "\t\t" << N_ENTITIES
-                << "\t\t" << N_FOLLOWS << "\t\t" << N_TWEETS << "\t\t" << N_RETWEETS << "\t\n";
+        stream << fixed << setprecision(2)
+                << TIME << "\t\t"
+                << network.n_entities << "\t\t"
+                << N_FOLLOWS << "\t\t"
+                << N_TWEETS << "\t\t"
+                << N_RETWEETS << "\t\n";
     }
 
     void output_summary_stats(double TIME) {
@@ -575,7 +537,7 @@ struct Analyzer {
 };
 
 // Run a network simulation using the given input file's parameters
-void simulate_network(map<string, string>& config, int seed) {
-    Analyzer analyzer(config, seed);
+void simulate_network(AnalysisState& analysis_state, int seed) {
+    Analyzer analyzer(analysis_state, seed);
     analyzer.main();
 }

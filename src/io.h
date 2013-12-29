@@ -3,11 +3,15 @@
 
 #include <fstream>
 
+#include "analyze.h"
 #include "network.h"
 
 void POUT(Network& network, int MAX_ENTITIES, int N_ENTITIES, int N_FOLLOWS);
 void PIN(Network& network, int MAX_ENTITIES, int N_ENTITIES, double R_FOLLOW_NORM);
-void output_position(Network& network, int n_entities);
+void output_position(Network& network, int end_time);
+
+void output_network_statistics(AnalysisState& state);
+
 int factorial(int input_number);
 void Categories_Check(CategoryGroup& tweeting, CategoryGroup& following, CategoryGroup& retweeting);
 void Cumulative_Distro(Network& network, int MAX_ENTITIES, int N_ENTITIES, int N_FOLLOWS);

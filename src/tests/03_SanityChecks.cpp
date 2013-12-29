@@ -1,5 +1,7 @@
 #include "tests.h"
 
+#include "../config.h"
+#include "../network.h"
 #include "../analyze.h"
 
 using namespace std;
@@ -11,7 +13,7 @@ SUITE(SanityChecks) {
     const int TEST_SEED = 0xDEADBEEF;
 
     TEST(simple_config) {
-        map<string, string> CONFIG = make_test_defaults();
-        simulate_network(CONFIG, TEST_SEED);
+        AnalysisState state(make_test_defaults());
+        simulate_network(state, TEST_SEED);
     }
 }

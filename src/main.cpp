@@ -9,7 +9,10 @@
 #include "dependencies/UnitTest++.h"
 #include "dependencies/lcommon.h"
 
+#include "config.h"
+#include "network.h"
 #include "analyze.h"
+#include "io.h"
 
 using namespace std;
 
@@ -51,11 +54,11 @@ static bool has_arg(int argc, char** argv, std::string test) {
 int test_main(int argc, char** argv); // Defined in tests/main.cpp
 
 int main(int argc, char** argv) {
-    std::map<string, string> config;
+    map<string, string> config_contents;
 	if (has_arg(argc, argv, "--tests")) {
 		// running tests:
 		return test_main(argc, argv);
-	} else if (load_config(config, "INFILE")) {
+	} else if (load_config(config_contents, "INFILE")) {
 		// or running analysis:
 		Timer t;
 		int seed = 1;
@@ -64,8 +67,14 @@ int main(int argc, char** argv) {
 			time(&t);
 			seed = (int)t;
 		}
-        simulate_network(config, seed);
+
+		AnalysisState analysis_state(config_contents);
+
+        simulate_network(analysis_state, seed);
+        output_network_statistics(analysis_state);
+
 		printf("Analysis took %.2fms.\n", t.get_microseconds() / 1000.0);
+
 		return 0;
     }
 
