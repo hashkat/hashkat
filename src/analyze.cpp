@@ -97,6 +97,9 @@ struct Analyzer {
             network(state.network), follow_set_grower(state.follow_set_grower),
             tweet_ranks(state.tweet_ranks), follow_ranks(state.follow_ranks),
             retweet_ranks(state.retweet_ranks), config(state.config), random_gen_state(seed) {
+        // Make sure 'entity_types' also references into our AnalysisState object.
+        entity_types = state.entity_types;
+
         network.n_entities = config["N_ENTITIES"];
         MAX_ENTITIES = config["MAX_ENTITIES"];
         VERBOSE = config["VERBOSE"];
