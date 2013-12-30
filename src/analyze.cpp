@@ -76,6 +76,7 @@ struct Analyzer {
     double R_TWEET_NORM;
 	double R_RETWEET_NORM;
 
+	int n_months;
 	// these values may get large, hence the long int
     long int N_STEPS, N_FOLLOWS, N_TWEETS, N_RETWEETS;
 
@@ -110,8 +111,8 @@ struct Analyzer {
         T_FINAL = config["T_FINAL"];
         config_output_summary_stats = (config["OUTPUT_SUMMARY"] != 0);
 
-        N_STEPS = 0, N_FOLLOWS = 0, N_TWEETS = 0, N_RETWEETS = 0;
-        set_rates();
+        N_STEPS = 0, N_FOLLOWS = 0, N_TWEETS = 0, N_RETWEETS = 0, n_months = 0;
+        set_rates(0.0);
 
         // The following allocates a memory chunk proportional to MAX_ENTITIES:
         network.preallocate(MAX_ENTITIES);
@@ -193,21 +194,45 @@ struct Analyzer {
     }
 
 	// after every iteration, make sure the rates are updated accordingly
-    void set_rates() {
+	vector<double> r_follow;
+	vector<double> r_tweet;
+	vector<double> r_retweet;
+	vector<int> entity_cap;
+    void set_rates(double TIME) {
         double R_FOLLOW_INI = config["R_FOLLOW"];
         double R_TWEET_INI = config["R_TWEET"];
         double R_ADD_INI = config["R_ADD"];
 		double R_RETWEET_INI = config["R_RETWEET"];
-
+		
 		int N = network.n_entities;
-
-        R_TOTAL = R_ADD_INI + R_FOLLOW_INI * N + R_TWEET_INI * N + R_RETWEET_INI * N;
+		if (int(TIME) % (24*60*30) == 0 && n_months*24*60*30 == int(TIME)) {
+			entity_cap.push_back(N);
+			cout << N << "\n";
+			r_follow.push_back(R_FOLLOW_INI /*constant rate*/);
+			r_tweet.push_back(R_TWEET_INI /*constant rate */);
+			r_retweet.push_back(R_RETWEET_INI /*constant rate */);
+			n_months ++;			
+		}
+		
+		int new_entities = N - entity_cap[n_months - 1];
+		
+		double overall_follow_rate = new_entities * R_FOLLOW_INI, 
+			   overall_tweet_rate = new_entities * R_TWEET_INI,
+			   overall_retweet_rate = new_entities * R_RETWEET_INI;
+		for (int i = 0; i < n_months; i ++) {
+			overall_follow_rate += r_follow[i] * entity_cap[i];
+			overall_tweet_rate += r_tweet[i] * entity_cap[i];
+			overall_retweet_rate += r_retweet[i] * entity_cap[i];
+		}
+		R_TOTAL = R_ADD_INI + overall_follow_rate + overall_tweet_rate + overall_retweet_rate; 
         //Normalize the rates
         R_ADD_NORM = R_ADD_INI / R_TOTAL;
-        R_FOLLOW_NORM = R_FOLLOW_INI * N / R_TOTAL;
-        R_TWEET_NORM = R_TWEET_INI * N / R_TOTAL;
-		R_RETWEET_NORM = R_RETWEET_INI * N / R_TOTAL;
+        
+		R_FOLLOW_NORM = overall_follow_rate / R_TOTAL;
+		R_TWEET_NORM = overall_tweet_rate / R_TOTAL;
+		R_RETWEET_NORM = overall_retweet_rate / R_TOTAL;
     }
+	
 
     /***************************************************************************
      * Entity mutation routines
@@ -466,7 +491,7 @@ struct Analyzer {
         step_time(TIME, N);
         N_STEPS++;
         //update the rates if n_entities has changed
-        set_rates();
+        set_rates(TIME);
 
 #ifdef SLOW_DEBUG_CHECKS
         static int i = 0;
