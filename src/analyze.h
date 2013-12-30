@@ -22,9 +22,9 @@ struct AnalysisState {
     // The full contents of the simulated network.
     Network network;
     // Various categorizations of users.
-    CategoryGroup tweet_ranks;
-    CategoryGroup follow_ranks;
-    CategoryGroup retweet_ranks;
+    CategoryGrouper tweet_ranks;
+    CategoryGrouper follow_ranks;
+    CategoryGrouper retweet_ranks;
 
     // struct for the entity classes, see network.h for specifications
     EntityType entity_types[ET_AMOUNT];

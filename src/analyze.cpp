@@ -41,7 +41,7 @@ struct Analyzer {
 
     //** These can be accessed by any of the below functions
     //** This is the principle convenience of encapsulating all the related functions
-    //** In this struct -- greatly reduce tedious parameter-passing
+    //** in this struct -- greatly reduce tedious parameter-passing
 
     InfileConfig& config;
 
@@ -52,9 +52,9 @@ struct Analyzer {
     Network& network;
     MemPoolVectorGrower& follow_set_grower;
 	// categories for tweeting, following, retweeting, and age
-    CategoryGroup& tweet_ranks;
-	CategoryGroup& follow_ranks;
-	CategoryGroup& retweet_ranks;
+    CategoryGrouper& tweet_ranks;
+	CategoryGrouper& follow_ranks;
+	CategoryGrouper& retweet_ranks;
 
 	vector <double> follow_probabilities, updating_follow_probabilities;
 	vector <int> last_entity_ID;
@@ -132,14 +132,14 @@ struct Analyzer {
     }
 	// this is a helper function for the function below, essentially it takes the thresholds
 	// and sets up the categories based on the INFILE
-    void initialize_category(CategoryGroup& group, const char* parameter) {
+    void initialize_category(CategoryGrouper& group, const char* parameter) {
     	vector<double> thresholds = parse_numlist(config.raw_get(parameter));
 
 		for (int i = 0; i < thresholds.size(); i++) {
-			group.categories.push_back(Category(thresholds[i]));
+			group.categories.push_back(CategoryEntityList(thresholds[i]));
 		}
 		// Sentinel of sorts, swallows everything else:
-		group.categories.push_back(Category(HUGE_VAL));
+		group.categories.push_back(CategoryEntityList(HUGE_VAL));
     }
 	
 	// calls above function for the different category types
@@ -156,13 +156,13 @@ struct Analyzer {
 		if (BARABASI == 1){
 			for (int i = 1; i < MAX_ENTITIES; i ++) {
 				follow_probabilities.push_back(i);
-				follow_ranks.categories.push_back(Category(i-1));
+				follow_ranks.categories.push_back(CategoryEntityList(i-1));
 			}
 		}
 		else {
 			vector<double> set_probabilities = parse_numlist(config.raw_get("FOLLOW_THRESHOLDS_PROBABILITIES"));
 			for (int i = 0; i < set_probabilities.size(); i ++) {
-				Category& C = follow_ranks.categories[i];
+				CategoryEntityList& C = follow_ranks.categories[i];
 				follow_probabilities.push_back(set_probabilities[i]);
 			}
 		}
@@ -307,18 +307,18 @@ struct Analyzer {
 			   the right bin to land in */
 			for (int i = 0; i < follow_probabilities.size(); i ++){
 				// look at each category
-				Category& C = follow_ranks.categories[i];
+				CategoryEntityList& C = follow_ranks.categories[i];
 				updating_follow_probabilities[i] = follow_probabilities[i]*C.entities.size();
 				sum_of_weights += C.entities.size()*follow_probabilities[i];				
 			}
 			for (int i = 0; i < follow_probabilities.size(); i ++ ){
-				Category& C = follow_ranks.categories[i];
+				CategoryEntityList& C = follow_ranks.categories[i];
 	 		   	updating_follow_probabilities[i] /= sum_of_weights;
 			} 
 			for (int i = 0; i < follow_probabilities.size(); i ++) {
 				if (rand_num - updating_follow_probabilities[i] <= ZEROTOL) {
 					// point to the category we landed in
-					Category& C = follow_ranks.categories[i];
+					CategoryEntityList& C = follow_ranks.categories[i];
 					// make sure we're not pulling a entity from an empty list
 					if (C.entities.size() != 0) {
 						// pull a random entity from whatever bin we landed in and break so we do not continue this loop
@@ -386,9 +386,9 @@ struct Analyzer {
 		// increase the number of tweets the entity had by one
 		e.n_tweets++;
 		tweet_ranks.categorize(entity, e.n_tweets);
-		if (e.n_tweets > 1000) {
-			action_unfollow(entity);
-		}
+//		if (e.n_tweets > 1000) {
+//			action_unfollow(entity);
+//		}
 	}
 	
 	void action_retweet(int entity, double time_of_retweet) {
