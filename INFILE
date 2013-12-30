@@ -2,7 +2,7 @@
 ; ADJUST YOUR VARIABLES ACCORDINGLY FOR THE NETWORK
 ;#################################################
 
-MAX_ENTITIES = 120000
+MAX_ENTITIES = 100000
 RANDOM_INCR = 1              ; -> 0 - increment by 1/R_total
 			     ; -> 1 - increment by random time based on R_total
 

@@ -4,16 +4,18 @@
 #include <cmath>
 #include <iostream>
 
+#include "dependencies/mtwist.h"
 #include "analyze.h"
 #include "io.h"
 #include "util.h"
 
 using namespace std;
 
+
 // ROOT OUTPUT ROUTINE
 /* After 'analyze', print the results of the computations. */
 void output_network_statistics(AnalysisState& state) {
-    Network& network = state.network;
+	Network& network = state.network;
     InfileConfig& config = state.config;
 
     // Print why program stopped
@@ -59,8 +61,12 @@ void output_network_statistics(AnalysisState& state) {
     }
 //        DATA_TIME.close();
 }
+MTwist random_gen_state;
+int rand_int(int max) {
+    return random_gen_state.genrand_int32() % max;
+}
 
-// edgelist created for R (analysis) and python executable (drawing)
+// edgelist created for R (analysis) and python executable (drawing) and gephi outputfile
 void output_position(Network& network, int n_entities) {
 	ofstream output1;
 	output1.open("POSITIONS.gexf");
@@ -71,20 +77,51 @@ void output_position(Network& network, int n_entities) {
             << "</meta>\n"
             << "<graph mode=\"static\" defaultedgetype=\"directed\">\n"
             << "<nodes>\n";
-	for (int i = 0; i < n_entities; i++) {
-	        Entity& p = network[i];
-	        output1 << "<node id=\"" << i << "\" label=\"" << p.entity << "\" />\n";
+	int count = 0;
+	if (n_entities <= 10000) {
+		for (int i = 0; i < n_entities; i++) {
+		        Entity& p = network[i];
+		        output1 << "<node id=\"" << i << "\" label=\"" << p.entity << "\" />\n";
+		}
+		output1 << "</nodes>\n" << "<edges>\n";
+		for (int i = 0; i < n_entities; i++) {
+		        for (int j = 0; j < network.n_following(i); j++) {
+		                output1 << "<edge id=\"" << count << "\" source=\"" << i
+		                                << "\" target=\"" << network.follow_i(i, j) << "\"/>\n";
+		        		count ++;
+				}
+		}
+		output1 << "</edges>\n" << "</graph>\n" << "</gexf>";
+		output1.close();
 	}
-	output1 << "</nodes>\n" << "<edges>\n";
-	for (int i = 0; i < n_entities; i++) {
-	        for (int j = 0; j < network.n_following(i); j++) {
-	                output1 << "<edge id=\"" << i << "\" source=\"" << i
-	                                << "\" target=\"" << network.follow_i(i, j) << "\"/>\n";
-	        }
-	}
-	output1 << "</edges>\n" << "</graph>\n" << "</gexf>";
-	output1.close();
 	
+	else {
+		int fraction_users = 10000;
+		vector<int> user_ids (fraction_users); 
+		for (int i = 0; i < fraction_users; i ++) {
+			user_ids[i] = rand_int(n_entities);
+		}
+	
+		for (int i = 0; i < fraction_users; i++) {
+		        Entity& p = network[user_ids[i]];
+		        output1 << "<node id=\"" << user_ids[i] << "\" label=\"" << p.entity << "\" />\n";
+				for (int j = 0; j < network.n_following(user_ids[i]); j++) {
+					Entity& p1 = network[network.follow_i(user_ids[i],j)];
+			        output1 << "<node id=\"" << network.follow_i(user_ids[i],j) << "\" label=\"" << p1.entity << " - followed"<< "\" />\n";
+				}
+		}
+		output1 << "</nodes>\n" << "<edges>\n";
+		int count = 0;
+		for (int i = 0; i < fraction_users; i++) {
+		        for (int j = 0; j < network.n_following(user_ids[i]); j++) {
+		                output1 << "<edge id=\"" << count << "\" source=\"" << user_ids[i]
+		                                << "\" target=\"" << network.follow_i(user_ids[i], j) << "\"/>\n";
+		        		count ++;
+				}
+		}
+		output1 << "</edges>\n" << "</graph>\n" << "</gexf>";
+		output1.close();
+	}
 	
 	ofstream output;
 	output.open("network.dat");

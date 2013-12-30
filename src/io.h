@@ -17,5 +17,5 @@ void Categories_Check(CategoryGroup& tweeting, CategoryGroup& following, Categor
 void Cumulative_Distro(Network& network, int MAX_ENTITIES, int N_ENTITIES, int N_FOLLOWS);
 void entity_statistics(Network& network,int n_follows, int n_entities, int max_entities, EntityType* entitytype);
 void tweets_distribution(Network& network, int n_users);
-
+int rand_int(int max);
 #endif
