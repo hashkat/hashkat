@@ -112,7 +112,7 @@ struct Analyzer {
         config_output_summary_stats = (config["OUTPUT_SUMMARY"] != 0);
 
         N_STEPS = 0, N_FOLLOWS = 0, N_TWEETS = 0, N_RETWEETS = 0, n_months = 0;
-        set_rates(0.0);
+        set_rates(/*0.0*/);
 
         // The following allocates a memory chunk proportional to MAX_ENTITIES:
         network.preallocate(MAX_ENTITIES);

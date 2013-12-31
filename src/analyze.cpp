@@ -316,8 +316,10 @@ struct Analyzer {
 		if (BARABASI == 1){
 			action_follow_entity(index, index, creation_time);
 		}
+		if (creation_time != 0) {
 		network.n_entities++;
-	}
+		}
+    }
 
     /* decides which entity to follow based on the rates in the INFILE */
 	void action_follow_entity(int entity, int n_entities, double time_of_follow) {
