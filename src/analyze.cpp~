@@ -209,9 +209,9 @@ struct Analyzer {
 
 	R_TOTAL = R_ADD_INI + R_FOLLOW_INI * N + R_TWEET_INI * N + R_RETWEET_INI * N;
 	R_ADD_NORM = R_ADD_INI / R_TOTAL;
-	R_FOLLOW_NORM = R_FOLLOW_INI * N  / R_TOTAL;
-	R_TWEET_NORM = R_TWEET_INI * N / R_TOTAL;
-	R_RETWEET_NORM = R_RETWEET_NORM * N/ R_TOTAL;
+	R_FOLLOW_NORM = R_FOLLOW_INI / R_TOTAL;
+	R_TWEET_NORM = R_TWEET_INI / R_TOTAL;
+	R_RETWEET_NORM = R_RETWEET_NORM / R_TOTAL;
 	//	int approx_month = 24*60*30;
 	//	int n_months = TIME / approx_month;
 	//	if (n_months > entity_cap.size() - 1 || TIME == 0) {

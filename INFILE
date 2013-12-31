@@ -6,11 +6,11 @@ MAX_ENTITIES = 100000
 RANDOM_INCR = 1              ; -> 0 - increment by 1/R_total
 			     ; -> 1 - increment by random time based on R_total
 
-T_FINAL = 1000.0           ; ->  1/10 year 
+T_FINAL = 90000.0           ; ->  1/10 year 
 
-R_ADD = 1.0                 ; ->    1 / hour
+R_ADD = 0.0                 ; ->    1 / hour
 			     ; twitter users / 8 years
-R_FOLLOW  = 0.00138           ; ->    1/week
+R_FOLLOW  = 0.0           ; ->    1/week
 R_TWEET = 0.00278          ; ->      2/day
 R_RETWEET = 0.00278
 
@@ -49,7 +49,7 @@ OUTPUT_SUMMARY = 1 ; Output summary such as number of tweets etc in a file calle
 VISUALIZE = 1
 
 ; Initial network contents:
-N_ENTITIES = 1              ; -> number of initial users
+N_ENTITIES = 1000              ; -> number of initial users
 
 ANALYZE_CULMULATIVE = 1
 ANALYZE_TWEETS = 1
