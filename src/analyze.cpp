@@ -112,7 +112,7 @@ struct Analyzer {
         config_output_summary_stats = (config["OUTPUT_SUMMARY"] != 0);
 
         N_STEPS = 0, N_FOLLOWS = 0, N_TWEETS = 0, N_RETWEETS = 0, n_months = 0;
-        set_rates(0.0);
+        set_rates(/*0.0*/);
 
         // The following allocates a memory chunk proportional to MAX_ENTITIES:
         network.preallocate(MAX_ENTITIES);
@@ -194,12 +194,12 @@ struct Analyzer {
     }
 
 	// after every iteration, make sure the rates are updated accordingly
-	vector<double> r_follow;
+	/*vector<double> r_follow;
 	vector<double> r_tweet;
 	vector<double> r_retweet;
 	vector<double> r_add;
-	vector<int> entity_cap;
-    void set_rates(double TIME) {
+	vector<int> entity_cap;*/
+    void set_rates(/*double TIME*/) {
         double R_FOLLOW_INI = config["R_FOLLOW"];
         double R_TWEET_INI = config["R_TWEET"];
         double R_ADD_INI = config["R_ADD"];
@@ -211,7 +211,7 @@ struct Analyzer {
 	R_ADD_NORM = R_ADD_INI / R_TOTAL;
 	R_FOLLOW_NORM = R_FOLLOW_INI * N  / R_TOTAL;
 	R_TWEET_NORM = R_TWEET_INI * N / R_TOTAL;
-	R_RETWEET_NORM = R_RETWEET_NORM * N/ R_TOTAL;
+	R_RETWEET_NORM = R_RETWEET_NORM * N / R_TOTAL;
 	//	int approx_month = 24*60*30;
 	//	int n_months = TIME / approx_month;
 	//	if (n_months > entity_cap.size() - 1 || TIME == 0) {
@@ -497,7 +497,7 @@ struct Analyzer {
         step_time(TIME, N);
         N_STEPS++;
         //update the rates if n_entities has changed
-        set_rates(TIME);
+        set_rates(/*TIME*/);
 
 #ifdef SLOW_DEBUG_CHECKS
         static int i = 0;
