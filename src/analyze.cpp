@@ -220,7 +220,7 @@ struct Analyzer {
 			entity_cap.push_front(N);
 
 			// CHANGE YOUR RATES ACCORDINGLY - they are constant right now
-			double change_follow_rate = R_FOLLOW_INI + R_FOLLOW_INI*n_months;
+			double change_follow_rate = R_FOLLOW_INI + R_FOLLOW_INI*(n_months);
 			double change_tweet_rate = R_TWEET_INI;
 			double change_retweet_rate = R_RETWEET_INI;
 			double change_add_rate = R_ADD_INI;
@@ -246,10 +246,10 @@ struct Analyzer {
 			overall_follow_rate = new_entities * r_follow[0], 
 			overall_tweet_rate = new_entities * r_tweet[0],
 			overall_retweet_rate = new_entities * r_retweet[0];
-			for (int i = 1; i < n_months; i ++) {
-				overall_follow_rate += r_follow[i] * (entity_cap[i] - entity_cap[i - 1]);
-				overall_tweet_rate += r_tweet[i] * (entity_cap[i] - entity_cap[i - 1]);
-				overall_retweet_rate += r_retweet[i] * (entity_cap[i] - entity_cap[i - 1]);
+			for (int i = 1; i <= n_months; i ++) {
+				overall_follow_rate += r_follow[i] * (entity_cap[i - 1] - entity_cap[i]);
+				overall_tweet_rate += r_tweet[i] * (entity_cap[i - 1] - entity_cap[i]);
+				overall_retweet_rate += r_retweet[i] * (entity_cap[i - 1] - entity_cap[i]);
 			}
 		}
 		R_TOTAL = R_ADD_INI + overall_follow_rate + overall_tweet_rate + overall_retweet_rate; 
