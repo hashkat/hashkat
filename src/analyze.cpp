@@ -235,19 +235,22 @@ struct Analyzer {
 			r_add.push_back(change_add_rate);
 		}
 		int new_entities;
+		double overall_follow_rate, overall_tweet_rate, overall_retweet_rate;
 		if (R_ADD_INI == 0) {
-		    new_entities = N;
+		    overall_follow_rate = N * r_follow[n_months];
+			overall_tweet_rate = N * r_tweet[n_months];
+			overall_retweet_rate = N * r_retweet[n_months];
 		}
 		else {
-		    new_entities = N - entity_cap[n_months];
-		}
-		double overall_follow_rate = new_entities * r_follow[0], 
-			   overall_tweet_rate = new_entities * r_tweet[0],
-			   overall_retweet_rate = new_entities * r_retweet[0];
-		for (int i = 1; i < n_months; i ++) {
-			overall_follow_rate += r_follow[i] * (entity_cap[i] - entity_cap[i - 1]);
-			overall_tweet_rate += r_tweet[i] * (entity_cap[i] - entity_cap[i - 1]);
-			overall_retweet_rate += r_retweet[i] * (entity_cap[i] - entity_cap[i - 1]);
+			new_entities = N - entity_cap[n_months];
+			overall_follow_rate = new_entities * r_follow[0], 
+			overall_tweet_rate = new_entities * r_tweet[0],
+			overall_retweet_rate = new_entities * r_retweet[0];
+			for (int i = 1; i < n_months; i ++) {
+				overall_follow_rate += r_follow[i] * (entity_cap[i] - entity_cap[i - 1]);
+				overall_tweet_rate += r_tweet[i] * (entity_cap[i] - entity_cap[i - 1]);
+				overall_retweet_rate += r_retweet[i] * (entity_cap[i] - entity_cap[i - 1]);
+			}
 		}
 		R_TOTAL = R_ADD_INI + overall_follow_rate + overall_tweet_rate + overall_retweet_rate; 
         	//Normalize the rates
