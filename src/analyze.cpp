@@ -207,12 +207,6 @@ struct Analyzer {
 	double R_RETWEET_INI = config["R_RETWEET"];
 	int N = network.n_entities;
 
-	/*R_TOTAL = R_ADD_INI + R_FOLLOW_INI * N + R_TWEET_INI * N + R_RETWEET_INI * N;
-	R_ADD_NORM = R_ADD_INI / R_TOTAL;
-	R_FOLLOW_NORM = R_FOLLOW_INI * N  / R_TOTAL;
-	R_TWEET_NORM = R_TWEET_INI * N / R_TOTAL;
-	R_RETWEET_NORM = R_RETWEET_NORM * N / R_TOTAL;*/
-
 		int approx_month = 24*60*30;
 		int n_months = TIME / approx_month;
 		if (n_months > entity_cap.size() - 1 || TIME == 0) {
@@ -220,11 +214,10 @@ struct Analyzer {
 			entity_cap.push_front(N);
 
 			// CHANGE YOUR RATES ACCORDINGLY - they are constant right now
-			double change_follow_rate = R_FOLLOW_INI + R_FOLLOW_INI*(n_months);
+			double change_follow_rate = R_FOLLOW_INI;
 			double change_tweet_rate = R_TWEET_INI;
 			double change_retweet_rate = R_RETWEET_INI;
 			double change_add_rate = R_ADD_INI;
-			cout << "Follow rate = " << change_follow_rate << "\n";
 			DEBUG_CHECK(change_follow_rate >= 0, "The follow rate can't be < 0");
 			DEBUG_CHECK(change_tweet_rate >= 0, "The tweet rate can't be < 0");
 			DEBUG_CHECK(change_retweet_rate >= 0, "The retweet rate can't be < 0");
@@ -491,28 +484,55 @@ struct Analyzer {
     // Takes old time, returns new time
     double step_analysis(double TIME) {
         double u_1 = rand_real_not0(); // get the first number with-in [0,1).
-
+		double rand_num = rand_real_not0();
         int N = network.n_entities;
+		int entity = -1;
+		double r_follow_sum = 0, r_tweet_sum = 0, r_retweet_sum = 0;
 
         // DECIDE WHAT TO DO:
         if (u_1 - (R_ADD_NORM) <= ZEROTOL) {
 			// If we find ourselves in the add entity chuck of our cumulative function:
             action_create_entity(TIME, N);
         } else if (u_1 - (R_ADD_NORM + R_FOLLOW_NORM) <= ZEROTOL) {
-        	// If we find ourselves in the bond node chunk of our cumulative function:
-            double val = u_1 - R_ADD_NORM;
-			int entity = val / (R_FOLLOW_NORM / N); // this finds the entity
+			// The follow event
+			for (int i = 0; i < r_follow.size(); i ++) {
+				r_follow_sum += r_follow[i];
+			}
+			for (int i = 0; i < r_follow.size(); i ++) {
+				if (rand_num <= (r_follow[i]/r_follow_sum) ) {
+					entity = rand_int(entity_cap[i]); // find the entity based on changing rates
+					break;
+				}
+				rand_num -= (r_follow[i]/r_follow_sum);
+			}
 			Entity& p = network[entity];
+			DEBUG_CHECK(entity != -1, "Entity following can not be -1");
 			action_follow_entity(entity, N, TIME);
         } else if (u_1 - (R_ADD_NORM + R_FOLLOW_NORM + R_TWEET_NORM) <= ZEROTOL) {
-        	// If we find ourselves in the tweet chuck of the cumulative function:
-            N_TWEETS++;
-            // User to send the tweet:
-            int entity = rand_int(network.max_entities);
+			// The tweet event
+			for (int i = 0; i < r_tweet.size(); i ++) {
+				r_tweet_sum += r_tweet[i];
+			}
+			for (int i = 0; i < r_tweet.size(); i ++) {
+				if (rand_num <= (r_tweet[i]/r_tweet_sum) ) {
+					entity = rand_int(entity_cap[i]); // find the entity based on changing rates
+					break;
+				}
+				rand_num -= (r_tweet[i]/r_tweet_sum);
+			}
+			N_TWEETS++;
             action_tweet(entity);
         } else if (u_1 - (R_ADD_NORM + R_FOLLOW_NORM + R_TWEET_NORM + R_RETWEET_NORM) <= ZEROTOL ) {
-			double val = u_1 - (R_ADD_NORM + R_FOLLOW_NORM + R_TWEET_NORM);
-			int entity = val / (R_RETWEET_NORM / N);
+			for (int i = 0; i < r_retweet.size(); i ++) {
+				r_retweet_sum += r_retweet[i];
+			}
+			for (int i = 0; i < r_retweet.size(); i ++) {
+				if (rand_num <= (r_retweet[i]/r_retweet_sum) ) {
+					entity = rand_int(entity_cap[i]); // find the entity based on changing rates
+					break;
+				}
+				rand_num -= (r_retweet[i]/r_retweet_sum);
+			}
 			action_retweet(entity, TIME);
         } else {
             cout << "Disaster, event out of bounds" << endl;
