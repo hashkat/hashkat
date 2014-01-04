@@ -22,7 +22,7 @@
 #include "config.h"
 
 // Above a certain threshold,
-template <int MEMPOOL_THRESHOLD>
+template <typename V, int MEMPOOL_THRESHOLD>
 struct MemPoolVector {
     MemPoolVector() {
         size = 0;
@@ -31,14 +31,7 @@ struct MemPoolVector {
         copy(NULL, 0);
     }
 
-    int size, capacity;
-    int* location;
-
-	// Define buffer1 as an array of fixed-length 'MEMPOOL_THRESHOLD'
-    // When size <= MEMPOOL_THRESHOLD, location points to this array
-    int buffer1[MEMPOOL_THRESHOLD]; // (Short-object-optimization)
-
-    void copy(int* source, int len) {
+    void copy(V* source, int len) {
         for (int i = 0; i < len; i++) {
         	location[i] = source[i];
         }
@@ -49,7 +42,7 @@ struct MemPoolVector {
 
     void sort_and_remove_duplicates() {
     	std::sort(location, location + size);
-    	int* new_end = std::unique(location, location + size);
+    	V* new_end = std::unique(location, location + size);
     	size = (new_end - location); // Where we start minus the new end
     }
 
@@ -65,22 +58,31 @@ struct MemPoolVector {
     		DEBUG_CHECK(location[i] != -1, "Invalid follow content");
     	}
     }
+
+    int size, capacity;
+    V* location;
+	// Define buffer1 as an array of fixed-length 'MEMPOOL_THRESHOLD'
+    // When size <= MEMPOOL_THRESHOLD, location points to this array
+    V buffer1[MEMPOOL_THRESHOLD]; // (Short-object-optimization)
 };
 
+template <typename V>
 struct DeletedMemPoolVector {
 	// A buffer in our pool that overgrew its boundary, and can be used by another entity.
-	int* location;
+    V* location;
 	int capacity;
-	DeletedMemPoolVector(int* loc, int cap) {
+	DeletedMemPoolVector(V* loc, int cap) {
 		location = loc, capacity = cap;
 	}
 };
 
-typedef std::vector<DeletedMemPoolVector> DeletedList;
 
 /* Handles growing follow sets, and allocating buffers when size > MEMPOOL_THRESHOLD. */
+template <typename V>
 struct MemPoolVectorGrower {
-	int* memory;
+    typedef std::vector< DeletedMemPoolVector<V> > DeletedList;
+
+	V* memory;
 	int used, capacity;
 	DeletedList deletions;
 
@@ -100,7 +102,7 @@ struct MemPoolVectorGrower {
 	// If we had to grow AND we have run out of allocated memory, we do nothing and return false.
 	// Otherwise, we return true.
     template <int MEMPOOL_THRESHOLD>
-	bool add_if_possible(MemPoolVector<MEMPOOL_THRESHOLD>& f, int element) {
+	bool add_if_possible(MemPoolVector<V, MEMPOOL_THRESHOLD>& f, int element) {
     	DEBUG_CHECK(f.size <= f.capacity, "Logic error, array should have been grown!");
 		if (f.size == f.capacity) {
 			if (!grow_follow_set(f)) {
@@ -116,13 +118,14 @@ struct MemPoolVectorGrower {
 	}
 private:
 	template <int MEMPOOL_THRESHOLD>
-	bool grow_follow_set(MemPoolVector<MEMPOOL_THRESHOLD>& f) {
+	bool grow_follow_set(MemPoolVector<V, MEMPOOL_THRESHOLD>& f) {
 		static std::map<void*, void*> allocs;
 
 		int new_capacity = f.capacity * FOLLOW_SET_GROWTH_MULTIPLE;
-		int* new_location = NULL;
+		V* new_location = NULL;
 		// Search recycled buffers
-		for (DeletedList::iterator candidate = deletions.begin(); candidate != deletions.end(); ++candidate) {
+		typename DeletedList::iterator candidate = deletions.begin();
+		for (; candidate != deletions.end(); ++candidate) {
 			// Compatible deleted buffer, recycle it:
 			if (candidate->capacity == new_capacity) {
 				new_location = candidate->location;
@@ -143,12 +146,12 @@ private:
 		if (f.location != f.buffer1) {
 			// If we are not pointing to our embedded 'buffer1', we must be pointing within the 'memory' array
 			DEBUG_CHECK(within_range(f.location, memory, memory + capacity), "Logic error");
-			deletions.push_back(DeletedMemPoolVector(f.location, f.capacity));
+			deletions.push_back(DeletedMemPoolVector<V>(f.location, f.capacity));
 #ifdef SLOW_DEBUG_CHECKS
 			allocs[f.location] = NULL;
 #endif
 		}
-		int* old_loc = f.location;
+		V* old_loc = f.location;
 		f.location = new_location;
 		f.capacity = new_capacity;
 		f.copy(old_loc, f.size);
@@ -159,7 +162,7 @@ private:
 #endif
 		return true;
 	}
-	int* allocate(int cap) {
+	V* allocate(int cap) {
 		if (used + cap > capacity) {
 			return NULL; // Not enough room!
 		}
