@@ -19,7 +19,7 @@ struct AnalysisState {
     InfileConfig config;
 
     // Note, 'MemPoolVectorGrower' is required to be in same scope as network, otherwise we will have undefined memory accesses.
-    MemPoolVectorGrower follow_set_grower;
+    MemPoolVectorGrower<int> follow_set_grower;
     // The full contents of the simulated network.
     Network network;
     // Various categorizations of users.

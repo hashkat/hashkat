@@ -51,7 +51,7 @@ struct Analyzer {
 
     // The network state
     Network& network;
-    MemPoolVectorGrower& follow_set_grower;
+    MemPoolVectorGrower<int>& follow_set_grower;
 	// categories for tweeting, following, retweeting, and age
     CategoryGrouper& tweet_ranks;
 	CategoryGrouper& follow_ranks;

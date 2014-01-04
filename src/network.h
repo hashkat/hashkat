@@ -12,8 +12,8 @@
 #include "MemPoolVector.h"
 #include "category.h"
 
-typedef MemPoolVector<FOLLOW_LIST_THRESHOLD1> FollowList;
-typedef MemPoolVector<FOLLOWER_LIST_THRESHOLD1> FollowerList;
+typedef MemPoolVector<int, FOLLOW_LIST_THRESHOLD1> FollowList;
+typedef MemPoolVector<int, FOLLOWER_LIST_THRESHOLD1> FollowerList;
 
 struct Retweet {
     int original_tweeter;
