@@ -10,10 +10,10 @@ set(CMAKE_BUILD_TYPE Debug)
 if (APPLE) 
 else()
     SET (CMAKE_EXE_LINKER_FLAGS
-        -fsanitize=address
+#        -fsanitize=address
     )
 
-    add_definitions(-fsanitize=address)
+ #   add_definitions(-fsanitize=address)
 endif()
 
 add_subdirectory(src)
