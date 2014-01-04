@@ -3,6 +3,7 @@
 
 #include <string>
 #include <map>
+#include <vector>
 #include "dependencies/mtwist.h"
 
 #include "config.h"
@@ -28,7 +29,7 @@ struct AnalysisState {
 
     // struct for the entity classes, see network.h for specifications
     EntityType entity_types[ET_AMOUNT];
-
+	std::vector<int>entity_cap;
     // Add any values that must be extracted from 'analyze' here.
     int n_follows;
     double r_follow_norm, end_time;

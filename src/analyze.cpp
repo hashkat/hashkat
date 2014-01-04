@@ -98,7 +98,8 @@ struct Analyzer {
         //** This ensures that updates are witnessed in the caller's AnalysisState object.
             network(state.network), follow_set_grower(state.follow_set_grower),
             tweet_ranks(state.tweet_ranks), follow_ranks(state.follow_ranks),
-            retweet_ranks(state.retweet_ranks), config(state.config), random_gen_state(seed) {
+            retweet_ranks(state.retweet_ranks), config(state.config), random_gen_state(seed),
+			entity_cap(state.entity_cap) {
         // Make sure 'entity_types' also references into our AnalysisState object.
         entity_types = state.entity_types;
 
@@ -199,7 +200,7 @@ struct Analyzer {
 	vector<double> r_tweet;
 	vector<double> r_retweet;
 	vector<double> r_add;
-	deque<int> entity_cap;
+	vector<int>& entity_cap;
     void set_rates(double TIME) {
         double R_FOLLOW_INI = config["R_FOLLOW"];
         double R_TWEET_INI = config["R_TWEET"];
@@ -211,7 +212,7 @@ struct Analyzer {
 		int n_months = TIME / approx_month;
 		if (n_months > entity_cap.size() - 1 || TIME == 0) {
 			cout << "\nNumber of Months = " << n_months << "\n\n";
-			entity_cap.push_front(N);
+			entity_cap.push_back(N);
 
 			// CHANGE YOUR RATES ACCORDINGLY - they are constant right now
 			double change_follow_rate = R_FOLLOW_INI;
@@ -240,9 +241,9 @@ struct Analyzer {
 			overall_tweet_rate = new_entities * r_tweet[0],
 			overall_retweet_rate = new_entities * r_retweet[0];
 			for (int i = 1; i <= n_months; i ++) {
-				overall_follow_rate += r_follow[i] * (entity_cap[i - 1] - entity_cap[i]);
-				overall_tweet_rate += r_tweet[i] * (entity_cap[i - 1] - entity_cap[i]);
-				overall_retweet_rate += r_retweet[i] * (entity_cap[i - 1] - entity_cap[i]);
+				overall_follow_rate += r_follow[i] * (entity_cap[entity_cap.size() - i] - entity_cap[entity_cap.size() - (i + 1)]);
+				overall_tweet_rate += r_tweet[i] * (entity_cap[entity_cap.size() - i] - entity_cap[entity_cap.size() - (i + 1)]);
+				overall_retweet_rate += r_retweet[i] * (entity_cap[entity_cap.size() - i] - entity_cap[entity_cap.size() - (i + 1)]);
 			}
 		}
 		R_TOTAL = R_ADD_INI + overall_follow_rate + overall_tweet_rate + overall_retweet_rate; 
@@ -479,6 +480,22 @@ struct Analyzer {
 		// remove entity id from follow_list
 		
 	}
+	int entity_selection(vector<double> rates) {
+		int entity = -1;
+		double rand_num = rand_real_not0(), rate_sum = 0;
+		for (int i = 0; i < rates.size(); i ++) {
+			rate_sum += rates[i];
+		}
+		for (int i = 0; i < rates.size(); i ++) {
+			if (rand_num <= (rates[i] / rate_sum)) {
+				entity = rand_int(entity_cap[entity_cap.size() - (i + 1)]);
+				break;
+			}
+			rand_num -= (rates[i] / rate_sum);
+		}
+		DEBUG_CHECK(entity != -1, "Entity acting can not have user ID = -1");
+		return entity;
+	}
 
     // Performs one step of the analysis routine.
     // Takes old time, returns new time
@@ -494,46 +511,13 @@ struct Analyzer {
 			// If we find ourselves in the add entity chuck of our cumulative function:
             action_create_entity(TIME, N);
         } else if (u_1 - (R_ADD_NORM + R_FOLLOW_NORM) <= ZEROTOL) {
-			// The follow event
-			for (int i = 0; i < r_follow.size(); i ++) {
-				r_follow_sum += r_follow[i];
-			}
-			for (int i = 0; i < r_follow.size(); i ++) {
-				if (rand_num <= (r_follow[i]/r_follow_sum) ) {
-					entity = rand_int(entity_cap[i]); // find the entity based on changing rates
-					break;
-				}
-				rand_num -= (r_follow[i]/r_follow_sum);
-			}
-			Entity& p = network[entity];
-			DEBUG_CHECK(entity != -1, "Entity following can not be -1");
-			action_follow_entity(entity, N, TIME);
+			action_follow_entity(entity_selection(r_follow), N, TIME);
         } else if (u_1 - (R_ADD_NORM + R_FOLLOW_NORM + R_TWEET_NORM) <= ZEROTOL) {
 			// The tweet event
-			for (int i = 0; i < r_tweet.size(); i ++) {
-				r_tweet_sum += r_tweet[i];
-			}
-			for (int i = 0; i < r_tweet.size(); i ++) {
-				if (rand_num <= (r_tweet[i]/r_tweet_sum) ) {
-					entity = rand_int(entity_cap[i]); // find the entity based on changing rates
-					break;
-				}
-				rand_num -= (r_tweet[i]/r_tweet_sum);
-			}
-			N_TWEETS++;
-            action_tweet(entity);
+            action_tweet(entity_selection(r_tweet));
+			N_TWEETS ++;
         } else if (u_1 - (R_ADD_NORM + R_FOLLOW_NORM + R_TWEET_NORM + R_RETWEET_NORM) <= ZEROTOL ) {
-			for (int i = 0; i < r_retweet.size(); i ++) {
-				r_retweet_sum += r_retweet[i];
-			}
-			for (int i = 0; i < r_retweet.size(); i ++) {
-				if (rand_num <= (r_retweet[i]/r_retweet_sum) ) {
-					entity = rand_int(entity_cap[i]); // find the entity based on changing rates
-					break;
-				}
-				rand_num -= (r_retweet[i]/r_retweet_sum);
-			}
-			action_retweet(entity, TIME);
+			action_retweet(entity_selection(r_retweet), TIME);
         } else {
             cout << "Disaster, event out of bounds" << endl;
         }
