@@ -26,6 +26,7 @@ struct AnalysisState {
     CategoryGrouper tweet_ranks;
     CategoryGrouper follow_ranks;
     CategoryGrouper retweet_ranks;
+	CategoryGrouper age_ranks;
 
     // struct for the entity classes, see network.h for specifications
     EntityType entity_types[ET_AMOUNT];

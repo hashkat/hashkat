@@ -56,6 +56,7 @@ struct Analyzer {
     CategoryGrouper& tweet_ranks;
 	CategoryGrouper& follow_ranks;
 	CategoryGrouper& retweet_ranks;
+	CategoryGrouper& age_ranks;
 
 	vector <double> follow_probabilities, updating_follow_probabilities;
 	vector <int> last_entity_ID;
@@ -99,7 +100,7 @@ struct Analyzer {
             network(state.network), follow_set_grower(state.follow_set_grower),
             tweet_ranks(state.tweet_ranks), follow_ranks(state.follow_ranks),
             retweet_ranks(state.retweet_ranks), config(state.config), random_gen_state(seed),
-			entity_cap(state.entity_cap) {
+			entity_cap(state.entity_cap), age_ranks(state.age_ranks) {
         // Make sure 'entity_types' also references into our AnalysisState object.
         entity_types = state.entity_types;
 
@@ -114,7 +115,7 @@ struct Analyzer {
         config_output_summary_stats = (config["OUTPUT_SUMMARY"] != 0);
 
         N_STEPS = 0, N_FOLLOWS = 0, N_TWEETS = 0, N_RETWEETS = 0, n_months = 0;
-        set_rates(0.0);
+        
 
         // The following allocates a memory chunk proportional to MAX_ENTITIES:
         network.preallocate(MAX_ENTITIES);
@@ -126,6 +127,7 @@ struct Analyzer {
         set_initial_categories();
 		set_initial_entities();
 		set_follow_rank_probabilities();
+		set_rates(0.0);
     }
     // make sure any initial entities are given a title based on the respective probabilities
     void set_initial_entities() {
@@ -205,15 +207,21 @@ struct Analyzer {
         double R_FOLLOW_INI = config["R_FOLLOW"];
         double R_TWEET_INI = config["R_TWEET"];
         double R_ADD_INI = config["R_ADD"];
-	double R_RETWEET_INI = config["R_RETWEET"];
-	int N = network.n_entities;
-
+		double R_RETWEET_INI = config["R_RETWEET"];
+		int N = network.n_entities;
 		int approx_month = 24*60*30;
 		int n_months = TIME / approx_month;
+		
 		if (n_months > entity_cap.size() - 1 || TIME == 0) {
 			cout << "\nNumber of Months = " << n_months << "\n\n";
-			entity_cap.push_back(N);
-
+			age_ranks.categories.push_back(TIME);
+			for (int i = 0; i < N; i ++) {
+				Entity& e = network[i];
+				age_ranks.categorize(i, e.creation_time);
+			}
+			
+			CategoryEntityList& C = age_ranks.categories[n_months];			
+			entity_cap.push_back(C.entities.size());
 			// CHANGE YOUR RATES ACCORDINGLY - they are constant right now
 			double change_follow_rate = R_FOLLOW_INI;
 			double change_tweet_rate = R_TWEET_INI;
@@ -252,7 +260,7 @@ struct Analyzer {
         
 		R_FOLLOW_NORM = overall_follow_rate / R_TOTAL;
 		R_TWEET_NORM = overall_tweet_rate / R_TOTAL;
-		R_RETWEET_NORM = overall_retweet_rate / R_TOTAL;
+		R_RETWEET_NORM = overall_retweet_rate / R_TOTAL;		
     }
 	
 
@@ -480,18 +488,28 @@ struct Analyzer {
 		// remove entity id from follow_list
 		
 	}
-	int entity_selection(vector<double> rates) {
+	int entity_selection(vector<double>& rates) {
 		int entity = -1;
+		int new_entities = network.n_entities - entity_cap[entity_cap.size() - 1];
 		double rand_num = rand_real_not0(), rate_sum = 0;
-		for (int i = 0; i < rates.size(); i ++) {
-			rate_sum += rates[i];
+		if (R_ADD_NORM == 0) {
+			entity = rand_int(network.n_entities);
 		}
-		for (int i = 0; i < rates.size(); i ++) {
-			if (rand_num <= (rates[i] / rate_sum)) {
-				entity = rand_int(entity_cap[entity_cap.size() - (i + 1)]);
-				break;
+		else {
+			for (int i = 0; i < rates.size(); i ++) {
+				rate_sum += rates[i];
 			}
-			rand_num -= (rates[i] / rate_sum);
+			for (int i = 0; i < rates.size(); i ++) {
+				if (rand_num <= (rates[i] / rate_sum) && i == 0) {
+					entity = rand_int(new_entities) + entity_cap.back() /*last element*/;
+					break;
+				}
+				else if (rand_num <= (rates[i] / rate_sum)){
+					entity = rand_int(entity_cap[entity_cap.size() - (i)]) + entity_cap[entity_cap.size() - (i+1)];
+					break;
+				}
+				rand_num -= (rates[i] / rate_sum);
+			}
 		}
 		DEBUG_CHECK(entity != -1, "Entity acting can not have user ID = -1");
 		return entity;
