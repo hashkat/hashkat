@@ -470,6 +470,13 @@ struct Analyzer {
 			}
 		}
 		if (entity_retweeted != -1 /*No retweet should occur*/) {
+			int n_following = network.n_following(entity);
+            // Loop over all the entities that witness the event:
+			for (int i = 0; i < n_following; i ++){
+				Entity& audience = network[network.follow_i(entity,i)];
+				Retweet retweet(entity_retweeted, time_of_retweet);
+				audience.retweets.add(retweet);
+			}
 			retweetee.n_retweets ++;
 			N_RETWEETS ++;
 		}
