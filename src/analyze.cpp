@@ -223,7 +223,7 @@ struct Analyzer {
 			CategoryEntityList& C = age_ranks.categories[n_months];			
 			entity_cap.push_back(C.entities.size());
 			// CHANGE YOUR RATES ACCORDINGLY - they are constant right now
-			double change_follow_rate = R_FOLLOW_INI;
+			double change_follow_rate = R_FOLLOW_INI + R_FOLLOW_INI*n_months;
 			double change_tweet_rate = R_TWEET_INI;
 			double change_retweet_rate = R_RETWEET_INI;
 			double change_add_rate = R_ADD_INI;
@@ -451,18 +451,28 @@ struct Analyzer {
 	void action_retweet(int entity, double time_of_retweet) {
 		Entity& retweetee = network[entity];
 		FollowList& f = retweetee.follow_set;
-		if (f.size != 0){
-			int entity_retweeted = f.location[rand_int(f.size)];
-			int n_following = network.n_following(entity);
-            // Loop over all the entities that witness the event:
-			for (int i = 0; i < n_following; i ++){
-				Entity& audience = network[network.follow_i(entity,i)];
-				Retweet retweet(entity_retweeted, time_of_retweet);
-				audience.retweets.add(retweet);
+		int entity_retweeted = -1;
+		double rand_num = rand_real_not0();
+		if (rand_num < 0.5) {
+			if (f.size != 0){
+				entity_retweeted = f.location[rand_int(f.size)];
 			}
 		}
-		retweetee.n_retweets ++;
-		N_RETWEETS ++;
+		else {
+			// retweet a retweet
+		    Retweet retweet;
+		    if (retweetee.retweets.check_recent(retweet)) {
+		        // grab the latest retweet
+				// if the retweet happened in the last 48 hours
+				if (time_of_retweet - retweet.time < 2880) {
+					entity_retweeted = retweet.original_tweeter;
+				}
+			}
+		}
+		if (entity_retweeted != -1 /*No retweet should occur*/) {
+			retweetee.n_retweets ++;
+			N_RETWEETS ++;
+		}
 	}
 	
 	void action_followback(int follower, int followee) {

@@ -6,7 +6,7 @@ MAX_ENTITIES = 100000
 RANDOM_INCR = 1              ; -> 0 - increment by 1/R_total
 			     ; -> 1 - increment by random time based on R_total
 
-T_FINAL = 100000.0           ; ->  1/10 year 
+T_FINAL = 1000000.0           ; ->  1/10 year 
 
 R_ADD = 0.001                 ; ->    1 / hour
 			     ; twitter users / 8 years
