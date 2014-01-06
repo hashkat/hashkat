@@ -10,3 +10,4 @@ POSITIONS*
 *.dat
 *.xyz
 *.csv
+yaml-cpp.pc

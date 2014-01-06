@@ -24,6 +24,12 @@ struct CategoryEntityList {
 	CategoryEntityList(double thresh) {
 		threshold = thresh;
 	}
+	size_t size() const {
+	    return entities.size();
+	}
+	int operator[](size_t idx) const {
+	    return entities[idx];
+	}
 };
 
 struct CategoryGrouper {
