@@ -58,7 +58,6 @@ struct Analyzer {
     CategoryGrouper& tweet_ranks;
 	CategoryGrouper& follow_ranks;
 	CategoryGrouper& retweet_ranks;
-	CategoryGrouper& age_ranks;
 
 	vector <double> follow_probabilities, updating_follow_probabilities;
 	vector <int> last_entity_ID;
@@ -101,11 +100,6 @@ struct Analyzer {
     }
 
 	// after every iteration, make sure the rates are updated accordingly
-	vector<double> r_follow;
-	vector<double> r_tweet;
-	vector<double> r_retweet;
-	vector<double> r_add;
-	vector<int>& entity_cap;
     void set_rates(double TIME) {
 		int N = network.n_entities;
 		int approx_month = 24*60*30;
@@ -115,45 +109,58 @@ struct Analyzer {
 		    if (config.output_stdout_basic) {
 		        cout << "\nNumber of Months = " << n_months << "\n\n";
 		    }
-			age_ranks.categories.push_back(TIME);
-			for (int i = 0; i < N; i ++) {
-				Entity& e = network[i];
-				age_ranks.categorize(i, e.creation_time);
+			// go through every user type
+			for (int i = 0; i < entity_types.size(); i ++) {
+				// set the thresholds for each entitytype -- they are the same for every entity
+				entity_types.age_ranks.categories.push_back(TIME);
+				// for every entitytype, go through every entity that is of that entitytype and categorize them based on their creation time
+				for (int j = 0; j < entity_types[i].entity_list.size(); j ++) {
+					Entity& e = network[entity_types[i].entity_list[j]];
+					entity_types[i].age_ranks.categorize(entity_types[i].entity_list[j],e.creation_time);
+				}
 			}
-
-			CategoryEntityList& C = age_ranks.categories[n_months];			
-			entity_cap.push_back(C.entities.size());
+			
+			for (int i = 0; i < entity_types.size(); i ++ ) {
+				CategoryEntityList& C = entity_types[i].age_ranks.categories[n_months];			
+				entity_types[i].entity_cap.push_back(C.entities.size());
+			}
 			// CHANGE YOUR RATES ACCORDINGLY - they are constant right now
-			double change_follow_rate = config.rate_follow + config.rate_follow*n_months;
+			double change_follow_rate = config.rate_follow;
 			double change_tweet_rate = config.rate_tweet;
 			double change_retweet_rate = config.rate_retweet;
 			double change_add_rate = config.rate_add;
+			
+			for (int i = 0; i < entity_types.size(); i ++) {
+				entity_types[i].r_follow.push_back(change_follow_rate);
+				entity_types[i].r_tweet.push_back(change_tweet_rate);
+				entity_types[i].r_retweet.push_back(change_retweet_rate);
+			}
 
 			ASSERT(change_follow_rate >= 0, "The follow rate can't be < 0");
 			ASSERT(change_tweet_rate >= 0, "The tweet rate can't be < 0");
 			ASSERT(change_retweet_rate >= 0, "The retweet rate can't be < 0");
-
-			r_follow.push_back(change_follow_rate);
-			r_tweet.push_back(change_tweet_rate);
-			r_retweet.push_back(change_retweet_rate);
-			r_add.push_back(change_add_rate);
 		}
-		int new_entities;
-		double overall_follow_rate, overall_tweet_rate, overall_retweet_rate;
+		double overall_follow_rate = 0, overall_tweet_rate = 0, overall_retweet_rate = 0;
 		if (config.rate_add == 0) {
-		    overall_follow_rate = N * r_follow[n_months];
-			overall_tweet_rate = N * r_tweet[n_months];
-			overall_retweet_rate = N * r_retweet[n_months];
+			for (int i = 0; i < entity_types.size(); i ++) {
+				overall_follow_rate += entity_types[i].entity_list.size() * entity_types[i].r_follow[n_months];
+				overall_tweet_rate += entity_types[i].entity_list.size() * entity_types[i].r_tweet[n_months];
+				overall_retweet_rate += entity_types[i].entity_list.size() * entity_types[i].r_retweet[n_months];
+			}
 		} else {
-			new_entities = N - entity_cap[n_months];
-			overall_follow_rate = new_entities * r_follow[0], 
-			overall_tweet_rate = new_entities * r_tweet[0],
-			overall_retweet_rate = new_entities * r_retweet[0];
-			for (int i = 1; i <= n_months; i ++) {
-				overall_follow_rate += r_follow[i] * (entity_cap[entity_cap.size() - i] - entity_cap[entity_cap.size() - (i + 1)]);
-				overall_tweet_rate += r_tweet[i] * (entity_cap[entity_cap.size() - i] - entity_cap[entity_cap.size() - (i + 1)]);
-				overall_retweet_rate += r_retweet[i] * (entity_cap[entity_cap.size() - i] - entity_cap[entity_cap.size() - (i + 1)]);
-            }
+			for (int i = 0; i < entity_types.size(); i ++) {
+				entity_types[i].new_entities = entity_types[i].entity_list.size() - entity_types[i].entity_cap[n_months];
+				overall_follow_rate += entity_types[i].new_entities * entity_types.r_follow[0];
+				overall_tweet_rate += entity_types[i].new_entities * entity_types.r_tweet[0];
+				overall_retweet_rate += entity_types[i].new_entities * entity_types.r_retweet[0];
+			}
+			for (int j = 0; j < entity_types.size(); j ++) {
+				for (int i = 1; i <= n_months; i ++) {
+					overall_follow_rate += entity_types[j].r_follow[i] * (entity_types[j].entity_cap[entity_types[j].entity_cap.size() - i] - entity_types[j].entity_cap[entity_types[j].entity_cap.size() - (i + 1)]);
+					overall_tweet_rate += entity_types[j].r_tweet[i] * (entity_types[j].entity_cap[entity_types[j].entity_cap.size() - i] - entity_types[j].entity_cap[entity_types[j].entity_cap.size() - (i + 1)]);
+					overall_retweet_rate += entity_types[j].r_retweet[i] * (entity_types[j].entity_cap[entity_types[j].entity_cap.size() - i] - entity_types[j].entity_cap[entity_types[j].entity_cap.size() - (i + 1)]);
+	            }
+			}
         }
         stats.event_rate = config.rate_add + overall_follow_rate + overall_tweet_rate + overall_retweet_rate;
         //Normalize the rates

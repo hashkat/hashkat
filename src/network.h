@@ -106,7 +106,19 @@ struct EntityType {
     double prob_add; // When a entity is added, how likely is it that it is this entity type ?
     double prob_follow; // When a entity is followed, how likely is it that it is this entity type ?
 	double prob_followback;
-    std::vector<int> entity_list;
+	int new_entities; // the number of new users in this entity type
+	
+	// changing rates for each user with time
+	std::vector<double> r_follow;
+	std::vector<double> r_tweet;
+	std::vector<double> r_retweet;
+	// number of entities for each discrete value of the rate(time)
+	std::vector<int> entity_cap;
+    // list of entity ID's
+	std::vector<int> entity_list;
+	// categorize the entities by age
+	CategoryGrouper age_ranks;
+	
     EntityType() {
         prob_add = prob_follow = prob_followback = 0;
     }
