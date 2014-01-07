@@ -1,6 +1,7 @@
 #include "tests.h"
 
-#include "../config.h"
+#include "../config_static.h"
+#include "../config_dynamic.h"
 #include "../network.h"
 #include "../analyze.h"
 
@@ -13,7 +14,8 @@ SUITE(SanityChecks) {
     const int TEST_SEED = 0xDEADBEEF;
 
     TEST(simple_config) {
-        AnalysisState state(make_test_defaults());
+        ParsedConfig config = parse_yaml_configuration("src/tests/03.yaml");
+        AnalysisState state(config);
         simulate_network(state, TEST_SEED);
     }
 }

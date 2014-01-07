@@ -16,47 +16,47 @@ using namespace std;
 /* After 'analyze', print the results of the computations. */
 void output_network_statistics(AnalysisState& state) {
 	Network& network = state.network;
-    InfileConfig& config = state.config;
+	ParsedConfig& C = state.config;
 
     // Print why program stopped
-    if (!config["SILENT"]) {
+    if (C.output_stdout_basic) {
         if (CTRL_C_ATTEMPTS > 0) {
             cout << "\nSimulation (Gracefully) Interrupted: ctrl-c was pressed\n";
-        } else if (state.end_time >= config["T_FINAL"]) {
+        } else if (state.end_time >= C.max_time) {
             cout << "\nSimulation Completed: desired duration reached\n";
         } else {
             cout << "\nSimulation Completed: desired entity amount reached\n";
         }
         cout << "\nCreating analysis files -- press ctrl-c multiple times to abort ... \n";
     }
-    int MAX_ENTITIES = (int)config["MAX_ENTITIES"];
+    int MAX_ENTITIES = C.max_entities;
     int N_ENTITIES = network.n_entities;
 
     // Depending on our INFILE/configuration, we may output various analysis
-    if (config["P_OUT"]) {
-        POUT(network, MAX_ENTITIES, N_ENTITIES, state.n_follows);
+    if (C.output_p_out) {
+        POUT(network, C.max_entities, N_ENTITIES, state.n_follows);
     }
-    if (config["P_IN"]) {
-        PIN(network, MAX_ENTITIES, N_ENTITIES, state.r_follow_norm);
+    if (C.output_p_in) {
+        PIN(network, C.max_entities, N_ENTITIES, state.r_follow_norm);
     }
-    if (config["VISUALIZE"]) {
+    if (C.output_visualize) {
         output_position(network, N_ENTITIES);
     }
     /* ADD FUNCTIONS THAT RUN AFTER NETWORK IS BUILT HERE */
-    if (config["BARABASI"]) {
+    if (C.use_barabasi) {
         Categories_Check(state.tweet_ranks, state.follow_ranks, state.retweet_ranks);
     }
-    if (config["ANALYZE_CULMULATIVE"]) {
-        Cumulative_Distro(network, MAX_ENTITIES, N_ENTITIES, state.n_follows);
+    if (C.output_cumulative_analysis) {
+        Cumulative_Distro(network, C.max_entities, N_ENTITIES, state.n_follows);
     }
 
-    if (config["ANALYZE_TWEETS"]) {
+    if (C.output_tweet_analysis) {
         tweets_distribution(network, N_ENTITIES);
     }
 
     //entity_statistics(network, N_FOLLOWS,N_ENTITIES, N_ENTITIES, entity_entities);
 
-    if (!config["SILENT"]) {
+    if (C.output_stdout_basic) {
         cout << "Analysis complete!\n";
     }
 //        DATA_TIME.close();

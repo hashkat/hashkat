@@ -18,8 +18,9 @@
 #include <vector>
 #include <map>
 #include <algorithm>
+
 #include "util.h"
-#include "config.h"
+#include "config_static.h"
 
 // Above a certain threshold,
 template <typename V, int MEMPOOL_THRESHOLD>

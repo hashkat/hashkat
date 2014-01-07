@@ -19,10 +19,10 @@ struct Cat {
 
 struct CategoryEntityList {
 	// Upper bound that fits into this category
-	double threshold;
+	double threshold, /*Optional*/ prob;
 	std::vector<int> entities;
-	CategoryEntityList(double thresh) {
-		threshold = thresh;
+	CategoryEntityList(double t, double p = 0) {
+		threshold = t, prob = p;
 	}
 	size_t size() const {
 	    return entities.size();

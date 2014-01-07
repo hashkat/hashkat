@@ -44,13 +44,12 @@ struct Analyzer {
     //** This is the principle convenience of encapsulating all the related functions
     //** in this struct -- greatly reduce tedious parameter-passing
 
-    InfileConfig& config;
     // Cached config variables, for performance:
-    CachedConfig cc;
+    ParsedConfig config;
     AnalysisStats stats;
 
     // struct for the entity classes, see network.h for specifications
-    EntityType* entity_types;
+    EntityTypeVector& entity_types;
 
     // The network state
     Network& network;
@@ -79,89 +78,25 @@ struct Analyzer {
         //** Here, we initialize REFERENCES to the various analysis pieces.
         //** The only way to initialize references is through this construct -- called an 'initializer list'.
         //** This ensures that updates are witnessed in the caller's AnalysisState object.
-            cc(state.config), network(state.network), follow_set_grower(state.follow_set_grower),
+            config(state.config), entity_types(state.entity_types),
+            network(state.network), follow_set_grower(state.follow_set_grower),
             tweet_ranks(state.tweet_ranks), follow_ranks(state.follow_ranks),
-            retweet_ranks(state.retweet_ranks), config(state.config), random_gen_state(seed),
+            retweet_ranks(state.retweet_ranks), random_gen_state(seed),
 			entity_cap(state.entity_cap), age_ranks(state.age_ranks) {
-        // Make sure 'entity_types' also references into our AnalysisState object.
-        entity_types = state.entity_types;
 
-        // The following allocates a memory chunk proportional to MAX_ENTITIES:
-        network.preallocate(cc.MAX_ENTITIES);
-        follow_set_grower.preallocate(FOLLOW_SET_MEM_PER_USER * cc.MAX_ENTITIES);
+        // The following allocates a memory chunk proportional to max_entities:
+        network.preallocate(config.max_entities);
+        follow_set_grower.preallocate(FOLLOW_SET_MEM_PER_USER * config.max_entities);
 
         DATA_TIME.open("DATA_vs_TIME");
 
-        set_entity_probabilities();
-        set_initial_categories();
 		set_initial_entities();
-		set_follow_rank_probabilities();
 		set_rates(0.0);
     }
     // make sure any initial entities are given a title based on the respective probabilities
     void set_initial_entities() {
-        for (int i = 0; i < config["N_ENTITIES"]; i++) {
+        for (int i = 0; i < config.initial_entities; i++) {
              action_create_entity(0.0, i);
-        }
-    }
-	// this is a helper function for the function below, essentially it takes the thresholds
-	// and sets up the categories based on the INFILE
-    void initialize_category(CategoryGrouper& group, const char* parameter) {
-    	vector<double> thresholds = parse_numlist(config.raw_get(parameter));
-
-		for (int i = 0; i < thresholds.size(); i++) {
-			group.categories.push_back(CategoryEntityList(thresholds[i]));
-		}
-		// Sentinel of sorts, swallows everything else:
-		group.categories.push_back(CategoryEntityList(HUGE_VAL));
-    }
-	
-	// calls above function for the different category types
-    void set_initial_categories() {
-    	initialize_category(tweet_ranks, "TWEET_THRESHOLDS");
-		if (!cc.BARABASI) {
-    		initialize_category(follow_ranks, "FOLLOW_THRESHOLDS");
-		}
-		initialize_category(retweet_ranks, "RETWEET_THRESHOLDS");
-    }
-	
-	// function for follow probabilities, this is used for a preferential follow method
-	void set_follow_rank_probabilities() {
-		if (cc.BARABASI){
-			for (int i = 1; i < cc.MAX_ENTITIES; i ++) {
-				follow_probabilities.push_back(i);
-				follow_ranks.categories.push_back(CategoryEntityList(i-1));
-			}
-		}
-		else {
-			vector<double> set_probabilities = parse_numlist(config.raw_get("FOLLOW_THRESHOLDS_PROBABILITIES"));
-			for (int i = 0; i < set_probabilities.size(); i ++) {
-				follow_probabilities.push_back(set_probabilities[i]);
-			}
-		}
-	}
-	
-	// this gets the probabilities for the 'follow entity by class' method
-    void set_entity_probabilities() {
-        entity_types[ET_NORMAL_INDEX].R_ADD = config["R_ADD_NORMAL"];
-        entity_types[ET_CELEB_INDEX].R_ADD = config["R_ADD_CELEB"];
-        entity_types[ET_ORG_INDEX].R_ADD = config["R_ADD_ORG"];
-        entity_types[ET_BOT_INDEX].R_ADD = config["R_ADD_BOT"];
-
-        entity_types[ET_NORMAL_INDEX].R_FOLLOW = config["R_FOLLOW_NORMAL"];
-        entity_types[ET_CELEB_INDEX].R_FOLLOW = config["R_FOLLOW_CELEB"];
-        entity_types[ET_ORG_INDEX].R_FOLLOW = config["R_FOLLOW_ORG"];
-        entity_types[ET_BOT_INDEX].R_FOLLOW = config["R_FOLLOW_BOT"];
-
-		// normalize the different entity probabilities
-        double add_total = 0, follow_total = 0;
-        for (int i = 0; i < ET_AMOUNT; i++) {
-            add_total += entity_types[i].R_ADD;
-            follow_total += entity_types[i].R_FOLLOW;
-        }
-        for (int i = 0; i < ET_AMOUNT; i++) {
-            entity_types[i].R_ADD /= add_total;
-            entity_types[i].R_FOLLOW /= follow_total;
         }
     }
 
@@ -175,9 +110,11 @@ struct Analyzer {
 		int N = network.n_entities;
 		int approx_month = 24*60*30;
 		int n_months = TIME / approx_month;
-		
+
 		if (n_months > entity_cap.size() - 1 || TIME == 0) {
-			cout << "\nNumber of Months = " << n_months << "\n\n";
+		    if (config.output_stdout_basic) {
+		        cout << "\nNumber of Months = " << n_months << "\n\n";
+		    }
 			age_ranks.categories.push_back(TIME);
 			for (int i = 0; i < N; i ++) {
 				Entity& e = network[i];
@@ -187,10 +124,10 @@ struct Analyzer {
 			CategoryEntityList& C = age_ranks.categories[n_months];			
 			entity_cap.push_back(C.entities.size());
 			// CHANGE YOUR RATES ACCORDINGLY - they are constant right now
-			double change_follow_rate = cc.R_FOLLOW_INI + cc.R_FOLLOW_INI*n_months;
-			double change_tweet_rate = cc.R_TWEET_INI;
-			double change_retweet_rate = cc.R_RETWEET_INI;
-			double change_add_rate = cc.R_ADD_INI;
+			double change_follow_rate = config.rate_follow + config.rate_follow*n_months;
+			double change_tweet_rate = config.rate_tweet;
+			double change_retweet_rate = config.rate_retweet;
+			double change_add_rate = config.rate_add;
 
 			ASSERT(change_follow_rate >= 0, "The follow rate can't be < 0");
 			ASSERT(change_tweet_rate >= 0, "The tweet rate can't be < 0");
@@ -203,12 +140,11 @@ struct Analyzer {
 		}
 		int new_entities;
 		double overall_follow_rate, overall_tweet_rate, overall_retweet_rate;
-		if (cc.R_ADD_INI == 0) {
+		if (config.rate_add == 0) {
 		    overall_follow_rate = N * r_follow[n_months];
 			overall_tweet_rate = N * r_tweet[n_months];
 			overall_retweet_rate = N * r_retweet[n_months];
-		}
-		else {
+		} else {
 			new_entities = N - entity_cap[n_months];
 			overall_follow_rate = new_entities * r_follow[0], 
 			overall_tweet_rate = new_entities * r_tweet[0],
@@ -219,13 +155,13 @@ struct Analyzer {
 				overall_retweet_rate += r_retweet[i] * (entity_cap[entity_cap.size() - i] - entity_cap[entity_cap.size() - (i + 1)]);
             }
         }
-        stats.R_TOTAL = cc.R_ADD_INI + overall_follow_rate + overall_tweet_rate + overall_retweet_rate;
+        stats.event_rate = config.rate_add + overall_follow_rate + overall_tweet_rate + overall_retweet_rate;
         //Normalize the rates
-        stats.R_ADD_NORM = cc.R_ADD_INI / stats.R_TOTAL;
+        stats.prob_add = config.rate_add / stats.event_rate;
 
-        stats.R_FOLLOW_NORM = overall_follow_rate / stats.R_TOTAL;
-        stats.R_TWEET_NORM = overall_tweet_rate / stats.R_TOTAL;
-        stats.R_RETWEET_NORM = overall_retweet_rate / stats.R_TOTAL;
+        stats.prob_follow = overall_follow_rate / stats.event_rate;
+        stats.prob_tweet = overall_tweet_rate / stats.event_rate;
+        stats.prob_norm = overall_retweet_rate / stats.event_rate;
     }
 
     /***************************************************************************
@@ -259,30 +195,30 @@ struct Analyzer {
     double run_network_simulation() {
         ctrl_C_handler_install();
         double time = 0;
-        while ( LIKELY(time < cc.T_FINAL && network.n_entities < cc.MAX_ENTITIES && CTRL_C_ATTEMPTS == 0) ) {
+        while ( LIKELY(time < config.max_time && network.n_entities < config.max_entities && CTRL_C_ATTEMPTS == 0) ) {
         	time = step_analysis(time);
         }
         return time;
     }
 
-    void step_time(double& TIME, int n_entities) {
-        double prev_milestone = floor(TIME / TIME_CATEGORIZATION_FREQUENCY);
-        double prev_integer = floor(TIME);
-        if (cc.RANDOM_INCR == 1) {
+    void step_time(double& time, int n_entities) {
+        double prev_milestone = floor(time / time_cat_freq);
+        double prev_integer = floor(time);
+        if (config.use_random_increment == 1) {
             // increment by random time
-            TIME += -log(rand_real_not0()) / stats.R_TOTAL;
+            time += -log(rand_real_not0()) / stats.event_rate;
         } else {
-            TIME += 1 / stats.R_TOTAL;
+            time += 1 / stats.event_rate;
         }
 
         // Categorize all entities based on time, on every new time milestone.
-        bool at_milestone = (floor(TIME / TIME_CATEGORIZATION_FREQUENCY) > prev_milestone);
+        bool at_milestone = (floor(time / time_cat_freq) > prev_milestone);
         if (at_milestone){
         	last_entity_ID.push_back(n_entities);
         }
 
-        if (cc.output_summary_stats && (floor(TIME) > prev_integer)) {
-            output_summary_stats(TIME);
+        if (config.output_stdout_summary && (floor(time) > prev_integer)) {
+            output_summary_stats(time);
         }
     }
 
@@ -292,16 +228,16 @@ struct Analyzer {
 		Entity& e = network[index];
 		e.creation_time = creation_time;
 		double rand_num = rand_real_not0();
-		for (int et = 0; et < ET_AMOUNT; et++) {
-			if (rand_num <= entity_types[et].R_ADD) {
+		for (int et = 0; et < entity_types.size(); et++) {
+			if (rand_num <= entity_types[et].prob_add) {
 				e.entity = et;
                 entity_types[et].entity_list.push_back(index);
 				follow_ranks.categorize(index, e.follower_set.size);
 				break;
 			}
-			rand_num -= entity_types[et].R_ADD;
+			rand_num -= entity_types[et].prob_add;
 		}
-		if (cc.BARABASI){
+		if (config.use_barabasi){
 			action_follow_entity(index, index, creation_time);
 		}
 		// AD: This condition doesn't seem like the right approach
@@ -314,13 +250,11 @@ struct Analyzer {
 		int entity_to_follow = -1;
 		double rand_num = rand_real_not0();
 		// if we want to do random follows
-		if (!cc.FOLLOW_METHOD) {
+		if (config.follow_model == RANDOM_FOLLOW) {
 			// find a random entity within [0:number of entities - 1]	
 			entity_to_follow = rand_int(n_entities);
-		}
-
-		// if we want to use a preferential follow method
-		if (cc.FOLLOW_METHOD) {
+		} else if (config.follow_model == PREFERENTIAL_FOLLOW) {
+		    // if we want to use a preferential follow method
 			double sum_of_weights = 0;
 			updating_follow_probabilities.resize(follow_probabilities.size());
 			/* search through the probabilities for each threshold and find
@@ -334,7 +268,7 @@ struct Analyzer {
 			for (int i = 0; i < follow_probabilities.size(); i ++ ){
 				CategoryEntityList& C = follow_ranks.categories[i];
 	 		   	updating_follow_probabilities[i] /= sum_of_weights;
-			} 
+			}
 			for (int i = 0; i < follow_probabilities.size(); i ++) {
 				if (rand_num - updating_follow_probabilities[i] <= ZEROTOL) {
 					// point to the category we landed in
@@ -349,13 +283,11 @@ struct Analyzer {
 				// part of the above search
 				rand_num -= updating_follow_probabilities[i];
 			}
-		}
-		
-		// if we want to follow by entity class
-		if (cc.FOLLOW_METHOD) {
+		} else if (config.follow_model == ENTITY_FOLLOW) {
+		    // if we want to follow by entity class
 			/* search through the probabilities for each entity and find the right bin to land in */
-			for (int i = 0; i < ET_AMOUNT; i++) {
-				if (rand_num <= entity_types[i].R_FOLLOW) {
+			for (int i = 0; i < entity_types.size(); i++) {
+				if (rand_num <= entity_types[i].prob_follow) {
 					// make sure we're not pulling from an empty list
 					if (entity_types[i].entity_list.size() != 0) {
 						// pull the entity from whatever bin we landed in and break so we dont continue this loop
@@ -364,11 +296,10 @@ struct Analyzer {
 					}
 				}
 				// part of the above search
-				rand_num -= entity_types[i].R_FOLLOW;
-			}					
-		}
-		//Retweet follow method
-		if (cc.FOLLOW_METHOD) {
+				rand_num -= entity_types[i].prob_follow;
+			}
+		} else if (config.follow_model == RETWEET_FOLLOW) {
+		    //Retweet follow method
 			if (rand_num > 0.5) {
 			    Retweet retweet;
 			    if (e1.retweets.check_recent(retweet)) {
@@ -383,6 +314,7 @@ struct Analyzer {
 				entity_to_follow = rand_int(n_entities);
 			}
 		}
+
 		// check and make sure we are not following ourself, or we are following entity -1
 		if (LIKELY(entity != entity_to_follow && entity_to_follow != -1)) {
 			// point to the entity who is being followed
@@ -390,13 +322,10 @@ struct Analyzer {
 				// based on the number of followers the followed-entity has, check to make sure we're still categorized properly
 				Entity& target = network[entity_to_follow];
 				follow_ranks.categorize(entity_to_follow, target.follower_set.size);
-				stats.N_FOLLOWS++; // We were able to add the follow; almost always the case.
+				stats.n_follows++; // We were able to add the follow; almost always the case.
 			}
         } 
-		else {
-			// no follow is added, this is unlikely
-            return;
-        }
+        // Otherwise, no follow is added, this is unlikely
 	}
 
 	// function to handle the tweeting
@@ -441,7 +370,7 @@ struct Analyzer {
 				audience.retweets.add(retweet);
 			}
 			retweetee.n_retweets ++;
-			stats.N_RETWEETS ++;
+			stats.n_retweets ++;
 		}
 	}
 	
@@ -450,7 +379,7 @@ struct Analyzer {
 		if (handle_follow(followee, follower)) {
 				Entity& target = network[follower];
 				follow_ranks.categorize(follower, target.follower_set.size);
-				stats.N_FOLLOWS++; // We were able to add the follow; almost always the case.
+				stats.n_follows++; // We were able to add the follow; almost always the case.
 		} 
 		else {
             return;
@@ -472,7 +401,7 @@ struct Analyzer {
 		int entity = -1;
 		int new_entities = network.n_entities - entity_cap[entity_cap.size() - 1];
 		double rand_num = rand_real_not0(), rate_sum = 0;
-		if (stats.R_ADD_NORM == 0) {
+		if (stats.prob_add == 0) {
 			entity = rand_int(network.n_entities);
 		}
 		else {
@@ -497,7 +426,7 @@ struct Analyzer {
 
     // Performs one step of the analysis routine.
     // Takes old time, returns new time
-    double step_analysis(double TIME) {
+    double step_analysis(double time) {
         double u_1 = rand_real_not0(); // get the first number with-in [0,1).
 		double rand_num = rand_real_not0();
         int N = network.n_entities;
@@ -505,25 +434,25 @@ struct Analyzer {
 		double r_follow_sum = 0, r_tweet_sum = 0, r_retweet_sum = 0;
 
         // DECIDE WHAT TO DO:
-        if (u_1 - (stats.R_ADD_NORM) <= ZEROTOL) {
+        if (u_1 - (stats.prob_add) <= ZEROTOL) {
 			// If we find ourselves in the add entity chuck of our cumulative function:
-            action_create_entity(TIME, N);
-        } else if (u_1 - (stats.R_ADD_NORM + stats.R_FOLLOW_NORM) <= ZEROTOL) {
-			action_follow_entity(entity_selection(r_follow), N, TIME);
-        } else if (u_1 - (stats.R_ADD_NORM + stats.R_FOLLOW_NORM + stats.R_TWEET_NORM) <= ZEROTOL) {
+            action_create_entity(time, N);
+        } else if (u_1 - (stats.prob_add + stats.prob_follow) <= ZEROTOL) {
+			action_follow_entity(entity_selection(r_follow), N, time);
+        } else if (u_1 - (stats.prob_add + stats.prob_follow + stats.prob_tweet) <= ZEROTOL) {
 			// The tweet event
             action_tweet(entity_selection(r_tweet));
-            stats.N_TWEETS ++;
-        } else if (u_1 - (stats.R_ADD_NORM + stats.R_FOLLOW_NORM + stats.R_TWEET_NORM + stats.R_RETWEET_NORM) <= ZEROTOL ) {
-			action_retweet(entity_selection(r_retweet), TIME);
+            stats.n_tweets ++;
+        } else if (u_1 - (stats.prob_add + stats.prob_follow + stats.prob_tweet + stats.prob_norm) <= ZEROTOL ) {
+			action_retweet(entity_selection(r_retweet), time);
         } else {
             cout << "Disaster, event out of bounds" << endl;
         }
 
-        step_time(TIME, N);
-        stats.N_STEPS++;
+        step_time(time, N);
+        stats.n_steps++;
         //update the rates if n_entities has changed
-        set_rates(TIME);
+        set_rates(time);
 
 #ifdef SLOW_DEBUG_CHECKS
         static int i = 0;
@@ -533,7 +462,7 @@ struct Analyzer {
         i++;
 #endif
 
-        return TIME;
+        return time;
     }
 
     /***************************************************************************
@@ -561,9 +490,9 @@ struct Analyzer {
         stream << fixed << setprecision(2)
                 << TIME << "\t\t"
                 << network.n_entities << "\t\t"
-                << stats.N_FOLLOWS << "\t\t"
-                << stats.N_TWEETS << "\t\t"
-                << stats.N_RETWEETS << "\t\n";
+                << stats.n_follows << "\t\t"
+                << stats.n_tweets << "\t\t"
+                << stats.n_retweets << "\t\n";
     }
 
     void output_summary_stats(double TIME) {

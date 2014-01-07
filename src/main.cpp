@@ -9,7 +9,9 @@
 #include "dependencies/UnitTest++.h"
 #include "dependencies/lcommon.h"
 
-#include "config.h"
+#include "config_static.h"
+#include "config_dynamic.h"
+
 #include "network.h"
 #include "analyze.h"
 #include "io.h"
@@ -27,20 +29,6 @@ static int loader_callback(void* vCONFIG, const char* unused_section,
     return 1;
 }
 
-// Read an arbitrary configuration from a file, store it in CONFIG.
-bool load_config(map<string, string>& config, string file_name) {
-    //** This is a low-level API, we have to pass a generic void* type
-    int error = ini_parse(file_name.c_str(), loader_callback, (void*)&config);
-    if (error < 0) {
-        printf("Can't read '%s'!\n", file_name.c_str());
-        return false;
-    } else if (error) {
-        printf("Bad config file (first error on line %d)!\n", error);
-        return false;
-    }
-    return true;
-}
-
 static bool has_arg(int argc, char** argv, std::string test) {
 	for (int i = 1; i < argc; i++) {
 		if (argv[i] == test) {
@@ -54,11 +42,11 @@ static bool has_arg(int argc, char** argv, std::string test) {
 int test_main(int argc, char** argv); // Defined in tests/main.cpp
 
 int main(int argc, char** argv) {
-    map<string, string> config_contents;
 	if (has_arg(argc, argv, "--tests")) {
 		// running tests:
 		return test_main(argc, argv);
-	} else if (load_config(config_contents, "INFILE")) {
+	} else {
+        ParsedConfig config = parse_yaml_configuration("INFILE.yaml");
 		// or running analysis:
 		Timer t;
 		int seed = 1;
@@ -68,7 +56,7 @@ int main(int argc, char** argv) {
 			seed = (int)t;
 		}
 
-		AnalysisState analysis_state(config_contents);
+		AnalysisState analysis_state(config);
 
         simulate_network(analysis_state, seed);
         output_network_statistics(analysis_state);

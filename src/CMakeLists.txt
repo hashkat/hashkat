@@ -1,6 +1,13 @@
 # Compile everything under 'dependencies'
 add_subdirectory(dependencies)
 
+# Add include directories
+include_directories(
+	"." 
+	dependencies
+	dependencies/yaml-cpp/include
+)
+
 add_definitions(-Wuninitialized -std=c++98)
 #SET (CMAKE_EXE_LINKER_FLAGS -fsanitize=address)
 #SET (CMAKE_MODULE_LINKER_FLAGS -fsanitize=address)
@@ -39,9 +46,6 @@ aux_source_directory(
 	lcommon_src
 )
 
-# Add include directories
-
-include_directories(".")
 
 # Add compilation target
 add_executable( 

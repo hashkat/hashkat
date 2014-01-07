@@ -2,13 +2,14 @@
 #define __UTIL_H_
 
 // Mixed bag of useful functions
-
+#include <cmath>
 #include <cassert>
 #include <cstdio>
 #include <cstdlib>
 #include <vector>
 #include <string>
 #include <sstream>
+#include <limits>
 
 // Dirt simple error handling, exits the program:
 inline void panic(const char* msg) {

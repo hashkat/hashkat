@@ -99,23 +99,19 @@ struct Network {
     int following_i(int id, int follow_index) {
         return entities[id].follower_set[follow_index];
     }
-
 };
 
 struct EntityType {
-    double R_ADD; // When a entity is added, how likely is it that it is this entity type ?
-    double R_FOLLOW; // When a entity is followed, how likely is it that it is this entity type ?
-	double followback_probability;
+    std::string name;
+    double prob_add; // When a entity is added, how likely is it that it is this entity type ?
+    double prob_follow; // When a entity is followed, how likely is it that it is this entity type ?
+	double prob_followback;
     std::vector<int> entity_list;
+    EntityType() {
+        prob_add = prob_follow = prob_followback = 0;
+    }
 };
 
-// The different entity types
-enum {
-    ET_NORMAL_INDEX = 0,
-    ET_CELEB_INDEX = 1,
-    ET_BOT_INDEX = 2,
-    ET_ORG_INDEX = 3,
-    ET_AMOUNT = 4
-};
+typedef std::vector<EntityType> EntityTypeVector;
 
 #endif

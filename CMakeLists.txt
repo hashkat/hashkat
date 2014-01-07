@@ -3,6 +3,8 @@
 
 cmake_minimum_required( VERSION 2.6 )
 
+add_definitions(-D_GLIBCXX_DEBUG)
+
 #set(CMAKE_BUILD_TYPE Release)
 set(CMAKE_BUILD_TYPE Debug)
 
@@ -10,10 +12,10 @@ set(CMAKE_BUILD_TYPE Debug)
 if (APPLE) 
 else()
     SET (CMAKE_EXE_LINKER_FLAGS
-#        -fsanitize=address
+        -fsanitize=address
     )
 
- #   add_definitions(-fsanitize=address)
+    add_definitions(-fsanitize=address)
 endif()
 
 add_subdirectory(src)
