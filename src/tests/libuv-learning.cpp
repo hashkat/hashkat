@@ -1,36 +1,49 @@
 #include <stdio.h>
 #include <unistd.h>
 
+#include "util.h"
 #include <uv.h>
 
-void hare(void *arg) {
-    int tracklen = *((int *) arg);
-    while (tracklen) {
-        tracklen--;
-        sleep(1);
-        fprintf(stderr, "Hare ran another step\n");
-    }
-    fprintf(stderr, "Hare done running!\n");
+static void finish(uv_work_t *req, int status) {
+    // Do nothing
 }
 
-void tortoise(void *arg) {
-    int tracklen = *((int *) arg);
-    while (tracklen) {
-        tracklen--;
-        fprintf(stderr, "Tortoise ran another step\n");
-        sleep(3);
+struct ThreadContext {
+    ThreadContext() {
+        loop = NULL;
     }
-    fprintf(stderr, "Tortoise done running!\n");
+    void start() {
+        loop = uv_loop_new();
+        ASSERT(uv_thread_create(&id, thread_runner, this) >= 0, "ThreadError");
+    }
+    void join() {
+        uv_thread_join(&id);
+    }
+    void queue(uv_work_cb work, void* data) {
+        uv_work_t req;
+        req.data = data;
+        uv_queue_work(loop, &req, work, finish);
+    }
+private:
+    static void thread_runner(void* arg) {
+        ThreadContext* context = (ThreadContext*)arg;
+        uv_run(context->loop, UV_RUN_NOWAIT);
+        printf("Exitting\n");
+    }
+    uv_thread_t id;
+    uv_loop_t* loop; // We keep one loop per thread
+};
+
+
+static void say(uv_work_t *req) {
+    fprintf(stdout, "%s\n", req->data);
 }
 
 int uv_main(int argc, char** argv) {
-    int tracklen = 10;
-    uv_thread_t hare_id;
-    uv_thread_t tortoise_id;
-    uv_thread_create(&hare_id, hare, &tracklen);
-    uv_thread_create(&tortoise_id, tortoise, &tracklen);
+    ThreadContext context;
+    context.start();
 
-    uv_thread_join(&hare_id);
-    uv_thread_join(&tortoise_id);
+    context.queue(say, (void*)"Hello World!");
+
     return 0;
 }
