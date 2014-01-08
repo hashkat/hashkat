@@ -4,7 +4,7 @@
 
 const int MEMPOOL_THRESHOLD = 96;
 
-static const int FIRST_ALLOC = FOLLOW_SET_GROWTH_MULTIPLE * MEMPOOL_THRESHOLD;
+static const int FIRST_ALLOC = 2 * MEMPOOL_THRESHOLD;
 
 SUITE(MemPoolVectors) {
     typedef MemPoolVector<int, MEMPOOL_THRESHOLD> MPVec;

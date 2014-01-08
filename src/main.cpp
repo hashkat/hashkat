@@ -18,17 +18,6 @@
 
 using namespace std;
 
-// Called using a function pointer by the ini-loading library.
-// We do not care about ini file sections or entities.
-// Stores arbitrary configuration in CONFIG.
-static int loader_callback(void* vCONFIG, const char* unused_section,
-        const char* name, const char* value) {
-    //** This is a low-level API, we have to convert to our desired type
-    map<string, string>& CONFIG = *(map<string, string>*)vCONFIG;
-    CONFIG[name] = value;
-    return 1;
-}
-
 static bool has_arg(int argc, char** argv, std::string test) {
 	for (int i = 1; i < argc; i++) {
 		if (argv[i] == test) {
@@ -40,9 +29,12 @@ static bool has_arg(int argc, char** argv, std::string test) {
 
 //** we avoid creating a header by pasting the 'test_main' prototype here:
 int test_main(int argc, char** argv); // Defined in tests/main.cpp
+int uv_main(int argc, char** argv); // Defined in tests/libuv-learning.cpp
 
 int main(int argc, char** argv) {
-	if (has_arg(argc, argv, "--tests")) {
+	if (has_arg(argc, argv, "--uv")) {
+	    return uv_main(argc, argv);
+	} else if (has_arg(argc, argv, "--tests")) {
 		// running tests:
 		return test_main(argc, argv);
 	} else {
@@ -56,9 +48,9 @@ int main(int argc, char** argv) {
 			seed = (int)t;
 		}
 
-		AnalysisState analysis_state(config);
+		AnalysisState analysis_state(config, seed);
 
-        simulate_network(analysis_state, seed);
+        simulate_network(analysis_state);
         output_network_statistics(analysis_state);
 
 		printf("Analysis took %.2fms.\n", t.get_microseconds() / 1000.0);

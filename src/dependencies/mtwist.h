@@ -85,6 +85,37 @@ public:
     /* generates a random number on [0,1) with 53-bit resolution*/
     double genrand_res53(void);
 
+// AD: Added for Twitter simulation
+
+    /* Grab an integer from 0 to max, non-inclusive (ie appropriate for array lengths). */
+    int rand_int(int max) {
+        //AD: Modified to remove modulo-bias problem. Inspired by Java's nextInt implementation.
+        int raw = genrand_int31();
+
+        if ((max & -max) == max) { // i.e., max is a power of 2
+            return (int) ((max * (long long)raw) >> 31);
+        }
+        int val;
+        do {
+            val = raw % max;
+            // Reject values within a small, problematic range:
+        } while (raw - val + (max - 1) < 0);
+
+        return val;
+    }
+    /* Grab a real number within [0,1) with 53-bit resolution */
+    double rand_real_not1() {
+        return genrand_res53();
+    }
+    /* Grab a real number within (0,1] with 53-bit resolution */
+    double rand_real_not0() {
+        return 1.0 - rand_real_not1();
+    }
+    /* Using Mersenne-twister, grab a real number within [0,1] */
+    double rand_real_with01() {
+        return genrand_real1();
+    }
+
 private:
     unsigned int mt[N];
     int mti;

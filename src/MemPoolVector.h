@@ -122,7 +122,8 @@ private:
 	bool grow_follow_set(MemPoolVector<V, MEMPOOL_THRESHOLD>& f) {
 		static std::map<void*, void*> allocs;
 
-		int new_capacity = f.capacity * FOLLOW_SET_GROWTH_MULTIPLE;
+		const int GROWTH_MULTIPLE = 2;
+		int new_capacity = f.capacity * GROWTH_MULTIPLE;
 		V* new_location = NULL;
 		// Search recycled buffers
 		typename DeletedList::iterator candidate = deletions.begin();

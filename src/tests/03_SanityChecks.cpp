@@ -15,7 +15,7 @@ SUITE(SanityChecks) {
 
     TEST(simple_config) {
         ParsedConfig config = parse_yaml_configuration("src/tests/03.yaml");
-        AnalysisState state(config);
-        simulate_network(state, TEST_SEED);
+        AnalysisState state(config, TEST_SEED);
+        simulate_network(state);
     }
 }

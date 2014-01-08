@@ -6,6 +6,7 @@ include_directories(
 	"." 
 	dependencies
 	dependencies/yaml-cpp/include
+	dependencies/libuv/include
 )
 
 add_definitions(-Wuninitialized -std=c++98)
@@ -60,4 +61,6 @@ target_link_libraries (
 	main 
 	UnitTest++
 	yaml-cpp
+	libuv
+        ${UV_LIBS}
 )

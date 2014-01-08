@@ -6,14 +6,17 @@ cmake_minimum_required( VERSION 2.6 )
 #set(CMAKE_BUILD_TYPE Release)
 set(CMAKE_BUILD_TYPE Debug)
 
+if(APPLE)
+   set(UV_LIBS m)
+elseif(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+   SET (CMAKE_EXE_LINKER_FLAGS
+       -fsanitize=address
+   )
 
-if (APPLE) 
-else()
-    SET (CMAKE_EXE_LINKER_FLAGS
-        -fsanitize=address
-    )
-
-    add_definitions(-fsanitize=address)
+   add_definitions(-fsanitize=address)
+   set(UV_LIBS rt m pthread)
+elseif(CMAKE_SYSTEM_NAME STREQUAL "FreeBSD")
+   set(UV_LIBS m pthread)
 endif()
 
 add_subdirectory(src)

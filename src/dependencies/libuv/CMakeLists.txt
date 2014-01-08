@@ -20,7 +20,6 @@ set(UV_POSIX_SRCS
     src/unix/threadpool.c
     src/unix/stream.c
     src/unix/tcp.c
-    src/unix/cygwin.c
     src/unix/fs.c
     src/unix/signal.c
     src/unix/timer.c
@@ -44,7 +43,6 @@ if(WIN32)
     set(UV_LIBS ws2_32)
 else()
     # POSIX common
-    include_directories(src/unix/ev)
     add_definitions(-D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -D_GNU_SOURCE -DEIO_STACKSIZE=262144)
 
     # OS specific thingy
@@ -81,6 +79,6 @@ else()
     endif()
 endif()
 
-add_library(uv ${UV_SRCS})
+add_library(libuv ${UV_SRCS})
 
-target_link_libraries(uv ${UV_LIBS})
+target_link_libraries(libuv ${UV_LIBS})

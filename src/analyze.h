@@ -30,7 +30,6 @@ struct AnalysisStats {
     }
 };
 
-
 // All the state passed to - and - from analyze.cpp.
 // Essentially this encapsulates all the information required for the post-analysis routines.
 // This is 'conceptually cleaner' than passing along the entire contents of the Analyzer struct.
@@ -57,19 +56,23 @@ struct AnalysisState {
     int n_follows;
     double r_follow_norm, end_time;
 
-    AnalysisState(const ParsedConfig& config) :
+    MTwist rng;
+
+    AnalysisState(const ParsedConfig& config, int seed) :
             config(config) {
-        // Let analyze.cpp handle all initialization logic from here.
         n_follows = 0;
         r_follow_norm = end_time = 0;
         tweet_ranks = config.tweet_ranks;
         follow_ranks = config.follow_ranks;
         retweet_ranks = config.retweet_ranks;
         entity_types = config.entity_types;
+
+        rng.init_genrand(seed);
+        // Let analyze.cpp handle any additional initialization logic from here.
     }
 };
 
 // Run a network simulation using the given input file's parameters
-void simulate_network(AnalysisState& analysis_state, int seed);
+void simulate_network(AnalysisState& analysis_state);
 
 #endif
