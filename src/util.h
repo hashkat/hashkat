@@ -12,7 +12,7 @@
 #include <limits>
 
 // Dirt simple error handling, exits the program:
-inline void panic(const char* msg) {
+inline void error_exit(const char* msg) {
     fprintf(stderr, "%s\n", msg);
     exit(2); // Return with error code
 }

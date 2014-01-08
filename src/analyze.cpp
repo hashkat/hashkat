@@ -26,7 +26,7 @@ static const int CTRL_C_ATTEMPTS_TO_ABORT = 4;
 static void ctrl_C_handler(int __dummy) {
     CTRL_C_ATTEMPTS++;
     if (CTRL_C_ATTEMPTS > CTRL_C_ATTEMPTS_TO_ABORT) {
-        panic("User demands abort!");
+        error_exit("User demands abort!");
     }
 }
 static void ctrl_C_handler_install() {

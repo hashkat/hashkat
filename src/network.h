@@ -69,7 +69,7 @@ struct Network {
         entities = (Entity*)malloc(sizeof(Entity) * max_entities);
         // This is very likely to be a large allocation, check for failures:
         if (entities == NULL) {
-            panic("Network::preallocate failed");
+            error_exit("Network::preallocate failed");
         }
         for (int i = 0; i < max_entities; i++) {
             // Placement new due to use of malloc
