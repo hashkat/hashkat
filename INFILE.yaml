@@ -43,10 +43,10 @@ follow_ranks:
 
 entities:
   - name: Standard
-    weights: {add = 70, follow = 5}
+    weights: {add: 70, follow: 5}
   - name: Celebrity
-    weights: {add = 10, follow = 80}
+    weights: {add: 10, follow: 80}
   - name: Bot
-    weights: {add = 5, follow = 0}
+    weights: {add: 5, follow: 0}
   - name: Organization
-    weights: {add = 15, follow = 15}
+    weights: {add: 15, follow: 15}

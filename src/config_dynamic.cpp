@@ -41,6 +41,7 @@ static FollowModel parse_follow_model(const Node& node) {
 
 static void parse_analysis_configuration(ParsedConfig& config, const Node& node) {
     parse(node, "max_entities", config.max_entities);
+    parse(node, "initial_entities", config.initial_entities);
     parse(node, "max_time", config.max_time);
     parse(node, "use_barabasi", config.use_barabasi);
     parse(node, "use_random_increment", config.use_random_increment);
@@ -122,6 +123,7 @@ static EntityTypeVector parse_entities_configuration(const Node& node) {
     }
     // Normalize the entity weights into probabilities
     for (int i = 0; i < node.size(); i++) {
+        printf("Got %f %f\n", vec[i].prob_add, vec[i].prob_follow);
         vec[i].prob_add /= add_total;
         vec[i].prob_follow /= follow_total;
     }
