@@ -80,8 +80,8 @@ struct Analyzer {
             config(state.config), entity_types(state.entity_types),
             network(state.network), follow_set_grower(state.follow_set_grower),
             tweet_ranks(state.tweet_ranks), follow_ranks(state.follow_ranks),
-            retweet_ranks(state.retweet_ranks), random_gen_state(seed),
-			entity_cap(state.entity_cap), age_ranks(state.age_ranks) {
+            retweet_ranks(state.retweet_ranks), random_gen_state(seed)
+			 {
 
         // The following allocates a memory chunk proportional to max_entities:
         network.preallocate(config.max_entities);
@@ -105,14 +105,14 @@ struct Analyzer {
 		int approx_month = 24*60*30;
 		int n_months = TIME / approx_month;
 
-		if (n_months > entity_cap.size() - 1 || TIME == 0) {
+		if (n_months > entity_types[0].entity_cap.size() - 1 || TIME == 0) {
 		    if (config.output_stdout_basic) {
 		        cout << "\nNumber of Months = " << n_months << "\n\n";
 		    }
 			// go through every user type
 			for (int i = 0; i < entity_types.size(); i ++) {
 				// set the thresholds for each entitytype -- they are the same for every entity
-				entity_types.age_ranks.categories.push_back(TIME);
+				entity_types[i].age_ranks.categories.push_back(TIME);
 				// for every entitytype, go through every entity that is of that entitytype and categorize them based on their creation time
 				for (int j = 0; j < entity_types[i].entity_list.size(); j ++) {
 					Entity& e = network[entity_types[i].entity_list[j]];
@@ -131,6 +131,7 @@ struct Analyzer {
 			double change_add_rate = config.rate_add;
 			
 			for (int i = 0; i < entity_types.size(); i ++) {
+				//all users will have the same constant rates for now
 				entity_types[i].r_follow.push_back(change_follow_rate);
 				entity_types[i].r_tweet.push_back(change_tweet_rate);
 				entity_types[i].r_retweet.push_back(change_retweet_rate);
@@ -149,10 +150,9 @@ struct Analyzer {
 			}
 		} else {
 			for (int i = 0; i < entity_types.size(); i ++) {
-				entity_types[i].new_entities = entity_types[i].entity_list.size() - entity_types[i].entity_cap[n_months];
-				overall_follow_rate += entity_types[i].new_entities * entity_types.r_follow[0];
-				overall_tweet_rate += entity_types[i].new_entities * entity_types.r_tweet[0];
-				overall_retweet_rate += entity_types[i].new_entities * entity_types.r_retweet[0];
+				overall_follow_rate += entity_types[i].new_entities * entity_types[i].r_follow[0];
+				overall_tweet_rate += entity_types[i].new_entities * entity_types[i].r_tweet[0];
+				overall_retweet_rate += entity_types[i].new_entities * entity_types[i].r_retweet[0];
 			}
 			for (int j = 0; j < entity_types.size(); j ++) {
 				for (int i = 1; i <= n_months; i ++) {
@@ -404,27 +404,112 @@ struct Analyzer {
 		// remove entity id from follow_list
 		
 	}
-	int entity_selection(vector<double>& rates) {
+	int entity_selection(double TIME, string event) {
 		int entity = -1;
-		int new_entities = network.n_entities - entity_cap[entity_cap.size() - 1];
-		double rand_num = rand_real_not0(), rate_sum = 0;
-		if (stats.prob_add == 0) {
-			entity = rand_int(network.n_entities);
-		}
-		else {
-			for (int i = 0; i < rates.size(); i ++) {
-				rate_sum += rates[i];
+		int n_months = TIME / (30*24*60);
+		double rand_num = rand_real_not0();
+		double rate_sum = 0;
+		
+		if (event == "follow") {
+			if (stats.prob_add == 0) {
+				for (int i = 0; i < entity_types.size(); i ++) {
+					rate_sum += entity_types[i].r_follow[n_months];
+				}
+				for (int i = 0; i < entity_types.size(); i ++ ) {
+					if (rand_num <= (entity_types[i].r_follow[n_months] / rate_sum)) {
+						entity = entity_types[i].entity_list[rand_int(entity_types[i].entity_list.size())];
+						break;	
+					}
+					rand_num -= (entity_types[i].r_follow[n_months] / rate_sum);
+				}
 			}
-			for (int i = 0; i < rates.size(); i ++) {
-				if (rand_num <= (rates[i] / rate_sum) && i == 0) {
-					entity = rand_int(new_entities) + entity_cap.back() /*last element*/;
-					break;
+			else {
+				for (int j = 0; j < entity_types.size(); j ++) {
+					for (int i = 0; i < entity_types[i].r_follow.size(); i ++) {
+						rate_sum += entity_types[j].r_follow[i];
+					}
 				}
-				else if (rand_num <= (rates[i] / rate_sum)){
-					entity = rand_int(entity_cap[entity_cap.size() - (i)]) + entity_cap[entity_cap.size() - (i+1)];
-					break;
+				for (int i = 0; i < entity_types.size(); i ++) {
+					for (int j = 0; j < entity_types[i].r_follow.size(); j ++) {
+						if (rand_num <= (entity_types[i].r_follow[j] / rate_sum) && j == 0) {
+							entity = rand_int(entity_types[i].new_entities) + entity_types[i].entity_cap.back();
+							break;
+						}
+						else if (rand_num <= (entity_types[i].r_follow[j] / rate_sum)) {
+							entity = rand_int(entity_types[i].entity_cap[entity_types[i].entity_cap.size() - (j)]) + entity_types[i].entity_cap[entity_types[i].entity_cap.size() - (j+1)];
+							break;
+						}
+						rand_num -= (entity_types[i].r_follow[j] / rate_sum);
+					}
 				}
-				rand_num -= (rates[i] / rate_sum);
+			}
+		}
+		else if (event == "tweet") {
+			if (stats.prob_add == 0) {
+				for (int i = 0; i < entity_types.size(); i ++) {
+					rate_sum += entity_types[i].r_tweet[n_months];
+				}
+				for (int i = 0; i < entity_types.size(); i ++ ) {
+					if (rand_num <= (entity_types[i].r_tweet[n_months] / rate_sum)) {
+						entity = entity_types[i].entity_list[rand_int(entity_types[i].entity_list.size())];
+						break;	
+					}
+					rand_num -= (entity_types[i].r_tweet[n_months] / rate_sum);
+				}
+			}
+			else {
+				for (int j = 0; j < entity_types.size(); j ++) {
+					for (int i = 0; i < entity_types[i].r_tweet.size(); i ++) {
+						rate_sum += entity_types[j].r_tweet[i];
+					}
+				}
+				for (int i = 0; i < entity_types.size(); i ++) {
+					for (int j = 0; j < entity_types[i].r_tweet.size(); j ++) {
+						if (rand_num <= (entity_types[i].r_tweet[j] / rate_sum) && j == 0) {
+							entity = rand_int(entity_types[i].new_entities) + entity_types[i].entity_cap.back();
+							break;
+						}
+						else if (rand_num <= (entity_types[i].r_tweet[j] / rate_sum)) {
+							entity = rand_int(entity_types[i].entity_cap[entity_types[i].entity_cap.size() - (j)]) + entity_types[i].entity_cap[entity_types[i].entity_cap.size() - (j+1)];
+							break;
+						}
+						rand_num -= (entity_types[i].r_tweet[j] / rate_sum);
+					}
+				}
+			}
+		}
+		if (event == "retweet") {
+			if (stats.prob_add == 0) {
+				for (int i = 0; i < entity_types.size(); i ++) {
+					rate_sum += entity_types[i].r_retweet[n_months];
+				}
+				for (int i = 0; i < entity_types.size(); i ++ ) {
+					if (rand_num <= (entity_types[i].r_retweet[n_months] / rate_sum)) {
+						entity = entity_types[i].entity_list[rand_int(entity_types[i].entity_list.size())];
+						break;	
+					}
+					rand_num -= (entity_types[i].r_retweet[n_months] / rate_sum);
+				}
+			}
+			else {
+				for (int j = 0; j < entity_types.size(); j ++) {
+					for (int i = 0; i < entity_types[i].r_retweet.size(); i ++) {
+						rate_sum += entity_types[j].r_retweet[i];
+					}
+				}
+				for (int i = 0; i < entity_types.size(); i ++) {
+					for (int j = 0; j < entity_types[i].r_retweet.size(); j ++) {
+						if (rand_num <= (entity_types[i].r_retweet[j] / rate_sum) && j == 0) {
+							entity = rand_int(entity_types[i].new_entities) + entity_types[i].entity_cap.back();
+							break;
+						}
+						else if (rand_num <= (entity_types[i].r_follow[j] / rate_sum)) {
+							entity = rand_int(entity_types[i].entity_cap[entity_types[i].entity_cap.size() - (j)]) + entity_types[i].entity_cap[entity_types[i].entity_cap.size() - (j+1)];
+							break;
+						}
+						rand_num -= (entity_types[i].r_retweet[j] / rate_sum);
+					}
+				}
 			}
 		}
 		DEBUG_CHECK(entity != -1, "Entity acting can not have user ID = -1");
@@ -445,13 +530,13 @@ struct Analyzer {
 			// If we find ourselves in the add entity chuck of our cumulative function:
             action_create_entity(time, N);
         } else if (u_1 - (stats.prob_add + stats.prob_follow) <= ZEROTOL) {
-			action_follow_entity(entity_selection(r_follow), N, time);
+			action_follow_entity(entity_selection(time, "follow"), N, time);
         } else if (u_1 - (stats.prob_add + stats.prob_follow + stats.prob_tweet) <= ZEROTOL) {
 			// The tweet event
-            action_tweet(entity_selection(r_tweet));
+            action_tweet(entity_selection(time, "tweet"));
             stats.n_tweets ++;
         } else if (u_1 - (stats.prob_add + stats.prob_follow + stats.prob_tweet + stats.prob_norm) <= ZEROTOL ) {
-			action_retweet(entity_selection(r_retweet), time);
+			action_retweet(entity_selection(time, "retweet"), time);
         } else {
             cout << "Disaster, event out of bounds" << endl;
         }
