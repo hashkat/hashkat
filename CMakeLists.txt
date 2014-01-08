@@ -7,9 +7,7 @@ cmake_minimum_required( VERSION 2.6 )
 set(CMAKE_BUILD_TYPE Debug)
 
 if(APPLE)
-   set(UV_LIBS m)
-
-   SET (CMAKE_EXE_LINKER_FLAGS ${CMAKE_MODULE_LINKER_FLAGS_INIT} -framework CoreFoundation)
+    set(UV_LIBS m "-framework CoreFoundation")
 
 elseif(CMAKE_SYSTEM_NAME STREQUAL "Linux")
    SET (CMAKE_EXE_LINKER_FLAGS
