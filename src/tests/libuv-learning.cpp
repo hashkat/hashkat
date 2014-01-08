@@ -35,6 +35,48 @@ private:
 };
 
 
+struct TEntity {
+    int entity_type;
+    TEntity() {
+        entity_type = -1;
+    }
+};
+
+struct TNetwork {
+    TEntity* entities; //** This is a pointer - used to create a dynamic array
+    int n_entities, max_entities;
+    TNetwork() {
+        entities = NULL;
+        n_entities = 0;
+        max_entities = 0;
+    }
+    ~TNetwork() { //** This defines how to clean-up our Network object; we free the dynamic array
+        free(entities);
+    }
+    TEntity& operator[](int index) { //** This allows us to index our Network struct as if it were an array.
+        return entities[index];
+    }
+
+    void preallocate(int n) {
+        max_entities = n;
+        entities = (TEntity*)malloc(sizeof(TEntity) * max_entities);
+        // This is very likely to be a large allocation, check for failures:
+        if (entities == NULL) {
+            panic("Network::preallocate failed");
+        }
+        for (int i = 0; i < max_entities; i++) {
+            // Placement new due to use of malloc
+            new (&entities[i]) TEntity();
+        }
+    }
+};
+
+
+struct TNetworkSlice {
+    TEntity* entities; //** This is a pointer - used to create a dynamic array
+};
+
+
 static void say(uv_work_t *req) {
     fprintf(stdout, "%s\n", req->data);
 }
