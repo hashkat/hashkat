@@ -3,8 +3,6 @@
 
 cmake_minimum_required( VERSION 2.6 )
 
-add_definitions(-D_GLIBCXX_DEBUG)
-
 #set(CMAKE_BUILD_TYPE Release)
 set(CMAKE_BUILD_TYPE Debug)
 
