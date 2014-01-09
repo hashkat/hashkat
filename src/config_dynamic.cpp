@@ -123,7 +123,6 @@ static EntityTypeVector parse_entities_configuration(const Node& node) {
     }
     // Normalize the entity weights into probabilities
     for (int i = 0; i < node.size(); i++) {
-        printf("Got %f %f\n", vec[i].prob_add, vec[i].prob_follow);
         vec[i].prob_add /= add_total;
         vec[i].prob_follow /= follow_total;
     }

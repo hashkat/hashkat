@@ -1,6 +1,6 @@
 analysis:
   max_entities: 
-    100000
+    10000
   max_time:
     1000000.0 # 1/10 year
   initial_entities:
