@@ -5,7 +5,7 @@
 #include <iostream>
 
 #include "dependencies/mtwist.h"
-#include "analyze.h"
+#include "analyzer.h"
 #include "io.h"
 #include "util.h"
 

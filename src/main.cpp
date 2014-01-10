@@ -13,7 +13,7 @@
 #include "config_dynamic.h"
 
 #include "network.h"
-#include "analyze.h"
+#include "analyzer.h"
 #include "io.h"
 
 using namespace std;
@@ -50,7 +50,7 @@ int main(int argc, char** argv) {
 
 		AnalysisState analysis_state(config, seed);
 
-        simulate_network(analysis_state);
+        analyzer_main(analysis_state);
         output_network_statistics(analysis_state);
 
 		printf("Analysis took %.2fms.\n", t.get_microseconds() / 1000.0);

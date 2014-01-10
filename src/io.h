@@ -3,7 +3,7 @@
 
 #include <fstream>
 
-#include "analyze.h"
+#include "analyzer.h"
 #include "network.h"
 
 void POUT(Network& network, int MAX_ENTITIES, int N_ENTITIES, int N_FOLLOWS);

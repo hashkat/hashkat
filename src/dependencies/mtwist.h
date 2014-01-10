@@ -103,6 +103,11 @@ public:
 
         return val;
     }
+    int rand_int(int min, int max) {
+        int range = max - min;
+        return rand_int(range) + min;
+    }
+
     /* Grab a real number within [0,1) with 53-bit resolution */
     double rand_real_not1() {
         return genrand_res53();

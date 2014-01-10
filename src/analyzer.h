@@ -18,17 +18,20 @@ struct AnalysisStats {
     double prob_norm;
 
     int64 n_steps, n_follows, n_tweets, n_retweets;
-    int n_months;
     double event_rate;
     AnalysisStats() {
         prob_add = 0;
         prob_follow = 0;
         prob_tweet = 0;
         prob_norm = 0;
-        n_steps = 0, n_follows = 0, n_tweets = 0, n_retweets = 0, n_months = 0;
+
+        n_steps = 0, n_follows = 0, n_tweets = 0, n_retweets = 0;
         event_rate = 0;
     }
 };
+
+
+const int APPROX_MONTH = 24 * 60 * 30;
 
 // All the state passed to - and - from analyze.cpp.
 // Essentially this encapsulates all the information required for the post-analysis routines.
@@ -58,6 +61,9 @@ struct AnalysisState {
 
     MTwist rng;
 
+    AnalysisStats stats;
+    // The current simulation time
+    double time;
     AnalysisState(const ParsedConfig& config, int seed) :
             config(config) {
         n_follows = 0;
@@ -68,11 +74,29 @@ struct AnalysisState {
         entity_types = config.entity_types;
 
         rng.init_genrand(seed);
+        time = 0.0;
         // Let analyze.cpp handle any additional initialization logic from here.
     }
+
+    int n_months() {
+        return time / APPROX_MONTH;
+    }
+
 };
 
+
+
+enum SelectionType {
+    FOLLOW_SELECT,
+    RETWEET_SELECT,
+    TWEET_SELECT
+};
+// 'analyzer_select_entity' and 'analyzer_set_rates' implement time-dependent rates
+// Select based on any SelectionType
+int analyzer_select_entity(AnalysisState& state, SelectionType type);
+void analyzer_rate_update(AnalysisState& state);
+
 // Run a network simulation using the given input file's parameters
-void simulate_network(AnalysisState& analysis_state);
+void analyzer_main(AnalysisState& analysis_state);
 
 #endif

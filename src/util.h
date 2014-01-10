@@ -61,4 +61,7 @@ inline double parse_num(std::string s) {
     return ret;
 }
 
+#define LOG(msg, ...) \
+    printf(msg, ...);
+
 #endif

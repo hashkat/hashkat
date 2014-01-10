@@ -4,7 +4,7 @@ analysis:
   max_time:
     1000000.0 # 1/10 year
   initial_entities:
-    1
+    100
   use_barabasi: false # if this is set to 1, the global follow rate will be ignored. Follow thresholds not needed.
   use_random_time_increment: true # increments by 1/sum(rates) on average
 

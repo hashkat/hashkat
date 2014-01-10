@@ -1,8 +1,10 @@
 #include <stdio.h>
 #include <unistd.h>
 
-#include "util.h"
 #include <uv.h>
+
+#include "util.h"
+#include "lcommon/Range.h"
 
 static void finish(uv_work_t *req, int status) {
     // Do nothing
@@ -70,7 +72,6 @@ struct TNetwork {
         }
     }
 };
-
 
 struct TNetworkSlice {
     TEntity* entities; //** This is a pointer - used to create a dynamic array

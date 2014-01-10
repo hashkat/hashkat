@@ -3,7 +3,7 @@
 #include "../config_static.h"
 #include "../config_dynamic.h"
 #include "../network.h"
-#include "../analyze.h"
+#include "../analyzer.h"
 
 using namespace std;
 
@@ -16,6 +16,6 @@ SUITE(SanityChecks) {
     TEST(simple_config) {
         ParsedConfig config = parse_yaml_configuration("src/tests/03.yaml");
         AnalysisState state(config, TEST_SEED);
-        simulate_network(state);
+        analyzer_main(state);
     }
 }
