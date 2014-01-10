@@ -433,7 +433,7 @@ struct Analyzer {
                 }
                 else {
                         for (int j = 0; j < entity_types.size(); j ++) {
-                                for (int i = 0; i < entity_types[i].r_follow.size(); i ++) {
+                                for (int i = 0; i < entity_types[j].r_follow.size(); i ++) {
                                         rate_sum += entity_types[j].r_follow[i];
                                 }
                         }
@@ -501,7 +501,7 @@ struct Analyzer {
                 }
                 else {
                         for (int j = 0; j < entity_types.size(); j ++) {
-                                for (int i = 0; i < entity_types[i].r_retweet.size(); i ++) {
+                                for (int i = 0; i < entity_types[j].r_retweet.size(); i ++) {
                                         rate_sum += entity_types[j].r_retweet[i];
                                 }
                         }

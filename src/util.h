@@ -1,7 +1,6 @@
 #ifndef __UTIL_H_
 #define __UTIL_H_
 
-// Mixed bag of useful functions
 #include <cmath>
 #include <cassert>
 #include <cstdio>
@@ -10,6 +9,8 @@
 #include <string>
 #include <sstream>
 #include <limits>
+
+// Mixed bag of useful functions
 
 // Dirt simple error handling, exits the program:
 inline void error_exit(const char* msg) {
