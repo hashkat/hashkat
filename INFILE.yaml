@@ -1,6 +1,6 @@
 analysis:
   max_entities: 
-    10000
+    1000000
   max_time:
     1000000.0 # 1/10 year
   initial_entities:
@@ -12,7 +12,7 @@ analysis:
 
 rates:
   add: 
-    0.001 # 1 / hour, twitter users / 8 years
+    0.01 # 0.001 == 1 / hour, twitter users / 8 years
   follow: 
     0.001
   tweet: 

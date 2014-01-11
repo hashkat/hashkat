@@ -10,15 +10,17 @@ if(APPLE)
     set(UV_LIBS m "-framework CoreFoundation" "-framework CoreServices")
 
 elseif(CMAKE_SYSTEM_NAME STREQUAL "Linux")
-   SET (CMAKE_EXE_LINKER_FLAGS
-       -fsanitize=address
-   )
+   if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+       SET (CMAKE_EXE_LINKER_FLAGS
+           -fsanitize=address
+       )
 
-   add_definitions(-fsanitize=address)
+       add_definitions(
+           -fsanitize=address
+       )
+   endif()
    set(UV_LIBS rt m pthread)
 elseif(CMAKE_SYSTEM_NAME STREQUAL "FreeBSD")
    set(UV_LIBS m pthread)
 endif()
-
-
 add_subdirectory(src)

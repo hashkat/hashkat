@@ -91,10 +91,10 @@ struct MemPoolVectorGrower {
 		memory = NULL;
 		used = 0, capacity = 0;
 	}
-	void preallocate(int max_bytes) {
-		capacity = max_bytes / sizeof(int);
-		memory = new int[capacity];
-	}
+    void preallocate(int max_bytes) {
+        capacity = max_bytes / sizeof(V);
+        memory = (V*) malloc(capacity * sizeof(V));
+    }
 	~MemPoolVectorGrower() {
 		delete[] memory;
 	}

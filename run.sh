@@ -49,10 +49,15 @@ if ! handle_flag "-f" ; then
     make -j$((cores+1))
 fi
 
-# Wrap the gdb around the program with -g:
 if handle_flag "-g" ; then
+    # Wrap the gdb around the program with -g:
     echo "Wrapping in GDB:" | colorify '1;35'
     gdb -silent -ex=r --args src/main $args
+elif handle_flag "-p" ; then
+    # Profile the program (requires oprofile) with -p:
+    echo "Profiling with oprofile:" | colorify '1;35'
+    operf --callgraph src/main $args
+    opreport --callgraph --exclude-dependent --demangle=smart --symbols /home/adomurad/KMC/src/main | more
 else
     # Normal execution
     src/main $args

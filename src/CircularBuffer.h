@@ -40,7 +40,7 @@ public:
         buffer[end] = val;
         end = (end == cap) ? 0 : end + 1;
         // Optimize for the always-full case, which happens the moment it is filled.
-        if (LIKELY(end == start)) {
+        if (end == start) {
             // If we are full, push the start and end together in a circular fashion
             start = (start + 1) % (cap+1);
         }

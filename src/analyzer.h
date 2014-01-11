@@ -59,6 +59,8 @@ struct AnalysisState {
     int n_follows;
     double r_follow_norm, end_time;
 
+    std::vector<double> follow_probabilities, updating_follow_probabilities;
+
     MTwist rng;
 
     AnalysisStats stats;
@@ -85,7 +87,6 @@ struct AnalysisState {
 };
 
 
-
 enum SelectionType {
     FOLLOW_SELECT,
     RETWEET_SELECT,
@@ -95,8 +96,13 @@ enum SelectionType {
 // Select based on any SelectionType
 int analyzer_select_entity(AnalysisState& state, SelectionType type);
 void analyzer_rate_update(AnalysisState& state);
-
+// Follow a specific user
+void analyzer_follow_entity(AnalysisState& state, int entity, int n_entities, double time_of_follow);
+// Implements a follow-back
+void analyzer_followback(AnalysisState& state, int follower, int followed);
 // Run a network simulation using the given input file's parameters
-void analyzer_main(AnalysisState& analysis_state);
+void analyzer_main(AnalysisState& state);
+
+const double ZEROTOL = 1e-16; // enough precision for really really low add rate
 
 #endif

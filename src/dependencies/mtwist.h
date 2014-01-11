@@ -95,11 +95,12 @@ public:
         if ((max & -max) == max) { // i.e., max is a power of 2
             return (int) ((max * (long long)raw) >> 31);
         }
-        int val;
-        do {
+        int val = raw % max;
+        // Reject values within a small, problematic range:
+        while (raw - val + (max - 1) < 0) {
+            raw = genrand_int31();
             val = raw % max;
-            // Reject values within a small, problematic range:
-        } while (raw - val + (max - 1) < 0);
+        }
 
         return val;
     }
