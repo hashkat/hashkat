@@ -2,7 +2,7 @@ analysis:
   max_entities: 
     1000000
   max_time:
-    1000000.0 # 1/10 year
+    100000000.0 # 1/10 year
   initial_entities:
     100
   use_barabasi: false # if this is set to 1, the global follow rate will be ignored. Follow thresholds not needed.
@@ -12,7 +12,7 @@ analysis:
 
 rates:
   add: 
-    0.01 # 0.001 == 1 / hour, twitter users / 8 years
+    5.7  # 0.001 == 1 / hour, twitter users / 8 years
   follow: 
     0.001
   tweet: 
