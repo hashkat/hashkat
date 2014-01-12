@@ -61,6 +61,7 @@ struct Network {
         free(entities);
     }
     Entity& operator[](int index) { //** This allows us to index our Network struct as if it were an array.
+        DEBUG_CHECK(index >= 0 && index <= n_entities, "Network out-of-bounds entity access");
         return entities[index];
     }
 

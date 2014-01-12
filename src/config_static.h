@@ -31,6 +31,6 @@ const int TIME_CAT_FREQ = 24*60;
 const int STDOUT_OUTPUT_RATE = 1000; // Once per X file outputs
 
 // Uncomment this to run expensive but informative checks:
-//#define SLOW_DEBUG_CHECKS
+#define SLOW_DEBUG_CHECKS
 
 #endif

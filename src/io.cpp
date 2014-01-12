@@ -15,7 +15,7 @@ using namespace std;
 // ROOT OUTPUT ROUTINE
 /* After 'analyze', print the results of the computations. */
 void output_network_statistics(AnalysisState& state) {
-	Network& network = state.network;
+	Network& N = state.network;
 	ParsedConfig& C = state.config;
 
     // Print why program stopped
@@ -29,32 +29,30 @@ void output_network_statistics(AnalysisState& state) {
         }
         cout << "\nCreating analysis files -- press ctrl-c multiple times to abort ... \n";
     }
-    int MAX_ENTITIES = C.max_entities;
-    int N_ENTITIES = network.n_entities;
 
     // Depending on our INFILE/configuration, we may output various analysis
     if (C.output_p_out) {
-        POUT(network, C.max_entities, N_ENTITIES, state.n_follows);
+        POUT(N, C.max_entities, N.n_entities, state.n_follows);
     }
     if (C.output_p_in) {
-        PIN(network, C.max_entities, N_ENTITIES, state.r_follow_norm);
+        PIN(N, C.max_entities, N.n_entities, state.r_follow_norm);
     }
     if (C.output_visualize) {
-        output_position(network, N_ENTITIES);
+        output_position(N, N.n_entities);
     }
     /* ADD FUNCTIONS THAT RUN AFTER NETWORK IS BUILT HERE */
     if (C.use_barabasi) {
         Categories_Check(state.tweet_ranks, state.follow_ranks, state.retweet_ranks);
     }
     if (C.output_cumulative_analysis) {
-        Cumulative_Distro(network, C.max_entities, N_ENTITIES, state.n_follows);
+        Cumulative_Distro(N, C.max_entities, N.n_entities, state.n_follows);
     }
 
     if (C.output_tweet_analysis) {
-        tweets_distribution(network, N_ENTITIES);
+        tweets_distribution(N, N.n_entities);
     }
 
-    //entity_statistics(network, N_FOLLOWS,N_ENTITIES, N_ENTITIES, entity_entities);
+    //entity_statistics(network, N_FOLLOWS,N.n_entities, N.n_entities, entity_entities);
 
     if (C.output_stdout_basic) {
         cout << "Analysis complete!\n";
@@ -217,7 +215,6 @@ void PIN(Network& network, int MAX_ENTITIES, int N_ENTITIES, double r_follow_nor
 	}
 
 	for (int i = 0; i < N_ENTITIES; i++) {
-		Entity& p = network[i];
 		int n_followers = N_FOLLOWERS_DATA.at(i);
 		DEBUG_CHECK(n_followers < N_FOLLOWERS_DISTRO.size(),
 		        "More followers than 'MAX_ENTITIES'. (Did you clean-up the follow lists?)");

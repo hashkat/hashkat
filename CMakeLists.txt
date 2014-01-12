@@ -17,6 +17,7 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "Linux")
 
        add_definitions(
            -fsanitize=address
+           -D_GLIBCXX_DEBUG
        )
    endif()
    set(UV_LIBS rt m pthread)

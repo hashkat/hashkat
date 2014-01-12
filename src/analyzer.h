@@ -17,6 +17,7 @@ struct AnalysisStats {
     double prob_tweet;
     double prob_norm;
 
+    int n_outputs;
     int64 n_steps, n_follows, n_tweets, n_retweets;
     double event_rate;
     AnalysisStats() {
@@ -25,19 +26,21 @@ struct AnalysisStats {
         prob_tweet = 0;
         prob_norm = 0;
 
+        n_outputs = 0;
         n_steps = 0, n_follows = 0, n_tweets = 0, n_retweets = 0;
         event_rate = 0;
     }
 };
 
-
-const int APPROX_MONTH = 24 * 60 * 30;
+const int APPROX_MONTH = 24 * 60; // * 30;
 
 // All the state passed to - and - from analyze.cpp.
 // Essentially this encapsulates all the information required for the post-analysis routines.
 // This is 'conceptually cleaner' than passing along the entire contents of the Analyzer struct.
 
 struct AnalysisState {
+    // The current simulation time
+    double time;
     ParsedConfig config;
 
     // Note, 'MemPoolVectorGrower' is required to be in same scope as network, otherwise we will have undefined memory accesses.
@@ -64,8 +67,6 @@ struct AnalysisState {
     MTwist rng;
 
     AnalysisStats stats;
-    // The current simulation time
-    double time;
     AnalysisState(const ParsedConfig& config, int seed) :
             config(config) {
         n_follows = 0;
@@ -86,12 +87,12 @@ struct AnalysisState {
 
 };
 
-
 enum SelectionType {
     FOLLOW_SELECT,
     RETWEET_SELECT,
     TWEET_SELECT
 };
+
 // 'analyzer_select_entity' and 'analyzer_set_rates' implement time-dependent rates
 // Select based on any SelectionType
 int analyzer_select_entity(AnalysisState& state, SelectionType type);

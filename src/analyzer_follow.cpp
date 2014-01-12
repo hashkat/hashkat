@@ -67,7 +67,6 @@ struct AnalyzerFollow {
                 sum_of_weights += C.entities.size()*follow_probabilities[i];
             }
             for (int i = 0; i < follow_probabilities.size(); i ++ ){
-                CategoryEntityList& C = follow_ranks.categories[i];
                 updating_follow_probabilities[i] /= sum_of_weights;
             }
             for (int i = 0; i < follow_probabilities.size(); i ++) {

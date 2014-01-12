@@ -94,9 +94,11 @@ struct MemPoolVectorGrower {
     void preallocate(int max_bytes) {
         capacity = max_bytes / sizeof(V);
         memory = (V*) malloc(capacity * sizeof(V));
+        printf("%d bytes in preallocate\n", max_bytes);
+        ASSERT(memory != NULL, "MemPoolVectorGrower::preallocate failed")
     }
 	~MemPoolVectorGrower() {
-		delete[] memory;
+		free(memory);
 	}
 
 	// Add an element to the pooled vector, potentially growing (reallocating) the array.
@@ -149,19 +151,19 @@ private:
 			// If we are not pointing to our embedded 'buffer1', we must be pointing within the 'memory' array
 			DEBUG_CHECK(within_range(f.location, memory, memory + capacity), "Logic error");
 			deletions.push_back(DeletedMemPoolVector<V>(f.location, f.capacity));
-#ifdef SLOW_DEBUG_CHECKS
-			allocs[f.location] = NULL;
-#endif
+//#ifdef SLOW_DEBUG_CHECKS
+//			allocs[f.location] = NULL;
+//#endif
 		}
 		V* old_loc = f.location;
 		f.location = new_location;
 		f.capacity = new_capacity;
 		f.copy(old_loc, f.size);
-#ifdef SLOW_DEBUG_CHECKS
-		DEBUG_CHECK(allocs[f.location] == NULL, "Logic error!");
-		allocs[f.location] = (void*)&f;
-		f.sanity_check();
-#endif
+//#ifdef SLOW_DEBUG_CHECKS
+//		DEBUG_CHECK(allocs[f.location] == NULL, "Logic error!");
+//		allocs[f.location] = (void*)&f;
+//		f.sanity_check();
+//#endif
 		return true;
 	}
 	V* allocate(int cap) {

@@ -21,12 +21,13 @@ using namespace std;
 
 volatile int CTRL_C_ATTEMPTS = 0;
 
-static const int CTRL_C_ATTEMPTS_TO_ABORT = 4;
+static const int CTRL_C_ATTEMPTS_TO_ABORT = 3;
 // Handler for SIGINT -- sent by Ctrl-C on command-line. Allows us to stop our program gracefully!
 static void ctrl_C_handler(int __dummy) {
     CTRL_C_ATTEMPTS++;
-    if (CTRL_C_ATTEMPTS > CTRL_C_ATTEMPTS_TO_ABORT) {
+    if (CTRL_C_ATTEMPTS >= CTRL_C_ATTEMPTS_TO_ABORT) {
         error_exit("User demands abort!");
+        signal(SIGINT, SIG_DFL);
     }
 }
 static void ctrl_C_handler_install() {
@@ -114,27 +115,29 @@ struct Analyzer {
     // ROOT ANALYSIS ROUTINE
     /* Run the main analysis routine using this config. */
     void run_network_simulation() {
-        ctrl_C_handler_install();
         while ( LIKELY(time < config.max_time && network.n_entities < config.max_entities && CTRL_C_ATTEMPTS == 0) ) {
         	step_analysis();
         }
     }
 
     void step_time(int n_entities) {
-        double prev_milestone = floor(time / TIME_CAT_FREQ);
+        static double STATIC_TIME = 0.0;
+
+        double prev_time = time;
         double prev_integer = floor(time);
-        if (config.use_random_increment == 1) {
+        double increment = -log(rng.rand_real_not0()) / stats.event_rate;
+        if (config.use_random_increment) {
             // increment by random time
-            time += -log(rng.rand_real_not0()) / stats.event_rate;
+            time += increment;
         } else {
-            time += 1 / stats.event_rate;
+            time += 1.0 / stats.event_rate;
         }
 
-        // Categorize all entities based on time, on every new time milestone.
-        bool at_milestone = (floor(time / TIME_CAT_FREQ) > prev_milestone);
-
+        ASSERT(STATIC_TIME < time, "Fail");
+        STATIC_TIME = time;
         if (config.output_stdout_summary && (floor(time) > prev_integer)) {
-            output_summary_stats(time);
+            printf("time=%.2f->%.2f incr=%.2f\n", prev_time, time, increment);
+            output_summary_stats();
         }
     }
 
@@ -221,10 +224,7 @@ struct Analyzer {
     // Takes old time, returns new time
     void step_analysis() {
         double u_1 = rng.rand_real_not0(); // get the first number with-in [0,1).
-        double rand_num = rng.rand_real_not0();
         int N = network.n_entities;
-        int entity = -1;
-        double r_follow_sum = 0, r_tweet_sum = 0, r_retweet_sum = 0;
 
         // DECIDE WHAT TO DO:
         if (u_1 - (stats.prob_add) <= ZEROTOL) {
@@ -249,14 +249,6 @@ struct Analyzer {
         stats.n_steps++;
         //update the rates if n_entities has changed
         analyzer_rate_update(state);
-
-#ifdef SLOW_DEBUG_CHECKS
-        static int i = 0;
-        if ((i%1000)==0) {
-        network.sanity_check();
-        }
-        i++;
-#endif
     }
 
     /***************************************************************************
@@ -269,31 +261,30 @@ struct Analyzer {
                 << network.n_entities << "\t\t"
                 << stats.n_follows << "\t\t"
                 << stats.n_tweets << "\t\t"
-                << stats.n_retweets << "\t";
+                << stats.n_retweets << "\t"
+                << stats.event_rate << "\t";
         if (time_spent != -1) {
             stream << time_spent << "ms\t";
         }
         stream << "\n";
     }
+    void output_summary_stats() {
 
-    void output_summary_stats(double TIME) {
-        static int n_outputs = 0;
-
-		const char* HEADER = "\n#Time\t\tUsers\t\tFollows\t\tTweets\t\tRetweets\tReal Time Spent\n\n";
-        if (n_outputs % (25 * STDOUT_OUTPUT_RATE) == 0) {
+		const char* HEADER = "\n#Time\t\tUsers\t\tFollows\t\tTweets\t\tRetweets\tR\tReal Time Spent\n\n";
+        if (stats.n_outputs % (25 * STDOUT_OUTPUT_RATE) == 0) {
         	cout << HEADER;
         }
-        if (n_outputs % 500 == 0) {
+        if (stats.n_outputs % 500 == 0) {
             DATA_TIME << HEADER;
         }
 
         output_summary_stats(DATA_TIME);
-        if (n_outputs % STDOUT_OUTPUT_RATE == 0) {
+        if (stats.n_outputs % STDOUT_OUTPUT_RATE == 0) {
         	output_summary_stats(cout, stdout_milestone_timer.get_microseconds() / 1000.0);
         	stdout_milestone_timer.start(); // Restart the timer
         }
 
-        n_outputs++;
+        stats.n_outputs++;
     }
 };
 
@@ -301,6 +292,8 @@ struct Analyzer {
 void analyzer_main(AnalysisState& state) {
     Timer timer;
     Analyzer analyzer(state);
+    ctrl_C_handler_install();
     analyzer.main();
+    signal(SIGINT, SIG_DFL);
     printf("'analyzer_main' took %.2f milliseconds.", timer.get_microseconds() / 1000.0);
 }

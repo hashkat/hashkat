@@ -39,7 +39,8 @@ set_source_files_properties(
 set_source_files_properties(
         ${networksim_src}
         PROPERTIES COMPILE_FLAGS 
-        "-pedantic-errors -Wno-long-long -Wno-variadic-macros"
+        "-pedantic-errors -Wno-long-long -Wno-variadic-macros -Wno-sign-compare -Wno-reorder"
+        #"-Wall -Wextra -Werror -pedantic-errors -Wno-long-long -Wno-variadic-macros -Wno-sign-compare -Wno-reorder"
 )
 
 

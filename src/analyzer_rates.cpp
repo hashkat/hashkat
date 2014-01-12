@@ -37,7 +37,6 @@ struct AnalyzerRates {
     }
 
     bool create_new_month_if_needed(EntityType& et) {
-        int N = network.n_entities;
         int n_months = state.n_months();
 
         if (n_months >= et.entity_cap.size() || state.time == 0) {
@@ -56,7 +55,6 @@ struct AnalyzerRates {
             double change_follow_rate = config.rate_follow;
             double change_tweet_rate = config.rate_tweet;
             double change_retweet_rate = config.rate_retweet;
-            double change_add_rate = config.rate_add;
 
             //all users will have the same constant rates for now
             et.r_follow.push_back(change_follow_rate);
