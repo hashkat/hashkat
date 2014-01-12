@@ -33,12 +33,6 @@ void output_network_statistics(AnalysisState& state) {
     int N_ENTITIES = network.n_entities;
 
     // Depending on our INFILE/configuration, we may output various analysis
-    if (C.output_p_out) {
-        POUT(network, C.max_entities, N_ENTITIES, state.n_follows);
-    }
-    if (C.output_p_in) {
-        PIN(network, C.max_entities, N_ENTITIES, state.r_follow_norm);
-    }
     if (C.output_visualize) {
         output_position(network, N_ENTITIES);
     }
@@ -46,10 +40,6 @@ void output_network_statistics(AnalysisState& state) {
     if (C.use_barabasi) {
         Categories_Check(state.tweet_ranks, state.follow_ranks, state.retweet_ranks);
     }
-    if (C.output_cumulative_analysis) {
-        Cumulative_Distro(network, C.max_entities, N_ENTITIES, state.n_follows);
-    }
-
     if (C.output_tweet_analysis) {
         tweets_distribution(network, N_ENTITIES);
     }
@@ -60,6 +50,8 @@ void output_network_statistics(AnalysisState& state) {
         cout << "Analysis complete!\n";
     }
 //        DATA_TIME.close();
+	degree_distributions(network);
+	
 }
 MTwist random_gen_state;
 int rand_int(int max) {
@@ -140,46 +132,66 @@ const int POUT_CAP = 1000; // AD: Rough work
  P_OUT = 1 in the INFILE. This function will generate an output file that
  can be plotted using gnuplot. */
 
-void POUT(Network& network, int MAX_ENTITIES, int N_ENTITIES, int N_FOLLOWS) {
-    vector<int> N_FOLLOW_DATA(POUT_CAP + 1);
-	for (int i = 0; i <= POUT_CAP; i++) {
-		N_FOLLOW_DATA[i] = 0;
-	}
-
-	ofstream OUTPUT;
-	OUTPUT.open("P_OUT.dat");
-	
-	OUTPUT << "##### THIS IS THE P_OUT(K) FUNCTION DATA #####\n\n";
-	OUTPUT << "#The mean of the distribution: " << double (N_FOLLOWS) / N_ENTITIES << "\n\n";
-	OUTPUT << "#N_FOLLOWS\tP(K)\tln(N_FOLLOWS)\tln(P(K))\n";
-
-	for (int i = 0; i < MAX_ENTITIES; i++) {
-		int n_following = network.n_following(i);
-		if (n_following <= POUT_CAP) {
-			// AD: Rough work, discard n_following > POUT_CAP
-			N_FOLLOW_DATA[n_following]++;
+void degree_distributions(Network& network) {
+	int max_following = 0, max_followers = 0;
+	for (int i = 0; i < network.n_entities; i ++) {
+		if (network.n_following(i) > max_following) {
+			max_following = network.n_following(i);
 		}
+		if (network.n_followers(i) > max_followers) {
+			max_followers = network.n_followers(i);
+		}
+	}	
+	
+	int max_degree = max_following + max_followers;
+	
+	// now that we have our boundaries lets plot our degree distributions
+	
+	// open some files
+	ofstream outdd, indd, cumuldd;
+	outdd.open("out-degree_distribution.dat");
+	indd.open("in-degree_distribution.dat");
+	cumuldd.open("cumulative_distribution.dat");
+	
+	outdd << "# This is the out-degree distribution. The data order is:\n# degree, normalized probability, log of degree, log of normalized probability\n\n";
+	indd << "# This is the in-degree distribution. The data order is:\n# degree, normalized probability, log of degree, log of normalized probability\n\n";
+	cumuldd << "# This is the cumulative degree distribution. The data order is:\n# degree, normalized probability, log of degree, log of normalized probability\n\n";
+	
+	//declare and set arrays to 0
+	vector<int> out_degree_distro (max_following);
+	vector<int> in_degree_distro (max_followers);
+	vector<int> cumulative_distro (max_degree);
+	for (int i = 0; i < max_following; i ++ ) {
+		out_degree_distro[i] = 0;
 	}
-
-	N_FOLLOW_DATA[0] -= (MAX_ENTITIES - N_ENTITIES);
-	for (int i = 1; i <= POUT_CAP; i++) {
-		OUTPUT << i - 0.5 
-			   << "\t" 
-			   << N_FOLLOW_DATA[i] / double(N_ENTITIES) 
-			   << "\t"
-			   << log(i) 
-			   << "\t" 
-			   << log(N_FOLLOW_DATA[i] / double(N_ENTITIES))
-			   << "\n"
-			   << i + 0.5 
-			   << "\t" 
-			   << N_FOLLOW_DATA[i] / double(N_ENTITIES) 
-			   << "\n";
-			   
+	for (int i = 0; i < max_followers; i ++ ) {
+		in_degree_distro[i] = 0;
 	}
-
-	OUTPUT.close();
+	for (int i = 0; i < max_degree; i ++ ) {
+		cumulative_distro[i] = 0;
+	}
+	
+	//go through network and generate distributions
+	for (int i = 0; i < network.n_entities; i ++) {
+		out_degree_distro[network.n_following(i)] ++;
+		in_degree_distro[network.n_followers(i)] ++;
+		cumulative_distro[network.n_followers(i) + network.n_following(i)] ++;
+	}
+	// output the distributions
+	for (int i = 0; i < max_following; i ++) {
+		outdd << i << "\t" << out_degree_distro[i] / (double) network.n_entities << "\t" << log(i) << "\t" << log(out_degree_distro[i] / (double)network.n_entities) << "\n";
+	}
+	for (int i = 0; i < max_followers; i ++) { 
+		indd << i << "\t" << in_degree_distro[i] / (double) network.n_entities << "\t" << log(i) << "\t" << log(in_degree_distro[i] / (double)network.n_entities) << "\n";
+	}
+	for (int i = 0; i < max_degree; i ++) {
+		cumuldd << i << "\t" << cumulative_distro[i] / (double) network.n_entities << "\t" << log(i) << "\t" << log(cumulative_distro[i] / (double)network.n_entities) << "\n";
+	}
+	outdd.close();
+	indd.close();
+	cumuldd.close();
 }
+
 int factorial(int input_number) {
 	int value = 1;
 	for (int i = 1; i <= input_number; i ++) {
@@ -187,52 +199,6 @@ int factorial(int input_number) {
 	}
 	return value;
 }
-/* This is a function that goes through the network and finds the probability
- of how many followers a given entity will have. If you would like to use this
- function simply put P_IN = 1 in the INFILE. This program will produce an
- output file that can be plotted using gnuplot. */
-
-void PIN(Network& network, int MAX_ENTITIES, int N_ENTITIES, double r_follow_norm) {
-    // Ensure follow-lists do not contain duplicates.
-    network.perform_cleanup();
-
-    vector<int> N_FOLLOWERS_DATA(N_ENTITIES);
-	for (int i = 0; i < N_ENTITIES; i++) {
-		N_FOLLOWERS_DATA.at(i) = 0;
-	}
-
-	for (int entity = 0; entity < N_ENTITIES; entity++) {
-		for (int i = 0; i < network.n_following(entity); i++) {
-			N_FOLLOWERS_DATA.at(network.follow_i(entity, i))++;
-		}
-	}
-	ofstream output;
-	output.open("P_IN.dat");
-
-	output << "##### THIS IS THE P_IN(K) FUNCTION DATA #####\n\n";
-	output << "#N_FOLLOWERS\tP(K)\tln(N_FOLLOWERS)\tln(P(K))\n";
-	vector<int> N_FOLLOWERS_DISTRO(MAX_ENTITIES);
-	for (int i = 0; i < MAX_ENTITIES; i++) {
-		N_FOLLOWERS_DISTRO.at(i) = 0;
-	}
-
-	for (int i = 0; i < N_ENTITIES; i++) {
-		Entity& p = network[i];
-		int n_followers = N_FOLLOWERS_DATA.at(i);
-		DEBUG_CHECK(n_followers < N_FOLLOWERS_DISTRO.size(),
-		        "More followers than 'MAX_ENTITIES'. (Did you clean-up the follow lists?)");
-		N_FOLLOWERS_DISTRO.at(N_FOLLOWERS_DATA.at(i))++;
-	}
-	for (int i = 1; i < MAX_ENTITIES; i++) {
-		output << i - 0.5 << "\t" << N_FOLLOWERS_DISTRO.at(i) / double(N_ENTITIES)
-				<< "\t" << log(i) << "\t"
-				<< log(N_FOLLOWERS_DISTRO[i] / double(N_ENTITIES)) << "\n";
-		output << i + 0.5 << "\t" << N_FOLLOWERS_DISTRO.at(i) / double(N_ENTITIES)
-				<< "\t" << "\n";
-	}
-	output.close();
-}
-
 
 static void category_print(ofstream& output, const char* name, CategoryGrouper& group) {
     output << name << " | ";
@@ -252,43 +218,6 @@ void Categories_Check(CategoryGrouper& tweeting, CategoryGrouper& following, Cat
 	output.close();
 }
 
-// this function is simply the P_OUT and P_IN function added together
-void Cumulative_Distro(Network& network, int MAX_ENTITIES, int N_ENTITIES, int N_FOLLOWS) {
-	vector<int> cumulative_distro(N_ENTITIES);
-	vector<int> n_followers_data(N_ENTITIES);
-	vector<int> n_followers_distro(N_ENTITIES);
-	vector<int> n_following_distro(N_ENTITIES);
-
-	for (int i = 0; i < N_ENTITIES; i ++) {
-		cumulative_distro[i] = 0;
-		n_followers_distro[i] = 0;
-		n_followers_data[i] = 0;
-		n_following_distro[i] = 0;
-	}
-	for (int i = 0; i < N_ENTITIES; i ++) {
-		for (int j = 0; j < network.n_following(i); j ++) {
-			n_followers_data[network.follow_i(i,j)] ++;
-		}
-	}
-	for (int i = 0; i < N_ENTITIES; i ++) {
-		n_followers_distro[n_followers_data[i]] ++;
-	}
-	for (int i = 0; i < N_ENTITIES; i ++) {
-		n_following_distro[network.n_following(i)] ++;
-	}
-	for (int i = 0; i < N_ENTITIES; i ++) {
-		cumulative_distro[i] = n_followers_distro[i] + n_following_distro[i];
-	}
-	
-	ofstream output;
-	output.open("cumulative_distro.dat");
-	
-	for (int i = 0; i < N_ENTITIES; i ++) {
-		output << i - 0.5 << "\t" << cumulative_distro[i]/double(2*N_ENTITIES) << "\n";
-		output << i + 0.5 << "\t" << cumulative_distro[i]/double(2*N_ENTITIES) << "\n";
-	}
-	output.close();
-}
 // produces an output file with entity type statistics, makes sure things are working properly
 void entity_statistics(Network& network, int n_follows, int n_entities, int max_entities, EntityType* entitytype) {
 	ofstream output;
