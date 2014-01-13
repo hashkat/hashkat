@@ -2,9 +2,9 @@ analysis:
   max_entities: 
     5000000
   max_time:
-    100000000.0 # 1/10 year
+    100000.0 # 1/10 year
   initial_entities:
-    100
+    1000
   use_barabasi: false # if this is set to 1, the global follow rate will be ignored. Follow thresholds not needed.
   use_random_time_increment: true # increments by 1/sum(rates) on average
 
@@ -27,11 +27,8 @@ output:
   verbose: true
   visualize: true
 
-  p_out: true
-  p_in: true
-
+  degree_distributions: true
   tweet_analysis: true
-  cumulative_analysis: true
 
 tweet_ranks: 
   thresholds: [1, 10, 20, 2000, 3000]

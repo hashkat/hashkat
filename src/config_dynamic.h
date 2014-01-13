@@ -27,7 +27,7 @@ struct ParsedConfig {
     // 'output' config options
     bool output_stdout_basic, output_stdout_summary;
     bool output_verbose, output_visualize;
-    bool output_p_out, output_p_in;
+    bool degree_distributions;
     bool output_tweet_analysis, output_cumulative_analysis;
 
     // 'X_category' config options
@@ -58,8 +58,7 @@ struct ParsedConfig {
         output_stdout_basic = output_stdout_summary = true;
         output_verbose = output_visualize = false;
         output_tweet_analysis = output_cumulative_analysis = false;
-
-        output_p_in = output_p_out = false;
+		degree_distributions = true;
     }
 };
 

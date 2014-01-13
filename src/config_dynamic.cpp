@@ -63,8 +63,7 @@ static void parse_output_configuration(ParsedConfig& config, const Node& node) {
     parse(node, "verbose", config.output_verbose);
     parse(node, "visualize", config.output_visualize);
 
-    parse(node, "p_in", config.output_p_in);
-    parse(node, "p_out", config.output_p_out);
+    parse(node, "degree-distributions", config.degree_distributions);
 
     parse(node, "tweet_analysis", config.output_tweet_analysis);
     parse(node, "cumulative_analysis", config.output_cumulative_analysis);

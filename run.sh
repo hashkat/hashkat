@@ -39,6 +39,15 @@ else
     cores=4 # Guess -- may want to manually edit if above fails.
 fi
 
+# Create eclipse-project-files
+if handle_flag "-e" ; then
+    src=$(pwd)
+    mkdir ../KMCEclipse -p
+    cd ../KMCEclipse
+    # Eclipse project creation
+    cmake -G"Eclipse CDT4 - Unix Makefiles" $src
+    exit
+fi
 
 # Pass the -f flag to avoid building:
 if ! handle_flag "-f" ; then
@@ -57,7 +66,7 @@ elif handle_flag "-p" ; then
     # Profile the program (requires oprofile) with -p:
     echo "Profiling with oprofile:" | colorify '1;35'
     operf --callgraph src/main $args
-    opreport --callgraph --exclude-dependent --demangle=smart --symbols /home/adomurad/KMC/src/main | more
+    opreport --callgraph --exclude-dependent --demangle=smart --symbols src/main | more
 else
     # Normal execution
     src/main $args
