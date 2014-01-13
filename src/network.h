@@ -10,7 +10,7 @@
 
 #include "CircularBuffer.h"
 #include "MemPoolVector.h"
-#include "category.h"
+#include "CategoryGrouper.h"
 
 typedef MemPoolVector<int, FOLLOW_LIST_THRESHOLD1> FollowList;
 typedef MemPoolVector<int, FOLLOWER_LIST_THRESHOLD1> FollowerList;

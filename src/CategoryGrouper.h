@@ -1,5 +1,5 @@
-#ifndef CATEGORY_H_
-#define CATEGORY_H_
+#ifndef CATEGORYGROUPER_H_
+#define CATEGORYGROUPER_H_
 
 #include "util.h"
 #include <vector>

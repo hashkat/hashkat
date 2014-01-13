@@ -52,14 +52,6 @@ struct MemPoolVector {
     	return location[index];
     }
 
-    // Slow, for debugging/testing purposes:
-    void sanity_check() {
-    	DEBUG_CHECK(size <= capacity, "Capacity bug");
-    	for (int i = 0; i < size; i++) {
-    		DEBUG_CHECK(location[i] != -1, "Invalid follow content");
-    	}
-    }
-
     int size, capacity;
     V* location;
 	// Define buffer1 as an array of fixed-length 'MEMPOOL_THRESHOLD'
@@ -67,23 +59,21 @@ struct MemPoolVector {
     V buffer1[MEMPOOL_THRESHOLD]; // (Short-object-optimization)
 };
 
-template <typename V>
 struct DeletedMemPoolVector {
 	// A buffer in our pool that overgrew its boundary, and can be used by another entity.
-    V* location;
+    void* location;
 	int capacity;
-	DeletedMemPoolVector(V* loc, int cap) {
+	DeletedMemPoolVector(void* loc, int cap) {
 		location = loc, capacity = cap;
 	}
 };
 
 
 /* Handles growing follow sets, and allocating buffers when size > MEMPOOL_THRESHOLD. */
-template <typename V>
 struct MemPoolVectorGrower {
-    typedef std::vector< DeletedMemPoolVector<V> > DeletedList;
+    typedef std::vector< DeletedMemPoolVector > DeletedList;
 
-	V* memory;
+	void* memory;
 	int used, capacity;
 	DeletedList deletions;
 
@@ -92,8 +82,8 @@ struct MemPoolVectorGrower {
 		used = 0, capacity = 0;
 	}
     void preallocate(int max_bytes) {
-        capacity = max_bytes / sizeof(V);
-        memory = (V*) malloc(capacity * sizeof(V));
+        capacity = max_bytes;
+        memory = (char*)malloc(capacity);
         printf("%d bytes in preallocate\n", max_bytes);
         ASSERT(memory != NULL, "MemPoolVectorGrower::preallocate failed")
     }
@@ -104,13 +94,12 @@ struct MemPoolVectorGrower {
 	// Add an element to the pooled vector, potentially growing (reallocating) the array.
 	// If we had to grow AND we have run out of allocated memory, we do nothing and return false.
 	// Otherwise, we return true.
-    template <int MEMPOOL_THRESHOLD>
+    template <typename V, int MEMPOOL_THRESHOLD>
 	bool add_if_possible(MemPoolVector<V, MEMPOOL_THRESHOLD>& f, int element) {
     	DEBUG_CHECK(f.size <= f.capacity, "Logic error, array should have been grown!");
 		if (f.size == f.capacity) {
 			if (!grow_follow_set(f)) {
-				// Not enough room for this MemPoolVector allocation; this is actually fine. Do nothing here.
-				// Virtually all other entities will still have a long way to go before hitting their cap.
+				// Not enough room for this MemPoolVector allocation. Do nothing here.
 				return false;
 			}
 		}
@@ -120,19 +109,20 @@ struct MemPoolVectorGrower {
 		return true;
 	}
 private:
-	template <int MEMPOOL_THRESHOLD>
+	template <typename V, int MEMPOOL_THRESHOLD>
 	bool grow_follow_set(MemPoolVector<V, MEMPOOL_THRESHOLD>& f) {
 		static std::map<void*, void*> allocs;
 
 		const int GROWTH_MULTIPLE = 2;
-		int new_capacity = f.capacity * GROWTH_MULTIPLE;
+		int new_capacity = f.capacity * sizeof(V) * GROWTH_MULTIPLE;
+		ASSERT(new_capacity % 64 == 0, "MemPoolVector allocations must be 64-byte aligned!");
 		V* new_location = NULL;
 		// Search recycled buffers
 		typename DeletedList::iterator candidate = deletions.begin();
 		for (; candidate != deletions.end(); ++candidate) {
 			// Compatible deleted buffer, recycle it:
 			if (candidate->capacity == new_capacity) {
-				new_location = candidate->location;
+				new_location = (V*)candidate->location;
 				deletions.erase(candidate);
 				break;
 			}
@@ -140,7 +130,7 @@ private:
 
 		// Go into our block of memory and allocate a pooled vector:
 		if (new_location == NULL) {
-			new_location = allocate(new_capacity);
+			new_location = allocate<V>(new_capacity);
 		}
 		if (new_location == NULL) {
 			return false; // Not enough room!
@@ -149,29 +139,23 @@ private:
 		// Recycle our old buffer
 		if (f.location != f.buffer1) {
 			// If we are not pointing to our embedded 'buffer1', we must be pointing within the 'memory' array
-			DEBUG_CHECK(within_range(f.location, memory, memory + capacity), "Logic error");
-			deletions.push_back(DeletedMemPoolVector<V>(f.location, f.capacity));
-//#ifdef SLOW_DEBUG_CHECKS
-//			allocs[f.location] = NULL;
-//#endif
+			DEBUG_CHECK(within_range((char*)f.location, (char*)memory, (char*)memory + capacity), "Logic error");
+			deletions.push_back(DeletedMemPoolVector(f.location, f.capacity));
 		}
 		V* old_loc = f.location;
 		f.location = new_location;
-		f.capacity = new_capacity;
+		f.capacity = new_capacity / sizeof(V);
 		f.copy(old_loc, f.size);
-//#ifdef SLOW_DEBUG_CHECKS
-//		DEBUG_CHECK(allocs[f.location] == NULL, "Logic error!");
-//		allocs[f.location] = (void*)&f;
-//		f.sanity_check();
-//#endif
 		return true;
 	}
+
+	template <typename V>
 	V* allocate(int cap) {
 		if (used + cap > capacity) {
 			return NULL; // Not enough room!
 		}
 		used += cap;
-		return &memory[used - cap];
+		return (V*)&((char*)memory)[used - cap];
 	}
 };
 

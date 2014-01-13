@@ -7,7 +7,7 @@
 #include <yaml-cpp/yaml.h>
 
 #include "util.h"
-#include "category.h"
+#include "CategoryGrouper.h"
 #include "config_dynamic.h"
 
 using namespace std;

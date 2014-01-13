@@ -11,7 +11,7 @@ struct AnalyzerFollow {
     //** Mind the StatE/StatS difference. They are entirely different structs.
     AnalysisState& state;
     AnalysisStats& stats;
-    MemPoolVectorGrower<int>& follow_set_grower;
+    MemPoolVectorGrower& follow_set_grower;
     CategoryGrouper& follow_ranks;
 
     vector<double>& follow_probabilities, updating_follow_probabilities;

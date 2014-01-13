@@ -8,7 +8,7 @@ static const int FIRST_ALLOC = 2 * MEMPOOL_THRESHOLD;
 
 SUITE(MemPoolVectors) {
     typedef MemPoolVector<int, MEMPOOL_THRESHOLD> MPVec;
-    typedef MemPoolVectorGrower<int> MPVecGrower;
+    typedef MemPoolVectorGrower MPVecGrower;
 
 	static void check_content(MPVec& f) {
 		for (int i = 0; i < f.size; i++) {

@@ -44,7 +44,7 @@ struct AnalysisState {
     ParsedConfig config;
 
     // Note, 'MemPoolVectorGrower' is required to be in same scope as network, otherwise we will have undefined memory accesses.
-    MemPoolVectorGrower<int> follow_set_grower;
+    MemPoolVectorGrower follow_set_grower;
     // The full contents of the simulated network.
     Network network;
     // Various categorizations of users.
