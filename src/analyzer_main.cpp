@@ -133,10 +133,9 @@ struct Analyzer {
             time += 1.0 / stats.event_rate;
         }
 
-        ASSERT(STATIC_TIME < time, "Fail");
+//        ASSERT(STATIC_TIME < time, "Fail");
         STATIC_TIME = time;
         if (config.output_stdout_summary && (floor(time) > prev_integer)) {
-            printf("time=%.2f->%.2f incr=%.2f\n", prev_time, time, increment);
             output_summary_stats();
         }
     }

@@ -25,7 +25,7 @@ const int FOLLOW_SET_MEM_PER_USER = 512 * 4 * 8;
 const int RETWEETS_STORED = 4;
 // Under review
 
-const int TIME_CAT_FREQ = 24*60;
+const int TIME_CAT_FREQ = 24*60*30;
 
 // Output frequency:
 const int STDOUT_OUTPUT_RATE = 1000; // Once per X file outputs
