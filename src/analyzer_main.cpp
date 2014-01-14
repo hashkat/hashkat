@@ -133,10 +133,10 @@ struct Analyzer {
             time += 1.0 / stats.event_rate;
         }
 
-//        ASSERT(STATIC_TIME < time, "Fail");
+		    // ASSERT(STATIC_TIME < time, "Fail");
         STATIC_TIME = time;
         if (config.output_stdout_summary && (floor(time) > prev_integer)) {
-            output_summary_stats();
+          output_summary_stats();
         }
     }
 
@@ -260,7 +260,7 @@ struct Analyzer {
                 << network.n_entities << "\t\t"
                 << stats.n_follows << "\t\t"
                 << stats.n_tweets << "\t\t"
-                << stats.n_retweets << "\t"
+                << stats.n_retweets << "\t\t"
                 << stats.event_rate << "\t";
         if (time_spent != -1) {
             stream << time_spent << "ms\t";
