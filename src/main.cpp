@@ -39,6 +39,9 @@ int main(int argc, char** argv) {
 		return test_main(argc, argv);
 	} else {
         ParsedConfig config = parse_yaml_configuration("INFILE.yaml");
+        if (has_arg(argc, argv, "--handle-ctrlc")) {
+            config.handle_ctrlc = true;
+        }
 		// or running analysis:
 		Timer t;
 		int seed = 1;

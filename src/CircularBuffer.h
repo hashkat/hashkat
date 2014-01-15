@@ -1,10 +1,3 @@
-/*
- * CircularBuffer.h
- *
- *  Created on: Dec 19, 2013
- *      Author: adomurad
- */
-
 #ifndef CIRCULARBUFFER_H_
 #define CIRCULARBUFFER_H_
 
@@ -79,4 +72,4 @@ private:
     T buffer[cap + 1]; // Contains sentinel element. Shielded from direct access
 };
 
-#endif /* CIRCULARBUFFER_H_ */
+#endif
