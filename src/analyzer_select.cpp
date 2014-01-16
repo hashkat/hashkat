@@ -41,7 +41,7 @@ struct AnalyzerSelect {
             for (int e = 0; e < entity_types.size(); e++) {
                 vector<double>& vec = selection_vector(entity_types[e], event);
                 for (int i = 0; i < vec.size(); i++) {
-                    rate_sum += vec[i];
+                    rate_sum += vec[i] * entity_types[e].prob_add;
                 }
             }
         }
@@ -59,15 +59,15 @@ struct AnalyzerSelect {
         } else {
             vector<int>& e_vec = et.entity_cap;
             for (int i = 0, e_i = e_vec.size() - 1; i < vec.size(); i++, e_i--) {
-                if (rand_num <= (vec[i] / rate_sum) && i == 0) {
+                if (rand_num <= ((vec[i] * et.prob_add) / rate_sum) && i == 0) {
                     int entity = rng.rand_int(et.new_entities) + e_vec.back();
                     return entity;
-                } else if (rand_num <= (vec[i] / rate_sum)) {
+                } else if (rand_num <= ((vec[i] * et.prob_add) / rate_sum)) {
                     int range_min = e_vec.at(e_i), range_max = e_vec.at(e_i + 1);
                     int entity = rng.rand_int(range_min, range_max);
                     return entity;
                 }
-                rand_num -= (vec[i] / rate_sum);
+                rand_num -= ((vec[i] * et.prob_add)/ rate_sum);
             }
         }
         return -1;

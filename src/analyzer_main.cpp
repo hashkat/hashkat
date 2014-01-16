@@ -291,7 +291,9 @@ struct Analyzer {
 void analyzer_main(AnalysisState& state) {
     Timer timer;
     Analyzer analyzer(state);
-    ctrl_C_handler_install();
+    if (state.config.handle_ctrlc) {
+        ctrl_C_handler_install();
+    }
     analyzer.main();
     signal(SIGINT, SIG_DFL);
     printf("'analyzer_main' took %.2f milliseconds.", timer.get_microseconds() / 1000.0);

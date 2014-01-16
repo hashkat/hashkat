@@ -39,6 +39,9 @@ struct ParsedConfig {
     // Note: Weights are filled, entity lists empty
     EntityTypeVector entity_types;
 
+    // command-line config options
+    bool handle_ctrlc;
+
     /* Most config values are optional -- place defaults here. */
     ParsedConfig() {
         initial_entities = 0;
@@ -58,6 +61,7 @@ struct ParsedConfig {
         output_verbose = output_visualize = false;
         output_tweet_analysis = output_cumulative_analysis = false;
 		degree_distributions = true;
+		handle_ctrlc = false;
     }
 };
 
