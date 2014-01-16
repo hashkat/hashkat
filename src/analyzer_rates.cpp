@@ -57,11 +57,11 @@ struct AnalyzerRates {
 	            change_follow_rate = config.rate_follow;
 			} else if (et.follow_function_type == "constant") {
 				change_follow_rate = et.f_const_val;
-				ASSERT(et.f_const_val == -1, "Set \'value\' to something in follow_rate");
+				ASSERT(et.f_const_val != -1, "Set \'value\' to something in follow_rate");
 			} else if (et.follow_function_type == "linear") {
 				change_follow_rate = et.f_y_intercept + n_months * et.f_slope;
-				ASSERT(et.f_y_intercept == -1, "Set \'y_intercept\' in follow_rate");
-				ASSERT(et.f_slope == -1, "Set \'slope\' in follow_rate");
+				ASSERT(et.f_y_intercept != -1, "Set \'y_intercept\' in follow_rate");
+				ASSERT(et.f_slope != -1, "Set \'slope\' in follow_rate");
 			} else if (et.follow_function_type == "exponential") {
 				change_follow_rate = et.f_amplitude*exp(et.f_exp_factor * n_months);
 				ASSERT(et.f_amplitude != -1, "Set \'amplitude\' in follow_rate");
@@ -76,12 +76,12 @@ struct AnalyzerRates {
 	            change_tweet_rate = config.rate_tweet;
 			} else if (et.tweet_function_type == "constant") {
 				change_tweet_rate = et.t_const_val;
-				ASSERT(et.t_const_val == -1, "Set \'value\' to something in tweet_rate");
+				ASSERT(et.t_const_val != -1, "Set \'value\' to something in tweet_rate");
 			} else if (et.tweet_function_type == "linear") {
 				change_tweet_rate = et.t_y_intercept + n_months * et.t_slope;
-				ASSERT(et.t_y_intercept == -1, "Set \'y_intercept\' in tweet_rate");
-				ASSERT(et.t_slope == -1, "Set \'slope\' in tweet_rate");
-			} else if (et.tweet_function_type == "exponential") {
+				ASSERT(et.t_y_intercept != -1, "Set \'y_intercept\' in tweet_rate");
+				ASSERT(et.t_slope != -1, "Set \'slope\' in tweet_rate");
+			} else if (et.tweet_function_type != "exponential") {
 				change_tweet_rate = et.t_amplitude*exp(et.t_exp_factor * n_months);
 				ASSERT(et.f_amplitude != -1, "Set \'amplitude\' in tweet_rate");
 				ASSERT(et.f_exp_factor != -1, "Set \'exp_factor\' in tweet_rate");
@@ -95,11 +95,11 @@ struct AnalyzerRates {
 	            change_retweet_rate = config.rate_retweet;
 			} else if (et.retweet_function_type == "constant") {
 				change_retweet_rate = et.r_const_val;
-				ASSERT(et.r_const_val == -1, "Set \'value\' to something in retweet_rate");
+				ASSERT(et.r_const_val != -1, "Set \'value\' to something in retweet_rate");
 			} else if (et.retweet_function_type == "linear") {
 				change_retweet_rate = et.f_y_intercept + n_months * et.f_slope;
-				ASSERT(et.r_y_intercept == -1, "Set \'y_intercept\' in retweet_rate");
-				ASSERT(et.r_slope == -1, "Set \'slope\' in retweet_rate");
+				ASSERT(et.r_y_intercept != -1, "Set \'y_intercept\' in retweet_rate");
+				ASSERT(et.r_slope != -1, "Set \'slope\' in retweet_rate");
 			} else if (et.retweet_function_type == "exponential") {
 				change_retweet_rate = et.r_amplitude*exp(et.r_exp_factor * n_months);
 				ASSERT(et.r_amplitude != -1, "Set \'amplitude\' in retweet_rate");

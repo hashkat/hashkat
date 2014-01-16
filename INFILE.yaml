@@ -41,21 +41,21 @@ follow_ranks:
 entities:
   - name: Standard
     weights: {add: 70, follow: 5}
-	follow_rate: {function: constant, value: 0.0}
-	tweet_rate: {function: constant, value: 0.0}
-	retweet_rate: {function: constant, value: 0.0}
+    follow_rate: {function: constant, value: 0.001}
+    tweet_rate: {function: constant, value: 0.001}
+    retweet_rate: {function: constant, value: 0.001}
   - name: Celebrity
     weights: {add: 5, follow: 80}
-	follow_rate: {function: constant, value: 0.0}
-	tweet_rate: {function: constant, value: 0.0}
-	retweet_rate: {function: constant, value: 0.0}
+    follow_rate: {function: constant, value: 0.001}
+    tweet_rate: {function: constant, value: 0.001}
+    retweet_rate: {function: constant, value: 0.001}
   - name: Bot
     weights: {add: 10, follow: 0}
-	follow_rate: {function: constant, value: 0.0}
-	tweet_rate: {function: constant, value: 0.0}
-	retweet_rate: {function: constant, value: 0.0}
+    follow_rate: {function: constant, value: 0.001}
+    tweet_rate: {function: constant, value: 0.001}
+    retweet_rate: {function: constant, value: 0.001}
   - name: Organization
     weights: {add: 15, follow: 15}
-	follow_rate: {function: constant, value: 0.0}
-	tweet_rate: {function: constant, value: 0.0}
-	retweet_rate: {function: constant, value: 0.0}
+    follow_rate: {function: constant, value: 0.001}
+    tweet_rate: {function: constant, value: 0.001}
+    retweet_rate: {function: constant, value: 0.001}
