@@ -32,7 +32,7 @@ struct AnalysisStats {
     }
 };
 
-const int APPROX_MONTH = 24 * 60; // * 30;
+const int APPROX_MONTH = 24 * 60 * 30;
 
 // All the state passed to - and - from analyze.cpp.
 // Essentially this encapsulates all the information required for the post-analysis routines.

@@ -29,7 +29,6 @@ struct ParsedConfig {
     bool output_verbose, output_visualize;
     bool degree_distributions;
     bool output_tweet_analysis, output_cumulative_analysis;
-
     // 'X_category' config options
 
     // Thresholds are filled, entity lists empty

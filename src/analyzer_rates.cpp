@@ -35,8 +35,8 @@ struct AnalyzerRates {
             network(state.network), state(state), stats(state.stats),
             config(state.config), entity_types(state.entity_types) {
     }
-
-    bool create_new_month_if_needed(EntityType& et) {
+	
+	bool create_new_month_if_needed(EntityType& et) {
         int n_months = state.n_months();
 
         if (n_months >= et.entity_cap.size() || state.time == 0) {
@@ -52,9 +52,63 @@ struct AnalyzerRates {
             et.entity_cap.push_back(C.entities.size());
 
             // CHANGE YOUR RATES ACCORDINGLY - they are constant right now
-            double change_follow_rate = config.rate_follow;
-            double change_tweet_rate = config.rate_tweet;
-            double change_retweet_rate = config.rate_retweet;
+			double change_follow_rate, change_tweet_rate, change_retweet_rate;
+			if (et.follow_function_type == "not specified") {
+	            change_follow_rate = config.rate_follow;
+			} else if (et.follow_function_type == "constant") {
+				change_follow_rate = et.f_const_val;
+				ASSERT(et.f_const_val == -1, "Set \'value\' to something in follow_rate");
+			} else if (et.follow_function_type == "linear") {
+				change_follow_rate = et.f_y_intercept + n_months * et.f_slope;
+				ASSERT(et.f_y_intercept == -1, "Set \'y_intercept\' in follow_rate");
+				ASSERT(et.f_slope == -1, "Set \'slope\' in follow_rate");
+			} else if (et.follow_function_type == "exponential") {
+				change_follow_rate = et.f_amplitude*exp(et.f_exp_factor * n_months);
+				ASSERT(et.f_amplitude != -1, "Set \'amplitude\' in follow_rate");
+				ASSERT(et.f_exp_factor != -1, "Set \'exp_factor\' in follow_rate");
+			} else if (et.follow_function_type == "user-defined") {
+				// enter your function here, this is where a piece-wise function can be constructed
+				change_follow_rate = 0;
+				ASSERT(change_follow_rate != 0, "Implement your function in follow_rate");
+			}
+			
+			if (et.tweet_function_type == "not specified") {
+	            change_tweet_rate = config.rate_tweet;
+			} else if (et.tweet_function_type == "constant") {
+				change_tweet_rate = et.t_const_val;
+				ASSERT(et.t_const_val == -1, "Set \'value\' to something in tweet_rate");
+			} else if (et.tweet_function_type == "linear") {
+				change_tweet_rate = et.t_y_intercept + n_months * et.t_slope;
+				ASSERT(et.t_y_intercept == -1, "Set \'y_intercept\' in tweet_rate");
+				ASSERT(et.t_slope == -1, "Set \'slope\' in tweet_rate");
+			} else if (et.tweet_function_type == "exponential") {
+				change_tweet_rate = et.t_amplitude*exp(et.t_exp_factor * n_months);
+				ASSERT(et.f_amplitude != -1, "Set \'amplitude\' in tweet_rate");
+				ASSERT(et.f_exp_factor != -1, "Set \'exp_factor\' in tweet_rate");
+			} else if (et.tweet_function_type == "user-defined") {
+				// enter your function here, this is where a piece-wise function can be constructed
+				change_tweet_rate = 0;
+				ASSERT(change_tweet_rate != 0, "Implement your function in tweet_rate");
+			}
+			
+			if (et.retweet_function_type == "not specified") {
+	            change_retweet_rate = config.rate_retweet;
+			} else if (et.retweet_function_type == "constant") {
+				change_retweet_rate = et.r_const_val;
+				ASSERT(et.r_const_val == -1, "Set \'value\' to something in retweet_rate");
+			} else if (et.retweet_function_type == "linear") {
+				change_retweet_rate = et.f_y_intercept + n_months * et.f_slope;
+				ASSERT(et.r_y_intercept == -1, "Set \'y_intercept\' in retweet_rate");
+				ASSERT(et.r_slope == -1, "Set \'slope\' in retweet_rate");
+			} else if (et.retweet_function_type == "exponential") {
+				change_retweet_rate = et.r_amplitude*exp(et.r_exp_factor * n_months);
+				ASSERT(et.r_amplitude != -1, "Set \'amplitude\' in retweet_rate");
+				ASSERT(et.r_exp_factor != -1, "Set \'exp_factor\' in retweet_rate");
+			} else if (et.retweet_function_type == "user_defined") {
+				// enter your function here, this is where a piece-wise function can be constructed
+				change_retweet_rate = 0;
+				ASSERT(change_retweet_rate != 0, "Implement your function in retweet_rate");
+			}
 
             //all users will have the same constant rates for now
             et.r_follow.push_back(change_follow_rate);
