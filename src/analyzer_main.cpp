@@ -90,6 +90,7 @@ struct Analyzer {
         DATA_TIME.open("DATA_vs_TIME");
 
 		set_initial_entities();
+        call_future_rates();
 		analyzer_rate_update(state);
     }
     // make sure any initial entities are given a title based on the respective probabilities
