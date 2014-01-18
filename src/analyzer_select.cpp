@@ -21,11 +21,11 @@ struct AnalyzerSelect {
 
     vector<double>& selection_vector(EntityType& type, SelectionType event) {
         if (event == FOLLOW_SELECT) {
-            return type.r_follow;
+            return type.RF[1].monthly_rates;
         } else if (event == RETWEET_SELECT) {
-            return type.r_retweet;
+            return type.RF[3].monthly_rates;
         } else if (event == TWEET_SELECT) {
-            return type.r_tweet;
+            return type.RF[2].monthly_rates;
         }
         throw "selection_vector: Logic Error";
     }

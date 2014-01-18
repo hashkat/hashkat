@@ -102,6 +102,19 @@ struct Network {
     }
 };
 
+// 0 - add, 1 - follow, 2 - tweet, 3 - retweet
+const int number_of_diff_events = 4;
+
+struct Rate_Function {
+	std::string function_type;
+	double slope, y_intercept, const_val, amplitude, exp_factor;
+	std::vector<double> monthly_rates;
+	Rate_Function() {
+		slope = y_intercept = const_val = amplitude = exp_factor = -1;
+		function_type = "not specified";
+	}
+};
+
 struct EntityType {
     std::string name;
     double prob_add; // When a entity is added, how likely is it that it is this entity type ?
@@ -109,14 +122,10 @@ struct EntityType {
 	double prob_followback;
 	int new_entities; // the number of new users in this entity type
 	
-	// changing rates for each user with time
-	std::vector<double> r_follow;
-	std::vector<double> r_tweet;
-	std::vector<double> r_retweet;
-	std::string follow_function_type, tweet_function_type, retweet_function_type;
-	double f_slope, f_y_intercept, f_const_val, f_amplitude, f_exp_factor;
-	double t_slope, t_y_intercept, t_const_val, t_amplitude, t_exp_factor;
-	double r_slope, r_y_intercept, r_const_val, r_amplitude, r_exp_factor;
+	// 0 - add, 1 - follow, 2 - tweet, 3 - retweet
+	int number_of_events;
+	Rate_Function RF[number_of_diff_events];
+	
 	// number of entities for each discrete value of the rate(time)
 	std::vector<int> entity_cap;
     // list of entity ID's
@@ -126,10 +135,7 @@ struct EntityType {
 	
     EntityType() {
         prob_add = prob_follow = prob_followback = 0;
-		follow_function_type = tweet_function_type = retweet_function_type = "not specified";
-    	f_slope = f_y_intercept = f_const_val = f_amplitude = f_exp_factor = -1;
-    	t_slope = t_y_intercept = t_const_val = t_amplitude = t_exp_factor = -1;
-    	r_slope = r_y_intercept = r_const_val = r_amplitude = r_exp_factor = -1;
+		number_of_events = 4;
 	}
 };
 

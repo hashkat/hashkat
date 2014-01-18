@@ -4,11 +4,11 @@
 using namespace std;
 
 struct Rates {
-    double overall_follow_rate;
+	double overall_follow_rate;
     double overall_tweet_rate;
     double overall_retweet_rate;
     Rates(double f, double t, double r) {
-        overall_follow_rate = f;
+		overall_follow_rate = f;
         overall_tweet_rate = t;
         overall_retweet_rate = r;
     }
@@ -51,73 +51,6 @@ struct AnalyzerRates {
             CategoryEntityList& C = et.age_ranks.categories.at(n_months);
             et.entity_cap.push_back(C.entities.size());
 
-            // CHANGE YOUR RATES ACCORDINGLY - they are constant right now
-			double change_follow_rate, change_tweet_rate, change_retweet_rate;
-			if (et.follow_function_type == "not specified") {
-	            change_follow_rate = config.rate_follow;
-			} else if (et.follow_function_type == "constant") {
-				change_follow_rate = et.f_const_val;
-				ASSERT(et.f_const_val != -1, "Set \'value\' to something in follow_rate");
-			} else if (et.follow_function_type == "linear") {
-				change_follow_rate = et.f_y_intercept + n_months * et.f_slope;
-				ASSERT(et.f_y_intercept != -1, "Set \'y_intercept\' in follow_rate");
-				ASSERT(et.f_slope != -1, "Set \'slope\' in follow_rate");
-			} else if (et.follow_function_type == "exponential") {
-				change_follow_rate = et.f_amplitude*exp(et.f_exp_factor * n_months);
-				ASSERT(et.f_amplitude != -1, "Set \'amplitude\' in follow_rate");
-				ASSERT(et.f_exp_factor != -1, "Set \'exp_factor\' in follow_rate");
-			} else if (et.follow_function_type == "user-defined") {
-				// enter your function here, this is where a piece-wise function can be constructed
-				change_follow_rate = 0;
-				ASSERT(change_follow_rate != 0, "Implement your function in follow_rate");
-			}
-			
-			if (et.tweet_function_type == "not specified") {
-	            change_tweet_rate = config.rate_tweet;
-			} else if (et.tweet_function_type == "constant") {
-				change_tweet_rate = et.t_const_val;
-				ASSERT(et.t_const_val != -1, "Set \'value\' to something in tweet_rate");
-			} else if (et.tweet_function_type == "linear") {
-				change_tweet_rate = et.t_y_intercept + n_months * et.t_slope;
-				ASSERT(et.t_y_intercept != -1, "Set \'y_intercept\' in tweet_rate");
-				ASSERT(et.t_slope != -1, "Set \'slope\' in tweet_rate");
-			} else if (et.tweet_function_type != "exponential") {
-				change_tweet_rate = et.t_amplitude*exp(et.t_exp_factor * n_months);
-				ASSERT(et.f_amplitude != -1, "Set \'amplitude\' in tweet_rate");
-				ASSERT(et.f_exp_factor != -1, "Set \'exp_factor\' in tweet_rate");
-			} else if (et.tweet_function_type == "user-defined") {
-				// enter your function here, this is where a piece-wise function can be constructed
-				change_tweet_rate = 0;
-				ASSERT(change_tweet_rate != 0, "Implement your function in tweet_rate");
-			}
-			
-			if (et.retweet_function_type == "not specified") {
-	            change_retweet_rate = config.rate_retweet;
-			} else if (et.retweet_function_type == "constant") {
-				change_retweet_rate = et.r_const_val;
-				ASSERT(et.r_const_val != -1, "Set \'value\' to something in retweet_rate");
-			} else if (et.retweet_function_type == "linear") {
-				change_retweet_rate = et.f_y_intercept + n_months * et.f_slope;
-				ASSERT(et.r_y_intercept != -1, "Set \'y_intercept\' in retweet_rate");
-				ASSERT(et.r_slope != -1, "Set \'slope\' in retweet_rate");
-			} else if (et.retweet_function_type == "exponential") {
-				change_retweet_rate = et.r_amplitude*exp(et.r_exp_factor * n_months);
-				ASSERT(et.r_amplitude != -1, "Set \'amplitude\' in retweet_rate");
-				ASSERT(et.r_exp_factor != -1, "Set \'exp_factor\' in retweet_rate");
-			} else if (et.retweet_function_type == "user_defined") {
-				// enter your function here, this is where a piece-wise function can be constructed
-				change_retweet_rate = 0;
-				ASSERT(change_retweet_rate != 0, "Implement your function in retweet_rate");
-			}
-
-            //all users will have the same constant rates for now
-            et.r_follow.push_back(change_follow_rate);
-            et.r_tweet.push_back(change_tweet_rate);
-            et.r_retweet.push_back(change_retweet_rate);
-
-            ASSERT(change_follow_rate >= 0, "The follow rate can't be < 0");
-            ASSERT(change_tweet_rate >= 0, "The tweet rate can't be < 0");
-            ASSERT(change_retweet_rate >= 0, "The retweet rate can't be < 0");
             return true;
         }
         return false;
@@ -150,13 +83,13 @@ struct AnalyzerRates {
                 overall_retweet_rate = 0;
         et.new_entities = et.entity_list.size() - et.entity_cap.back();
         if (config.rate_add == 0) {
-            overall_follow_rate += et.entity_list.size() * et.r_follow.back();
-            overall_tweet_rate += et.entity_list.size() * et.r_tweet.back();
-            overall_retweet_rate += et.entity_list.size() * et.r_retweet.back();
+            overall_follow_rate += et.entity_list.size() * et.RF[1].monthly_rates[state.n_months()];
+            overall_tweet_rate += et.entity_list.size() * et.RF[2].monthly_rates[state.n_months()];
+            overall_retweet_rate += et.entity_list.size() * et.RF[3].monthly_rates[state.n_months()];
         } else {
-            update_rate(et, et.r_follow, overall_follow_rate);
-            update_rate(et, et.r_tweet, overall_tweet_rate);
-            update_rate(et, et.r_retweet, overall_retweet_rate);
+            update_rate(et, et.RF[1].monthly_rates, overall_follow_rate);
+            update_rate(et, et.RF[2].monthly_rates, overall_tweet_rate);
+            update_rate(et, et.RF[3].monthly_rates, overall_retweet_rate);
         }
         return Rates(overall_follow_rate, overall_tweet_rate, overall_retweet_rate);
     }

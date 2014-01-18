@@ -93,6 +93,39 @@ struct Analyzer {
 		analyzer_rate_update(state);
     }
     // make sure any initial entities are given a title based on the respective probabilities
+	void call_future_rates() {
+		for (int i = 0; i < entity_types.size(); i ++) {
+			for (int j = 0; j < entity_types[i].number_of_events; j ++) {
+				set_future_rates(entity_types[i], j);
+			}
+		}
+	}
+	void set_future_rates(EntityType& et, int event) {
+		int projected_months = config.max_time/TIME_CAT_FREQ;
+		if (et.RF[event].function_type == "constant") {
+			ASSERT(et.RF[event].const_val >= 0, "Check your rates, one of them is < 0");
+			for (int i = 0; i < projected_months; i ++) {
+				et.RF[event].monthly_rates.push_back(et.RF[event].const_val);
+			}
+		} else if (et.RF[event].function_type == "linear") {
+			for (int i = 0; i < projected_months; i ++) {
+				if (et.RF[event].y_intercept + i * et.RF[event].slope >= 0) {
+					et.RF[event].monthly_rates.push_back(et.RF[event].y_intercept + i * et.RF[event].slope);
+				} else {
+					et.RF[event].monthly_rates.push_back(0);
+				}
+			}
+		} else if (et.RF[event].function_type == "exponential") {
+			for (int i = 0; i < projected_months; i ++) {
+				if (et.RF[event].amplitude*exp(et.RF[event].exp_factor) >= 0) {
+					et.RF[event].monthly_rates.push_back(et.RF[event].amplitude*exp(et.RF[event].exp_factor));
+				} else {
+					et.RF[event].monthly_rates.push_back(0);
+				}
+			}
+		}
+		
+	}
     void set_initial_entities() {
         for (int i = 0; i < config.initial_entities; i++) {
              action_create_entity(0.0, i);
