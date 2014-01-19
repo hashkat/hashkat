@@ -73,7 +73,7 @@ struct AnalyzerRates {
         // Iterate two vectors in opposite directions
         rate += et.new_entities * vec[0];
         for (int i = 1, e_i = n_months; i <= n_months; i++, e_i--) {
-            rate += vec[i] * (et.entity_cap[e_i - 1] - et.entity_cap[e_i]);
+            rate += vec[i] * (et.entity_cap[e_i] - et.entity_cap[e_i - 1]);
         }
     }
 
