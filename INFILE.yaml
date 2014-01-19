@@ -2,7 +2,7 @@ analysis:
   max_entities: 
     5000000
   max_time:
-    1000000.0 # 1/10 year
+    100000.0 # 1/10 year
   initial_entities:
     10000
   use_barabasi: false # if this is set to 1, the global follow rate will be ignored. Follow thresholds not needed.
