@@ -103,13 +103,19 @@ struct Analyzer {
 	}
 	void set_future_rates(EntityType& et, int event) {
 		int projected_months = config.max_time/TIME_CAT_FREQ;
-		if (et.RF[event].function_type == "constant") {
+        if (et.RF[event].function_type == "not specified" && event == 1) {
+            et.RF[event].monthly_rates.push_back(config.rate_follow);
+        } else if (et.RF[event].function_type == "not specified" && event == 2) {
+            et.RF[event].monthly_rates.push_back(config.rate_tweet);
+        } else if (et.RF[event].function_type == "not specified" && event == 3) {
+            et.RF[event].monthly_rates.push_back(config.rate_retweet);
+        } else if (et.RF[event].function_type == "constant") {
 			ASSERT(et.RF[event].const_val >= 0, "Check your rates, one of them is < 0");
-			for (int i = 0; i < projected_months; i ++) {
+			for (int i = 0; i <= projected_months; i ++) {
 				et.RF[event].monthly_rates.push_back(et.RF[event].const_val);
 			}
 		} else if (et.RF[event].function_type == "linear") {
-			for (int i = 0; i < projected_months; i ++) {
+			for (int i = 0; i <= projected_months; i ++) {
 				if (et.RF[event].y_intercept + i * et.RF[event].slope >= 0) {
 					et.RF[event].monthly_rates.push_back(et.RF[event].y_intercept + i * et.RF[event].slope);
 				} else {
@@ -117,7 +123,7 @@ struct Analyzer {
 				}
 			}
 		} else if (et.RF[event].function_type == "exponential") {
-			for (int i = 0; i < projected_months; i ++) {
+			for (int i = 0; i <= projected_months; i ++) {
 				if (et.RF[event].amplitude*exp(et.RF[event].exp_factor) >= 0) {
 					et.RF[event].monthly_rates.push_back(et.RF[event].amplitude*exp(et.RF[event].exp_factor));
 				} else {
@@ -208,37 +214,7 @@ struct Analyzer {
 	}
 	
 	void action_retweet(int entity, double time_of_retweet) {
-		Entity& retweetee = network[entity];
-		FollowList& f = retweetee.follow_set;
-		int entity_retweeted = -1;
-		double rand_num = rng.rand_real_not0();
-		if (rand_num < 0.5) {
-			if (f.size != 0){
-				entity_retweeted = f[rng.rand_int(f.size)];
-			}
-		}
-		else {
-			// retweet a retweet
-		    Retweet retweet;
-		    if (retweetee.retweets.check_recent(retweet)) {
-		        // grab the latest retweet
-				// if the retweet happened in the last 48 hours
-				if (time_of_retweet - retweet.time < 2880) {
-					entity_retweeted = retweet.original_tweeter;
-				}
-			}
-		}
-		if (entity_retweeted != -1 /*No retweet should occur*/) {
-			int n_following = network.n_following(entity);
-            // Loop over all the entities that witness the event:
-			for (int i = 0; i < n_following; i ++){
-				Entity& audience = network[network.follow_i(entity,i)];
-				Retweet retweet(entity_retweeted, time_of_retweet);
-				audience.retweets.add(retweet);
-			}
-			retweetee.n_retweets ++;
-			stats.n_retweets ++;
-		}
+		stats.n_retweets ++;
 	}
 
 	void action_unfollow(int entity_id) {

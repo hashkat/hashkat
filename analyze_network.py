@@ -3,7 +3,8 @@
 import matplotlib.pyplot as plt
 import networkx as nx
 from networkx import *
-
+import time
+t0 = time.clock()
 f = open('network.dat', 'r')
 
 edgelist = []
@@ -22,9 +23,23 @@ print "Number of links in undirected graph:\t", Undirected_G.number_of_edges()
 #nx.draw(G,pos, node_size=30, alpha=0.5,node_color="blue", with_labels=False, width=0.1)
 #plt.show()
 print "Computing values...this may take a while\n"
+t1 = time.clock()
 print "Average clustering coefficient:\t", nx.average_clustering(Undirected_G)
+t2 = time.clock()
+print '%f seconds elapsed\n' % (t2-t1)
+t3 = time.clock()
+centrality = nx.eigenvector_centrality_numpy(Directed_G)
+t4 = time.clock()
+print '%f seconds elapsed for centrality calculation\n' % (t4-t3)
+t5 = time.clock()
+print "The average shortest path is:\t", nx.average_shortest_path_length(Undirected_G)
+t6 = time.clock()
+print '%f seconds elapsed for average path length calculation\n' % (t6-t5)
+
+
 #for g in nx.connected_component_subgraphs(G):
  #   print(nx.average_shortest_path_length(g)) 
 #print "Average shortest path:\t", nx.average_shortest_path_length(G)
     
-print "\n\nAll done.\n" 
+print "\nAll done.\n" 
+print '%f seconds elapsed in total\n' % (t6-t0)
