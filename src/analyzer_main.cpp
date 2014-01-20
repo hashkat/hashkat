@@ -97,8 +97,8 @@ struct Analyzer {
         followers_data.open("entity_followers.dat");
         tweet_data.open("entity_tweets.dat");
         retweet_data.open("entity_retweets.dat");
-        
-		set_initial_entities();
+		
+        set_initial_entities();
         call_future_rates();
 		analyzer_rate_update(state);
     }
@@ -283,7 +283,7 @@ struct Analyzer {
                 << stats.n_follows << "\t\t"
                 << stats.n_tweets << "\t\t"
                 << stats.n_retweets << "\t\t"
-                << stats.event_rate << "\t";
+                << stats.event_rate << "\t\t";
         if (time_spent != -1) {
             stream << time_spent << "ms\t";
         }
@@ -291,7 +291,7 @@ struct Analyzer {
     }
     void output_summary_stats() {
 
-		const char* HEADER = "\n#Time\t\tEntities\t\tFollows\t\tTweets\t\tRetweets\tR\tReal Time Spent\n\n";
+		const char* HEADER = "\n#Time\t\tUsers\t\tFollows\t\tTweets\t\tRetweets\tR\tReal Time Spent\n\n";
         if (stats.n_outputs % (25 * STDOUT_OUTPUT_RATE) == 0) {
         	cout << HEADER;
         }
@@ -314,26 +314,25 @@ struct Analyzer {
             tweet_data << "\n\n";
             retweet_data << "\n\n";
             add_data << "\n\n";
-        }
-        following_data << time << "\t";
-        followers_data << time << "\t";
-        tweet_data << time << "\t";
-        retweet_data << time << "\t";
-        add_data << time << "\t";
-        for (int i = 0; i < entity_types.size(); i ++) {
-            following_data << entity_types[i].n_follows << "\t";
-            followers_data << entity_types[i].n_followers << "\t";
-            tweet_data << entity_types[i].n_tweets << "\t";
-            retweet_data << entity_types[i].n_retweets << "\t";
-            add_data << entity_types[i].entity_list.size() << "\t";
-        }
+            }
+            following_data << time << "\t";
+            followers_data << time << "\t";
+            tweet_data << time << "\t";
+            retweet_data << time << "\t";
+            add_data << time << "\t";
+            for (int i = 0; i < entity_types.size(); i ++) {
+                following_data << entity_types[i].n_follows << "\t";
+                followers_data << entity_types[i].n_followers << "\t";
+                tweet_data << entity_types[i].n_tweets << "\t";
+                retweet_data << entity_types[i].n_retweets << "\t";
+                add_data << entity_types[i].entity_list.size() << "\t";
+            }
         following_data << "\n";
         followers_data << "\n";
         tweet_data << "\n";
         retweet_data << "\n";
         add_data << "\n";
         output_summary_stats(DATA_TIME);
-        
         if (stats.n_outputs % STDOUT_OUTPUT_RATE == 0) {
         	output_summary_stats(cout, stdout_milestone_timer.get_microseconds() / 1000.0);
         	stdout_milestone_timer.start(); // Restart the timer

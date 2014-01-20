@@ -17,6 +17,5 @@ void entity_statistics(Network& network,int n_follows, int n_entities, int max_e
 void tweets_distribution(Network& network, int n_users);
 int rand_int(int max);
 void degree_distributions(Network& network);
-void entity_degree_distributions(Network& network, EntityTypeVector& entity_types);
 
 #endif
