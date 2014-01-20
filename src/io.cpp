@@ -8,6 +8,7 @@
 #include "analyzer.h"
 #include "io.h"
 #include "util.h"
+#include "network.h"
 
 using namespace std;
 
@@ -17,7 +18,7 @@ using namespace std;
 void output_network_statistics(AnalysisState& state) {
     Network& network = state.network;
     ParsedConfig& C = state.config;
-
+    EntityTypeVector& entity_types = state.entity_types;
     // Print why program stopped
     if (C.output_stdout_basic) {
         if (CTRL_C_ATTEMPTS > 0) {
@@ -43,6 +44,8 @@ void output_network_statistics(AnalysisState& state) {
     if (C.output_tweet_analysis) {
         tweets_distribution(network, N_ENTITIES);
     }
+    entity_degree_distributions(network, entity_types);
+    
 
     //entity_statistics(network, N_FOLLOWS,N_ENTITIES, N_ENTITIES, entity_entities);
 
@@ -315,4 +318,10 @@ void tweets_distribution(Network& network, int n_users) {
     }
     tweet_output.close();
     retweet_output.close();
+}
+
+void entity_degree_distributions(Network& network, EntityTypeVector& entity_types) {
+    for (int i = 0; i < entity_types.size(); i ++) {
+        // do some stuff
+    }
 }

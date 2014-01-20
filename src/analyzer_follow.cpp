@@ -123,6 +123,8 @@ struct AnalyzerFollow {
                 Entity& target = network[entity_to_follow];
                 follow_ranks.categorize(entity_to_follow, target.follower_set.size);
                 stats.n_follows++; // We were able to add the follow; almost always the case.
+                entity_types[e1.entity].n_follows ++;
+                entity_types[target.entity].n_followers ++;
             }
         }
         //

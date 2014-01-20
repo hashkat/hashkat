@@ -121,7 +121,10 @@ struct EntityType {
     double prob_follow; // When a entity is followed, how likely is it that it is this entity type ?
 	double prob_followback;
 	int new_entities; // the number of new users in this entity type
-	
+	int n_tweets;
+    int n_follows;
+    int n_followers;
+    int n_retweets;
 	// 0 - add, 1 - follow, 2 - tweet, 3 - retweet
 	int number_of_events;
 	Rate_Function RF[number_of_diff_events];
@@ -134,6 +137,7 @@ struct EntityType {
 	CategoryGrouper age_ranks;
 	
     EntityType() {
+        n_tweets = n_follows = n_retweets = n_followers = 0;
         prob_add = prob_follow = prob_followback = 0;
 		number_of_events = 4;
 	}
