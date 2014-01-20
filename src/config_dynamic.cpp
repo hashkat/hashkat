@@ -115,9 +115,9 @@ static EntityTypeVector parse_entities_configuration(const Node& node) {
         const Node& weights = child["weights"];
         parse(weights, "add", et.prob_add);
         parse(weights, "follow", et.prob_follow);
-		const Node& follow_rate = child["r_follow"];
-		const Node& tweet_rate = child["r_tweet"];
-		const Node& retweet_rate = child["r_retweet"];
+		const Node& follow_rate = child["rates"]["follow"];
+		const Node& tweet_rate = child["rates"]["tweet"];
+		const Node& retweet_rate = child["rates"]["retweet"];
 		
 		parse(follow_rate, "function", et.RF[1].function_type);
 		if (et.RF[1].function_type == "constant") {
