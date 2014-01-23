@@ -2,7 +2,7 @@ analysis:
   max_entities: 
     5000000
   max_time:
-    1000000.0 # 1/10 year
+    215000.0 # 1/10 year
   initial_entities:
     1
   use_barabasi: false # if this is set to 1, the global follow rate will be ignored. Follow thresholds not needed.
@@ -43,7 +43,7 @@ entities:
   - name: Standard
     weights: {add: 25, follow: 5}
     rates: 
-        follow: {function: constant, value: 0.001}
+        follow: {function: exponential, amplitude: 0.001, exp_factor: 0.1}
         tweet: {function: constant, value: 0.0}
         retweet: {function: constant, value: 0.0}
   - name: Celebrity

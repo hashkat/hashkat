@@ -382,11 +382,11 @@ bool entity_checks(EntityTypeVector& ets, Network& network, AnalysisState& state
                 double correct_val = 0.5 * (ets[i].RF[j].const_val / rate_add) * ((rate_add * rate_add) * ets[i].prob_add * (state.time * state.time) + (rate_add * state.time) - (initial_entities - 1) * initial_entities);
                 return quick_rate_check(ets, correct_val, i, j);
             } else if (rate_add != 0 && ets[i].RF[j].function_type == "linear" ) {
-                double correct_val = (ets[i].RF[j].y_intercept + ets[i].RF[j].slope * state.n_months()) * state.time * network.n_entities * ets[i].prob_add;
+                double correct_val = (0.5 * ets[i].RF[j].y_intercept * rate_add * ets[i].prob_add * state.time * state.time) + 0.25 * ets[i].RF[j].slope * state.n_months() * state.time + 0.3333 * rate_add * ets[i].RF[j].slope * state.n_months() * ets[i].prob_add * state.time * state.time * 0.5 + 0.5 * ets[i].RF[j].y_intercept * state.time - (initial_entities - 1) * initial_entities;
                 return quick_rate_check(ets, correct_val, i, j);
-            } else if (rate_add != 0 && ets[i].RF[j].function_type == "exponential") {
+            } /*else if (rate_add != 0 && ets[i].RF[j].function_type == "exponential") {
                 double correct_val = (ets[i].RF[j].amplitude*exp(ets[i].RF[j].exp_factor*state.n_months())) * state.time * network.n_entities * ets[i].prob_add;
-                return quick_rate_check(ets, correct_val, i, j);
+                return quick_rate_check(ets, correct_val, i, j);*/
             }
         }
     }

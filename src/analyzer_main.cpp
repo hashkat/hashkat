@@ -136,8 +136,8 @@ struct Analyzer {
 			}
 		} else if (et.RF[event].function_type == "exponential") {
 			for (int i = 0; i <= projected_months; i ++) {
-				if (et.RF[event].amplitude*exp(et.RF[event].exp_factor) >= 0) {
-					et.RF[event].monthly_rates.push_back(et.RF[event].amplitude*exp(et.RF[event].exp_factor));
+				if (et.RF[event].amplitude*exp(et.RF[event].exp_factor*i) >= 0) {
+					et.RF[event].monthly_rates.push_back(et.RF[event].amplitude*exp(et.RF[event].exp_factor*i));
 				} else {
 					et.RF[event].monthly_rates.push_back(0);
 				}
