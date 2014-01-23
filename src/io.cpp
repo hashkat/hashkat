@@ -386,8 +386,8 @@ bool entity_checks(EntityTypeVector& ets, Network& network, AnalysisState& state
                 return quick_rate_check(ets, correct_val, i, j);
             } /*else if (rate_add != 0 && ets[i].RF[j].function_type == "exponential") {
                 double correct_val = (ets[i].RF[j].amplitude*exp(ets[i].RF[j].exp_factor*state.n_months())) * state.time * network.n_entities * ets[i].prob_add;
-                return quick_rate_check(ets, correct_val, i, j);*/
-            }
+                return quick_rate_check(ets, correct_val, i, j);
+            }*/
         }
     }
     return true;

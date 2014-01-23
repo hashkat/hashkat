@@ -43,24 +43,24 @@ entities:
   - name: Standard
     weights: {add: 25, follow: 5}
     rates: 
-        follow: {function: exponential, amplitude: 0.001, exp_factor: 0.1}
-        tweet: {function: constant, value: 0.0}
-        retweet: {function: constant, value: 0.0}
+        follow: {function: constant, value: 0.001}
+        tweet: {function: constant, value: 0.001}
+        retweet: {function: constant, value: 0.001}
   - name: Celebrity
     weights: {add: 25, follow: 80}
     rates:
         follow: {function: constant, value: 0.001}
-        tweet: {function: constant, value: 0.0}
-        retweet: {function: constant, value: 0.0}
+        tweet: {function: constant, value: 0.001}
+        retweet: {function: constant, value: 0.001}
   - name: Bot
     weights: {add: 25, follow: 0}
     rates:
         follow: {function: constant, value: 0.002}
-        tweet: {function: constant, value: 0.0}
-        retweet: {function: constant, value: 0.0}
+        tweet: {function: constant, value: 0.001}
+        retweet: {function: constant, value: 0.001}
   - name: Organization
     weights: {add: 25, follow: 15}
     rates:
         follow: {function: constant, value: 0.002}
-        tweet: {function: constant, value: 0.0}
-        retweet: {function: constant, value: 0.0}
+        tweet: {function: constant, value: 0.001}
+        retweet: {function: constant, value: 0.001}
