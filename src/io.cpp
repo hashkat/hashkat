@@ -3,6 +3,7 @@
 #include <string>
 #include <cmath>
 #include <iostream>
+#include <iomanip>
 
 #include "dependencies/mtwist.h"
 #include "analyzer.h"
@@ -17,7 +18,8 @@ using namespace std;
 void output_network_statistics(AnalysisState& state) {
     Network& network = state.network;
     ParsedConfig& C = state.config;
-
+    EntityTypeVector& et_vec = state.entity_types;
+    AnalysisStats& stats = state.stats;
     // Print why program stopped
     if (C.output_stdout_basic) {
         if (CTRL_C_ATTEMPTS > 0) {
@@ -30,7 +32,9 @@ void output_network_statistics(AnalysisState& state) {
         cout << "\nCreating analysis files -- press ctrl-c multiple times to abort ... \n";
     }
     int MAX_ENTITIES = C.max_entities;
+    double rate_add = C.rate_add;
     int N_ENTITIES = network.n_entities;
+    int initial_entities = C.initial_entities;
 
     // Depending on our INFILE/configuration, we may output various analysis
     if (C.output_visualize) {
@@ -43,6 +47,12 @@ void output_network_statistics(AnalysisState& state) {
     if (C.output_tweet_analysis) {
         tweets_distribution(network, N_ENTITIES);
     }
+    if (entity_checks(et_vec, network, state, rate_add, initial_entities)) {
+        cout << "Numbers check out :-)\n";
+    } else {
+        cout << "Numbers are wrong :-(\n";
+    }
+    
 
     //entity_statistics(network, N_FOLLOWS,N_ENTITIES, N_ENTITIES, entity_entities);
 
@@ -315,4 +325,70 @@ void tweets_distribution(Network& network, int n_users) {
     }
     tweet_output.close();
     retweet_output.close();
+}
+
+
+bool quick_rate_check(EntityTypeVector ets, double correct_val, int i, int j) {
+    double tolerence = 0.05;
+    if (j == 1 && abs(correct_val - ets[i].n_follows) / correct_val >= tolerence) {
+        cout << "\nNumber of follows for entity type \'" << ets[i].name << "\' is not correct. " << correct_val << " is the right number.\n";
+        return false;
+    } else if (j == 2 && abs(correct_val - ets[i].n_tweets) / correct_val >= tolerence) {
+        cout << "\nNumber of tweets for entity type \'" << ets[i].name << "\' is not correct. " << correct_val << " is the right number.\n";
+        return false;
+    } else if (j == 3 && abs(correct_val - ets[i].n_retweets) / correct_val >= tolerence) {
+        cout << "\nNumber of retweets for entity type \'" << ets[i].name << "\' is not correct. " << correct_val << " is the right number.\n";
+        return false;
+    }
+    return true;
+}
+
+bool entity_checks(EntityTypeVector& ets, Network& network, AnalysisState& state, double rate_add, int initial_entities) {
+    double tolerence = 0.05;
+    vector<double> average_rates(ets[1].number_of_events);
+    vector<int> number_of_rates(ets[1].number_of_events);
+    for (int j = 1; j < ets[j].number_of_events - 1; j ++) {
+        average_rates.at(j) = 0;
+        number_of_rates.at(j) = 0;
+    }
+    for (int i = 0; i < ets.size(); i ++) {
+        for (int j = 1; j < ets[i].number_of_events; j ++) {
+            for (int k = 0; k < ets[i].RF[j].monthly_rates.size(); k ++) {
+                average_rates.at(j) += ets[i].RF[j].monthly_rates[k];
+                number_of_rates.at(j) ++;
+            }
+        }
+    }
+    for (int i = 1; i < ets[0].number_of_events; i ++) {
+        average_rates[i] /= number_of_rates[i];
+    }
+    for (int i = 0; i < ets.size(); i ++) {
+        double add_correct = network.n_entities * ets[i].prob_add;
+        if (abs(add_correct - ets[i].entity_list.size()) / add_correct >= tolerence) {
+            cout << "\nNumber of entity type \'" << ets[i].name << "\' is not correct. " << add_correct << " is the right number.\n";
+            return false;
+        }
+        for (int j = 1; j < ets[i].number_of_events; j ++) {
+            if (rate_add == 0 && ets[i].RF[j].function_type == "constant") {
+                double correct_val = ets[i].RF[j].const_val * state.time * network.n_entities * ets[i].prob_add;
+                return quick_rate_check(ets, correct_val, i, j);
+            } else if (rate_add == 0 && ets[i].RF[j].function_type == "linear" ) {
+                double correct_val = (ets[i].RF[j].y_intercept + ets[i].RF[j].slope * state.n_months()) * state.time * network.n_entities * ets[i].prob_add;
+                return quick_rate_check(ets, correct_val, i, j);
+            } else if (rate_add == 0 && ets[i].RF[j].function_type == "exponential") {
+                double correct_val = (ets[i].RF[j].amplitude*exp(ets[i].RF[j].exp_factor*state.n_months())) * state.time * network.n_entities * ets[i].prob_add;
+                return quick_rate_check(ets, correct_val, i, j);
+            } else if (rate_add != 0 && ets[i].RF[j].function_type == "constant") {
+                double correct_val = 0.5 * (ets[i].RF[j].const_val / rate_add) * ((rate_add * rate_add) * ets[i].prob_add * (state.time * state.time) + (rate_add * state.time) - (initial_entities - 1) * initial_entities);
+                return quick_rate_check(ets, correct_val, i, j);
+            } else if (rate_add != 0 && ets[i].RF[j].function_type == "linear" ) {
+                double correct_val = (ets[i].RF[j].y_intercept + ets[i].RF[j].slope * state.n_months()) * state.time * network.n_entities * ets[i].prob_add;
+                return quick_rate_check(ets, correct_val, i, j);
+            } else if (rate_add != 0 && ets[i].RF[j].function_type == "exponential") {
+                double correct_val = (ets[i].RF[j].amplitude*exp(ets[i].RF[j].exp_factor*state.n_months())) * state.time * network.n_entities * ets[i].prob_add;
+                return quick_rate_check(ets, correct_val, i, j);
+            }
+        }
+    }
+    return true;
 }

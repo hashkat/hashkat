@@ -95,7 +95,7 @@ static CategoryGrouper parse_category_type(const Node& node) {
 static void parse_category_configurations(ParsedConfig& config, const Node& node) {
     if (config.use_barabasi) {
         for (int i = 1; i < config.max_entities; i ++) {
-            CategoryEntityList cat(i-1, double(i) / config.max_entities);
+            CategoryEntityList cat(i-1, i);
             config.follow_ranks.categories.push_back(cat);
         }
     } else {

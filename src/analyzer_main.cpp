@@ -105,23 +105,26 @@ struct Analyzer {
     // make sure any initial entities are given a title based on the respective probabilities
 	void call_future_rates() {
 		for (int i = 0; i < entity_types.size(); i ++) {
-			for (int j = 0; j < entity_types[i].number_of_events; j ++) {
+			for (int j = 1; j < entity_types[i].number_of_events; j ++) {
 				set_future_rates(entity_types[i], j);
 			}
 		}
 	}
 	void set_future_rates(EntityType& et, int event) {
-		int projected_months = config.max_time/TIME_CAT_FREQ;
+		int projected_months = config.max_time/APPROX_MONTH;
         if (et.RF[event].function_type == "not specified" && event == 1) {
+            cout << "\nFollow rate function for entity \"" << et.name << "\" was not specified, constant global follow rate was used.\n";
             et.RF[event].monthly_rates.push_back(config.rate_follow);
         } else if (et.RF[event].function_type == "not specified" && event == 2) {
+            cout << "\nTweet rate function for entity \"" << et.name << "\" was not specified, constant global tweet rate was used.\n";
             et.RF[event].monthly_rates.push_back(config.rate_tweet);
         } else if (et.RF[event].function_type == "not specified" && event == 3) {
+            cout << "\nRetweet rate function for entity \"" << et.name << "\" was not specified, constant global retweet rate was used.\n";
             et.RF[event].monthly_rates.push_back(config.rate_retweet);
         } else if (et.RF[event].function_type == "constant") {
 			ASSERT(et.RF[event].const_val >= 0, "Check your rates, one of them is < 0");
 			for (int i = 0; i <= projected_months; i ++) {
-				et.RF[event].monthly_rates.push_back(et.RF[event].const_val);
+                et.RF[event].monthly_rates.push_back(et.RF[event].const_val);
 			}
 		} else if (et.RF[event].function_type == "linear") {
 			for (int i = 0; i <= projected_months; i ++) {

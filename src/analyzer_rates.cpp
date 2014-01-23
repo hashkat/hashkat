@@ -99,7 +99,7 @@ struct AnalyzerRates {
 
         Rates global(0, 0, 0);
         for (int e = 0; e < entity_types.size(); e++) {
-            //set_rates (entity_types[e]);
+            set_rates (entity_types[e]);
             Rates rates = set_rates(entity_types[e]);
             global.add(rates); // Sum the rates
         }

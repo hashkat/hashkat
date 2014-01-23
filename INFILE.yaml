@@ -2,7 +2,7 @@ analysis:
   max_entities: 
     5000000
   max_time:
-    100000.0 # 1/10 year
+    1000000.0 # 1/10 year
   initial_entities:
     1
   use_barabasi: false # if this is set to 1, the global follow rate will be ignored. Follow thresholds not needed.
@@ -13,7 +13,7 @@ analysis:
 # the follow, tweet and retweet is not going to be used anymore
 rates:
   add: 
-    1.0  # 0.001 == 1 / hour, twitter users / 8 years
+    0.1  # 0.001 == 1 / hour, twitter users / 8 years
   follow: 
     0.001
   tweet: 
@@ -41,26 +41,26 @@ follow_ranks:
 
 entities:
   - name: Standard
-    weights: {add: 70, follow: 5}
+    weights: {add: 25, follow: 5}
     rates: 
         follow: {function: constant, value: 0.001}
-        tweet: {function: constant, value: 0.001}
-        retweet: {function: constant, value: 0.001}
+        tweet: {function: constant, value: 0.0}
+        retweet: {function: constant, value: 0.0}
   - name: Celebrity
-    weights: {add: 5, follow: 80}
+    weights: {add: 25, follow: 80}
     rates:
         follow: {function: constant, value: 0.001}
-        tweet: {function: constant, value: 0.001}
-        retweet: {function: constant, value: 0.001}
+        tweet: {function: constant, value: 0.0}
+        retweet: {function: constant, value: 0.0}
   - name: Bot
-    weights: {add: 10, follow: 0}
+    weights: {add: 25, follow: 0}
     rates:
-        follow: {function: constant, value: 0.001}
-        tweet: {function: constant, value: 0.001}
-        retweet: {function: constant, value: 0.001}
+        follow: {function: constant, value: 0.002}
+        tweet: {function: constant, value: 0.0}
+        retweet: {function: constant, value: 0.0}
   - name: Organization
-    weights: {add: 15, follow: 15}
+    weights: {add: 25, follow: 15}
     rates:
-        follow: {function: constant, value: 0.001}
-        tweet: {function: constant, value: 0.001}
-        retweet: {function: constant, value: 0.001}
+        follow: {function: constant, value: 0.002}
+        tweet: {function: constant, value: 0.0}
+        retweet: {function: constant, value: 0.0}

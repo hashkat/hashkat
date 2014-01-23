@@ -1,4 +1,5 @@
 #include <iostream>
+#include <iomanip>
 
 #include "analyzer.h"
 
@@ -60,11 +61,11 @@ struct AnalyzerSelect {
             vector<int>& e_vec = et.entity_cap;
             for (int i = 0, e_i = e_vec.size() - 1; i <= state.n_months(); i++, e_i--) {
                 if (rand_num <= ((vec[i] * et.prob_add) / rate_sum) && i == 0) {
-                    int entity = rng.rand_int(et.new_entities) + e_vec.back();
+                    int entity = et.entity_list[rng.rand_int(et.new_entities) + e_vec.back()];
                     return entity;
                 } else if (rand_num <= ((vec[i] * et.prob_add) / rate_sum)) {
                     int range_min = e_vec.at(e_i), range_max = e_vec.at(e_i + 1);
-                    int entity = rng.rand_int(range_min, range_max);
+                    int entity = et.entity_list[rng.rand_int(range_min, range_max)];
                     return entity;
                 }
                 rand_num -= ((vec[i] * et.prob_add)/ rate_sum);
