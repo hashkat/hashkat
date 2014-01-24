@@ -1,4 +1,6 @@
 #include <iostream>
+#include <iomanip>
+
 #include "analyzer.h"
 
 using namespace std;
@@ -39,7 +41,7 @@ struct AnalyzerRates {
 	bool create_new_month_if_needed(EntityType& et) {
         int n_months = state.n_months();
 
-        if (n_months >= et.entity_cap.size() || state.time == 0) {
+        if (n_months == et.entity_cap.size() || state.time == 0) {
             // set the thresholds for each entitytype -- they are the same for every entity
             et.age_ranks.categories.push_back(state.time);
             // for every entitytype, go through every entity that is of that entitytype and categorize them based on their creation time
@@ -47,10 +49,7 @@ struct AnalyzerRates {
                 Entity& e = network[et.entity_list[i]];
                 et.age_ranks.categorize(et.entity_list[i], e.creation_time);
             }
-
-            CategoryEntityList& C = et.age_ranks.categories.at(n_months);
-            et.entity_cap.push_back(C.entities.size());
-
+            et.entity_cap.push_back(et.entity_list.size());
             return true;
         }
         return false;

@@ -35,6 +35,7 @@ struct ParsedConfig {
     CategoryGrouper tweet_ranks, follow_ranks;
     CategoryGrouper retweet_ranks;
 
+    std::vector<double> follow_probabilities;
     // 'entities' config options
     // Note: Weights are filled, entity lists empty
     EntityTypeVector entity_types;

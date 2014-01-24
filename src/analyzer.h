@@ -32,7 +32,7 @@ struct AnalysisStats {
     }
 };
 
-const int APPROX_MONTH = 24 * 60 * 30;
+const int APPROX_MONTH = 30 * 24 * 60;
 
 // All the state passed to - and - from analyze.cpp.
 // Essentially this encapsulates all the information required for the post-analysis routines.
@@ -75,6 +75,7 @@ struct AnalysisState {
         follow_ranks = config.follow_ranks;
         retweet_ranks = config.retweet_ranks;
         entity_types = config.entity_types;
+        follow_probabilities = config.follow_probabilities;
 
         rng.init_genrand(seed);
         time = 0.0;

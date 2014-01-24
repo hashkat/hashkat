@@ -102,7 +102,6 @@ struct Analyzer {
         call_future_rates();
 		analyzer_rate_update(state);
     }
-    // make sure any initial entities are given a title based on the respective probabilities
 	void call_future_rates() {
 		for (int i = 0; i < entity_types.size(); i ++) {
 			for (int j = 1; j < entity_types[i].number_of_events; j ++) {
@@ -111,7 +110,8 @@ struct Analyzer {
 		}
 	}
 	void set_future_rates(EntityType& et, int event) {
-		int projected_months = config.max_time/APPROX_MONTH;
+		int projected_months = config.max_time / APPROX_MONTH;
+        cout << "projected months = " << projected_months << "\n";
         if (et.RF[event].function_type == "not specified" && event == 1) {
             cout << "\nFollow rate function for entity \"" << et.name << "\" was not specified, constant global follow rate was used.\n";
             et.RF[event].monthly_rates.push_back(config.rate_follow);

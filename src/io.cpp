@@ -328,7 +328,7 @@ void tweets_distribution(Network& network, int n_users) {
 }
 
 
-bool quick_rate_check(EntityTypeVector ets, double correct_val, int i, int j) {
+bool quick_rate_check(EntityTypeVector& ets, double& correct_val, int& i, int& j) {
     double tolerence = 0.05;
     if (j == 1 && abs(correct_val - ets[i].n_follows) / correct_val >= tolerence) {
         cout << "\nNumber of follows for entity type \'" << ets[i].name << "\' is not correct. " << correct_val << " is the right number.\n";
@@ -343,52 +343,46 @@ bool quick_rate_check(EntityTypeVector ets, double correct_val, int i, int j) {
     return true;
 }
 
-bool entity_checks(EntityTypeVector& ets, Network& network, AnalysisState& state, double rate_add, int initial_entities) {
+bool entity_checks(EntityTypeVector& ets, Network& network, AnalysisState& state, double& rate_add, int& initial_entities) {
     double tolerence = 0.05;
-    vector<double> average_rates(ets[1].number_of_events);
-    vector<int> number_of_rates(ets[1].number_of_events);
-    for (int j = 1; j < ets[j].number_of_events - 1; j ++) {
-        average_rates.at(j) = 0;
-        number_of_rates.at(j) = 0;
-    }
-    for (int i = 0; i < ets.size(); i ++) {
-        for (int j = 1; j < ets[i].number_of_events; j ++) {
-            for (int k = 0; k < ets[i].RF[j].monthly_rates.size(); k ++) {
-                average_rates.at(j) += ets[i].RF[j].monthly_rates[k];
-                number_of_rates.at(j) ++;
-            }
-        }
-    }
-    for (int i = 1; i < ets[0].number_of_events; i ++) {
-        average_rates[i] /= number_of_rates[i];
-    }
+    int final_check = 0;
+    int check_count = 0;
     for (int i = 0; i < ets.size(); i ++) {
         double add_correct = network.n_entities * ets[i].prob_add;
         if (abs(add_correct - ets[i].entity_list.size()) / add_correct >= tolerence) {
             cout << "\nNumber of entity type \'" << ets[i].name << "\' is not correct. " << add_correct << " is the right number.\n";
-            return false;
+            final_check += false;
+            check_count ++;
         }
         for (int j = 1; j < ets[i].number_of_events; j ++) {
             if (rate_add == 0 && ets[i].RF[j].function_type == "constant") {
                 double correct_val = ets[i].RF[j].const_val * state.time * network.n_entities * ets[i].prob_add;
-                return quick_rate_check(ets, correct_val, i, j);
+                final_check += quick_rate_check(ets, correct_val, i, j);
+                check_count ++;
             } else if (rate_add == 0 && ets[i].RF[j].function_type == "linear" ) {
                 double correct_val = (ets[i].RF[j].y_intercept + ets[i].RF[j].slope * state.n_months()) * state.time * network.n_entities * ets[i].prob_add;
-                return quick_rate_check(ets, correct_val, i, j);
+                final_check += quick_rate_check(ets, correct_val, i, j);
+                check_count ++;
             } else if (rate_add == 0 && ets[i].RF[j].function_type == "exponential") {
                 double correct_val = (ets[i].RF[j].amplitude*exp(ets[i].RF[j].exp_factor*state.n_months())) * state.time * network.n_entities * ets[i].prob_add;
-                return quick_rate_check(ets, correct_val, i, j);
+                final_check += quick_rate_check(ets, correct_val, i, j);
+                check_count ++;
             } else if (rate_add != 0 && ets[i].RF[j].function_type == "constant") {
                 double correct_val = 0.5 * (ets[i].RF[j].const_val / rate_add) * ((rate_add * rate_add) * ets[i].prob_add * (state.time * state.time) + (rate_add * state.time) - (initial_entities - 1) * initial_entities);
-                return quick_rate_check(ets, correct_val, i, j);
+                final_check += quick_rate_check(ets, correct_val, i, j);
+                check_count ++;
             } else if (rate_add != 0 && ets[i].RF[j].function_type == "linear" ) {
                 double correct_val = (0.5 * ets[i].RF[j].y_intercept * rate_add * ets[i].prob_add * state.time * state.time) + 0.25 * ets[i].RF[j].slope * state.n_months() * state.time + 0.3333 * rate_add * ets[i].RF[j].slope * state.n_months() * ets[i].prob_add * state.time * state.time * 0.5 + 0.5 * ets[i].RF[j].y_intercept * state.time - (initial_entities - 1) * initial_entities;
-                return quick_rate_check(ets, correct_val, i, j);
+                final_check += quick_rate_check(ets, correct_val, i, j);
+                check_count ++;
             } /*else if (rate_add != 0 && ets[i].RF[j].function_type == "exponential") {
                 double correct_val = (ets[i].RF[j].amplitude*exp(ets[i].RF[j].exp_factor*state.n_months())) * state.time * network.n_entities * ets[i].prob_add;
                 return quick_rate_check(ets, correct_val, i, j);
             }*/
         }
     }
-    return true;
+    if (final_check == check_count) {
+        return true;
+    }
+    return false;
 }

@@ -97,6 +97,7 @@ static void parse_category_configurations(ParsedConfig& config, const Node& node
         for (int i = 1; i < config.max_entities; i ++) {
             CategoryEntityList cat(i-1, i);
             config.follow_ranks.categories.push_back(cat);
+            config.follow_probabilities.push_back(i);
         }
     } else {
         config.follow_ranks = parse_category_type(node["follow_ranks"]);

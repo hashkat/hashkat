@@ -61,7 +61,12 @@ struct AnalyzerSelect {
             vector<int>& e_vec = et.entity_cap;
             for (int i = 0, e_i = e_vec.size() - 1; i <= state.n_months(); i++, e_i--) {
                 if (rand_num <= ((vec[i] * et.prob_add) / rate_sum) && i == 0) {
-                    int entity = et.entity_list[rng.rand_int(et.new_entities) + e_vec.back()];
+                    int entity = -1;
+                    if (state.n_months() == 0) {
+                        entity = et.entity_list[rng.rand_int(et.new_entities)];
+                    } else {
+                        entity = et.entity_list[et.entity_list.size() - 1 - rng.rand_int(et.new_entities)];
+                    }
                     return entity;
                 } else if (rand_num <= ((vec[i] * et.prob_add) / rate_sum)) {
                     int range_min = e_vec.at(e_i), range_max = e_vec.at(e_i + 1);
