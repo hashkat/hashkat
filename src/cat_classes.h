@@ -11,6 +11,7 @@ namespace cats {
 template <typename ElemT>
 struct LeafClass {
     typedef TreeNode< LeafNode<ElemT> > CatGroup;
+    typedef typename CatGroup::iterator iterator;
 
     template <typename NetworkT>
     double& get(NetworkT& N, int bin) {
@@ -35,6 +36,7 @@ struct LeafClass {
 template <typename InnerT>
 struct TreeClass {
     typedef TreeNode<typename InnerT::CatGroup> CatGroup;
+    typedef typename CatGroup::iterator iterator;
 
     template <typename NetworkT>
     InnerT& get(NetworkT& N, int bin) {

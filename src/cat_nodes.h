@@ -48,6 +48,33 @@ template <typename Elem>
 struct LeafNode {
     typedef google::sparse_hash_set<Elem> HashSet;
 
+    struct iterator {
+        int slot;
+        iterator() : slot(0) {
+        }
+    };
+
+    bool iterate(iterator& iter, Elem& elem) {
+        int& slot = iter.slot;
+        int n_hash_slots = elems.rep.table.size();
+        if (slot >= n_hash_slots) {
+            // At end, leave
+            return false;
+        }
+        // If not at end, we will loop until we find a hash-slot that
+        // contains a valid instance of 'Elem'.
+        while (slot < n_hash_slots && !elems.rep.table.test(slot)) {
+            slot++;
+        }
+        if (slot >= n_hash_slots) {
+            // At end, leave
+            return false;
+        }
+        elem = elems.rep.table.unsafe_get(slot);
+        slot++; // Move to next unused slot
+        return true;
+    }
+
     LeafNode() {
         total_rate = 0;
         // MUST be done to use erase() with Google's HashSet
@@ -112,6 +139,21 @@ struct LeafNode {
         elems.clear();
     }
 
+    void pick_random_uniform(MTwist& rng, Elem& elem) {
+        int n_hash_slots = elems.rep.table.size();
+        int idx;
+        do {
+            // We will loop until we find a hash-slot that
+            // contains a valid instance of 'Elem'.
+            idx = rng.rand_int(n_hash_slots);
+        } while (!elems.rep.table.test(idx));
+        elem = elems.rep.table.unsafe_get(idx);
+    }
+
+    void pick_random_weighted(MTwist& rng, Elem& elem) {
+        // Same thing for LeafNode's
+        pick_random_uniform(rng, elem);
+    }
 private:
     double total_rate;
     HashSet elems;
@@ -127,6 +169,28 @@ private:
 /* Points either to further TreeNode's, or a LeafNode. */
 template <typename SubCat>
 struct TreeNode {
+    typedef typename SubCat::iterator sub_iterator;
+    struct iterator {
+        int bin;
+        sub_iterator sub_iter;
+        iterator() {
+            bin = 0;
+        }
+    };
+
+    template <typename Elem>
+    bool iterate(iterator& iter, Elem& elem) {
+        int& bin = iter.bin;
+        while (bin < cats.size()) {
+            if (cats[bin].iterate(iter.sub_iter, elem)) {
+                return true;
+            }
+            bin++;
+            iter.sub_iter = sub_iterator();
+        }
+        return false;
+    }
+
     TreeNode() {
         total_rate = 0;
         _n_elems = 0;
@@ -194,6 +258,22 @@ struct TreeNode {
         return false;
     }
 
+    template <typename Elem>
+    void pick_random_uniform(MTwist& rng, Elem& elem) {
+        ASSERT(n_elems() > 0, "Cannot pick from empty set");
+        // Same thing for LeafNode's
+        SubCat& sub_cat = cats[random_uniform_bin(rng)];
+        sub_cat.pick_random_uniform(rng, elem);
+    }
+
+    template <typename Elem>
+    void pick_random_weighted(MTwist& rng, Elem& elem) {
+        ASSERT(n_elems() > 0, "Cannot pick from empty set");
+        // Same thing for LeafNode's
+        SubCat& sub_cat = cats[random_weighted_bin(rng)];
+        sub_cat.pick_random_weighted(rng, elem);
+    }
+
     // Leaf node, return true if the element was actually in the set
     template <typename NetworkT, typename ClassifierT, typename Elem>
     bool remove(NetworkT& N, ClassifierT& C, double& ret, const Elem& elem) {
@@ -216,7 +296,7 @@ struct TreeNode {
     }
 
     /* Uniform method, choose with respect amount only. */
-    int pick_random_uniform(MTwist& rng) {
+    int random_uniform_bin(MTwist& rng) {
         int num = rng.rand_int(n_elems());
         for (int i = 0; i < cats.size(); i++) {
             num -= cats.n_elems();
@@ -228,10 +308,10 @@ struct TreeNode {
         return -1;
     }
     /* Principal KMC method, choose with respect to bin rates. */
-    int pick_random_weighted(MTwist& rng) {
+    int random_weighted_bin(MTwist& rng) {
         double num = rng.genrand_real2() * total_rate;
         for (int i = 0; i < cats.size(); i++) {
-            num -= cats.total_rate;
+            num -= cats[i].get_total_rate();
             if (num <= 0) {
                 return i;
             }
