@@ -1182,7 +1182,7 @@ class sparse_hashtable {
     key_info.set_key(v, k);
   }
 
- private:
+ public:
   // Actual data
   Settings settings;
   KeyInfo key_info;

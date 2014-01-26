@@ -104,7 +104,7 @@ template <class Value,
           class EqualKey = std::equal_to<Value>,
           class Alloc = libc_allocator_with_realloc<Value> >
 class sparse_hash_set {
- private:
+ public:
   // Apparently identity is not stl-standard, so we define our own
   struct Identity {
     typedef const Value& result_type;
