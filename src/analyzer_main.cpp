@@ -169,29 +169,9 @@ struct Analyzer {
         }
     }
 
-    void step_time(int n_entities) {
-        static double STATIC_TIME = 0.0;
-
-        double prev_time = time;
-        double prev_integer = floor(time);
-        double increment = -log(rng.rand_real_not0()) / stats.event_rate;
-        if (config.use_random_increment) {
-            // increment by random time
-            time += increment;
-        } else {
-            time += 1.0 / stats.event_rate;
-        }
-
-		    // ASSERT(STATIC_TIME < time, "Fail");
-        STATIC_TIME = time;
-        if (config.output_stdout_summary && (floor(time) > prev_integer)) {
-          output_summary_stats();
-        }
-    }
-
     /* Create a entity at the given index.
      * The index should be an empty entity slot. */
-    void action_create_entity(double creation_time, int index) {
+    bool action_create_entity(double creation_time, int index) {
 		Entity& e = network[index];
 		e.creation_time = creation_time;
 		double rand_num = rng.rand_real_not0();
@@ -208,34 +188,37 @@ struct Analyzer {
 			analyzer_follow_entity(state, index, index, creation_time);
 		}
         network.n_entities++;
+        return true; // Always succeeds, for now.
     }
 
 	// function to handle the tweeting
-	void action_tweet(int entity) {
+	bool action_tweet(int entity) {
 		// This is the entity tweeting
 		Entity& e = network[entity];
 		// increase the number of tweets the entity had by one
 		e.n_tweets++;
         entity_types[e.entity].n_tweets ++;
 		tweet_ranks.categorize(entity, e.n_tweets);
-		/* AD: Temporarily re-enabled */
-		if (e.n_tweets > 10) {
-			action_unfollow(entity);
-		}
+        stats.n_tweets ++;
+//		if (e.n_tweets > 10) {
+//			action_unfollow(entity);
+//		}
+		return true; // Always succeeds
 	}
 	
-	void action_retweet(int entity, double time_of_retweet) {
+	bool action_retweet(int entity, double time_of_retweet) {
 		Entity& et = network[entity];
         entity_types[et.entity].n_retweets ++;
         stats.n_retweets ++;
+        return true; // Always succeeds
 	}
 
-	void action_unfollow(int entity_id) {
+	bool action_unfollow(int entity_id) {
 		Entity& e1 = network[entity_id];
 		FollowerSet& follower_set = e1.follower_set;
 		int follower_id = -1;
 		if (!follower_set.pick_random_uniform(rng, follower_id)) {
-		    return; // Empty
+		    return false; // Empty
 		}
 
 		Entity& follower = network[follower_id];
@@ -244,37 +227,69 @@ struct Analyzer {
 		bool follow_existed = follower_set.remove(state, /* AD: dummy rate for now */ 1.0, follower_id);
 		DEBUG_CHECK(follower_existed, "unfollow: Did not exist in follower list");
 		DEBUG_CHECK(follow_existed, "unfollow: Did not exist in follow list");
+		return true;
 	}
 
     // Performs one step of the analysis routine.
     // Takes old time, returns new time
     void step_analysis() {
-        double u_1 = rng.rand_real_not0(); // get the first number with-in [0,1).
-        int N = network.n_entities;
+        /*
+         * Our step is wrapped in a loop to enabling restarting of events.
+         * Often, there will be no way to resolve an event failure at the moment it occurs.
+         * For example, when we land on a follow selection, and only have follows that we already have made.
+         * At this point, the only logical course is to retry the whole KMC event.
+         *
+         * Luckily, this should be rare.
+         */
+        bool complete = false;
+        while (!complete) {
+            double u_1 = rng.rand_real_not0(); // get the first number with-in [0,1).
+            int N = network.n_entities;
 
-        // DECIDE WHAT TO DO:
-        if (u_1 - (stats.prob_add) <= ZEROTOL) {
-                        // If we find ourselves in the add entity chuck of our cumulative function:
-            action_create_entity(time, N);
-        } else if (u_1 - (stats.prob_add + stats.prob_follow) <= ZEROTOL) {
-            int entity = analyzer_select_entity(state, FOLLOW_SELECT);
-            analyzer_follow_entity(state, entity, N, time);
-        } else if (u_1 - (stats.prob_add + stats.prob_follow + stats.prob_tweet) <= ZEROTOL) {
-                        // The tweet event
-            int entity = analyzer_select_entity(state, TWEET_SELECT);
-            action_tweet(entity);
-            stats.n_tweets ++;
-        } else if (u_1 - (stats.prob_add + stats.prob_follow + stats.prob_tweet + stats.prob_norm) <= ZEROTOL ) {
-            int entity = analyzer_select_entity(state, RETWEET_SELECT);
-            action_retweet(entity, time);
-        } else {
-            error_exit("step_analysis: event out of bounds");
+            // DECIDE WHAT TO DO:
+            if (u_1 - (stats.prob_add) <= ZEROTOL) {
+                // If we find ourselves in the add entity chuck of our cumulative function:
+                complete = action_create_entity(time, N);
+            } else if (u_1 - (stats.prob_add + stats.prob_follow) <= ZEROTOL) {
+                int entity = analyzer_select_entity(state, FOLLOW_SELECT);
+                complete = analyzer_follow_entity(state, entity, N, time);
+            } else if (u_1 - (stats.prob_add + stats.prob_follow + stats.prob_tweet) <= ZEROTOL) {
+                // The tweet event
+                int entity = analyzer_select_entity(state, TWEET_SELECT);
+                complete = action_tweet(entity);
+            } else if (u_1 - (stats.prob_add + stats.prob_follow + stats.prob_tweet + stats.prob_norm) <= ZEROTOL ) {
+                int entity = analyzer_select_entity(state, RETWEET_SELECT);
+                complete = action_retweet(entity, time);
+            } else {
+                error_exit("step_analysis: event out of bounds");
+            }
         }
 
-        step_time(N);
+        step_time();
         stats.n_steps++;
         //update the rates if n_entities has changed
         analyzer_rate_update(state);
+    }
+
+    /* Step our KMC simulation proportionally to the global event rate. */
+    void step_time() {
+        static double STATIC_TIME = 0.0;
+
+        double prev_time = time;
+        double prev_integer = floor(time);
+        double increment = -log(rng.rand_real_not0()) / stats.event_rate;
+        if (config.use_random_increment) {
+            // increment by random time
+            time += increment;
+        } else {
+            time += 1.0 / stats.event_rate;
+        }
+
+        ASSERT(STATIC_TIME < time, "Fail");
+        STATIC_TIME = time;
+        if (config.output_stdout_summary && (floor(time) > prev_integer)) {
+          output_summary_stats();
+        }
     }
 
     /***************************************************************************

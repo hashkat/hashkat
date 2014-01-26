@@ -342,12 +342,15 @@ bool quick_rate_check(EntityTypeVector& ets, double& correct_val, int& i, int& j
     double tolerence = 0.05;
     if (j == 1 && abs(correct_val - ets[i].n_follows) / correct_val >= tolerence) {
         cout << "\nNumber of follows for entity type \'" << ets[i].name << "\' is not correct. " << correct_val << " is the right number.\n";
+        cout << "Was: " << ets[i].n_follows << endl;
         return false;
     } else if (j == 2 && abs(correct_val - ets[i].n_tweets) / correct_val >= tolerence) {
         cout << "\nNumber of tweets for entity type \'" << ets[i].name << "\' is not correct. " << correct_val << " is the right number.\n";
+        cout << "Was: " << ets[i].n_tweets << endl;
         return false;
     } else if (j == 3 && abs(correct_val - ets[i].n_retweets) / correct_val >= tolerence) {
         cout << "\nNumber of retweets for entity type \'" << ets[i].name << "\' is not correct. " << correct_val << " is the right number.\n";
+        cout << "Was: " << ets[i].n_retweets << endl;
         return false;
     }
     return true;

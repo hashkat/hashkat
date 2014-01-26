@@ -46,7 +46,8 @@ struct AnalyzerFollow {
     * Entity observation routines
     ***************************************************************************/
 
-    void follow_entity(int entity, int n_entities, double time_of_follow) {
+   // Returns false to signify that we must retry the KMC event
+    bool follow_entity(int entity, int n_entities, double time_of_follow) {
         Entity& e1 = network[entity];
         int entity_to_follow = -1;
         double rand_num = rng.rand_real_not0();
@@ -125,27 +126,30 @@ struct AnalyzerFollow {
                 stats.n_follows++; // We were able to add the follow; almost always the case.
                 entity_types[e1.entity].n_follows ++;
                 entity_types[target.entity].n_followers ++;
+                return true;
             }
         }
-        //
+        return false; // Completion failure: Restart the event
     }
 
-    void followback(int follower, int followed) {
+    bool followback(int follower, int followed) {
         // now the followee will follow the follower back
         if (handle_follow(followed, follower)) {
             Entity& target = network[follower];
             follow_ranks.categorize(follower, target.follower_set.size());
             stats.n_follows++; // We were able to add the follow; almost always the case.
+            return true;
         }
+        return false; // Completion failure: Restart the event
     }
 };
 
-void analyzer_follow_entity(AnalysisState& state, int entity, int n_entities, double time_of_follow) {
+bool analyzer_follow_entity(AnalysisState& state, int entity, int n_entities, double time_of_follow) {
     AnalyzerFollow analyzer(state);
-    analyzer.follow_entity(entity, n_entities, time_of_follow);
+    return analyzer.follow_entity(entity, n_entities, time_of_follow);
 }
 
-void analyzer_followback(AnalysisState& state, int follower, int followed) {
+bool analyzer_followback(AnalysisState& state, int follower, int followed) {
     AnalyzerFollow analyzer(state);
-    analyzer.followback(follower, followed);
+    return analyzer.followback(follower, followed);
 }
