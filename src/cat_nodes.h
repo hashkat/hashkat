@@ -109,6 +109,12 @@ struct LeafNode {
         return false;
     }
 
+    template <typename StateT>
+    bool remove(StateT& N, double rate, const ElemT& elem) {
+        double dummy;
+        return remove(N, rate, dummy, elem);
+    }
+
     double get_total_rate() {
         return total_rate;
     }
@@ -143,7 +149,10 @@ struct LeafNode {
         elems.clear();
     }
 
-    void pick_random_uniform(MTwist& rng, ElemT& elem) {
+    bool pick_random_uniform(MTwist& rng, ElemT& elem) {
+        if (elems.empty()) {
+            return false;
+        }
         int n_hash_slots = elems.rep.table.size();
         int idx;
         do {
@@ -152,11 +161,12 @@ struct LeafNode {
             idx = rng.rand_int(n_hash_slots);
         } while (!elems.rep.table.test(idx));
         elem = elems.rep.table.unsafe_get(idx);
+        return true;
     }
 
-    void pick_random_weighted(MTwist& rng, ElemT& elem) {
+    bool pick_random_weighted(MTwist& rng, ElemT& elem) {
         // Same thing for LeafNode's
-        pick_random_uniform(rng, elem);
+        return pick_random_uniform(rng, elem);
     }
 private:
     double total_rate;
@@ -255,6 +265,7 @@ struct TreeNode {
         ensure_bin(bin);
         if (cats[bin].add(S, C.get(S, bin), delta, elem)) { // Did we insert a unique element?
             n_elems++;
+            DEBUG_CHECK(delta >= 0, "Negative rate delta on 'add'!");
             total_rate += delta;
             ret = delta;
             return true;
@@ -269,19 +280,23 @@ struct TreeNode {
     }
 
     template <typename ElemT>
-    void pick_random_uniform(MTwist& rng, ElemT& elem) {
-        ASSERT(size() > 0, "Cannot pick from empty set");
+    bool pick_random_uniform(MTwist& rng, ElemT& elem) {
+        if (cats.empty()) {
+            return false;
+        }
         // Same thing for LeafNode's
         SubCat& sub_cat = cats[random_uniform_bin(rng)];
-        sub_cat.pick_random_uniform(rng, elem);
+        return sub_cat.pick_random_uniform(rng, elem);
     }
 
-    template <typename ElemT>
-    void pick_random_weighted(MTwist& rng, ElemT& elem) {
-        ASSERT(size() > 0, "Cannot pick from empty set");
+    template<typename ElemT>
+    bool pick_random_weighted(MTwist& rng, ElemT& elem) {
+        if (cats.empty()) {
+            return false;
+        }
         // Same thing for LeafNode's
         SubCat& sub_cat = cats[random_weighted_bin(rng)];
-        sub_cat.pick_random_weighted(rng, elem);
+        return sub_cat.pick_random_weighted(rng, elem);
     }
 
     // Leaf node, return true if the element was actually in the set
@@ -292,11 +307,18 @@ struct TreeNode {
         ensure_bin(bin);
         if (cats[bin].remove(S, C.get(S, bin), delta, elem)) { // Did we insert a unique element?
             n_elems--;
+            DEBUG_CHECK(delta <= 0, "Positive rate delta on 'remove'!");
             total_rate += delta;
             ret = delta;
             return true;
         }
         return false;
+    }
+
+    template <typename StateT, typename ElemT>
+    bool remove(StateT& N, double rate, const ElemT& elem) {
+        double dummy;
+        return remove(N, rate, dummy, elem);
     }
 
     void ensure_bin(int bin) {

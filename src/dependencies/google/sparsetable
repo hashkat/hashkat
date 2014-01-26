@@ -241,6 +241,7 @@
 #include <iterator>             // to define reverse_iterator for me
 #include <algorithm>            // equal, lexicographical_compare, swap,...
 #include <memory>               // uninitialized_copy, uninitialized_fill
+
 #include <vector>               // a sparsetable is a vector of groups
 #include <google/type_traits.h>
 #include <google/sparsehash/libc_allocator_with_realloc.h>
@@ -1801,8 +1802,8 @@ class sparsetable {
         : allocator_type(s),
           table_size(s.table_size), num_buckets(s.num_buckets) { }
 
-    size_type table_size;          // how many buckets they want
-    size_type num_buckets;         // number of non-empty buckets
+    /* AD: changed size_type -> unsigned int */ unsigned int table_size;          // how many buckets they want
+    unsigned int num_buckets;         // number of non-empty buckets
   };
 
   // The actual data

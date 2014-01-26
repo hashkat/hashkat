@@ -218,9 +218,10 @@ struct Analyzer {
 		e.n_tweets++;
         entity_types[e.entity].n_tweets ++;
 		tweet_ranks.categorize(entity, e.n_tweets);
-//		if (e.n_tweets > 1000) {
-//			action_unfollow(entity);
-//		}
+		/* AD: Temporarily re-enabled */
+		if (e.n_tweets > 10) {
+			action_unfollow(entity);
+		}
 	}
 	
 	void action_retweet(int entity, double time_of_retweet) {
@@ -230,15 +231,19 @@ struct Analyzer {
 	}
 
 	void action_unfollow(int entity_id) {
-	    // Broken, commented out -- AD
-//		Entity& e1 = network[entity_id];
-//		int unfollowing_location = rng.rand_int(network.n_followers(entity_id));
-//		Entity& e2 = network[unfollowing_location];
-//		FollowerList& f1 = e1.follower_set;
-//		FollowList& f2 = e2.follow_set;
-		// remove unfollowing location from follower_list
-		// remove entity id from follow_list
-		
+		Entity& e1 = network[entity_id];
+		FollowerSet& follower_set = e1.follower_set;
+		int follower_id = -1;
+		if (!follower_set.pick_random_uniform(rng, follower_id)) {
+		    return; // Empty
+		}
+
+		Entity& follower = network[follower_id];
+		FollowSet& follow_set = e1.follow_set;
+		bool follower_existed = follower_set.remove(state, /* AD: dummy rate for now */ 1.0, follower_id);
+		bool follow_existed = follower_set.remove(state, /* AD: dummy rate for now */ 1.0, follower_id);
+		DEBUG_CHECK(follower_existed, "unfollow: Did not exist in follower list");
+		DEBUG_CHECK(follow_existed, "unfollow: Did not exist in follow list");
 	}
 
     // Performs one step of the analysis routine.

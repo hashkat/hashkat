@@ -23,8 +23,6 @@ SUITE(cat_time_rates) {
     typedef vector<MockEntity> MockNetwork;
 
     struct EntityTypeClass: cats::LeafClass<int> {
-        EntityTypeClass() {
-        }
         int classify(MockNetwork& N, int elem) {
             return N[elem].entity_type;
         }
@@ -90,6 +88,7 @@ SUITE(cat_time_rates) {
             for (TimeClass::iterator it; cat_group.iterate(it, elem);) {
                 printf("Element %d: %d\n", i++, elem);
             }
+            printf("Sizeof leaf-node: %d\n", sizeof(LeafNode<int>));
         }
     }
 }

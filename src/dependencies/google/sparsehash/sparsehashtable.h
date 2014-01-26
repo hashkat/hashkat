@@ -432,9 +432,6 @@ class sparse_hashtable {
   key_equal key_eq() const                { return key_info; }
   allocator_type get_allocator() const    { return table.get_allocator(); }
 
-  // Accessor function for statistics gathering.
-  int num_table_copies() const { return settings.num_ht_copies(); }
-
  private:
   // We need to copy values when we set the special marker for deleted
   // elements, but, annoyingly, we can't just use the copy assignment
@@ -460,18 +457,18 @@ class sparse_hashtable {
   // at.  This is just because I don't know how to assign just a key.)
  private:
   void squash_deleted() {           // gets rid of any deleted entries we have
-    if ( num_deleted ) {            // get rid of deleted before writing
+    if ( num_deleted() ) {            // get rid of deleted before writing
       sparse_hashtable tmp(MoveDontGrow, *this);
       swap(tmp);                    // now we are tmp
     }
-    assert(num_deleted == 0);
+    assert(num_deleted() == 0);
   }
 
   // Test if the given key is the deleted indicator.  Requires
-  // num_deleted > 0, for correctness of read(), and because that
+  // num_deleted() > 0, for correctness of read(), and because that
   // guarantees that key_info.delkey is valid.
   bool test_deleted_key(const key_type& key) const {
-    assert(num_deleted > 0);
+    assert(num_deleted() > 0);
     return equals(key_info.delkey, key);
   }
 
@@ -495,25 +492,25 @@ class sparse_hashtable {
   // These are public so the iterators can use them
   // True if the item at position bucknum is "deleted" marker
   bool test_deleted(size_type bucknum) const {
-    // Invariant: !use_deleted() implies num_deleted is 0.
-    assert(settings.use_deleted() || num_deleted == 0);
-    return num_deleted > 0 && table.test(bucknum) &&
+    // Invariant: !use_deleted() implies num_deleted() is 0.
+    assert(settings.use_deleted() || num_deleted() == 0);
+    return num_deleted() > 0 && table.test(bucknum) &&
         test_deleted_key(get_key(table.unsafe_get(bucknum)));
   }
   bool test_deleted(const iterator &it) const {
-    // Invariant: !use_deleted() implies num_deleted is 0.
-    assert(settings.use_deleted() || num_deleted == 0);
-    return num_deleted > 0 && test_deleted_key(get_key(*it));
+    // Invariant: !use_deleted() implies num_deleted() is 0.
+    assert(settings.use_deleted() || num_deleted() == 0);
+    return num_deleted() > 0 && test_deleted_key(get_key(*it));
   }
   bool test_deleted(const const_iterator &it) const {
-    // Invariant: !use_deleted() implies num_deleted is 0.
-    assert(settings.use_deleted() || num_deleted == 0);
-    return num_deleted > 0 && test_deleted_key(get_key(*it));
+    // Invariant: !use_deleted() implies num_deleted() is 0.
+    assert(settings.use_deleted() || num_deleted() == 0);
+    return num_deleted() > 0 && test_deleted_key(get_key(*it));
   }
   bool test_deleted(const destructive_iterator &it) const {
-    // Invariant: !use_deleted() implies num_deleted is 0.
-    assert(settings.use_deleted() || num_deleted == 0);
-    return num_deleted > 0 && test_deleted_key(get_key(*it));
+    // Invariant: !use_deleted() implies num_deleted() is 0.
+    assert(settings.use_deleted() || num_deleted() == 0);
+    return num_deleted() > 0 && test_deleted_key(get_key(*it));
   }
 
  private:
@@ -557,7 +554,7 @@ class sparse_hashtable {
 
   // FUNCTIONS CONCERNING SIZE
  public:
-  size_type size() const      { return table.num_nonempty() - num_deleted; }
+  size_type size() const      { return table.num_nonempty() - num_deleted(); }
   size_type max_size() const          { return table.max_size(); }
   bool empty() const                  { return size() == 0; }
   size_type bucket_count() const      { return table.size(); }
@@ -576,7 +573,7 @@ class sparse_hashtable {
   // TODO(csilvers): take a delta so we can take into account inserts
   // done after shrinking.  Maybe make part of the Settings class?
   bool maybe_shrink() {
-    assert(table.num_nonempty() >= num_deleted);
+    assert(table.num_nonempty() >= num_deleted());
     assert((bucket_count() & (bucket_count()-1)) == 0); // is a power of two
     assert(bucket_count() >= HT_MIN_BUCKETS);
     bool retval = false;
@@ -586,8 +583,8 @@ class sparse_hashtable {
     // shrink below HT_DEFAULT_STARTING_BUCKETS.  Otherwise, something
     // like "dense_hash_set<int> x; x.insert(4); x.erase(4);" will
     // shrink us down to HT_MIN_BUCKETS buckets, which is too small.
-    const size_type num_remain = table.num_nonempty() - num_deleted;
-    const size_type shrink_threshold = settings.shrink_threshold();
+    const size_type num_remain = table.num_nonempty() - num_deleted();
+    const size_type shrink_threshold = settings.enlarge_size(table.size());
     if (shrink_threshold > 0 && num_remain < shrink_threshold &&
         bucket_count() > HT_DEFAULT_STARTING_BUCKETS) {
       const float shrink_factor = settings.shrink_factor();
@@ -618,7 +615,7 @@ class sparse_hashtable {
       throw std::length_error("resize overflow");
     }
     if ( bucket_count() >= HT_MIN_BUCKETS &&
-         (table.num_nonempty() + delta) <= settings.enlarge_threshold() )
+         (table.num_nonempty() + delta) <= settings.enlarge_size(table.size()) )
       return did_resize;                       // we're ok as we are
 
     // Sometimes, we need to resize just to get rid of all the
@@ -633,7 +630,7 @@ class sparse_hashtable {
       return did_resize;
 
     size_type resize_to =
-        settings.min_buckets(table.num_nonempty() - num_deleted + delta,
+        settings.min_buckets(table.num_nonempty() - num_deleted() + delta,
                              bucket_count());
     if (resize_to < needed_size &&    // may double resize_to
         resize_to < (std::numeric_limits<size_type>::max)() / 2) {
@@ -646,7 +643,7 @@ class sparse_hashtable {
       // deleted elements).
       const size_type target =
           static_cast<size_type>(settings.shrink_size(resize_to*2));
-      if (table.num_nonempty() - num_deleted + delta >= target) {
+      if (table.num_nonempty() - num_deleted() + delta >= target) {
         // Good, we won't be below the shrink threshhold even if we double.
         resize_to *= 2;
       }
@@ -659,7 +656,7 @@ class sparse_hashtable {
 
   // Used to actually do the rehashing when we grow/shrink a hashtable
   void copy_from(const sparse_hashtable &ht, size_type min_buckets_wanted) {
-    clear();            // clear table, set num_deleted to 0
+    clear();            // clear table, set num_deleted() to 0
 
     // If we need to change the size of our table, do it now
     const size_type resize_to =
@@ -694,7 +691,7 @@ class sparse_hashtable {
   // useful in resizing, since we're throwing away the "from" guy anyway.
   void move_from(MoveDontCopyT mover, sparse_hashtable &ht,
                  size_type min_buckets_wanted) {
-    clear();            // clear table, set num_deleted to 0
+    clear();            // clear table, set num_deleted() to 0
 
     // If we need to change the size of our table, do it now
     size_type resize_to;
@@ -766,7 +763,6 @@ class sparse_hashtable {
                             const Alloc& alloc = Alloc())
       : settings(hf),
         key_info(ext, set, eql),
-        num_deleted(0),
         table((expected_max_items_in_table == 0
                ? HT_DEFAULT_STARTING_BUCKETS
                : settings.min_buckets(expected_max_items_in_table, 0)),
@@ -782,7 +778,6 @@ class sparse_hashtable {
                    size_type min_buckets_wanted = HT_DEFAULT_STARTING_BUCKETS)
       : settings(ht.settings),
         key_info(ht.key_info),
-        num_deleted(0),
         table(0, ht.get_allocator()) {
     settings.reset_thresholds(bucket_count());
     copy_from(ht, min_buckets_wanted);   // copy_from() ignores deleted entries
@@ -791,7 +786,6 @@ class sparse_hashtable {
                    size_type min_buckets_wanted = HT_DEFAULT_STARTING_BUCKETS)
       : settings(ht.settings),
         key_info(ht.key_info),
-        num_deleted(0),
         table(0, ht.get_allocator()) {
     settings.reset_thresholds(bucket_count());
     move_from(mover, ht, min_buckets_wanted);  // ignores deleted entries
@@ -801,8 +795,8 @@ class sparse_hashtable {
     if (&ht == this)  return *this;        // don't copy onto ourselves
     settings = ht.settings;
     key_info = ht.key_info;
-    num_deleted = ht.num_deleted;
-    // copy_from() calls clear and sets num_deleted to 0 too
+    num_deleted() = ht.num_deleted();
+    // copy_from() calls clear and sets num_deleted() to 0 too
     copy_from(ht, HT_MIN_BUCKETS);
     // we purposefully don't copy the allocator, which may not be copyable
     return *this;
@@ -812,7 +806,7 @@ class sparse_hashtable {
   void swap(sparse_hashtable& ht) {
     std::swap(settings, ht.settings);
     std::swap(key_info, ht.key_info);
-    std::swap(num_deleted, ht.num_deleted);
+    std::swap(num_deleted(), ht.num_deleted());
     table.swap(ht.table);
     settings.reset_thresholds(bucket_count());  // also resets consider_shrink
     ht.settings.reset_thresholds(ht.bucket_count());
@@ -821,11 +815,11 @@ class sparse_hashtable {
 
   // It's always nice to be able to clear a table without deallocating it
   void clear() {
-    if (!empty() || (num_deleted != 0)) {
+    if (!empty() || (num_deleted() != 0)) {
       table.clear();
     }
     settings.reset_thresholds(bucket_count());
-    num_deleted = 0;
+    num_deleted() = 0;
   }
 
   // LOOKUP ROUTINES
@@ -929,8 +923,8 @@ class sparse_hashtable {
     }
     if ( test_deleted(pos) ) {      // just replace if it's been deleted
       // The set() below will undelete this object.  We just worry about stats
-      assert(num_deleted > 0);
-      --num_deleted;                // used to be, now it isn't
+      assert(num_deleted() > 0);
+      --num_deleted();                // used to be, now it isn't
     }
     table.set(pos, obj);
     return iterator(this, table.get_iter(pos), table.nonempty_end());
@@ -1016,7 +1010,7 @@ class sparse_hashtable {
     if ( pos != end() ) {
       assert(!test_deleted(pos));  // or find() shouldn't have returned it
       set_deleted(pos);
-      ++num_deleted;
+      ++num_deleted();
       // will think about shrink after next insert
       settings.set_consider_shrink(true);
       return 1;                    // because we deleted one thing
@@ -1029,7 +1023,7 @@ class sparse_hashtable {
   void erase(iterator pos) {
     if ( pos == end() ) return;    // sanity check
     if ( set_deleted(pos) ) {      // true if object has been newly deleted
-      ++num_deleted;
+      ++num_deleted();
       // will think about shrink after next insert
       settings.set_consider_shrink(true);
     }
@@ -1038,7 +1032,7 @@ class sparse_hashtable {
   void erase(iterator f, iterator l) {
     for ( ; f != l; ++f) {
       if ( set_deleted(f)  )       // should always be true
-        ++num_deleted;
+        ++num_deleted();
     }
     // will think about shrink after next insert
     settings.set_consider_shrink(true);
@@ -1052,7 +1046,7 @@ class sparse_hashtable {
   void erase(const_iterator pos) {
     if ( pos == end() ) return;    // sanity check
     if ( set_deleted(pos) ) {      // true if object has been newly deleted
-      ++num_deleted;
+      ++num_deleted();
       // will think about shrink after next insert
       settings.set_consider_shrink(true);
     }
@@ -1060,7 +1054,7 @@ class sparse_hashtable {
   void erase(const_iterator f, const_iterator l) {
     for ( ; f != l; ++f) {
       if ( set_deleted(f)  )       // should always be true
-        ++num_deleted;
+        ++num_deleted();
     }
     // will think about shrink after next insert
     settings.set_consider_shrink(true);
@@ -1110,7 +1104,7 @@ class sparse_hashtable {
 
   template <typename INPUT>
   bool read_metadata(INPUT *fp) {
-    num_deleted = 0;            // since we got rid before writing
+    num_deleted() = 0;            // since we got rid before writing
     bool result = table.read_metadata(fp);
     settings.reset_thresholds(bucket_count());
     return result;
@@ -1186,7 +1180,9 @@ class sparse_hashtable {
   // Actual data
   Settings settings;
   KeyInfo key_info;
-  size_type num_deleted;   // how many occupied buckets are marked deleted
+  unsigned int& num_deleted() const {
+      return (unsigned int&)settings.num_deleted;   // how many occupied buckets are marked deleted
+  }
   Table table;     // holds num_buckets and num_elements too
 };
 
