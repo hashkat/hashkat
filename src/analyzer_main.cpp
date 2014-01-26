@@ -50,7 +50,6 @@ struct Analyzer {
 
     // The network state
     Network& network;
-    MemPoolVectorGrower& follow_set_grower;
 
 	// Categories for tweeting, following, retweeting
     CategoryGrouper& tweet_ranks;
@@ -83,13 +82,11 @@ struct Analyzer {
         //** This ensures that updates are witnessed in the caller's AnalysisState object.
             state(state), stats(state.stats), config(state.config),
             entity_types(state.entity_types), network(state.network),
-            follow_set_grower(state.follow_set_grower),
             tweet_ranks(state.tweet_ranks), follow_ranks(state.follow_ranks), retweet_ranks(state.retweet_ranks),
             rng(state.rng), time(state.time) {
 
         // The following allocates a memory chunk proportional to max_entities:
         network.preallocate(config.max_entities);
-        follow_set_grower.preallocate(FOLLOW_SET_MEM_PER_USER * config.max_entities);
 
         DATA_TIME.open("DATA_vs_TIME");
         add_data.open("entity_populations.dat");
@@ -202,7 +199,7 @@ struct Analyzer {
 			if (rand_num <= entity_types[et].prob_add) {
 				e.entity = et;
                 entity_types[et].entity_list.push_back(index);
-				follow_ranks.categorize(index, e.follower_set.size);
+				follow_ranks.categorize(index, e.follower_set.size());
 				break;
 			}
 			rand_num -= entity_types[et].prob_add;

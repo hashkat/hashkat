@@ -9,8 +9,6 @@
 #include "dependencies/mtwist.h"
 #include "lcommon/typename.h"
 
-#include "network.h"
-
 #include <google/sparse_hash_set>
 
 namespace cats {
@@ -44,9 +42,9 @@ namespace cats {
  * They are also fairly dynamic. If we hit memory problems, we can write to disk and restart the simulation.
  * The simulation will then be 'defragmented'.
  * For this reason the nice properties of dynamic memory allocation (simplicity and very decent performance) were preferred. */
-template <typename Elem>
+template <typename ElemT>
 struct LeafNode {
-    typedef google::sparse_hash_set<Elem> HashSet;
+    typedef google::sparse_hash_set<ElemT> HashSet;
 
     struct iterator {
         int slot;
@@ -54,7 +52,7 @@ struct LeafNode {
         }
     };
 
-    bool iterate(iterator& iter, Elem& elem) {
+    bool iterate(iterator& iter, ElemT& elem) {
         int& slot = iter.slot;
         int n_hash_slots = elems.rep.table.size();
         if (slot >= n_hash_slots) {
@@ -62,7 +60,7 @@ struct LeafNode {
             return false;
         }
         // If not at end, we will loop until we find a hash-slot that
-        // contains a valid instance of 'Elem'.
+        // contains a valid instance of 'ElemT'.
         while (slot < n_hash_slots && !elems.rep.table.test(slot)) {
             slot++;
         }
@@ -78,15 +76,15 @@ struct LeafNode {
     LeafNode() {
         total_rate = 0;
         // MUST be done to use erase() with Google's HashSet
-        elems.set_deleted_key(Elem(-1));
+        elems.set_deleted_key(ElemT(-1));
     }
 
-    int n_elems() {
+    int size() {
         return elems.size();
     }
 
-    template <typename NetworkT>
-    bool add(NetworkT& N, double rate, double& delta, const Elem& elem) {
+    template <typename StateT>
+    bool add(StateT& N, double rate, double& delta, const ElemT& elem) {
         if (insert(elem)) { // Did we insert a unique element?
             delta = rate;
             total_rate += delta;
@@ -95,8 +93,14 @@ struct LeafNode {
         return false;
     }
 
-    template <typename NetworkT>
-    bool remove(NetworkT& N, double rate, double& delta, const Elem& elem) {
+    template <typename StateT>
+    bool add(StateT& N, double rate, const ElemT& elem) {
+        double dummy;
+        return add(N, rate, dummy, elem);
+    }
+
+    template <typename StateT>
+    bool remove(StateT& N, double rate, double& delta, const ElemT& elem) {
         if (elems.erase(elem) > 0) { // Did we erase an element that was in our set?
             delta = -rate;
             total_rate += delta;
@@ -109,18 +113,18 @@ struct LeafNode {
         return total_rate;
     }
 
-    template <typename NetworkT>
-    double recalc_rates(NetworkT& N, double rate) {
+    template <typename StateT>
+    double recalc_rates(StateT& N, double rate) {
         total_rate = rate * elems.size();
         return total_rate;
     }
 
-    template <typename NetworkT>
-    void print(NetworkT& N, double rate, int bin, int layer) {
+    template <typename StateT>
+    void print(StateT& N, double rate, int bin, int layer) {
         for (int i = 0; i < layer; i++) {
             printf("  ");
         }
-        printf("[Bin %d][leaf] (Total %.2f; N_elems %d; Rate %.2f) ", bin, float(total_rate), rate, n_elems());
+        printf("[Bin %d][leaf] (Total %.2f; N_elems %d; Rate %.2f) ", bin, float(total_rate), rate, size());
         printf("[");
         typename HashSet::iterator it = elems.begin();
         for (; it != elems.end(); ++it) {
@@ -129,8 +133,8 @@ struct LeafNode {
         printf("]\n");
     }
 
-    template <typename NetworkT, typename ClassifierT, typename Node>
-    void transfer(NetworkT& N, ClassifierT& C, Node& o) {
+    template <typename StateT, typename ClassifierT, typename Node>
+    void transfer(StateT& N, ClassifierT& C, Node& o) {
         typename HashSet::iterator it = elems.begin();
         for (; it != elems.end(); ++it) {
             double delta = 0.0;
@@ -139,18 +143,18 @@ struct LeafNode {
         elems.clear();
     }
 
-    void pick_random_uniform(MTwist& rng, Elem& elem) {
+    void pick_random_uniform(MTwist& rng, ElemT& elem) {
         int n_hash_slots = elems.rep.table.size();
         int idx;
         do {
             // We will loop until we find a hash-slot that
-            // contains a valid instance of 'Elem'.
+            // contains a valid instance of 'ElemT'.
             idx = rng.rand_int(n_hash_slots);
         } while (!elems.rep.table.test(idx));
         elem = elems.rep.table.unsafe_get(idx);
     }
 
-    void pick_random_weighted(MTwist& rng, Elem& elem) {
+    void pick_random_weighted(MTwist& rng, ElemT& elem) {
         // Same thing for LeafNode's
         pick_random_uniform(rng, elem);
     }
@@ -159,7 +163,7 @@ private:
     HashSet elems;
 
     // Returns true if the element was unique
-    bool insert(const Elem& elem) {
+    bool insert(const ElemT& elem) {
         size_t prev_size = elems.size();
         elems.insert(elem);
         return (elems.size() > prev_size);
@@ -178,8 +182,8 @@ struct TreeNode {
         }
     };
 
-    template <typename Elem>
-    bool iterate(iterator& iter, Elem& elem) {
+    template <typename ElemT>
+    bool iterate(iterator& iter, ElemT& elem) {
         int& bin = iter.bin;
         while (bin < cats.size()) {
             if (cats[bin].iterate(iter.sub_iter, elem)) {
@@ -193,25 +197,25 @@ struct TreeNode {
 
     TreeNode() {
         total_rate = 0;
-        _n_elems = 0;
+        n_elems = 0;
     }
-    int n_elems() {
-        return _n_elems;
+    int size() {
+        return n_elems;
     }
 
     void swap(TreeNode& o) {
         double tmp_total = total_rate;
-        int tmp_n = _n_elems;
-        _n_elems = o._n_elems;
+        int tmp_n = n_elems;
+        n_elems = o.n_elems;
         total_rate = o.total_rate;
-        o._n_elems = tmp_n;
+        o.n_elems = tmp_n;
         o.total_rate = tmp_total;
         cats.swap(o.cats);
     }
 
     /* Useful for time-dependent rates */
-    template <typename NetworkT, typename ClassifierT>
-    void shift_and_recalc_rates(NetworkT& N, ClassifierT& C) {
+    template <typename StateT, typename ClassifierT>
+    void shift_and_recalc_rates(StateT& S, ClassifierT& C) {
         cats.resize(cats.size() + 1);
         // Empty category should be swapped into first slot by end
         for (int i = cats.size() - 1; i >= 1; i--) {
@@ -220,37 +224,37 @@ struct TreeNode {
         // Collapse all categories that are more than the intended maximum
         int max = C.size();
         for (int i = max; i < cats.size(); i++) {
-            cats[i].transfer(N, C.get(N, max - 1), cats[max - 1]);
+            cats[i].transfer(S, C.get(S, max - 1), cats[max - 1]);
         }
         cats.resize(C.size());
-        recalc_rates(N, C);
+        recalc_rates(S, C);
     }
 
-    template <typename NetworkT, typename ClassifierT, typename Node>
-    void transfer(NetworkT& N, ClassifierT& C, Node& o) {
+    template <typename StateT, typename ClassifierT, typename Node>
+    void transfer(StateT& S, ClassifierT& C, Node& o) {
         for (int i = 0; i < cats.size(); i++) {
-            cats[i].transfer(N, C, o);
+            cats[i].transfer(S, C, o);
         }
-//        cats.clear();
+        cats.clear();
     }
 
-    template <typename NetworkT, typename ClassifierT>
-    double recalc_rates(NetworkT& N, ClassifierT& C) {
+    template <typename StateT, typename ClassifierT>
+    double recalc_rates(StateT& S, ClassifierT& C) {
         total_rate = 0;
-        for (int i = 0; i < size(); i++) {
-            total_rate += cats[i].recalc_rates(N, C.get(N,i));
+        for (int i = 0; i < n_bins(); i++) {
+            total_rate += cats[i].recalc_rates(S, C.get(S,i));
         }
         return total_rate;
     }
 
     // Leaf node, return true if the element already existed
-    template <typename NetworkT, typename ClassifierT, typename Elem>
-    bool add(NetworkT& N, ClassifierT& C, double& ret, const Elem& elem) {
+    template <typename StateT, typename ClassifierT, typename ElemT>
+    bool add(StateT& S, ClassifierT& C, double& ret, const ElemT& elem) {
         double delta = 0.0;
-        int bin = C.classify(N, elem);
+        int bin = C.classify(S, elem);
         ensure_bin(bin);
-        if (cats[bin].add(N, C.get(N, bin), delta, elem)) { // Did we insert a unique element?
-            _n_elems++;
+        if (cats[bin].add(S, C.get(S, bin), delta, elem)) { // Did we insert a unique element?
+            n_elems++;
             total_rate += delta;
             ret = delta;
             return true;
@@ -258,30 +262,36 @@ struct TreeNode {
         return false;
     }
 
-    template <typename Elem>
-    void pick_random_uniform(MTwist& rng, Elem& elem) {
-        ASSERT(n_elems() > 0, "Cannot pick from empty set");
+    template <typename StateT, typename ElemT>
+    bool add(StateT& N, double rate, const ElemT& elem) {
+        double dummy;
+        return add(N, rate, dummy, elem);
+    }
+
+    template <typename ElemT>
+    void pick_random_uniform(MTwist& rng, ElemT& elem) {
+        ASSERT(size() > 0, "Cannot pick from empty set");
         // Same thing for LeafNode's
         SubCat& sub_cat = cats[random_uniform_bin(rng)];
         sub_cat.pick_random_uniform(rng, elem);
     }
 
-    template <typename Elem>
-    void pick_random_weighted(MTwist& rng, Elem& elem) {
-        ASSERT(n_elems() > 0, "Cannot pick from empty set");
+    template <typename ElemT>
+    void pick_random_weighted(MTwist& rng, ElemT& elem) {
+        ASSERT(size() > 0, "Cannot pick from empty set");
         // Same thing for LeafNode's
         SubCat& sub_cat = cats[random_weighted_bin(rng)];
         sub_cat.pick_random_weighted(rng, elem);
     }
 
     // Leaf node, return true if the element was actually in the set
-    template <typename NetworkT, typename ClassifierT, typename Elem>
-    bool remove(NetworkT& N, ClassifierT& C, double& ret, const Elem& elem) {
+    template <typename StateT, typename ClassifierT, typename ElemT>
+    bool remove(StateT& S, ClassifierT& C, double& ret, const ElemT& elem) {
         double delta = 0.0;
-        int bin = C.classify(N, elem);
+        int bin = C.classify(S, elem);
         ensure_bin(bin);
-        if (cats[bin].remove(N, C.get(N, bin), delta, elem)) { // Did we insert a unique element?
-            _n_elems--;
+        if (cats[bin].remove(S, C.get(S, bin), delta, elem)) { // Did we insert a unique element?
+            n_elems--;
             total_rate += delta;
             ret = delta;
             return true;
@@ -295,11 +305,11 @@ struct TreeNode {
         }
     }
 
-    /* Uniform method, choose with respect amount only. */
+    /* Uniform method, choose with respect to amount only. */
     int random_uniform_bin(MTwist& rng) {
-        int num = rng.rand_int(n_elems());
+        int num = rng.rand_int(size());
         for (int i = 0; i < cats.size(); i++) {
-            num -= cats.n_elems();
+            num -= cats.size();
             if (num <= 0) {
                 return i;
             }
@@ -320,7 +330,7 @@ struct TreeNode {
         return cats.size() - 1; // Assume we should choose last one due to floating point issues
     }
 
-    size_t size() {
+    size_t n_bins() {
         return cats.size();
     }
 
@@ -332,8 +342,8 @@ struct TreeNode {
         return total_rate;
     }
 
-    template <typename NetworkT, typename ClassifierT>
-    void print(NetworkT& N, ClassifierT& C, int bin = 0, int layer = 0) {
+    template <typename StateT, typename ClassifierT>
+    void print(StateT& S, ClassifierT& C, int bin = 0, int layer = 0) {
         for (int i = 0; i < layer; i++) {
             printf("  ");
         }
@@ -341,15 +351,15 @@ struct TreeNode {
                 bin,
                 cpp_type_name_no_namespace(C).c_str(),
                 float(total_rate),
-                n_elems()
+                size()
         );
         for (int i = 0; i < cats.size(); i++) {
-            cats[i].print(N, C.get(N, i), i, layer + 1);
+            cats[i].print(S, C.get(S, i), i, layer + 1);
         }
     }
 private:
     double total_rate; // Total weight of the subtree
-    int _n_elems;
+    int n_elems;
     std::vector<SubCat> cats;
 };
 
