@@ -84,11 +84,10 @@ void output_position(Network& network, int n_entities) {
         }
         output1 << "</nodes>\n" << "<edges>\n";
         for (int i = 0; i < n_entities; i++) {
-            int target = -1;
             FollowSet& follow_set = network.follow_set(i);
-            for (FollowSet::iterator it; follow_set.iterate(it, target);) {
+            for (FollowSet::iterator it; follow_set.iterate(it);) {
                 output1 << "<edge id=\"" << count << "\" source=\"" << i
-                        << "\" target=\"" << target << "\"/>\n";
+                        << "\" target=\"" << it.get() << "\"/>\n";
                 count++;
             }
         }
@@ -109,21 +108,19 @@ void output_position(Network& network, int n_entities) {
                 Entity& p = network[user_ids[i]];
                 output1 << "<node id=\"" << user_ids[i] << "\" label=\"" << p.entity << "\" />\n";
 
-                int target = -1;
                 FollowSet& follow_set = network.follow_set(user_ids[i]);
-                for (FollowSet::iterator it; follow_set.iterate(it, target);) {
-                    Entity& p1 = network[target];
-                    output1 << "<node id=\"" << target << "\" label=\"" << p1.entity << " - followed"<< "\" />\n";
+                for (FollowSet::iterator it; follow_set.iterate(it);) {
+                    Entity& p1 = network[it.get()];
+                    output1 << "<node id=\"" << it.get() << "\" label=\"" << p1.entity << " - followed"<< "\" />\n";
                 }
         }
         output1 << "</nodes>\n" << "<edges>\n";
         int count = 0;
         for (int i = 0; i < fraction_users; i++) {
-            int target = -1;
             FollowSet& follow_set = network.follow_set(i);
-            for (FollowSet::iterator it; follow_set.iterate(it, target);) {
+            for (FollowSet::iterator it; follow_set.iterate(it);) {
                 output1 << "<edge id=\"" << count << "\" source=\""
-                        << user_ids[i] << "\" target=\"" << target << "\"/>\n";
+                        << user_ids[i] << "\" target=\"" << it.get() << "\"/>\n";
                 count++;
             }
         }
@@ -135,10 +132,9 @@ void output_position(Network& network, int n_entities) {
     output.open("network.dat");
     for (int i = 0; i < n_entities; i ++) {
 
-        int target = -1;
         FollowerSet& follower_set = network.follower_set(i);
-        for (FollowerSet::iterator it; follower_set.iterate(it, target);) {
-            output << i << "\t" << target << "\n";
+        for (FollowerSet::iterator it; follower_set.iterate(it);) {
+            output << i << "\t" << it.get() << "\n";
         }
     }
     output.close();
@@ -404,61 +400,83 @@ bool entity_checks(EntityTypeVector& ets, Network& network, AnalysisState& state
     return false;
 }
 
+static void whos_following_who(EntityTypeVector& types, EntityType& type, Network& network) {
+    //** AD: It's easier to reason about nested loops with separate functions, because
+    //** you only need worry about one indexing variable at a time. 'i'/'j' is error-prone for anything
+    //** past a simple loop.
+    string filename = type.name + "_info.dat";
+    ofstream output;
+    output.open(filename.c_str());
+    int max_degree = 0;
+    for (int i = 0; i < type.entity_list.size(); i ++) {
+        int degree = network.n_following(type.entity_list[i]) + network.n_followers(type.entity_list[i]);
+        if (degree > max_degree) {
+            max_degree = degree;
+        }
+    }
+
+    /* Declare 0-filled counting-vectors. */
+    vector<int> entity_followers(max_degree + 1 /* AD: Needed one past max stored*/, 0);
+    vector<int> entity_following(max_degree + 1, 0);
+    vector<int> entity_degree(max_degree + 1, 0);
+    vector<int> who_following(types.size());
+    vector<int> who_followers(types.size());
+
+    for (int i = 0; i < types.size(); i ++) {
+        who_following.at(i) = 0;
+        who_followers.at(i) = 0;
+    }
+    double followers_sum = 0, following_sum = 0;
+    for (int i = 0; i < type.entity_list.size(); i ++) {
+        int id = type.entity_list[i];
+        int in_degree = network.n_followers(type.entity_list[i]);
+        int out_degree = network.n_following(type.entity_list[i]);
+        entity_followers[in_degree] ++;
+        entity_following[out_degree] ++;
+        entity_degree[in_degree + out_degree] ++;
+
+        // Analyze ins == followers
+        FollowerSet& ins = network.follower_set(id);
+        for (FollowerSet::iterator it; ins.iterate(it);) {
+            Entity& et = network[it.get()];
+            who_followers[et.entity] ++;
+            followers_sum ++;
+        }
+
+        // Analyze outs == follows
+        FollowSet& outs = network.follow_set(id);
+        for (FollowerSet::iterator it; ins.iterate(it);) {
+            Entity& et = network[it.get()];
+            who_following[et.entity] ++;
+            following_sum ++;
+        }
+    }
+    output << "# Entity percentages following entity type \'" << type.name << "\'\n# ";
+    for (int i = 0; i < types.size(); i ++) {
+        output << types[i].name << ": " << who_followers[i] / followers_sum * 100.0 << "   ";
+    }
+    output << "\n# Entity percentages that entity type \'" << type.name << "\' follows\n# ";
+    for (int i = 0; i < types.size(); i ++) {
+        output << types[i].name << ": " << who_following[i] / following_sum * 100.0 << "   ";
+    }
+    output << "\n# degree\tin_degree\tout_degree\tcumulative\tlog(degree)\tlog(in_degree)\tlog(out_degree)\tlog(cumulative)\n\n";
+    for (int i = 0; i < max_degree; i++) {
+        output << i << "\t"
+                << entity_followers[i] / (double) type.entity_list.size() << "\t"
+                << entity_following[i] / (double) type.entity_list.size() << "\t"
+                << entity_degree[i] / (double) type.entity_list.size()
+                << "\t" << log(i) << "\t"
+                << log(entity_followers[i] / (double) type.entity_list.size()) << "\t"
+                << log(entity_following[i] / (double) type.entity_list.size()) << "\t"
+                << log(entity_degree[i] / (double) type.entity_list.size()) << "\n";
+    }
+    output.close();
+}
+
 // function that will plot degree distributions for every entity, and at the top
 // of the files gives you info about the percentage of each entity they are following
-void whos_following_who(EntityTypeVector& ets, Network& network) {
-    for (int i = 0; i < ets.size(); i ++ ) {
-        string filename = ets[i].name + "_info.dat";
-        ofstream output;
-        output.open(filename.c_str());
-        int max_degree = 0;
-        for (int j = 0; j < ets[i].entity_list.size(); j ++) {
-            int degree = network.n_following(ets[i].entity_list[j]) + network.n_followers(ets[i].entity_list[j]);
-            if (degree > max_degree) {
-                max_degree = degree;
-            }
-        }        
-        vector<int> entity_followers(max_degree), entity_following(max_degree), entity_degree(max_degree);
-        for (int j = 0; j < max_degree; j ++) {
-            entity_followers[j] = 0;
-            entity_following[j] = 0;
-            entity_degree[j] = 0;
-        }
-        vector<int> who_following(ets.size()), who_followers(ets.size());
-        for (int i = 0; i < ets.size(); i ++) {
-            who_following.at(i) = 0;
-            who_followers.at(i) = 0;
-        }
-        double followers_sum = 0, following_sum = 0;
-        for (int j = 0; j < ets[i].entity_list.size(); j ++) {
-            int in_degree = network.n_followers(ets[i].entity_list[j]);
-            int out_degree = network.n_following(ets[i].entity_list[j]);
-            entity_followers[in_degree] ++;
-            entity_following[out_degree] ++;
-            entity_degree[in_degree + out_degree] ++;
-            for (int k = 0; k < in_degree; k ++) {
-                Entity& et = network[network.following_i(ets[i].entity_list[j], k)];
-                who_followers[et.entity] ++;
-                followers_sum ++;
-            }
-            for (int k = 0; k < out_degree; k ++) {
-                Entity& et = network[network.follow_i(ets[i].entity_list[j], k)];
-                who_following[et.entity] ++;
-                following_sum ++;
-            }
-        }
-        output << "# Entity percentages following entity type \'" << ets[i].name << "\'\n# ";
-        for (int j = 0; j < ets.size(); j ++) {
-            output << ets[j].name << ": " << who_followers[j] / followers_sum * 100.0 << "   ";
-        }
-        output << "\n# Entity percentages that entity type \'" << ets[i].name << "\' follows\n# ";
-        for (int j = 0; j < ets.size(); j ++) {
-            output << ets[j].name << ": " << who_following[j] / following_sum * 100.0 << "   ";
-        }
-        output << "\n# degree\tin_degree\tout_degree\tcumulative\tlog(degree)\tlog(in_degree)\tlog(out_degree)\tlog(cumulative)\n\n";
-        for (int j = 0; j < max_degree; j ++) {
-            output << j << "\t" << entity_followers[j] / (double) ets[i].entity_list.size() << "\t" << entity_following[j] / (double) ets[i].entity_list.size() << "\t" << entity_degree[j] / (double) ets[i].entity_list.size() << "\t" << log(j) << "\t" << log(entity_followers[j] / (double) ets[i].entity_list.size()) << "\t" << log(entity_following[j] / (double) ets[i].entity_list.size()) << "\t" << log(entity_degree[j] / (double) ets[i].entity_list.size()) << "\n";
-        }
-       output.close(); 
+void whos_following_who(EntityTypeVector& types, Network& network) {
+    for (int i = 0; i < types.size(); i ++ ) {
+        whos_following_who(types, types[i], network);
     }
 }

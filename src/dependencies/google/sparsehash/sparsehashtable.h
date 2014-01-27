@@ -95,7 +95,7 @@
 #ifndef _SPARSEHASHTABLE_H_
 #define _SPARSEHASHTABLE_H_
 
-#include <google/sparsehash/sparseconfig.h>
+#include <tr1/functional>
 #include <assert.h>
 #include <algorithm>                 // For swap(), eg
 #include <iterator>                  // for iterator tags

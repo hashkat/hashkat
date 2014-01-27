@@ -103,11 +103,11 @@
 #include <utility>                          // for pair<>
 #include <google/sparsehash/densehashtable.h>        // IWYU pragma: export
 #include <google/sparsehash/libc_allocator_with_realloc.h>
-#include HASH_FUN_H                 // for hash<>
+
 _START_GOOGLE_NAMESPACE_
 
 template <class Key, class T,
-          class HashFcn = SPARSEHASH_HASH<Key>,   // defined in sparseconfig.h
+          class HashFcn
           class EqualKey = std::equal_to<Key>,
           class Alloc = libc_allocator_with_realloc<std::pair<const Key, T> > >
 class dense_hash_map {

@@ -95,12 +95,11 @@
 #include <utility>                         // for pair<>
 #include <google/sparsehash/libc_allocator_with_realloc.h>
 #include <google/sparsehash/sparsehashtable.h>      // IWYU pragma: export
-#include HASH_FUN_H                // for hash<>
 
 _START_GOOGLE_NAMESPACE_
 
 template <class Value,
-          class HashFcn = SPARSEHASH_HASH<Value>,   // defined in sparseconfig.h
+          class HashFcn,
           class EqualKey = std::equal_to<Value>,
           class Alloc = libc_allocator_with_realloc<Value> >
 class sparse_hash_set {

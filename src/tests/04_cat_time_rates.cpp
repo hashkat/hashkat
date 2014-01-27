@@ -85,8 +85,8 @@ SUITE(cat_time_rates) {
         {
             // Iteration sub-test
             int i = 0, elem = -1;
-            for (TimeClass::iterator it; cat_group.iterate(it, elem);) {
-                printf("Element %d: %d\n", i++, elem);
+            for (TimeClass::iterator it; cat_group.iterate(it);) {
+                printf("Element %d: %d\n", i++, it.get());
             }
             printf("Sizeof leaf-node: %d\n", sizeof(LeafNode<int>));
         }

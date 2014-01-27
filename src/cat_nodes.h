@@ -38,21 +38,34 @@ namespace cats {
  *  Then, pass along an instance of OuterLayer when adding to the structure.
  */
 
+// Place hash functions here:
+struct Hasher {
+    size_t operator()(int elem) const {
+        return elem;
+    }
+};
+
 /* Every LeafNode holds a google-spare-hash-set. These data structures are highly memory efficient.
  * They are also fairly dynamic. If we hit memory problems, we can write to disk and restart the simulation.
  * The simulation will then be 'defragmented'.
  * For this reason the nice properties of dynamic memory allocation (simplicity and very decent performance) were preferred. */
-template <typename ElemT>
+template <typename ElemT, typename HasherT = Hasher>
 struct LeafNode {
-    typedef google::sparse_hash_set<ElemT> HashSet;
+    typedef google::sparse_hash_set<ElemT, HasherT> HashSet;
+    typedef ElemT value_type;
 
     struct iterator {
+        typedef ElemT value_type;
         int slot;
+        ElemT elem;
         iterator() : slot(0) {
+        }
+        ElemT get() {
+            return elem;
         }
     };
 
-    bool iterate(iterator& iter, ElemT& elem) {
+    bool iterate(iterator& iter) {
         int& slot = iter.slot;
         int n_hash_slots = elems.rep.table.size();
         if (slot >= n_hash_slots) {
@@ -68,7 +81,7 @@ struct LeafNode {
             // At end, leave
             return false;
         }
-        elem = elems.rep.table.unsafe_get(slot);
+        iter.elem = elems.rep.table.unsafe_get(slot);
         slot++; // Move to next unused slot
         return true;
     }
@@ -184,19 +197,24 @@ private:
 template <typename SubCat>
 struct TreeNode {
     typedef typename SubCat::iterator sub_iterator;
+    typedef typename SubCat::value_type value_type;
+
     struct iterator {
         int bin;
         sub_iterator sub_iter;
         iterator() {
             bin = 0;
         }
+        value_type get() {
+            return sub_iter.get();
+        }
+
     };
 
-    template <typename ElemT>
-    bool iterate(iterator& iter, ElemT& elem) {
+    bool iterate(iterator& iter) {
         int& bin = iter.bin;
         while (bin < cats.size()) {
-            if (cats[bin].iterate(iter.sub_iter, elem)) {
+            if (cats[bin].iterate(iter.sub_iter)) {
                 return true;
             }
             bin++;
@@ -258,8 +276,8 @@ struct TreeNode {
     }
 
     // Leaf node, return true if the element already existed
-    template <typename StateT, typename ClassifierT, typename ElemT>
-    bool add(StateT& S, ClassifierT& C, double& ret, const ElemT& elem) {
+    template <typename StateT, typename ClassifierT>
+    bool add(StateT& S, ClassifierT& C, double& ret, const value_type& elem) {
         double delta = 0.0;
         int bin = C.classify(S, elem);
         ensure_bin(bin);
@@ -273,14 +291,13 @@ struct TreeNode {
         return false;
     }
 
-    template <typename StateT, typename ElemT>
-    bool add(StateT& N, double rate, const ElemT& elem) {
+    template <typename StateT>
+    bool add(StateT& N, double rate, const value_type& elem) {
         double dummy;
         return add(N, rate, dummy, elem);
     }
 
-    template <typename ElemT>
-    bool pick_random_uniform(MTwist& rng, ElemT& elem) {
+    bool pick_random_uniform(MTwist& rng, value_type& elem) {
         if (cats.empty()) {
             return false;
         }
@@ -289,8 +306,7 @@ struct TreeNode {
         return sub_cat.pick_random_uniform(rng, elem);
     }
 
-    template<typename ElemT>
-    bool pick_random_weighted(MTwist& rng, ElemT& elem) {
+    bool pick_random_weighted(MTwist& rng, value_type& elem) {
         if (cats.empty()) {
             return false;
         }
@@ -300,8 +316,8 @@ struct TreeNode {
     }
 
     // Leaf node, return true if the element was actually in the set
-    template <typename StateT, typename ClassifierT, typename ElemT>
-    bool remove(StateT& S, ClassifierT& C, double& ret, const ElemT& elem) {
+    template <typename StateT, typename ClassifierT>
+    bool remove(StateT& S, ClassifierT& C, double& ret, const value_type& elem) {
         double delta = 0.0;
         int bin = C.classify(S, elem);
         ensure_bin(bin);
@@ -315,8 +331,8 @@ struct TreeNode {
         return false;
     }
 
-    template <typename StateT, typename ElemT>
-    bool remove(StateT& N, double rate, const ElemT& elem) {
+    template <typename StateT>
+    bool remove(StateT& N, double rate, const value_type& elem) {
         double dummy;
         return remove(N, rate, dummy, elem);
     }
