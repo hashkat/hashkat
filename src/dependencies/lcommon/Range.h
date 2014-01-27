@@ -23,6 +23,9 @@ struct Range {
 	Range multiply(int n) const {
 		return Range(min * n, max * n);
 	}
+	bool empty() const {
+	    return min == max;
+	}
 };
 
 /*Represents a float range*/
@@ -48,6 +51,10 @@ struct RangeF {
 	RangeF multiply(float n) const {
 		return RangeF(min * n, max * n);
 	}
+
+    bool empty() const {
+        return min == max;
+    }
 };
 
 #endif /* LCOMMON_RANGE_H_ */

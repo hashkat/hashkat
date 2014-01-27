@@ -12,8 +12,11 @@
 #include "MemPoolVector.h"
 #include "CategoryGrouper.h"
 
-typedef MemPoolVector<int, FOLLOW_LIST_THRESHOLD1> FollowList;
-typedef MemPoolVector<int, FOLLOWER_LIST_THRESHOLD1> FollowerList;
+#include "cat_classes.h"
+#include "cat_nodes.h"
+
+typedef cats::LeafNode<int> FollowSet;
+typedef cats::LeafNode<int> FollowerSet;
 
 struct Retweet {
     int original_tweeter;
@@ -35,8 +38,8 @@ struct Entity {
     float x_location, y_location;
 
     // Store the two directions of the follow relationship
-    FollowList follow_set;
-    FollowerList follower_set;
+    FollowSet follow_set;
+    FollowerSet follower_set;
 
     RetweetBuffer retweets;
 
@@ -78,27 +81,23 @@ struct Network {
         }
     }
 
-    // Cleanup method. Remove duplicates from everyone's follow lists.
     void perform_cleanup() {
-        for (int i = 0 ; i < max_entities; i++) {
-            Entity& e = entities[i];
-            e.follow_set.sort_and_remove_duplicates();
-            e.follower_set.sort_and_remove_duplicates();
-        }
+        // TODO: Clean-up is no longer required as follow-sets do not permit duplicates anymore
     }
 
     // Convenient network queries:
-    int n_following(int id) {
-        return entities[id].follow_set.size;
+    FollowSet& follow_set(int id) {
+        return entities[id].follow_set;
     }
-    int n_followers(int id) {
-        return entities[id].follower_set.size;
+    FollowerSet& follower_set(int id) {
+        return entities[id].follower_set;
     }
-    int follow_i(int id, int follow_index) {
-        return entities[id].follow_set[follow_index];
+
+    size_t n_following(int id) {
+        return follow_set(id).size();
     }
-    int following_i(int id, int follow_index) {
-        return entities[id].follower_set[follow_index];
+    size_t n_followers(int id) {
+        return follower_set(id).size();
     }
 };
 

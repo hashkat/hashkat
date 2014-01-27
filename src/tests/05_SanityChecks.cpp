@@ -13,9 +13,9 @@ using namespace std;
 SUITE(SanityChecks) {
     const int TEST_SEED = 0xDEADBEEF;
 
-    TEST(simple_config) {
-        ParsedConfig config = parse_yaml_configuration("src/tests/03.yaml");
-        AnalysisState state(config, TEST_SEED);
-        analyzer_main(state);
-    }
+//    TEST(simple_config) {
+//        ParsedConfig config = parse_yaml_configuration("src/tests/03.yaml");
+//        AnalysisState state(config, TEST_SEED);
+//        analyzer_main(state);
+//    }
 }

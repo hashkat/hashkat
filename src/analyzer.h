@@ -99,9 +99,9 @@ enum SelectionType {
 int analyzer_select_entity(AnalysisState& state, SelectionType type);
 void analyzer_rate_update(AnalysisState& state);
 // Follow a specific user
-void analyzer_follow_entity(AnalysisState& state, int entity, int n_entities, double time_of_follow);
+bool analyzer_follow_entity(AnalysisState& state, int entity, int n_entities, double time_of_follow);
 // Implements a follow-back
-void analyzer_followback(AnalysisState& state, int follower, int followed);
+bool analyzer_followback(AnalysisState& state, int follower, int followed);
 // Run a network simulation using the given input file's parameters
 void analyzer_main(AnalysisState& state);
 

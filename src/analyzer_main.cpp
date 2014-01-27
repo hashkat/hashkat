@@ -50,7 +50,6 @@ struct Analyzer {
 
     // The network state
     Network& network;
-    MemPoolVectorGrower& follow_set_grower;
 
 	// Categories for tweeting, following, retweeting
     CategoryGrouper& tweet_ranks;
@@ -83,13 +82,11 @@ struct Analyzer {
         //** This ensures that updates are witnessed in the caller's AnalysisState object.
             state(state), stats(state.stats), config(state.config),
             entity_types(state.entity_types), network(state.network),
-            follow_set_grower(state.follow_set_grower),
             tweet_ranks(state.tweet_ranks), follow_ranks(state.follow_ranks), retweet_ranks(state.retweet_ranks),
             rng(state.rng), time(state.time) {
 
         // The following allocates a memory chunk proportional to max_entities:
         network.preallocate(config.max_entities);
-        follow_set_grower.preallocate(FOLLOW_SET_MEM_PER_USER * config.max_entities);
 
         DATA_TIME.open("DATA_vs_TIME");
         add_data.open("entity_populations.dat");
@@ -172,7 +169,110 @@ struct Analyzer {
         }
     }
 
-    void step_time(int n_entities) {
+    /* Create a entity at the given index.
+     * The index should be an empty entity slot. */
+    bool action_create_entity(double creation_time, int index) {
+		Entity& e = network[index];
+		e.creation_time = creation_time;
+		double rand_num = rng.rand_real_not0();
+		for (int et = 0; et < entity_types.size(); et++) {
+			if (rand_num <= entity_types[et].prob_add) {
+				e.entity = et;
+                entity_types[et].entity_list.push_back(index);
+				follow_ranks.categorize(index, e.follower_set.size());
+				break;
+			}
+			rand_num -= entity_types[et].prob_add;
+		}
+		if (config.use_barabasi){
+			analyzer_follow_entity(state, index, index, creation_time);
+		}
+        network.n_entities++;
+        return true; // Always succeeds, for now.
+    }
+
+	// function to handle the tweeting
+	bool action_tweet(int entity) {
+		// This is the entity tweeting
+		Entity& e = network[entity];
+		// increase the number of tweets the entity had by one
+		e.n_tweets++;
+        entity_types[e.entity].n_tweets ++;
+		tweet_ranks.categorize(entity, e.n_tweets);
+        stats.n_tweets ++;
+//		if (e.n_tweets > 10) {
+//			action_unfollow(entity);
+//		}
+		return true; // Always succeeds
+	}
+	
+	bool action_retweet(int entity, double time_of_retweet) {
+		Entity& et = network[entity];
+        entity_types[et.entity].n_retweets ++;
+        stats.n_retweets ++;
+        return true; // Always succeeds
+	}
+
+	bool action_unfollow(int entity_id) {
+		Entity& e1 = network[entity_id];
+		FollowerSet& follower_set = e1.follower_set;
+		int follower_id = -1;
+		if (!follower_set.pick_random_uniform(rng, follower_id)) {
+		    return false; // Empty
+		}
+
+		Entity& follower = network[follower_id];
+		FollowSet& follow_set = e1.follow_set;
+		bool follower_existed = follower_set.remove(state, /* AD: dummy rate for now */ 1.0, follower_id);
+		bool follow_existed = follower_set.remove(state, /* AD: dummy rate for now */ 1.0, follower_id);
+		DEBUG_CHECK(follower_existed, "unfollow: Did not exist in follower list");
+		DEBUG_CHECK(follow_existed, "unfollow: Did not exist in follow list");
+		return true;
+	}
+
+    // Performs one step of the analysis routine.
+    // Takes old time, returns new time
+    void step_analysis() {
+        /*
+         * Our step is wrapped in a loop to enabling restarting of events.
+         * Often, there will be no way to resolve an event failure at the moment it occurs.
+         * For example, when we land on a follow selection, and only have follows that we already have made.
+         * At this point, the only logical course is to retry the whole KMC event.
+         *
+         * Luckily, this should be rare.
+         */
+        bool complete = false;
+        while (!complete) {
+            double u_1 = rng.rand_real_not0(); // get the first number with-in [0,1).
+            int N = network.n_entities;
+
+            // DECIDE WHAT TO DO:
+            if (u_1 - (stats.prob_add) <= ZEROTOL) {
+                // If we find ourselves in the add entity chuck of our cumulative function:
+                complete = action_create_entity(time, N);
+            } else if (u_1 - (stats.prob_add + stats.prob_follow) <= ZEROTOL) {
+                int entity = analyzer_select_entity(state, FOLLOW_SELECT);
+                complete = analyzer_follow_entity(state, entity, N, time);
+            } else if (u_1 - (stats.prob_add + stats.prob_follow + stats.prob_tweet) <= ZEROTOL) {
+                // The tweet event
+                int entity = analyzer_select_entity(state, TWEET_SELECT);
+                complete = action_tweet(entity);
+            } else if (u_1 - (stats.prob_add + stats.prob_follow + stats.prob_tweet + stats.prob_norm) <= ZEROTOL ) {
+                int entity = analyzer_select_entity(state, RETWEET_SELECT);
+                complete = action_retweet(entity, time);
+            } else {
+                error_exit("step_analysis: event out of bounds");
+            }
+        }
+
+        step_time();
+        stats.n_steps++;
+        //update the rates if n_entities has changed
+        analyzer_rate_update(state);
+    }
+
+    /* Step our KMC simulation proportionally to the global event rate. */
+    void step_time() {
         static double STATIC_TIME = 0.0;
 
         double prev_time = time;
@@ -185,94 +285,11 @@ struct Analyzer {
             time += 1.0 / stats.event_rate;
         }
 
-		    // ASSERT(STATIC_TIME < time, "Fail");
+        ASSERT(STATIC_TIME < time, "Fail");
         STATIC_TIME = time;
         if (config.output_stdout_summary && (floor(time) > prev_integer)) {
           output_summary_stats();
         }
-    }
-
-    /* Create a entity at the given index.
-     * The index should be an empty entity slot. */
-    void action_create_entity(double creation_time, int index) {
-		Entity& e = network[index];
-		e.creation_time = creation_time;
-		double rand_num = rng.rand_real_not0();
-		for (int et = 0; et < entity_types.size(); et++) {
-			if (rand_num <= entity_types[et].prob_add) {
-				e.entity = et;
-                entity_types[et].entity_list.push_back(index);
-				follow_ranks.categorize(index, e.follower_set.size);
-				break;
-			}
-			rand_num -= entity_types[et].prob_add;
-		}
-		if (config.use_barabasi){
-			analyzer_follow_entity(state, index, index, creation_time);
-		}
-        network.n_entities++;
-    }
-
-	// function to handle the tweeting
-	void action_tweet(int entity) {
-		// This is the entity tweeting
-		Entity& e = network[entity];
-		// increase the number of tweets the entity had by one
-		e.n_tweets++;
-        entity_types[e.entity].n_tweets ++;
-		tweet_ranks.categorize(entity, e.n_tweets);
-//		if (e.n_tweets > 1000) {
-//			action_unfollow(entity);
-//		}
-	}
-	
-	void action_retweet(int entity, double time_of_retweet) {
-		Entity& et = network[entity];
-        entity_types[et.entity].n_retweets ++;
-        stats.n_retweets ++;
-	}
-
-	void action_unfollow(int entity_id) {
-	    // Broken, commented out -- AD
-//		Entity& e1 = network[entity_id];
-//		int unfollowing_location = rng.rand_int(network.n_followers(entity_id));
-//		Entity& e2 = network[unfollowing_location];
-//		FollowerList& f1 = e1.follower_set;
-//		FollowList& f2 = e2.follow_set;
-		// remove unfollowing location from follower_list
-		// remove entity id from follow_list
-		
-	}
-
-    // Performs one step of the analysis routine.
-    // Takes old time, returns new time
-    void step_analysis() {
-        double u_1 = rng.rand_real_not0(); // get the first number with-in [0,1).
-        int N = network.n_entities;
-
-        // DECIDE WHAT TO DO:
-        if (u_1 - (stats.prob_add) <= ZEROTOL) {
-                        // If we find ourselves in the add entity chuck of our cumulative function:
-            action_create_entity(time, N);
-        } else if (u_1 - (stats.prob_add + stats.prob_follow) <= ZEROTOL) {
-            int entity = analyzer_select_entity(state, FOLLOW_SELECT);
-            analyzer_follow_entity(state, entity, N, time);
-        } else if (u_1 - (stats.prob_add + stats.prob_follow + stats.prob_tweet) <= ZEROTOL) {
-                        // The tweet event
-            int entity = analyzer_select_entity(state, TWEET_SELECT);
-            action_tweet(entity);
-            stats.n_tweets ++;
-        } else if (u_1 - (stats.prob_add + stats.prob_follow + stats.prob_tweet + stats.prob_norm) <= ZEROTOL ) {
-            int entity = analyzer_select_entity(state, RETWEET_SELECT);
-            action_retweet(entity, time);
-        } else {
-            error_exit("step_analysis: event out of bounds");
-        }
-
-        step_time(N);
-        stats.n_steps++;
-        //update the rates if n_entities has changed
-        analyzer_rate_update(state);
     }
 
     /***************************************************************************

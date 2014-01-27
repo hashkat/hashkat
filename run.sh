@@ -42,7 +42,7 @@ fi
 # Create eclipse-project-files
 if handle_flag "-e" ; then
     src=$(pwd)
-    rm CMakeCache.txt
+    rm -f CMakeCache.txt
     mkdir ../KMCEclipse -p
     cd ../KMCEclipse
     # Eclipse project creation

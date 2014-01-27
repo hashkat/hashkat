@@ -11,7 +11,6 @@ struct AnalyzerFollow {
     //** Mind the StatE/StatS difference. They are entirely different structs.
     AnalysisState& state;
     AnalysisStats& stats;
-    MemPoolVectorGrower& follow_set_grower;
     CategoryGrouper& follow_ranks;
 
     vector<double>& follow_probabilities, updating_follow_probabilities;
@@ -20,7 +19,7 @@ struct AnalyzerFollow {
     MTwist& rng;
     // There are multiple 'Analyzer's, they each operate on parts of AnalysisState.
     AnalyzerFollow(AnalysisState& state) :
-            network(state.network), state(state), stats(state.stats), follow_set_grower(state.follow_set_grower),
+            network(state.network), state(state), stats(state.stats),
             config(state.config), follow_ranks(state.follow_ranks),
             follow_probabilities(state.follow_probabilities),
             updating_follow_probabilities(state.updating_follow_probabilities),
@@ -30,13 +29,14 @@ struct AnalyzerFollow {
    /***************************************************************************
     * Entity mutation routines
     ***************************************************************************/
-   // Return whether the follow could be added, or if we have run out of buffer room.
+   // Returns true if a follow is added that was not already added
    bool handle_follow(int actor, int target) {
        Entity& A = network[actor];
        Entity& T = network[target];
-       bool was_added = follow_set_grower.add_if_possible(A.follow_set, target);
+       bool was_added = A.follow_set.add(state, /* AD: dummy rate for now */ 1.0, target);
        if (was_added) {
-           was_added = follow_set_grower.add_if_possible(T.follower_set, actor);
+           bool was_added = T.follower_set.add(state, /* AD: dummy rate for now */ 1.0, actor);
+           ASSERT(was_added, "Follow/follower-set asymmetry detected!");
            return true;
        }
        return false;
@@ -46,7 +46,8 @@ struct AnalyzerFollow {
     * Entity observation routines
     ***************************************************************************/
 
-    void follow_entity(int entity, int n_entities, double time_of_follow) {
+   // Returns false to signify that we must retry the KMC event
+    bool follow_entity(int entity, int n_entities, double time_of_follow) {
         Entity& e1 = network[entity];
         int entity_to_follow = -1;
         double rand_num = rng.rand_real_not0();
@@ -121,31 +122,34 @@ struct AnalyzerFollow {
             if (handle_follow(entity, entity_to_follow)) {
                 // based on the number of followers the followed-entity has, check to make sure we're still categorized properly
                 Entity& target = network[entity_to_follow];
-                follow_ranks.categorize(entity_to_follow, target.follower_set.size);
+                follow_ranks.categorize(entity_to_follow, target.follower_set.size());
                 stats.n_follows++; // We were able to add the follow; almost always the case.
                 entity_types[e1.entity].n_follows ++;
                 entity_types[target.entity].n_followers ++;
+                return true;
             }
         }
-        //
+        return false; // Completion failure: Restart the event
     }
 
-    void followback(int follower, int followed) {
+    bool followback(int follower, int followed) {
         // now the followee will follow the follower back
         if (handle_follow(followed, follower)) {
             Entity& target = network[follower];
-            follow_ranks.categorize(follower, target.follower_set.size);
+            follow_ranks.categorize(follower, target.follower_set.size());
             stats.n_follows++; // We were able to add the follow; almost always the case.
+            return true;
         }
+        return false; // Completion failure: Restart the event
     }
 };
 
-void analyzer_follow_entity(AnalysisState& state, int entity, int n_entities, double time_of_follow) {
+bool analyzer_follow_entity(AnalysisState& state, int entity, int n_entities, double time_of_follow) {
     AnalyzerFollow analyzer(state);
-    analyzer.follow_entity(entity, n_entities, time_of_follow);
+    return analyzer.follow_entity(entity, n_entities, time_of_follow);
 }
 
-void analyzer_followback(AnalysisState& state, int follower, int followed) {
+bool analyzer_followback(AnalysisState& state, int follower, int followed) {
     AnalyzerFollow analyzer(state);
-    analyzer.followback(follower, followed);
+    return analyzer.followback(follower, followed);
 }

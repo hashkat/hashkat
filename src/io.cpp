@@ -84,11 +84,13 @@ void output_position(Network& network, int n_entities) {
         }
         output1 << "</nodes>\n" << "<edges>\n";
         for (int i = 0; i < n_entities; i++) {
-                for (int j = 0; j < network.n_following(i); j++) {
-                        output1 << "<edge id=\"" << count << "\" source=\"" << i
-                                        << "\" target=\"" << network.follow_i(i, j) << "\"/>\n";
-                        count ++;
-                }
+            int target = -1;
+            FollowSet& follow_set = network.follow_set(i);
+            for (FollowSet::iterator it; follow_set.iterate(it, target);) {
+                output1 << "<edge id=\"" << count << "\" source=\"" << i
+                        << "\" target=\"" << target << "\"/>\n";
+                count++;
+            }
         }
         output1 << "</edges>\n" << "</graph>\n" << "</gexf>";
         output1.close();
@@ -106,19 +108,24 @@ void output_position(Network& network, int n_entities) {
         for (int i = 0; i < fraction_users; i++) {
                 Entity& p = network[user_ids[i]];
                 output1 << "<node id=\"" << user_ids[i] << "\" label=\"" << p.entity << "\" />\n";
-                for (int j = 0; j < network.n_following(user_ids[i]); j++) {
-                    Entity& p1 = network[network.follow_i(user_ids[i],j)];
-                    output1 << "<node id=\"" << network.follow_i(user_ids[i],j) << "\" label=\"" << p1.entity << " - followed"<< "\" />\n";
+
+                int target = -1;
+                FollowSet& follow_set = network.follow_set(user_ids[i]);
+                for (FollowSet::iterator it; follow_set.iterate(it, target);) {
+                    Entity& p1 = network[target];
+                    output1 << "<node id=\"" << target << "\" label=\"" << p1.entity << " - followed"<< "\" />\n";
                 }
         }
         output1 << "</nodes>\n" << "<edges>\n";
         int count = 0;
         for (int i = 0; i < fraction_users; i++) {
-                for (int j = 0; j < network.n_following(user_ids[i]); j++) {
-                        output1 << "<edge id=\"" << count << "\" source=\"" << user_ids[i]
-                                        << "\" target=\"" << network.follow_i(user_ids[i], j) << "\"/>\n";
-                        count ++;
-                }
+            int target = -1;
+            FollowSet& follow_set = network.follow_set(i);
+            for (FollowSet::iterator it; follow_set.iterate(it, target);) {
+                output1 << "<edge id=\"" << count << "\" source=\""
+                        << user_ids[i] << "\" target=\"" << target << "\"/>\n";
+                count++;
+            }
         }
         output1 << "</edges>\n" << "</graph>\n" << "</gexf>";
         output1.close();
@@ -127,8 +134,11 @@ void output_position(Network& network, int n_entities) {
     ofstream output;
     output.open("network.dat");
     for (int i = 0; i < n_entities; i ++) {
-        for (int j = 0; j < network.n_followers(i); j ++) {
-            output << i << "\t" << network.following_i(i,j) << "\n";
+
+        int target = -1;
+        FollowerSet& follower_set = network.follower_set(i);
+        for (FollowerSet::iterator it; follower_set.iterate(it, target);) {
+            output << i << "\t" << target << "\n";
         }
     }
     output.close();
@@ -144,11 +154,11 @@ const int POUT_CAP = 1000; // AD: Rough work
 void degree_distributions(Network& network) {
     int max_following = 0, max_followers = 0;
     for (int i = 0; i < network.n_entities; i ++) {
-        if (network.n_following(i) > max_following) {
-            max_following = network.n_following(i);
+        if (network.n_following(i) >= max_following) {
+            max_following = network.n_following(i) + 1;
         }
-        if (network.n_followers(i) > max_followers) {
-            max_followers = network.n_followers(i);
+        if (network.n_followers(i) >= max_followers) {
+            max_followers = network.n_followers(i) + 1;
         }
     }
 
@@ -244,7 +254,7 @@ void entity_statistics(Network& network, int n_follows, int n_entities, int max_
         for (int j = 0; j < max_entities; j ++) {
             if (p.entity == j) {
                 entity_counts[j] ++;
-                average_followers_from_network[j] += p.follower_set.size;
+                average_followers_from_network[j] += p.follower_set.size();
             }
         }
     }
@@ -269,7 +279,7 @@ void entity_statistics(Network& network, int n_follows, int n_entities, int max_
     for (int i = 0; i < max_entities; i ++){
         for (int j = 0; j < entitytype[i].entity_list.size(); j++) {
             Entity& p = network[entitytype[i].entity_list[j]];
-            average_followers_from_lists[i] += p.follower_set.size;
+            average_followers_from_lists[i] += p.follower_set.size();
         }
     }
     output << "\n\n ****** Info regarding following certain entity types - BASED ON USER_LISTS ****** \n      SHOULD BE THE SAME AS ABOVE\n\n";
@@ -333,12 +343,15 @@ bool quick_rate_check(EntityTypeVector& ets, double& correct_val, int& i, int& j
     double tolerence = 0.05;
     if (j == 1 && abs(correct_val - ets[i].n_follows) / correct_val >= tolerence) {
         cout << "\nNumber of follows for entity type \'" << ets[i].name << "\' is not correct. " << correct_val << " is the right number.\n";
+        cout << "Was: " << ets[i].n_follows << endl;
         return false;
     } else if (j == 2 && abs(correct_val - ets[i].n_tweets) / correct_val >= tolerence) {
         cout << "\nNumber of tweets for entity type \'" << ets[i].name << "\' is not correct. " << correct_val << " is the right number.\n";
+        cout << "Was: " << ets[i].n_tweets << endl;
         return false;
     } else if (j == 3 && abs(correct_val - ets[i].n_retweets) / correct_val >= tolerence) {
         cout << "\nNumber of retweets for entity type \'" << ets[i].name << "\' is not correct. " << correct_val << " is the right number.\n";
+        cout << "Was: " << ets[i].n_retweets << endl;
         return false;
     }
     return true;

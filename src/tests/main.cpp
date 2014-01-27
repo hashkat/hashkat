@@ -72,8 +72,14 @@ public:
         }
 
         printf("Total tests run: %d\n", totalTestCount);
-        printf("Test results: passed: %d; failed: %d\n",
-                totalTestCount - failedTestCount, failedTestCount);
+        int n_passed = (totalTestCount - failedTestCount);
+        if (failedTestCount == 0) {
+            printf("All %d tests have PASSED\n",
+                    n_passed);
+        } else {
+            printf("Test results: passed: %d; failed: %d\n", n_passed,
+                    failedTestCount);
+        }
     }
 
 private:
