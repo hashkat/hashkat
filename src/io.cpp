@@ -55,6 +55,7 @@ void output_network_statistics(AnalysisState& state) {
     
 
     //entity_statistics(network, N_FOLLOWS,N_ENTITIES, N_ENTITIES, entity_entities);
+    whos_following_who(et_vec, network);
 
     if (C.output_stdout_basic) {
         cout << "Analysis complete!\n";
@@ -327,7 +328,7 @@ void tweets_distribution(Network& network, int n_users) {
     retweet_output.close();
 }
 
-
+// group the quick_rate_check and entity_checks together, they're dependent on one another
 bool quick_rate_check(EntityTypeVector& ets, double& correct_val, int& i, int& j) {
     double tolerence = 0.05;
     if (j == 1 && abs(correct_val - ets[i].n_follows) / correct_val >= tolerence) {
@@ -375,7 +376,10 @@ bool entity_checks(EntityTypeVector& ets, Network& network, AnalysisState& state
                 double correct_val = (0.5 * ets[i].RF[j].y_intercept * rate_add * ets[i].prob_add * state.time * state.time) + 0.25 * ets[i].RF[j].slope * state.n_months() * state.time + 0.3333 * rate_add * ets[i].RF[j].slope * state.n_months() * ets[i].prob_add * state.time * state.time * 0.5 + 0.5 * ets[i].RF[j].y_intercept * state.time - (initial_entities - 1) * initial_entities;
                 final_check += quick_rate_check(ets, correct_val, i, j);
                 check_count ++;
-            } /*else if (rate_add != 0 && ets[i].RF[j].function_type == "exponential") {
+                
+            } 
+            // exponential analytical solution not found yet, checks to come
+            /*else if (rate_add != 0 && ets[i].RF[j].function_type == "exponential") {
                 double correct_val = (ets[i].RF[j].amplitude*exp(ets[i].RF[j].exp_factor*state.n_months())) * state.time * network.n_entities * ets[i].prob_add;
                 return quick_rate_check(ets, correct_val, i, j);
             }*/
@@ -385,4 +389,63 @@ bool entity_checks(EntityTypeVector& ets, Network& network, AnalysisState& state
         return true;
     }
     return false;
+}
+
+// function that will plot degree distributions for every entity, and at the top
+// of the files gives you info about the percentage of each entity they are following
+void whos_following_who(EntityTypeVector& ets, Network& network) {
+    for (int i = 0; i < ets.size(); i ++ ) {
+        string filename = ets[i].name + "_info.dat";
+        ofstream output;
+        output.open(filename.c_str());
+        int max_degree = 0;
+        for (int j = 0; j < ets[i].entity_list.size(); j ++) {
+            int degree = network.n_following(ets[i].entity_list[j]) + network.n_followers(ets[i].entity_list[j]);
+            if (degree > max_degree) {
+                max_degree = degree;
+            }
+        }        
+        vector<int> entity_followers(max_degree), entity_following(max_degree), entity_degree(max_degree);
+        for (int j = 0; j < max_degree; j ++) {
+            entity_followers[j] = 0;
+            entity_following[j] = 0;
+            entity_degree[j] = 0;
+        }
+        vector<int> who_following(ets.size()), who_followers(ets.size());
+        for (int i = 0; i < ets.size(); i ++) {
+            who_following.at(i) = 0;
+            who_followers.at(i) = 0;
+        }
+        double followers_sum = 0, following_sum = 0;
+        for (int j = 0; j < ets[i].entity_list.size(); j ++) {
+            int in_degree = network.n_followers(ets[i].entity_list[j]);
+            int out_degree = network.n_following(ets[i].entity_list[j]);
+            entity_followers[in_degree] ++;
+            entity_following[out_degree] ++;
+            entity_degree[in_degree + out_degree] ++;
+            for (int k = 0; k < in_degree; k ++) {
+                Entity& et = network[network.following_i(ets[i].entity_list[j], k)];
+                who_followers[et.entity] ++;
+                followers_sum ++;
+            }
+            for (int k = 0; k < out_degree; k ++) {
+                Entity& et = network[network.follow_i(ets[i].entity_list[j], k)];
+                who_following[et.entity] ++;
+                following_sum ++;
+            }
+        }
+        output << "# Entity percentages following entity type \'" << ets[i].name << "\'\n# ";
+        for (int j = 0; j < ets.size(); j ++) {
+            output << ets[j].name << ": " << who_followers[j] / followers_sum * 100.0 << "   ";
+        }
+        output << "\n# Entity percentages that entity type \'" << ets[i].name << "\' follows\n# ";
+        for (int j = 0; j < ets.size(); j ++) {
+            output << ets[j].name << ": " << who_following[j] / following_sum * 100.0 << "   ";
+        }
+        output << "\n# degree\tin_degree\tout_degree\tcumulative\tlog(degree)\tlog(in_degree)\tlog(out_degree)\tlog(cumulative)\n\n";
+        for (int j = 0; j < max_degree; j ++) {
+            output << j << "\t" << entity_followers[j] / (double) ets[i].entity_list.size() << "\t" << entity_following[j] / (double) ets[i].entity_list.size() << "\t" << entity_degree[j] / (double) ets[i].entity_list.size() << "\t" << log(j) << "\t" << log(entity_followers[j] / (double) ets[i].entity_list.size()) << "\t" << log(entity_following[j] / (double) ets[i].entity_list.size()) << "\t" << log(entity_degree[j] / (double) ets[i].entity_list.size()) << "\n";
+        }
+       output.close(); 
+    }
 }

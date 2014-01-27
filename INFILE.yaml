@@ -8,7 +8,7 @@ analysis:
   use_barabasi: false # if this is set to 1, the global follow rate will be ignored. Follow thresholds not needed.
   use_random_time_increment: true # increments by 1/sum(rates) on average
 
-  follow_model: random # Accepted models: 'random', 'preferential', 'entity', 'retweet'
+  follow_model: entity # Accepted models: 'random', 'preferential', 'entity', 'retweet'
 
 # the follow, tweet and retweet is not going to be used anymore
 rates:
@@ -43,7 +43,7 @@ entities:
   - name: Standard
     weights: {add: 25, follow: 5}
     rates: 
-        follow: {function: linear, y_intercept: 0.001, slope: 0.001}
+        follow: {function: constant, value: 0.001}
         tweet: {function: constant, value: 0.0}
         retweet: {function: constant, value: 0.0}
   - name: Celebrity
