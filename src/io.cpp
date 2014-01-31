@@ -401,9 +401,6 @@ bool entity_checks(EntityTypeVector& ets, Network& network, AnalysisState& state
 }
 
 static void whos_following_who(EntityTypeVector& types, EntityType& type, Network& network) {
-    //** AD: It's easier to reason about nested loops with separate functions, because
-    //** you only need worry about one indexing variable at a time. 'i'/'j' is error-prone for anything
-    //** past a simple loop.
     string filename = type.name + "_info.dat";
     ofstream output;
     output.open(filename.c_str());
@@ -419,18 +416,14 @@ static void whos_following_who(EntityTypeVector& types, EntityType& type, Networ
     vector<int> entity_followers(max_degree + 1 /* AD: Needed one past max stored*/, 0);
     vector<int> entity_following(max_degree + 1, 0);
     vector<int> entity_degree(max_degree + 1, 0);
-    vector<int> who_following(types.size());
-    vector<int> who_followers(types.size());
+    vector<int> who_following(types.size(), 0);
+    vector<int> who_followers(types.size(), 0);
 
-    for (int i = 0; i < types.size(); i ++) {
-        who_following.at(i) = 0;
-        who_followers.at(i) = 0;
-    }
     double followers_sum = 0, following_sum = 0;
     for (int i = 0; i < type.entity_list.size(); i ++) {
         int id = type.entity_list[i];
-        int in_degree = network.n_followers(type.entity_list[i]);
-        int out_degree = network.n_following(type.entity_list[i]);
+        int in_degree = network.n_followers(id);
+        int out_degree = network.n_following(id);
         entity_followers[in_degree] ++;
         entity_following[out_degree] ++;
         entity_degree[in_degree + out_degree] ++;
@@ -439,16 +432,16 @@ static void whos_following_who(EntityTypeVector& types, EntityType& type, Networ
         FollowerSet& ins = network.follower_set(id);
         for (FollowerSet::iterator it; ins.iterate(it);) {
             Entity& et = network[it.get()];
-            who_followers[et.entity] ++;
-            followers_sum ++;
+            who_following[et.entity] ++;
+            following_sum ++;
         }
 
         // Analyze outs == follows
         FollowSet& outs = network.follow_set(id);
-        for (FollowerSet::iterator it; ins.iterate(it);) {
+        for (FollowSet::iterator it; outs.iterate(it);) {
             Entity& et = network[it.get()];
-            who_following[et.entity] ++;
-            following_sum ++;
+            who_followers[et.entity] ++;
+            followers_sum ++;
         }
     }
     output << "# Entity percentages following entity type \'" << type.name << "\'\n# ";

@@ -107,7 +107,7 @@ struct Analyzer {
 		}
 	}
 	void set_future_rates(EntityType& et, int event) {
-		int projected_months = config.max_time / APPROX_MONTH;
+        int projected_months = config.max_time / APPROX_MONTH;
         cout << "projected months = " << projected_months << "\n";
         if (et.RF[event].function_type == "not specified" && event == 1) {
             cout << "\nFollow rate function for entity \"" << et.name << "\" was not specified, constant global follow rate was used.\n";

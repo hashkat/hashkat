@@ -177,9 +177,27 @@ struct LeafNode {
         return true;
     }
 
+    ElemT pick_random_uniform(MTwist& rng) {
+        ElemT elem;
+        if (pick_random_uniform(rng, elem)) {
+            return elem;
+        }
+        ASSERT(false, "Failure in pick_random_uniform");
+        return elem;
+    }
+
     bool pick_random_weighted(MTwist& rng, ElemT& elem) {
         // Same thing for LeafNode's
         return pick_random_uniform(rng, elem);
+    }
+
+    ElemT pick_random_weighted(MTwist& rng) {
+        ElemT elem;
+        if (pick_random_weighted(rng, elem)) {
+            return elem;
+        }
+        ASSERT(false, "Failure in pick_random_weighted");
+        return elem;
     }
 private:
     double total_rate;
@@ -306,6 +324,15 @@ struct TreeNode {
         return sub_cat.pick_random_uniform(rng, elem);
     }
 
+    value_type pick_random_uniform(MTwist& rng) {
+        value_type elem;
+        if (pick_random_weighted(rng, elem)) {
+            return elem;
+        }
+        ASSERT(false, "Failure in pick_random_uniform");
+        return elem;
+    }
+
     bool pick_random_weighted(MTwist& rng, value_type& elem) {
         if (cats.empty()) {
             return false;
@@ -313,6 +340,15 @@ struct TreeNode {
         // Same thing for LeafNode's
         SubCat& sub_cat = cats[random_weighted_bin(rng)];
         return sub_cat.pick_random_weighted(rng, elem);
+    }
+
+    value_type pick_random_weighted(MTwist& rng) {
+        value_type elem;
+        if (pick_random_weighted(rng, elem)) {
+            return elem;
+        }
+        ASSERT(false, "Failure in pick_random_weighted");
+        return elem;
     }
 
     // Leaf node, return true if the element was actually in the set
