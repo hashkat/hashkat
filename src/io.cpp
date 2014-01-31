@@ -446,11 +446,11 @@ static void whos_following_who(EntityTypeVector& types, EntityType& type, Networ
     }
     output << "# Entity percentages following entity type \'" << type.name << "\'\n# ";
     for (int i = 0; i < types.size(); i ++) {
-        output << types[i].name << ": " << who_followers[i] / followers_sum * 100.0 << "   ";
+        output << types[i].name << ": " << who_following[i] / followers_sum * 100.0 << "   ";
     }
     output << "\n# Entity percentages that entity type \'" << type.name << "\' follows\n# ";
     for (int i = 0; i < types.size(); i ++) {
-        output << types[i].name << ": " << who_following[i] / following_sum * 100.0 << "   ";
+        output << types[i].name << ": " << who_followers[i] / following_sum * 100.0 << "   ";
     }
     output << "\n# degree\tin_degree\tout_degree\tcumulative\tlog(degree)\tlog(in_degree)\tlog(out_degree)\tlog(cumulative)\n\n";
     for (int i = 0; i < max_degree; i++) {
