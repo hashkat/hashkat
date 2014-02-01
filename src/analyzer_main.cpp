@@ -108,16 +108,12 @@ struct Analyzer {
 	}
 	void set_future_rates(EntityType& et, int event) {
         int projected_months = config.max_time / APPROX_MONTH;
-        cout << "projected months = " << projected_months << "\n";
         if (et.RF[event].function_type == "not specified" && event == 1) {
             cout << "\nFollow rate function for entity \"" << et.name << "\" was not specified, constant global follow rate was used.\n";
             et.RF[event].monthly_rates.push_back(config.rate_follow);
         } else if (et.RF[event].function_type == "not specified" && event == 2) {
             cout << "\nTweet rate function for entity \"" << et.name << "\" was not specified, constant global tweet rate was used.\n";
             et.RF[event].monthly_rates.push_back(config.rate_tweet);
-        } else if (et.RF[event].function_type == "not specified" && event == 3) {
-            cout << "\nRetweet rate function for entity \"" << et.name << "\" was not specified, constant global retweet rate was used.\n";
-            et.RF[event].monthly_rates.push_back(config.rate_retweet);
         } else if (et.RF[event].function_type == "constant") {
 			ASSERT(et.RF[event].const_val >= 0, "Check your rates, one of them is < 0");
 			for (int i = 0; i <= projected_months; i ++) {
@@ -194,6 +190,8 @@ struct Analyzer {
 	// function to handle the tweeting
 	bool action_tweet(int entity) {
 		// This is the entity tweeting
+        network.recent_tweet_ID.push_back(entity);
+        network.recent_tweet_times.push_back(state.time);
 		Entity& e = network[entity];
 		// increase the number of tweets the entity had by one
 		e.n_tweets++;
@@ -257,8 +255,9 @@ struct Analyzer {
                 // The tweet event
                 int entity = analyzer_select_entity(state, TWEET_SELECT);
                 complete = action_tweet(entity);
-            } else if (u_1 - (stats.prob_add + stats.prob_follow + stats.prob_tweet + stats.prob_norm) <= ZEROTOL ) {
-                int entity = analyzer_select_entity(state, RETWEET_SELECT);
+            } else if (u_1 - (stats.prob_add + stats.prob_follow + stats.prob_tweet + stats.prob_retweet) <= ZEROTOL ) {
+                int entity = analyzer_select_entity_retweet(state, RETWEET_SELECT);
+
                 complete = action_retweet(entity, time);
             } else {
                 error_exit("step_analysis: event out of bounds");

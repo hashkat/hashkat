@@ -1,5 +1,6 @@
 #include <iostream>
 #include <iomanip>
+#include <vector>
 
 #include "analyzer.h"
 
@@ -23,8 +24,6 @@ struct AnalyzerSelect {
     vector<double>& selection_vector(EntityType& type, SelectionType event) {
         if (event == FOLLOW_SELECT) {
             return type.RF[1].monthly_rates;
-        } else if (event == RETWEET_SELECT) {
-            return type.RF[3].monthly_rates;
         } else if (event == TWEET_SELECT) {
             return type.RF[2].monthly_rates;
         }
@@ -82,16 +81,17 @@ struct AnalyzerSelect {
     int entity_selection(SelectionType event) {
         double rate_sum = calc_rate_sum(event);
         double rand_num = rng.rand_real_not0();
-
+    
         for (int e = 0; e < entity_types.size(); e++) {
             vector<double>& vec = selection_vector(entity_types[e], event);
             int entity = entity_selection(entity_types[e], vec, rand_num, rate_sum);
             if (entity != -1) {
                 return entity;
             }
-        }
-        error_exit("Logic error selecting entity to act or target");
-        return -1;
+        }   
+    
+    error_exit("Logic error selecting entity to act or target");
+    return -1;
     }
 };
 

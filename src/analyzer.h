@@ -15,7 +15,7 @@ struct AnalysisStats {
     double prob_add;
     double prob_follow;
     double prob_tweet;
-    double prob_norm;
+    double prob_retweet;
 
     int n_outputs;
     int64 n_steps, n_follows, n_tweets, n_retweets;
@@ -24,7 +24,7 @@ struct AnalysisStats {
         prob_add = 0;
         prob_follow = 0;
         prob_tweet = 0;
-        prob_norm = 0;
+        prob_retweet = 0;
 
         n_outputs = 0;
         n_steps = 0, n_follows = 0, n_tweets = 0, n_retweets = 0;
@@ -104,6 +104,11 @@ bool analyzer_follow_entity(AnalysisState& state, int entity, int n_entities, do
 bool analyzer_followback(AnalysisState& state, int follower, int followed);
 // Run a network simulation using the given input file's parameters
 void analyzer_main(AnalysisState& state);
+// this returns the total retweet rate
+double analyzer_total_retweet_rate(AnalysisState& state);
+// this is for the retweet entity selection
+int analyzer_select_entity_retweet(AnalysisState& state, SelectionType type);
+
 
 const double ZEROTOL = 1e-16; // enough precision for really really low add rate
 

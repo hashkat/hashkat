@@ -36,6 +36,11 @@ struct Entity {
     int n_tweets, n_retweets;
     double creation_time;
     float x_location, y_location;
+    double decay_time;
+    //** make a copy of a follow_set, if it's not in use, the size will 
+    //** ALWAYS be 0, if not we can easily remove entity ID's from this
+    //** list and still have our actual follow_set (below) in tact.
+    std::vector<int> follower_set_cp; 
 
     // Store the two directions of the follow relationship
     FollowSet follow_set;
@@ -49,12 +54,18 @@ struct Entity {
         x_location = -1, y_location = -1;
         n_tweets = 0;
         n_retweets = 0;
+        decay_time = 5; // 5 minutes
     }
 };
 
 struct Network {
     Entity* entities; //** This is a pointer - used to create a dynamic array
     int n_entities, max_entities;
+    std::vector<int> recent_tweet_ID;
+    std::vector<double> recent_tweet_times;
+    std::vector<int> recent_retweet_ID;
+    std::vector<double> recent_retweet_times;
+    std::vector<double> decay_rates;
     Network() {
         entities = NULL;
         n_entities = 0;
@@ -102,7 +113,7 @@ struct Network {
 };
 
 // 0 - add, 1 - follow, 2 - tweet, 3 - retweet
-const int number_of_diff_events = 4;
+const int number_of_diff_events = 3;
 
 struct Rate_Function {
 	std::string function_type;
@@ -135,7 +146,7 @@ struct EntityType {
     EntityType() {
         n_tweets = n_follows = n_followers = n_retweets = 0;
         prob_add = prob_follow = prob_followback = 0;
-		number_of_events = 4;
+		number_of_events = 3;
 	}
 };
 

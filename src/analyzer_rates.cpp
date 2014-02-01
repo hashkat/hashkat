@@ -8,19 +8,16 @@ using namespace std;
 struct Rates {
 	double overall_follow_rate;
     double overall_tweet_rate;
-    double overall_retweet_rate;
-    Rates(double f, double t, double r) {
+    Rates(double f, double t) {
 		overall_follow_rate = f;
         overall_tweet_rate = t;
-        overall_retweet_rate = r;
     }
     void add(const Rates& o) {
         overall_follow_rate += o.overall_follow_rate;
         overall_tweet_rate += o.overall_tweet_rate;
-        overall_retweet_rate += o.overall_retweet_rate;
     }
     double total_rate() {
-        return overall_follow_rate + overall_tweet_rate + overall_retweet_rate;
+        return overall_follow_rate + overall_tweet_rate;
     }
 };
 
@@ -84,32 +81,30 @@ struct AnalyzerRates {
         if (config.rate_add == 0) {
             overall_follow_rate += et.entity_list.size() * et.RF[1].monthly_rates[state.n_months()];
             overall_tweet_rate += et.entity_list.size() * et.RF[2].monthly_rates[state.n_months()];
-            overall_retweet_rate += et.entity_list.size() * et.RF[3].monthly_rates[state.n_months()];
         } else {
             update_rate(et, et.RF[1].monthly_rates, overall_follow_rate);
             update_rate(et, et.RF[2].monthly_rates, overall_tweet_rate);
-            update_rate(et, et.RF[3].monthly_rates, overall_retweet_rate);
         }
-        return Rates(overall_follow_rate, overall_tweet_rate, overall_retweet_rate);
+        return Rates(overall_follow_rate, overall_tweet_rate);
     }
 
     void set_rates() {
         create_new_months_if_needed();
 
-        Rates global(0, 0, 0);
+        Rates global(0, 0);
         for (int e = 0; e < entity_types.size(); e++) {
             set_rates (entity_types[e]);
             Rates rates = set_rates(entity_types[e]);
             global.add(rates); // Sum the rates
         }
-
-        stats.event_rate = config.rate_add + global.total_rate();
+        double overall_retweet_rate = analyzer_total_retweet_rate(state);
+        stats.event_rate = config.rate_add + global.total_rate() + overall_retweet_rate;
 
         // Normalize the rates
         stats.prob_add = config.rate_add / stats.event_rate;
         stats.prob_follow = global.overall_follow_rate / stats.event_rate;
         stats.prob_tweet = global.overall_tweet_rate / stats.event_rate;
-        stats.prob_norm = global.overall_retweet_rate / stats.event_rate;
+        stats.prob_retweet = overall_retweet_rate / stats.event_rate;
     }
 };
 
