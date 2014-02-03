@@ -52,7 +52,7 @@ struct AnalyzerRetweet {
     }
     
     void sum_retweet_rates(Entity& et, double& rate_total) {
-        double decay_rate = 1/(1000 * et.decay_time);
+        double decay_rate = 1/(et.decay_time * et.follower_set_cp.size());
         rate_total += decay_rate * et.follower_set_cp.size();
     }
     
@@ -74,7 +74,7 @@ struct AnalyzerRetweet {
         for (int i = 0; i < network.recent_tweet_ID.size(); i ++) {
             int entity_ID = network.recent_tweet_ID[i];
             Entity& et = network[entity_ID];
-            double decay_rate = 1/(1000 * et.decay_time);
+            double decay_rate = 1/(et.decay_time * et.follower_set_cp.size());
             if (rand_num <= ( (decay_rate * et.follower_set_cp.size()) / rate_sum)) {
                 int element = rng.rand_int(et.follower_set_cp.size());
                 int entity = et.follower_set_cp[element];

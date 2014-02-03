@@ -370,7 +370,7 @@ bool entity_checks(EntityTypeVector& ets, Network& network, AnalysisState& state
                 final_check += quick_rate_check(ets, correct_val, i, j);
                 check_count ++;
             } else if (rate_add == 0 && ets[i].RF[j].function_type == "linear" ) {
-                double correct_val = (ets[i].RF[j].y_intercept + ets[i].RF[j].slope * state.n_months()) * state.time * network.n_entities * ets[i].prob_add;
+                double correct_val = (ets[i].RF[j].y_intercept + 0.5 * ets[i].RF[j].slope * state.n_months()) * state.time * network.n_entities * ets[i].prob_add;
                 final_check += quick_rate_check(ets, correct_val, i, j);
                 check_count ++;
             } else if (rate_add == 0 && ets[i].RF[j].function_type == "exponential") {
