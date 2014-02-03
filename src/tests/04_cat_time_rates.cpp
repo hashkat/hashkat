@@ -28,7 +28,8 @@ SUITE(cat_time_rates) {
         }
     };
 
-    struct TimeClass: cats::TreeClass<EntityTypeClass> {
+    // Also try with just TreeClass
+    struct TimeClass: cats::StaticTreeClass<EntityTypeClass, 10> {
         TimeClass(double res) {
             resolution = res;
         }

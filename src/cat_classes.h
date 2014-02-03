@@ -33,9 +33,9 @@ struct LeafClass {
     std::vector<double> rates;
 };
 
-template <typename InnerT>
+template <typename InnerT, typename CatData = std::vector<typename InnerT::CatGroup> >
 struct TreeClass {
-    typedef TreeNode<typename InnerT::CatGroup> CatGroup;
+    typedef TreeNode<typename InnerT::CatGroup, CatData> CatGroup;
     typedef typename CatGroup::iterator iterator;
 
     template <typename NetworkT>
@@ -61,6 +61,10 @@ struct TreeClass {
         }
     }
     std::vector<InnerT> classes;
+};
+
+template <typename InnerT, int MAX_CATS>
+struct StaticTreeClass : TreeClass<InnerT, StaticVector<typename InnerT::CatGroup, MAX_CATS> > {
 };
 
 }

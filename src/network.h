@@ -18,9 +18,12 @@
 typedef cats::LeafNode<int> FollowSet;
 typedef cats::LeafNode<int> FollowerSet;
 
+typedef google::sparse_hash_set<int, cats::Hasher> HashSet;
+
 struct Retweet {
     int original_tweeter;
     double time;
+
     Retweet() {
     }
     Retweet(int tweet, double time) :
@@ -37,10 +40,10 @@ struct Entity {
     double creation_time;
     float x_location, y_location;
     double decay_time;
-    //** make a copy of a follow_set, if it's not in use, the size will 
+    //** make a copy of a follow_set, if it's not in use, the size will
     //** ALWAYS be 0, if not we can easily remove entity ID's from this
     //** list and still have our actual follow_set (below) in tact.
-    std::vector<int> follower_set_cp; 
+    std::vector<int> follower_set_cp;
 
     // Store the two directions of the follow relationship
     FollowSet follow_set;
@@ -142,7 +145,7 @@ struct EntityType {
 	std::vector<int> entity_list;
 	// categorize the entities by age
 	CategoryGrouper age_ranks;
-	
+
     EntityType() {
         n_tweets = n_follows = n_followers = n_retweets = 0;
         prob_add = prob_follow = prob_followback = 0;

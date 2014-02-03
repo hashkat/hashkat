@@ -136,7 +136,6 @@ struct Analyzer {
 				}
 			}
 		}
-		
 	}
     void set_initial_entities() {
         for (int i = 0; i < config.initial_entities; i++) {

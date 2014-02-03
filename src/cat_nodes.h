@@ -211,8 +211,42 @@ private:
     }
 };
 
+// Create a mock of a vector using only a static array, that is compatible enough
+// for our purposes. Mainly, we do not assume the vector starts empty,
+// and we only attempt to grow it on out-of-bounds.
+// If we are OK with accepting out-of-bounds as an error, StaticVector
+// will provide much better memory properties.
+template <typename T, int N_ELEMS>
+struct StaticVector {
+    void resize(int amount) {
+        if (amount > N_ELEMS) {
+            error_exit("Category out-of-bounds! See comment above.");
+        }
+    }
+    // Number of categories
+    size_t size() {
+        return N_ELEMS;
+    }
+
+    bool empty() {
+        return false;
+    }
+    void swap(StaticVector& o) {
+        for (int i = 0; i < size(); i++) {
+            elem_data[i].swap(o.elem_data[i]);
+        }
+    }
+
+    T& operator[](int index) {
+        DEBUG_CHECK(index >= 0 && index < N_ELEMS, "Out of bounds!");
+        return elem_data[index];
+    }
+private:
+    T elem_data[N_ELEMS];
+};
+
 /* Points either to further TreeNode's, or a LeafNode. */
-template <typename SubCat>
+template <typename SubCat, typename CatDataT = std::vector<SubCat> >
 struct TreeNode {
     typedef typename SubCat::iterator sub_iterator;
     typedef typename SubCat::value_type value_type;
@@ -259,20 +293,21 @@ struct TreeNode {
         cats.swap(o.cats);
     }
 
-    /* Useful for time-dependent rates */
+    /* Useful for time-dependent rates
+     * Assumes that bins all move together in discrete steps */
     template <typename StateT, typename ClassifierT>
     void shift_and_recalc_rates(StateT& S, ClassifierT& C) {
-        cats.resize(cats.size() + 1);
-        // Empty category should be swapped into first slot by end
-        for (int i = cats.size() - 1; i >= 1; i--) {
+        // Collapse all categories that will be more than the intended maximum
+        // into the maximal category
+        int last = C.size() - 1;
+        ensure_bin(last);
+        DEBUG_CHECK(last >= 1, "Logic error")
+        cats[last - 1].transfer(S, C.get(S, last), cats[last]);
+        // The category 'last - 1' is now empty, we begin swapping from here.
+        // The empty category should be swapped into first slot by end
+        for (int i = last - 1; i >= 1; i--) {
             cats[i].swap(cats[i-1]);
         }
-        // Collapse all categories that are more than the intended maximum
-        int max = C.size();
-        for (int i = max; i < cats.size(); i++) {
-            cats[i].transfer(S, C.get(S, max - 1), cats[max - 1]);
-        }
-        cats.resize(C.size());
         recalc_rates(S, C);
     }
 
@@ -434,7 +469,7 @@ struct TreeNode {
 private:
     double total_rate; // Total weight of the subtree
     int n_elems;
-    std::vector<SubCat> cats;
+    CatDataT cats;
 };
 
 }
