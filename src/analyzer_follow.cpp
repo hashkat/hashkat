@@ -55,7 +55,7 @@ struct AnalyzerFollow {
         if (config.follow_model == RANDOM_FOLLOW) {
             // find a random entity within [0:number of entities - 1]
             entity_to_follow = rng.rand_int(n_entities);
-        } else if (config.follow_model == PREFERENTIAL_FOLLOW) {
+        } else if (config.follow_model == PREFERENTIAL_FOLLOW && config.use_barabasi) {
             // if we want to use a preferential follow method
             double sum_of_weights = 0;
             updating_follow_probabilities.resize(follow_probabilities.size());
@@ -83,6 +83,27 @@ struct AnalyzerFollow {
                 }
                 // part of the above search
                 rand_num -= updating_follow_probabilities[i];
+            }
+        } else if(config.follow_model == PREFERENTIAL_FOLLOW && !config.use_barabasi) {
+            double rand_num = rng.rand_real_not0();
+            double prob_sum = 0;
+            vector<double> updating_probs(follow_ranks.categories.size());
+            for (int i = 0; i < follow_ranks.categories.size(); i ++) {
+                CategoryEntityList& C = follow_ranks.categories[i];
+                updating_probs[i] = follow_ranks.categories[i].prob * C.entities.size();
+                prob_sum = follow_ranks.categories[i].prob * C.entities.size();
+            }
+            for (int i = 0; i < updating_probs.size(); i ++) {
+                updating_probs[i] /= prob_sum;
+            }
+            for (int i = 0; i < updating_probs.size(); i ++) {
+                if (rand_num <= updating_probs[i]) {
+                    CategoryEntityList& C = follow_ranks.categories[i];
+                    // pull a random entity from whatever bin we landed in and break so we do not continue this loop
+                    entity_to_follow = C.entities[rng.rand_int(C.entities.size())];
+                    break;
+                }
+                rand_num -= updating_probs[i];
             }
         } else if (config.follow_model == ENTITY_FOLLOW) {
             // if we want to follow by entity class

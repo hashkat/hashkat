@@ -73,29 +73,76 @@ static void parse_output_configuration(ParsedConfig& config, const Node& node) {
     parse(node, "cumulative_analysis", config.output_cumulative_analysis);
 }
 
-static CategoryGrouper parse_category_type(const Node& node) {
+static CategoryGrouper parse_category_thresholds(const Node& node) {
     CategoryGrouper group;
-
+    string bin_spacing;
+    int min_binsize, max_binsize, increment;
+    parse(node, "bin_spacing", bin_spacing);
+    parse(node, "min", min_binsize);
+    parse(node, "max", max_binsize);
+    parse(node, "increment", increment);
     vector<double> thresholds, weights;
-    parse(node, "thresholds", thresholds);
-    parse_opt(node, "weights", weights);
-
-    double total_weight = 0;
     /* Initialize the thresholds and the weights */
-    for (int i = 0; i < thresholds.size(); i++) {
-        double w = (weights.size() > i) ? weights[i] : 0;
-        total_weight += w;
-        group.categories.push_back(CategoryEntityList(thresholds[i], w));
-    }
-    group.categories.push_back(CategoryEntityList(HUGE_VAL, 0));
-
-    /* Normalize the weights into probabilities */
-    if (total_weight > 0) {
-        for (int i = 0; i < thresholds.size(); i++) {
-            group.categories[i].prob /= total_weight;
+    if (bin_spacing == "linear") {
+        for (int i = min_binsize; i < max_binsize; i+= increment) {
+            group.categories.push_back(CategoryEntityList(i, 0));
+        }
+    } else if (bin_spacing == "quadratic") {
+        for (int i = min_binsize; i < max_binsize; i+= increment*increment) {
+            group.categories.push_back(CategoryEntityList(i, 0));
+        }
+    } else if (bin_spacing == "cubic") {
+        for (int i = min_binsize; i < max_binsize; i+= increment*increment*increment) {
+            group.categories.push_back(CategoryEntityList(i, 0));
         }
     }
+    group.categories.push_back(CategoryEntityList(HUGE_VAL, 0));
     return group;
+}
+void parse_category_weights(const Node& node, CategoryGrouper& group) {
+    string bin_spacing;
+    double min_binsize, max_binsize, increment;
+    parse(node, "bin_spacing", bin_spacing);
+    parse(node, "min", min_binsize);
+    parse(node, "max", max_binsize);
+    parse(node, "increment", increment);
+    vector<double> weights;
+    double total_weight = 0;
+    /* Initialize the thresholds and the weights */
+    if (bin_spacing == "linear") {
+        for (int i = min_binsize, j = 0; i < max_binsize ; i+= increment, j++) {
+            group.categories[j].prob = (double) i;
+            total_weight += i;
+        }
+        /* Normalize the weights into probabilities */
+        if (total_weight > 0) {
+            for (int i = 0; i < group.categories.size(); i++) {
+                group.categories[i].prob /= total_weight;                
+            }
+        }
+    } else if (bin_spacing == "quadratic") {
+        for (int i = min_binsize; i < max_binsize; i+= increment*increment) {
+            total_weight += i;
+        }
+        double threshold_count = (max_binsize - min_binsize) / (double) increment*increment;
+        /* Normalize the weights into probabilities */
+        if (total_weight > 0) {
+            for (int i = 0; i < (int) threshold_count; i++) {
+                group.categories[i].prob /= total_weight;
+            }
+        }
+    } else if (bin_spacing == "cubic") {
+        for (int i = min_binsize; i < max_binsize; i+= increment*increment*increment) {
+            total_weight += i;
+        }
+        double threshold_count = (max_binsize - min_binsize) / (double) increment*increment*increment;
+        /* Normalize the weights into probabilities */
+        if (total_weight > 0) {
+            for (int i = 0; i < (int) threshold_count; i++) {
+                group.categories[i].prob /= total_weight;
+            }
+        }
+    }
 }
 static void parse_category_configurations(ParsedConfig& config, const Node& node) {
     if (config.use_barabasi) {
@@ -104,11 +151,12 @@ static void parse_category_configurations(ParsedConfig& config, const Node& node
             config.follow_ranks.categories.push_back(cat);
             config.follow_probabilities.push_back(i);
         }
-    } else {
-        config.follow_ranks = parse_category_type(node["follow_ranks"]);
+    } else {   
+        config.follow_ranks = parse_category_thresholds(node["follow_ranks"]["thresholds"]);                
+        parse_category_weights(node["follow_ranks"]["weights"], config.follow_ranks);
     }
-    config.tweet_ranks = parse_category_type(node["tweet_ranks"]);
-    config.retweet_ranks = parse_category_type(node["retweet_ranks"]);
+    config.tweet_ranks = parse_category_thresholds(node["tweet_ranks"]["thresholds"]);
+    config.retweet_ranks = parse_category_thresholds(node["retweet_ranks"]["thresholds"]);
 }
 
 static EntityTypeVector parse_entities_configuration(const Node& node) {

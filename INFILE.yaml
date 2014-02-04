@@ -8,7 +8,7 @@ analysis:
   use_barabasi: false # if this is set to 1, the global follow rate will be ignored. Follow thresholds not needed.
   use_random_time_increment: true # increments by 1/sum(rates) on average
   
-  follow_model: random # Accepted models: 'random', 'preferential', 'entity'
+  follow_model: preferential # Accepted models: 'random', 'preferential', 'entity'
 
 rates:
   add: 
@@ -26,12 +26,12 @@ output:
   cumulative_analysis: false
 
 tweet_ranks: 
-  thresholds: [1, 10, 20, 2000, 3000]
+  thresholds: {bin_spacing: linear, min: 10, max: 300, increment: 10}
 retweet_ranks:
-  thresholds: [1, 10, 20, 2000, 3000]
+  thresholds: {bin_spacing: linear, min: 10, max: 300, increment: 10}
 follow_ranks:
-  thresholds: [0, 10, 50, 100, 200]
-  weights:    [1, 10, 50, 100, 200]
+  thresholds: {bin_spacing: linear, min: 0, max: 1001, increment: 1}
+  weights:    {bin_spacing: linear, min: 1, max: 1000, increment: 1}
 
 entities:
   - name: Standard
@@ -56,5 +56,5 @@ entities:
     weights: {add: 25, follow: 15}
     followback_probability: 0
     rates:
-        follow: {function: constant, value: 0.0007}
+        follow: {function: constant, value: 0.001}
         tweet: {function: constant, value: 0.001}

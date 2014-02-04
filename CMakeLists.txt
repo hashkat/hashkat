@@ -9,11 +9,11 @@ set(CMAKE_BUILD_TYPE Debug)
 
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
 SET (CMAKE_EXE_LINKER_FLAGS
-    -fsanitize=address 
+    #-fsanitize=address 
 )
 
 add_definitions(
-   -fsanitize=address 
+   #-fsanitize=address 
    -D_GLIBCXX_DEBUG
 )
 
