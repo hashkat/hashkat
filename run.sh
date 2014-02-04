@@ -71,7 +71,7 @@ elif handle_flag "-p" ; then
     # Profile the program (requires oprofile) with -p:
     echo "Profiling with oprofile:" | colorify '1;35'
     operf --callgraph src/main $args
-    opreport --callgraph --exclude-dependent --demangle=smart --symbols src/main | more
+    opreport --callgraph --exclude-dependent --demangle=smart --symbols src/main | less
 else
     # Normal execution
     src/main $args --handle-ctrlc

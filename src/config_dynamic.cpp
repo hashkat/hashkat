@@ -73,6 +73,7 @@ static CategoryGrouper parse_category_type(const Node& node) {
 
     vector<double> thresholds, weights;
     parse(node, "thresholds", thresholds);
+    parse(node, "weights", weights);
 
     double total_weight = 0;
     /* Initialize the thresholds and the weights */

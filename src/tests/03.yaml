@@ -20,6 +20,7 @@ rates:
   retweet: 
     0
 
+
 output:
   stdout_basic: false
   stdout_summary: false
