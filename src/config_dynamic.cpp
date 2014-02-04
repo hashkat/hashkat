@@ -31,8 +31,6 @@ static FollowModel parse_follow_model(const Node& node) {
         return PREFERENTIAL_FOLLOW;
     } else if (follow_model == "entity") {
         return ENTITY_FOLLOW;
-    } else if (follow_model == "retweet") {
-        return RETWEET_FOLLOW;
     } else {
         throw YAML::RepresentationException(node.GetMark(),
                 format("'%s' is not a valid follow model!", follow_model.c_str()));

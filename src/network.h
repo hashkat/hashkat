@@ -20,6 +20,11 @@ typedef cats::LeafNode<int> FollowerSet;
 
 typedef google::sparse_hash_set<int, cats::Hasher> UsedEntities;
 
+struct Tweet {
+    UsedEntities used_entities;
+
+};
+
 struct Retweet {
     int original_tweeter;
     double time;
@@ -30,9 +35,6 @@ struct Retweet {
             original_tweeter(tweet), time(time) {
     }
 };
-
-// Store the last 'RETWEETS_STORED' tweets, discarding old ones.
-typedef CircularBuffer<Retweet, RETWEETS_STORED> RetweetBuffer;
 
 struct Entity {
     int entity;
@@ -48,8 +50,6 @@ struct Entity {
     // Store the two directions of the follow relationship
     FollowSet follow_set;
     FollowerSet follower_set;
-
-    RetweetBuffer retweets;
 
     Entity() {
         entity = 0;
@@ -115,7 +115,7 @@ struct Network {
     }
 };
 
-// 0 - add, 1 - follow, 2 - tweet, 3 - retweet
+// 0 - add, 1 - follow, 2 - tweet
 const int number_of_diff_events = 3;
 
 struct Rate_Function {
@@ -135,7 +135,7 @@ struct EntityType {
 	double prob_followback;
 	int new_entities; // the number of new users in this entity type
 	int n_tweets, n_follows, n_followers, n_retweets;
-	// 0 - add, 1 - follow, 2 - tweet, 3 - retweet
+	// 0 - add, 1 - follow, 2 - tweet
 	int number_of_events;
 	Rate_Function RF[number_of_diff_events];
 	

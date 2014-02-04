@@ -99,21 +99,6 @@ struct AnalyzerFollow {
                 // part of the above search
                 rand_num -= entity_types[i].prob_follow;
             }
-        } else if (config.follow_model == RETWEET_FOLLOW) {
-            //Retweet follow method
-            if (rand_num > 0.5) {
-                Retweet retweet;
-                if (e1.retweets.check_recent(retweet)) {
-                    // grab the latest retweet
-                    // if the retweet happened in the last 48 hours
-                    if (time_of_follow - retweet.time < 2880) {
-                        entity_to_follow = retweet.original_tweeter;
-                    }
-                }
-            }
-            else {
-                entity_to_follow = rng.rand_int(n_entities);
-            }
         }
 
         // check and make sure we are not following ourself, or we are following entity -1
