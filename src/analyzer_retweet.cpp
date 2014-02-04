@@ -28,7 +28,7 @@ struct AnalyzerRetweet {
             if (state.time - network.recent_tweet_times[i] > et.decay_time) {
                 network.recent_tweet_times.erase(network.recent_tweet_times.begin() + i);
                 network.recent_tweet_ID.erase(network.recent_tweet_ID.begin() + i);
-                et.follower_set_cp.clear();
+                et.usedentities.clear();
             }
         }
     }
@@ -41,19 +41,14 @@ struct AnalyzerRetweet {
             if (fs.size() == 0 /* if their followerlist is 0, remove them from the list */) {
                 network.recent_tweet_times.erase(network.recent_tweet_times.begin() + i);
                 network.recent_tweet_ID.erase(network.recent_tweet_ID.begin() + i);
-                et.follower_set_cp.clear();
-            } else /* make the copy, so we can easily remove ID's without changing the network */ {
-                for (FollowerSet::iterator it; fs.iterate(it);) {
-                    // make the copy here
-                    et.follower_set_cp.push_back(it.get());
-                }
-            }
+                et.usedentities.clear();
+            } 
         }
     }
     
     void sum_retweet_rates(Entity& et, double& rate_total) {
-        double decay_rate = 1/(et.decay_time * et.follower_set_cp.size());
-        rate_total += decay_rate * et.follower_set_cp.size();
+        double decay_rate = 1/(et.decay_time * et.follower_set.size());
+        rate_total += decay_rate * et.follower_set.size();
     }
     
     double total_retweet_rate() {
@@ -74,15 +69,18 @@ struct AnalyzerRetweet {
         for (int i = 0; i < network.recent_tweet_ID.size(); i ++) {
             int entity_ID = network.recent_tweet_ID[i];
             Entity& et = network[entity_ID];
-            double decay_rate = 1/(et.decay_time * et.follower_set_cp.size());
-            if (rand_num <= ( (decay_rate * et.follower_set_cp.size()) / rate_sum)) {
-                int element = rng.rand_int(et.follower_set_cp.size());
-                int entity = et.follower_set_cp[element];
-                // now that this entity has been chosen to do something, remove them from the list
-                et.follower_set_cp.erase(et.follower_set_cp.begin() + element);
-                return entity;
+            double decay_rate = 1/(et.decay_time * et.follower_set.size());
+            if (rand_num <= ( (decay_rate * et.follower_set.size()) / rate_sum)) {
+                int entity = et.follower_set.pick_random_uniform(rng);
+                    // exit when not already in the set
+                if (et.usedentities.find(entity) == et.usedentities.end()) {
+                    et.usedentities.insert(entity);
+                    return entity;
+                } else {
+                    return -1;
+                }
             }
-            rand_num -= ((decay_rate * et.follower_set_cp.size()) / rate_sum);
+            rand_num -= ((decay_rate * et.follower_set.size()) / rate_sum);
         }
         return -1;
     }

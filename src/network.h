@@ -18,7 +18,7 @@
 typedef cats::LeafNode<int> FollowSet;
 typedef cats::LeafNode<int> FollowerSet;
 
-typedef google::sparse_hash_set<int, cats::Hasher> HashSet;
+typedef google::sparse_hash_set<int, cats::Hasher> UsedEntities;
 
 struct Retweet {
     int original_tweeter;
@@ -43,7 +43,7 @@ struct Entity {
     //** make a copy of a follow_set, if it's not in use, the size will
     //** ALWAYS be 0, if not we can easily remove entity ID's from this
     //** list and still have our actual follow_set (below) in tact.
-    std::vector<int> follower_set_cp;
+    UsedEntities usedentities;
 
     // Store the two directions of the follow relationship
     FollowSet follow_set;

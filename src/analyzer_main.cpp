@@ -256,8 +256,9 @@ struct Analyzer {
                 complete = action_tweet(entity);
             } else if (u_1 - (stats.prob_add + stats.prob_follow + stats.prob_tweet + stats.prob_retweet) <= ZEROTOL ) {
                 int entity = analyzer_select_entity_retweet(state, RETWEET_SELECT);
-
-                complete = action_retweet(entity, time);
+                if (entity != -1) {
+                    complete = action_retweet(entity, time);
+                }
             } else {
                 error_exit("step_analysis: event out of bounds");
             }
