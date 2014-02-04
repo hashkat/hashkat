@@ -20,8 +20,7 @@ struct ParsedConfig {
     FollowModel follow_model;
 
     // 'rates' config options
-    double rate_follow, rate_tweet;
-    double rate_add, rate_retweet;
+    double rate_add;
 
     // 'output' config options
     bool output_stdout_basic, output_stdout_summary;
@@ -54,8 +53,7 @@ struct ParsedConfig {
 
         follow_model = RANDOM_FOLLOW;
 
-        rate_follow = rate_tweet = 0;
-        rate_add = rate_retweet = 0;
+        rate_add = 0;
 
         output_stdout_basic = output_stdout_summary = true;
         output_verbose = output_visualize = false;

@@ -23,6 +23,7 @@ output:
 
   degree_distributions: true
   tweet_analysis: true
+  cumulative_analysis: false
 
 tweet_ranks: 
   thresholds: [1, 10, 20, 2000, 3000]
@@ -41,16 +42,19 @@ entities:
         tweet: {function: constant, value: 0.001}
   - name: Celebrity
     weights: {add: 25, follow: 80}
+    followback_probability: 0
     rates:
         follow: {function: constant, value: 0.001}
         tweet: {function: constant, value: 0.001}
   - name: Bot
     weights: {add: 25, follow: 0}
+    followback_probability: 0
     rates:
         follow: {function: constant, value: 0.001}
         tweet: {function: constant, value: 0.001}
   - name: Organization
     weights: {add: 25, follow: 15}
+    followback_probability: 0
     rates:
         follow: {function: constant, value: 0.0007}
         tweet: {function: constant, value: 0.001}

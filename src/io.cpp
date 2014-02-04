@@ -364,7 +364,7 @@ bool entity_checks(EntityTypeVector& ets, Network& network, AnalysisState& state
             final_check += false;
             check_count ++;
         }
-        for (int j = 1; j < ets[i].number_of_events; j ++) {
+        for (int j = 1; j < number_of_diff_events; j ++) {
             if (rate_add == 0 && ets[i].RF[j].function_type == "constant") {
                 double correct_val = ets[i].RF[j].const_val * state.time * network.n_entities * ets[i].prob_add;
                 final_check += quick_rate_check(ets, correct_val, i, j);

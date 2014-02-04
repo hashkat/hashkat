@@ -18,10 +18,16 @@ static inline void parse(const Node& node, const char* key, T& value, bool optio
     if (node.FindValue(key)) {
         node[key] >> value;
     } else if (!optional) {
-//        printf("Could not find '%s' in config_dynamic. Fatal error. \n", key);
-//        error_exit("");
+        throw YAML::RepresentationException(node.GetMark(),
+                format("'%s' was not found!", key));
     }
 }
+// Optionally parse an element, leaving it alone if it was not found
+template<class T>
+static inline void parse_opt(const Node& node, const char* key, T& value, bool optional = false) {
+    parse(node, key, value, true);
+}
+
 
 /* Convert from a text node to the number representing
  * the follow model. */
@@ -52,8 +58,6 @@ static void parse_analysis_configuration(ParsedConfig& config, const Node& node)
 
 static void parse_rates_configuration(ParsedConfig& config, const Node& node) {
     parse(node, "add", config.rate_add);
-    parse(node, "follow", config.rate_follow);
-    parse(node, "tweet", config.rate_tweet);
 }
 
 static void parse_output_configuration(ParsedConfig& config, const Node& node) {
@@ -63,7 +67,7 @@ static void parse_output_configuration(ParsedConfig& config, const Node& node) {
     parse(node, "verbose", config.output_verbose);
     parse(node, "visualize", config.output_visualize);
 
-    parse(node, "degree-distributions", config.degree_distributions);
+    parse(node, "degree_distributions", config.degree_distributions);
 
     parse(node, "tweet_analysis", config.output_tweet_analysis);
     parse(node, "cumulative_analysis", config.output_cumulative_analysis);
@@ -74,7 +78,7 @@ static CategoryGrouper parse_category_type(const Node& node) {
 
     vector<double> thresholds, weights;
     parse(node, "thresholds", thresholds);
-    parse(node, "weights", weights);
+    parse_opt(node, "weights", weights);
 
     double total_weight = 0;
     /* Initialize the thresholds and the weights */

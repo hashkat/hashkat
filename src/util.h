@@ -13,8 +13,8 @@
 // Mixed bag of useful functions
 
 // Dirt simple error handling, exits the program:
-inline void error_exit(const char* msg) {
-    fprintf(stderr, "%s\n", msg);
+inline void error_exit(const std::string& msg) {
+    fprintf(stderr, "%s\n", msg.c_str());
     exit(2); // Return with error code
 }
 

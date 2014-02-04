@@ -101,7 +101,7 @@ struct Analyzer {
     }
 	void call_future_rates() {
 		for (int i = 0; i < entity_types.size(); i ++) {
-			for (int j = 1; j < entity_types[i].number_of_events; j ++) {
+			for (int j = 1; j < number_of_diff_events; j ++) {
 				set_future_rates(entity_types[i], j);
 			}
 		}
@@ -109,11 +109,9 @@ struct Analyzer {
 	void set_future_rates(EntityType& et, int event) {
         int projected_months = config.max_time / APPROX_MONTH;
         if (et.RF[event].function_type == "not specified" && event == 1) {
-            cout << "\nFollow rate function for entity \"" << et.name << "\" was not specified, constant global follow rate was used.\n";
-            et.RF[event].monthly_rates.push_back(config.rate_follow);
+            error_exit("FATAL: Follow rate function for entity \""+ et.name + "\" was not specified.");
         } else if (et.RF[event].function_type == "not specified" && event == 2) {
-            cout << "\nTweet rate function for entity \"" << et.name << "\" was not specified, constant global tweet rate was used.\n";
-            et.RF[event].monthly_rates.push_back(config.rate_tweet);
+            error_exit("FATAL: Follow rate function for entity \""+ et.name + "\" was not specified.");
         } else if (et.RF[event].function_type == "constant") {
 			ASSERT(et.RF[event].const_val >= 0, "Check your rates, one of them is < 0");
 			for (int i = 0; i <= projected_months; i ++) {

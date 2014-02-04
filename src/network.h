@@ -135,8 +135,6 @@ struct EntityType {
 	double prob_followback;
 	int new_entities; // the number of new users in this entity type
 	int n_tweets, n_follows, n_followers, n_retweets;
-	// 0 - add, 1 - follow, 2 - tweet
-	int number_of_events;
 	Rate_Function RF[number_of_diff_events];
 	
 	// number of entities for each discrete value of the rate(time)
@@ -149,7 +147,6 @@ struct EntityType {
     EntityType() {
         n_tweets = n_follows = n_followers = n_retweets = 0;
         prob_add = prob_follow = prob_followback = 0;
-		number_of_events = 3;
 	}
 };
 
