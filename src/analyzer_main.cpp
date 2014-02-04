@@ -273,7 +273,7 @@ struct Analyzer {
         double prev_time = time;
         double prev_integer = floor(time);
         double increment = -log(rng.rand_real_not0()) / stats.event_rate;
-        if (config.use_random_increment) {
+        if (config.use_random_time_increment) {
             // increment by random time
             time += increment;
         } else {

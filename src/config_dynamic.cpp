@@ -14,9 +14,12 @@ using namespace std;
 using namespace YAML;
 
 template<class T>
-static inline void parse(const Node& node, const char* key, T& value) {
+static inline void parse(const Node& node, const char* key, T& value, bool optional = false) {
     if (node.FindValue(key)) {
         node[key] >> value;
+    } else if (!optional) {
+//        printf("Could not find '%s' in config_dynamic. Fatal error. \n", key);
+//        error_exit("");
     }
 }
 
@@ -42,7 +45,7 @@ static void parse_analysis_configuration(ParsedConfig& config, const Node& node)
     parse(node, "initial_entities", config.initial_entities);
     parse(node, "max_time", config.max_time);
     parse(node, "use_barabasi", config.use_barabasi);
-    parse(node, "use_random_increment", config.use_random_increment);
+    parse(node, "use_random_time_increment", config.use_random_time_increment);
 
     config.follow_model = parse_follow_model(node);
 }
@@ -111,6 +114,7 @@ static EntityTypeVector parse_entities_configuration(const Node& node) {
         EntityType et;
         const Node& child = node[i];
         parse(child, "name", et.name);
+        parse(child, "followback_probability", et.prob_followback);
         const Node& weights = child["weights"];
         parse(weights, "add", et.prob_add);
         parse(weights, "follow", et.prob_follow);
@@ -138,7 +142,6 @@ static EntityTypeVector parse_entities_configuration(const Node& node) {
 			parse(tweet_rate, "amplitude", et.RF[2].amplitude);
 			parse(tweet_rate, "exp_factor", et.RF[2].exp_factor);
 		} 
-		
         add_total += et.prob_add, follow_total += et.prob_follow;
 
         vec.push_back(et);

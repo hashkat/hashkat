@@ -14,7 +14,7 @@ struct ParsedConfig {
     // 'analysis' config options
     int initial_entities, max_entities;
     double max_time;
-    bool use_random_increment;
+    bool use_random_time_increment;
     bool use_preferential_follow;
     bool use_barabasi;
     FollowModel follow_model;
@@ -48,7 +48,7 @@ struct ParsedConfig {
         max_entities = 1000;
         max_time = INFINITY;
 
-        use_random_increment = false;
+        use_random_time_increment = false;
         use_preferential_follow = false;
         use_barabasi = false;
 
