@@ -9,6 +9,8 @@
 #include "dependencies/UnitTest++.h"
 #include "dependencies/lcommon.h"
 
+#include "dependencies/lcommon/typename.h"
+
 #include "config_static.h"
 #include "config_dynamic.h"
 

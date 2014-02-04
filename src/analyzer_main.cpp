@@ -170,7 +170,7 @@ struct Analyzer {
 		double rand_num = rng.rand_real_not0();
 		for (int et = 0; et < entity_types.size(); et++) {
 			if (rand_num <= entity_types[et].prob_add) {
-				e.entity = et;
+				e.entity_type = et;
                 entity_types[et].entity_list.push_back(index);
 				follow_ranks.categorize(index, e.follower_set.size());
 				break;
@@ -192,7 +192,7 @@ struct Analyzer {
 		Entity& e = network[entity];
 		// increase the number of tweets the entity had by one
 		e.n_tweets++;
-        entity_types[e.entity].n_tweets ++;
+        entity_types[e.entity_type].n_tweets ++;
 		tweet_ranks.categorize(entity, e.n_tweets);
         stats.n_tweets ++;
 		return true; // Always succeeds
@@ -200,7 +200,7 @@ struct Analyzer {
 	
 	bool action_retweet(int entity, double time_of_retweet) {
 		Entity& et = network[entity];
-        entity_types[et.entity].n_retweets ++;
+        entity_types[et.entity_type].n_retweets ++;
         stats.n_retweets ++;
         return true; // Always succeeds
 	}

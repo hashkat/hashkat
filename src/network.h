@@ -22,7 +22,6 @@ typedef google::sparse_hash_set<int, cats::Hasher> UsedEntities;
 
 struct Tweet {
     UsedEntities used_entities;
-
 };
 
 struct Retweet {
@@ -37,7 +36,7 @@ struct Retweet {
 };
 
 struct Entity {
-    int entity;
+    int entity_type;
     int n_tweets, n_retweets;
     double creation_time;
     float x_location, y_location;
@@ -52,7 +51,7 @@ struct Entity {
     FollowerSet follower_set;
 
     Entity() {
-        entity = 0;
+        entity_type = 0;
         creation_time = 0.0;
         x_location = -1, y_location = -1;
         n_tweets = 0;
@@ -60,6 +59,7 @@ struct Entity {
         decay_time = 5; // 5 minutes
     }
 };
+
 
 struct Network {
     Entity* entities; //** This is a pointer - used to create a dynamic array

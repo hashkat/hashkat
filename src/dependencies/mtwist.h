@@ -117,6 +117,10 @@ public:
     double rand_real_not0() {
         return 1.0 - rand_real_not1();
     }
+
+    bool random_chance(double probability) {
+        return (genrand_real1() < probability);
+    }
     /* Using Mersenne-twister, grab a real number within [0,1] */
     double rand_real_with01() {
         return genrand_real1();

@@ -105,15 +105,21 @@ struct AnalyzerFollow {
         if (LIKELY(entity != entity_to_follow && entity_to_follow != -1)) {
             // point to the entity who is being followed
             if (handle_follow(entity, entity_to_follow)) {
+                int et_id = network[entity].entity_type;
+                EntityType& et = entity_types[et_id];
+                if (rng.random_chance(et.prob_followback)) {
+                    analyzer_followback(state, entity, entity_to_follow);
+                }
                 // based on the number of followers the followed-entity has, check to make sure we're still categorized properly
                 Entity& target = network[entity_to_follow];
                 follow_ranks.categorize(entity_to_follow, target.follower_set.size());
                 stats.n_follows++; // We were able to add the follow; almost always the case.
-                entity_types[e1.entity].n_follows ++;
-                entity_types[target.entity].n_followers ++;
+                entity_types[e1.entity_type].n_follows ++;
+                entity_types[target.entity_type].n_followers ++;
                 return true;
             }
         }
+
         return false; // Completion failure: Restart the event
     }
 

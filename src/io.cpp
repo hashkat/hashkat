@@ -80,7 +80,7 @@ void output_position(Network& network, int n_entities) {
     if (n_entities <= 10000) {
         for (int i = 0; i < n_entities; i++) {
                 Entity& p = network[i];
-                output1 << "<node id=\"" << i << "\" label=\"" << p.entity << "\" />\n";
+                output1 << "<node id=\"" << i << "\" label=\"" << p.entity_type << "\" />\n";
         }
         output1 << "</nodes>\n" << "<edges>\n";
         for (int i = 0; i < n_entities; i++) {
@@ -106,12 +106,12 @@ void output_position(Network& network, int n_entities) {
 
         for (int i = 0; i < fraction_users; i++) {
                 Entity& p = network[user_ids[i]];
-                output1 << "<node id=\"" << user_ids[i] << "\" label=\"" << p.entity << "\" />\n";
+                output1 << "<node id=\"" << user_ids[i] << "\" label=\"" << p.entity_type << "\" />\n";
 
                 FollowSet& follow_set = network.follow_set(user_ids[i]);
                 for (FollowSet::iterator it; follow_set.iterate(it);) {
                     Entity& p1 = network[it.get()];
-                    output1 << "<node id=\"" << it.get() << "\" label=\"" << p1.entity << " - followed"<< "\" />\n";
+                    output1 << "<node id=\"" << it.get() << "\" label=\"" << p1.entity_type << " - followed"<< "\" />\n";
                 }
         }
         output1 << "</nodes>\n" << "<edges>\n";
@@ -248,7 +248,7 @@ void entity_statistics(Network& network, int n_follows, int n_entities, int max_
     for (int i = 0 ; i < n_entities; i ++) {
         Entity& p = network[i];
         for (int j = 0; j < max_entities; j ++) {
-            if (p.entity == j) {
+            if (p.entity_type == j) {
                 entity_counts[j] ++;
                 average_followers_from_network[j] += p.follower_set.size();
             }
@@ -432,7 +432,7 @@ static void whos_following_who(EntityTypeVector& types, EntityType& type, Networ
         FollowerSet& ins = network.follower_set(id);
         for (FollowerSet::iterator it; ins.iterate(it);) {
             Entity& et = network[it.get()];
-            who_following[et.entity] ++;
+            who_following[et.entity_type] ++;
             following_sum ++;
         }
 
@@ -440,7 +440,7 @@ static void whos_following_who(EntityTypeVector& types, EntityType& type, Networ
         FollowSet& outs = network.follow_set(id);
         for (FollowSet::iterator it; outs.iterate(it);) {
             Entity& et = network[it.get()];
-            who_followers[et.entity] ++;
+            who_followers[et.entity_type] ++;
             followers_sum ++;
         }
     }
