@@ -29,10 +29,11 @@ struct AnalyzerRates {
     AnalysisState& state;
     AnalysisStats& stats;
     EntityTypeVector& entity_types;
+    Add_Rates& add_rates;
     // There are multiple 'Analyzer's, they each operate on parts of AnalysisState.
     AnalyzerRates(AnalysisState& state) :
             network(state.network), state(state), stats(state.stats),
-            config(state.config), entity_types(state.entity_types) {
+            config(state.config), entity_types(state.entity_types), add_rates(state.add_rates) {
     }
 	
 	bool create_new_month_if_needed(EntityType& et) {
@@ -90,7 +91,7 @@ struct AnalyzerRates {
 
     void set_rates() {
         create_new_months_if_needed();
-
+        
         Rates global(0, 0);
         for (int e = 0; e < entity_types.size(); e++) {
             set_rates (entity_types[e]);
@@ -98,6 +99,7 @@ struct AnalyzerRates {
             global.add(rates); // Sum the rates
         }
         double overall_retweet_rate = analyzer_total_retweet_rate(state);
+        config.rate_add = add_rates.RF.monthly_rates[state.n_months()]; 
         stats.event_rate = config.rate_add + global.total_rate() + overall_retweet_rate;
 
         // Normalize the rates

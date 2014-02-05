@@ -56,8 +56,16 @@ static void parse_analysis_configuration(ParsedConfig& config, const Node& node)
     config.follow_model = parse_follow_model(node);
 }
 
-static void parse_rates_configuration(ParsedConfig& config, const Node& node) {
-    parse(node, "add", config.rate_add);
+static Add_Rates parse_rates_configuration(ParsedConfig& config, const Node& node) {
+    Add_Rates add_rates;
+    parse(node, "function", add_rates.RF.function_type);
+    if (add_rates.RF.function_type == "constant") {
+        parse(node, "value", add_rates.RF.const_val);
+    } else if (add_rates.RF.function_type == "linear") {
+        parse(node, "y_intercept", add_rates.RF.y_intercept);
+        parse(node, "slope", add_rates.RF.slope);
+    } 
+    return add_rates;
 }
 
 static void parse_output_configuration(ParsedConfig& config, const Node& node) {
@@ -208,7 +216,7 @@ static EntityTypeVector parse_entities_configuration(const Node& node) {
 
 static void parse_all_configuration(ParsedConfig& config, const Node& node) {
     parse_analysis_configuration(config, node["analysis"]);
-    parse_rates_configuration(config, node["rates"]);
+    config.add_rates = parse_rates_configuration(config, node["rates"]["add"]);
     parse_output_configuration(config, node["output"]);
     parse_category_configurations(config, node);
     config.entity_types = parse_entities_configuration(node["entities"]);

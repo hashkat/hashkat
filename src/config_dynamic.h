@@ -37,6 +37,7 @@ struct ParsedConfig {
     // 'entities' config options
     // Note: Weights are filled, entity lists empty
     EntityTypeVector entity_types;
+    Add_Rates add_rates;
 
     // command-line config options
     bool handle_ctrlc;

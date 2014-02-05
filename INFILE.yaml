@@ -11,9 +11,8 @@ analysis:
   follow_model: preferential # Accepted models: 'random', 'preferential', 'entity'
 
 rates:
-  add: 
-    1.0  # 0.001 == 1 / hour, twitter users / 8 years
-
+  add: {function: constant, value: 1.0} 
+      
 output:
   stdout_basic: true
   stdout_summary: true

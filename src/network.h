@@ -128,6 +128,10 @@ struct Rate_Function {
 	}
 };
 
+struct Add_Rates {
+    Rate_Function RF;
+};
+
 struct EntityType {
     std::string name;
     double prob_add; // When a entity is added, how likely is it that it is this entity type ?

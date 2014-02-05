@@ -52,6 +52,7 @@ struct AnalysisState {
     CategoryGrouper follow_ranks;
     CategoryGrouper retweet_ranks;
     CategoryGrouper age_ranks;
+    Add_Rates add_rates;
 
     // Our distinct entity classes.
     // Entity probabilities are derived from config,
@@ -75,6 +76,7 @@ struct AnalysisState {
         follow_ranks = config.follow_ranks;
         retweet_ranks = config.retweet_ranks;
         entity_types = config.entity_types;
+        add_rates = config.add_rates;
         follow_probabilities = config.follow_probabilities;
 
         rng.init_genrand(seed);

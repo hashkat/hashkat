@@ -55,6 +55,7 @@ struct Analyzer {
     CategoryGrouper& tweet_ranks;
 	CategoryGrouper& follow_ranks;
 	CategoryGrouper& retweet_ranks;
+    Add_Rates& add_rates;
 
     /* Mersenne-twister random number generator */
     MTwist& rng;
@@ -83,7 +84,7 @@ struct Analyzer {
             state(state), stats(state.stats), config(state.config),
             entity_types(state.entity_types), network(state.network),
             tweet_ranks(state.tweet_ranks), follow_ranks(state.follow_ranks), retweet_ranks(state.retweet_ranks),
-            rng(state.rng), time(state.time) {
+            rng(state.rng), time(state.time), add_rates(state.add_rates) {
 
         // The following allocates a memory chunk proportional to max_entities:
         network.preallocate(config.max_entities);
@@ -96,9 +97,24 @@ struct Analyzer {
         retweet_data.open("entity_retweets.dat");
 		
         set_initial_entities();
+        set_future_add_rates(add_rates);
         call_future_rates();
 		analyzer_rate_update(state);
     }
+    void set_future_add_rates(Add_Rates& add_rates) {
+        int projected_months = config.max_time / APPROX_MONTH;
+        cout << add_rates.RF.function_type << "\n";
+        if (add_rates.RF.function_type == "constant" ) {
+            for (int i = 0; i <= projected_months; i ++) {
+                add_rates.RF.monthly_rates.push_back(add_rates.RF.const_val);
+            }
+        } else if (add_rates.RF.function_type == "linear") {
+            for (int i = 0; i <= projected_months; i ++) {
+                add_rates.RF.monthly_rates.push_back(add_rates.RF.y_intercept + i*add_rates.RF.slope);
+            }
+        }
+    }
+    
 	void call_future_rates() {
 		for (int i = 0; i < entity_types.size(); i ++) {
 			for (int j = 1; j < number_of_diff_events; j ++) {
