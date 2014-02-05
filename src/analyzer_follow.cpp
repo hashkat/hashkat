@@ -91,7 +91,7 @@ struct AnalyzerFollow {
             for (int i = 0; i < follow_ranks.categories.size(); i ++) {
                 CategoryEntityList& C = follow_ranks.categories[i];
                 updating_probs[i] = follow_ranks.categories[i].prob * C.entities.size();
-                prob_sum = follow_ranks.categories[i].prob * C.entities.size();
+                prob_sum += follow_ranks.categories[i].prob * C.entities.size();
             }
             for (int i = 0; i < updating_probs.size(); i ++) {
                 updating_probs[i] /= prob_sum;
