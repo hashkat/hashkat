@@ -1,5 +1,3 @@
-TODO actually use this
-
 analysis:
   max_entities: 
     100001
