@@ -126,7 +126,9 @@ struct AnalyzerFollow {
         if (LIKELY(entity != entity_to_follow && entity_to_follow != -1)) {
             // point to the entity who is being followed
             if (handle_follow(entity, entity_to_follow)) {
-                int et_id = network[entity].entity_type;
+                /* FEATURE: Follow-back based on target's prob_followback.
+                 * Set in INFILE.yaml as followback_probability. */
+                int et_id = network[entity_to_follow].entity_type;
                 EntityType& et = entity_types[et_id];
                 if (rng.random_chance(et.prob_followback)) {
                     analyzer_followback(state, entity, entity_to_follow);
