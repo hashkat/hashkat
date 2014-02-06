@@ -19,6 +19,8 @@ struct AnalysisStats {
 
     int n_outputs;
     int64 n_steps, n_follows, n_tweets, n_retweets;
+    EntityEventStats event_stats;
+
     double event_rate;
     AnalysisStats() {
         prob_add = 0;
@@ -82,6 +84,17 @@ struct AnalysisState {
         rng.init_genrand(seed);
         time = 0.0;
         // Let analyze.cpp handle any additional initialization logic from here.
+    }
+
+    EntityType& entity_type(int entity_id) {
+        return entity_types[network[entity_id].entity_type];
+    }
+    void stat_event(int entity_id, EventID event, double increment = 1.0) {
+        EntityType& type = entity_type(entity_id);
+        // Increment per-type
+        type.event_stats[event] += increment;
+        // Increment per-event
+        stats.event_stats[event] += increment;
     }
 
     int n_months() {

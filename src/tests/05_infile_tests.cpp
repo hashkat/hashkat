@@ -1,4 +1,6 @@
 #include <fstream>
+#include <iostream>
+#include <map>
 
 #include "tests.h"
 
@@ -20,16 +22,19 @@ static bool str_replace(std::string& str, const std::string& from, const std::st
 
 // Test the system in edge cases using custom INFILE's.
 // UnitTest++ will catch any segfaults, and report them as test errors
-
-ParsedConfig create_config(const char* followback_probability) {
-    const char* OUT_FILE = "src/tests/followback_temp.yaml";
+typedef map<string, string> StringMap;
+ParsedConfig create_config(StringMap& replacements) {
+    const char* OUT_FILE = "src/tests/INFILE_temporary.yaml";
     // File with templated arguments
-    fstream input(fstream::in, "src/tests/followback_template.yaml");
-    fstream output(fstream::out, OUT_FILE);
+    fstream input("src/tests/INFILE_template.yaml", fstream::in);
+    fstream output(OUT_FILE, fstream::out);
 
-    std::string line;
+    string line;
     while (getline(input, line)) {
-        str_replace(line, "$followback_probability", followback_probability);
+        StringMap::iterator it = replacements.begin();
+        for (; it != replacements.end(); ++it) {
+            str_replace(line, "$" + it->first, it->second);
+        }
         output << line << '\n';
     }
     output.close();
@@ -40,10 +45,23 @@ ParsedConfig create_config(const char* followback_probability) {
 SUITE(SanityChecks) {
     const int TEST_SEED = 0xDEADBEEF;
 
-    TEST(simple_config) {
-        ParsedConfig config = parse_yaml_configuration("src/tests/infile_template.yaml");
+    TEST(SanityCheck) {
+        // Specify variables in the followback_template.yaml file
+        StringMap C;
+        C["max_entities"] = "10000"; // One more than initial
+        C["max_time"] = "100";
+        C["initial_entities"] = "9999";
+        C["followback_probability"] = "1.0";
+        C["add_rate"] = "0.0"; // Don't add any users
+
+        ParsedConfig config = create_config(C);
 
         AnalysisState state(config, TEST_SEED);
         analyzer_main(state);
+        double follow_backs = state.stats.event_stats[EV_FOLLOWBACK];
+        double follows = state.stats.n_follows;
+        cout << "Followbacks: " << follow_backs << endl;
+        cout << "Follows: " << follows << endl;
+        CHECK(follow_backs == follows/2);
     }
 }

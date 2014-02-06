@@ -380,5 +380,5 @@ void analyzer_main(AnalysisState& state) {
     }
     analyzer.main();
     signal(SIGINT, SIG_DFL);
-    printf("'analyzer_main' took %.2f milliseconds.", timer.get_microseconds() / 1000.0);
+    printf("'analyzer_main' took %.2f milliseconds.\n", timer.get_microseconds() / 1000.0);
 }

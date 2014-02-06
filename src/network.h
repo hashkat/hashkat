@@ -35,6 +35,27 @@ struct Retweet {
     }
 };
 
+
+// The different events covered by the statistics gathering
+enum EventID {
+    // AD: TODO move all rates into this form
+    EV_FOLLOWBACK,
+    N_EVENTS // Not a real entry; automatically gives amount.
+};
+
+struct EntityEventStats {
+    double& operator[](int index) {
+        DEBUG_CHECK(index >= 0 && index < N_EVENTS, "Out of bounds!");
+        return stats_array[index];
+    }
+    EntityEventStats() {
+        memset(stats_array, 0, sizeof(double) * N_EVENTS);
+    }
+private:
+    // AD: TODO move all rates into this struct
+    double stats_array[N_EVENTS];
+};
+
 struct Entity {
     int entity_type;
     int n_tweets, n_retweets;
@@ -147,6 +168,8 @@ struct EntityType {
 	std::vector<int> entity_list;
 	// categorize the entities by age
 	CategoryGrouper age_ranks;
+
+	EntityEventStats event_stats;
 
     EntityType() {
         n_tweets = n_follows = n_followers = n_retweets = 0;

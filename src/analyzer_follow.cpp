@@ -146,15 +146,17 @@ struct AnalyzerFollow {
         return false; // Completion failure: Restart the event
     }
 
-    bool followback(int follower, int followed) {
-        // now the followee will follow the follower back
-        if (handle_follow(followed, follower)) {
-            Entity& target = network[follower];
-            follow_ranks.categorize(follower, target.follower_set.size());
-            stats.n_follows++; // We were able to add the follow; almost always the case.
+    bool followback(int prev_actor_id, int prev_target_id) {
+        // now the previous target will follow the previous actor back
+        if (handle_follow(prev_target_id, prev_actor_id)) {
+            Entity& prev_actor = network[prev_actor_id];
+            Entity& prev_target = network[prev_target_id];
+            follow_ranks.categorize(prev_target_id, prev_target.follower_set.size());
+            stats.n_follows++; // We were able to add the follow; usually the case.
+            state.stat_event(prev_target_id, EV_FOLLOWBACK);
             return true;
         }
-        return false; // Completion failure: Restart the event
+        return false; // Completion failure: Can be ignored for followback, largely
     }
 };
 
