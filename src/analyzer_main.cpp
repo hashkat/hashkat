@@ -10,8 +10,9 @@
 // Local includes:
 #include "analyzer.h"
 #include "util.h"
-#include "MemPoolVector.h"
 #include "network.h"
+
+#include "config_static.h"
 
 #include "dependencies/lcommon/Timer.h"
 

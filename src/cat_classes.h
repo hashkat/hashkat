@@ -35,9 +35,9 @@ struct LeafClass {
 };
 
 
-//template <typename ElemT, int MAX_CATS>
-//struct StaticLeafClass : LeafClass<ElemT, StaticVector<LeafNode<ElemT>, MAX_CATS> > {
-//};
+template <typename ElemT, int MAX_CATS>
+struct StaticLeafClass : LeafClass<ElemT, StaticVector<LeafNode<ElemT>, MAX_CATS> > {
+};
 
 
 template <typename InnerT, typename CatData = std::vector<typename InnerT::CatGroup> >

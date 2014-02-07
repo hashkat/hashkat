@@ -30,8 +30,4 @@ const int STDOUT_OUTPUT_RATE = 1000; // Once per X file outputs
 // Uncomment this to run expensive but informative checks:
 #define SLOW_DEBUG_CHECKS
 
-/**
- * Categorizations of
- */
-
 #endif

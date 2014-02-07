@@ -9,7 +9,6 @@
 #include "util.h"
 
 #include "CircularBuffer.h"
-#include "MemPoolVector.h"
 #include "CategoryGrouper.h"
 
 #include "cat_classes.h"
