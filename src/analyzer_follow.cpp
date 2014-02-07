@@ -130,9 +130,11 @@ struct AnalyzerFollow {
                  * Set in INFILE.yaml as followback_probability. */
                 int et_id = network[entity_to_follow].entity_type;
                 EntityType& et = entity_types[et_id];
-                if (rng.random_chance(et.prob_followback)) {
+                
+                // this followback process has to be another follow method that happens naturally at some other time, possibly another 'spike' in the rate
+                /*if (rng.random_chance(et.prob_followback)) {
                     analyzer_followback(state, entity, entity_to_follow);
-                }
+                }*/
                 // based on the number of followers the followed-entity has, check to make sure we're still categorized properly
                 Entity& target = network[entity_to_follow];
                 follow_ranks.categorize(entity_to_follow, target.follower_set.size());
