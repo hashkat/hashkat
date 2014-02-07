@@ -25,6 +25,13 @@ output:
   tweet_analysis: false
   cumulative_analysis: false
 
+languages:
+  weights:
+    English: $english_weight
+    French: $french_weight
+    French+English: $french_and_english_weight
+
+
 tweet_ranks: 
   thresholds: {bin_spacing: linear, min: 10, max: 300, increment: 10}
 retweet_ranks:

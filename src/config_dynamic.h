@@ -19,6 +19,7 @@ struct ParsedConfig {
     bool use_flawed_followback;
     bool use_barabasi;
     FollowModel follow_model;
+    FollowerSetRates follower_rates;
 
     // 'rates' config options
     double rate_add;
@@ -33,6 +34,7 @@ struct ParsedConfig {
     // Thresholds are filled, entity lists empty
     CategoryGrouper tweet_ranks, follow_ranks;
     CategoryGrouper retweet_ranks;
+    LanguageProbabilities lang_probs;
 
     std::vector<double> follow_probabilities;
     // 'entities' config options
@@ -57,6 +59,13 @@ struct ParsedConfig {
         follow_model = RANDOM_FOLLOW;
 
         rate_add = 0;
+
+        std::vector<double> rates;
+        rates.push_back(0.5); // Uniform for now
+        rates.push_back(0.5);
+        rates.push_back(0.5);
+
+        follower_rates.fill_rates(rates);
 
         output_stdout_basic = output_stdout_summary = true;
         output_verbose = output_visualize = false;

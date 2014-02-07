@@ -1,48 +1,49 @@
 #ifndef ENTITY_H_
 #define ENTITY_H_
 
+#include <vector>
+
 #include "cat_classes.h"
 #include "cat_nodes.h"
+#include "CategoryGrouper.h"
 
+#include "dependencies/mtwist.h"
 #include "events.h"
-
-typedef cats::LeafNode<int> FollowSet;
-
-//namespace follower_set {
-//    struct EntityTypeClass: cats::LeafClass<int> {
-//        int classify(AnalysisState& N, int entity_id) {
-//            return N[elem].entity_type;
-//        }
-//    };
-//
-//    // Also try with just TreeClass
-//    struct TimeClass: cats::StaticTreeClass<EntityTypeClass, /*Max bins*/ 2> {
-//        TimeClass(double res) {
-//            resolution = res;
-//        }
-//        int classify(MockNetwork& N, int elem) {
-//            return int(N[elem].creation_time / resolution);
-//        }
-//        double resolution; // At what resolution to bin
-//    };
-//}
-
-
-typedef cats::LeafNode<int> FollowerSet;
 
 enum Language {
     LANG_ENGLISH,
-    LANG_FRENCH
+    LANG_FRENCH,
+    LANG_FRENCH_AND_ENGLISH,
+    N_LANGS // Not a real entry; evaluates to amount of languages
 };
 
-struct EntityLiteracy {
-    bool uses_english; // Always true for English speakers
-    Language main_language;
-    EntityLiteracy() {
-        uses_english = false;
-        main_language = (Language)-1; // Initialize with invalid language
+struct LanguageProbabilities {
+    double& operator[](int index) {
+        DEBUG_CHECK(index >= 0 && index < N_LANGS, "Out of bounds!");
+        return probs[index];
     }
+    LanguageProbabilities() {
+        memset(probs, 0, sizeof(double) * N_LANGS);
+    }
+    Language kmc_select(MTwist& rng) {
+        return (Language)rng.kmc_select(probs, N_LANGS);
+    }
+private:
+    double probs[N_LANGS];
 };
+
+typedef cats::LeafNode<int> FollowSet;
+
+struct AnalysisState;
+
+namespace follower_set {
+    struct LanguageClass: cats::StaticLeafClass<int, N_LANGS> {
+        int classify(AnalysisState& N, int entity_id); // Defined in entity.cpp
+    };
+}
+
+typedef follower_set::LanguageClass FollowerSetRates;
+typedef FollowerSetRates::CatGroup FollowerSet;
 
 struct Entity {
     int entity_type;
@@ -50,7 +51,7 @@ struct Entity {
     double creation_time;
     float x_location, y_location;
     double decay_time;
-    EntityLiteracy literacy;
+    Language language;
     //** make a copy of a follow_set, if it's not in use, the size will
     //** ALWAYS be 0, if not we can easily remove entity ID's from this
     //** list and still have our actual follow_set (below) in tact.
@@ -65,6 +66,7 @@ struct Entity {
         creation_time = 0.0;
         x_location = -1, y_location = -1;
         n_tweets = 0;
+        language = (Language)-1; // Initialize with invalid language
         n_retweets = 0;
         decay_time = 5; // 5 minutes
     }

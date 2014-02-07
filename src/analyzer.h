@@ -77,6 +77,7 @@ struct AnalysisState {
         retweet_ranks = config.retweet_ranks;
         entity_types = config.entity_types;
         add_rates = config.add_rates;
+
         follow_probabilities = config.follow_probabilities;
 
         rng.init_genrand(seed);

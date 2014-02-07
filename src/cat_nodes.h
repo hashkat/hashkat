@@ -344,10 +344,10 @@ struct TreeNode {
         return false;
     }
 
-    template <typename StateT>
-    bool add(StateT& N, double rate, const value_type& elem) {
+    template <typename StateT, typename ClassifierT>
+    bool add(StateT& N, ClassifierT& C, const value_type& elem) {
         double dummy;
-        return add(N, rate, dummy, elem);
+        return add(N, C, dummy, elem);
     }
 
     bool pick_random_uniform(MTwist& rng, value_type& elem) {

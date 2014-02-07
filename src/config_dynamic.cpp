@@ -46,6 +46,28 @@ static FollowModel parse_follow_model(const Node& node) {
     }
 }
 
+static LanguageProbabilities parse_language_configuration(const Node& node) {
+    map<int,string> lang_map;
+    lang_map[LANG_ENGLISH] = "English";
+    lang_map[LANG_FRENCH] = "French";
+    lang_map[LANG_FRENCH_AND_ENGLISH] = "French+English";
+
+    const Node& weights = node["weights"];
+    LanguageProbabilities probs;
+    double total = 0.0; // For normalization
+    for (int i = 0; i < N_LANGS; i++) {
+        string str = lang_map[i];
+        parse(weights, str.c_str(), probs[i]);
+        total += probs[i];
+    }
+    ASSERT(total > 0, "Total must be greater than 0");
+    for (int i = 0; i < N_LANGS; i++) {
+        probs[i] /= total; // Normalize
+    }
+
+    return probs;
+}
+
 static void parse_analysis_configuration(ParsedConfig& config, const Node& node) {
     parse(node, "max_entities", config.max_entities);
     parse(node, "initial_entities", config.initial_entities);
@@ -53,7 +75,6 @@ static void parse_analysis_configuration(ParsedConfig& config, const Node& node)
     parse(node, "use_barabasi", config.use_barabasi);
     parse(node, "use_flawed_followback", config.use_flawed_followback);
     parse(node, "use_random_time_increment", config.use_random_time_increment);
-
     config.follow_model = parse_follow_model(node);
 }
 
@@ -68,6 +89,7 @@ static Add_Rates parse_rates_configuration(ParsedConfig& config, const Node& nod
     } 
     return add_rates;
 }
+
 
 static void parse_output_configuration(ParsedConfig& config, const Node& node) {
     parse(node, "stdout_basic", config.output_stdout_basic);
@@ -217,6 +239,7 @@ static EntityTypeVector parse_entities_configuration(const Node& node) {
 
 static void parse_all_configuration(ParsedConfig& config, const Node& node) {
     parse_analysis_configuration(config, node["analysis"]);
+    config.lang_probs = parse_language_configuration(node["languages"]);
     config.add_rates = parse_rates_configuration(config, node["rates"]["add"]);
     parse_output_configuration(config, node["output"]);
     parse_category_configurations(config, node);

@@ -179,11 +179,16 @@ struct Analyzer {
         }
     }
 
+    Language entity_pick_language() {
+        return config.lang_probs.kmc_select(rng);
+    }
+
     /* Create a entity at the given index.
      * The index should be an empty entity slot. */
     bool action_create_entity(double creation_time, int index) {
 		Entity& e = network[index];
 		e.creation_time = creation_time;
+		e.language = entity_pick_language();
 		double rand_num = rng.rand_real_not0();
 		for (int et = 0; et < entity_types.size(); et++) {
 			if (rand_num <= entity_types[et].prob_add) {

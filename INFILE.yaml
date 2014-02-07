@@ -34,6 +34,12 @@ follow_ranks:
   thresholds: {bin_spacing: linear, min: 0, max: 1001, increment: 1}
   weights:    {bin_spacing: linear, min: 1, max: 1000, increment: 1}
 
+languages:
+  weights:
+    English: 100
+    French: 25
+    French+English: 25
+
 entities:
   - name: Standard
     weights:

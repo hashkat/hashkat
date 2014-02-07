@@ -109,6 +109,18 @@ public:
         return rand_int(range) + min;
     }
 
+    // Makes a choice given a profile of probabilities
+    inline int kmc_select(double* start, int len) {
+        double num =  genrand_real1();
+        for (int i = 0; i < len; i++) {
+            if (num < start[i]) {
+                return i;
+            }
+            num -= start[i];
+        }
+        return len - 1; // Assume floating point error
+    }
+
     /* Grab a real number within [0,1) with 53-bit resolution */
     double rand_real_not1() {
         return genrand_res53();
