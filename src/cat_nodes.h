@@ -213,7 +213,7 @@ private:
 
 // Create a mock of a vector using only a static array, that is compatible enough
 // for our purposes. Mainly, we do not assume the vector starts empty,
-// and we only attempt to grow it on out-of-bounds.
+// and we do not assume we can increase the initial capacity.
 // If we are OK with accepting out-of-bounds as an error, StaticVector
 // will provide much better memory properties.
 template <typename T, int N_ELEMS>

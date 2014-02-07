@@ -1,0 +1,48 @@
+analysis:
+  max_entities: 
+    $max_entities
+  max_time:
+    $max_time
+  initial_entities:
+    $initial_entities
+  use_barabasi: false # if this is set to 1, the global follow rate will be ignored. Follow thresholds not needed.
+  use_random_time_increment: false # increments by 1/sum(rates) on average
+  
+  follow_model: preferential # Accepted models: 'random', 'preferential', 'entity'
+
+rates:
+  # Rate for creating entities
+  add: {function: constant, value: $add_rate}
+
+output:
+  stdout_basic: false
+  stdout_summary: false
+
+  verbose: false
+  visualize: false
+
+  degree_distributions: false
+  tweet_analysis: false
+  cumulative_analysis: false
+
+tweet_ranks: 
+  thresholds: {bin_spacing: linear, min: 10, max: 300, increment: 10}
+retweet_ranks:
+  thresholds: {bin_spacing: linear, min: 10, max: 300, increment: 10}
+follow_ranks:
+  thresholds: {bin_spacing: linear, min: 0, max: 1001, increment: 1}
+  weights:    {bin_spacing: linear, min: 1, max: 1000, increment: 1}
+
+entities:
+  - name: Test
+    weights:
+      # Weight with which this entity is created
+      add: 100 # Note, add rate is 0 for this test, so this is meaningless
+      # Weight with which this entity is followed in preferential follow
+      follow: 100
+    # Probability that following this entity results in a follow-back
+    followback_probability: $followback_probability
+    rates:
+      follow: {function: constant, value: 0.001}
+      tweet: {function: constant, value: 0.001}
+ 

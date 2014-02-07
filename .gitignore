@@ -1,6 +1,7 @@
 CMakeCache.txt
 CMakeFiles/
 oprofile_data/
+src/tests/INFILE_temporary.yaml
 Makefile
 DATA_vs_TIME
 cmake_install.cmake

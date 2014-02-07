@@ -15,72 +15,8 @@
 #include "cat_classes.h"
 #include "cat_nodes.h"
 
-typedef cats::LeafNode<int> FollowSet;
-typedef cats::LeafNode<int> FollowerSet;
-
-typedef google::sparse_hash_set<int, cats::Hasher> UsedEntities;
-
-struct Tweet {
-    UsedEntities used_entities;
-};
-
-struct Retweet {
-    int original_tweeter;
-    double time;
-
-    Retweet() {
-    }
-    Retweet(int tweet, double time) :
-            original_tweeter(tweet), time(time) {
-    }
-};
-
-
-// The different events covered by the statistics gathering
-enum EventID {
-    // AD: TODO move all rates into this form
-    EV_FOLLOWBACK,
-    N_EVENTS // Not a real entry; automatically gives amount.
-};
-
-struct EntityEventStats {
-    double& operator[](int index) {
-        DEBUG_CHECK(index >= 0 && index < N_EVENTS, "Out of bounds!");
-        return stats_array[index];
-    }
-    EntityEventStats() {
-        memset(stats_array, 0, sizeof(double) * N_EVENTS);
-    }
-private:
-    // AD: TODO move all rates into this struct
-    double stats_array[N_EVENTS];
-};
-
-struct Entity {
-    int entity_type;
-    int n_tweets, n_retweets;
-    double creation_time;
-    float x_location, y_location;
-    double decay_time;
-    //** make a copy of a follow_set, if it's not in use, the size will
-    //** ALWAYS be 0, if not we can easily remove entity ID's from this
-    //** list and still have our actual follow_set (below) in tact.
-    UsedEntities usedentities;
-
-    // Store the two directions of the follow relationship
-    FollowSet follow_set;
-    FollowerSet follower_set;
-
-    Entity() {
-        entity_type = 0;
-        creation_time = 0.0;
-        x_location = -1, y_location = -1;
-        n_tweets = 0;
-        n_retweets = 0;
-        decay_time = 5; // 5 minutes
-    }
-};
-
+#include "entity.h"
+#include "events.h"
 
 struct Network {
     Entity* entities; //** This is a pointer - used to create a dynamic array
@@ -135,48 +71,5 @@ struct Network {
         return follower_set(id).size();
     }
 };
-
-// 0 - add, 1 - follow, 2 - tweet
-const int number_of_diff_events = 3;
-
-struct Rate_Function {
-	std::string function_type;
-	double slope, y_intercept, const_val, amplitude, exp_factor;
-	std::vector<double> monthly_rates;
-	Rate_Function() {
-		slope = y_intercept = const_val = amplitude = exp_factor = -1;
-		function_type = "not specified";
-	}
-};
-
-struct Add_Rates {
-    Rate_Function RF;
-};
-
-struct EntityType {
-    std::string name;
-    double prob_add; // When a entity is added, how likely is it that it is this entity type ?
-    double prob_follow; // When a entity is followed, how likely is it that it is this entity type ?
-	double prob_followback;
-	int new_entities; // the number of new users in this entity type
-	int n_tweets, n_follows, n_followers, n_retweets;
-	Rate_Function RF[number_of_diff_events];
-	
-	// number of entities for each discrete value of the rate(time)
-	std::vector<int> entity_cap;
-    // list of entity ID's
-	std::vector<int> entity_list;
-	// categorize the entities by age
-	CategoryGrouper age_ranks;
-
-	EntityEventStats event_stats;
-
-    EntityType() {
-        n_tweets = n_follows = n_followers = n_retweets = 0;
-        prob_add = prob_follow = prob_followback = 0;
-	}
-};
-
-typedef std::vector<EntityType> EntityTypeVector;
 
 #endif

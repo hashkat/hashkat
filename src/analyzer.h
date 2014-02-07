@@ -89,7 +89,8 @@ struct AnalysisState {
     EntityType& entity_type(int entity_id) {
         return entity_types[network[entity_id].entity_type];
     }
-    void stat_event(int entity_id, EventID event, double increment = 1.0) {
+
+    void event_stat_log(int entity_id, EventID event, double increment = 1.0) {
         EntityType& type = entity_type(entity_id);
         // Increment per-type
         type.event_stats[event] += increment;

@@ -1,4 +1,5 @@
 #ifndef CAT_CLASSES_H_
+#define CAT_CLASSES_H_
 
 #include "cat_nodes.h"
 
@@ -8,9 +9,9 @@
 
 namespace cats {
 
-template <typename ElemT>
+template <typename ElemT, typename CatData = std::vector<LeafNode<ElemT> > >
 struct LeafClass {
-    typedef TreeNode< LeafNode<ElemT> > CatGroup;
+    typedef TreeNode< LeafNode<ElemT>, CatData > CatGroup;
     typedef typename CatGroup::iterator iterator;
 
     template <typename NetworkT>
@@ -32,6 +33,12 @@ struct LeafClass {
     }
     std::vector<double> rates;
 };
+
+
+//template <typename ElemT, int MAX_CATS>
+//struct StaticLeafClass : LeafClass<ElemT, StaticVector<LeafNode<ElemT>, MAX_CATS> > {
+//};
+
 
 template <typename InnerT, typename CatData = std::vector<typename InnerT::CatGroup> >
 struct TreeClass {
