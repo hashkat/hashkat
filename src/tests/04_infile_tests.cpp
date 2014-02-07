@@ -53,6 +53,7 @@ SUITE(SanityChecks) {
         C["initial_entities"] = "9999";
         C["followback_probability"] = "1.0";
         C["add_rate"] = "0.0"; // Don't add any users
+        C["use_flawed_followback"] = "true";
 
         ParsedConfig config = create_config(C);
 

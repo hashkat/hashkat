@@ -16,6 +16,7 @@ struct ParsedConfig {
     double max_time;
     bool use_random_time_increment;
     bool use_preferential_follow;
+    bool use_flawed_followback;
     bool use_barabasi;
     FollowModel follow_model;
 
@@ -51,6 +52,7 @@ struct ParsedConfig {
         use_random_time_increment = false;
         use_preferential_follow = false;
         use_barabasi = false;
+        use_flawed_followback = false;
 
         follow_model = RANDOM_FOLLOW;
 
