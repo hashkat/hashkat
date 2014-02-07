@@ -43,40 +43,25 @@ entities:
     # Probability that following this entity results in a follow-back
     followback_probability: 40
     rates: 
-<<<<<<< Updated upstream
         # Rate for follows from this entity:
         follow: {function: constant, value: 0.001}
         # Rate for tweets from this entity:
         tweet: {function: constant, value: 0.001}
 
-=======
-        follow: {function: constant, value: 0.0001}
-        tweet: {function: constant, value: 0.0001}
->>>>>>> Stashed changes
   - name: Celebrity
     weights: {add: 25, follow: 80}
     followback_probability: 0
     rates:
-<<<<<<< Updated upstream
         follow: {function: constant, value: 0.001}
         tweet: {function: constant, value: 0.001}
 
-=======
-        follow: {function: constant, value: 0.0001}
-        tweet: {function: constant, value: 0.0001}
->>>>>>> Stashed changes
   - name: Bot
     weights: {add: 25, follow: 0}
     followback_probability: 0
     rates:
-<<<<<<< Updated upstream
         follow: {function: constant, value: 0.001}
         tweet: {function: constant, value: 0.001}
 
-=======
-        follow: {function: constant, value: 0.0001}
-        tweet: {function: constant, value: 0.0001}
->>>>>>> Stashed changes
   - name: Organization
     weights: {add: 25, follow: 15}
     followback_probability: 0
