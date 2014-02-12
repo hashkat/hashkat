@@ -360,7 +360,7 @@ bool entity_checks(EntityTypeVector& ets, Network& network, AnalysisState& state
     for (int i = 0; i < ets.size(); i ++) {
         double add_correct = network.n_entities * ets[i].prob_add;
         if (abs(add_correct - ets[i].entity_list.size()) / add_correct >= tolerence) {
-            cout << "\nNumber of entity type \'" << ets[i].name << "\' is not correct. " << add_correct << " is the right number.\n";
+            cout << "\nNumber of entity type \'" << ets[i].name << "\' is not correct. " << (int) add_correct << " is the right number.\n";
             final_check += false;
             check_count ++;
         }

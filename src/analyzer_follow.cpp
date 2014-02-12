@@ -12,7 +12,6 @@ struct AnalyzerFollow {
     AnalysisState& state;
     AnalysisStats& stats;
     CategoryGrouper& follow_ranks;
-
     vector<double>& follow_probabilities, updating_follow_probabilities;
 
     EntityTypeVector& entity_types;
@@ -120,6 +119,40 @@ struct AnalyzerFollow {
                 // part of the above search
                 rand_num -= entity_types[i].prob_follow;
             }
+        } else if (config.follow_model == PREFERENTIAL_ENTITY_FOLLOW) {
+            for (int i = 0; i < entity_types.size(); i++) {
+                if (rand_num <= entity_types[i].prob_follow) {                    
+                    double another_rand_num = rng.rand_real_not0();
+                    // make sure we're not pulling from an empty list
+                    EntityType& et = entity_types[i];
+                    vector<double>& up = et.updating_probs;
+                    up.resize(et.follow_ranks.categories.size());
+                    double prob_sum = 0;
+                    for (int j = 0; j < et.follow_ranks.categories.size(); j ++) {
+                        CategoryEntityList& C = et.follow_ranks.categories[j];
+                        up[j] = et.follow_ranks.categories[j].prob * C.entities.size();
+                        prob_sum += et.follow_ranks.categories[j].prob * C.entities.size();
+                    }
+                    for (int j = 0; j < up.size(); j ++) {                        
+                        up[j] /= prob_sum;
+                    }
+                    for (int j = 0; j < up.size(); j ++) {
+                        if (another_rand_num <= up[j]) {
+                            CategoryEntityList& C = et.follow_ranks.categories[j];
+                            // pull a random entity from whatever bin we landed in and break so we do not continue this loop                            
+                            entity_to_follow = C.entities[rng.rand_int(C.entities.size())];
+                            break;
+                        }
+                        another_rand_num -= up[j];
+                    }
+                }
+                if (entity_to_follow != -1){
+                    break;
+                } else {
+                    // part of the above search
+                    rand_num -= entity_types[i].prob_follow;
+                }
+            }
         }
 
         // check and make sure we are not following ourself, or we are following entity -1
@@ -137,6 +170,7 @@ struct AnalyzerFollow {
                 }
                 // based on the number of followers the followed-entity has, check to make sure we're still categorized properly
                 Entity& target = network[entity_to_follow];
+                et.follow_ranks.categorize(entity_to_follow, target.follower_set.size());
                 follow_ranks.categorize(entity_to_follow, target.follower_set.size());
                 stats.n_follows++; // We were able to add the follow; almost always the case.
                 entity_types[e1.entity_type].n_follows ++;
@@ -153,9 +187,13 @@ struct AnalyzerFollow {
         if (handle_follow(prev_target_id, prev_actor_id)) {
             Entity& prev_actor = network[prev_actor_id];
             Entity& prev_target = network[prev_target_id];
-            follow_ranks.categorize(prev_target_id, prev_target.follower_set.size());
+            int et_id = network[prev_actor_id].entity_type;
+            EntityType& et = entity_types[et_id];
+            et.follow_ranks.categorize(prev_actor_id, prev_actor.follower_set.size());
+            follow_ranks.categorize(prev_actor_id, prev_actor.follower_set.size());
             stats.n_follows++; // We were able to add the follow; usually the case.
             state.event_stat_log(prev_target_id, EV_FOLLOWBACK);
+            state.stat_event(prev_actor_id, EV_FOLLOWBACK);
             return true;
         }
         return false; // Completion failure: Can be ignored for followback, largely

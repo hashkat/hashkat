@@ -40,6 +40,8 @@ static FollowModel parse_follow_model(const Node& node) {
         return PREFERENTIAL_FOLLOW;
     } else if (follow_model == "entity") {
         return ENTITY_FOLLOW;
+    } else if (follow_model == "preferential-entity") {
+        return PREFERENTIAL_ENTITY_FOLLOW;
     } else {
         throw YAML::RepresentationException(node.GetMark(),
                 format("'%s' is not a valid follow model!", follow_model.c_str()));
@@ -185,6 +187,10 @@ static void parse_category_configurations(ParsedConfig& config, const Node& node
     } else {   
         config.follow_ranks = parse_category_thresholds(node["follow_ranks"]["thresholds"]);                
         parse_category_weights(node["follow_ranks"]["weights"], config.follow_ranks);
+        for (int i = 0; i < config.entity_types.size(); i ++) {
+            config.entity_types[i].follow_ranks = parse_category_thresholds(node["follow_ranks"]["thresholds"]);                
+            parse_category_weights(node["follow_ranks"]["weights"], config.entity_types[i].follow_ranks);
+        }
     }
     config.tweet_ranks = parse_category_thresholds(node["tweet_ranks"]["thresholds"]);
     config.retweet_ranks = parse_category_thresholds(node["retweet_ranks"]["thresholds"]);
@@ -225,8 +231,8 @@ static EntityTypeVector parse_entities_configuration(const Node& node) {
 			parse(tweet_rate, "amplitude", et.RF[2].amplitude);
 			parse(tweet_rate, "exp_factor", et.RF[2].exp_factor);
 		} 
+        
         add_total += et.prob_add, follow_total += et.prob_follow;
-
         vec.push_back(et);
     }
     // Normalize the entity weights into probabilities
@@ -242,8 +248,9 @@ static void parse_all_configuration(ParsedConfig& config, const Node& node) {
     config.lang_probs = parse_language_configuration(node["languages"]);
     config.add_rates = parse_rates_configuration(config, node["rates"]["add"]);
     parse_output_configuration(config, node["output"]);
-    parse_category_configurations(config, node);
     config.entity_types = parse_entities_configuration(node["entities"]);
+    parse_category_configurations(config, node);
+    
 }
 
 ParsedConfig parse_yaml_configuration(const char* file_name) {

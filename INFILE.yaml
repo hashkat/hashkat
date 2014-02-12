@@ -9,7 +9,8 @@ analysis:
   use_random_time_increment: true # increments by 1/sum(rates) on average
   use_flawed_followback: false
 
-  follow_model: entity # Accepted models: 'random', 'preferential', 'entity'
+  follow_model: preferential-entity # Accepted models: 'random', 'preferential', 'entity', 'preferential-entity'
+
 
 rates:
   # Rate for creating entities

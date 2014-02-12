@@ -195,6 +195,7 @@ struct Analyzer {
 				e.entity_type = et;
                 entity_types[et].entity_list.push_back(index);
 				follow_ranks.categorize(index, e.follower_set.size());
+                entity_types[et].follow_ranks.categorize(index, e.follower_set.size());
 				break;
 			}
 			rand_num -= entity_types[et].prob_add;

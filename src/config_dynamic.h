@@ -4,7 +4,8 @@
 enum FollowModel {
     RANDOM_FOLLOW,
     PREFERENTIAL_FOLLOW,
-    ENTITY_FOLLOW
+    ENTITY_FOLLOW,
+    PREFERENTIAL_ENTITY_FOLLOW
 };
 
 #include "network.h"
