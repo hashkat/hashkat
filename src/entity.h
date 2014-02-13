@@ -1,6 +1,7 @@
 #ifndef ENTITY_H_
 #define ENTITY_H_
 
+#include <string>
 #include <vector>
 
 #include "cat_classes.h"
@@ -10,39 +11,19 @@
 #include "dependencies/mtwist.h"
 #include "events.h"
 
-enum Language {
-    LANG_ENGLISH,
-    LANG_FRENCH,
-    LANG_FRENCH_AND_ENGLISH,
-    N_LANGS // Not a real entry; evaluates to amount of languages
-};
-
-struct LanguageProbabilities {
-    double& operator[](int index) {
-        DEBUG_CHECK(index >= 0 && index < N_LANGS, "Out of bounds!");
-        return probs[index];
-    }
-    LanguageProbabilities() {
-        memset(probs, 0, sizeof(double) * N_LANGS);
-    }
-    Language kmc_select(MTwist& rng) {
-        return (Language)rng.kmc_select(probs, N_LANGS);
-    }
-private:
-    double probs[N_LANGS];
-};
+#include "entity_properties.h"
 
 typedef cats::LeafNode<int> FollowSet;
 
 struct AnalysisState;
 
 namespace follower_set {
-    struct LanguageClass: cats::StaticLeafClass<int, N_LANGS> {
+    struct LanguageFilter: cats::StaticLeafClass<int, N_LANGS> {
         int classify(AnalysisState& N, int entity_id); // Defined in entity.cpp
     };
 }
 
-typedef follower_set::LanguageClass FollowerSetRates;
+typedef follower_set::LanguageFilter FollowerSetRates;
 typedef FollowerSetRates::CatGroup FollowerSet;
 
 // information for when a user tweets
@@ -96,34 +77,5 @@ struct Entity {
         n_retweets = 0;
     }
 };
-
-struct EntityType {
-    std::string name;
-    double prob_add; // When a entity is added, how likely is it that it is this entity type ?
-    double prob_follow; // When a entity is followed, how likely is it that it is this entity type ?
-    double prob_followback;
-    int new_entities; // the number of new users in this entity type
-    int n_tweets, n_follows, n_followers, n_retweets;
-    Rate_Function RF[number_of_diff_events];
-
-    // number of entities for each discrete value of the rate(time)
-    std::vector<int> entity_cap;
-    // list of entity ID's
-    std::vector<int> entity_list;
-    // categorize the entities by age
-    CategoryGrouper age_ranks;
-    CategoryGrouper follow_ranks;
-    std::vector<double> updating_probs;
-
-    EntityEventStats event_stats;
-
-    EntityType() {
-        new_entities = 0;
-        n_tweets = n_follows = n_followers = n_retweets = 0;
-        prob_add = prob_follow = prob_followback = 0;
-    }
-};
-
-typedef std::vector<EntityType> EntityTypeVector;
 
 #endif

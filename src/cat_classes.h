@@ -10,10 +10,18 @@
 namespace cats {
 
 template <typename ElemT, typename CatData = std::vector<LeafNode<ElemT> > >
-struct LeafClass {
+struct BaseLeafClass {
     typedef TreeNode< LeafNode<ElemT>, CatData > CatGroup;
     typedef typename CatGroup::iterator iterator;
+};
 
+template <typename ElemT, int MAX_CATS>
+struct StaticBaseLeafClass : BaseLeafClass<ElemT, StaticVector<LeafNode<ElemT>, MAX_CATS> > {
+};
+
+
+template <typename ElemT, typename CatData = std::vector<LeafNode<ElemT> > >
+struct LeafClass : BaseLeafClass<ElemT, CatData> {
     template <typename NetworkT>
     double& get(NetworkT& N, int bin) {
         return rates.at(bin);
@@ -33,7 +41,6 @@ struct LeafClass {
     }
     std::vector<double> rates;
 };
-
 
 template <typename ElemT, int MAX_CATS>
 struct StaticLeafClass : LeafClass<ElemT, StaticVector<LeafNode<ElemT>, MAX_CATS> > {
