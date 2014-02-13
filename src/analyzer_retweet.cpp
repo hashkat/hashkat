@@ -29,14 +29,14 @@ struct AnalyzerRetweet {
         for (int i = 0; i < atl.size(); i ++) {
             TweetInfo& ti = atl[i];
             int entity_ID = ti.entity_ID;
-            if (state.time - ti.time_of_tweet > tweet_bank.total_lifetime) {
+            if (tweet_bank.get_omega(ti.time_of_tweet, state.time) == -1) {
                 atl.erase(atl.begin() + i);
             }
         }
         for (int i = 0; i < arl.size(); i ++) {
             RetweetInfo& ri = arl[i];
             int entity_ID = ri.entity_ID;
-            if (state.time - ri.time_of_retweet > tweet_bank.total_lifetime) {
+            if (tweet_bank.get_omega(ri.time_of_retweet, state.time) == -1) {
                 arl.erase(arl.begin() + i);
             }
         }

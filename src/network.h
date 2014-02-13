@@ -7,6 +7,8 @@
 #include <vector>
 #include <exception>
 #include <cmath>
+#include <iostream>
+#include <iomanip>
 #include "util.h"
 
 #include "CircularBuffer.h"
@@ -24,26 +26,21 @@ struct TweetBank {
     RetweetList active_retweet_list; 
    
     double half_life;
-    double total_lifetime;
-    int precision;
+    double tolerance;
     std::vector<double> half_life_function;
     
     TweetBank() {
         half_life = 90; // 90 minutes
-        total_lifetime = 5 * 90; // 7.5 hours
-        precision = 10; // gives the number of values in the half life 'function' below
-        
-        for (int i = 0; i < precision; i ++) {
-            double time_incr = total_lifetime / precision;
-            // determine the discrete values of 
-            double val = exp(- i * time_incr / half_life );
-            half_life_function.push_back(val);
-        }
+        tolerance = 0.01;
     }
+
     // gives the value for Omega(t) discussed
     double get_omega(double time_of_tweet, double actual_time) {
-        int which_value = (actual_time - time_of_tweet) / precision;
-        return half_life_function[which_value];
+        double value = exp((time_of_tweet - actual_time) / half_life);
+        if (value < tolerance) {
+            return -1;
+        }
+        return value;
     }
     
 };
