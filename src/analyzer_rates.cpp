@@ -98,8 +98,9 @@ struct AnalyzerRates {
             Rates rates = set_rates(entity_types[e]);
             global.add(rates); // Sum the rates
         }
-        double overall_retweet_rate = analyzer_total_retweet_rate(state);
+        update_retweets(state);
         config.rate_add = add_rates.RF.monthly_rates[state.n_months()]; 
+        double overall_retweet_rate = analyzer_total_retweet_rate(state);
         stats.event_rate = config.rate_add + global.total_rate() + overall_retweet_rate;
 
         // Normalize the rates

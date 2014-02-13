@@ -6,6 +6,7 @@
 #include <cstdlib>
 #include <vector>
 #include <exception>
+#include <cmath>
 #include "util.h"
 
 #include "CircularBuffer.h"
@@ -17,14 +18,40 @@
 #include "entity.h"
 #include "events.h"
 
+
+struct TweetBank {
+    TweetList active_tweet_list;
+    RetweetList active_retweet_list; 
+   
+    double half_life;
+    double total_lifetime;
+    int precision;
+    std::vector<double> half_life_function;
+    
+    TweetBank() {
+        half_life = 90; // 90 minutes
+        total_lifetime = 5 * 90; // 7.5 hours
+        precision = 10; // gives the number of values in the half life 'function' below
+        
+        for (int i = 0; i < precision; i ++) {
+            double time_incr = total_lifetime / precision;
+            // determine the discrete values of 
+            double val = exp(- i * time_incr / half_life );
+            half_life_function.push_back(val);
+        }
+    }
+    // gives the value for Omega(t) discussed
+    double get_omega(double time_of_tweet, double actual_time) {
+        int which_value = (actual_time - time_of_tweet) / precision;
+        return half_life_function[which_value];
+    }
+    
+};
+
 struct Network {
     Entity* entities; //** This is a pointer - used to create a dynamic array
     int n_entities, max_entities;
-    std::vector<int> recent_tweet_ID;
-    std::vector<double> recent_tweet_times;
-    std::vector<int> recent_retweet_ID;
-    std::vector<double> recent_retweet_times;
-    std::vector<double> decay_rates;
+    TweetBank tweet_bank;
     Network() {
         entities = NULL;
         n_entities = 0;
@@ -70,53 +97,6 @@ struct Network {
         return follower_set(id).size();
     }
 };
-
-// 0 - add, 1 - follow, 2 - tweet
-const int number_of_diff_events = 3;
-
-struct Rate_Function {
-	std::string function_type;
-	double slope, y_intercept, const_val, amplitude, exp_factor;
-	std::vector<double> monthly_rates;
-	Rate_Function() {
-		slope = y_intercept = const_val = amplitude = exp_factor = -1;
-		function_type = "not specified";
-	}
-};
-
-struct Add_Rates {
-    Rate_Function RF;
-};
-
-struct EntityType {
-    CategoryGrouper entity_type_cat_group;
-    std::string name;
-    double prob_add; // When a entity is added, how likely is it that it is this entity type ?
-    double prob_follow; // When a entity is followed, how likely is it that it is this entity type ?
-	double prob_followback;
-    // for preferential follow model within entity groups
-    std::vector<double> updating_probs;
-	int new_entities; // the number of new users in this entity type
-	int n_tweets, n_follows, n_followers, n_retweets;
-	Rate_Function RF[number_of_diff_events];
-	
-	// number of entities for each discrete value of the rate(time)
-	std::vector<int> entity_cap;
-    // list of entity ID's
-	std::vector<int> entity_list;
-	// categorize the entities by age
-	CategoryGrouper age_ranks;
-    CategoryGrouper follow_ranks;
-
-	EntityEventStats event_stats;
-
-    EntityType() {
-        n_tweets = n_follows = n_followers = n_retweets = 0;
-        prob_add = prob_follow = prob_followback = 0;
-	}
-};
-
-typedef std::vector<EntityType> EntityTypeVector;
 
 
 #endif

@@ -206,13 +206,36 @@ struct Analyzer {
         network.n_entities++;
         return true; // Always succeeds, for now.
     }
+    // this will be the function that will return the rate for a given tweet.
+    // the rate is based on the content and the entity tweeting; it will most
+    // likely have something to do with the entities followers, but not for now 
+    double tweet_content(Entity& e) {
+        // return a constant value for now
+        return 0.0001;
+    }
+    // will use the categories here to decide who will retweet
+    int users_to_retweet(Entity& e) {
+        // returns full list for now
+        return e.follower_set.size();
+    }
+    
+    void get_tweet_info(int entity, Entity& e) {
+        TweetInfo& ti = e.tweet_info;
+        ti.entity_ID = entity;
+        ti.time_of_tweet = time;
+        ti.starting_rate = tweet_content(e) * users_to_retweet(e);
+        // if they have no followers, why add them to the bank?
+        if (network.n_followers(entity) != 0) {
+            network.tweet_bank.active_tweet_list.push_back(ti);
+        }
+    }
 
 	// function to handle the tweeting
 	bool action_tweet(int entity) {
-		// This is the entity tweeting
-        network.recent_tweet_ID.push_back(entity);
-        network.recent_tweet_times.push_back(state.time);
+		// This is the entity tweeting 
 		Entity& e = network[entity];
+        // add info to TweetInfo struct
+        get_tweet_info(entity, e);
 		// increase the number of tweets the entity had by one
 		e.n_tweets++;
         entity_types[e.entity_type].n_tweets ++;
@@ -221,8 +244,19 @@ struct Analyzer {
 		return true; // Always succeeds
 	}
 	
+    void get_retweet_info(int entity, Entity& e) {
+        RetweetInfo& ri = e.retweet_info;
+        ri.entity_ID = entity;
+        ri.time_of_retweet = time;
+        ri.starting_rate = tweet_content(e) * users_to_retweet(e);
+        if (network.n_followers(entity) != 0) {
+            network.tweet_bank.active_retweet_list.push_back(ri);
+        }
+    }
+    
 	bool action_retweet(int entity, double time_of_retweet) {
 		Entity& et = network[entity];
+        get_retweet_info(entity, et);
         entity_types[et.entity_type].n_retweets ++;
         stats.n_retweets ++;
         return true; // Always succeeds

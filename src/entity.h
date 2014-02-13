@@ -45,12 +45,37 @@ namespace follower_set {
 typedef follower_set::LanguageClass FollowerSetRates;
 typedef FollowerSetRates::CatGroup FollowerSet;
 
+// information for when a user tweets
+struct TweetInfo {
+    double starting_rate, updating_rate;
+    int entity_ID;
+    double time_of_tweet;
+    TweetInfo() {
+        starting_rate = updating_rate = 0;
+        entity_ID = -1;
+    }
+};
+
+// information for when a user retweets
+struct RetweetInfo {
+    double starting_rate, updating_rate;
+    int entity_ID;
+    double time_of_retweet;
+    RetweetInfo() {
+        starting_rate = updating_rate = 0;
+        entity_ID = -1;
+    }
+};
+
+
+typedef std::vector<TweetInfo> TweetList;
+typedef std::vector<RetweetInfo> RetweetList;
+
 struct Entity {
     int entity_type;
     int n_tweets, n_retweets;
     double creation_time;
     float x_location, y_location;
-    double decay_time;
     Language language;
     //** make a copy of a follow_set, if it's not in use, the size will
     //** ALWAYS be 0, if not we can easily remove entity ID's from this
@@ -60,6 +85,9 @@ struct Entity {
     // Store the two directions of the follow relationship
     FollowSet follow_set;
     FollowerSet follower_set;
+    
+    TweetInfo tweet_info;
+    RetweetInfo retweet_info;
 
     Entity() {
         entity_type = 0;
@@ -68,7 +96,6 @@ struct Entity {
         n_tweets = 0;
         language = (Language)-1; // Initialize with invalid language
         n_retweets = 0;
-        decay_time = 5; // 5 minutes
     }
 };
 
@@ -87,6 +114,8 @@ struct EntityType {
     std::vector<int> entity_list;
     // categorize the entities by age
     CategoryGrouper age_ranks;
+    CategoryGrouper follow_ranks;
+    std::vector<double> updating_probs;
 
     EntityEventStats event_stats;
 

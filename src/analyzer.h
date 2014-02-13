@@ -123,6 +123,8 @@ void analyzer_main(AnalysisState& state);
 double analyzer_total_retweet_rate(AnalysisState& state);
 // this is for the retweet entity selection
 int analyzer_select_entity_retweet(AnalysisState& state, SelectionType type);
+void update_retweets(AnalysisState& state);
+
 
 const double ZEROTOL = 1e-16; // enough precision for really really low add rate
 
