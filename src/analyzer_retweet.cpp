@@ -85,13 +85,17 @@ struct AnalyzerRetweet {
         
         for (int i = 0; i < atl.size(); i ++) {
             if (rand_num <= (atl[i].updating_rate / rate_total) ) {
-                return atl[i].entity_ID;
+                Entity& e = network[atl[i].entity_ID];
+                int entity_retweeting = e.follower_set.pick_random_uniform(rng);
+                return entity_retweeting;
             }
             rand_num -= (atl[i].updating_rate / rate_total);
         }
         for (int i = 0; i < arl.size(); i ++) {
             if (rand_num <= (arl[i].updating_rate / rate_total) ) {
-                return arl[i].entity_ID;
+                Entity& e = network[arl[i].entity_ID];
+                int entity_retweeting = e.follower_set.pick_random_uniform(rng);
+                return entity_retweeting;
             }
             rand_num -= (arl[i].updating_rate / rate_total);
         }

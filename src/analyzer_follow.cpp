@@ -120,6 +120,7 @@ struct AnalyzerFollow {
                 rand_num -= entity_types[i].prob_follow;
             }
         } else if (config.follow_model == PREFERENTIAL_ENTITY_FOLLOW) {
+            double rand_num = rng.rand_real_not0();
             for (int i = 0; i < entity_types.size(); i++) {
                 if (rand_num <= entity_types[i].prob_follow) {                    
                     double another_rand_num = rng.rand_real_not0();
@@ -148,10 +149,9 @@ struct AnalyzerFollow {
                 }
                 if (entity_to_follow != -1){
                     break;
-                } else {
-                    // part of the above search
-                    rand_num -= entity_types[i].prob_follow;
                 }
+                // part of the above search
+                rand_num -= entity_types[i].prob_follow;
             }
         }
 

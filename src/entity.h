@@ -50,6 +50,7 @@ struct TweetInfo {
     double starting_rate, updating_rate;
     int entity_ID;
     double time_of_tweet;
+    UsedEntities used_entities;
     TweetInfo() {
         starting_rate = updating_rate = 0;
         entity_ID = -1;
@@ -77,15 +78,12 @@ struct Entity {
     double creation_time;
     float x_location, y_location;
     Language language;
-    //** make a copy of a follow_set, if it's not in use, the size will
-    //** ALWAYS be 0, if not we can easily remove entity ID's from this
-    //** list and still have our actual follow_set (below) in tact.
-    UsedEntities usedentities; //** AD: UsedEntities Moved to events.h
 
     // Store the two directions of the follow relationship
     FollowSet follow_set;
     FollowerSet follower_set;
     
+    //info needed for retweeting
     TweetInfo tweet_info;
     RetweetInfo retweet_info;
 

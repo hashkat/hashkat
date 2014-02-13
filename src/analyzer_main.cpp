@@ -213,6 +213,7 @@ struct Analyzer {
         // return a constant value for now
         return 0.0001;
     }
+    
     // will use the categories here to decide who will retweet
     int users_to_retweet(Entity& e) {
         // returns full list for now
