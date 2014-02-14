@@ -9,19 +9,19 @@
 
 namespace cats {
 
-template <typename ElemT, typename CatData = std::vector<LeafNode<ElemT> > >
+template <typename ElemT, typename CatData = std::vector<LeafNode<ElemT> >, int N_ELEMS = 1>
 struct BaseLeafClass {
-    typedef TreeNode< LeafNode<ElemT>, CatData > CatGroup;
+    typedef TreeNode< LeafNode<ElemT, N_ELEMS>, CatData > CatGroup;
     typedef typename CatGroup::iterator iterator;
 };
 
-template <typename ElemT, int MAX_CATS>
-struct StaticBaseLeafClass : BaseLeafClass<ElemT, StaticVector<LeafNode<ElemT>, MAX_CATS> > {
+template <typename ElemT, int MAX_CATS, int N_ELEMS = 1>
+struct StaticBaseLeafClass : BaseLeafClass<ElemT, StaticVector<LeafNode<ElemT, N_ELEMS>, MAX_CATS>, N_ELEMS > {
 };
 
 
-template <typename ElemT, typename CatData = std::vector<LeafNode<ElemT> > >
-struct LeafClass : BaseLeafClass<ElemT, CatData> {
+template <typename ElemT, typename CatData = std::vector<LeafNode<ElemT> >, int N_ELEMS = 1>
+struct LeafClass : BaseLeafClass<ElemT, CatData, N_ELEMS> {
     template <typename NetworkT>
     double& get(NetworkT& N, int bin) {
         return rates.at(bin);
@@ -42,14 +42,14 @@ struct LeafClass : BaseLeafClass<ElemT, CatData> {
     std::vector<double> rates;
 };
 
-template <typename ElemT, int MAX_CATS>
-struct StaticLeafClass : LeafClass<ElemT, StaticVector<LeafNode<ElemT>, MAX_CATS> > {
+template <typename ElemT, int MAX_CATS, int N_ELEMS = 1>
+struct StaticLeafClass : LeafClass<ElemT, StaticVector<LeafNode<ElemT, N_ELEMS>, MAX_CATS>, N_ELEMS> {
 };
 
 
-template <typename InnerT, typename CatData = std::vector<typename InnerT::CatGroup> >
+template <typename InnerT, typename CatData = std::vector<typename InnerT::CatGroup>, int N_ELEMS = 1 >
 struct TreeClass {
-    typedef TreeNode<typename InnerT::CatGroup, CatData> CatGroup;
+    typedef TreeNode<typename InnerT::CatGroup, CatData, N_ELEMS> CatGroup;
     typedef typename CatGroup::iterator iterator;
 
     template <typename NetworkT>
@@ -77,8 +77,8 @@ struct TreeClass {
     std::vector<InnerT> classes;
 };
 
-template <typename InnerT, int MAX_CATS>
-struct StaticTreeClass : TreeClass<InnerT, StaticVector<typename InnerT::CatGroup, MAX_CATS> > {
+template <typename InnerT, int MAX_CATS, int N_ELEMS = 1>
+struct StaticTreeClass : TreeClass<InnerT, StaticVector<typename InnerT::CatGroup, MAX_CATS>, N_ELEMS> {
 };
 
 }

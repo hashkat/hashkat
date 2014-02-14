@@ -27,6 +27,19 @@ TEST(leaf_node) {
     CHECK(delta == 1.0);
 }
 
+TEST(leaf_node_rate_tuple) {
+    using namespace cats;
+    MockNetwork N;
+    LeafNode<int, 2> leaf;
+    RateTuple<2> delta = 0.0;
+    for (int elem = 0; elem < 1000; elem++) {
+        CHECK(leaf.add(N, RateTuple<2>(1.0), delta, elem));
+        CHECK(!leaf.add(N, RateTuple<2>(1.0), delta, elem));
+    }
+    CHECK(leaf.get_total_rate() == RateTuple<2>(1000));
+    CHECK(delta == RateTuple<2>(1.0));
+}
+
 struct MockLeafClass : cats::LeafClass<int> {
     MockLeafClass(int mod) {
         modulo = mod;

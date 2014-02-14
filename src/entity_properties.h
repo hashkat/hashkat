@@ -5,6 +5,32 @@
 
 /* This file contains properties that differentiate tweets and entities */
 
+enum Language {
+    LANG_ENGLISH,
+    LANG_FRENCH_AND_ENGLISH,
+    LANG_FRENCH, // All languages before LANG_FRENCH contain English
+    N_LANGS // Not a real entry; evaluates to amount of languages
+};
+
+inline bool contains_english(Language lang) {
+    return (lang < LANG_FRENCH); // All languages before LANG_FRENCH contain English
+}
+
+struct LanguageProbabilities {
+    double& operator[](int index) {
+        DEBUG_CHECK(index >= 0 && index < N_LANGS, "Out of bounds!");
+        return probs[index];
+    }
+    LanguageProbabilities() {
+        memset(probs, 0, sizeof(double) * N_LANGS);
+    }
+    Language kmc_select(MTwist& rng) {
+        return (Language)rng.kmc_select(probs, N_LANGS);
+    }
+private:
+    double probs[N_LANGS];
+};
+
 /*
  * An entity type is a static class of entity, determined at creation.
  * Entity types are intended to represent different kinds of network participants,
@@ -43,31 +69,5 @@ typedef std::vector<EntityType> EntityTypeVector;
 
 // 'EntityTypeVector' acts exactly as a 'vector'
 typedef std::vector<EntityType> EntityTypeVector;
-
-enum Language {
-    LANG_ENGLISH,
-    LANG_FRENCH_AND_ENGLISH,
-    LANG_FRENCH, // All languages before LANG_FRENCH contain English
-    N_LANGS // Not a real entry; evaluates to amount of languages
-};
-
-inline bool contains_english(Language lang) {
-    return (lang < LANG_FRENCH); // All languages before LANG_FRENCH contain English
-}
-
-struct LanguageProbabilities {
-    double& operator[](int index) {
-        DEBUG_CHECK(index >= 0 && index < N_LANGS, "Out of bounds!");
-        return probs[index];
-    }
-    LanguageProbabilities() {
-        memset(probs, 0, sizeof(double) * N_LANGS);
-    }
-    Language kmc_select(MTwist& rng) {
-        return (Language)rng.kmc_select(probs, N_LANGS);
-    }
-private:
-    double probs[N_LANGS];
-};
 
 #endif

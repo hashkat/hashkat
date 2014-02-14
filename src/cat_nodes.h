@@ -45,12 +45,48 @@ struct Hasher {
     }
 };
 
+template <int N_ELEMS>
+struct RateTuple {
+    RateTuple(double d = 0) {
+        for (int i = 0; i < N_ELEMS; i++) {
+            rates[i] = d;
+        }
+    }
+
+    void operator+=(const RateTuple& o) {
+        for (int i = 0; i < N_ELEMS; i++) {
+            rates[i] += o.rates[i];
+        }
+    }
+
+    bool operator==(const RateTuple& o) {
+        for (int i = 0; i < N_ELEMS; i++) {
+            if (rates[i] != o.rates[i]) {
+                return false;
+            }
+        }
+        return true;
+    }
+    double rates[N_ELEMS];
+};
+
+template <int N_ELEMS>
+struct CompileTimeRateSwitch {
+    typedef RateTuple<N_ELEMS> repr_t; // Default, use 'RateTuple<N_ELEMS>'
+};
+
+template <>
+struct CompileTimeRateSwitch<1> {
+    typedef double repr_t; // N_ELEMS == 1, use 'double'
+};
+
 /* Every LeafNode holds a google-spare-hash-set. These data structures are highly memory efficient.
  * They are also fairly dynamic. If we hit memory problems, we can write to disk and restart the simulation.
  * The simulation will then be 'defragmented'.
  * For this reason the nice properties of dynamic memory allocation (simplicity and very decent performance) were preferred. */
-template <typename ElemT, typename HasherT = Hasher>
+template <typename ElemT, int N_RATE_ELEMS = 1, typename HasherT = Hasher>
 struct LeafNode {
+    typedef typename CompileTimeRateSwitch<N_RATE_ELEMS>::repr_t rate_t;
     typedef google::sparse_hash_set<ElemT, HasherT> HashSet;
     typedef ElemT value_type;
 
@@ -86,8 +122,7 @@ struct LeafNode {
         return true;
     }
 
-    LeafNode() {
-        total_rate = 0;
+    LeafNode() : total_rate(0) {
         // MUST be done to use erase() with Google's HashSet
         elems.set_deleted_key(ElemT(-1));
     }
@@ -97,7 +132,7 @@ struct LeafNode {
     }
 
     template <typename StateT>
-    bool add(StateT& N, double rate, double& delta, const ElemT& elem) {
+    bool add(StateT& N, rate_t rate, rate_t& delta, const ElemT& elem) {
         if (insert(elem)) { // Did we insert a unique element?
             delta = rate;
             total_rate += delta;
@@ -107,13 +142,13 @@ struct LeafNode {
     }
 
     template <typename StateT>
-    bool add(StateT& N, double rate, const ElemT& elem) {
-        double dummy;
+    bool add(StateT& N, rate_t rate, const ElemT& elem) {
+        rate_t dummy;
         return add(N, rate, dummy, elem);
     }
 
     template <typename StateT>
-    bool remove(StateT& N, double rate, double& delta, const ElemT& elem) {
+    bool remove(StateT& N, rate_t rate, rate_t& delta, const ElemT& elem) {
         if (elems.erase(elem) > 0) { // Did we erase an element that was in our set?
             delta = -rate;
             total_rate += delta;
@@ -123,23 +158,23 @@ struct LeafNode {
     }
 
     template <typename StateT>
-    bool remove(StateT& N, double rate, const ElemT& elem) {
-        double dummy;
+    bool remove(StateT& N, rate_t rate, const ElemT& elem) {
+        rate_t dummy;
         return remove(N, rate, dummy, elem);
     }
 
-    double get_total_rate() {
+    rate_t get_total_rate() {
         return total_rate;
     }
 
     template <typename StateT>
-    double recalc_rates(StateT& N, double rate) {
+    rate_t recalc_rates(StateT& N, rate_t rate) {
         total_rate = rate * elems.size();
         return total_rate;
     }
 
     template <typename StateT>
-    void print(StateT& N, double rate, int bin, int layer) {
+    void print(StateT& N, rate_t rate, int bin, int layer) {
         for (int i = 0; i < layer; i++) {
             printf("  ");
         }
@@ -156,7 +191,7 @@ struct LeafNode {
     void transfer(StateT& N, ClassifierT& C, Node& o) {
         typename HashSet::iterator it = elems.begin();
         for (; it != elems.end(); ++it) {
-            double delta = 0.0;
+            rate_t delta = 0.0;
             o.add(N, C, delta, *it);
         }
         elems.clear();
@@ -200,7 +235,7 @@ struct LeafNode {
         return elem;
     }
 private:
-    double total_rate;
+    rate_t total_rate;
     HashSet elems;
 
     // Returns true if the element was unique
@@ -246,8 +281,10 @@ private:
 };
 
 /* Points either to further TreeNode's, or a LeafNode. */
-template <typename SubCat, typename CatDataT = std::vector<SubCat> >
+template <typename SubCat, typename CatDataT = std::vector<SubCat>, int N_RATE_ELEMS = 1>
 struct TreeNode {
+    typedef typename CompileTimeRateSwitch<N_RATE_ELEMS>::repr_t rate_t;
+
     typedef typename SubCat::iterator sub_iterator;
     typedef typename SubCat::value_type value_type;
 
@@ -260,7 +297,6 @@ struct TreeNode {
         value_type get() {
             return sub_iter.get();
         }
-
     };
 
     bool iterate(iterator& iter) {
@@ -284,7 +320,7 @@ struct TreeNode {
     }
 
     void swap(TreeNode& o) {
-        double tmp_total = total_rate;
+        rate_t tmp_total = total_rate;
         int tmp_n = n_elems;
         n_elems = o.n_elems;
         total_rate = o.total_rate;
@@ -320,7 +356,7 @@ struct TreeNode {
     }
 
     template <typename StateT, typename ClassifierT>
-    double recalc_rates(StateT& S, ClassifierT& C) {
+    rate_t recalc_rates(StateT& S, ClassifierT& C) {
         total_rate = 0;
         for (int i = 0; i < n_bins(); i++) {
             total_rate += cats[i].recalc_rates(S, C.get(S,i));
@@ -330,8 +366,8 @@ struct TreeNode {
 
     // Leaf node, return true if the element already existed
     template <typename StateT, typename ClassifierT>
-    bool add(StateT& S, ClassifierT& C, double& ret, const value_type& elem) {
-        double delta = 0.0;
+    bool add(StateT& S, ClassifierT& C, rate_t& ret, const value_type& elem) {
+        rate_t delta = 0.0;
         int bin = C.classify(S, elem);
         ensure_bin(bin);
         if (cats[bin].add(S, C.get(S, bin), delta, elem)) { // Did we insert a unique element?
@@ -346,7 +382,7 @@ struct TreeNode {
 
     template <typename StateT, typename ClassifierT>
     bool add(StateT& N, ClassifierT& C, const value_type& elem) {
-        double dummy;
+        rate_t dummy;
         return add(N, C, dummy, elem);
     }
 
@@ -388,8 +424,8 @@ struct TreeNode {
 
     // Leaf node, return true if the element was actually in the set
     template <typename StateT, typename ClassifierT>
-    bool remove(StateT& S, ClassifierT& C, double& ret, const value_type& elem) {
-        double delta = 0.0;
+    bool remove(StateT& S, ClassifierT& C, rate_t& ret, const value_type& elem) {
+        rate_t delta = 0.0;
         int bin = C.classify(S, elem);
         ensure_bin(bin);
         if (cats[bin].remove(S, C.get(S, bin), delta, elem)) { // Did we insert a unique element?
@@ -403,8 +439,8 @@ struct TreeNode {
     }
 
     template <typename StateT>
-    bool remove(StateT& N, double rate, const value_type& elem) {
-        double dummy;
+    bool remove(StateT& N, rate_t rate, const value_type& elem) {
+        rate_t dummy;
         return remove(N, rate, dummy, elem);
     }
 
@@ -447,7 +483,7 @@ struct TreeNode {
         return cats[bin];
     }
 
-    double get_total_rate() {
+    rate_t get_total_rate() {
         return total_rate;
     }
 
@@ -467,7 +503,7 @@ struct TreeNode {
         }
     }
 private:
-    double total_rate; // Total weight of the subtree
+    rate_t total_rate; // Total weight of the subtree
     int n_elems;
     CatDataT cats;
 };
