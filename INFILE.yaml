@@ -11,7 +11,6 @@ analysis:
 
   follow_model: preferential-entity # Accepted models: 'random', 'preferential', 'entity', 'preferential-entity'
 
-
 rates:
   # Rate for creating entities
   add: {function: constant, value: 1.0}
@@ -40,6 +39,38 @@ languages:
     English: 100
     French: 25
     French+English: 25
+
+tweet_observation:
+   # Configures an observation probability density function that gives 
+   # the probability that a tweet is observed at a certain time by an 'ideal observer'. 
+   # An 'ideal observer' is one which always sees a tweet, eventually.'
+   # The observation PDF is used for both retweeting and follow-from-tweet.
+   # We combine this with a relevance factor, r, where 0 <= r <= 1.0, we in turn
+   # determines the probability that a given entity will act on a given tweet.
+
+   half_life: 90 # In minutes. Determines half-life of exponetial decay.
+   initial_resolution: 0.016 # In minutes. The time-step with which to begin binning.
+   final_rate: 0.01 # A final value when to stop binning our omega function.
+
+tweet_relevance:
+    # Determine amount of discrete bins; should have correspondence with the C++ config_static.h limits.
+    # Distance is the value [0...1] determined by a modular distance function.
+    distance_bins: 10
+    location_bins: 10
+
+    # Determine traits relevant to the relevance determination function 
+    # Relevance functions are automatically converted into the necessary tables
+    # using Python. The strings provided are Python strings.
+    preference_classes:
+      - name: OnlyStandard
+        retweet_relevance:
+          Standard: 1
+          else: 0
+
+      - name: OnlyCelebrities
+        retweet_relevance: 
+          Celebrity: 1
+          else: 0 
 
 entities:
   - name: Standard

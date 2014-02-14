@@ -27,7 +27,12 @@ const int TIME_CAT_FREQ = 30 * 24 * 60;
 // Output frequency:
 const int STDOUT_OUTPUT_RATE = 1000; // Once per X file outputs
 
-// Uncomment this to run expensive but informative checks:
+// Uncomment this to run (somewhat) expensive but informative checks:
 #define SLOW_DEBUG_CHECKS
+
+// MAX_PREFERENCE_CLASSES should ideally be equal to
+// the amount of preference classes actually used in the simulation.
+// The memory waste should not be horrible to overshoot by, say, 2x, however.
+const int MAX_PREFERENCE_CLASSES = 10;
 
 #endif

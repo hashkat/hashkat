@@ -19,7 +19,6 @@ template <typename ElemT, int MAX_CATS, int N_ELEMS = 1>
 struct StaticBaseLeafClass : BaseLeafClass<ElemT, StaticVector<LeafNode<ElemT, N_ELEMS>, MAX_CATS>, N_ELEMS > {
 };
 
-
 template <typename ElemT, typename CatData = std::vector<LeafNode<ElemT> >, int N_ELEMS = 1>
 struct LeafClass : BaseLeafClass<ElemT, CatData, N_ELEMS> {
     template <typename NetworkT>

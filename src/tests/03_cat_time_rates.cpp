@@ -16,7 +16,6 @@ SUITE(cat_time_rates) {
         double creation_time;
         MockEntity(int et, double creation_time) :
                 entity_type(et), creation_time(creation_time) {
-
         }
     };
 

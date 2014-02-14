@@ -250,7 +250,6 @@ static void parse_all_configuration(ParsedConfig& config, const Node& node) {
     parse_output_configuration(config, node["output"]);
     config.entity_types = parse_entities_configuration(node["entities"]);
     parse_category_configurations(config, node);
-    
 }
 
 ParsedConfig parse_yaml_configuration(const char* file_name) {

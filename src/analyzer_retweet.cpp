@@ -101,7 +101,6 @@ struct AnalyzerRetweet {
         }
         return -1;
     }
-
 };
 
 void update_retweets(AnalysisState& state) {
