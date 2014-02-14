@@ -51,9 +51,9 @@ void output_network_statistics(AnalysisState& state) {
         tweets_distribution(network, N_ENTITIES);
     }
     if (entity_checks(et_vec, network, state, rate_add, initial_entities)) {
-        cout << "Numbers check out :-)\n";
+        cout << "Number of events are valid.\n";
     } else {
-        cout << "Numbers are wrong :-(\n";
+        cout << "Numbers are events are not valid, adjust the tolerance or check for errors.\n";
     }
     
 

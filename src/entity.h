@@ -52,6 +52,7 @@ struct RetweetInfo {
     double starting_rate, updating_rate;
     int entity_ID;
     double time_of_retweet;
+    UsedEntities used_entities;
     RetweetInfo() {
         starting_rate = updating_rate = 0;
         entity_ID = -1;
