@@ -11,6 +11,8 @@
 #include "dependencies/mtwist.h"
 #include "events.h"
 
+#include "config_static.h"
+
 #include "entity_properties.h"
 
 typedef cats::LeafNode<int> FollowSet;
@@ -18,12 +20,19 @@ typedef cats::LeafNode<int> FollowSet;
 struct AnalysisState;
 
 namespace follower_set {
-    struct LanguageFilter: cats::StaticLeafClass<int, N_LANGS> {
+    struct LanguageComponent: cats::StaticLeafClass<int, N_LANGS> {
+        int classify(AnalysisState& N, int entity_id); // Defined in entity.cpp
+        template <typename AnyT>
+        double get(AnyT& notused, int bin) {
+            return 1; // TODO: Not used
+        }
+    };
+    struct PreferenceClassComponent: cats::StaticTreeClass<LanguageComponent, MAX_PREFERENCE_CLASSES> {
         int classify(AnalysisState& N, int entity_id); // Defined in entity.cpp
     };
 }
 
-typedef follower_set::LanguageFilter FollowerSetRates;
+typedef follower_set::PreferenceClassComponent FollowerSetRates;
 typedef FollowerSetRates::CatGroup FollowerSet;
 
 // information for when a user tweets
@@ -55,6 +64,7 @@ typedef std::vector<RetweetInfo> RetweetList;
 
 struct Entity {
     int entity_type;
+    int preference_class;
     int n_tweets, n_retweets;
     double creation_time;
     float x_location, y_location;
@@ -70,6 +80,7 @@ struct Entity {
 
     Entity() {
         entity_type = 0;
+        preference_class = 0;
         creation_time = 0.0;
         x_location = -1, y_location = -1;
         n_tweets = 0;

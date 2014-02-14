@@ -94,8 +94,6 @@ def compute_tweet_obs():
 
     return rates
 
-print compute_tweet_obs()
-
 #######################
 # Relevance lookup table generation
 

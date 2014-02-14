@@ -68,8 +68,4 @@ struct EntityType {
 // 'EntityTypeVector' acts exactly as a 'vector'
 typedef std::vector<EntityType> EntityTypeVector;
 
-struct PreferenceClass {
-    std::string name; // Name associated with our preference class
-};
-
 #endif

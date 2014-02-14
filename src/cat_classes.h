@@ -53,6 +53,9 @@ struct TreeClass {
 
     template <typename NetworkT>
     InnerT& get(NetworkT& N, int bin) {
+        if (size() < bin + 1) {
+            resize(bin + 1);
+        }
         return classes.at(bin);
     }
     void resize(int n) {

@@ -61,13 +61,6 @@ struct ParsedConfig {
 
         rate_add = 0;
 
-        std::vector<double> rates;
-        rates.push_back(0.5); // Uniform for now
-        rates.push_back(0.5);
-        rates.push_back(0.5);
-
-        follower_rates.fill_rates(rates);
-
         output_stdout_basic = output_stdout_summary = true;
         output_verbose = output_visualize = false;
         output_tweet_analysis = output_cumulative_analysis = false;
