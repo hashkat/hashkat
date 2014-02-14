@@ -13,7 +13,7 @@ analysis:
 
 rates:
   # Rate for creating entities
-  add: {function: constant, value: 1.0}
+  add: {function: constant, value: 5.7}
 
 output:
   stdout_basic: true
