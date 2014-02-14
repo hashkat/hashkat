@@ -50,12 +50,13 @@ tweet_observation:
 
    half_life: 90 # In minutes. Determines half-life of exponetial decay.
    initial_resolution: 0.016 # In minutes. The time-step with which to begin binning.
-   final_rate: 0.01 # A final value when to stop binning our omega function.
+   final_rate: 0.001 # A final value when to stop binning our omega function.
 
 tweet_relevance:
     # Determine amount of discrete bins; should have correspondence with the C++ config_static.h limits.
     # Distance is the value [0...1] determined by a modular distance function.
     distance_bins: 10
+    humour_bins: 10
     location_bins: 10
 
     # Determine traits relevant to the relevance determination function 

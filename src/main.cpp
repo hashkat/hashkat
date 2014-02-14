@@ -40,7 +40,7 @@ int main(int argc, char** argv) {
 		// running tests:
 		return test_main(argc, argv);
 	} else {
-        ParsedConfig config = parse_yaml_configuration("INFILE.yaml");
+        ParsedConfig config = parse_yaml_configuration("INFILE-generated.yaml");
         if (has_arg(argc, argv, "--handle-ctrlc")) {
             config.handle_ctrlc = true;
         }
