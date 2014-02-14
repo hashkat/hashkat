@@ -87,7 +87,12 @@ struct AnalyzerRetweet {
             if (rand_num <= (atl[i].updating_rate / rate_total) ) {
                 Entity& e = network[atl[i].entity_ID];
                 int entity_retweeting = e.follower_set.pick_random_uniform(rng);
-                return entity_retweeting;
+                // this a bad way to search through to find an entity that hasn't retweeted
+                // but other ways add memory and slow things down
+                if (atl[i].used_entities.find(entity_retweeting) == atl[i].used_entities.end()) {
+                    atl[i].used_entities.insert(entity_retweeting);
+                    return entity_retweeting;
+                }
             }
             rand_num -= (atl[i].updating_rate / rate_total);
         }
@@ -95,7 +100,10 @@ struct AnalyzerRetweet {
             if (rand_num <= (arl[i].updating_rate / rate_total) ) {
                 Entity& e = network[arl[i].entity_ID];
                 int entity_retweeting = e.follower_set.pick_random_uniform(rng);
-                return entity_retweeting;
+                if (arl[i].used_entities.find(entity_retweeting) == arl[i].used_entities.end()) {
+                    arl[i].used_entities.insert(entity_retweeting);
+                    return entity_retweeting;
+                }
             }
             rand_num -= (arl[i].updating_rate / rate_total);
         }
