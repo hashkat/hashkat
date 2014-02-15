@@ -20,8 +20,7 @@ struct AnalyzerRetweet {
             network(state.network), state(state), stats(state.stats),
             config(state.config), entity_types(state.entity_types), rng(state.rng) {
     }
-    
-    
+
     void handle_old_tweet_and_retweet_IDs(TweetBank& tweet_bank) {
         TweetList& atl = tweet_bank.active_tweet_list;
         RetweetList& arl = tweet_bank.active_retweet_list;

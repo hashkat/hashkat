@@ -20,20 +20,29 @@ typedef cats::LeafNode<int> FollowSet;
 struct AnalysisState;
 
 namespace follower_set {
-    struct LanguageComponent: cats::StaticLeafClass<int, N_LANGS> {
+    struct PreferenceClassComponent: cats::StaticLeafClass<int, N_LANGS> {
         int classify(AnalysisState& N, int entity_id); // Defined in entity.cpp
         template <typename AnyT>
         double get(AnyT& notused, int bin) {
             return 1; // TODO: Not used
         }
     };
-    struct PreferenceClassComponent: cats::StaticTreeClass<LanguageComponent, MAX_PREFERENCE_CLASSES> {
+    struct LanguageComponent: cats::StaticTreeClass<PreferenceClassComponent, MAX_PREFERENCE_CLASSES> {
         int classify(AnalysisState& N, int entity_id); // Defined in entity.cpp
     };
 }
 
-typedef follower_set::PreferenceClassComponent FollowerSetRates;
+typedef follower_set::LanguageComponent FollowerSetRates;
 typedef FollowerSetRates::CatGroup FollowerSet;
+
+inline int language_entity_amount(FollowerSet& set, Language language) {
+    return set[language].size();
+}
+
+inline int language_entity_random(MTwist& rng, FollowerSet& set, Language language) {
+    // Required that language_entity_amount > 0
+    return set[language].pick_random_uniform(rng);
+}
 
 // information for when a user tweets
 struct TweetInfo {
