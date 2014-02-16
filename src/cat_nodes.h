@@ -518,7 +518,9 @@ struct TreeNode {
                 size()
         );
         for (int i = 0; i < cats.size(); i++) {
-            cats[i].print(S, C.get(S, i), i, layer + 1, C.cat_name(S, i));
+            if (cats[i].size() > 0) {
+                cats[i].print(S, C.get(S, i), i, layer + 1, C.cat_name(S, i));
+            }
         }
     }
 private:

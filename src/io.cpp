@@ -17,7 +17,8 @@ using namespace std;
 /* After 'analyze', print the results of the computations. */
 void output_network_statistics(AnalysisState& state) {
     Network& network = state.network;
-    for (int i = 0; i < 1 /*network.n_entities*/; i++) {
+    for (int i = 0; i < min(10, network.n_entities); i++) {
+        printf("(Entity %d Follower List)-----------------------------------------------\n", i);
         follower_set::Context context(state, i);
         network[i].follower_set.print(context, state.config.follower_rates);
     }
