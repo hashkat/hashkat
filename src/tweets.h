@@ -30,7 +30,16 @@ struct Tweet {
 };
 
 struct TweetStore {
-
+    struct PreferenceClassComponent: cats::StaticLeafClass<int, MAX_PREFERENCE_CLASSES> {
+        int classify(AnalysisState& N, int entity_id); // Defined in entity.cpp
+        template <typename AnyT>
+        double get(AnyT& notused, int bin) {
+            return 1; // TODO: Not used
+        }
+    };
+    struct LanguageComponent: cats::StaticTreeClass<PreferenceClassComponent, N_LANGS> {
+        int classify(AnalysisState& N, int entity_id); // Defined in entity.cpp
+    };
 };
 
 #endif

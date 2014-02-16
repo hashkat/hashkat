@@ -70,6 +70,18 @@ static LanguageProbabilities parse_language_configuration(const Node& node) {
     return probs;
 }
 
+static std::vector<EntityPreferenceClass> parse_preference_classes(const Node& node) {
+    const Node& tweet_rel = node["tweet_relevance"];
+    const Node& pref_classes = tweet_rel["preference_classes"];
+    std::vector<EntityPreferenceClass> ret;
+    for (int i = 0; i < pref_classes.size(); i++) {
+        EntityPreferenceClass pref_class;
+        parse(pref_classes[i], "name", pref_class.name);
+        ret.push_back(pref_class);
+    }
+    return ret;
+}
+
 static void parse_analysis_configuration(ParsedConfig& config, const Node& node) {
     parse(node, "max_entities", config.max_entities);
     parse(node, "initial_entities", config.initial_entities);
@@ -246,6 +258,7 @@ static EntityTypeVector parse_entities_configuration(const Node& node) {
 static void parse_all_configuration(ParsedConfig& config, const Node& node) {
     parse_analysis_configuration(config, node["analysis"]);
     config.lang_probs = parse_language_configuration(node["languages"]);
+    config.pref_classes = parse_preference_classes(node);
     config.add_rates = parse_rates_configuration(config, node["rates"]["add"]);
     parse_output_configuration(config, node["output"]);
     config.entity_types = parse_entities_configuration(node["entities"]);

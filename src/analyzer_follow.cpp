@@ -193,7 +193,6 @@ struct AnalyzerFollow {
             follow_ranks.categorize(prev_actor_id, prev_actor.follower_set.size());
             stats.n_follows++; // We were able to add the follow; usually the case.
             state.event_stat_log(prev_target_id, EV_FOLLOWBACK);
-            //state.stat_event(prev_actor_id, EV_FOLLOWBACK);
             return true;
         }
         return false; // Completion failure: Can be ignored for followback, largely

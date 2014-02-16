@@ -5,12 +5,20 @@
 
 /* This file contains properties that differentiate tweets and entities */
 
+// An X-Macro, allowing for syntatic construction via defining X before resolution
+#define X_ALL_LANGUAGES \
+    X(LANG_ENGLISH)\
+    X(LANG_FRENCH_AND_ENGLISH)\
+    X(LANG_FRENCH)
+/* All languages before LANG_FRENCH contain English */
+
+#define X(x) x, /* Resolve for enum */
 enum Language {
-    LANG_ENGLISH,
-    LANG_FRENCH_AND_ENGLISH,
-    LANG_FRENCH, // All languages before LANG_FRENCH contain English
+    // Resolves using X above, fills enum:
+    X_ALL_LANGUAGES
     N_LANGS // Not a real entry; evaluates to amount of languages
 };
+#undef X
 
 inline bool contains_english(Language lang) {
     return (lang < LANG_FRENCH); // All languages before LANG_FRENCH contain English

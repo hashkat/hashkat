@@ -8,6 +8,7 @@
 #include "util.h"
 #include "dependencies/mtwist.h"
 #include "lcommon/typename.h"
+#include "lcommon/strformat.h"
 
 #include <google/sparse_hash_set>
 
@@ -174,11 +175,21 @@ struct LeafNode {
     }
 
     template <typename StateT>
-    void print(StateT& N, rate_t rate, int bin, int layer) {
+    void print(StateT& N, rate_t rate, int bin, int layer, const char* name) {
         for (int i = 0; i < layer; i++) {
             printf("  ");
         }
-        printf("[Bin %d][leaf] (Total %.2f; N_elems %d; Rate %.2f) ", bin, float(total_rate), rate, size());
+        std::string repr;
+        if (name != NULL) {
+            repr = format("%s (Bin %d)", name, bin);
+        } else {
+            repr = format("Bin %d", bin);
+        }
+        printf("[%s][leaf] (Total %.2f; N_elems %d; Rate %.2f) ",
+                repr.c_str(),
+                float(total_rate),
+                rate,
+                size());
         printf("[");
         typename HashSet::iterator it = elems.begin();
         for (; it != elems.end(); ++it) {
@@ -488,18 +499,26 @@ struct TreeNode {
     }
 
     template <typename StateT, typename ClassifierT>
-    void print(StateT& S, ClassifierT& C, int bin = 0, int layer = 0) {
+    void print(StateT& S, ClassifierT& C, int bin = -1, int layer = 0, const char* name = NULL) {
         for (int i = 0; i < layer; i++) {
             printf("  ");
         }
-        printf("[Bin %d][%s] (Total %.2f; N_elems %d) \n",
-                bin,
+        std::string repr = "Root";
+        if (bin != -1) {
+            if (name != NULL) {
+                repr = format("%s (Bin %d)", name, bin);
+            } else {
+                repr = format("Bin %d", bin);
+            }
+        }
+        printf("[%s][%s] (Total %.2f; N_elems %d) \n",
+                repr.c_str(),
                 cpp_type_name_no_namespace(C).c_str(),
                 float(total_rate),
                 size()
         );
         for (int i = 0; i < cats.size(); i++) {
-            cats[i].print(S, C.get(S, i), i, layer + 1);
+            cats[i].print(S, C.get(S, i), i, layer + 1, C.cat_name(S, i));
         }
     }
 private:

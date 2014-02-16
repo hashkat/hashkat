@@ -10,6 +10,10 @@ enum FollowModel {
 
 #include "network.h"
 
+struct EntityPreferenceClass {
+    std::string name;
+};
+
 // Config variables, read from INFILE.yaml
 struct ParsedConfig {
     // 'analysis' config options
@@ -42,6 +46,8 @@ struct ParsedConfig {
     // Note: Weights are filled, entity lists empty
     EntityTypeVector entity_types;
     Add_Rates add_rates;
+
+    std::vector<EntityPreferenceClass> pref_classes;
 
     // command-line config options
     bool handle_ctrlc;

@@ -35,6 +35,11 @@ struct LeafClass : BaseLeafClass<ElemT, CatData, N_ELEMS> {
         rates.push_back(rate);
     }
 
+    template <typename NetworkT>
+    const char* cat_name(NetworkT& N, int bin) {
+        return NULL;
+    }
+
     void fill_rates(std::vector<double>& rates) {
         this->rates = rates;
     }
@@ -67,6 +72,11 @@ struct TreeClass {
 
     int size() {
         return classes.size();
+    }
+
+    template <typename NetworkT>
+    const char* cat_name(NetworkT& N, int bin) {
+        return NULL;
     }
 
     template <typename T>

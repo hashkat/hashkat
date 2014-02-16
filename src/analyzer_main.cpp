@@ -189,6 +189,7 @@ struct Analyzer {
 		Entity& e = network[index];
 		e.creation_time = creation_time;
 		e.language = entity_pick_language();
+		e.preference_class = rng.rand_int(config.pref_classes.size());
 		double rand_num = rng.rand_real_not0();
 		for (int et = 0; et < entity_types.size(); et++) {
 			if (rand_num <= entity_types[et].prob_add) {
