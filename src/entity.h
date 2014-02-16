@@ -82,7 +82,6 @@ struct RetweetInfo {
     }
 };
 
-
 typedef std::vector<TweetInfo> TweetList;
 typedef std::vector<RetweetInfo> RetweetList;
 
