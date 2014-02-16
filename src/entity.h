@@ -20,17 +20,29 @@ typedef cats::LeafNode<int> FollowSet;
 struct AnalysisState;
 
 namespace follower_set {
-    struct PreferenceClassComponent: cats::StaticLeafClass<int, MAX_PREFERENCE_CLASSES> {
-        int classify(AnalysisState& N, int entity_id); // Defined in entity.cpp
-        const char* cat_name(AnalysisState& N, int bin);
+    struct Context {
+        Context(AnalysisState& N, int owner_id) :
+                N(N), owner_id(owner_id) {
+        }
+        AnalysisState& N; // Analysis state
+        int owner_id; // Owner of the follower set
+    };
+    struct PreferenceClassComponent: cats::StaticLeafClass<int, N_BIN_PREFERENCE_CLASS> {
+        int classify(Context& N, int entity_id); // Defined in entity.cpp
+        std::string cat_name(Context& N, int bin);
         template <typename AnyT>
         double get(AnyT& notused, int bin) {
             return 1; // TODO: Not used
         }
     };
-    struct LanguageComponent: cats::StaticTreeClass<PreferenceClassComponent, N_LANGS> {
-        const char* cat_name(AnalysisState& N, int bin);
-        int classify(AnalysisState& N, int entity_id); // Defined in entity.cpp
+    // The distance you are to your followers is a categorization dimension
+    struct DistanceComponent: cats::StaticTreeClass<PreferenceClassComponent, N_BIN_DISTANCE> {
+        std::string cat_name(Context& N, int bin);
+        int classify(Context& N, int entity_id); // Defined in entity.cpp
+    };
+    struct LanguageComponent: cats::StaticTreeClass<DistanceComponent, N_LANGS> {
+        std::string cat_name(Context& N, int bin);
+        int classify(Context& N, int entity_id); // Defined in entity.cpp
     };
 }
 
@@ -79,7 +91,7 @@ struct Entity {
     int preference_class;
     int n_tweets, n_retweets;
     double creation_time;
-    float x_location, y_location;
+    Location location;
     Language language;
 
     // Store the two directions of the follow relationship
@@ -94,7 +106,6 @@ struct Entity {
         entity_type = 0;
         preference_class = 0;
         creation_time = 0.0;
-        x_location = -1, y_location = -1;
         n_tweets = 0;
         language = (Language)-1; // Initialize with invalid language
         n_retweets = 0;

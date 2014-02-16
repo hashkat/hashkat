@@ -175,15 +175,15 @@ struct LeafNode {
     }
 
     template <typename StateT>
-    void print(StateT& N, rate_t rate, int bin, int layer, const char* name) {
+    void print(StateT& N, rate_t rate, int bin, int layer, std::string name = std::string()) {
         for (int i = 0; i < layer; i++) {
             printf("  ");
         }
         std::string repr;
-        if (name != NULL) {
-            repr = format("%s (Bin %d)", name, bin);
-        } else {
+        if (name.empty()) {
             repr = format("Bin %d", bin);
+        } else {
+            repr = format("%s (Bin %d)", name.c_str(), bin);
         }
         printf("[%s][leaf] (Total %.2f; N_elems %d; Rate %.2f) ",
                 repr.c_str(),
@@ -499,16 +499,16 @@ struct TreeNode {
     }
 
     template <typename StateT, typename ClassifierT>
-    void print(StateT& S, ClassifierT& C, int bin = -1, int layer = 0, const char* name = NULL) {
+    void print(StateT& S, ClassifierT& C, int bin = -1, int layer = 0, std::string name = std::string()) {
         for (int i = 0; i < layer; i++) {
             printf("  ");
         }
         std::string repr = "Root";
         if (bin != -1) {
-            if (name != NULL) {
-                repr = format("%s (Bin %d)", name, bin);
-            } else {
+            if (name.empty()) {
                 repr = format("Bin %d", bin);
+            } else {
+                repr = format("%s (Bin %d)", name.c_str(), bin);
             }
         }
         printf("[%s][%s] (Total %.2f; N_elems %d) \n",

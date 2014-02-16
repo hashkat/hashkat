@@ -82,6 +82,19 @@ static std::vector<EntityPreferenceClass> parse_preference_classes(const Node& n
     return ret;
 }
 
+static TweetObservationPDF parse_tweet_obs_pdf(const Node& node) {
+    const Node& tweet_obs = node["tweet_observation"];
+    const Node& func = node["GENERATED"]["obs_function"];
+    TweetObservationPDF ret; 
+    parse(tweet_obs, "initial_resolution", ret.initial_resolution);
+    for (int i = 0; i < func.size(); i++) {
+        double val = 0;
+        func[i] >> val;
+        ret.values.push_back(val);
+    }
+    return ret;
+}
+
 static void parse_analysis_configuration(ParsedConfig& config, const Node& node) {
     parse(node, "max_entities", config.max_entities);
     parse(node, "initial_entities", config.initial_entities);
@@ -259,6 +272,7 @@ static void parse_all_configuration(ParsedConfig& config, const Node& node) {
     parse_analysis_configuration(config, node["analysis"]);
     config.lang_probs = parse_language_configuration(node["languages"]);
     config.pref_classes = parse_preference_classes(node);
+    config.tweet_obs = parse_tweet_obs_pdf(node);
     config.add_rates = parse_rates_configuration(config, node["rates"]["add"]);
     parse_output_configuration(config, node["output"]);
     config.entity_types = parse_entities_configuration(node["entities"]);

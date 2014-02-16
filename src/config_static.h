@@ -30,9 +30,17 @@ const int STDOUT_OUTPUT_RATE = 1000; // Once per X file outputs
 // Uncomment this to run (somewhat) expensive but informative checks:
 #define SLOW_DEBUG_CHECKS
 
-// MAX_PREFERENCE_CLASSES should ideally be equal to
+/*
+ * Parameters for tweet relevance functions
+ */
+
+// N_BIN_PREFERENCE_CLASS should ideally be equal to
 // the amount of preference classes actually used in the simulation.
 // The memory waste should not be horrible to overshoot by, say, 2x, however.
-const int MAX_PREFERENCE_CLASSES = 10;
+const int N_BIN_PREFERENCE_CLASS = 10;
+
+// NOTE WELL: The below 2 parameters should max your INFILE.yaml!!
+const int N_BIN_HUMOUR = 10;
+const int N_BIN_DISTANCE = 10;
 
 #endif

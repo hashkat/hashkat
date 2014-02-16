@@ -71,6 +71,7 @@ profile_funcs = load_relevance_functions()
 # It is scaled by the relevance factor.
 def tweet_observation_pdf(t):
     hl = tweet_obs_half_life
+
     val = exp(-t / hl * log(2))
     #print(str(t) + ' ' + str(val)) #Uncomment for simple, plottable data
     return val

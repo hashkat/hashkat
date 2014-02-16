@@ -18,7 +18,8 @@ using namespace std;
 void output_network_statistics(AnalysisState& state) {
     Network& network = state.network;
     for (int i = 0; i < 1 /*network.n_entities*/; i++) {
-        network[i].follower_set.print(state, state.config.follower_rates);
+        follower_set::Context context(state, i);
+        network[i].follower_set.print(context, state.config.follower_rates);
     }
     ParsedConfig& C = state.config;
     EntityTypeVector& et_vec = state.entity_types;

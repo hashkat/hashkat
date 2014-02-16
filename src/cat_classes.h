@@ -36,8 +36,8 @@ struct LeafClass : BaseLeafClass<ElemT, CatData, N_ELEMS> {
     }
 
     template <typename NetworkT>
-    const char* cat_name(NetworkT& N, int bin) {
-        return NULL;
+    std::string cat_name(NetworkT& N, int bin) {
+        return "";
     }
 
     void fill_rates(std::vector<double>& rates) {
@@ -75,8 +75,8 @@ struct TreeClass {
     }
 
     template <typename NetworkT>
-    const char* cat_name(NetworkT& N, int bin) {
-        return NULL;
+    std::string cat_name(NetworkT& N, int bin) {
+        return "";
     }
 
     template <typename T>

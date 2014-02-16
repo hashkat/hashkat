@@ -190,6 +190,10 @@ struct Analyzer {
 		e.creation_time = creation_time;
 		e.language = entity_pick_language();
 		e.preference_class = rng.rand_int(config.pref_classes.size());
+		// Place the entity in a random location
+		// TODO: Location choosing scheme
+		e.location.x = rng.rand_real_with01();
+		e.location.y = rng.rand_real_with01();
 		double rand_num = rng.rand_real_not0();
 		for (int et = 0; et < entity_types.size(); et++) {
 			if (rand_num <= entity_types[et].prob_add) {

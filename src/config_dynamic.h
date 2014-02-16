@@ -8,10 +8,29 @@ enum FollowModel {
     PREFERENTIAL_ENTITY_FOLLOW
 };
 
+#include <cmath>
 #include "network.h"
 
 struct EntityPreferenceClass {
     std::string name;
+};
+
+// Also referred to as the Omega function, see INFILE.yaml for details:
+struct TweetObservationPDF {
+    double initial_resolution;
+    std::vector<double> values;
+
+    // Inverse of our exponential function:
+    int get_probability_bin(double time) {
+        const double log2 = 0.30102999566;
+        double R = initial_resolution;
+        double L = log( (R+time) / (3.0 * R));
+        int bin = (int)ceil((L - log2) / log2);
+        if (bin >= values.size()) {
+            return values.size() - 1;
+        }
+        return bin;
+    }
 };
 
 // Config variables, read from INFILE.yaml
@@ -51,6 +70,9 @@ struct ParsedConfig {
 
     // command-line config options
     bool handle_ctrlc;
+
+    // Tweet relevance functions
+    TweetObservationPDF tweet_obs;
 
     /* Most config values are optional -- place defaults here. */
     ParsedConfig() {

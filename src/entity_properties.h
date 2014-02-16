@@ -1,7 +1,11 @@
 #ifndef ENTITY_CHARACTERISTICS_H_
 #define ENTITY_CHARACTERISTICS_H_
 
+#include <cmath>
+#include <algorithm>
 #include "util.h"
+
+#include "config_static.h"
 
 /* This file contains properties that differentiate tweets and entities */
 
@@ -12,6 +16,35 @@
     X(LANG_FRENCH)
 /* All languages before LANG_FRENCH contain English */
 
+// Helper for location distance:
+inline double wrap_dist(double d1, double d2) {
+    double distA = fabs(d2 - d1);
+    double distB = fabs(d2 - d1 + 1);
+    double distC = fabs(d2 - d1 - 1);
+    return std::min(distA, std::min(distB, distC));
+}
+
+/* Represents a Location object that wraps around in (x = 0 to 1) X (y = 0 to 1) space*/
+struct Location {
+    double x, y;
+    Location() {
+        x = 0, y = 0;
+    }
+    double distance(const Location& o) {
+        double dx = wrap_dist(x, o.x);
+        double dy = wrap_dist(y, o.y);
+        double d= sqrt(dx*dx + dy*dy);
+        return d;
+    }
+    int distance_bin(const Location& o) {
+        // We normalize to 0..1 by multiplying by 2, as
+        // 0.5 is the maximum distance with modular coordinates.
+        int bin = (int) (distance(o) * 2.0 * N_BIN_DISTANCE);
+        bin = std::min(bin, N_BIN_DISTANCE - 1);
+        return bin;
+    }
+};
+
 #define X(x) x, /* Resolve for enum */
 enum Language {
     // Resolves using X above, fills enum:
@@ -19,6 +52,7 @@ enum Language {
     N_LANGS // Not a real entry; evaluates to amount of languages
 };
 #undef X
+
 
 inline bool contains_english(Language lang) {
     return (lang < LANG_FRENCH); // All languages before LANG_FRENCH contain English

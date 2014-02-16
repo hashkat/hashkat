@@ -10,6 +10,5 @@ using namespace std;
 
 SUITE(TweetStore) {
     TEST(basic) {
-        TweetStore t;
     }
 }

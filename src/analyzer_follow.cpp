@@ -34,7 +34,8 @@ struct AnalyzerFollow {
        Entity& T = network[target];
        bool was_added = A.follow_set.add(state, /* AD: dummy rate for now */ 1.0, target);
        if (was_added) {
-           bool was_added = T.follower_set.add(state, config.follower_rates, actor);
+           follower_set::Context context(state, target);
+           bool was_added = T.follower_set.add(context, config.follower_rates, actor);
            ASSERT(was_added, "Follow/follower-set asymmetry detected!");
            return true;
        }

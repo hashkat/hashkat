@@ -40,7 +40,7 @@ languages:
     French: 25
     French+English: 25
 
-tweet_observation:
+tweet_observation: # 'Omega'
    # Configures an observation probability density function that gives 
    # the probability that a tweet is observed at a certain time by an 'ideal observer'. 
    # An 'ideal observer' is one which always sees a tweet, eventually.'
@@ -49,7 +49,7 @@ tweet_observation:
    # determines the probability that a given entity will act on a given tweet.
 
    half_life: 90 # In minutes. Determines half-life of exponetial decay.
-   initial_resolution: 0.016 # In minutes. The time-step with which to begin binning.
+   initial_resolution: 0.01 # In minutes. The time-step with which to begin binning.
    final_rate: 0.001 # A final value when to stop binning our omega function.
 
 tweet_relevance:
