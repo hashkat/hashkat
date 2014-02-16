@@ -50,9 +50,10 @@ def load_relevance_functions():
         for e in entities:
             name = e["name"]
             retweet_rel = p["retweet_relevance"]
-            func_str = (retweet_rel[name]
-                            if (name in retweet_rel)
-                            else retweet_rel["else"])
+            if name in retweet_rel:
+                func_str = retweet_rel[name]
+            else:
+                func_str = retweet_rel["else"]
             func = load_relevance_function(func_str)
             func_set[name] = func
         funcs.append(func_set)
