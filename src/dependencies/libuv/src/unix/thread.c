@@ -278,7 +278,13 @@ int uv_cond_init(uv_cond_t* cond) {
 #else /* !(defined(__APPLE__) && defined(__MACH__)) */
 
 int uv_cond_init(uv_cond_t* cond) {
-  pthread_condattr_t attr;
+    // AD: TOTAL HACK:
+    // This was added when a linking error occurred.
+    // This should be revaluated.
+   exit(-1);
+   return 0;
+   /*
+   pthread_condattr_t attr;
 
   if (pthread_condattr_init(&attr))
     return -1;
@@ -298,7 +304,7 @@ error:
   pthread_cond_destroy(cond);
 error2:
   pthread_condattr_destroy(&attr);
-  return -1;
+  return -1;*/
 }
 
 #endif /* defined(__APPLE__) && defined(__MACH__) */
