@@ -122,13 +122,12 @@ static void parse_output_configuration(ParsedConfig& config, const Node& node) {
     parse(node, "stdout_basic", config.output_stdout_basic);
     parse(node, "stdout_summary", config.output_stdout_summary);
 
-    parse(node, "verbose", config.output_verbose);
     parse(node, "visualize", config.output_visualize);
-
+    parse(node, "entity_stats", config.entity_stats);
+    
     parse(node, "degree_distributions", config.degree_distributions);
 
     parse(node, "tweet_analysis", config.output_tweet_analysis);
-    parse(node, "cumulative_analysis", config.output_cumulative_analysis);
 }
 
 static CategoryGrouper parse_category_thresholds(const Node& node) {

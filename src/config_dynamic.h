@@ -42,6 +42,7 @@ struct ParsedConfig {
     bool use_preferential_follow;
     bool use_flawed_followback;
     bool use_barabasi;
+    bool entity_stats;
     FollowModel follow_model;
     FollowerSetRates follower_rates;
 
@@ -50,9 +51,9 @@ struct ParsedConfig {
 
     // 'output' config options
     bool output_stdout_basic, output_stdout_summary;
-    bool output_verbose, output_visualize;
+    bool output_visualize;
     bool degree_distributions;
-    bool output_tweet_analysis, output_cumulative_analysis;
+    bool output_tweet_analysis;
     // 'X_category' config options
 
     // Thresholds are filled, entity lists empty
@@ -90,8 +91,8 @@ struct ParsedConfig {
         rate_add = 0;
 
         output_stdout_basic = output_stdout_summary = true;
-        output_verbose = output_visualize = false;
-        output_tweet_analysis = output_cumulative_analysis = false;
+        output_visualize = false;
+        output_tweet_analysis = false;
 		degree_distributions = true;
 		handle_ctrlc = false;
     }

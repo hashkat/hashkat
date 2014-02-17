@@ -64,6 +64,7 @@ struct TweetInfo {
     int entity_ID;
     double time_of_tweet;
     UsedEntities used_entities;
+    Language language;
     TweetInfo() {
         starting_rate = updating_rate = 0;
         entity_ID = -1;
@@ -72,13 +73,15 @@ struct TweetInfo {
 
 // information for when a user retweets
 struct RetweetInfo {
+    int original_ID;
     double starting_rate, updating_rate;
     int entity_ID;
     double time_of_retweet;
     UsedEntities used_entities;
+    Language language;
     RetweetInfo() {
         starting_rate = updating_rate = 0;
-        entity_ID = -1;
+        entity_ID = original_ID = -1;
     }
 };
 

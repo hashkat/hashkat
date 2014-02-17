@@ -90,6 +90,8 @@ struct AnalyzerRetweet {
                 // but other ways add memory and slow things down
                 if (atl[i].used_entities.find(entity_retweeting) == atl[i].used_entities.end()) {
                     atl[i].used_entities.insert(entity_retweeting);
+                    Entity& e = network[entity_retweeting];
+                    e.retweet_info.original_ID = atl[i].entity_ID;
                     return entity_retweeting;
                 }
             }
@@ -101,6 +103,8 @@ struct AnalyzerRetweet {
                 int entity_retweeting = e.follower_set.pick_random_uniform(rng);
                 if (arl[i].used_entities.find(entity_retweeting) == arl[i].used_entities.end()) {
                     arl[i].used_entities.insert(entity_retweeting);
+                    Entity& e = network[entity_retweeting];
+                    e.retweet_info.original_ID = arl[i].original_ID;
                     return entity_retweeting;
                 }
             }

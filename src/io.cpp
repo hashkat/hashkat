@@ -57,23 +57,21 @@ void output_network_statistics(AnalysisState& state) {
     } else {
         cout << "Numbers are events are not valid, adjust the tolerance or check for errors.\n";
     }
-    
-
-    //entity_statistics(network, N_FOLLOWS,N_ENTITIES, N_ENTITIES, entity_entities);
-    whos_following_who(et_vec, network);
-
+    if (C.entity_stats) {
+        whos_following_who(et_vec, network);
+    }
     if (C.output_stdout_basic) {
         cout << "Analysis complete!\n";
     }
-//        DATA_TIME.close();
-    degree_distributions(network);
-
+    if (C.degree_distributions) {
+        degree_distributions(network);
+    }
 }
 
 // edgelist created for R (analysis) and python executable (drawing) and gephi outputfile
 void output_position(Network& network, int n_entities) {
     ofstream output1;
-    output1.open("POSITIONS.gexf");
+    output1.open("network.gexf");
     output1 << "<gexf version=\"1.2\">\n"
             << "<meta lastmodifieddate=\"2013-11-21\">\n"
             << "<creator> Kevin Ryczko </creator>\n"

@@ -11,6 +11,7 @@
 #include "analyzer.h"
 #include "util.h"
 #include "network.h"
+#include "entity.h"
 
 #include "config_static.h"
 
@@ -216,13 +217,30 @@ struct Analyzer {
     // likely have something to do with the entities followers, but not for now 
     double tweet_content(Entity& e) {
         // return a constant value for now
-        return 0.0001;
+        double value;
+        // the language of the tweet is most likely the same language of the entity
+        e.tweet_info.language = e.language;
+        // if (e.tweet_info.some_characteristic == funny) {
+        //     value = 0.01; // some value greater than normal
+        // }
+        value = 0.01 / network.tweet_bank.half_life;
+        return value;
     }
     
     // will use the categories here to decide who will retweet
     int users_to_retweet(Entity& e) {
         // returns full list for now
-        return e.follower_set.size();
+        FollowerSet& fs = e.follower_set;
+        if (e.language == 0 /*english*/) {
+            // return all of the english speakers and bilingual speakers 
+            return language_entity_amount(fs, (Language)0) + language_entity_amount(fs, (Language)1); 
+        } else if (e.language == 1 /*english & french*/) {
+            // return the whole list
+            return e.follower_set.size();
+        } else if (e.language == 2 /*french*/){
+            return language_entity_amount(fs, (Language)1) + language_entity_amount(fs, (Language)2); 
+        }
+        return 0;
     }
     
     void get_tweet_info(int entity, Entity& e) {

@@ -1,1 +1,1 @@
-rm *.dat POS* DATA_* 
+rm *.dat *.gexf DATA_* 

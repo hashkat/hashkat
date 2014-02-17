@@ -1,0 +1,7 @@
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /Users/kryczko/git/KMC
+[ 34%] [ 49%] Built target UnitTest++
+[ 76%] Built target libuv
+Built target yaml-cpp
+[100%] Built target main
