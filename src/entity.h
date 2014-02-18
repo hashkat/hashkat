@@ -75,8 +75,7 @@ struct Entity {
     FollowerSet follower_set;
     
     //info needed for retweeting
-    smartptr<TweetContent> tweet_info;
-    Tweet retweet_info;
+    Tweet last_tweet; // TODO: Entities should have more than one active tweet possible
 
     Entity() {
         entity_type = 0;

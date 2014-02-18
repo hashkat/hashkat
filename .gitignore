@@ -6,6 +6,7 @@ INFILE-generated.yaml
 Makefile
 DATA_vs_TIME
 network.gexf
+*.yaml-generated
 cmake_install.cmake
 main
 src/main

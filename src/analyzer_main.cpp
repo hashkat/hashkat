@@ -244,51 +244,60 @@ struct Analyzer {
         return 0;
     }
 
-    smartptr<TweetContent> generate_tweet_content(int entity, Entity& e) {
+    smartptr<TweetContent> generate_tweet_content(int id_original_author) {
+        Entity& e_original_author = network[id_original_author];
+
         smartptr<TweetContent> ti(new TweetContent);
-        ti->entity_ID = entity;
+        ti->id_original_author = id_original_author;
         ti->time_of_tweet = time;
         // TODO: Pick
-        ti->language = e.language; // TODO: AD -- Bilingual tweets make no sense
-        ti->starting_rate = tweet_content(e) * users_to_retweet(e);
-        // if they have no followers, why add them to the bank?
-        if (network.n_followers(entity) != 0) {
-            // AD -- TEMPORARY NOTE: Refactoring occurred here
-            network.tweet_bank.active_retweet_list.push_back(ti);
-        }
+        ti->language = e_original_author.language; // TODO: AD -- Bilingual tweets make no sense
+        ti->starting_rate = tweet_content(e_original_author) * users_to_retweet(e_original_author);
+
         return ti;
     }
 
+    Tweet generate_tweet(int id_tweeter, const smartptr<TweetContent>& content) {
+        Entity& e_tweeter = network[id_tweeter];
+        Tweet tweet;
+        tweet.content = content;
+        tweet.creation_time = time;
+        tweet.id_tweeter = id_tweeter;
+        tweet.starting_rate = tweet_content(e_tweeter) * users_to_retweet(e_tweeter);
+        if (network.n_followers(id_tweeter) != 0) {
+            network.tweet_bank.active_tweet_list.push_back(tweet);
+        }
+        return tweet;
+    }
+
 	// function to handle the tweeting
-	bool action_tweet(int entity) {
-		// This is the entity tweeting 
-		Entity& e = network[entity];
+	bool action_tweet(int id_tweeter) {
+        if (network.n_followers(id_tweeter) == 0) {
+            // No followers -- no need to even store the tweet.
+            return true; //** AD: Still consider a success for now, re-evaluate later
+            //** AD: Maybe we may want to discount the possibility of such tweets and just restart
+        }
+		// This is the entity tweeting
+		Entity& e = network[id_tweeter];
         // add info to TweetInfo struct
-        e.tweet_info = generate_tweet_content(entity, e);
+        e.last_tweet = generate_tweet(id_tweeter, generate_tweet_content(id_tweeter));
 		// increase the number of tweets the entity had by one
 		e.n_tweets++;
         entity_types[e.entity_type].n_tweets ++;
-		tweet_ranks.categorize(entity, e.n_tweets);
+		tweet_ranks.categorize(id_tweeter, e.n_tweets);
         stats.n_tweets ++;
 		return true; // Always succeeds
 	}
 	
-    void get_retweet_info(RetweetChoice choice, Entity& e) {
-        Tweet& ri = e.retweet_info;
-        ri.content = network[choice.e_author].tweet_info;
-        ri.creation_time = time;
-        ri.starting_rate = tweet_content(e) * users_to_retweet(e);
-        if (network.n_followers(choice.e_observer) != 0) {
-            network.tweet_bank.active_retweet_list.push_back(ri);
-        }
-    }
-    
 	bool action_retweet(RetweetChoice choice, double time_of_retweet) {
-		Entity& e_observer = network[choice.e_observer];
+		Entity& e_observer = network[choice.id_observer];
+		Entity& e_author = network[choice.id_author];
 
-        get_retweet_info(choice, e_observer);
+		DEBUG_CHECK(!e_author.last_tweet.content.empty(), "Retweeting empty tweet!");
+		generate_tweet(choice.id_observer, e_author.last_tweet.content);
         entity_types[e_observer.entity_type].n_retweets ++;
         stats.n_retweets ++;
+
         return true; // Always succeeds
 	}
 
@@ -337,7 +346,7 @@ struct Analyzer {
                 complete = action_tweet(entity);
             } else if (u_1 - (stats.prob_add + stats.prob_follow + stats.prob_tweet + stats.prob_retweet) <= ZEROTOL ) {
                 RetweetChoice choice = analyzer_select_entity_retweet(state, RETWEET_SELECT);
-                if (choice.e_author != -1) {
+                if (choice.id_author != -1) {
                     complete = action_retweet(choice, time);
                 }
             } else {

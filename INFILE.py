@@ -1,6 +1,7 @@
 #!/usr/bin/python
 
 import yaml
+import sys
 
 from pprint import pprint
 from math import *
@@ -12,7 +13,16 @@ from math import *
 # functions a user might want to supply.
 #################################################################
 
-print("INFILE.py -- Generating rates")
+def get_var_arg(test, default_val):
+    for i in range(len(sys.argv) - 1): 
+        print(sys.argv[i], test)
+        if sys.argv[i] == test:
+            return sys.argv[i+1]
+    return default_val
+
+INPUT_FILE_NAME = get_var_arg("--input", "INFILE.yaml")
+
+print("INFILE.py -- Generating rates for " + INPUT_FILE_NAME)
 
 ######################
 # Load the relevant pieces of the config.
@@ -145,6 +155,6 @@ generated = {
 
 CONFIG["GENERATED"] = generated
 
-yaml.dump(CONFIG, open("INFILE-generated.yaml", "w"))
+yaml.dump(CONFIG, open(INPUT_FILE_NAME + "-generated", "w"))
 
 print("INFILE.py -- Done generating rates")

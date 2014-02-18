@@ -37,7 +37,7 @@ const char* get_var_arg(int argc, char** argv, std::string test, const char* def
             return argv[i+1];
         }
     }
-    return NULL;
+    return default_val;
 }
 
 //** we avoid creating a header by pasting the 'test_main' prototype here:
@@ -51,8 +51,12 @@ int main(int argc, char** argv) {
 		// running tests:
 		return test_main(argc, argv);
 	} else {
-	    const char* INFILE = get_var_arg(argc, argv, "--input-file", "INFILE-generated.yaml");
-        ParsedConfig config = parse_yaml_configuration("INFILE-generated.yaml");
+	    printf("Network simulation started.\n");
+	    // NOTE: We rely on INFILE.py to create a -generated version of our input file!
+	    std::string INFILE = get_var_arg(argc, argv, "--input", "INFILE.yaml");
+        INFILE += "-generated";
+	    printf("Loading input configuration from '%s'.\n", INFILE.c_str());
+        ParsedConfig config = parse_yaml_configuration(INFILE.c_str());
         if (has_flag(argc, argv, "--handle-ctrlc")) {
             config.handle_ctrlc = true;
         }

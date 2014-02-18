@@ -26,11 +26,19 @@ function colorify() {
 # Returns true if flag was removed.
 function handle_flag() {
     flag=$1
-    if [[ "$args" == *"$flag"* ]] ; then
-        args="${args/$flag/}"
-        return 0 # True!
-    fi
-    return 1 # False!
+    local new_args
+    local got
+    got=1 # False!
+    for arg in $args ; do
+        if [ $arg = $flag ] ; then
+            args="${args/$flag/}"
+            got=0 # True!
+        else
+            new_args="$new_args $arg"
+        fi
+    done
+    args="$new_args"
+    return $got # False!
 }
 
 if [[ -e /proc/cpuinfo ]] ; then
@@ -59,9 +67,12 @@ if ! handle_flag "-f" ; then
     make -j$((cores+1))
 fi
 
+# Clear all existing generated YAML files:
+rm -f *yaml-generated
+
 # We must generate INFILE-generated.yaml from INFILE.yaml:
 # NOTE: Requires python and the pyyaml package
-python INFILE.py "$args"
+python './INFILE.py' "$@"
 
 if handle_flag "-g" ; then
     # Wrap the gdb around the program with -g:

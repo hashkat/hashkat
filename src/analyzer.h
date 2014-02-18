@@ -110,13 +110,13 @@ enum SelectionType {
 };
 
 struct RetweetChoice {
-    int e_author;
-    int e_observer;
-    RetweetChoice(int e_author, int e_observer) :
-            e_author(e_author), e_observer(e_observer) {
+    int id_author;
+    int id_observer;
+    RetweetChoice(int id_author, int id_observer) :
+            id_author(id_author), id_observer(id_observer) {
     }
     bool valid() {
-        return (e_author != -1);
+        return (id_author != -1);
     }
 };
 
