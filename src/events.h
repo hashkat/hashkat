@@ -6,23 +6,6 @@
 
 typedef google::sparse_hash_set<int, cats::Hasher> UsedEntities;
 
-// TODO:
-
-//struct Tweet {
-//    UsedEntities used_entities;
-//};
-//
-//struct Retweet {
-//    int original_tweeter;
-//    double time;
-//
-//    Retweet() {
-//    }
-//    Retweet(int tweet, double time) :
-//            original_tweeter(tweet), time(time) {
-//    }
-//};
-
 // The different events covered by the statistics gathering
 enum EventID {
     // AD: TODO move all rates into this form

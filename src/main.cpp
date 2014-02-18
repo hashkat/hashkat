@@ -20,7 +20,8 @@
 
 using namespace std;
 
-static bool has_arg(int argc, char** argv, std::string test) {
+// Check for a command-line flag
+static bool has_flag(int argc, char** argv, std::string test) {
 	for (int i = 1; i < argc; i++) {
 		if (argv[i] == test) {
 			return true;
@@ -29,25 +30,36 @@ static bool has_arg(int argc, char** argv, std::string test) {
 	return false;
 }
 
+// Get a flag's argument
+const char* get_var_arg(int argc, char** argv, std::string test, const char* default_val) {
+    for (int i = 1; i < argc - 1; i++) {
+        if (argv[i] == test) {
+            return argv[i+1];
+        }
+    }
+    return NULL;
+}
+
 //** we avoid creating a header by pasting the 'test_main' prototype here:
 int test_main(int argc, char** argv); // Defined in tests/main.cpp
 int uv_main(int argc, char** argv); // Defined in tests/libuv-learning.cpp
 
 int main(int argc, char** argv) {
-	if (has_arg(argc, argv, "--uv")) {
+	if (has_flag(argc, argv, "--uv")) {
 	    return uv_main(argc, argv);
-	} else if (has_arg(argc, argv, "--tests")) {
+	} else if (has_flag(argc, argv, "--tests")) {
 		// running tests:
 		return test_main(argc, argv);
 	} else {
+	    const char* INFILE = get_var_arg(argc, argv, "--input-file", "INFILE-generated.yaml");
         ParsedConfig config = parse_yaml_configuration("INFILE-generated.yaml");
-        if (has_arg(argc, argv, "--handle-ctrlc")) {
+        if (has_flag(argc, argv, "--handle-ctrlc")) {
             config.handle_ctrlc = true;
         }
 		// or running analysis:
 		Timer t;
 		int seed = 1;
-		if (has_arg(argc, argv, "--rand")) {
+		if (has_flag(argc, argv, "--rand")) {
 			time_t t;
 			time(&t);
 			seed = (int)t;

@@ -26,14 +26,14 @@ struct AnalyzerRetweet {
         RetweetList& arl = tweet_bank.active_retweet_list;
         
         for (int i = 0; i < atl.size(); i ++) {
-            TweetInfo& ti = atl[i];
+            OriginalTweet& ti = atl[i];
             int entity_ID = ti.entity_ID;
             if (tweet_bank.get_omega(ti.time_of_tweet, state.time) == -1) {
                 atl.erase(atl.begin() + i);
             }
         }
         for (int i = 0; i < arl.size(); i ++) {
-            RetweetInfo& ri = arl[i];
+            Tweet& ri = arl[i];
             int entity_ID = ri.entity_ID;
             if (tweet_bank.get_omega(ri.time_of_retweet, state.time) == -1) {
                 arl.erase(arl.begin() + i);
@@ -65,11 +65,11 @@ struct AnalyzerRetweet {
         TweetList& atl = tweet_bank.active_tweet_list;
         RetweetList& arl = tweet_bank.active_retweet_list;
         for (int i = 0; i < atl.size(); i ++) {
-            TweetInfo& ti = atl[i];
+            OriginalTweet& ti = atl[i];
             sum += ti.updating_rate;
         }
         for (int i = 0; i < arl.size(); i ++) {
-            RetweetInfo& ri = arl[i]; 
+            Tweet& ri = arl[i]; 
             sum += ri.updating_rate;
         }
         return sum;

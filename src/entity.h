@@ -15,6 +15,8 @@
 
 #include "entity_properties.h"
 
+#include "tweets.h"
+
 typedef cats::LeafNode<int> FollowSet;
 
 struct AnalysisState;
@@ -58,36 +60,6 @@ inline int language_entity_random(MTwist& rng, FollowerSet& set, Language langua
     return set[language].pick_random_uniform(rng);
 }
 
-// information for when a user tweets
-struct TweetInfo {
-    double starting_rate, updating_rate;
-    int entity_ID;
-    double time_of_tweet;
-    UsedEntities used_entities;
-    Language language;
-    TweetInfo() {
-        starting_rate = updating_rate = 0;
-        entity_ID = -1;
-    }
-};
-
-// information for when a user retweets
-struct RetweetInfo {
-    int original_ID;
-    double starting_rate, updating_rate;
-    int entity_ID;
-    double time_of_retweet;
-    UsedEntities used_entities;
-    Language language;
-    RetweetInfo() {
-        starting_rate = updating_rate = 0;
-        entity_ID = original_ID = -1;
-    }
-};
-
-typedef std::vector<TweetInfo> TweetList;
-typedef std::vector<RetweetInfo> RetweetList;
-
 struct Entity {
     int entity_type;
     int preference_class;
@@ -101,8 +73,8 @@ struct Entity {
     FollowerSet follower_set;
     
     //info needed for retweeting
-    TweetInfo tweet_info;
-    RetweetInfo retweet_info;
+    OriginalTweet tweet_info;
+    Tweet retweet_info;
 
     Entity() {
         entity_type = 0;

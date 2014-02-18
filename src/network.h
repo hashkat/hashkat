@@ -19,37 +19,15 @@
 
 #include "entity.h"
 #include "events.h"
+#include "tweets.h"
 
-
-struct TweetBank {
-    TweetList active_tweet_list;
-    RetweetList active_retweet_list; 
-   
-    double half_life;
-    double tolerance;
-    std::vector<double> half_life_function;
-    
-    TweetBank() {
-        half_life = 90; // 90 minutes
-        tolerance = 0.01;
-    }
-
-    // gives the value for Omega(t) discussed
-    double get_omega(double time_of_tweet, double actual_time) {
-        double value = exp((time_of_tweet - actual_time) / half_life);
-        if (value < tolerance) {
-            return -1;
-        }
-        return value;
-    }
-    
-};
+//[[AD -- TEMPORARY NOTE]] TweetBank was moved to tweets.h
 
 struct Network {
     Entity* entities; //** This is a pointer - used to create a dynamic array
     int n_entities, max_entities;
     TweetBank tweet_bank;
-    Network() {
+    Network() : tweet_bank(TweetRateDeterminer()){
         entities = NULL;
         n_entities = 0;
         max_entities = 0;

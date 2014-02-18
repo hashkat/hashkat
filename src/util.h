@@ -36,6 +36,7 @@ inline static void error_exit(const std::string& msg) {
 // XXX: NB: Not true for all compilers.
 typedef int int32;
 typedef long long int64;
+typedef int32 ref_t;
 
 template <typename T>
 inline bool within_range(T val, T a, T b) {

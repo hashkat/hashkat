@@ -12,6 +12,8 @@ from math import *
 # functions a user might want to supply.
 #################################################################
 
+print("INFILE.py -- Generating rates")
+
 ######################
 # Load the relevant pieces of the config.
 # We will add a 'generated' node to this, and emit it as INFILE-generated.yaml
@@ -33,7 +35,6 @@ tweet_obs_final_rate = obs_pdf["final_rate"]
 tweet_rel = CONFIG["tweet_relevance"]
 distance_bins = tweet_rel["distance_bins"]
 humour_bins = tweet_rel["humour_bins"]
-location_bins = tweet_rel["location_bins"]
 
 pref_classes = tweet_rel["preference_classes"]
 
@@ -145,3 +146,5 @@ generated = {
 CONFIG["GENERATED"] = generated
 
 yaml.dump(CONFIG, open("INFILE-generated.yaml", "w"))
+
+print("INFILE.py -- Done generating rates")

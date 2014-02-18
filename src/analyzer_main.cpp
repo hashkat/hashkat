@@ -212,6 +212,7 @@ struct Analyzer {
         network.n_entities++;
         return true; // Always succeeds, for now.
     }
+
     // this will be the function that will return the rate for a given tweet.
     // the rate is based on the content and the entity tweeting; it will most
     // likely have something to do with the entities followers, but not for now 
@@ -231,25 +232,28 @@ struct Analyzer {
     int users_to_retweet(Entity& e) {
         // returns full list for now
         FollowerSet& fs = e.follower_set;
-        if (e.language == 0 /*english*/) {
+
+        // AD -- TEMPORARY NOTE: Refactoring occurred here
+        if (e.language == LANG_ENGLISH) {
             // return all of the english speakers and bilingual speakers 
-            return language_entity_amount(fs, (Language)0) + language_entity_amount(fs, (Language)1); 
-        } else if (e.language == 1 /*english & french*/) {
+            return language_entity_amount(fs, LANG_ENGLISH) + language_entity_amount(fs, LANG_FRENCH_AND_ENGLISH);
+        } else if (e.language == LANG_FRENCH_AND_ENGLISH) {
             // return the whole list
             return e.follower_set.size();
-        } else if (e.language == 2 /*french*/){
-            return language_entity_amount(fs, (Language)1) + language_entity_amount(fs, (Language)2); 
+        } else if (e.language == LANG_FRENCH){
+            return language_entity_amount(fs, LANG_FRENCH) + language_entity_amount(fs, LANG_FRENCH_AND_ENGLISH);
         }
         return 0;
     }
-    
+
     void get_tweet_info(int entity, Entity& e) {
-        TweetInfo& ti = e.tweet_info;
+        OriginalTweet& ti = e.tweet_info;
         ti.entity_ID = entity;
         ti.time_of_tweet = time;
         ti.starting_rate = tweet_content(e) * users_to_retweet(e);
         // if they have no followers, why add them to the bank?
         if (network.n_followers(entity) != 0) {
+            // AD -- TEMPORARY NOTE: Refactoring occurred here
             network.tweet_bank.active_tweet_list.push_back(ti);
         }
     }
@@ -269,7 +273,7 @@ struct Analyzer {
 	}
 	
     void get_retweet_info(int entity, Entity& e) {
-        RetweetInfo& ri = e.retweet_info;
+        Tweet& ri = e.retweet_info;
         ri.entity_ID = entity;
         ri.time_of_retweet = time;
         ri.starting_rate = tweet_content(e) * users_to_retweet(e);

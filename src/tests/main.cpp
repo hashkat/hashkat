@@ -1,6 +1,7 @@
 #include <cstdio>
 #include <string>
 #include <stdexcept>
+#include <sstream>
 #include <cassert>
 
 #include "../dependencies/UnitTest++.h"
@@ -59,8 +60,7 @@ public:
     virtual void ReportTestFinish(const TestDetails& details,
             float secondsElapsed) {
         if (did_finish_correctly) {
-            printf("%s\t%s passed \n", suite_str(details).c_str(),
-                    details.testName);
+            printf("%s\t%s passed \n", suite_str(details).c_str(), details.testName);
         }
     }
 
@@ -72,24 +72,39 @@ public:
         }
 
         printf("Total tests run: %d\n", totalTestCount);
-        int n_passed = (totalTestCount - failedTestCount);
-        if (failedTestCount == 0) {
-            printf("All %d tests have PASSED\n",
-                    n_passed);
-        } else {
-            printf("Test results: passed: %d; failed: %d\n", n_passed,
-                    failedTestCount);
-        }
+        printf("Test results: passed: %d; failed: %d\n",
+                totalTestCount - failedTestCount, failedTestCount);
     }
 
 private:
     bool did_finish_correctly;
 };
 
+// Defined in main.cpp:
+const char* get_var_arg(int argc, char** argv, std::string test, const char* default_val);
+
+struct TestSelector {
+    TestSelector(int argc, char** argv) {
+        std::stringstream s;
+        s << get_var_arg(argc, argv, "--test", "-1");
+        s >> test_to_run;
+    }
+    bool operator()(const Test* test) const {
+        static int test_num = 0;
+        test_num++;
+//        if (test_to_run == -1) {
+            return true;
+//        }
+        return (test_to_run == test_num);
+    }
+    int test_to_run;
+};
+
 int test_main(int argc, char** argv) {
     _UnitTestReporter reporter;
     TestRunner runner(reporter);
+    TestSelector selector(argc, argv);
 
     return runner.RunTestsIf(Test::GetTestList(), NULL /*All suites*/,
-            True() /*All tests*/, 0 /*No time limit*/);
+            selector, 0 /*No time limit*/);
 }
