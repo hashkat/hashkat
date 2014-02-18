@@ -61,7 +61,7 @@ fi
 
 # We must generate INFILE-generated.yaml from INFILE.yaml:
 # NOTE: Requires python and the pyyaml package
-python './INFILE.py'
+python INFILE.py "$args"
 
 if handle_flag "-g" ; then
     # Wrap the gdb around the program with -g:

@@ -219,8 +219,6 @@ struct Analyzer {
     double tweet_content(Entity& e) {
         // return a constant value for now
         double value;
-        // the language of the tweet is most likely the same language of the entity
-        e.tweet_info.language = e.language;
         // if (e.tweet_info.some_characteristic == funny) {
         //     value = 0.01; // some value greater than normal
         // }
@@ -239,23 +237,26 @@ struct Analyzer {
             return language_entity_amount(fs, LANG_ENGLISH) + language_entity_amount(fs, LANG_FRENCH_AND_ENGLISH);
         } else if (e.language == LANG_FRENCH_AND_ENGLISH) {
             // return the whole list
-            return e.follower_set.size();
+            return e.follower_set.size(); // TODO: AD -- Bilingual tweets make no sense
         } else if (e.language == LANG_FRENCH){
             return language_entity_amount(fs, LANG_FRENCH) + language_entity_amount(fs, LANG_FRENCH_AND_ENGLISH);
         }
         return 0;
     }
 
-    void get_tweet_info(int entity, Entity& e) {
-        OriginalTweet& ti = e.tweet_info;
-        ti.entity_ID = entity;
-        ti.time_of_tweet = time;
-        ti.starting_rate = tweet_content(e) * users_to_retweet(e);
+    smartptr<TweetContent> generate_tweet_content(int entity, Entity& e) {
+        smartptr<TweetContent> ti(new TweetContent);
+        ti->entity_ID = entity;
+        ti->time_of_tweet = time;
+        // TODO: Pick
+        ti->language = e.language; // TODO: AD -- Bilingual tweets make no sense
+        ti->starting_rate = tweet_content(e) * users_to_retweet(e);
         // if they have no followers, why add them to the bank?
         if (network.n_followers(entity) != 0) {
             // AD -- TEMPORARY NOTE: Refactoring occurred here
-            network.tweet_bank.active_tweet_list.push_back(ti);
+            network.tweet_bank.active_retweet_list.push_back(ti);
         }
+        return ti;
     }
 
 	// function to handle the tweeting
@@ -263,7 +264,7 @@ struct Analyzer {
 		// This is the entity tweeting 
 		Entity& e = network[entity];
         // add info to TweetInfo struct
-        get_tweet_info(entity, e);
+        e.tweet_info = generate_tweet_content(entity, e);
 		// increase the number of tweets the entity had by one
 		e.n_tweets++;
         entity_types[e.entity_type].n_tweets ++;
@@ -272,20 +273,21 @@ struct Analyzer {
 		return true; // Always succeeds
 	}
 	
-    void get_retweet_info(int entity, Entity& e) {
+    void get_retweet_info(RetweetChoice choice, Entity& e) {
         Tweet& ri = e.retweet_info;
-        ri.entity_ID = entity;
-        ri.time_of_retweet = time;
+        ri.content = network[choice.e_author].tweet_info;
+        ri.creation_time = time;
         ri.starting_rate = tweet_content(e) * users_to_retweet(e);
-        if (network.n_followers(entity) != 0) {
+        if (network.n_followers(choice.e_observer) != 0) {
             network.tweet_bank.active_retweet_list.push_back(ri);
         }
     }
     
-	bool action_retweet(int entity, double time_of_retweet) {
-		Entity& et = network[entity];
-        get_retweet_info(entity, et);
-        entity_types[et.entity_type].n_retweets ++;
+	bool action_retweet(RetweetChoice choice, double time_of_retweet) {
+		Entity& e_observer = network[choice.e_observer];
+
+        get_retweet_info(choice, e_observer);
+        entity_types[e_observer.entity_type].n_retweets ++;
         stats.n_retweets ++;
         return true; // Always succeeds
 	}
@@ -334,9 +336,9 @@ struct Analyzer {
                 int entity = analyzer_select_entity(state, TWEET_SELECT);
                 complete = action_tweet(entity);
             } else if (u_1 - (stats.prob_add + stats.prob_follow + stats.prob_tweet + stats.prob_retweet) <= ZEROTOL ) {
-                int entity = analyzer_select_entity_retweet(state, RETWEET_SELECT);
-                if (entity != -1) {
-                    complete = action_retweet(entity, time);
+                RetweetChoice choice = analyzer_select_entity_retweet(state, RETWEET_SELECT);
+                if (choice.e_author != -1) {
+                    complete = action_retweet(choice, time);
                 }
             } else {
                 error_exit("step_analysis: event out of bounds");

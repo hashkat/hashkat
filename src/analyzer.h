@@ -109,6 +109,17 @@ enum SelectionType {
     TWEET_SELECT
 };
 
+struct RetweetChoice {
+    int e_author;
+    int e_observer;
+    RetweetChoice(int e_author, int e_observer) :
+            e_author(e_author), e_observer(e_observer) {
+    }
+    bool valid() {
+        return (e_author != -1);
+    }
+};
+
 // 'analyzer_select_entity' and 'analyzer_set_rates' implement time-dependent rates
 // Select based on any SelectionType
 int analyzer_select_entity(AnalysisState& state, SelectionType type);
@@ -122,7 +133,7 @@ void analyzer_main(AnalysisState& state);
 // this returns the total retweet rate
 double analyzer_total_retweet_rate(AnalysisState& state);
 // this is for the retweet entity selection
-int analyzer_select_entity_retweet(AnalysisState& state, SelectionType type);
+RetweetChoice analyzer_select_entity_retweet(AnalysisState& state, SelectionType type);
 void update_retweets(AnalysisState& state);
 
 const double ZEROTOL = 1e-16; // enough precision for really really low add rate

@@ -8,7 +8,9 @@
 #include "cat_nodes.h"
 #include "CategoryGrouper.h"
 
-#include "dependencies/mtwist.h"
+#include "lcommon/smartptr.h"
+#include "mtwist.h"
+
 #include "events.h"
 
 #include "config_static.h"
@@ -73,7 +75,7 @@ struct Entity {
     FollowerSet follower_set;
     
     //info needed for retweeting
-    OriginalTweet tweet_info;
+    smartptr<TweetContent> tweet_info;
     Tweet retweet_info;
 
     Entity() {
