@@ -8,14 +8,17 @@ cmake_minimum_required( VERSION 2.6 )
 set(CMAKE_BUILD_TYPE Debug)
 
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+if(APPLE) 
+else()
 SET (CMAKE_EXE_LINKER_FLAGS
-#    -fsanitize=address 
+    -fsanitize=address 
 )
 
 add_definitions(
- #  -fsanitize=address 
-  # -D_GLIBCXX_DEBUG
+  -fsanitize=address 
+   -D_GLIBCXX_DEBUG
 )
+endif()
 
 else()
 SET (CMAKE_EXE_LINKER_FLAGS

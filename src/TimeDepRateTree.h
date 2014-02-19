@@ -9,7 +9,7 @@
 #define TIMEDEPRATETREE_H_
 
 #include <cmath>
-
+#include <vector>
 #include <google/sparse_hash_set>
 
 #include "cat_nodes.h"
@@ -25,9 +25,9 @@ struct TimeDepRateTree {
         determiner(determiner), initial_resolution(initial_resolution), number_of_bins(number_of_bins) {
         ASSERT(number_of_bins > 0, "Need more than 0 bins!");
         time_sets.resize(number_of_bins);
-        for (int i = 0; i < number_of_bins; i++) {
-            time_sets[i].set_deleted_key(-1);
-        }
+//        for (int i = 0; i < number_of_bins; i++) {
+//            time_sets[i].set_deleted_key(-1);
+//        }
         last_rate = 0;
     }
 
@@ -89,8 +89,11 @@ struct TimeDepRateTree {
             double threshold = determiner.get_cat_threshold(bin);
             TimeSet& set = time_sets[bin];
             TimeSet::iterator it = set.begin();
-            for (; it != set.end(); it++) {
-                ref_t ref = *it;
+            for (; it != set.end();) {
+                TimeSet::iterator curr = it;
+                ++it;
+
+                ref_t ref = *curr;
                 T& data = tree.get(ref).data;
                 // Need to find new rates
                 double age = determiner.get_age(data);
@@ -102,13 +105,16 @@ struct TimeDepRateTree {
                     } else {
                         tree.remove(ref);
                     }
-                    double new_rate = determiner.get_rate(data, bin);
+                    RateVec<N_ELEM> rates = determiner.get_rate(data, bin);
+                    tree.replace_rate(ref, rates);
 
-                    // Google sparse hash guarantees that iterators are valid to erase
-                    // See http://google-sparsehash.googlecode.com/svn/trunk/doc/sparse_hash_map.html (Validity of Iterators)
-                    set.erase(it);
+                    delete_list.push_back(*curr);
                 }
             }
+            for (int i = 0; i < delete_list.size(); i++) {
+                set.erase(delete_list[i]);
+            }
+            delete_list.clear();
 
             this_bin /= 2;
             next_bin /= 2;
@@ -128,6 +134,7 @@ private:
     RateDeterminer determiner;
     double last_rate, initial_resolution;
     RateTree<T, N_ELEM, N_CHILDREN> tree;
+    std::vector<ref_t> delete_list;
     TimeSets time_sets;
     int number_of_bins;
 };

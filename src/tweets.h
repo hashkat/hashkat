@@ -86,13 +86,9 @@ struct AnalysisState;
 
 struct TweetRateDeterminer {
     TweetRateDeterminer(AnalysisState& state) : state(state){
-
     }
     double get_age(Tweet& tweet);
-    double get_rate(Tweet& tweet, int bin) {
-        // TODO
-        return 0.01;
-    }
+    double get_rate(Tweet& tweet, int bin);
 
     double get_cat_threshold(int bin) {
         return pow(2, bin) * 90;
@@ -108,9 +104,8 @@ struct TweetBank {
         return tree.rate_summary().tuple_sum;
     }
 
-    TweetBank(TweetRateDeterminer determiner, double initial_resolution = 90, int number_of_bins = 1) :
-            tree(determiner, initial_resolution, number_of_bins) {
-    }
+    TweetBank(AnalysisState& state);
+
     int n_active_tweets() const {
         return tree.size();
     }

@@ -259,6 +259,7 @@ struct RateTree {
         ASSERT(size() > 0, "No element to pick!");
         return get(0).pick_random_weighted(*this, rng, 0);
     }
+
     ref_t add(const T& data, const RateVec<N_ELEM>& tuple) {
         node_pool.reserve(node_pool.size() + 3); // Resolve cases where nodes can become deallocated during use
         ref_t node = find_vacancy();

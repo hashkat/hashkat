@@ -70,7 +70,7 @@ struct AnalysisState {
 
     AnalysisStats stats;
     AnalysisState(const ParsedConfig& config, int seed) :
-            config(config), tweet_bank(TweetRateDeterminer(*this)){
+            config(config), tweet_bank(*this){
         n_follows = 0;
         r_follow_norm = end_time = 0;
         tweet_ranks = config.tweet_ranks;
