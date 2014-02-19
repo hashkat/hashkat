@@ -49,6 +49,114 @@
 #include "mersenne-simd/SFMT.h"
 
 // Mersenne twister random number generator
+class MTwistClassic {
+public:
+    enum {
+        N = 624
+    };
+
+    void init_genrand(unsigned int s);
+    void init_by_array(unsigned int init_key[], int key_length);
+
+    MTwistClassic() :
+            mti(N + 1) {
+    }
+
+    MTwistClassic(unsigned int s) :
+            mti(N + 1) {
+        init_genrand(s);
+    }
+    MTwistClassic(unsigned int init_key[], int key_length) :
+            mti(N + 1) {
+        init_by_array(init_key, key_length);
+    }
+
+    /* generates a random number on [0,0xffffffff]-interval */
+    unsigned int genrand_int32(void);
+
+    /* generates a random number on [0,0x7fffffff]-interval */
+    int genrand_int31(void);
+
+    /* generates a random number on [0,1]-real-interval */
+    double genrand_real1(void);
+
+    /* generates a random number on [0,1)-real-interval */
+    double genrand_real2(void);
+
+    /* generates a random number on (0,1)-real-interval */
+    double genrand_real3(void);
+
+    /* generates a random number on [0,1) with 53-bit resolution*/
+    double genrand_res53(void);
+
+// AD: Added for Twitter simulation
+
+    /* Grab an integer from 0 to max, non-inclusive (ie appropriate for array lengths). */
+    int rand_int(int max) {
+        //AD: Modified to remove modulo-bias problem. Inspired by Java's nextInt implementation.
+        int raw = genrand_int31();
+
+        if ((max & -max) == max) { // i.e., max is a power of 2
+            return (int) ((max * (long long)raw) >> 31);
+        }
+        int val = raw % max;
+        // Reject values within a small, problematic range:
+        while (raw - val + (max - 1) < 0) {
+            raw = genrand_int31();
+            val = raw % max;
+        }
+
+        return val;
+    }
+    int rand_int(int min, int max) {
+        int range = max - min;
+        return rand_int(range) + min;
+    }
+
+    // Makes a choice given a profile of probabilities
+    inline int kmc_select(double* start, int len) {
+        double num =  genrand_real1();
+        for (int i = 0; i < len; i++) {
+            if (num < start[i]) {
+                return i;
+            }
+            num -= start[i];
+        }
+        return len - 1; // Assume floating point error
+    }
+
+    /* Grab a real number within [0,1) with 53-bit resolution */
+    double rand_real_not1() {
+        return genrand_res53();
+    }
+    /* Grab a real number within (0,1] with 53-bit resolution */
+    double rand_real_not0() {
+        return 1.0 - rand_real_not1();
+    }
+
+    template <typename T>
+    T pick_random_uniform(const std::vector<T>& vec) {
+        int n = rand_int(vec.size());
+        return vec[n];
+    }
+
+    bool random_chance(double probability) {
+        return (genrand_real1() < probability);
+    }
+    /* Using Mersenne-twister, grab a real number within [0,1] */
+    double rand_real_with01() {
+        return genrand_real1();
+    }
+
+private:
+    unsigned int mt[N];
+    int mti;
+};
+
+typedef MTwistClassic MTwist;
+
+// TODO: Remove the duplication once MTWistSSE can be trusted
+// Mersenne twister random number generator, SSE optimized
 class MTwistSSE {
 public:
     void init_genrand(unsigned int s) {

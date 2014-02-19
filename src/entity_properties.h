@@ -67,7 +67,7 @@ struct LanguageProbabilities {
     LanguageProbabilities() {
         memset(probs, 0, sizeof(double) * N_LANGS);
     }
-    Language kmc_select(MTwistSSE& rng) {
+    Language kmc_select(MTwist& rng) {
         return (Language)rng.kmc_select(probs, N_LANGS);
     }
 private:

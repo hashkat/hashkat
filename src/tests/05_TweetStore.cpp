@@ -19,7 +19,7 @@ SUITE(TweetStore) {
         }
     };
     TEST(RateTree) {
-        MTwistSSE rng;
+        MTwist rng;
         typedef RateTree<RateV, 1> Tree;
         Tree vec_tree;
         RateVec<1> vec;

@@ -75,7 +75,7 @@ SUITE(cat_time_rates) {
         CHECK(cat_group.get_total_rate() == 640);
         cat_group.print(N, time_class);
 
-        MTwistSSE rng;
+        MTwist rng;
         rng.init_genrand(29);
         int elem = -1;
         for (int i = 0; i < 100; i++) {

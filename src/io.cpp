@@ -99,7 +99,7 @@ void output_position(Network& network, int n_entities) {
     }
 
     else {
-        MTwistSSE rng;
+        MTwist rng;
         rng.init_genrand(/* Fixed seed */ 2);
         int fraction_users = 10000;
         vector<int> user_ids (fraction_users);

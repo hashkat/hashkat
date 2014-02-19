@@ -14,7 +14,7 @@ struct AnalyzerSelect {
     AnalysisState& state;
     AnalysisStats& stats;
     EntityTypeVector& entity_types;
-    MTwistSSE& rng;
+    MTwist& rng;
     // There are multiple 'Analyzer's, they each operate on parts of AnalysisState.
     AnalyzerSelect(AnalysisState& state) :
             network(state.network), state(state), stats(state.stats),

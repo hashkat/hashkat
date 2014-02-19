@@ -60,7 +60,7 @@ struct Analyzer {
     Add_Rates& add_rates;
 
     /* Mersenne-twister random number generator */
-    MTwistSSE& rng;
+    MTwist& rng;
 
     // Times the interval between prints to the console
     Timer stdout_milestone_timer;
