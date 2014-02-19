@@ -15,7 +15,7 @@ struct AnalyzerFollow {
     vector<double>& follow_probabilities, updating_follow_probabilities;
 
     EntityTypeVector& entity_types;
-    MTwist& rng;
+    MTwistSSE& rng;
     // There are multiple 'Analyzer's, they each operate on parts of AnalysisState.
     AnalyzerFollow(AnalysisState& state) :
             network(state.network), state(state), stats(state.stats),

@@ -44,11 +44,12 @@
 #ifndef MTWIST_H_
 #define MTWIST_H_
 
-#define SFMT_MEXP 19937
+#include <vector>
+
 #include "mersenne-simd/SFMT.h"
 
 // Mersenne twister random number generator
-class MTwist {
+class MTwistSSE {
 public:
     void init_genrand(unsigned int s) {
         sfmt_init_gen_rand(&state, s);
@@ -58,10 +59,10 @@ public:
         sfmt_init_by_array(&state, init_key, key_length);
     }
 
-    MTwist(unsigned int s = 0) {
+    MTwistSSE(unsigned int s = 0) {
         init_genrand(s);
     }
-    MTwist(unsigned int init_key[], int key_length) {
+    MTwistSSE(unsigned int init_key[], int key_length) {
         init_by_array(init_key, key_length);
     }
 
@@ -95,12 +96,12 @@ public:
     /* Grab an integer from 0 to max, non-inclusive (ie appropriate for array lengths). */
     int rand_int(int max) {
         //AD: Modified to remove modulo-bias problem. Inspired by Java's nextInt implementation.
-        unsigned int raw = genrand_uint32();
+        long long raw = genrand_uint32();
 
         if ((max & -max) == max) { // i.e., max is a power of 2
-            return (int) ((max * (long long)raw) >> 31);
+            return (int) ((max * raw) >> 31);
         }
-        int val = raw % max;
+        long long val = raw % max;
         // Reject values within a small, problematic range:
         while (raw - val + (max - 1) < 0) {
             raw = genrand_uint32();
@@ -135,6 +136,11 @@ public:
         return 1.0 - rand_real_not1();
     }
 
+    template <typename T>
+    T pick_random_uniform(const std::vector<T>& vec) {
+        int n = rand_int(vec.size());
+        return vec[n];
+    }
     bool random_chance(double probability) {
         return (genrand_real1() < probability);
     }

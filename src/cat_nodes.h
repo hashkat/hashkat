@@ -208,7 +208,7 @@ struct LeafNode {
         elems.clear();
     }
 
-    bool pick_random_uniform(MTwist& rng, ElemT& elem) {
+    bool pick_random_uniform(MTwistSSE& rng, ElemT& elem) {
         if (elems.empty()) {
             return false;
         }
@@ -223,7 +223,7 @@ struct LeafNode {
         return true;
     }
 
-    ElemT pick_random_uniform(MTwist& rng) {
+    ElemT pick_random_uniform(MTwistSSE& rng) {
         ElemT elem;
         if (pick_random_uniform(rng, elem)) {
             return elem;
@@ -232,12 +232,12 @@ struct LeafNode {
         return elem;
     }
 
-    bool pick_random_weighted(MTwist& rng, ElemT& elem) {
+    bool pick_random_weighted(MTwistSSE& rng, ElemT& elem) {
         // Same thing for LeafNode's
         return pick_random_uniform(rng, elem);
     }
 
-    ElemT pick_random_weighted(MTwist& rng) {
+    ElemT pick_random_weighted(MTwistSSE& rng) {
         ElemT elem;
         if (pick_random_weighted(rng, elem)) {
             return elem;
@@ -397,7 +397,7 @@ struct TreeNode {
         return add(N, C, dummy, elem);
     }
 
-    bool pick_random_uniform(MTwist& rng, value_type& elem) {
+    bool pick_random_uniform(MTwistSSE& rng, value_type& elem) {
         if (cats.empty()) {
             return false;
         }
@@ -406,7 +406,7 @@ struct TreeNode {
         return sub_cat.pick_random_uniform(rng, elem);
     }
 
-    value_type pick_random_uniform(MTwist& rng) {
+    value_type pick_random_uniform(MTwistSSE& rng) {
         value_type elem;
         if (pick_random_weighted(rng, elem)) {
             return elem;
@@ -415,7 +415,7 @@ struct TreeNode {
         return elem;
     }
 
-    bool pick_random_weighted(MTwist& rng, value_type& elem) {
+    bool pick_random_weighted(MTwistSSE& rng, value_type& elem) {
         if (cats.empty()) {
             return false;
         }
@@ -424,7 +424,7 @@ struct TreeNode {
         return sub_cat.pick_random_weighted(rng, elem);
     }
 
-    value_type pick_random_weighted(MTwist& rng) {
+    value_type pick_random_weighted(MTwistSSE& rng) {
         value_type elem;
         if (pick_random_weighted(rng, elem)) {
             return elem;
@@ -462,7 +462,7 @@ struct TreeNode {
     }
 
     /* Uniform method, choose with respect to amount only. */
-    int random_uniform_bin(MTwist& rng) {
+    int random_uniform_bin(MTwistSSE& rng) {
         int num = rng.rand_int(size());
         for (int i = 0; i < cats.size(); i++) {
             num -= cats.size();
@@ -474,7 +474,7 @@ struct TreeNode {
         return -1;
     }
     /* Principal KMC method, choose with respect to bin rates. */
-    int random_weighted_bin(MTwist& rng) {
+    int random_weighted_bin(MTwistSSE& rng) {
         double num = rng.genrand_real2() * total_rate;
         for (int i = 0; i < cats.size(); i++) {
             num -= cats[i].get_total_rate();

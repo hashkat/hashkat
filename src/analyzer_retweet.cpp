@@ -14,7 +14,7 @@ struct AnalyzerRetweet {
     AnalysisState& state;
     AnalysisStats& stats;
     EntityTypeVector& entity_types;
-    MTwist& rng;
+    MTwistSSE& rng;
     // There are multiple 'Analyzer's, they each operate on parts of AnalysisState.
     AnalyzerRetweet(AnalysisState& state) :
             network(state.network), state(state), stats(state.stats),

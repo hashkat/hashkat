@@ -109,7 +109,7 @@ struct TweetBank {
     int n_active_tweets() const {
         return tree.size();
     }
-    Tweet& pick_random_weighted(MTwist& rng) {
+    Tweet& pick_random_weighted(MTwistSSE& rng) {
         ref_t ref = tree.pick_random_weighted(rng);
         return tree.get(ref).data;
     }

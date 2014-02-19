@@ -126,7 +126,7 @@ struct TimeDepRateTree {
     }
 
     /* Principal KMC method, choose with respect to bin rates. */
-    ref_t pick_random_weighted(MTwist& rng) {
+    ref_t pick_random_weighted(MTwistSSE& rng) {
         return tree.pick_random_weighted(rng);
     }
 

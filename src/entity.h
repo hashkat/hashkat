@@ -57,7 +57,7 @@ inline int language_entity_amount(FollowerSet& set, Language language) {
     return set[language].size();
 }
 
-inline int language_entity_random(MTwist& rng, FollowerSet& set, Language language) {
+inline int language_entity_random(MTwistSSE& rng, FollowerSet& set, Language language) {
     // Required that language_entity_amount > 0
     return set[language].pick_random_uniform(rng);
 }

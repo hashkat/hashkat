@@ -60,7 +60,7 @@ struct Analyzer {
     Add_Rates& add_rates;
 
     /* Mersenne-twister random number generator */
-    MTwist& rng;
+    MTwistSSE& rng;
 
     // Times the interval between prints to the console
     Timer stdout_milestone_timer;
@@ -269,7 +269,7 @@ struct Analyzer {
         e.last_tweet = generate_tweet(id_tweeter, generate_tweet_content(id_tweeter));
 		// increase the number of tweets the entity had by one
 		e.n_tweets++;
-        entity_types[e.entity_type].n_tweets ++;
+        entity_types[e.entity_type].n_tweets++;
 		tweet_ranks.categorize(id_tweeter, e.n_tweets);
         stats.n_tweets ++;
 		return true; // Always succeeds

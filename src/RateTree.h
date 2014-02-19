@@ -163,7 +163,7 @@ struct RateTree {
             }
         }
         /* Principal KMC method, choose with respect to bin rates. */
-        ref_t random_weighted_bin(RateTree& tree, MTwist& rng) {
+        ref_t random_weighted_bin(RateTree& tree, MTwistSSE& rng) {
             const double ZEROTOL = 1e-16;
 
             double num = rng.rand_real_not1() * rates.tuple_sum;
@@ -180,7 +180,7 @@ struct RateTree {
             return INVALID;
         }
 
-        ref_t pick_random_weighted(RateTree& tree, MTwist& rng, ref_t self) {
+        ref_t pick_random_weighted(RateTree& tree, MTwistSSE& rng, ref_t self) {
             if (is_leaf) {
                 return self; // We are done
             }
@@ -255,7 +255,7 @@ struct RateTree {
         n = Node();// 'Wipe' the node
     }
 
-    ref_t pick_random_weighted(MTwist& rng) {
+    ref_t pick_random_weighted(MTwistSSE& rng) {
         ASSERT(size() > 0, "No element to pick!");
         return get(0).pick_random_weighted(*this, rng, 0);
     }

@@ -14,7 +14,7 @@ struct AnalyzerSelect {
     AnalysisState& state;
     AnalysisStats& stats;
     EntityTypeVector& entity_types;
-    MTwist& rng;
+    MTwistSSE& rng;
     // There are multiple 'Analyzer's, they each operate on parts of AnalysisState.
     AnalyzerSelect(AnalysisState& state) :
             network(state.network), state(state), stats(state.stats),
@@ -48,14 +48,19 @@ struct AnalyzerSelect {
         return rate_sum;
     }
 
+    int CHECK(int entity) {
+        DEBUG_CHECK(network.is_valid_id(entity), "Invalid entity selection!");
+        return entity;
+    }
+
     int entity_selection(EntityType& et, vector<double>& vec, double& rand_num, double rate_sum) {
         if (stats.prob_add == 0) {
-			if (rand_num <= ((vec[state.n_months()] * et.prob_add) / rate_sum)) {
-                int entity = et.entity_list[rng.rand_int(et.entity_list.size())];
-                return entity;
-			} else {rand_num -= ((vec[state.n_months()] * et.prob_add) / rate_sum) ;
-				}
-			
+            if (rand_num <= ((vec[state.n_months()] * et.prob_add) / rate_sum)) {
+                int entity = rng.pick_random_uniform(et.entity_list);
+                return CHECK(entity);
+            } else {
+                rand_num -= ((vec[state.n_months()] * et.prob_add) / rate_sum);
+            }
         } else {
             vector<int>& e_vec = et.entity_cap;
             for (int i = 0, e_i = e_vec.size() - 1; i <= state.n_months(); i++, e_i--) {
@@ -63,14 +68,15 @@ struct AnalyzerSelect {
                     int entity = -1;
                     if (state.n_months() == 0) {
                         entity = et.entity_list[rng.rand_int(et.new_entities)];
+                        DEBUG_CHECK(network.is_valid_id(entity), "Invalid entity selection!");
                     } else {
                         entity = et.entity_list[et.entity_list.size() - 1 - rng.rand_int(et.new_entities)];
                     }
-                    return entity;
+                    return CHECK(entity);
                 } else if (rand_num <= ((vec[i] * et.prob_add) / rate_sum)) {
                     int range_min = e_vec.at(e_i), range_max = e_vec.at(e_i + 1);
                     int entity = et.entity_list[rng.rand_int(range_min, range_max)];
-                    return entity;
+                    return CHECK(entity);
                 }
                 rand_num -= ((vec[i] * et.prob_add)/ rate_sum);
             }

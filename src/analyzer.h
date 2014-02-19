@@ -66,7 +66,7 @@ struct AnalysisState {
     TweetBank tweet_bank;
     std::vector<double> follow_probabilities, updating_follow_probabilities;
 
-    MTwist rng;
+    MTwistSSE rng;
 
     AnalysisStats stats;
     AnalysisState(const ParsedConfig& config, int seed) :

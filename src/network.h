@@ -49,6 +49,11 @@ struct Network {
     FollowSet& follow_set(int id) {
         return entities[id].follow_set;
     }
+
+    bool is_valid_id(int id) {
+        return (id >= 0 && id < n_entities);
+    }
+
     FollowerSet& follower_set(int id) {
         return entities[id].follower_set;
     }
@@ -60,6 +65,5 @@ struct Network {
         return follower_set(id).size();
     }
 };
-
 
 #endif
