@@ -66,7 +66,6 @@ struct Tweet { // AD: TEMPORARY NOTE was RetweetInfo
     // The entity broadcasting the tweet
     int id_tweeter;
     double starting_rate, updating_rate;
-    UsedEntities used_entities;
     // A tweet is an orignal tweet if tweeter_id == content.author_id
     smartptr<TweetContent> content;
     double tweet_time;
@@ -80,35 +79,39 @@ struct Tweet { // AD: TEMPORARY NOTE was RetweetInfo
 
 typedef std::vector<Tweet> TweetList;
 
+struct AnalysisState;
+
 struct TweetRateDeterminer {
-    double get_rate() {
+    TweetRateDeterminer(AnalysisState& state) : state(state){
+
+    }
+    double get_age(Tweet& tweet);
+    double get_rate(Tweet& tweet, int bin) {
+        // TODO
         return 0.01;
     }
+
+    double get_cat_threshold(int bin) {
+        return pow(2, bin) * 90;
+    }
+
+    AnalysisState& state;
 };
 
 struct TweetBank {
-    TweetList active_tweet_list;
     TimeDepRateTree<Tweet, 1 /*Just one rate for now*/, TweetRateDeterminer> tree;
 
-    double half_life;
-    double tolerance;
-    std::vector<double> half_life_function;
+    double get_total_rate() {
+        return tree.rate_summary().tuple_sum;
+    }
 
-    TweetBank(TweetRateDeterminer determiner, double initial_resolution = 1, int number_of_bins = 1) :
+    TweetBank(TweetRateDeterminer determiner, double initial_resolution = 90, int number_of_bins = 1) :
             tree(determiner, initial_resolution, number_of_bins) {
-        half_life = 90; // 90 minutes
-        tolerance = 0.01;
     }
-
-    // gives the value for Omega(t) discussed
-    double get_omega(double time_of_tweet, double actual_time) {
-        double value = exp((time_of_tweet - actual_time) / half_life);
-        if (value < tolerance) {
-            return -1;
-        }
-        return value;
+    Tweet& pick_random_weighted(MTwist& rng) {
+        ref_t ref = tree.pick_random_weighted(rng);
+        return tree.get(ref).data;
     }
-
 };
 
 #endif

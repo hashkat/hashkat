@@ -9,6 +9,7 @@ include_directories(
 	dependencies/libuv/include
 )
 
+
 add_definitions(-Wuninitialized -std=c++98 -O0 -ggdb)
 
 #SET (CMAKE_EXE_LINKER_FLAGS -fsanitize=address)

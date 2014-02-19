@@ -19,11 +19,11 @@ template <int N_ELEM>
 struct RateVec {
     double tuple[N_ELEM];
     double tuple_sum;
-    RateVec() {
+    RateVec(double v = 0) {
         for (int i = 0; i < N_ELEM; i++) {
-            tuple[i] = 0;
+            tuple[i] = v;
         }
-        tuple_sum = 0;
+        tuple_sum = v * N_ELEM;
     }
     void print() const {
         printf("(Sum = %.2f)[Elems: ", tuple_sum);

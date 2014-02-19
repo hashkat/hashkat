@@ -81,6 +81,7 @@ struct ParsedConfig {
         max_entities = 1000;
         max_time = INFINITY;
 
+        entity_stats = false;
         use_random_time_increment = false;
         use_preferential_follow = false;
         use_barabasi = false;

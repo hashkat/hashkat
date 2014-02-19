@@ -63,13 +63,14 @@ struct AnalysisState {
     int n_follows;
     double r_follow_norm, end_time;
 
+    TweetBank tweet_bank;
     std::vector<double> follow_probabilities, updating_follow_probabilities;
 
     MTwist rng;
 
     AnalysisStats stats;
     AnalysisState(const ParsedConfig& config, int seed) :
-            config(config) {
+            config(config), tweet_bank(TweetRateDeterminer(*this)){
         n_follows = 0;
         r_follow_norm = end_time = 0;
         tweet_ranks = config.tweet_ranks;

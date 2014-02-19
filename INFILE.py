@@ -28,7 +28,7 @@ print("INFILE.py -- Generating rates for " + INPUT_FILE_NAME)
 # Load the relevant pieces of the config.
 # We will add a 'generated' node to this, and emit it as INFILE-generated.yaml
 
-CONFIG = yaml.load(open("INFILE.yaml", "r"))
+CONFIG = yaml.load(open(INPUT_FILE_NAME, "r"))
 
 entities = CONFIG["entities"]
 

@@ -1,10 +1,10 @@
 analysis:
   max_entities: 
-    101
+    21
   max_time:
     2591990.0 # 1/10 year
   initial_entities:
-    100
+    20
   use_barabasi: false # if this is set to 1, the global follow rate will be ignored. Follow thresholds not needed.
   use_random_time_increment: true # increments by 1/sum(rates) on average
   use_flawed_followback: false
@@ -12,7 +12,7 @@ analysis:
 
 rates:
   # Rate for creating entities
-  add: {function: constant, value: 0.001}
+  add: {function: constant, value: 0.000}
 
 output:
   stdout_basic: true

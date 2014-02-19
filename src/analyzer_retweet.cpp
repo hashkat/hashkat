@@ -22,62 +22,37 @@ struct AnalyzerRetweet {
     }
 
     void handle_old_tweet_and_retweet_IDs(TweetBank& tweet_bank) {
-        TweetList& arl = tweet_bank.active_tweet_list;
-        
-        for (int i = 0; i < arl.size(); i ++) {
-            Tweet& ri = arl[i];
-            int tweeter_id = ri.id_tweeter;
-            if (tweet_bank.get_omega(ri.creation_time, state.time) == -1) {
-                arl.erase(arl.begin() + i);
-            }
-        }
-    }
-    
-    void handle_active_tweet_and_retweet_IDs(TweetBank& tweet_bank) {
-        TweetList& arl = tweet_bank.active_tweet_list;
-
-        for (int i = 0; i < arl.size(); i ++) {
-            arl[i].updating_rate = arl[i].starting_rate * tweet_bank.get_omega(arl[i].creation_time, state.time);
-        }
+        tweet_bank.tree.update(state.time);
     }
     
     void update_all_retweets() {
-        TweetBank& tweet_bank = network.tweet_bank;
+        TweetBank& tweet_bank = state.tweet_bank;
         handle_old_tweet_and_retweet_IDs(tweet_bank);
-        handle_active_tweet_and_retweet_IDs(tweet_bank);
     }
     
     double total_retweet_rate() {
-        double sum = 0;
-        TweetBank& tweet_bank = network.tweet_bank;
-        TweetList& arl = tweet_bank.active_tweet_list;
-        for (int i = 0; i < arl.size(); i ++) {
-            Tweet& ri = arl[i]; 
-            sum += ri.updating_rate;
-        }
-        return sum;
+        return state.tweet_bank.get_total_rate();
     }
 
-    // Returns two values via refererence passing
     RetweetChoice retweet_entity_selection() {
-        TweetBank& tweet_bank = network.tweet_bank;
-        TweetList& arl = tweet_bank.active_tweet_list;
+        TweetBank& tweet_bank = state.tweet_bank;
 
         double rand_num = rng.rand_real_not0();
         double rate_total = total_retweet_rate();
 
-        for (int i = 0; i < arl.size(); i ++) {
-            if (rand_num <= (arl[i].updating_rate / rate_total) ) {
-                Entity& e = network[arl[i].id_tweeter];
-                int entity_retweeting = e.follower_set.pick_random_uniform(rng);
-                if (arl[i].used_entities.find(entity_retweeting) == arl[i].used_entities.end()) {
-                    arl[i].used_entities.insert(entity_retweeting);
-                    Entity& e = network[entity_retweeting];
-                    return RetweetChoice(arl[i].content->id_original_author, entity_retweeting);
-                }
-            }
-            rand_num -= (arl[i].updating_rate / rate_total);
+        Tweet& tweet = tweet_bank.pick_random_weighted(rng);
+        UsedEntities& used = tweet.content->used_entities;
+
+        Entity& e = network[tweet.id_tweeter];
+        int entity_retweeting = e.follower_set.pick_random_uniform(rng);
+
+        if (used.find(entity_retweeting) == used.end()) {
+            // Entity has NOT already retweeted this tweet
+            used.insert(entity_retweeting);
+            Entity& e = network[entity_retweeting];
+            return RetweetChoice(tweet.content->id_original_author, entity_retweeting);
         }
+
         return RetweetChoice(-1,-1);
     }
 };

@@ -35,6 +35,14 @@ struct TimeDepRateTree {
         return ref;
     }
 
+    typename RateTree<T, N_ELEM, N_CHILDREN>::Node& get(ref_t ref) {
+        return tree.get(ref);
+    }
+
+    RateVec<N_ELEM> rate_summary() {
+        return tree.rate_summary();
+    }
+
     double get_cat_threshold(int i) {
         if (i == 0) {
             return 0;
@@ -71,19 +79,28 @@ struct TimeDepRateTree {
                 return; // Logarithmic spacing -- this will be true for all next time bins
             }
 
-            double threshold = tree.get_cat_threshold(bin);
+            double threshold = determiner.get_cat_threshold(bin);
             TimeSet& set = time_sets[bin];
             TimeSet::iterator it = set.begin();
             for (; it != set.end(); it++) {
                 ref_t ref = *it;
+                T& data = tree.get(ref).data;
                 // Need to find new rates
-                double age = determiner.get_age();
-                double new_rate = determiner.get_rate(tree.get(ref).data, bin);
-                if (new_rate >= threshold) {
+                double age = determiner.get_age(data);
+                if (age >= threshold) {
+                    // Add to next bin, if it exists:
+                    bool is_last_bin = (bin == time_sets.size() - 1);
+                    if (!is_last_bin) {
+                        time_sets[bin + 1].insert(ref);
+                    } else {
+                        printf("TWEET TIMEOUT after %.2f!\n", age);
+                        tree.remove(ref);
+                    }
+                    double new_rate = determiner.get_rate(data, bin);
+
                     // Google sparse hash guarantees that iterators are valid to erase
                     // See http://google-sparsehash.googlecode.com/svn/trunk/doc/sparse_hash_map.html (Validity of Iterators)
-                    bool erased = set.erase(it);
-                    DEBUG_CHECK(erased, "Set erase fail!");
+                    set.erase(it);
                 }
             }
 

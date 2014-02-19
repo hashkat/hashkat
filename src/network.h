@@ -26,35 +26,23 @@
 struct Network {
     Entity* entities; //** This is a pointer - used to create a dynamic array
     int n_entities, max_entities;
-    TweetBank tweet_bank;
-    Network() : tweet_bank(TweetRateDeterminer()){
+    Network() {
         entities = NULL;
         n_entities = 0;
         max_entities = 0;
     }
     ~Network() { //** This defines how to clean-up our Network object; we free the dynamic array
-        free(entities);
+        delete[] entities;
     }
     Entity& operator[](int index) { //** This allows us to index our Network struct as if it were an array.
+        // Note that we allow accessing the tail unallocated element (hence the <= instead of <):
         DEBUG_CHECK(index >= 0 && index <= n_entities, "Network out-of-bounds entity access");
         return entities[index];
     }
 
-    void preallocate(int n) {
+    void allocate(int n) {
         max_entities = n;
-        entities = (Entity*)malloc(sizeof(Entity) * max_entities);
-        // This is very likely to be a large allocation, check for failures:
-        if (entities == NULL) {
-            error_exit("Network::preallocate failed");
-        }
-        for (int i = 0; i < max_entities; i++) {
-            // Placement new due to use of malloc
-            new (&entities[i]) Entity();
-        }
-    }
-
-    void perform_cleanup() {
-        // TODO: Clean-up is no longer required as follow-sets do not permit duplicates anymore
+        entities = new Entity[max_entities];
     }
 
     // Convenient network queries:

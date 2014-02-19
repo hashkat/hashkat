@@ -73,7 +73,7 @@ struct Entity {
     // Store the two directions of the follow relationship
     FollowSet follow_set;
     FollowerSet follower_set;
-    
+
     //info needed for retweeting
     Tweet last_tweet; // TODO: Entities should have more than one active tweet possible
 

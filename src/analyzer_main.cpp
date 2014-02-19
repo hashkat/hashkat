@@ -89,7 +89,7 @@ struct Analyzer {
             rng(state.rng), time(state.time), add_rates(state.add_rates) {
 
         // The following allocates a memory chunk proportional to max_entities:
-        network.preallocate(config.max_entities);
+        network.allocate(config.max_entities);
 
         DATA_TIME.open("DATA_vs_TIME");
         add_data.open("entity_populations.dat");
@@ -213,19 +213,6 @@ struct Analyzer {
         return true; // Always succeeds, for now.
     }
 
-    // this will be the function that will return the rate for a given tweet.
-    // the rate is based on the content and the entity tweeting; it will most
-    // likely have something to do with the entities followers, but not for now 
-    double tweet_content(Entity& e) {
-        // return a constant value for now
-        double value;
-        // if (e.tweet_info.some_characteristic == funny) {
-        //     value = 0.01; // some value greater than normal
-        // }
-        value = 0.01 / network.tweet_bank.half_life;
-        return value;
-    }
-    
     // will use the categories here to decide who will retweet
     int users_to_retweet(Entity& e) {
         // returns full list for now
@@ -252,8 +239,6 @@ struct Analyzer {
         ti->time_of_tweet = time;
         // TODO: Pick
         ti->language = e_original_author.language; // TODO: AD -- Bilingual tweets make no sense
-        ti->starting_rate = tweet_content(e_original_author) * users_to_retweet(e_original_author);
-
         return ti;
     }
 
@@ -263,9 +248,9 @@ struct Analyzer {
         tweet.content = content;
         tweet.creation_time = time;
         tweet.id_tweeter = id_tweeter;
-        tweet.starting_rate = tweet_content(e_tweeter) * users_to_retweet(e_tweeter);
         if (network.n_followers(id_tweeter) != 0) {
-            network.tweet_bank.active_tweet_list.push_back(tweet);
+            RateVec<1> rate_vec(0.01 * network.n_followers(id_tweeter));
+            state.tweet_bank.tree.add(tweet, rate_vec);
         }
         return tweet;
     }
@@ -376,7 +361,7 @@ struct Analyzer {
 
         ASSERT(STATIC_TIME < time, "Fail");
         STATIC_TIME = time;
-        if (config.output_stdout_summary && (floor(time) > prev_integer)) {
+        if (config.output_stdout_summary ) { //&& (floor(time) > prev_integer)) {
           output_summary_stats();
         }
     }
