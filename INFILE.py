@@ -15,7 +15,6 @@ from math import *
 
 def get_var_arg(test, default_val):
     for i in range(len(sys.argv) - 1): 
-        print(sys.argv[i], test)
         if sys.argv[i] == test:
             return sys.argv[i+1]
     return default_val

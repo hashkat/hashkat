@@ -115,7 +115,7 @@ class sh_hashtable_settings : public HashFunc {
   }
 
   bool use_deleted() const {
-    return false;//use_deleted_;
+    return true;//use_deleted_;
   }
   void set_use_deleted(bool t) {
 //    use_deleted_ = t;

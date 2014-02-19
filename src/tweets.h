@@ -68,12 +68,15 @@ struct Tweet { // AD: TEMPORARY NOTE was RetweetInfo
     double starting_rate, updating_rate;
     // A tweet is an orignal tweet if tweeter_id == content.author_id
     smartptr<TweetContent> content;
-    double tweet_time;
     double creation_time;
     explicit Tweet(const smartptr<TweetContent>& content = smartptr<TweetContent>()) : content(content) {
         id_tweeter = -1;
         starting_rate = updating_rate = 0;
-        tweet_time = creation_time = 0;
+        creation_time = 0;
+    }
+    void print() {
+        printf("(Tweeter = %d, Original Author = %d, Created = %.2f\n)",
+                id_tweeter, content->id_original_author, creation_time);
     }
 };
 
@@ -107,6 +110,9 @@ struct TweetBank {
 
     TweetBank(TweetRateDeterminer determiner, double initial_resolution = 90, int number_of_bins = 1) :
             tree(determiner, initial_resolution, number_of_bins) {
+    }
+    int n_active_tweets() const {
+        return tree.size();
     }
     Tweet& pick_random_weighted(MTwist& rng) {
         ref_t ref = tree.pick_random_weighted(rng);

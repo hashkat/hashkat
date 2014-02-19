@@ -465,10 +465,10 @@ class sparse_hashtable {
 
   // Test if the given key is the deleted indicator.  Requires
   // num_deleted() > 0, for correctness of read(), and because that
-  // guarantees that key_info.delkey is valid.
+  // guarantees that key_info.delkey() is valid.
   bool test_deleted_key(const key_type& key) const {
     assert(num_deleted() > 0);
-    return equals(key_info.delkey, key);
+    return equals(key_info.delkey(), key);
   }
 
  public:
@@ -476,7 +476,7 @@ class sparse_hashtable {
     // It's only safe to change what "deleted" means if we purge deleted guys
     squash_deleted();
     settings.set_use_deleted(true);
-    key_info.delkey = key;
+//    key_info.delkey() = key;
   }
   void clear_deleted_key() {
     squash_deleted();
@@ -485,7 +485,7 @@ class sparse_hashtable {
   key_type deleted_key() const {
     assert(settings.use_deleted()
            && "Must set deleted key before calling deleted_key");
-    return key_info.delkey;
+    return key_info.delkey();
   }
 
   // These are public so the iterators can use them
@@ -524,7 +524,7 @@ class sparse_hashtable {
     check_use_deleted("set_deleted()");
     bool retval = !test_deleted(it);
     // &* converts from iterator to value-type.
-    set_key(&(*it), key_info.delkey);
+    set_key(&(*it), key_info.delkey());
     return retval;
   }
   // Set it so test_deleted is false.  true if object used to be deleted.
@@ -542,7 +542,7 @@ class sparse_hashtable {
   bool set_deleted(const_iterator &it) {
     check_use_deleted("set_deleted()");
     bool retval = !test_deleted(it);
-    set_key(const_cast<pointer>(&(*it)), key_info.delkey);
+    set_key(const_cast<pointer>(&(*it)), key_info.delkey());
     return retval;
   }
   // Set it so test_deleted is false.  true if object used to be deleted.
@@ -932,7 +932,7 @@ class sparse_hashtable {
   // If you know *this is big enough to hold obj, use this routine
   std::pair<iterator, bool> insert_noresize(const_reference obj) {
     // First, double-check we're not inserting delkey
-    assert((!settings.use_deleted() || !equals(get_key(obj), key_info.delkey))
+    assert((!settings.use_deleted() || !equals(get_key(obj), key_info.delkey()))
            && "Inserting the deleted key");
     const std::pair<size_type,size_type> pos = find_position(get_key(obj));
     if ( pos.first != ILLEGAL_BUCKET) {      // object was already there
@@ -985,7 +985,7 @@ class sparse_hashtable {
   template <class DefaultValue>
   value_type& find_or_insert(const key_type& key) {
     // First, double-check we're not inserting delkey
-    assert((!settings.use_deleted() || !equals(key, key_info.delkey))
+    assert((!settings.use_deleted() || !equals(key, key_info.delkey()))
            && "Inserting the deleted key");
     const std::pair<size_type,size_type> pos = find_position(key);
     DefaultValue default_value;
@@ -1002,9 +1002,9 @@ class sparse_hashtable {
   // DELETION ROUTINES
   size_type erase(const key_type& key) {
     // First, double-check we're not erasing delkey.
-    assert((!settings.use_deleted() || !equals(key, key_info.delkey))
+    assert((!settings.use_deleted() || !equals(key, key_info.delkey()))
            && "Erasing the deleted key");
-    assert(!settings.use_deleted() || !equals(key, key_info.delkey));
+    assert(!settings.use_deleted() || !equals(key, key_info.delkey()));
     const_iterator pos = find(key);   // shrug: shouldn't need to be const
     if ( pos != end() ) {
       assert(!test_deleted(pos));  // or find() shouldn't have returned it
@@ -1158,7 +1158,9 @@ class sparse_hashtable {
 
     // Which key marks deleted entries.
     // TODO(csilvers): make a pointer, and get rid of use_deleted (benchmark!)
-    typename base::remove_const<key_type>::type delkey;
+    typename base::remove_const<key_type>::type delkey() const {
+        return -1; // AD: Nasty hack
+    }
   };
 
   // Utility functions to access the templated operators

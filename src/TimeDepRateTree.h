@@ -25,6 +25,9 @@ struct TimeDepRateTree {
         determiner(determiner), initial_resolution(initial_resolution), number_of_bins(number_of_bins) {
         ASSERT(number_of_bins > 0, "Need more than 0 bins!");
         time_sets.resize(number_of_bins);
+        for (int i = 0; i < number_of_bins; i++) {
+            time_sets[i].set_deleted_key(-1);
+        }
         last_rate = 0;
     }
 
@@ -33,6 +36,10 @@ struct TimeDepRateTree {
         ref_t ref = tree.add(data, tuple);
         time_sets[0].insert(ref);
         return ref;
+    }
+
+    size_t size() const {
+        return tree.size();
     }
 
     typename RateTree<T, N_ELEM, N_CHILDREN>::Node& get(ref_t ref) {
@@ -93,7 +100,6 @@ struct TimeDepRateTree {
                     if (!is_last_bin) {
                         time_sets[bin + 1].insert(ref);
                     } else {
-                        printf("TWEET TIMEOUT after %.2f!\n", age);
                         tree.remove(ref);
                     }
                     double new_rate = determiner.get_rate(data, bin);

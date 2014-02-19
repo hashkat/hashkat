@@ -103,6 +103,7 @@ struct Analyzer {
         call_future_rates();
 		analyzer_rate_update(state);
     }
+
     void set_future_add_rates(Add_Rates& add_rates) {
         int projected_months = config.max_time / APPROX_MONTH;
         cout << add_rates.RF.function_type << "\n";
@@ -273,13 +274,13 @@ struct Analyzer {
         stats.n_tweets ++;
 		return true; // Always succeeds
 	}
-	
+
 	bool action_retweet(RetweetChoice choice, double time_of_retweet) {
 		Entity& e_observer = network[choice.id_observer];
 		Entity& e_author = network[choice.id_author];
 
 		DEBUG_CHECK(!e_author.last_tweet.content.empty(), "Retweeting empty tweet!");
-		generate_tweet(choice.id_observer, e_author.last_tweet.content);
+		e_observer.last_tweet = generate_tweet(choice.id_observer, e_author.last_tweet.content);
         entity_types[e_observer.entity_type].n_retweets ++;
         stats.n_retweets ++;
 
@@ -361,7 +362,8 @@ struct Analyzer {
 
         ASSERT(STATIC_TIME < time, "Fail");
         STATIC_TIME = time;
-        if (config.output_stdout_summary ) { //&& (floor(time) > prev_integer)) {
+        bool small_network = (network.n_entities < 40);
+        if (config.output_stdout_summary && (floor(time) > prev_integer || small_network)) {
           output_summary_stats();
         }
     }
@@ -376,7 +378,7 @@ struct Analyzer {
                 << network.n_entities << "\t\t"
                 << stats.n_follows << "\t\t"
                 << stats.n_tweets << "\t\t"
-                << stats.n_retweets << "\t\t"
+                << stats.n_retweets << "(" << state.tweet_bank.n_active_tweets() << ")\t"
                 << stats.event_rate << "\t\t";
         if (time_spent != -1) {
             stream << time_spent << "ms\t";

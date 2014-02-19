@@ -5,5 +5,7 @@
 #include "entity.h"
 
 double TweetRateDeterminer::get_age(Tweet& tweet) {
-    return (tweet.creation_time - state.time);
+    double age = (state.time - tweet.creation_time);
+    DEBUG_CHECK(age >= 0.0, "Cannot have negative ages!");
+    return age;
 }
