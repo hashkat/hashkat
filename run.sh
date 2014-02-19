@@ -24,7 +24,7 @@ function colorify() {
 # Bash function to check for a flag in 'args' and remove it.
 # Treats 'args' as one long string.
 # Returns true if flag was removed.
-function handle_flag() {
+function handle_flag(){
     flag=$1
     local new_args
     local got
@@ -85,8 +85,22 @@ elif handle_flag "-l" ; then
 elif handle_flag "-p" ; then
     # Profile the program (requires oprofile) with -p:
     echo "Profiling with oprofile:" | colorify '1;35'
-    operf --callgraph src/main $args
-    opreport --callgraph --exclude-dependent --demangle=smart --symbols src/main | less
+    operf src/main $args
+    opreport --exclude-dependent --demangle=smart --symbols src/main | less
+elif handle_flag "--valgrind" ; then
+    # Profile the program (requires oprofile) with -p:
+    echo "Profiling with oprofile:" | colorify '1;35'
+
+    function showOutput() {
+        kcachegrind callgrind.out.*
+        rm callgrind.out.*        
+    }
+
+    trap showOutput INT
+
+    valgrind --tool=callgrind src/main $args
+
+    showOutput
 else
     # Normal execution
     src/main $args --handle-ctrlc

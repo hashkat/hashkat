@@ -123,7 +123,7 @@ struct LeafNode {
         return true;
     }
 
-    LeafNode() : total_rate(0) {
+    LeafNode() : elems(/*Minimum start capacity:*/ 4), total_rate(0) {
         // MUST be done to use erase() with Google's HashSet
         elems.set_deleted_key(ElemT(-1));
     }

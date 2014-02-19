@@ -4,41 +4,51 @@
 
 cmake_minimum_required( VERSION 2.6 )
 
-#set(CMAKE_BUILD_TYPE Release)
-set(CMAKE_BUILD_TYPE Debug)
+if ($ENV{BUILD_RELEASE})
+    set(CMAKE_BUILD_TYPE Release)
+else()
+    set(CMAKE_BUILD_TYPE Debug)
+endif()
 
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-if(APPLE) 
-else()
-SET (CMAKE_EXE_LINKER_FLAGS
-    -fsanitize=address 
-)
+    add_definitions(
+       -D_GLIBCXX_DEBUG
+    )
+    if(APPLE) 
+    elseif ($ENV{BUILD_USE_ASAN})
+        SET (CMAKE_EXE_LINKER_FLAGS
+            -fsanitize=address 
+        )
 
-add_definitions(
-  -fsanitize=address 
-   -D_GLIBCXX_DEBUG
-)
+        add_definitions(
+           -fsanitize=address 
+        )
+    endif()
+else()
+    add_definitions(-DNDEBUG)
+    if ($ENV{BUILD_PROF_GEN})
+        SET (CMAKE_EXE_LINKER_FLAGS
+           -fprofile-generate
+        )
+        add_definitions(
+           -fprofile-generate
+        )
+    elseif( $ENV{BUILD_PROF_USE})
+        SET (CMAKE_EXE_LINKER_FLAGS
+           -fprofile-use
+        )
+        add_definitions(
+           -fprofile-use
+        )
+    endif()
 endif()
 
-else()
-SET (CMAKE_EXE_LINKER_FLAGS
-   #-fprofile-generate
-   #-fprofile-use
-)
-
-add_definitions(
-   #-fprofile-generate
-   #-fprofile-use
-   -DNDEBUG
-)
-endif()
-set(UV_LIBS rt m pthread)
 if(APPLE)
-    set(UV_LIBS m "-framework CoreFoundation" "-framework CoreServices")
-else()
-
-set(UV_LIBS rt m pthread)
+   set(UV_LIBS m "-framework CoreFoundation" "-framework CoreServices")
 elseif(CMAKE_SYSTEM_NAME STREQUAL "FreeBSD")
    set(UV_LIBS m pthread)
+else()
+   set(UV_LIBS rt m pthread)
 endif()
+
 add_subdirectory(src)

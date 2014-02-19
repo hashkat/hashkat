@@ -10,6 +10,7 @@ network.gexf
 cmake_install.cmake
 main
 src/main
+callgrind.out.*
 POSITIONS*
 *.a
 *.dat

@@ -50,10 +50,15 @@ aux_source_directory(
 	lcommon_src
 )
 
+aux_source_directory(
+	"dependencies/mersenne-simd" 
+	mersenne_simd_src
+)
 
 # Add compilation target
 add_executable( 
-	main 
+	main
+	${mersenne_simd_src} 
 	${networksim_src} 
 	${networksim_tests} 
 	${lcommon_src} 

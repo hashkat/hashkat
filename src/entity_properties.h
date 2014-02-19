@@ -40,6 +40,7 @@ struct Location {
         // We normalize to 0..1 by multiplying by 2, as
         // 0.5 is the maximum distance with modular coordinates.
         int bin = (int) (distance(o) * 2.0 * N_BIN_DISTANCE);
+        DEBUG_CHECK(bin >= 0, "Cannot have negative bin!");
         bin = std::min(bin, N_BIN_DISTANCE - 1);
         return bin;
     }

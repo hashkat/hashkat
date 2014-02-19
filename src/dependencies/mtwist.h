@@ -44,53 +44,58 @@
 #ifndef MTWIST_H_
 #define MTWIST_H_
 
+#define SFMT_MEXP 19937
+#include "mersenne-simd/SFMT.h"
+
 // Mersenne twister random number generator
 class MTwist {
 public:
-    enum {
-        N = 624
-    };
+    void init_genrand(unsigned int s) {
+        sfmt_init_gen_rand(&state, s);
 
-    void init_genrand(unsigned int s);
-    void init_by_array(unsigned int init_key[], int key_length);
-
-    MTwist() :
-            mti(N + 1) {
+    }
+    void init_by_array(unsigned int init_key[], int key_length) {
+        sfmt_init_by_array(&state, init_key, key_length);
     }
 
-    MTwist(unsigned int s) :
-            mti(N + 1) {
+    MTwist(unsigned int s = 0) {
         init_genrand(s);
     }
-    MTwist(unsigned int init_key[], int key_length) :
-            mti(N + 1) {
+    MTwist(unsigned int init_key[], int key_length) {
         init_by_array(init_key, key_length);
     }
 
     /* generates a random number on [0,0xffffffff]-interval */
-    unsigned int genrand_int32(void);
-
-    /* generates a random number on [0,0x7fffffff]-interval */
-    int genrand_int31(void);
+    unsigned int genrand_uint32(void) {
+        return sfmt_genrand_uint32(&state);
+    }
 
     /* generates a random number on [0,1]-real-interval */
-    double genrand_real1(void);
+    double genrand_real1(void) {
+        return sfmt_genrand_real1(&state);
+    }
 
     /* generates a random number on [0,1)-real-interval */
-    double genrand_real2(void);
+    double genrand_real2(void) {
+        return sfmt_genrand_real2(&state);
+    }
 
     /* generates a random number on (0,1)-real-interval */
-    double genrand_real3(void);
+    double genrand_real3(void) {
+        return sfmt_genrand_real3(&state);
+    }
 
     /* generates a random number on [0,1) with 53-bit resolution*/
-    double genrand_res53(void);
+    double genrand_res53(void) {
+        return sfmt_genrand_res53(&state);
+    }
 
 // AD: Added for Twitter simulation
 
     /* Grab an integer from 0 to max, non-inclusive (ie appropriate for array lengths). */
     int rand_int(int max) {
         //AD: Modified to remove modulo-bias problem. Inspired by Java's nextInt implementation.
-        int raw = genrand_int31();
+        unsigned int raw = genrand_uint32();
 
         if ((max & -max) == max) { // i.e., max is a power of 2
             return (int) ((max * (long long)raw) >> 31);
@@ -98,7 +103,7 @@ public:
         int val = raw % max;
         // Reject values within a small, problematic range:
         while (raw - val + (max - 1) < 0) {
-            raw = genrand_int31();
+            raw = genrand_uint32();
             val = raw % max;
         }
 
@@ -139,8 +144,7 @@ public:
     }
 
 private:
-    unsigned int mt[N];
-    int mti;
+    sfmt_t state;
 };
 
 #endif
