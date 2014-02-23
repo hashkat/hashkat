@@ -294,10 +294,10 @@ struct Analyzer {
 	// Causes 'id_unfollowed' to lose a follower
 	// Returns true if a follower was removed, false if there was no follower to remove
 	bool action_unfollow(int id_unfollowed) {
-		Entity& e_unfollowed = network[id_unfollowed]; // The entity which unfollows
+		Entity& e_unfollowed = network[id_unfollowed]; // The entity which is unfollowed
 		FollowerSet& candidate_followers = e_unfollowed.follower_set;
 
-		int id_lost_follower = -1; // The entity to unfollow
+		int id_lost_follower = -1; // The entity to unfollow us
 		if (!candidate_followers.pick_random_uniform(rng, id_lost_follower)) {
 		    return false; // Empty
 		}
