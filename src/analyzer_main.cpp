@@ -301,7 +301,7 @@ struct Analyzer {
 		}
 
         // Remove our target from our actor's follows:
-        bool actor_had_target = actor_follows.remove(state, 1.0, id_actor);
+        bool actor_had_target = actor_follows.remove(state, 1.0, id_target);
 		DEBUG_CHECK(actor_had_target, "unfollow: Did not exist in follow list");
 
         // Remove our actor from our target's followers:
@@ -310,7 +310,7 @@ struct Analyzer {
 
 		// Necessary for use with follower set:
         follower_set::Context context(state, id_target);
-		bool target_had_actor = target_followers.remove(context, config.follower_rates, id_target);
+		bool target_had_actor = target_followers.remove(context, config.follower_rates, id_actor);
 		DEBUG_CHECK(target_had_actor, "unfollow: Did not exist in follower list");
 
 		return true;
