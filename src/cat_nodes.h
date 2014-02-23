@@ -465,7 +465,7 @@ struct TreeNode {
     int random_uniform_bin(MTwist& rng) {
         int num = rng.rand_int(size());
         for (int i = 0; i < cats.size(); i++) {
-            num -= cats.size();
+            num -= cats[i].size();
             if (num <= 0) {
                 return i;
             }
