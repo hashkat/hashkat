@@ -449,10 +449,10 @@ struct TreeNode {
         return false;
     }
 
-    template <typename StateT>
-    bool remove(StateT& N, rate_t rate, const value_type& elem) {
+    template <typename StateT, typename ClassifierT>
+    bool remove(StateT& N, ClassifierT& C, const value_type& elem) {
         rate_t dummy;
-        return remove(N, rate, dummy, elem);
+        return remove(N, C, dummy, elem);
     }
 
     void ensure_bin(int bin) {

@@ -297,7 +297,9 @@ struct Analyzer {
 
 		Entity& followed = network[follow_id];
 		bool follow_existed = follow_set.remove(state, /* AD: dummy rate for now */ 1.0, follow_id);
-		bool follower_existed = followed.follow_set.remove(state, /* AD: dummy rate for now */ 1.0, entity_id);
+
+        follower_set::Context context(state, follow_id);
+		bool follower_existed = followed.follower_set.remove(context, config.follower_rates, entity_id);
 		DEBUG_CHECK(follow_existed, "unfollow: Did not exist in follow list");
 		DEBUG_CHECK(follower_existed, "unfollow: Did not exist in follower list");
 		return true;
