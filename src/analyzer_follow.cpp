@@ -70,7 +70,7 @@ struct AnalyzerFollow {
             for (int i = 0; i < follow_probabilities.size(); i ++ ){
                 updating_follow_probabilities[i] /= sum_of_weights;
             }
-            for (int i = 0; i < follow_probabilities.size(); i ++) {
+            for (int i = 0; i < updating_follow_probabilities.size(); i ++) {
                 if (rand_num - updating_follow_probabilities[i] <= ZEROTOL) {
                     // point to the category we landed in
                     CategoryEntityList& C = follow_ranks.categories[i];

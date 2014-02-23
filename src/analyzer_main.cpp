@@ -269,6 +269,10 @@ struct Analyzer {
         e.last_tweet = generate_tweet(id_tweeter, generate_tweet_content(id_tweeter));
 		// increase the number of tweets the entity had by one
 		e.n_tweets++;
+        double ridic_tweet_rate = 0.00694; // 10 tweets/day
+            if (e.n_tweets / (time - e.creation_time) >= ridic_tweet_rate) {
+                action_unfollow(id_tweeter);
+            }
         entity_types[e.entity_type].n_tweets++;
 		tweet_ranks.categorize(id_tweeter, e.n_tweets);
         stats.n_tweets ++;
@@ -289,17 +293,17 @@ struct Analyzer {
 
 	bool action_unfollow(int entity_id) {
 		Entity& e1 = network[entity_id];
-		FollowSet& follow_set = e1.follow_set;
+		FollowerSet& follower_set = e1.follower_set;
 		int follow_id = -1;
-		if (!follow_set.pick_random_uniform(rng, follow_id)) {
+		if (!follower_set.pick_random_uniform(rng, follow_id)) {
 		    return false; // Empty
 		}
 
 		Entity& followed = network[follow_id];
-		bool follow_existed = follow_set.remove(state, /* AD: dummy rate for now */ 1.0, follow_id);
-
         follower_set::Context context(state, follow_id);
-		bool follower_existed = followed.follower_set.remove(context, config.follower_rates, entity_id);
+        
+		bool follow_existed = follower_set.remove(state, config.follower_rates, follow_id);
+        bool follower_existed = followed.follow_set.remove(context, 1.0, entity_id);
 		DEBUG_CHECK(follow_existed, "unfollow: Did not exist in follow list");
 		DEBUG_CHECK(follower_existed, "unfollow: Did not exist in follower list");
 		return true;
