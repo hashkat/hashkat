@@ -398,7 +398,7 @@ struct TreeNode {
     }
 
     bool pick_random_uniform(MTwist& rng, value_type& elem) {
-        if (cats.empty()) {
+        if (cats.empty() || size() == 0) {
             return false;
         }
         // Same thing for LeafNode's
