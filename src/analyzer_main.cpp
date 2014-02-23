@@ -291,21 +291,28 @@ struct Analyzer {
         return true; // Always succeeds
 	}
 
-	bool action_unfollow(int entity_id) {
-		Entity& e1 = network[entity_id];
-		FollowerSet& follower_set = e1.follower_set;
-		int follow_id = -1;
-		if (!follower_set.pick_random_uniform(rng, follow_id)) {
+	bool action_unfollow(int id_actor) {
+		Entity& e_actor = network[id_actor]; // The entity which unfollows
+		FollowSet& actor_follows = e_actor.follow_set;
+
+		int id_target = -1; // The entity to unfollow
+		if (!actor_follows.pick_random_uniform(rng, id_target)) {
 		    return false; // Empty
 		}
 
-		Entity& followed = network[follow_id];
-        follower_set::Context context(state, follow_id);
-        
-		bool follow_existed = follower_set.remove(state, config.follower_rates, follow_id);
-        bool follower_existed = followed.follow_set.remove(context, 1.0, entity_id);
-		DEBUG_CHECK(follow_existed, "unfollow: Did not exist in follow list");
-		DEBUG_CHECK(follower_existed, "unfollow: Did not exist in follower list");
+        // Remove our target from our actor's follows:
+        bool actor_had_target = actor_follows.remove(state, 1.0, id_actor);
+		DEBUG_CHECK(actor_had_target, "unfollow: Did not exist in follow list");
+
+        // Remove our actor from our target's followers:
+		Entity& e_target = network[id_target];
+		FollowerSet& target_followers = e_target.follower_set;
+
+		// Necessary for use with follower set:
+        follower_set::Context context(state, id_target);
+		bool target_had_actor = target_followers.remove(context, config.follower_rates, id_target);
+		DEBUG_CHECK(target_had_actor, "unfollow: Did not exist in follower list");
+
 		return true;
 	}
 
