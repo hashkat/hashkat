@@ -48,6 +48,7 @@ struct ParsedConfig {
 
     // 'rates' config options
     double rate_add;
+    double unfollow_tweet_rate;
 
     // 'output' config options
     bool output_stdout_basic, output_stdout_summary;

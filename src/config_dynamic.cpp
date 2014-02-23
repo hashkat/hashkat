@@ -99,6 +99,7 @@ static void parse_analysis_configuration(ParsedConfig& config, const Node& node)
     parse(node, "max_entities", config.max_entities);
     parse(node, "initial_entities", config.initial_entities);
     parse(node, "max_time", config.max_time);
+    parse(node, "unfollow_tweet_rate", config.unfollow_tweet_rate);
     parse(node, "use_barabasi", config.use_barabasi);
     parse(node, "use_flawed_followback", config.use_flawed_followback);
     parse(node, "use_random_time_increment", config.use_random_time_increment);

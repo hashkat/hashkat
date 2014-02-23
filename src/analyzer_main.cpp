@@ -269,8 +269,7 @@ struct Analyzer {
         e.last_tweet = generate_tweet(id_tweeter, generate_tweet_content(id_tweeter));
 		// increase the number of tweets the entity had by one
 		e.n_tweets++;
-        double ridic_tweet_rate = 0.00694; // 10 tweets/day
-            if (e.n_tweets / (time - e.creation_time) >= ridic_tweet_rate) {
+            if (e.n_tweets / (time - e.creation_time) >= config.unfollow_tweet_rate) {
                 action_unfollow(id_tweeter);
             }
         entity_types[e.entity_type].n_tweets++;

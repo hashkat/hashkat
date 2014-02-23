@@ -9,6 +9,7 @@ analysis:
   use_random_time_increment: true # increments by 1/sum(rates) on average
   use_flawed_followback: false
   follow_model: random # Accepted models: 'random', 'preferential', 'entity', 'preferential-entity'
+  unfollow_tweet_rate: 0.00694 # 10 tweets/day
 
 rates:
   # Rate for creating entities
@@ -79,7 +80,7 @@ entities:
     followback_probability: 40
     rates: 
         # Rate for follows from this entity:
-        follow: {function: constant, value: 0.0}
+        follow: {function: constant, value: 0.001}
         # Rate for tweets from this entity:
         tweet: {function: constant, value: 0.001}
 
@@ -94,12 +95,12 @@ entities:
     weights: {add: 25, follow: 0}
     followback_probability: 0
     rates:
-        follow: {function: constant, value: 0.0}
+        follow: {function: constant, value: 0.001}
         tweet: {function: constant, value: 0.001}
 
   - name: Organization
     weights: {add: 25, follow: 15}
     followback_probability: 0
     rates:
-        follow: {function: constant, value: 0.0}
+        follow: {function: constant, value: 0.001}
         tweet: {function: constant, value: 0.001}
