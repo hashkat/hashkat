@@ -214,13 +214,19 @@ struct LeafNode {
         }
         int n_hash_slots = elems.rep.table.size();
         int idx;
-        do {
+        while (true) {
             // We will loop until we find a hash-slot that
             // contains a valid instance of 'ElemT'.
             idx = rng.rand_int(n_hash_slots);
-        } while (!elems.rep.table.test(idx));
-        elem = elems.rep.table.unsafe_get(idx);
-        return true;
+            if (elems.rep.table.test(idx)) {
+                elem = elems.rep.table.unsafe_get(idx);
+                if (elem != -1) {
+                    return true;
+                }
+            }
+        }
+        ASSERT(false, "Should be unreachable!");
+        return false;
     }
 
     ElemT pick_random_uniform(MTwist& rng) {
@@ -408,7 +414,7 @@ struct TreeNode {
 
     value_type pick_random_uniform(MTwist& rng) {
         value_type elem;
-        if (pick_random_weighted(rng, elem)) {
+        if (pick_random_uniform(rng, elem)) {
             return elem;
         }
         ASSERT(false, "Failure in pick_random_uniform");
@@ -416,7 +422,7 @@ struct TreeNode {
     }
 
     bool pick_random_weighted(MTwist& rng, value_type& elem) {
-        if (cats.empty()) {
+        if (cats.empty()  || size() == 0) {
             return false;
         }
         // Same thing for LeafNode's

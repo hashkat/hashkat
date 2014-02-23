@@ -300,9 +300,8 @@ struct Analyzer {
 		if (!candidate_followers.pick_random_uniform(rng, id_lost_follower)) {
 		    return false; // Empty
 		}
-		if (id_lost_follower) {
-		    return false;
-		}
+
+		DEBUG_CHECK(id_lost_follower != -1, "Should not be -1 after choice!");
 
 		// Necessary for use with follower set:
         follower_set::Context context(state, id_unfollowed);
