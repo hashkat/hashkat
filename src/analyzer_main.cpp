@@ -291,27 +291,27 @@ struct Analyzer {
         return true; // Always succeeds
 	}
 
-	bool action_unfollow(int id_actor) {
-		Entity& e_actor = network[id_actor]; // The entity which unfollows
-		FollowSet& actor_follows = e_actor.follow_set;
+	// Causes 'id_unfollowed' to lose a follower
+	// Returns true if a follower was removed, false if there was no follower to remove
+	bool action_unfollow(int id_unfollowed) {
+		Entity& e_unfollowed = network[id_unfollowed]; // The entity which unfollows
+		FollowerSet& candidate_followers = e_unfollowed.follower_set;
 
-		int id_target = -1; // The entity to unfollow
-		if (!actor_follows.pick_random_uniform(rng, id_target)) {
+		int id_lost_follower = -1; // The entity to unfollow
+		if (!candidate_followers.pick_random_uniform(rng, id_lost_follower)) {
 		    return false; // Empty
 		}
 
-        // Remove our target from our actor's follows:
-        bool actor_had_target = actor_follows.remove(state, 1.0, id_target);
-		DEBUG_CHECK(actor_had_target, "unfollow: Did not exist in follow list");
-
-        // Remove our actor from our target's followers:
-		Entity& e_target = network[id_target];
-		FollowerSet& target_followers = e_target.follower_set;
-
 		// Necessary for use with follower set:
-        follower_set::Context context(state, id_target);
-		bool target_had_actor = target_followers.remove(context, config.follower_rates, id_actor);
-		DEBUG_CHECK(target_had_actor, "unfollow: Did not exist in follower list");
+        follower_set::Context context(state, id_unfollowed);
+        // Remove our target from our actor's follows:
+        bool had_follower = candidate_followers.remove(context, config.follower_rates, id_lost_follower);
+		DEBUG_CHECK(had_follower, "unfollow: Did not exist in follower list");
+
+        // Remove our unfollowed person from our target's followers:
+		Entity& e_lost_follower = network[id_lost_follower];
+		bool had_follow = e_lost_follower.follow_set.remove(context, /*Dummy rate*/ 1.0, id_unfollowed);
+		DEBUG_CHECK(had_follow, "unfollow: Did not exist in follow list");
 
 		return true;
 	}
