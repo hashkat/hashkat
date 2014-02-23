@@ -12,37 +12,6 @@
 #include "events.h"
 #include "entity_properties.h"
 
-//struct OriginalTweet {
-//    Language language; // The language that the tweet is in
-//    double humour; // The humour level of the tweet, 0 to 1
-//    int author_id; // The entity that created the original content
-//    OriginalTweet(Language language, double humour, int author_id) :
-//            language(language), humour(humour), author_id(author_id) {
-//    }
-//};
-//
-// A tweet is an orignal tweet if tweeter_id == content.author_id
-//struct Tweet {
-//    // The entity broadcasting the tweet
-//    int tweeter_id;
-//    smartptr<OriginalTweet> content;
-//
-//    Tweet(int tweeter_id, const smartptr<OriginalTweet>& content) :
-//            tweeter_id(tweeter_id), content(content) {
-//    }
-//
-//    bool is_original_tweet() {
-//        return (content->author_id == tweeter_id);
-//    }
-//
-//    bool is_retweet() {
-//        return !is_original_tweet();
-//    }
-//    OriginalTweet* operator->() {
-//        return content.get();
-//    }
-//};
-
 // information for when a user tweets
 struct TweetContent { // AD: TEMPORARY NOTE was TweetInfo
     double time_of_tweet;

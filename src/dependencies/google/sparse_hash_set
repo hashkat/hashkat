@@ -99,7 +99,7 @@
 _START_GOOGLE_NAMESPACE_
 
 template <class Value,
-          class HashFcn,
+          class HashFcn,   // defined in sparseconfig.h
           class EqualKey = std::equal_to<Value>,
           class Alloc = libc_allocator_with_realloc<Value> >
 class sparse_hash_set {

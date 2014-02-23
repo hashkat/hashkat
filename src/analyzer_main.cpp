@@ -250,7 +250,7 @@ struct Analyzer {
         tweet.creation_time = time;
         tweet.id_tweeter = id_tweeter;
         if (network.n_followers(id_tweeter) != 0) {
-            RateVec<1> rate_vec(0.01 * network.n_followers(id_tweeter));
+            RateVec<1> rate_vec(0.0001 * network.n_followers(id_tweeter));
             state.tweet_bank.tree.add(tweet, rate_vec);
         }
         return tweet;
@@ -269,9 +269,9 @@ struct Analyzer {
         e.last_tweet = generate_tweet(id_tweeter, generate_tweet_content(id_tweeter));
 		// increase the number of tweets the entity had by one
 		e.n_tweets++;
-            if (e.n_tweets / (time - e.creation_time) >= config.unfollow_tweet_rate) {
-                action_unfollow(id_tweeter);
-            }
+        if (e.n_tweets / (time - e.creation_time) >= config.unfollow_tweet_rate) {
+            action_unfollow(id_tweeter);
+        }
         entity_types[e.entity_type].n_tweets++;
 		tweet_ranks.categorize(id_tweeter, e.n_tweets);
         stats.n_tweets ++;

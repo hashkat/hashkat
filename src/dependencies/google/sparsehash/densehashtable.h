@@ -414,7 +414,7 @@ class dense_hashtable {
     // It's only safe to change what "deleted" means if we purge deleted guys
     squash_deleted();
     settings.set_use_deleted(true);
-//    key_info.delkey = key;
+    key_info.delkey = key;
   }
   void clear_deleted_key() {
     squash_deleted();
@@ -1298,12 +1298,10 @@ class dense_hashtable {
     bool equals(const key_type& a, const key_type& b) const {
       return EqualKey::operator()(a, b);
     }
+
     // Which key marks deleted entries.
     // TODO(csilvers): make a pointer, and get rid of use_deleted (benchmark!)
-    typename base::remove_const<key_type>::type delkey() const {
-        return -1; // AD: Nasty hack
-    }
-
+    typename base::remove_const<key_type>::type delkey;
   };
 
   // Utility functions to access the templated operators

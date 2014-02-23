@@ -19,17 +19,18 @@
 // Logarithmically organizes elements using RateTree
 template <typename T, int N_ELEM, typename RateDeterminer, int N_CHILDREN = 10>
 struct TimeDepRateTree {
-//    typedef google::sparse_hash_set<ref_t, cats::Hasher> TimeSet;
-    typedef std::set<ref_t> TimeSet;
+    typedef google::sparse_hash_set<ref_t, cats::Hasher> TimeSet;
+    // For sanity checking, call fall back to the API-compatible std::set:
+//    typedef std::set<ref_t> TimeSet;
     typedef std::vector<TimeSet> TimeSets;
 
     TimeDepRateTree(RateDeterminer determiner, double initial_resolution, int number_of_bins) :
         determiner(determiner), initial_resolution(initial_resolution), number_of_bins(number_of_bins) {
         ASSERT(number_of_bins > 0, "Need more than 0 bins!");
         time_sets.resize(number_of_bins);
-//        for (int i = 0; i < number_of_bins; i++) {
-//            time_sets[i].set_deleted_key(-1);
-//        }
+        for (int i = 0; i < number_of_bins; i++) {
+            time_sets[i].set_deleted_key(-1);
+        }
         last_rate = 0;
     }
 

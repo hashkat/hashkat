@@ -99,7 +99,7 @@ template <class Key, class T,
           class EqualKey = std::equal_to<Key>,
           class Alloc = libc_allocator_with_realloc<std::pair<const Key, T> > >
 class sparse_hash_map {
- private:
+ public:
   // Apparently select1st is not stl-standard, so we define our own
   struct SelectKey {
     typedef const Key& result_type;

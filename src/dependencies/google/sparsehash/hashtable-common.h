@@ -61,13 +61,12 @@ class sh_hashtable_settings : public HashFunc {
                         const float ht_occupancy_flt,
                         const float ht_empty_flt)
       : hasher(hf),
-//        enlarge_threshold_(0),
-//        shrink_threshold_(0),
-//        consider_shrink_(false),
-//        use_empty_(false),
-//        use_deleted_(false),
-        num_deleted(0)
- {
+        enlarge_threshold_(0),
+        shrink_threshold_(0),
+        consider_shrink_(false),
+        use_empty_(false),
+        use_deleted_(false),
+        num_ht_copies_(0) {
     set_enlarge_factor(ht_occupancy_flt);
     set_shrink_factor(ht_empty_flt);
   }
@@ -78,63 +77,72 @@ class sh_hashtable_settings : public HashFunc {
   }
 
   float enlarge_factor() const {
-    return 0.80f;
+    return enlarge_factor_;
   }
   void set_enlarge_factor(float f) {
-//    enlarge_factor_ = f;
+    enlarge_factor_ = f;
   }
   float shrink_factor() const {
-    return 0.32f;
+    return shrink_factor_;
   }
   void set_shrink_factor(float f) {
-//    shrink_factor_ = f;
+    shrink_factor_ = f;
+  }
+
+  size_type enlarge_threshold() const {
+    return enlarge_threshold_;
+  }
+  void set_enlarge_threshold(size_type t) {
+    enlarge_threshold_ = t;
+  }
+  size_type shrink_threshold() const {
+    return shrink_threshold_;
   }
   void set_shrink_threshold(size_type t) {
-//    shrink_threshold_ = t;
+    shrink_threshold_ = t;
   }
 
   size_type enlarge_size(size_type x) const {
-    return x * 8u / 10u;
+    return static_cast<size_type>(x * enlarge_factor_);
   }
   size_type shrink_size(size_type x) const {
-    return x * 32u / 100u;
+    return static_cast<size_type>(x * shrink_factor_);
   }
 
   bool consider_shrink() const {
-    return false;
+    return consider_shrink_;
   }
   void set_consider_shrink(bool t) {
-//    consider_shrink_ = t;
+    consider_shrink_ = t;
   }
 
   bool use_empty() const {
-    return false;//use_empty_;
+    return use_empty_;
   }
   void set_use_empty(bool t) {
-//    use_empty_ = t;
+    use_empty_ = t;
   }
 
   bool use_deleted() const {
-    return true;//use_deleted_;
+    return use_deleted_;
   }
   void set_use_deleted(bool t) {
-//    use_deleted_ = t;
+    use_deleted_ = t;
   }
 
   size_type num_ht_copies() const {
-      return 0;
-//    return static_cast<size_type>(num_ht_copies_);
+    return static_cast<size_type>(num_ht_copies_);
   }
   void inc_num_ht_copies() {
-//    ++num_ht_copies_;
+    ++num_ht_copies_;
   }
 
   // Reset the enlarge and shrink thresholds
   void reset_thresholds(size_type num_buckets) {
-//    set_enlarge_threshold(enlarge_size(num_buckets));
-//    set_shrink_threshold(shrink_size(num_buckets));
+    set_enlarge_threshold(enlarge_size(num_buckets));
+    set_shrink_threshold(shrink_size(num_buckets));
     // whatever caused us to reset already considered
-//    set_consider_shrink(false);
+    set_consider_shrink(false);
   }
 
   // Caller is resposible for calling reset_threshold right after
@@ -165,7 +173,7 @@ class sh_hashtable_settings : public HashFunc {
     return sz;
   }
 
- public:
+ private:
   template<class HashKey> class hash_munger {
    public:
     static size_t MungedHash(size_t hash) {
@@ -184,10 +192,17 @@ class sh_hashtable_settings : public HashFunc {
       return hash / sizeof(void*);   // get rid of known-0 bits
     }
   };
-  // AD: This class has been hacked to bits to save on memory
-  // Fields were here, currently this class has none of the members it did have.
-  // This was done to save on memory.
-  unsigned int num_deleted;   // how many occupied buckets are marked deleted
+
+  size_type enlarge_threshold_;  // table.size() * enlarge_factor
+  size_type shrink_threshold_;   // table.size() * shrink_factor
+  float enlarge_factor_;         // how full before resize
+  float shrink_factor_;          // how empty before resize
+  // consider_shrink=true if we should try to shrink before next insert
+  bool consider_shrink_;
+  bool use_empty_;    // used only by densehashtable, not sparsehashtable
+  bool use_deleted_;  // false until delkey has been set
+  // num_ht_copies is a counter incremented every Copy/Move
+  unsigned int num_ht_copies_;
 };
 
 #endif  // UTIL_GTL_HASHTABLE_COMMON_H_
