@@ -44,7 +44,10 @@ struct AnalyzerRetweet {
         UsedEntities& used = tweet.content->used_entities;
 
         Entity& e = network[tweet.id_tweeter];
-        int entity_retweeting = e.follower_set.pick_random_uniform(rng);
+        int entity_retweeting = -1;
+        if (!e.follower_set.pick_random_uniform(rng, entity_retweeting)) {
+            return RetweetChoice(-1,-1);
+        }
 
         if (used.find(entity_retweeting) == used.end()) {
             // Entity has NOT already retweeted this tweet

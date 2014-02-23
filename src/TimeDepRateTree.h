@@ -10,6 +10,7 @@
 
 #include <cmath>
 #include <vector>
+#include <set>
 #include <google/sparse_hash_set>
 
 #include "cat_nodes.h"
@@ -18,7 +19,8 @@
 // Logarithmically organizes elements using RateTree
 template <typename T, int N_ELEM, typename RateDeterminer, int N_CHILDREN = 10>
 struct TimeDepRateTree {
-    typedef google::sparse_hash_set<ref_t, cats::Hasher> TimeSet;
+//    typedef google::sparse_hash_set<ref_t, cats::Hasher> TimeSet;
+    typedef std::set<ref_t> TimeSet;
     typedef std::vector<TimeSet> TimeSets;
 
     TimeDepRateTree(RateDeterminer determiner, double initial_resolution, int number_of_bins) :
