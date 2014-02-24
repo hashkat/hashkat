@@ -103,23 +103,26 @@ struct LeafNode {
     };
 
     bool iterate(iterator& iter) {
-        int& slot = iter.slot;
         int n_hash_slots = elems.rep.table.size();
-        if (slot >= n_hash_slots) {
-            // At end, leave
-            return false;
+
+        bool found_element = false;
+        // Find next available slot
+        while (!found_element) {
+            if (iter.slot >= n_hash_slots) {
+                // No more elements
+                return false;
+            }
+            // If not at end, we will loop until we find a hash-slot that
+            // contains a valid instance of 'ElemT'.
+            if (elems.rep.table.test(iter.slot)) {
+                value_type elem = elems.rep.table.unsafe_get(iter.slot);
+                if (elem != -1) {
+                    iter.elem = elem;
+                    found_element = true;
+                }
+            }
+            iter.slot++;
         }
-        // If not at end, we will loop until we find a hash-slot that
-        // contains a valid instance of 'ElemT'.
-        while (slot < n_hash_slots && !elems.rep.table.test(slot)) {
-            slot++;
-        }
-        if (slot >= n_hash_slots) {
-            // At end, leave
-            return false;
-        }
-        iter.elem = elems.rep.table.unsafe_get(slot);
-        slot++; // Move to next unused slot
         return true;
     }
 
