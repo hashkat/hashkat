@@ -124,6 +124,7 @@ static void parse_output_configuration(ParsedConfig& config, const Node& node) {
     parse(node, "stdout_summary", config.output_stdout_summary);
 
     parse(node, "visualize", config.output_visualize);
+    parse(node, "verbose", config.output_verbose);
     parse(node, "entity_stats", config.entity_stats);
     
     parse(node, "degree_distributions", config.degree_distributions);

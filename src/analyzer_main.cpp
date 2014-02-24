@@ -376,8 +376,7 @@ struct Analyzer {
 
         ASSERT(STATIC_TIME < time, "Fail");
         STATIC_TIME = time;
-        bool small_network = (network.n_entities < 40);
-        if (config.output_stdout_summary && (floor(time) > prev_integer || small_network)) {
+        if (config.output_stdout_summary && (floor(time) > prev_integer || config.output_verbose)) {
           output_summary_stats();
         }
     }

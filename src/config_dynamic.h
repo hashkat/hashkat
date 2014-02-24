@@ -55,6 +55,7 @@ struct ParsedConfig {
     bool output_visualize;
     bool degree_distributions;
     bool output_tweet_analysis;
+    bool output_verbose;
     // 'X_category' config options
 
     // Thresholds are filled, entity lists empty
@@ -87,7 +88,9 @@ struct ParsedConfig {
         use_preferential_follow = false;
         use_barabasi = false;
         use_flawed_followback = false;
+        output_verbose = false;
 
+        unfollow_tweet_rate = 0.0;
         follow_model = RANDOM_FOLLOW;
 
         rate_add = 0;
