@@ -326,7 +326,7 @@ struct Analyzer {
          * For example, when we land on a follow selection, and only have follows that we already have made.
          * At this point, the only logical course is to retry the whole KMC event.
          *
-         * Luckily, this should be rare.
+         * Luckily, this should be (relatively) rare.
          */
         bool complete = false;
         while (!complete) {
