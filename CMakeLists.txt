@@ -4,7 +4,7 @@
 
 cmake_minimum_required( VERSION 2.6 )
 
-if ($ENV{BUILD_RELEASE})
+if ($ENV{BUILD_OPTIMIZE})
     message("Building release... no debug symbols will be available.")
     set(CMAKE_BUILD_TYPE Release)
 else()
@@ -17,7 +17,7 @@ if(CMAKE_BUILD_TYPE STREQUAL "Debug")
        -D_GLIBCXX_DEBUG
     )
     if(APPLE) 
-    elseif ($ENV{BUILD_USE_ASAN})
+    elseif ($ENV{BUILD_SANITIZE})
         SET (CMAKE_EXE_LINKER_FLAGS
             -fsanitize=address 
         )

@@ -1,6 +1,6 @@
 analysis:
   max_entities: 
-    100001
+    1001
   max_time:
     2591990.0 # 1/10 year
   initial_entities:
@@ -13,7 +13,7 @@ analysis:
 
 rates:
   # Rate for creating entities
-  add: {function: constant, value: 10.0}
+  add: {function: constant, value: 0.01}
 
 output:
   stdout_basic: true

@@ -47,6 +47,26 @@ else
     cores=4 # Guess -- may want to manually edit if above fails.
 fi
 
+# Handle environment-variable setting convenience flags
+# These are used to communicate with CMake
+# Each flag has an optional shortform, use whichever is preferred.
+
+if handle_flag "--optimize" || handle_flag "-O" ; then
+    export BUILD_OPTIMIZE=1
+fi
+if handle_flag "--sanitize" || handle_flag "-S" ; then
+    export BUILD_SANITIZE=1
+fi
+if handle_flag "--profile-gen" || handle_flag "--pgen" ; then
+    export BUILD_OPTIMIZE=1
+    export BUILD_PROF_GEN=1
+fi
+# Use --pgen, and then this flag, with, for optimal performance
+if handle_flag "--profile-use" || handle_flag "--puse" ; then
+    export BUILD_OPTIMIZE=1
+    export BUILD_PROF_USE=1
+fi
+
 # Create eclipse-project-files
 if handle_flag "-e" ; then
     src=$(pwd)
