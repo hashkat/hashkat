@@ -241,27 +241,21 @@ static EntityTypeVector parse_entities_configuration(const Node& node) {
 		const Node& follow_rate = child["rates"]["follow"];
 		const Node& tweet_rate = child["rates"]["tweet"];
 		
-		parse(follow_rate, "function", et.RF[1].function_type);
-		if (et.RF[1].function_type == "constant") {
-			parse(follow_rate, "value", et.RF[1].const_val);
-		} else if (et.RF[1].function_type == "linear") {
-			parse(follow_rate, "slope", et.RF[1].slope);
-			parse(follow_rate, "y_intercept", et.RF[1].y_intercept);
-		} else if (et.RF[1].function_type == "exponential") {
-			parse(follow_rate, "amplitude", et.RF[1].amplitude);
-			parse(follow_rate, "exp_factor", et.RF[1].exp_factor);
+		parse(follow_rate, "function", et.RF[0].function_type);
+		if (et.RF[0].function_type == "constant") {
+			parse(follow_rate, "value", et.RF[0].const_val);
+		} else if (et.RF[0].function_type == "linear") {
+			parse(follow_rate, "slope", et.RF[0].slope);
+			parse(follow_rate, "y_intercept", et.RF[0].y_intercept);
 		} 
 		
-		parse(tweet_rate, "function", et.RF[2].function_type);
-		if (et.RF[2].function_type == "constant") {
-			parse(tweet_rate, "value", et.RF[2].const_val);
-		} else if (et.RF[2].function_type == "linear") {
-			parse(tweet_rate, "slope", et.RF[2].slope);
-			parse(tweet_rate, "y_intercept", et.RF[2].y_intercept);
-		} else if (et.RF[2].function_type == "exponential") {
-			parse(tweet_rate, "amplitude", et.RF[2].amplitude);
-			parse(tweet_rate, "exp_factor", et.RF[2].exp_factor);
-		} 
+		parse(tweet_rate, "function", et.RF[1].function_type);
+		if (et.RF[1].function_type == "constant") {
+			parse(tweet_rate, "value", et.RF[1].const_val);
+		} else if (et.RF[1].function_type == "linear") {
+			parse(tweet_rate, "slope", et.RF[1].slope);
+			parse(tweet_rate, "y_intercept", et.RF[1].y_intercept);
+		}
         
         add_total += et.prob_add, follow_total += et.prob_follow;
         vec.push_back(et);

@@ -1,19 +1,19 @@
 analysis:
   max_entities: 
-    1001
+    100001
   max_time:
     2591990.0 # 1/10 year
   initial_entities:
-    10
+    1
   use_barabasi: false # if this is set to 1, the global follow rate will be ignored. Follow thresholds not needed.
   use_random_time_increment: true # increments by 1/sum(rates) on average
   use_flawed_followback: false
-  follow_model: random # Accepted models: 'random', 'preferential', 'entity', 'preferential-entity'
-  unfollow_tweet_rate: 0.00694 # 10 tweets/day
+  follow_model: preferential-entity # Accepted models: 'random', 'preferential', 'entity', 'preferential-entity'
+  unfollow_tweet_rate: 10 # 10 tweets/day
 
 rates:
   # Rate for creating entities
-  add: {function: constant, value: 0.01}
+  add: {function: constant, value: 1.0}
 
 output:
   stdout_basic: true
@@ -46,7 +46,7 @@ tweet_observation: # 'Omega'
    # We combine this with a relevance factor, r, where 0 <= r <= 1.0, we in turn
    # determines the probability that a given entity will act on a given tweet.
 
-   half_life: 90 # In minutes. Determines half-life of exponetial decay.
+   half_life: 22.5 # In minutes. Determines half-life of exponetial decay.
    initial_resolution: 0.01 # In minutes. The time-step with which to begin binning.
    final_rate: 0.001 # A final value when to stop binning our omega function.
 
@@ -74,7 +74,7 @@ entities:
   - name: Standard
     weights:
       # Weight with which this entity is created
-      add: 25 
+      add: 80 
       # Weight with which this entity is followed in preferential follow
       follow: 5
     # Probability that following this entity results in a follow-back
@@ -86,21 +86,21 @@ entities:
         tweet: {function: constant, value: 0.001}
 
   - name: Celebrity
-    weights: {add: 25, follow: 80}
+    weights: {add: 5, follow: 80}
     followback_probability: 0
     rates:
-        follow: {function: constant, value: 0.0001}
+        follow: {function: constant, value: 0.001}
         tweet: {function: constant, value: 0.001}
 
   - name: Bot
-    weights: {add: 25, follow: 0}
+    weights: {add: 5, follow: 0}
     followback_probability: 0
     rates:
         follow: {function: constant, value: 0.001}
         tweet: {function: constant, value: 0.001}
 
   - name: Organization
-    weights: {add: 25, follow: 15}
+    weights: {add: 10, follow: 15}
     followback_probability: 0
     rates:
         follow: {function: constant, value: 0.001}

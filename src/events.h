@@ -27,7 +27,7 @@ private:
 };
 
 // 0 - add, 1 - follow, 2 - tweet
-const int number_of_diff_events = 3;
+const int number_of_diff_events = 2;
 
 struct Rate_Function {
     std::string function_type;

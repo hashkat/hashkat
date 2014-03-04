@@ -31,6 +31,7 @@ struct AnalyzerRetweet {
     }
     
     double total_retweet_rate() {
+        update_all_retweets();
         return state.tweet_bank.get_total_rate();
     }
 

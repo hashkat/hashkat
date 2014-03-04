@@ -12,6 +12,7 @@
 #include "util.h"
 #include "network.h"
 #include "entity.h"
+#include "io.h"
 
 #include "config_static.h"
 
@@ -106,9 +107,9 @@ struct Analyzer {
 
     void set_future_add_rates(Add_Rates& add_rates) {
         int projected_months = config.max_time / APPROX_MONTH;
-        cout << add_rates.RF.function_type << "\n";
         if (add_rates.RF.function_type == "constant" ) {
             for (int i = 0; i <= projected_months; i ++) {
+                cout << add_rates.RF.const_val << "\n";
                 add_rates.RF.monthly_rates.push_back(add_rates.RF.const_val);
             }
         } else if (add_rates.RF.function_type == "linear") {
@@ -120,16 +121,16 @@ struct Analyzer {
     
 	void call_future_rates() {
 		for (int i = 0; i < entity_types.size(); i ++) {
-			for (int j = 1; j < number_of_diff_events; j ++) {
+			for (int j = 0; j < number_of_diff_events; j ++) {
 				set_future_rates(entity_types[i], j);
 			}
 		}
 	}
 	void set_future_rates(EntityType& et, int event) {
         int projected_months = config.max_time / APPROX_MONTH;
-        if (et.RF[event].function_type == "not specified" && event == 1) {
+        if (et.RF[event].function_type == "not specified" && event == 0) {
             error_exit("FATAL: Follow rate function for entity \""+ et.name + "\" was not specified.");
-        } else if (et.RF[event].function_type == "not specified" && event == 2) {
+        } else if (et.RF[event].function_type == "not specified" && event == 1) {
             error_exit("FATAL: Follow rate function for entity \""+ et.name + "\" was not specified.");
         } else if (et.RF[event].function_type == "constant") {
 			ASSERT(et.RF[event].const_val >= 0, "Check your rates, one of them is < 0");
@@ -258,13 +259,16 @@ struct Analyzer {
 
 	// function to handle the tweeting
 	bool action_tweet(int id_tweeter) {
+        // This is the entity tweeting
+		Entity& e = network[id_tweeter];
         if (network.n_followers(id_tweeter) == 0) {
             // No followers -- no need to even store the tweet.
+            entity_types[e.entity_type].n_tweets++;
+    		tweet_ranks.categorize(id_tweeter, e.n_tweets);
+            stats.n_tweets ++;
             return true; //** AD: Still consider a success for now, re-evaluate later
             //** AD: Maybe we may want to discount the possibility of such tweets and just restart
         }
-		// This is the entity tweeting
-		Entity& e = network[id_tweeter];
         // add info to TweetInfo struct
         e.last_tweet = generate_tweet(id_tweeter, generate_tweet_content(id_tweeter));
 		// increase the number of tweets the entity had by one
@@ -285,6 +289,7 @@ struct Analyzer {
 		DEBUG_CHECK(!e_author.last_tweet.content.empty(), "Retweeting empty tweet!");
 		e_observer.last_tweet = generate_tweet(choice.id_observer, e_author.last_tweet.content);
         entity_types[e_observer.entity_type].n_retweets ++;
+        e_observer.n_retweets ++;
         stats.n_retweets ++;
 
         return true; // Always succeeds
@@ -378,6 +383,11 @@ struct Analyzer {
         STATIC_TIME = time;
         if (config.output_stdout_summary && (floor(time) > prev_integer || config.output_verbose)) {
           output_summary_stats();
+        } 
+        if (stats.n_outputs % (STDOUT_OUTPUT_RATE*50 + 1)  == 0 && stats.n_outputs != 0) {
+            cout << "\n\nPerforming mid-simulation calculations...\n\n";
+            output_network_statistics(state);
+            cout << "Done.\n";
         }
     }
 

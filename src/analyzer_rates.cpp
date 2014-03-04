@@ -80,11 +80,11 @@ struct AnalyzerRates {
                 overall_retweet_rate = 0;
         et.new_entities = et.entity_list.size() - et.entity_cap.back();
         if (config.rate_add == 0) {
-            overall_follow_rate += et.entity_list.size() * et.RF[1].monthly_rates[state.n_months()];
-            overall_tweet_rate += et.entity_list.size() * et.RF[2].monthly_rates[state.n_months()];
+            overall_follow_rate += et.entity_list.size() * et.RF[0].monthly_rates[state.n_months()];
+            overall_tweet_rate += et.entity_list.size() * et.RF[1].monthly_rates[state.n_months()];
         } else {
-            update_rate(et, et.RF[1].monthly_rates, overall_follow_rate);
-            update_rate(et, et.RF[2].monthly_rates, overall_tweet_rate);
+            update_rate(et, et.RF[0].monthly_rates, overall_follow_rate);
+            update_rate(et, et.RF[1].monthly_rates, overall_tweet_rate);
         }
         return Rates(overall_follow_rate, overall_tweet_rate);
     }
