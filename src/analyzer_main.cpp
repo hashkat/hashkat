@@ -109,7 +109,6 @@ struct Analyzer {
         int projected_months = config.max_time / APPROX_MONTH;
         if (add_rates.RF.function_type == "constant" ) {
             for (int i = 0; i <= projected_months; i ++) {
-                cout << add_rates.RF.const_val << "\n";
                 add_rates.RF.monthly_rates.push_back(add_rates.RF.const_val);
             }
         } else if (add_rates.RF.function_type == "linear") {
@@ -384,11 +383,11 @@ struct Analyzer {
         if (config.output_stdout_summary && (floor(time) > prev_integer || config.output_verbose)) {
           output_summary_stats();
         } 
-        if (stats.n_outputs % (STDOUT_OUTPUT_RATE*50 + 1)  == 0 && stats.n_outputs != 0) {
+        /*if (stats.n_outputs % (STDOUT_OUTPUT_RATE*50 + 1)  == 0 && stats.n_outputs != 0) {
             cout << "\n\nPerforming mid-simulation calculations...\n\n";
             output_network_statistics(state);
             cout << "Done.\n";
-        }
+        }*/
     }
 
     /***************************************************************************

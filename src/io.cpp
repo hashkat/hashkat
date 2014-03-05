@@ -53,7 +53,7 @@ void output_network_statistics(AnalysisState& state) {
         tweets_distribution(network, N_ENTITIES);
     }
     if (entity_checks(et_vec, network, state, state.add_rates, initial_entities)) {
-        cout << "Number of events are valid.\n";
+        //cout << "Number of events are valid.\n";
     } else {
         cout << "Numbers are events are not valid, adjust the tolerance or check for errors.\n";
     }
@@ -341,16 +341,16 @@ void tweets_distribution(Network& network, int n_users) {
 bool quick_rate_check(EntityTypeVector& ets, double& correct_val, int& i, int& j) {
     double tolerence = 0.05;
     if (j == 1 && abs(correct_val - ets[i].n_follows) / correct_val >= tolerence) {
-        cout << "\nNumber of follows for entity type \'" << ets[i].name << "\' is not correct. " << correct_val << " is the right number.\n";
-        cout << "Was: " << ets[i].n_follows << endl;
+        //cout << "\nNumber of follows for entity type \'" << ets[i].name << "\' is not correct. " << correct_val << " is the right number.\n";
+        //cout << "Was: " << ets[i].n_follows << endl;
         return false;
     } else if (j == 2 && abs(correct_val - ets[i].n_tweets) / correct_val >= tolerence) {
-        cout << "\nNumber of tweets for entity type \'" << ets[i].name << "\' is not correct. " << correct_val << " is the right number.\n";
-        cout << "Was: " << ets[i].n_tweets << endl;
+        //cout << "\nNumber of tweets for entity type \'" << ets[i].name << "\' is not correct. " << correct_val << " is the right number.\n";
+        //cout << "Was: " << ets[i].n_tweets << endl;
         return false;
     } else if (j == 3 && abs(correct_val - ets[i].n_retweets) / correct_val >= tolerence) {
-        cout << "\nNumber of retweets for entity type \'" << ets[i].name << "\' is not correct. " << correct_val << " is the right number.\n";
-        cout << "Was: " << ets[i].n_retweets << endl;
+        //cout << "\nNumber of retweets for entity type \'" << ets[i].name << "\' is not correct. " << correct_val << " is the right number.\n";
+        //cout << "Was: " << ets[i].n_retweets << endl;
         return false;
     }
     return true;
@@ -364,8 +364,8 @@ bool entity_checks(EntityTypeVector& ets, Network& network, AnalysisState& state
     for (int i = 0; i < ets.size(); i ++) {
         double add_correct = network.n_entities * ets[i].prob_add;
         if (abs(add_correct - ets[i].entity_list.size()) / add_correct >= tolerence) {
-            cout << "\nNumber of entity type \'" << ets[i].name << "\' is not correct. " << (int) add_correct << " is the right number.\n";
-            cout << "was: " << ets[i].entity_list.size() << "\n";
+            //cout << "\nNumber of entity type \'" << ets[i].name << "\' is not correct. " << (int) add_correct << " is the right number.\n";
+            //cout << "was: " << ets[i].entity_list.size() << "\n";
             final_check += false;
             check_count ++;
         }

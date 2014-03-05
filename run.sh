@@ -123,5 +123,5 @@ elif handle_flag "--valgrind" ; then
     showOutput
 else
     # Normal execution
-    src/main $args --handle-ctrlc
+    src/main $args --handle-ctrlc 
 fi
