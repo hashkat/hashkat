@@ -61,9 +61,7 @@ struct Analyzer {
 	CategoryGrouper& retweet_ranks;
     Add_Rates& add_rates;
     TweetBank& tweet_bank;
-    TweetList& tweet_list;
     MostPopularTweet& most_pop_tweet;
-    
 
     /* Mersenne-twister random number generator */
     MTwist& rng;
@@ -93,7 +91,7 @@ struct Analyzer {
             entity_types(state.entity_types), network(state.network),
             tweet_ranks(state.tweet_ranks), follow_ranks(state.follow_ranks), retweet_ranks(state.retweet_ranks),
             rng(state.rng), time(state.time), add_rates(state.add_rates), tweet_bank(state.tweet_bank),
-            tweet_list(state.tweet_list), most_pop_tweet(state.most_pop_tweet) {
+            most_pop_tweet(state.most_pop_tweet) {
 
         // The following allocates a memory chunk proportional to max_entities:
         network.allocate(config.max_entities);
@@ -256,7 +254,7 @@ struct Analyzer {
         tweet.creation_time = time;
         tweet.id_tweeter = id_tweeter;
         if (network.n_followers(id_tweeter) != 0) {
-            RateVec<1> rate_vec(0.01 * network.n_followers(id_tweeter));
+            RateVec<1> rate_vec(0.0001 * network.n_followers(id_tweeter));
             state.tweet_bank.tree.add(tweet, rate_vec);
         }
         return tweet;
@@ -400,6 +398,33 @@ struct Analyzer {
      * Helper functions
      ***************************************************************************/
 
+    void find_most_popular_tweet() {
+        int local_max = 0;
+        Tweet local_tweet;
+        vector<Tweet> active_tweet_list = tweet_bank.as_vector();
+        for (int i = 0; i < active_tweet_list.size(); i ++) {
+            UsedEntities& ue = active_tweet_list[i].content->used_entities;
+            if (ue.size() > local_max) {
+                local_max = ue.size();
+                local_tweet = active_tweet_list[i];
+            }
+        }
+        if (local_max > most_pop_tweet.global_max) {
+            most_pop_tweet.global_max = local_max;
+            most_pop_tweet.most_popular_tweet = local_tweet;
+        }
+    }
+    
+    void output_tweets() {
+        vector<Tweet> atl = tweet_bank.as_vector();
+        ofstream output;
+        output.open("tweets.dat");
+        output << "\nID\t\torigID\t\ttime\t\torigtime\n\n";
+        for (int i = 0; i < atl.size(); i ++) {
+            output << atl[i].id_tweeter << "\t\t" << atl[i].content->id_original_author << "\t\t" << atl[i].creation_time << "\t\t" << atl[i].content->time_of_tweet << "\n";
+        }
+    }
+
     void output_summary_stats(ostream& stream, double time_spent = /*Don't print*/-1) {
         stream << fixed << setprecision(2)
                 << time << "\t\t"
@@ -459,6 +484,7 @@ struct Analyzer {
         output_summary_stats(DATA_TIME);
         if (stats.n_outputs % STDOUT_OUTPUT_RATE == 0) {
         	output_summary_stats(cout, stdout_milestone_timer.get_microseconds() / 1000.0);
+            find_most_popular_tweet();
             stdout_milestone_timer.start(); // Restart the timer
         }
 

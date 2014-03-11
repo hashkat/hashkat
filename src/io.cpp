@@ -4,6 +4,7 @@
 #include <cmath>
 #include <iostream>
 #include <iomanip>
+#include <set>
 
 #include "dependencies/mtwist.h"
 #include "analyzer.h"
@@ -27,6 +28,7 @@ void output_network_statistics(AnalysisState& state) {
     EntityTypeVector& et_vec = state.entity_types;
     AnalysisStats& stats = state.stats;
     TweetBank& tb = state.tweet_bank;
+    MostPopularTweet& mpt = state.most_pop_tweet;
     
     // Print why program stopped
     if (C.output_stdout_basic) {
@@ -69,7 +71,7 @@ void output_network_statistics(AnalysisState& state) {
     if (C.degree_distributions) {
         degree_distributions(network);
     }
-    retweet_analysis(stats, tb);
+    visualize_most_popular_tweet(mpt, network);
 }
 
 // edgelist created for R (analysis) and python executable (drawing) and gephi outputfile
@@ -474,7 +476,52 @@ void whos_following_who(EntityTypeVector& types, Network& network) {
     }
 }
 
-void retweet_analysis(AnalysisStats& stats, TweetBank& tb) {
-    vector<Tweet> list_of_tweets = tb.as_vector();
-    cout << "Stats gives " << stats.n_tweets + stats.n_retweets << " ; as_vector gives " << list_of_tweets.size() << " (TB says " <<  tb.n_active_tweets() <<")\n";
+void visualize_most_popular_tweet(MostPopularTweet& mpt, Network& network) {
+    ofstream output;
+    output.open("retweet_viz.gexf");
+    Tweet& t = mpt.most_popular_tweet;
+    
+    output << "<gexf xmlns=\"http://www.gexf.net/1.2draft\" xmlns:viz=\"http://www.gexf.net/1.2draft/viz\">\n"
+            << "<meta lastmodifieddate=\"2013-11-21\">\n"
+            << "<creator> Kevin Ryczko </creator>\n"
+            << "<description> Social Network Visualization </description>\n"
+            << "</meta>\n"
+            << "<graph mode=\"static\" defaultedgetype=\"directed\">\n"
+            << "<nodes>\n";
+            
+    UsedEntities& used = t.content->used_entities;
+    for (UsedEntities::iterator it = used.begin(); it != used.end(); ++it) {
+        Entity& p = network[*it];
+        output << "<node id=\"" << *it << "\" label=\"" << "Retweeters" << "\">\n";
+        output << "<viz:size value=\"2.5\"/>\n";
+        output << "</node>\n";
+        FollowerSet& follower_set = network.follower_set(*it);
+        for (FollowerSet::iterator i; follower_set.iterate(i);) {
+            Entity& e = network[i.get()];
+            output << "<node id=\"" << i.get() << "\" label=\"" << "Non-Retweeters" << "\" >\n";
+            output << "<viz:size value=\"2.0\"/>\n";
+            output << "</node>\n";
+        }
+    }
+    output << "<node id=\"" << t.id_tweeter << "\" label=\"" << "Main-Tweeter" << "\" >\n";
+    output << "<viz:size value=\"3.0\"/>\n";
+    output << "</node>\n";
+    int count = 0;
+    output << "</nodes>\n" << "<edges>\n";
+    FollowerSet& follower_set = network.follower_set(t.id_tweeter);
+    for (FollowerSet::iterator i; follower_set.iterate(i);) {
+        output << "<edge id=\"" << count << "\" source=\"" << i.get()
+                << "\" target=\"" << t.id_tweeter << "\"/>\n";
+        count ++;
+    }
+    for (UsedEntities::iterator it = used.begin(); it != used.end(); ++it) {
+        FollowerSet& follower_set = network.follower_set(*it);
+        for (FollowerSet::iterator i; follower_set.iterate(i);) {
+            output << "<edge id=\"" << count << "\" source=\"" << i.get()
+                    << "\" target=\"" << *it << "\"/>\n";
+            count ++;
+        }
+    }
+    output << "</edges>\n" << "</graph>\n" << "</gexf>";
+    output.close();
 }

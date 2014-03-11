@@ -52,17 +52,17 @@ struct Tweet { // AD: TEMPORARY NOTE was RetweetInfo
 
 typedef std::vector<Tweet> TweetList;
 
-struct MostPopularTweet {
-    Tweet tweet;
-    TweetList list_of_retweets;
-    int count;
-    int global_tweet_max;
+struct AnalysisState;
+
+struct MostPopularTweet { 
+    // this is the most retweeted tweet
+    Tweet most_popular_tweet;
+    // The max number of retweets for one tweet
+    int global_max;
     MostPopularTweet() {
-        count = global_tweet_max = 0;
+        global_max = 0;
     }
 };
-
-struct AnalysisState;
 
 struct TweetRateDeterminer {
     TweetRateDeterminer(AnalysisState& state) : state(state){
