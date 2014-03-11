@@ -476,5 +476,5 @@ void whos_following_who(EntityTypeVector& types, Network& network) {
 
 void retweet_analysis(AnalysisStats& stats, TweetBank& tb) {
     vector<Tweet> list_of_tweets = tb.as_vector();
-    cout << "Stats gives " << stats.n_tweets + stats.n_retweets << " ; as_vector gives " << list_of_tweets.size() << "\n";
+    cout << "Stats gives " << stats.n_tweets + stats.n_retweets << " ; as_vector gives " << list_of_tweets.size() << " (TB says " <<  tb.n_active_tweets() <<")\n";
 }

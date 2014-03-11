@@ -69,15 +69,6 @@ struct RateTree {
 
         ref_t children[N_CHILDREN]; // INVALID if not allocated
 
-        bool debug_has_child() {
-            for (int i = 0; i < N_CHILDREN; i++) {
-                if (children[i] != INVALID) {
-                    return true; // At least one child
-                }
-            }
-            return false;
-        }
-
         double debug_rate_sum(RateTree& tree) { // Inefficient
             if (is_leaf) {
                 return rates.tuple_sum;
@@ -107,6 +98,7 @@ struct RateTree {
         ref_t alloc_child(RateTree& tree, ref_t self, int child) {
              ref_t ref = tree.alloc_node();
              children[child] = ref;
+             is_allocated = true; // Hack for parent object, which starts !is_allocated
              tree.get(ref).link_to_parent(self, depth + 1);
              return ref;
         }
@@ -242,22 +234,23 @@ struct RateTree {
     // Debug methods:
     void debug_check_rates() {
 #ifndef NDEBUG
-        std::vector<Node*> v = as_node_vector();
+        std::vector<Node*> v = as_node_vector(/*all:*/ true);
         int occurrences = 0;
         for (int i = 0; i < v.size(); i++) {
-            if (v[i]->rates.tuple_sum <= 0) {
-                DEBUG_CHECK(!v[i]->debug_has_child(), "Occurrence rate should never be 0 for active parents!");
-            }
-            DEBUG_CHECK(v[i]->debug_rate_sum(*this) == v[i]->rates.tuple_sum, "Should be equal!");
+            double calc_sum = v[i]->debug_rate_sum(*this);
+            double stored_sum = v[i]->rates.tuple_sum;
+            DEBUG_CHECK(fabs(calc_sum - stored_sum) < 1.0e-6, "Should be (fairly) equal!");
         }
 #endif
     }
     void debug_check_reachability(ref_t ref) {
 #ifndef NDEBUG
-        std::vector<Node*> reachables = as_node_vector();
+        std::vector<Node*> nv = as_node_vector();
+        DEBUG_CHECK(nv.size() == size(), "Size mismatch!");
+        std::vector<Node*> v = as_node_vector(/*all:*/ true);
         int occurrences = 0;
-        for (int i = 0; i < reachables.size(); i++) {
-            if (reachables[i] == &get(ref)) {
+        for (int i = 0; i < v.size(); i++) {
+            if (v[i] == &get(ref)) {
                 occurrences++;
             }
         }
@@ -285,30 +278,33 @@ struct RateTree {
         return false;
     }
 
-    void as_node_vector(Node& node, std::vector<Node*>& vec) {
+    void as_node_vector(Node& node, std::vector<Node*>& vec, bool all = false) {
         if (node.is_leaf) {
-            // Only leaves have data:
             vec.push_back(&node);
             return;
+        }
+        if (all) {
+            vec.push_back(&node);
         }
         // Not a leaf, query our children:
         for (int i = 0; i < N_CHILDREN; i++) {
             int c = node.children[i];
             if (c != INVALID) {
-                as_node_vector(get(c), vec);
+                as_node_vector(get(c), vec, all);
             }
         }
     }
 
-    std::vector<Node*> as_node_vector() {
+    std::vector<Node*> as_node_vector(bool all = false) {
         std::vector<Node*> vec;
-        as_node_vector(node_pool[0], vec);
+        if (node_pool[0].is_allocated) {
+        as_node_vector(node_pool[0], vec, all);
+        }
         return vec;
     }
 
     std::vector<T> as_vector() {
         std::vector<Node*> node_vec = as_node_vector();
-        as_node_vector(node_pool[0], node_vec);
         std::vector<T> vec;
         for (int i = 0; i < node_vec.size(); i++) {
             vec.push_back(node_vec[i]->data);
@@ -362,6 +358,7 @@ struct RateTree {
         get(n.parent).rate_add(*this, n.rates);
         n_elems++;
 
+        debug_check_reachability(node);
         debug_check_rates();
         return node;
     }
@@ -421,7 +418,6 @@ private:
             if (!valid) {
                 continue;
             }
-            debug_check_reachability(new_node);
             return new_node;
         }
         return INVALID;
