@@ -13,6 +13,7 @@
 #include "network.h"
 #include "entity.h"
 #include "io.h"
+#include "tweets.h"
 
 #include "config_static.h"
 
@@ -47,7 +48,7 @@ struct Analyzer {
     AnalysisState& state;
     ParsedConfig& config;
     AnalysisStats& stats;
-
+    
     // struct for the entity classes, see network.h for specifications
     EntityTypeVector& entity_types;
 
@@ -59,6 +60,10 @@ struct Analyzer {
 	CategoryGrouper& follow_ranks;
 	CategoryGrouper& retweet_ranks;
     Add_Rates& add_rates;
+    TweetBank& tweet_bank;
+    TweetList& tweet_list;
+    MostPopularTweet& most_pop_tweet;
+    
 
     /* Mersenne-twister random number generator */
     MTwist& rng;
@@ -87,7 +92,8 @@ struct Analyzer {
             state(state), stats(state.stats), config(state.config),
             entity_types(state.entity_types), network(state.network),
             tweet_ranks(state.tweet_ranks), follow_ranks(state.follow_ranks), retweet_ranks(state.retweet_ranks),
-            rng(state.rng), time(state.time), add_rates(state.add_rates) {
+            rng(state.rng), time(state.time), add_rates(state.add_rates), tweet_bank(state.tweet_bank),
+            tweet_list(state.tweet_list), most_pop_tweet(state.most_pop_tweet) {
 
         // The following allocates a memory chunk proportional to max_entities:
         network.allocate(config.max_entities);
@@ -250,7 +256,7 @@ struct Analyzer {
         tweet.creation_time = time;
         tweet.id_tweeter = id_tweeter;
         if (network.n_followers(id_tweeter) != 0) {
-            RateVec<1> rate_vec(0.0001 * network.n_followers(id_tweeter));
+            RateVec<1> rate_vec(0.01 * network.n_followers(id_tweeter));
             state.tweet_bank.tree.add(tweet, rate_vec);
         }
         return tweet;
@@ -453,7 +459,8 @@ struct Analyzer {
         output_summary_stats(DATA_TIME);
         if (stats.n_outputs % STDOUT_OUTPUT_RATE == 0) {
         	output_summary_stats(cout, stdout_milestone_timer.get_microseconds() / 1000.0);
-        	stdout_milestone_timer.start(); // Restart the timer
+        	watch_most_retweeted();
+            stdout_milestone_timer.start(); // Restart the timer
         }
 
         stats.n_outputs++;

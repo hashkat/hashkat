@@ -1,29 +1,41 @@
 analysis:
-  max_entities: 
+# The maximum number of entities (users) in the simulation. 
+ max_entities: 
     100001
+# The maximum amount of time (minutes) in the simulation.
   max_time:
     1000.0 # 1/10 year
+# The initial number of entities (users) in the simulation.
   initial_entities:
     100000
-  use_barabasi: false # if this is set to 1, the global follow rate will be ignored. Follow thresholds not needed.
-  use_random_time_increment: true # increments by 1/sum(rates) on average
+# alternative simulation to produce a scale free network, set to false because we want a random graph!
+  use_barabasi: false 
+# Determines the time progression, if false, the timestep is constant.
+  use_random_time_increment: true 
+# Entities tend to follow eachother back in a real life social network, but it is set to false for now.
   use_flawed_followback: false
-  follow_model: random # Accepted models: 'random', 'preferential', 'entity', 'preferential-entity'
-  unfollow_tweet_rate: 10 # 10 tweets/day
+# We want to produce a random graph, therefore our follow model is 'random'.
+  follow_model: random 
+# the unfollow rate is set to something absurd (10 tweets / min) so no unfollowing happens.
+  unfollow_tweet_rate: 10 
 
 rates:
-  # Rate for creating entities
+  # Rate of adding entities into the network, a random graph is static therefore the rate is 0.
   add: {function: constant, value: 0.0}
 
 output:
+# print information of the network out to screen.
   stdout_basic: true
   stdout_summary: true
+# write data files to possibly visualize the network.
   visualize: true
   verbose: true
+# write data files for network topology.
   entity_stats: true
   degree_distributions: true
   tweet_analysis: true
 
+# set up bins to organize entities for tweeting, retweeting, and number of followers. The follow ranks are dismissed for a random network simulation.
 tweet_ranks: 
   thresholds: {bin_spacing: linear, min: 10, max: 300, increment: 10}
 retweet_ranks:
@@ -32,12 +44,14 @@ follow_ranks:
   thresholds: {bin_spacing: linear, min: 0, max: 100001, increment: 1}
   weights:    {bin_spacing: linear, min: 1, max: 100000, increment: 1}
 
+# The different languages in the network, the weights are normalized.
 languages:
   weights:
     English: 100
     French: 25
     French+English: 25
 
+# FIXXXXXXX THIS
 tweet_observation: # 'Omega'
    # Configures an observation probability density function that gives 
    # the probability that a tweet is observed at a certain time by an 'ideal observer'. 
@@ -48,7 +62,7 @@ tweet_observation: # 'Omega'
 
    half_life: 22.5 # In minutes. Determines half-life of exponetial decay.
    initial_resolution: 0.01 # In minutes. The time-step with which to begin binning.
-   final_rate: 0.001 # A final value when to stop binning our omega function.
+   final_rate: 0.001 # A final value when to stop binning our omega feunction.
 
 tweet_relevance:
     # Determine amount of discrete bins; should have correspondence with the C++ config_static.h limits.

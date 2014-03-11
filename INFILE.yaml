@@ -2,7 +2,7 @@ analysis:
   max_entities: 
     100001
   max_time:
-    1000.0 # 1/10 year
+    100000.0 # 1/10 year
   initial_entities:
     100
   use_barabasi: false # if this is set to 1, the global follow rate will be ignored. Follow thresholds not needed.
@@ -13,7 +13,7 @@ analysis:
 
 rates:
   # Rate for creating entities
-  add: {function: constant, value: 0.0}
+  add: {function: constant, value: 0.1}
 
 output:
   stdout_basic: true
@@ -83,25 +83,25 @@ entities:
         # Rate for follows from this entity:
         follow: {function: constant, value: 0.001}
         # Rate for tweets from this entity:
-        tweet: {function: constant, value: 0.0}
+        tweet: {function: constant, value: 0.001}
 
   - name: Celebrity
     weights: {add: 5, follow: 80}
     followback_probability: 0
     rates:
         follow: {function: constant, value: 0.001}
-        tweet: {function: constant, value: 0.0}
+        tweet: {function: constant, value: 0.001}
 
   - name: Bot
     weights: {add: 5, follow: 0}
     followback_probability: 0
     rates:
         follow: {function: constant, value: 0.001}
-        tweet: {function: constant, value: 0.0}
+        tweet: {function: constant, value: 0.001}
 
   - name: Organization
     weights: {add: 10, follow: 15}
     followback_probability: 0
     rates:
         follow: {function: constant, value: 0.001}
-        tweet: {function: constant, value: 0.0}
+        tweet: {function: constant, value: 0.001}

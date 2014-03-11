@@ -20,5 +20,5 @@ void degree_distributions(Network& network);
 bool quick_rate_check(EntityTypeVector& ets, double& correct_val, int& i, int& j);
 bool entity_checks(EntityTypeVector& ets, Network& network, AnalysisState& state, Add_Rates& add_rates, int& initial_entities);
 void whos_following_who(EntityTypeVector& ets, Network& network);
-
+void retweet_analysis(AnalysisStats& stats, TweetBank& tb);
 #endif

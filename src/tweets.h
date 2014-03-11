@@ -12,6 +12,7 @@
 #include "events.h"
 #include "entity_properties.h"
 
+
 // information for when a user tweets
 struct TweetContent { // AD: TEMPORARY NOTE was TweetInfo
     double time_of_tweet;
@@ -50,6 +51,16 @@ struct Tweet { // AD: TEMPORARY NOTE was RetweetInfo
 };
 
 typedef std::vector<Tweet> TweetList;
+
+struct MostPopularTweet {
+    Tweet tweet;
+    TweetList list_of_retweets;
+    int count;
+    int global_tweet_max;
+    MostPopularTweet() {
+        count = global_tweet_max = 0;
+    }
+};
 
 struct AnalysisState;
 

@@ -9,6 +9,7 @@
 #include "analyzer.h"
 #include "io.h"
 #include "util.h"
+#include "tweets.h"
 
 using namespace std;
 
@@ -25,6 +26,8 @@ void output_network_statistics(AnalysisState& state) {
     ParsedConfig& C = state.config;
     EntityTypeVector& et_vec = state.entity_types;
     AnalysisStats& stats = state.stats;
+    TweetBank& tb = state.tweet_bank;
+    
     // Print why program stopped
     if (C.output_stdout_basic) {
         if (CTRL_C_ATTEMPTS > 0) {
@@ -66,6 +69,7 @@ void output_network_statistics(AnalysisState& state) {
     if (C.degree_distributions) {
         degree_distributions(network);
     }
+    retweet_analysis(stats, tb);
 }
 
 // edgelist created for R (analysis) and python executable (drawing) and gephi outputfile
@@ -468,4 +472,9 @@ void whos_following_who(EntityTypeVector& types, Network& network) {
     for (int i = 0; i < types.size(); i ++ ) {
         whos_following_who(types, types[i], network);
     }
+}
+
+void retweet_analysis(AnalysisStats& stats, TweetBank& tb) {
+    vector<Tweet> list_of_tweets = tb.as_vector();
+    cout << "Stats gives " << stats.n_tweets + stats.n_retweets << " ; as_vector gives " << list_of_tweets.size() << "\n";
 }

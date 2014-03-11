@@ -53,6 +53,8 @@ struct AnalysisState {
     CategoryGrouper retweet_ranks;
     CategoryGrouper age_ranks;
     Add_Rates add_rates;
+    TweetList tweet_list;
+    MostPopularTweet most_pop_tweet;
 
     // Our distinct entity classes.
     // Entity probabilities are derived from config,
