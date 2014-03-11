@@ -23,7 +23,7 @@ SUITE(TweetStore) {
 
     static void basic_check(Tree& vec_tree) {
         std::vector<Tree::Node*> vec = vec_tree.as_node_vector();
-        CHECK(vec.size() == vec_tree.size());
+    CHECK_EQUAL(vec.size(), vec_tree.size());
         double sum = vec_tree.rate_summary().tuple_sum;
         double alt_sum = 0.0;
         for (int i = 0; i < vec.size(); i++) {
@@ -41,10 +41,10 @@ SUITE(TweetStore) {
         Tree vec_tree;
         vec.tuple[0] = 1.0;
         vec.tuple_sum = 1.0;
-        for (int z = 0; z < 25; z++) {
+        for (int z = 0; z < 250; z++) {
             std::vector<int> elemsA;
             std::vector<int> elemsB;
-            for (int i = 0; i < 91; i++) {
+            for (int i = 0; i < 9001; i++) {
                 int elem = vec_tree.add(i, vec);
                 basic_check(vec_tree);
                 if (i % 2 == 0) {

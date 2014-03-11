@@ -459,7 +459,6 @@ struct Analyzer {
         output_summary_stats(DATA_TIME);
         if (stats.n_outputs % STDOUT_OUTPUT_RATE == 0) {
         	output_summary_stats(cout, stdout_milestone_timer.get_microseconds() / 1000.0);
-        	watch_most_retweeted();
             stdout_milestone_timer.start(); // Restart the timer
         }
 

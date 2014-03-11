@@ -69,6 +69,28 @@ struct RateTree {
 
         ref_t children[N_CHILDREN]; // INVALID if not allocated
 
+        bool debug_has_child() {
+            for (int i = 0; i < N_CHILDREN; i++) {
+                if (children[i] != INVALID) {
+                    return true; // At least one child
+                }
+            }
+            return false;
+        }
+
+        double debug_rate_sum(RateTree& tree) { // Inefficient
+            if (is_leaf) {
+                return rates.tuple_sum;
+            }
+            double sum = 0.0;
+            for (int i = 0; i < N_CHILDREN; i++) {
+                if (children[i] != INVALID) {
+                    sum += tree.get(children[i]).debug_rate_sum(tree);
+                }
+            }
+            return sum;
+        }
+
         bool has_vacancy() {
             for (int i = 0; i < N_CHILDREN; i++) {
                 if (children[i] == INVALID) {
@@ -105,8 +127,10 @@ struct RateTree {
              tree.get(ref).is_leaf = false;
              depth++;
              // Update pointer from parent to self
-             ref_t* self_loc = tree.get(parent).seek_ref(self);
-             *self_loc = ref;
+             if (parent != INVALID) {
+                 ref_t* self_loc = tree.get(parent).seek_ref(self);
+                 *self_loc = ref;
+             }
              parent = ref; // Take new node as parent
              // Become first child of new parent
              tree.get(parent).children[0] = self;
@@ -215,6 +239,32 @@ struct RateTree {
         }
     };
 
+    // Debug methods:
+    void debug_check_rates() {
+#ifndef NDEBUG
+        std::vector<Node*> v = as_node_vector();
+        int occurrences = 0;
+        for (int i = 0; i < v.size(); i++) {
+            if (v[i]->rates.tuple_sum <= 0) {
+                DEBUG_CHECK(!v[i]->debug_has_child(), "Occurrence rate should never be 0 for active parents!");
+            }
+            DEBUG_CHECK(v[i]->debug_rate_sum(*this) == v[i]->rates.tuple_sum, "Should be equal!");
+        }
+#endif
+    }
+    void debug_check_reachability(ref_t ref) {
+#ifndef NDEBUG
+        std::vector<Node*> reachables = as_node_vector();
+        int occurrences = 0;
+        for (int i = 0; i < reachables.size(); i++) {
+            if (reachables[i] == &get(ref)) {
+                occurrences++;
+            }
+        }
+        DEBUG_CHECK(occurrences == 1, "Should occur exactly once in reachability list!")
+#endif
+    }
+
     RateTree() {
         n_elems = 0;
         node_pool.resize(1); // Allocate root
@@ -273,19 +323,28 @@ struct RateTree {
         Node& n = get(handle);
         Node& p = get(n.parent);
         // Perform unlink
-        bool removed = false;
+        bool removed = false, was_full = true;
         for (int i = 0; i < N_CHILDREN; i++) {
-            if (p.children[i] == handle) {
+            if (p.children[i] == INVALID) {
+                was_full = false;
+            } else if (p.children[i] == handle) {
                 p.children[i] = INVALID;
                 removed = true;
             }
         }
+        if (was_full) {
+            // Important: Repost parent to vacancy list if not already in it!!
+            post_vacancy(n.parent);
+        }
+
+        DEBUG_CHECK(handle != 0, "Could not remove top node!");
         DEBUG_CHECK(removed, "Could not remove child!");
         DEBUG_CHECK(!has_child(p, handle), "Removed child, but duplicate exists!");
         get(n.parent).rate_sub(*this, n.rates);
         n_elems--;
         free_list.push_back(handle);
         n = Node();// 'Wipe' the node
+        debug_check_rates();
     }
 
     ref_t pick_random_weighted(MTwist& rng) {
@@ -294,13 +353,16 @@ struct RateTree {
     }
 
     ref_t add(const T& data, const RateVec<N_ELEM>& tuple) {
-        node_pool.reserve(node_pool.size() + 3); // Resolve cases where nodes can become deallocated during use
+        const int BUFF = 3; // Buffer room resolve cases where nodes can become deallocated during internal methods
+        node_pool.reserve(node_pool.size() + BUFF);
         ref_t node = find_vacancy();
         Node& n = get(node);
         n.data = data;
         n.rates = tuple;
         get(n.parent).rate_add(*this, n.rates);
         n_elems++;
+
+        debug_check_rates();
         return node;
     }
     void replace_rate(ref_t ref, const RateVec<N_ELEM>& tuple) {
@@ -349,7 +411,8 @@ private:
     ref_t find_vacancy(int depth, ref_list& sub_list) {
         while (!sub_list.empty()) {
             ref_t vacancy = sub_list.back();
-            sub_list.pop_back(); // We assume we need to pop the element, we let the below routine re-add as necessary
+            // We assume we need to pop the element, we re-add as necessary (eg in alloc_with_next_vacancy or right below)
+            sub_list.pop_back();
             if (!check_validity(depth, vacancy) ) {
                 continue;
             }
@@ -358,6 +421,7 @@ private:
             if (!valid) {
                 continue;
             }
+            debug_check_reachability(new_node);
             return new_node;
         }
         return INVALID;
