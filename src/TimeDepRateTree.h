@@ -124,6 +124,10 @@ struct TimeDepRateTree {
         }
     }
 
+    std::vector<T> as_vector() {
+        return tree.as_vector();
+    }
+
     void print() {
         tree.print();
     }

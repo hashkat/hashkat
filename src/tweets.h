@@ -75,6 +75,10 @@ struct TweetBank {
 
     TweetBank(AnalysisState& state);
 
+    std::vector<Tweet> as_vector() {
+        return tree.as_vector();
+    }
+
     int n_active_tweets() const {
         return tree.size();
     }

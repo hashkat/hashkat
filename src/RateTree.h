@@ -63,6 +63,7 @@ struct RateTree {
         short depth;
         bool is_leaf; // Default true
         bool is_allocated; // Default false
+        // Only leaves have data!! (Do not use if is_leaf is false!)
         T data;
         RateVec<N_ELEM> rates;
 
@@ -233,6 +234,38 @@ struct RateTree {
         }
         return false;
     }
+
+    void as_node_vector(Node& node, std::vector<Node*>& vec) {
+        if (node.is_leaf) {
+            // Only leaves have data:
+            vec.push_back(&node);
+            return;
+        }
+        // Not a leaf, query our children:
+        for (int i = 0; i < N_CHILDREN; i++) {
+            int c = node.children[i];
+            if (c != INVALID) {
+                as_node_vector(get(c), vec);
+            }
+        }
+    }
+
+    std::vector<Node*> as_node_vector() {
+        std::vector<Node*> vec;
+        as_node_vector(node_pool[0], vec);
+        return vec;
+    }
+
+    std::vector<T> as_vector() {
+        std::vector<Node*> node_vec = as_node_vector();
+        as_node_vector(node_pool[0], node_vec);
+        std::vector<T> vec;
+        for (int i = 0; i < node_vec.size(); i++) {
+            vec.push_back(node_vec[i]->data);
+        }
+        return vec;
+    }
+
     // NOTE: Should only be exposing ref's to leaf nodes,
     // don't call with parent nodes.
     void remove(ref_t handle) {
