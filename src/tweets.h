@@ -99,7 +99,6 @@ struct TweetBank {
 
     TweetBank(AnalysisState& state);
 
-
     /*
      * Add an tweet. TweetRateDeterminer determines the reaction rate (follow or retweet) associated.
      */
