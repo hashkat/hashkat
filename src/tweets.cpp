@@ -29,7 +29,7 @@ TweetReactRateVec TweetRateDeterminer::get_rate(const Tweet& tweet, int bin) {
      }
     DEBUG_CHECK(n_elems == followers.size(), "Amount of entities in the follower set don't match up!");
 
-    return state.config.tweet_obs.values[bin];
+    return state.config.tweet_obs.values[bin+1];
 }
 
 TweetBank::TweetBank(AnalysisState& state) :

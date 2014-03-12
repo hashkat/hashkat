@@ -62,6 +62,8 @@ def load_relevance_functions():
             retweet_rel = p["retweet_relevance"]
             if name in retweet_rel:
                 func_str = retweet_rel[name]
+            elif "all" in retweet_rel:
+                func_str = retweet_rel["all"]
             else:
                 func_str = retweet_rel["else"]
             func = load_relevance_function(func_str)

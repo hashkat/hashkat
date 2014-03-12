@@ -9,7 +9,9 @@ DATA_vs_TIME
 *.yaml-generated
 cmake_install.cmake
 main
+socialsim
 src/main
+src/socialsim
 callgrind.out.*
 POSITIONS*
 *.a
