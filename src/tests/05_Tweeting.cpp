@@ -72,4 +72,7 @@ SUITE(TweetStore) {
             }
         }
     }
+
+    TEST(RateTree) {
+    }
 }

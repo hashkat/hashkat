@@ -66,14 +66,14 @@ if handle_flag "--profile-use" || handle_flag "--puse" ; then
     export BUILD_OPTIMIZE=1
     export BUILD_PROF_USE=1
 fi
-# Pick whether to use debug data-structures for eg std:;vector
-if handle_flag "--debug" ; then
+# Pick whether to use debug std data-structures for eg std::vector
+if handle_flag "--debug-std" ; then
     export BUILD_FLAGS="$BUILD_FLAGS -D_GLIBCXX_DEBUG"
 fi
 
 
 # Create eclipse-project-files
-if handle_flag "-e" ; then
+if handle_flag "--eclipse" || handle_flag "-e" ; then
     src=$(pwd)
     rm -f CMakeCache.txt
     mkdir ../KMCEclipse -p
@@ -84,7 +84,7 @@ if handle_flag "-e" ; then
 fi
 
 # Pass the -f flag to avoid building:
-if ! handle_flag "-f" ; then
+if ! handle_flag "-f" && handle_flag "--force" ; then
     cmake . | colorify '1;33'
     if handle_flag "--clean" ; then
         make clean
@@ -104,25 +104,27 @@ if ! handle_flag "--no-ctrlc" ; then
     args="$args --handle-ctrlc"
 fi
 
-if handle_flag "-g" ; then
+if handle_flag "--gdb" || handle_flag "-g" ; then
     # Wrap the gdb around the program with -g:
     echo "Wrapping in GDB:" | colorify '1;35'
     gdb -silent  \
+        -ex='set confirm off' \
         -ex="handle SIGINT nostop noprint pass" \
         -ex="handle 31 nostop noprint pass" -ex=r --args src/socialsim $args 
 
-elif handle_flag "-l" ; then
-    # Wrap lldb around the program with -g:
+elif handle_flag "--lldb" || handle_flag "-l" ; then
+    # Wrap lldb around the program with -l:
     echo "Wrapping in LLDB:" | colorify '1;35'
     lldb src/socialsim $args
-elif handle_flag "-p" ; then
+elif handle_flag "--oprofile" || handle_flag "--oprof" ; then
+    # Requires installation of oprofile!
     # Profile the program (requires oprofile) with -p:
     echo "Profiling with oprofile:" | colorify '1;35'
     operf src/socialsim $args
     opreport --exclude-dependent --demangle=smart --symbols src/socialsim | less
-elif handle_flag "--valgrind" ; then
-    # Profile the program (requires oprofile) with -p:
-    echo "Profiling with oprofile:" | colorify '1;35'
+elif handle_flag "--valgrind" || handle_flag "--vprof"; then
+    # Requires installation of valgrind and kCacheGrind!
+    echo "Profiling with valgrind:" | colorify '1;35'
 
     function showOutput() {
         kcachegrind callgrind.out.*
