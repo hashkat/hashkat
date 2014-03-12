@@ -32,7 +32,7 @@ void output_network_statistics(AnalysisState& state) {
     
     // Print why program stopped
     if (C.output_stdout_basic) {
-        if (CTRL_C_ATTEMPTS > 0) {
+        if (SIGNAL_ATTEMPTS > 0) {
             cout << "\nSimulation (Gracefully) Interrupted: ctrl-c was pressed\n";
         } else if (state.end_time >= C.max_time) {
             cout << "\nSimulation Completed: desired duration reached\n";
@@ -71,7 +71,8 @@ void output_network_statistics(AnalysisState& state) {
     if (C.degree_distributions) {
         degree_distributions(network);
     }
-    visualize_most_popular_tweet(mpt, network);
+   visualize_most_popular_tweet(mpt, network);
+//    retweet_analysis(stats, tb);
 }
 
 // edgelist created for R (analysis) and python executable (drawing) and gephi outputfile

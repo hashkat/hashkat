@@ -509,6 +509,7 @@ struct TreeNode {
 
     template <typename StateT, typename ClassifierT>
     void print(StateT& S, ClassifierT& C, int bin = -1, int layer = 0, std::string name = std::string()) {
+
         for (int i = 0; i < layer; i++) {
             printf("  ");
         }

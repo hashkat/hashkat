@@ -94,19 +94,27 @@ rm -f *yaml-generated
 # NOTE: Requires python and the pyyaml package
 python './INFILE.py' "$@"
 
+# If the flag is NOT present
+if ! handle_flag "--no-ctrlc" ; then
+    args="$args --handle-ctrlc"
+fi
+
 if handle_flag "-g" ; then
     # Wrap the gdb around the program with -g:
     echo "Wrapping in GDB:" | colorify '1;35'
-    gdb -silent -ex=r --args src/main $args
+    gdb -silent  \
+        -ex="handle SIGINT nostop noprint pass" \
+        -ex="handle 31 nostop noprint pass" -ex=r --args src/socialsim $args 
+
 elif handle_flag "-l" ; then
     # Wrap lldb around the program with -g:
     echo "Wrapping in LLDB:" | colorify '1;35'
-    lldb src/main $args
+    lldb src/socialsim $args
 elif handle_flag "-p" ; then
     # Profile the program (requires oprofile) with -p:
     echo "Profiling with oprofile:" | colorify '1;35'
-    operf src/main $args
-    opreport --exclude-dependent --demangle=smart --symbols src/main | less
+    operf src/socialsim $args
+    opreport --exclude-dependent --demangle=smart --symbols src/socialsim | less
 elif handle_flag "--valgrind" ; then
     # Profile the program (requires oprofile) with -p:
     echo "Profiling with oprofile:" | colorify '1;35'
@@ -118,10 +126,10 @@ elif handle_flag "--valgrind" ; then
 
     trap showOutput INT
 
-    valgrind --tool=callgrind src/main $args
+    valgrind --tool=callgrind src/socialsim $args
 
     showOutput
 else
     # Normal execution
-    src/main $args --handle-ctrlc 
+    src/socialsim $args
 fi

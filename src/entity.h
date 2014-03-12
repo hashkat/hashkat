@@ -74,9 +74,6 @@ struct Entity {
     FollowSet follow_set;
     FollowerSet follower_set;
 
-    //info needed for retweeting
-    Tweet last_tweet; // TODO: Entities should have more than one active tweet possible
-
     Entity() {
         entity_type = 0;
         preference_class = 0;

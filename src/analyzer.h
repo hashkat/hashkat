@@ -9,7 +9,7 @@
 #include "config_dynamic.h"
 #include "network.h"
 
-extern volatile int CTRL_C_ATTEMPTS;
+extern volatile int SIGNAL_ATTEMPTS;
 
 struct AnalysisStats {
     double prob_add;
@@ -114,8 +114,14 @@ enum SelectionType {
 struct RetweetChoice {
     int id_author;
     int id_observer;
-    RetweetChoice(int id_author, int id_observer) :
-            id_author(id_author), id_observer(id_observer) {
+    // We could have used 'smartptr', however the tweet is not going anywhere
+    // in the short while we retweet, so a pointer is safe.
+    smartptr<TweetContent>* tweet;
+    RetweetChoice() :
+        id_author(-1), id_observer(-1), tweet(NULL) {
+    }
+    RetweetChoice(int id_author, int id_observer, smartptr<TweetContent>* tweet) :
+            id_author(id_author), id_observer(id_observer), tweet(tweet) {
     }
     bool valid() {
         return (id_author != -1);
@@ -135,7 +141,7 @@ void analyzer_main(AnalysisState& state);
 // this returns the total retweet rate
 double analyzer_total_retweet_rate(AnalysisState& state);
 // this is for the retweet entity selection
-RetweetChoice analyzer_select_entity_retweet(AnalysisState& state, SelectionType type);
+RetweetChoice analyzer_select_tweet_to_retweet(AnalysisState& state, SelectionType type);
 void update_retweets(AnalysisState& state);
 
 const double ZEROTOL = 1e-16; // enough precision for really really low add rate

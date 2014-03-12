@@ -45,6 +45,13 @@ int test_main(int argc, char** argv); // Defined in tests/main.cpp
 int uv_main(int argc, char** argv); // Defined in tests/libuv-learning.cpp
 
 int main(int argc, char** argv) {
+
+    if (has_flag(argc, argv, "--stdout-nobuffer")) {
+        // Important mainly for colorization tool
+        setvbuf(stdout,NULL,_IONBF,0); // Make stdout unbuffered
+        cout.setf(std::ios::unitbuf);
+    }
+
 	if (has_flag(argc, argv, "--uv")) {
 	    return uv_main(argc, argv);
 	} else if (has_flag(argc, argv, "--tests")) {
@@ -69,6 +76,7 @@ int main(int argc, char** argv) {
 			seed = (int)t;
 		}
 
+		printf("Starting simulation with seed '%d'.\n", seed);
 		AnalysisState analysis_state(config, seed);
 
         analyzer_main(analysis_state);

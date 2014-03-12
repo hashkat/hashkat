@@ -14,7 +14,7 @@
 
 
 // information for when a user tweets
-struct TweetContent { // AD: TEMPORARY NOTE was TweetInfo
+struct TweetContent {
     double time_of_tweet;
     double starting_rate, updating_rate;
     UsedEntities used_entities;
@@ -32,7 +32,7 @@ struct TweetContent { // AD: TEMPORARY NOTE was TweetInfo
 
 // TODO Clear all temporary comments eventually
 // A tweet is an orignal tweet if tweeter_id == content.author_id
-struct Tweet { // AD: TEMPORARY NOTE was RetweetInfo
+struct Tweet {
     // The entity broadcasting the tweet
     int id_tweeter;
     double starting_rate, updating_rate;
@@ -87,9 +87,16 @@ struct TweetBank {
     TweetBank(AnalysisState& state);
 
     std::vector<Tweet> as_vector() {
-        return tree.as_vector();
+        std::vector<Tweet> vec = tree.as_vector();
+        for (int i = 0; i < vec.size(); i++) {
+            DEBUG_CHECK(!vec[i].content.empty(), "Tweet has no content!");
+        }
+        return vec;
     }
 
+    void print() {
+        tree.print();
+    }
     int n_active_tweets() const {
         return tree.size();
     }

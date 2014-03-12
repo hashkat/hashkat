@@ -10,10 +10,7 @@ include_directories(
 )
 
 
-add_definitions(-Wuninitialized -std=c++98 -O0 -ggdb)
-
-#SET (CMAKE_EXE_LINKER_FLAGS -fsanitize=address)
-#SET (CMAKE_MODULE_LINKER_FLAGS -fsanitize=address)
+add_definitions(-Wuninitialized -std=c++98)
 
 # Find source files
 aux_source_directory(
@@ -41,7 +38,6 @@ set_source_files_properties(
         ${networksim_src}
         PROPERTIES COMPILE_FLAGS 
         "-pedantic-errors -Wno-long-long -Wno-variadic-macros -Wno-sign-compare -Wno-reorder"
-        #"-Wall -Wextra -Werror -pedantic-errors -Wno-long-long -Wno-variadic-macros -Wno-sign-compare -Wno-reorder"
 )
 
 
@@ -57,7 +53,7 @@ aux_source_directory(
 
 # Add compilation target
 add_executable( 
-	main
+	socialsim
 	${mersenne_simd_src} 
 	${networksim_src} 
 	${networksim_tests} 
@@ -66,7 +62,7 @@ add_executable(
 )
 
 target_link_libraries (
-	main 
+	socialsim 
 	UnitTest++
 	yaml-cpp
 	libuv

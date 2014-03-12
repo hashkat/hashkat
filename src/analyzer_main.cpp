@@ -23,19 +23,28 @@
 
 using namespace std;
 
-volatile int CTRL_C_ATTEMPTS = 0;
+volatile int SIGNAL_ATTEMPTS = 0;
 
-static const int CTRL_C_ATTEMPTS_TO_ABORT = 3;
-// Handler for SIGINT -- sent by Ctrl-C on command-line. Allows us to stop our program gracefully!
-static void ctrl_C_handler(int __dummy) {
-    CTRL_C_ATTEMPTS++;
-    if (CTRL_C_ATTEMPTS >= CTRL_C_ATTEMPTS_TO_ABORT) {
+static const int SIGNAL_ATTEMPTS_TO_ABORT = 3;
+// Handler for singals -- sent by eg Ctrl-C on command-line. Allows us to stop our program gracefully!
+static void signal_handler(int __dummy) {
+    SIGNAL_ATTEMPTS++;
+    if (SIGNAL_ATTEMPTS >= SIGNAL_ATTEMPTS_TO_ABORT) {
         error_exit("User demands abort!");
         signal(SIGINT, SIG_DFL);
     }
 }
-static void ctrl_C_handler_install() {
-   signal(SIGINT, ctrl_C_handler);
+
+static void signal_handlers_uninstall(AnalysisState& state) {
+   signal(SIGINT, SIG_DFL);
+   signal(SIGUSR1 , SIG_DFL); // For custom interaction
+}
+
+static void signal_handlers_install(AnalysisState& state) {
+   if (state.config.handle_ctrlc) {
+       signal(SIGINT, signal_handler);
+   }
+   signal(SIGUSR1, signal_handler); // For custom interaction
 }
 
 /* The Analyze struct encapsulates the many-parameter analyze function, and its state. */
@@ -174,13 +183,15 @@ struct Analyzer {
      * Returns end-time. */
     double main() {
         run_network_simulation();
+        // TEMPORARY COMMENT AD: Added here after seeing no tweet come up in the MostPopularTweet structr
+        find_most_popular_tweet();
         return time;
     }
 
     // ROOT ANALYSIS ROUTINE
     /* Run the main analysis routine using this config. */
     void run_network_simulation() {
-        while ( LIKELY(time < config.max_time && network.n_entities < config.max_entities && CTRL_C_ATTEMPTS == 0) ) {
+        while ( LIKELY(time < config.max_time && network.n_entities < config.max_entities && SIGNAL_ATTEMPTS == 0) ) {
         	step_analysis();
         }
     }
@@ -264,24 +275,24 @@ struct Analyzer {
 	bool action_tweet(int id_tweeter) {
         // This is the entity tweeting
 		Entity& e = network[id_tweeter];
-        if (network.n_followers(id_tweeter) == 0) {
-            // No followers -- no need to even store the tweet.
-            entity_types[e.entity_type].n_tweets++;
-    		tweet_ranks.categorize(id_tweeter, e.n_tweets);
-            stats.n_tweets ++;
-            return true; //** AD: Still consider a success for now, re-evaluate later
-            //** AD: Maybe we may want to discount the possibility of such tweets and just restart
-        }
-        // add info to TweetInfo struct
-        e.last_tweet = generate_tweet(id_tweeter, generate_tweet_content(id_tweeter));
-		// increase the number of tweets the entity had by one
-		e.n_tweets++;
-        if (e.n_tweets / (time - e.creation_time) >= config.unfollow_tweet_rate) {
-            action_unfollow(id_tweeter);
-        }
         entity_types[e.entity_type].n_tweets++;
-		tweet_ranks.categorize(id_tweeter, e.n_tweets);
+        tweet_ranks.categorize(id_tweeter, e.n_tweets);
         stats.n_tweets ++;
+        if (network.n_followers(id_tweeter) > 0) {
+            generate_tweet(id_tweeter, generate_tweet_content(id_tweeter));
+            // Generate the tweet content:
+            // increase the number of tweets the entity had by one
+            e.n_tweets++;
+            if (e.n_tweets / (time - e.creation_time) >= config.unfollow_tweet_rate) {
+                action_unfollow(id_tweeter);
+            }
+            entity_types[e.entity_type].n_tweets++;
+            tweet_ranks.categorize(id_tweeter, e.n_tweets);
+            stats.n_tweets ++;
+        }
+        // Else, no followers -- no need to create a tweet
+        //** AD: Still consider a success for now, re-evaluate later
+        //** AD: Maybe we may want to discount the possibility of such tweets and just restart
 		return true; // Always succeeds
 	}
 
@@ -289,8 +300,7 @@ struct Analyzer {
 		Entity& e_observer = network[choice.id_observer];
 		Entity& e_author = network[choice.id_author];
 
-		DEBUG_CHECK(!e_author.last_tweet.content.empty(), "Retweeting empty tweet!");
-		e_observer.last_tweet = generate_tweet(choice.id_observer, e_author.last_tweet.content);
+		generate_tweet(choice.id_observer, *choice.tweet);
         entity_types[e_observer.entity_type].n_retweets ++;
         e_observer.n_retweets ++;
         stats.n_retweets ++;
@@ -325,6 +335,13 @@ struct Analyzer {
 		return true;
 	}
 
+	// Helper for step_analysis.
+	// Subtracts from a 'double' variable, 'var' by 'increment', and returns the new value.
+	static double subtract_var(double& var, double increment) {
+	    var -= increment;
+	    return var;
+	}
+
     // Performs one step of the analysis routine.
     // Takes old time, returns new time
     void step_analysis() {
@@ -338,22 +355,22 @@ struct Analyzer {
          */
         bool complete = false;
         while (!complete) {
-            double u_1 = rng.rand_real_not0(); // get the first number with-in [0,1).
+            double r = rng.rand_real_not0(); // get the first number with-in [0,1).
             int N = network.n_entities;
 
             // DECIDE WHAT TO DO:
-            if (u_1 - (stats.prob_add) <= ZEROTOL) {
+            if (subtract_var(r, stats.prob_add) <= ZEROTOL) {
                 // If we find ourselves in the add entity chuck of our cumulative function:
                 complete = action_create_entity(time, N);
-            } else if (u_1 - (stats.prob_add + stats.prob_follow) <= ZEROTOL) {
+            } else if (subtract_var(r, stats.prob_follow) <= ZEROTOL) {
                 int entity = analyzer_select_entity(state, FOLLOW_SELECT);
                 complete = analyzer_follow_entity(state, entity, N, time);
-            } else if (u_1 - (stats.prob_add + stats.prob_follow + stats.prob_tweet) <= ZEROTOL) {
+            } else if (subtract_var(r, stats.prob_tweet) <= ZEROTOL) {
                 // The tweet event
                 int entity = analyzer_select_entity(state, TWEET_SELECT);
                 complete = action_tweet(entity);
-            } else if (u_1 - (stats.prob_add + stats.prob_follow + stats.prob_tweet + stats.prob_retweet) <= ZEROTOL ) {
-                RetweetChoice choice = analyzer_select_entity_retweet(state, RETWEET_SELECT);
+            } else if (subtract_var(r, stats.prob_retweet) <= ZEROTOL ) {
+                RetweetChoice choice = analyzer_select_tweet_to_retweet(state, RETWEET_SELECT);
                 if (choice.id_author != -1) {
                     complete = action_retweet(choice, time);
                 }
@@ -412,6 +429,9 @@ struct Analyzer {
         if (local_max > most_pop_tweet.global_max) {
             most_pop_tweet.global_max = local_max;
             most_pop_tweet.most_popular_tweet = local_tweet;
+        }
+        if (!active_tweet_list.empty()) {
+            ASSERT(!most_pop_tweet.most_popular_tweet.content.empty(), "Should have a most popular tweet!");
         }
     }
     
@@ -497,9 +517,9 @@ void analyzer_main(AnalysisState& state) {
     Timer timer;
     Analyzer analyzer(state);
     if (state.config.handle_ctrlc) {
-        ctrl_C_handler_install();
+        signal_handlers_install(state);
     }
     analyzer.main();
-    signal(SIGINT, SIG_DFL);
+    signal_handlers_uninstall(state);
     printf("'analyzer_main' took %.2f milliseconds.\n", timer.get_microseconds() / 1000.0);
 }
