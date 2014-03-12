@@ -84,7 +84,7 @@ if handle_flag "--eclipse" || handle_flag "-e" ; then
 fi
 
 # Pass the -f flag to avoid building:
-if ! handle_flag "-f" && handle_flag "--force" ; then
+if ! handle_flag "-f" && ! handle_flag "--force" ; then
     cmake . | colorify '1;33'
     if handle_flag "--clean" ; then
         make clean
