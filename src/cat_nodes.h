@@ -537,10 +537,10 @@ struct TreeNode {
             DEBUG_CHECK(delta >= 0, "Negative rate delta on 'add'!");
             total_rate += delta;
             ret = delta;
-            debug_check_sums();
+//            debug_check_sums();
             return true;
         }
-        debug_check_sums();
+//        debug_check_sums();
         return false;
     }
 
@@ -556,7 +556,7 @@ struct TreeNode {
         }
         // Same thing for LeafNode's
         SubCat& sub_cat = cats[random_uniform_bin(rng)];
-        debug_check_sums();
+//        debug_check_sums();
         return sub_cat.pick_random_uniform(rng, elem);
     }
 
@@ -598,10 +598,10 @@ struct TreeNode {
             DEBUG_CHECK(delta <= 0, "Positive rate delta on 'remove'!");
             total_rate += delta;
             ret = delta;
-            debug_check_sums();
+//            debug_check_sums();
             return true;
         }
-        debug_check_sums();
+//        debug_check_sums();
         return false;
     }
 
