@@ -32,6 +32,10 @@ struct RateVec {
         }
         printf("]");
     }
+    void add(int n, double val) {
+        tuple[n] += val;
+        tuple_sum += val;
+    }
     void add(RateVec& o) {
         for (int i = 0; i < N_ELEM; i++) {
             tuple[i] += o.tuple[i];

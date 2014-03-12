@@ -84,33 +84,30 @@ static std::vector<EntityPreferenceClass> parse_preference_classes(const Node& n
     return ret;
 }
 
+// Terminal case of vector nesting:
+static void parse_vector(const Node& node, double& val, int tab =0) {
+    node >> val;
+}
+
+template <typename T>
+static void parse_vector(const Node& node, std::vector<T>& vec, int tab =0) {
+    vec.resize(node.size());
+    for (int i = 0; i < node.size(); i++) {
+        parse_vector(node[i], vec[i], tab + 1);
+    }
+}
+
 static TweetObservationPDF parse_tweet_obs_pdf(const Node& node) {
     const Node& tweet_obs = node["tweet_observation"];
     const Node& func = node["GENERATED"]["obs_function"];
     TweetObservationPDF ret; 
     parse(tweet_obs, "initial_resolution", ret.initial_resolution);
-    for (int i = 0; i < func.size(); i++) {
-        double val = 0;
-        func[i] >> val;
-        ret.values.push_back(val);
+    parse_vector(func, ret.values);
+    for (int i = 0; i < ret.values.size(); i++ ) {
+        printf("VALUE IS %.2f\n", ret.values[i]);
     }
     return ret;
 }
-
-
-// Terminal case of vector nesting:
-static void parse_nested_vector(const Node& node, double& val, int tab =0) {
-    node >> val;
-}
-
-template <typename T>
-static void parse_nested_vector(const Node& node, std::vector<T>& vec, int tab =0) {
-    vec.resize(node.size());
-    for (int i = 0; i < node.size(); i++) {
-        parse_nested_vector(node[i], vec[i], tab + 1);
-    }
-}
-
 
 static FollowerSetRatesDeterminer parse_tweet_react_rates(const Node& node) {
     // Nesting is as follows:
@@ -125,7 +122,7 @@ static FollowerSetRatesDeterminer parse_tweet_react_rates(const Node& node) {
     // is in the same order as expected by FollowerSetRates (which is a category component type)
 
     rel_function_t input_func; // Multi-dimensional vector, see above
-    parse_nested_vector(generated["rel_function"], input_func   );
+    parse_vector(generated["rel_function"], input_func   );
 
     // Rates for every entity-type X humour-bin
     vector< vector<FollowerSetRates> > total_rates;

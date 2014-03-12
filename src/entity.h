@@ -55,6 +55,10 @@ typedef follower_set::DistanceComponent::CatGroup FollowerSetDistanceLayer;
 typedef follower_set::LanguageComponent::CatGroup FollowerSetLanguageLayer;
 typedef FollowerSetLeafBin::iterator FollowerSetLeafIter;
 
+typedef FollowerSetLanguageLayer FollowerSetLayer1;
+typedef FollowerSetDistanceLayer FollowerSetLayer2;
+typedef FollowerSetLeafBin FollowerSetLayer3;
+
 typedef follower_set::LanguageComponent FollowerSetRates;
 typedef FollowerSetRates::CatGroup FollowerSet;
 
