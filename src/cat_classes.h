@@ -25,6 +25,24 @@ struct LeafClass : BaseLeafClass<ElemT, CatData, N_ELEMS> {
     double& get(NetworkT& N, int bin) {
         return rates.at(bin);
     }
+
+    template <typename NetworkT>
+    void print(NetworkT& N, int bin, int layer) {
+        for (int i = 0; i < layer; i++) {
+            printf("  ");
+        }
+        printf("Layer %d (Bin %d) \n", layer, bin);
+        std::vector<double>::iterator it = rates.begin();
+        for (int i = 0; i < layer; i++) {
+            printf("  ");
+        }
+
+        for (; it != rates.end(); ++it) {
+            printf("%.2f ", *it);
+        }
+        printf("\n");
+    }
+
     void resize(int n) {
         rates.resize(n);
     }
@@ -49,7 +67,6 @@ struct LeafClass : BaseLeafClass<ElemT, CatData, N_ELEMS> {
 template <typename ElemT, int MAX_CATS, int N_ELEMS = 1>
 struct StaticLeafClass : LeafClass<ElemT, StaticVector<LeafNode<ElemT, N_ELEMS>, MAX_CATS>, N_ELEMS> {
 };
-
 
 template <typename InnerT, typename CatData = std::vector<typename InnerT::CatGroup>, int N_ELEMS = 1 >
 struct TreeClass {
@@ -77,6 +94,23 @@ struct TreeClass {
     template <typename NetworkT>
     std::string cat_name(NetworkT& N, int bin) {
         return "";
+    }
+
+    template <typename NetworkT>
+    void print(NetworkT& N, int bin = 0, int layer = 0) {
+        for (int i = 0; i < layer; i++) {
+            printf("  ");
+        }
+
+        printf("Layer %d (Bin %d) \n", layer, bin);
+
+        /* Print children: */
+        int child_bin = 0;
+        typename std::vector<InnerT>::iterator it = classes.begin();
+        for (; it != classes.end(); ++it) {
+            it->print(N, child_bin, layer + 1);
+            child_bin++;
+        }
     }
 
     template <typename T>

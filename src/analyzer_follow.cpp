@@ -29,13 +29,14 @@ struct AnalyzerFollow {
     * Entity mutation routines
     ***************************************************************************/
    // Returns true if a follow is added that was not already added
-   bool handle_follow(int actor, int target) {
-       Entity& A = network[actor];
-       Entity& T = network[target];
-       bool was_added = A.follow_set.add(state, /* AD: dummy rate for now */ 1.0, target);
+   bool handle_follow(int id_actor, int id_target) {
+       Entity& A = network[id_actor];
+       Entity& T = network[id_target];
+       bool was_added = A.follow_set.add(state, /* AD: dummy rate for now */ 1.0, id_target);
        if (was_added) {
-           follower_set::Context context(state, target);
-           bool was_added = T.follower_set.add(context, config.follower_rates, actor);
+           follower_set::Context context(state, id_target);
+           FollowerSetRates& rates = config.follower_rates.get_rates(A);
+           bool was_added = T.follower_set.add(context, rates, id_actor);
            ASSERT(was_added, "Follow/follower-set asymmetry detected!");
            return true;
        }

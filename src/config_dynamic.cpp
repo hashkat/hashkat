@@ -7,8 +7,10 @@
 #include <yaml-cpp/yaml.h>
 
 #include "util.h"
+
 #include "CategoryGrouper.h"
 #include "config_dynamic.h"
+#include "entity.h"
 
 using namespace std;
 using namespace YAML;
@@ -93,6 +95,61 @@ static TweetObservationPDF parse_tweet_obs_pdf(const Node& node) {
         ret.values.push_back(val);
     }
     return ret;
+}
+
+
+// Terminal case of vector nesting:
+static void parse_nested_vector(const Node& node, double& val, int tab =0) {
+    node >> val;
+}
+
+template <typename T>
+static void parse_nested_vector(const Node& node, std::vector<T>& vec, int tab =0) {
+    vec.resize(node.size());
+    for (int i = 0; i < node.size(); i++) {
+        parse_nested_vector(node[i], vec[i], tab + 1);
+    }
+}
+
+
+static FollowerSetRatesDeterminer parse_tweet_react_rates(const Node& node) {
+    // Nesting is as follows:
+    // Each (entity-type X humour-bin) has its own rate object which has rates for:
+    //  (language X distance X pref-class)
+    typedef vector< vector< double > > entity_humour_rel_function_t;
+    typedef vector<entity_humour_rel_function_t> entity_rel_function_t;
+    typedef vector<entity_rel_function_t> rel_function_t;
+
+    const Node& generated = node["GENERATED"];
+    // Assumption: The vector we read from state.config.follower_rates
+    // is in the same order as expected by FollowerSetRates (which is a category component type)
+
+    rel_function_t input_func; // Multi-dimensional vector, see above
+    parse_nested_vector(generated["rel_function"], input_func   );
+
+    // Rates for every entity-type X humour-bin
+    vector< vector<FollowerSetRates> > total_rates;
+
+    // Loop over entity-type layer:
+    for (int i = 0; i < input_func.size(); i++) {
+        vector<FollowerSetRates> evec;
+        entity_rel_function_t& entity_func = input_func[i];
+
+        // Loop over humour-bin layer:
+        for (int j = 0; j < entity_func.size(); j++) {
+            entity_humour_rel_function_t& eh_func = entity_func[j];
+            FollowerSetRates react_rates;
+            // Fill the same rates for every language (slightly memory inefficient):
+            for (int k = 0; k < eh_func.size(); k++) {
+                react_rates.get(/*Dummy value:*/react_rates, k).fill_rates(eh_func);
+            }
+//            react_rates.print(/*Dummy value:*/react_rates);
+            evec.push_back(react_rates);
+        }
+
+        total_rates.push_back(evec);
+    }
+    return FollowerSetRatesDeterminer(total_rates);
 }
 
 static void parse_analysis_configuration(ParsedConfig& config, const Node& node) {
@@ -273,6 +330,7 @@ static void parse_all_configuration(ParsedConfig& config, const Node& node) {
     config.lang_probs = parse_language_configuration(node["languages"]);
     config.pref_classes = parse_preference_classes(node);
     config.tweet_obs = parse_tweet_obs_pdf(node);
+    config.follower_rates = parse_tweet_react_rates(node);
     config.add_rates = parse_rates_configuration(config, node["rates"]["add"]);
     parse_output_configuration(config, node["output"]);
     config.entity_types = parse_entities_configuration(node["entities"]);
@@ -295,4 +353,9 @@ ParsedConfig parse_yaml_configuration(const char* file_name) {
                 e.what());
         throw;
     }
+}
+
+// Declared in .h file
+FollowerSetRates& FollowerSetRatesDeterminer::get_rates(Entity& entity) {
+    return rates[entity.entity_type][entity.humour_bin];
 }

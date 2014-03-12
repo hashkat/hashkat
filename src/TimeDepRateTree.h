@@ -34,10 +34,15 @@ struct TimeDepRateTree {
         last_rate = 0;
     }
 
-    ref_t add(const T& data, const RateVec<N_ELEM>& tuple) {
-        // ASSUMPTION: Add to initial time set always
-        ref_t ref = tree.add(data, tuple);
-        time_sets[0].insert(ref);
+    /*
+     * Add an element. Determiner determines the rate associated.
+     */
+    ref_t add(const T& data) {
+        // ASSUMPTION: Add to initial time bin always
+        const int TIME_BIN = 0;
+        RateVec<N_ELEM> rate_tuple = determiner.get_rate(data, TIME_BIN);
+        ref_t ref = tree.add(data, rate_tuple);
+        time_sets[TIME_BIN].insert(ref);
         return ref;
     }
 

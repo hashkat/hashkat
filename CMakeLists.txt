@@ -12,6 +12,10 @@ else()
     set(CMAKE_BUILD_TYPE Debug)
 endif()
 
+if ($ENV{BUILD_FLAGS})
+    add_definitions ($ENV{BUILD_FLAGS})
+endif()
+
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
     add_definitions(
        -D_GLIBCXX_DEBUG

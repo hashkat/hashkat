@@ -20,9 +20,15 @@ using namespace std;
 void output_network_statistics(AnalysisState& state) {
     Network& network = state.network;
     for (int i = 0; i < min(10, network.n_entities); i++) {
-        printf("(Entity %d Follower List)-----------------------------------------------\n", i);
+        Entity& e = network[i];
+        EntityType& et = state.entity_types[e.entity_type];
+
+        printf("------------------------------------------------------------------------\n", i);
+        printf("(Entity %d)\n", i);
+        printf("(EntityType %s)\n", et.name.c_str());
+        printf("------------------------------------------------------------------------\n", i);
         follower_set::Context context(state, i);
-        network[i].follower_set.print(context, state.config.follower_rates);
+        e.follower_set.print(context, state.config.follower_rates.get_rates(e));
     }
     ParsedConfig& C = state.config;
     EntityTypeVector& et_vec = state.entity_types;

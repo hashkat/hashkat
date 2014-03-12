@@ -33,6 +33,26 @@ struct TweetObservationPDF {
     }
 };
 
+//TODO AD: Better name
+// First layer: entity_type
+// Second layer: humour bin
+typedef std::vector< std::vector<FollowerSetRates> > FollowerSetRatesVec;
+
+//TODO AD: Better name
+struct FollowerSetRatesDeterminer {
+    FollowerSetRatesDeterminer() {
+    }
+
+    FollowerSetRatesDeterminer(const FollowerSetRatesVec& rates) : rates(rates){
+    }
+
+    // Defined in .cpp file
+    FollowerSetRates& get_rates(Entity& entity);
+
+private:
+    FollowerSetRatesVec rates;
+};
+
 // Config variables, read from INFILE.yaml
 struct ParsedConfig {
     // 'analysis' config options
@@ -44,7 +64,8 @@ struct ParsedConfig {
     bool use_barabasi;
     bool entity_stats;
     FollowModel follow_model;
-    FollowerSetRates follower_rates;
+
+    FollowerSetRatesDeterminer follower_rates;
 
     // 'rates' config options
     double rate_add;

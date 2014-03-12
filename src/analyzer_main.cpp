@@ -206,6 +206,8 @@ struct Analyzer {
 		Entity& e = network[index];
 		e.creation_time = creation_time;
 		e.language = entity_pick_language();
+		e.humour_bin = 0; // For now, no humour
+//		e.humour_bin = rng.rand_int(N_BIN_HUMOUR); // Uniform
 		e.preference_class = rng.rand_int(config.pref_classes.size());
 		// Place the entity in a random location
 		// TODO: Location choosing scheme
@@ -265,8 +267,7 @@ struct Analyzer {
         tweet.creation_time = time;
         tweet.id_tweeter = id_tweeter;
         if (network.n_followers(id_tweeter) != 0) {
-            RateVec<1> rate_vec(0.0001 * network.n_followers(id_tweeter));
-            state.tweet_bank.tree.add(tweet, rate_vec);
+            state.tweet_bank.add(tweet);
         }
         return tweet;
     }
@@ -324,7 +325,7 @@ struct Analyzer {
 		// Necessary for use with follower set:
         follower_set::Context context(state, id_unfollowed);
         // Remove our target from our actor's follows:
-        bool had_follower = candidate_followers.remove(context, config.follower_rates, id_lost_follower);
+        bool had_follower = candidate_followers.remove(context, config.follower_rates.get_rates(e_unfollowed), id_lost_follower);
 		DEBUG_CHECK(had_follower, "unfollow: Did not exist in follower list");
 
         // Remove our unfollowed person from our target's followers:
