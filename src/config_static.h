@@ -15,10 +15,10 @@
  */
 
 // Follow set allocation tuning:
-const int FOLLOW_LIST_THRESHOLD1 = 96; // Initial follow set limit, statically included in every entity object. (Short-object-optimization)
-// '96' rationale: Chosen because 95% of Twitter users have <100 follows.
-const int FOLLOWER_LIST_THRESHOLD1 = 96; // Initial follower set limit, statically included in every entity object. (Short-object-optimization)
-// '96' rationale: Somewhat arbitrarily chosen to be same as follow.
+const int FOLLOW_LIST_THRESHOLD1 = 256; // Initial follow-set size-limit before data-structure is switched to google's sparsehash
+const int FOLLOWER_LIST_THRESHOLD1 = 256; // Initial follower-set size-limit before data-structure is switched to google's sparsehash
+// TODO Somewhat arbitrarily chosen
+
 const int FOLLOW_SET_MEM_PER_USER = 512 * 4 * 8;
 // Allocate enough space for 512 follows for each entity. Increase for a more dense follow network.
 

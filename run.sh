@@ -66,6 +66,11 @@ if handle_flag "--profile-use" || handle_flag "--puse" ; then
     export BUILD_OPTIMIZE=1
     export BUILD_PROF_USE=1
 fi
+# Pick whether to use debug data-structures for eg std:;vector
+if handle_flag "--debug" ; then
+    export BUILD_FLAGS="$BUILD_FLAGS -D_GLIBCXX_DEBUG"
+fi
+
 
 # Create eclipse-project-files
 if handle_flag "-e" ; then

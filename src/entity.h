@@ -141,6 +141,9 @@ struct Entity {
         n_retweets = 0;
         humour_bin = -1; // Initialize with invalid humour bin
     }
+private:
+    // Ban the copy constructor:
+    Entity(const Entity&);
 };
 
 #endif

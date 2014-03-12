@@ -81,6 +81,178 @@ struct CompileTimeRateSwitch<1> {
     typedef double repr_t; // N_ELEMS == 1, use 'double'
 };
 
+
+// A set that dynamically picks its implementation based on the load.
+// For
+template <typename T, typename HasherT = Hasher>
+struct FlexibleSet {
+    enum {
+        INITIAL = 0,
+        THRESHOLD = 128
+    };
+
+    ~FlexibleSet() {
+        clear();
+    }
+    FlexibleSet() {
+        hash_impl = NULL;
+        vector_impl.reserve(INITIAL);
+    }
+
+    struct iterator {
+        typedef T value_type;
+        int slot;
+        T elem;
+        iterator() : slot(0) {
+        }
+        T get() {
+            return elem;
+        }
+    };
+
+    bool pick_random_uniform(MTwist& rng, T& elem) {
+        if (UNLIKELY(empty())) {
+            return false;
+        }
+        if (UNLIKELY(hash_impl)) {
+            HashSet& elems = *hash_impl;
+            int n_hash_slots = elems.rep.table.size();
+            int idx;
+            while (true) {
+                // We will loop until we find a hash-slot that
+                // contains a valid instance of 'ElemT'.
+                idx = rng.rand_int(n_hash_slots);
+                if (elems.rep.table.test(idx)) {
+                    elem = elems.rep.table.unsafe_get(idx);
+                    if (elem != -1) {
+                        return true;
+                    }
+                }
+            }
+            ASSERT(false, "Should be unreachable!");
+            return false;
+        } else {
+            int idx = rng.rand_int(vector_impl.size());
+            elem = vector_impl[idx];
+            return true;
+        }
+    }
+
+    void print() {
+        if (hash_impl) {
+            HashSet& elems = *hash_impl;
+            printf("{");
+            typename HashSet::iterator it = elems.begin();
+            for (; it != elems.end(); ++it) {
+                printf("%d ", *it);
+            }
+            printf("}\n");
+        } else {
+            printf("[");
+            typename std::vector<T>::iterator it = vector_impl.begin();
+            for (; it != vector_impl.end(); ++it) {
+                printf("%d ", *it);
+            }
+            printf("]\n");
+        }
+    }
+    bool iterate(iterator& iter) {
+        if (UNLIKELY(hash_impl)) {
+            HashSet& elems = *hash_impl;
+            int n_hash_slots = elems.rep.table.size();
+
+            bool found_element = false;
+            // Find next available slot
+            while (!found_element) {
+                if (iter.slot >= n_hash_slots) {
+                    // No more elements
+                    return false;
+                }
+                // If not at end, we will loop until we find a hash-slot that
+                // contains a valid instance of 'ElemT'.
+                if (elems.rep.table.test(iter.slot)) {
+                    T elem = elems.rep.table.unsafe_get(iter.slot);
+                    if (elem != -1) {
+                        iter.elem = elem;
+                        found_element = true;
+                    }
+                }
+                iter.slot++;
+            }
+        } else {
+            if (iter.slot >= vector_impl.size()){
+                return false;
+            }
+            iter.elem = vector_impl[iter.slot];
+            iter.slot++;
+        }
+        return true;
+    }
+
+    bool erase(const T& elem) {
+        if (UNLIKELY(hash_impl) ) {
+            return hash_impl->erase(elem);
+        }
+        // Must scan for element, linearly
+        // Luckily, we are below THRESHOLD, and thus should be fairly small
+        const int nElem = vector_impl.size();
+        for (int i = 0; i < nElem; i++) {
+            // Individual case unlikely -- must happen once, though, typically.
+            if (UNLIKELY(vector_impl[i] == elem)) {
+                vector_impl.erase(vector_impl.begin() + i);
+                return true;
+            }
+        }
+        return false;
+    }
+    bool insert(const T& elem) {
+        if (UNLIKELY(vector_impl.size() > THRESHOLD)) {
+            switch_to_hash_set();
+        }
+        if (UNLIKELY(hash_impl) ) {
+            HashSet& elems = *hash_impl;
+            size_t prev_size = elems.size();
+            elems.insert(elem);
+            return (elems.size() > prev_size);
+        }
+        // Must scan for element, linearly
+        // Luckily, we are below THRESHOLD, and thus should be fairly small
+        const int nElem = vector_impl.size();
+        for (int i = 0; i < nElem; i++) {
+            if (UNLIKELY(vector_impl[i] == elem)) {
+                // Already in our set!
+                return false;
+            }
+        }
+        // Otherwise, simply append to our vector:
+        vector_impl.push_back(elem);
+        return true;
+    }
+    bool empty() const {
+        return hash_impl ? hash_impl->empty() : vector_impl.empty();
+    }
+    size_t size() const {
+        return hash_impl ? hash_impl->size() : vector_impl.size();
+    }
+    void clear() {
+        delete hash_impl;
+        hash_impl = NULL;
+        vector_impl = std::vector<T>();
+    }
+private:
+    // If we pass THRESHOLD, we should switch to a different implementation
+    void switch_to_hash_set() {
+        hash_impl = new HashSet(size()*2);
+        // MUST be done to use erase() with Google's HashSet:
+        hash_impl->set_deleted_key((T)-1);
+        // Ensure our vector's memory is reclaimed:
+        vector_impl = std::vector<T>();
+    }
+    typedef google::sparse_hash_set<T, HasherT> HashSet;
+    HashSet* hash_impl; // If NULL, use vector_impl
+    std::vector<T> vector_impl;
+};
+
 /* Every LeafNode holds a google-spare-hash-set. These data structures are highly memory efficient.
  * They are also fairly dynamic. If we hit memory problems, we can write to disk and restart the simulation.
  * The simulation will then be 'defragmented'.
@@ -88,47 +260,15 @@ struct CompileTimeRateSwitch<1> {
 template <typename ElemT, int N_RATE_ELEMS = 1, typename HasherT = Hasher>
 struct LeafNode {
     typedef typename CompileTimeRateSwitch<N_RATE_ELEMS>::repr_t rate_t;
-    typedef google::sparse_hash_set<ElemT, HasherT> HashSet;
+    typedef FlexibleSet<ElemT, HasherT> ElemSet;
     typedef ElemT value_type;
-
-    struct iterator {
-        typedef ElemT value_type;
-        int slot;
-        ElemT elem;
-        iterator() : slot(0) {
-        }
-        ElemT get() {
-            return elem;
-        }
-    };
+    typedef typename ElemSet::iterator iterator;
 
     bool iterate(iterator& iter) {
-        int n_hash_slots = elems.rep.table.size();
-
-        bool found_element = false;
-        // Find next available slot
-        while (!found_element) {
-            if (iter.slot >= n_hash_slots) {
-                // No more elements
-                return false;
-            }
-            // If not at end, we will loop until we find a hash-slot that
-            // contains a valid instance of 'ElemT'.
-            if (elems.rep.table.test(iter.slot)) {
-                value_type elem = elems.rep.table.unsafe_get(iter.slot);
-                if (elem != -1) {
-                    iter.elem = elem;
-                    found_element = true;
-                }
-            }
-            iter.slot++;
-        }
-        return true;
+        return elems.iterate(iter);
     }
 
-    LeafNode() : elems(/*Minimum start capacity:*/ 4), total_rate(0) {
-        // MUST be done to use erase() with Google's HashSet
-        elems.set_deleted_key(ElemT(-1));
+    LeafNode() : total_rate(0) {
     }
 
     int size() {
@@ -193,43 +333,21 @@ struct LeafNode {
                 float(total_rate),
                 rate,
                 size());
-        printf("[");
-        typename HashSet::iterator it = elems.begin();
-        for (; it != elems.end(); ++it) {
-            printf("%d ", *it);
-        }
-        printf("]\n");
+        elems.print();
     }
 
     template <typename StateT, typename ClassifierT, typename Node>
     void transfer(StateT& N, ClassifierT& C, Node& o) {
-        typename HashSet::iterator it = elems.begin();
-        for (; it != elems.end(); ++it) {
+        iterator it;
+        while (elems.iterate(it)) {
             rate_t delta = 0.0;
-            o.add(N, C, delta, *it);
+            o.add(N, C, delta, it.get());
         }
         elems.clear();
     }
 
     bool pick_random_uniform(MTwist& rng, ElemT& elem) {
-        if (elems.empty()) {
-            return false;
-        }
-        int n_hash_slots = elems.rep.table.size();
-        int idx;
-        while (true) {
-            // We will loop until we find a hash-slot that
-            // contains a valid instance of 'ElemT'.
-            idx = rng.rand_int(n_hash_slots);
-            if (elems.rep.table.test(idx)) {
-                elem = elems.rep.table.unsafe_get(idx);
-                if (elem != -1) {
-                    return true;
-                }
-            }
-        }
-        ASSERT(false, "Should be unreachable!");
-        return false;
+        return elems.pick_random_uniform(rng, elem);
     }
 
     ElemT pick_random_uniform(MTwist& rng) {
@@ -254,15 +372,20 @@ struct LeafNode {
         ASSERT(false, "Failure in pick_random_weighted");
         return elem;
     }
+
+    int debug_size() { // Inefficient
+        return size();
+    }
+    double debug_rate_sum() { // Inefficient
+        return total_rate;
+    }
 private:
     rate_t total_rate;
-    HashSet elems;
+    ElemSet elems;
 
     // Returns true if the element was unique
     bool insert(const ElemT& elem) {
-        size_t prev_size = elems.size();
-        elems.insert(elem);
-        return (elems.size() > prev_size);
+        return elems.insert(elem);
     }
 };
 
@@ -308,6 +431,25 @@ struct TreeNode {
     typedef typename SubCat::iterator sub_iterator;
     typedef typename SubCat::value_type value_type;
 
+    double debug_size() { // Inefficient
+        int n_elems = 0.0;
+        for (int i = 0; i < n_bins(); i++) {
+            n_elems += (*this)[i].debug_size();
+        }
+        return n_elems;
+    }
+
+    double debug_rate_sum() { // Inefficient
+        double sum = 0.0;
+        for (int i = 0; i < n_bins(); i++) {
+            sum += (*this)[i].debug_rate_sum();
+        }
+        return sum;
+    }
+    void debug_check_sums() {
+        ASSERT(debug_size() == size(), "Sizes don't match!");
+        ASSERT(debug_rate_sum() == total_rate, "Rates don't match!");
+    }
     struct iterator {
         int bin;
         sub_iterator sub_iter;
@@ -395,8 +537,10 @@ struct TreeNode {
             DEBUG_CHECK(delta >= 0, "Negative rate delta on 'add'!");
             total_rate += delta;
             ret = delta;
+            debug_check_sums();
             return true;
         }
+        debug_check_sums();
         return false;
     }
 
@@ -412,6 +556,7 @@ struct TreeNode {
         }
         // Same thing for LeafNode's
         SubCat& sub_cat = cats[random_uniform_bin(rng)];
+        debug_check_sums();
         return sub_cat.pick_random_uniform(rng, elem);
     }
 
@@ -425,7 +570,7 @@ struct TreeNode {
     }
 
     bool pick_random_weighted(MTwist& rng, value_type& elem) {
-        if (cats.empty()  || size() == 0) {
+        if (total_rate == 0.0 || size() == 0 ) {
             return false;
         }
         // Same thing for LeafNode's
@@ -453,8 +598,10 @@ struct TreeNode {
             DEBUG_CHECK(delta <= 0, "Positive rate delta on 'remove'!");
             total_rate += delta;
             ret = delta;
+            debug_check_sums();
             return true;
         }
+        debug_check_sums();
         return false;
     }
 

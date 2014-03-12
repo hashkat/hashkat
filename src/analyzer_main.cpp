@@ -417,7 +417,7 @@ struct Analyzer {
      ***************************************************************************/
 
     void find_most_popular_tweet() {
-        int local_max = 0;
+        int local_max = -1;
         Tweet local_tweet;
         vector<Tweet> active_tweet_list = tweet_bank.as_vector();
         for (int i = 0; i < active_tweet_list.size(); i ++) {
@@ -431,9 +431,10 @@ struct Analyzer {
             most_pop_tweet.global_max = local_max;
             most_pop_tweet.most_popular_tweet = local_tweet;
         }
-        if (!active_tweet_list.empty()) {
-            ASSERT(!most_pop_tweet.most_popular_tweet.content.empty(), "Should have a most popular tweet!");
-        }
+
+//        if (!active_tweet_list.empty()) {
+//            ASSERT(!most_pop_tweet.most_popular_tweet.content.empty(), "Should have a most popular tweet!");
+//        }
     }
     
     void output_tweets() {

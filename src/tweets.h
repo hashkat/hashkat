@@ -104,12 +104,12 @@ struct TweetBank {
      * Add an tweet. TweetRateDeterminer determines the reaction rate (follow or retweet) associated.
      */
     void add(const Tweet& data) {
-        static int ITER = 1;
+//        static int ITER = 1;
         tree.add(data);
-        printf("Tweet %d: \n", ITER);
-        printf("------------------------------------------------------------------------\n");
-        print();
-        ITER++;
+//        printf("Tweet %d: \n", ITER);
+//        printf("------------------------------------------------------------------------\n");
+//        print();
+//        ITER++;
     }
 
     std::vector<Tweet> as_vector() {

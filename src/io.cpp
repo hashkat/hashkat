@@ -487,6 +487,9 @@ void visualize_most_popular_tweet(MostPopularTweet& mpt, Network& network) {
     ofstream output;
     output.open("retweet_viz.gexf");
     Tweet& t = mpt.most_popular_tweet;
+    if (t.content.empty()) {
+        return; // Nothing to see here
+    }
     
     output << "<gexf xmlns=\"http://www.gexf.net/1.2draft\" xmlns:viz=\"http://www.gexf.net/1.2draft/viz\">\n"
             << "<meta lastmodifieddate=\"2013-11-21\">\n"

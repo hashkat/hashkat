@@ -17,9 +17,6 @@ if ($ENV{BUILD_FLAGS})
 endif()
 
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-    add_definitions(
-       -D_GLIBCXX_DEBUG
-    )
     if(APPLE) 
     elseif ($ENV{BUILD_SANITIZE})
         SET (CMAKE_EXE_LINKER_FLAGS

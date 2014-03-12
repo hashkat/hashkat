@@ -344,7 +344,7 @@ struct RateTree {
         n_elems--;
         free_list.push_back(handle);
         n = Node();// 'Wipe' the node
-        debug_check_rates();
+//        debug_check_rates();
     }
 
     ref_t pick_random_weighted(MTwist& rng) {
@@ -362,8 +362,8 @@ struct RateTree {
         get(n.parent).rate_add(*this, n.rates);
         n_elems++;
 
-        debug_check_reachability(node);
-        debug_check_rates();
+//        debug_check_reachability(node);
+//        debug_check_rates();
         return node;
     }
     void replace_rate(ref_t ref, const RateVec<N_ELEM>& tuple) {

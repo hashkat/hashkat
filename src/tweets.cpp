@@ -15,7 +15,7 @@ void TweetRateDeterminer::update_rate(TweetReactRateVec& rates, const Tweet& twe
 }
 
 TweetReactRateVec TweetRateDeterminer::get_rate(const Tweet& tweet, int bin) {
-    Entity entity = state.network[tweet.id_tweeter];
+    Entity& entity = state.network[tweet.id_tweeter];
     Language lang = entity.language;
     FollowerSet followers = entity.follower_set;
     int n_elems = 0;
@@ -62,8 +62,8 @@ TweetReactRateVec TweetRateDeterminer::get_rate(const Tweet& tweet, int bin) {
      }
     DEBUG_CHECK(n_elems == followers.size(), "Amount of entities in the follower set don't match up!");
 
-    printf("GETTING RATE:\n");
-    rates.print();
+//    printf("GETTING RATE:\n");
+//    rates.print();
     return rates;
 }
 
