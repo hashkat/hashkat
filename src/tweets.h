@@ -69,7 +69,7 @@ struct MostPopularTweet {
  * Each tweeter's follower list has homogenous (ie, same):
  *  - entity type (of tweeter)
  * */
-const int RETWEET_RATE_ELEMENTS = N_BIN_DISTANCE * N_BIN_HUMOUR;
+const int RETWEET_RATE_ELEMENTS = 1;
 typedef RateVec<RETWEET_RATE_ELEMENTS> TweetReactRateVec;
 
 struct TweetRateDeterminer {
@@ -109,7 +109,7 @@ struct TweetBank {
     }
 
     std::vector<Tweet> as_vector() {
-        std::vector<Tweet> vec = tree.as_vector();
+        auto vec = tree.as_vector();
         for (int i = 0; i < vec.size(); i++) {
             DEBUG_CHECK(!vec[i].content.empty(), "Tweet has no content!");
         }

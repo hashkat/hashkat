@@ -29,7 +29,7 @@ struct AnalyzerRetweet {
         TweetBank& tweet_bank = state.tweet_bank;
         handle_old_tweet_and_retweet_IDs(tweet_bank);
     }
-    
+
     double total_retweet_rate() {
         return state.tweet_bank.get_total_rate();
     }

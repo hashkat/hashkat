@@ -39,8 +39,8 @@ const int STDOUT_OUTPUT_RATE = 1000; // Once per X file outputs
 // The memory waste should not be horrible to overshoot by, say, 2x, however.
 const int N_BIN_PREFERENCE_CLASS = 10;
 
-// NOTE WELL: The below 2 parameters should max your INFILE.yaml!!
-const int N_BIN_HUMOUR = 10;
-const int N_BIN_DISTANCE = 10;
+// NOTE WELL: The below 2 parameters should match your INFILE.yaml!!
+const int N_BIN_HUMOUR = 2;
+const int N_BIN_DISTANCE = 4;
 
 #endif

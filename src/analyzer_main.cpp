@@ -183,7 +183,7 @@ struct Analyzer {
      * Returns end-time. */
     double main() {
         run_network_simulation();
-        // TEMPORARY COMMENT AD: Added here after seeing no tweet come up in the MostPopularTweet structr
+        // TEMPORARY COMMENT AD: Added here after seeing no tweet come up in the MostPopularTweet struct
         find_most_popular_tweet();
         return time;
     }
@@ -215,11 +215,12 @@ struct Analyzer {
 		e.location.y = rng.rand_real_with01();
 		double rand_num = rng.rand_real_not0();
 		for (int et = 0; et < entity_types.size(); et++) {
-			if (rand_num <= entity_types[et].prob_add) {
+		    EntityType type = entity_types[et];
+			if (rand_num <= type.prob_add) {
 				e.entity_type = et;
-                entity_types[et].entity_list.push_back(index);
+                type.entity_list.push_back(index);
 				follow_ranks.categorize(index, e.follower_set.size());
-                entity_types[et].follow_ranks.categorize(index, e.follower_set.size());
+                type.follow_ranks.categorize(index, e.follower_set.size());
 				break;
 			}
 			rand_num -= entity_types[et].prob_add;
@@ -229,24 +230,6 @@ struct Analyzer {
 		}
         network.n_entities++;
         return true; // Always succeeds, for now.
-    }
-
-    // will use the categories here to decide who will retweet
-    int users_to_retweet(Entity& e) {
-        // returns full list for now
-        FollowerSet& fs = e.follower_set;
-
-        // AD -- TEMPORARY NOTE: Refactoring occurred here
-        if (e.language == LANG_ENGLISH) {
-            // return all of the english speakers and bilingual speakers 
-            return language_entity_amount(fs, LANG_ENGLISH) + language_entity_amount(fs, LANG_FRENCH_AND_ENGLISH);
-        } else if (e.language == LANG_FRENCH_AND_ENGLISH) {
-            // return the whole list
-            return e.follower_set.size(); // TODO: AD -- Bilingual tweets make no sense
-        } else if (e.language == LANG_FRENCH){
-            return language_entity_amount(fs, LANG_FRENCH) + language_entity_amount(fs, LANG_FRENCH_AND_ENGLISH);
-        }
-        return 0;
     }
 
     smartptr<TweetContent> generate_tweet_content(int id_original_author) {
@@ -420,11 +403,11 @@ struct Analyzer {
         int local_max = -1;
         Tweet local_tweet;
         vector<Tweet> active_tweet_list = tweet_bank.as_vector();
-        for (int i = 0; i < active_tweet_list.size(); i ++) {
-            UsedEntities& ue = active_tweet_list[i].content->used_entities;
+        for (auto& tweet : active_tweet_list) {
+            UsedEntities& ue = tweet.content->used_entities;
             if (ue.size() > local_max) {
                 local_max = ue.size();
-                local_tweet = active_tweet_list[i];
+                local_tweet = tweet;
             }
         }
         if (local_max > most_pop_tweet.global_max) {
@@ -473,12 +456,12 @@ struct Analyzer {
             tweet_data << "\n#Time\t";
             retweet_data << "\n#Time\t";
             add_data << "\n#Time\t";
-            for (int i = 0; i < entity_types.size(); i ++) {
-                following_data << entity_types[i].name << "\t";
-                followers_data << entity_types[i].name << "\t";
-                tweet_data << entity_types[i].name << "\t";
-                retweet_data << entity_types[i].name << "\t";
-                add_data << entity_types[i].name << "\t";
+            for (auto& type : entity_types) {
+                following_data << type.name << "\t";
+                followers_data << type.name << "\t";
+                tweet_data << type.name << "\t";
+                retweet_data << type.name << "\t";
+                add_data << type.name << "\t";
             }
             following_data << "\n\n";
             followers_data << "\n\n";
@@ -491,12 +474,12 @@ struct Analyzer {
             tweet_data << time << "\t";
             retweet_data << time << "\t";
             add_data << time << "\t";
-            for (int i = 0; i < entity_types.size(); i ++) {
-                following_data << entity_types[i].n_follows << "\t";
-                followers_data << entity_types[i].n_followers << "\t";
-                tweet_data << entity_types[i].n_tweets << "\t";
-                retweet_data << entity_types[i].n_retweets << "\t";
-                add_data << entity_types[i].entity_list.size() << "\t";
+            for (auto& type : entity_types) {
+                following_data << type.n_follows << "\t";
+                followers_data << type.n_followers << "\t";
+                tweet_data << type.n_tweets << "\t";
+                retweet_data << type.n_retweets << "\t";
+                add_data << type.entity_list.size() << "\t";
             }
         following_data << "\n";
         followers_data << "\n";

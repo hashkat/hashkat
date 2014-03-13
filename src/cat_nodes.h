@@ -414,6 +414,12 @@ struct StaticVector {
             elem_data[i].swap(o.elem_data[i]);
         }
     }
+    T* begin() {
+        return elem_data;
+    }
+    T* end() {
+        return elem_data + N_ELEMS;
+    }
 
     T& operator[](int index) {
         DEBUG_CHECK(index >= 0 && index < N_ELEMS, "Out of bounds!");
@@ -620,7 +626,7 @@ struct TreeNode {
     /* Uniform method, choose with respect to amount only. */
     int random_uniform_bin(MTwist& rng) {
         int num = rng.rand_int(size());
-        for (int i = 0; i < cats.size(); i++) {
+        for (int i = 0; cats.size(); i++) {
             num -= cats[i].size();
             if (num <= 0) {
                 return i;
@@ -679,6 +685,10 @@ struct TreeNode {
                 cats[i].print(S, C.get(S, i), i, layer + 1, C.cat_name(S, i));
             }
         }
+    }
+
+    CatDataT& children() {
+        return cats;
     }
 private:
     rate_t total_rate; // Total weight of the subtree

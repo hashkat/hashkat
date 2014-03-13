@@ -18,7 +18,6 @@ TweetReactRateVec TweetRateDeterminer::get_rate(const Tweet& tweet, int bin) {
     Entity& entity = state.network[tweet.id_tweeter];
     Language lang = entity.language;
     FollowerSet followers = entity.follower_set;
-    int n_elems = 0;
 
     /********************************************************************
      * Determine the 'Omega' observation PDF.
@@ -44,26 +43,18 @@ TweetReactRateVec TweetRateDeterminer::get_rate(const Tweet& tweet, int bin) {
     // with the rates for each terminal bin in follower-set,
     // and will decode it in the same order when making a retweet decision.
 
-    /* A  macro to iterate over the language layer of a follower_set.
-        NOTE: 'bin_id', 'layer' are declared by the macro! */
-     FOR_LANG_LAYER(followers, bin_id, layer) {
-        int rate_bin = 0;
-        // All languages are treated equally for now
-        for (int i = 0; i < layer->n_bins(); i++) {
-            FollowerSetLayer2& layer2 = layer[i];
-            for (int j = 0; j < layer2.n_bins(); j++) {
-                double rate = (*layer)[j].get_total_rate();
-                rates.add(rate_bin, rate);
-                rate_bin++;
+    int n_elems = 0;
+    for (auto& lang_cat : followers.children()) {
+        for (auto& dist_cat : lang_cat.children()) {
+            for (auto& pref_cat : dist_cat.children()) {
+                double rate = pref_cat.get_total_rate();
+                rates.add(0, rate); // TODO: Remove 'magic' 0 (only element in rates 'vector')
+                n_elems += pref_cat.size();
             }
         }
-        DEBUG_CHECK(rate_bin == RETWEET_RATE_ELEMENTS, "Dimensionality mismatch!");
-        n_elems += layer->size();
-     }
-    DEBUG_CHECK(n_elems == followers.size(), "Amount of entities in the follower set don't match up!");
+    }
 
-//    printf("GETTING RATE:\n");
-//    rates.print();
+    DEBUG_CHECK(n_elems == followers.size(), "Amount of entities in the follower set don't match up!");
     return rates;
 }
 
