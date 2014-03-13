@@ -88,38 +88,42 @@ struct AnalyzerFollow {
         } else if(config.follow_model == PREFERENTIAL_FOLLOW && !config.use_barabasi) {
             double rand_num = rng.rand_real_not0();
             double prob_sum = 0;
-            vector<double> updating_probs(follow_ranks.categories.size());
+            auto& updating_probs = updating_follow_probabilities;
+            updating_probs.resize(follow_ranks.categories.size());
             for (int i = 0; i < follow_ranks.categories.size(); i ++) {
                 CategoryEntityList& C = follow_ranks.categories[i];
                 updating_probs[i] = follow_ranks.categories[i].prob * C.entities.size();
                 prob_sum += follow_ranks.categories[i].prob * C.entities.size();
             }
-            for (int i = 0; i < updating_probs.size(); i ++) {
-                updating_probs[i] /= prob_sum;
+            for (auto& p : updating_probs) {
+                p /= prob_sum;
             }
-            for (int i = 0; i < updating_probs.size(); i ++) {
-                if (rand_num <= updating_probs[i]) {
+            int i = 0;
+            for (auto& p : updating_probs) {
+                if (rand_num <= p) {
                     CategoryEntityList& C = follow_ranks.categories[i];
                     // pull a random entity from whatever bin we landed in and break so we do not continue this loop
                     entity_to_follow = C.entities[rng.rand_int(C.entities.size())];
                     break;
                 }
-                rand_num -= updating_probs[i];
+                rand_num -= p;
+                i++;
             }
         } else if (config.follow_model == ENTITY_FOLLOW) {
             // if we want to follow by entity class
             /* search through the probabilities for each entity and find the right bin to land in */
-            for (int i = 0; i < entity_types.size(); i++) {
-                if (rand_num <= entity_types[i].prob_follow) {
+            for (auto& type : entity_types) {
+                if (rand_num <= type.prob_follow) {
                     // make sure we're not pulling from an empty list
-                    if (entity_types[i].entity_list.size() != 0) {
+                    if (type.entity_list.size() != 0) {
                         // pull the entity from whatever bin we landed in and break so we dont continue this loop
-                        entity_to_follow = entity_types[i].entity_list[rng.rand_int(entity_types[i].entity_list.size())];
+                        int n = rng.rand_int(type.entity_list.size());
+                        entity_to_follow = type.entity_list[n];
                         break;
                     }
                 }
                 // part of the above search
-                rand_num -= entity_types[i].prob_follow;
+                rand_num -= type.prob_follow;
             }
         } else if (config.follow_model == PREFERENTIAL_ENTITY_FOLLOW) {
             double rand_num = rng.rand_real_not0();

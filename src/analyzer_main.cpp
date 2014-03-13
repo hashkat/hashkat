@@ -215,7 +215,7 @@ struct Analyzer {
 		e.location.y = rng.rand_real_with01();
 		double rand_num = rng.rand_real_not0();
 		for (int et = 0; et < entity_types.size(); et++) {
-		    EntityType type = entity_types[et];
+		    EntityType& type = entity_types[et];
 			if (rand_num <= type.prob_add) {
 				e.entity_type = et;
                 type.entity_list.push_back(index);
@@ -425,8 +425,8 @@ struct Analyzer {
         ofstream output;
         output.open("tweets.dat");
         output << "\nID\t\torigID\t\ttime\t\torigtime\n\n";
-        for (int i = 0; i < atl.size(); i ++) {
-            output << atl[i].id_tweeter << "\t\t" << atl[i].content->id_original_author << "\t\t" << atl[i].creation_time << "\t\t" << atl[i].content->time_of_tweet << "\n";
+        for (auto& t : atl) {
+            output << t.id_tweeter << "\t\t" << t.content->id_original_author << "\t\t" << t.creation_time << "\t\t" << t.content->time_of_tweet << "\n";
         }
     }
 
