@@ -91,6 +91,7 @@ struct TweetRateDeterminer {
 };
 
 struct TweetBank {
+    typedef TimeDepRateTree<Tweet, RETWEET_RATE_ELEMENTS /*Just one rate for now*/, TweetRateDeterminer> RateTree;
     TimeDepRateTree<Tweet, RETWEET_RATE_ELEMENTS /*Just one rate for now*/, TweetRateDeterminer> tree;
 
     double get_total_rate() {

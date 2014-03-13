@@ -32,6 +32,16 @@ struct RateVec {
         }
         printf("]");
     }
+    int pick_random_weighted(MTwist& rng) {
+        // Picks out of our tuple elements randomly:
+        double r = rng.rand_real_not1();
+        for (int i = 0; i < N_ELEM; i++) {
+            r -= tuple[i];
+            if (r <= 10^-9) {
+
+            }
+        }
+    }
     void add(int n, double val) {
         tuple[n] += val;
         tuple_sum += val;
