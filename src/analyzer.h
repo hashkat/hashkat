@@ -116,12 +116,12 @@ struct RetweetChoice {
     int id_observer;
     // We could have used 'smartptr', however the tweet is not going anywhere
     // in the short while we retweet, so a pointer is safe.
-    smartptr<TweetContent>* tweet;
+    smartptr<TweetContent>* content;
     RetweetChoice() :
-        id_author(-1), id_observer(-1), tweet(NULL) {
+        id_author(-1), id_observer(-1), content(NULL) {
     }
     RetweetChoice(int id_author, int id_observer, smartptr<TweetContent>* tweet) :
-            id_author(id_author), id_observer(id_observer), tweet(tweet) {
+            id_author(id_author), id_observer(id_observer), content(tweet) {
     }
     bool valid() {
         return (id_author != -1);

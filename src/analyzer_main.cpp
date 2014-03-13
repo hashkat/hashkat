@@ -301,7 +301,7 @@ struct Analyzer {
 		Entity& e_observer = network[choice.id_observer];
 		Entity& e_author = network[choice.id_author];
 
-		generate_tweet(choice.id_observer, *choice.tweet);
+		generate_tweet(choice.id_observer, *choice.content);
         entity_types[e_observer.entity_type].n_retweets ++;
         e_observer.n_retweets ++;
         stats.n_retweets ++;

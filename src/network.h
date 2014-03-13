@@ -11,7 +11,6 @@
 #include <iomanip>
 #include "util.h"
 
-#include "CircularBuffer.h"
 #include "CategoryGrouper.h"
 
 #include "cat_classes.h"
