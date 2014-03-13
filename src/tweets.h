@@ -17,12 +17,10 @@
 // information for when a user tweets
 struct TweetContent {
     double time_of_tweet;
-    double starting_rate, updating_rate;
     UsedEntities used_entities;
     Language language;
     int id_original_author; // The entity that created the original content
     TweetContent() {
-        starting_rate = updating_rate = -1;
         time_of_tweet = -1;
         language = N_LANGS; // Set to invalid
         id_original_author = -1;
