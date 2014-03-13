@@ -34,13 +34,11 @@ struct TweetContent {
 struct Tweet {
     // The entity broadcasting the tweet
     int id_tweeter;
-    double starting_rate, updating_rate;
     // A tweet is an orignal tweet if tweeter_id == content.author_id
     smartptr<TweetContent> content;
     double creation_time;
     explicit Tweet(const smartptr<TweetContent>& content = smartptr<TweetContent>()) : content(content) {
         id_tweeter = -1;
-        starting_rate = updating_rate = 0;
         creation_time = 0;
     }
     void print() {
