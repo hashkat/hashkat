@@ -10,7 +10,7 @@ include_directories(
 )
 
 
-add_definitions(-Wuninitialized -std=c++98)
+add_definitions(-Wuninitialized -std=c++11)
 
 # Find source files
 aux_source_directory(
