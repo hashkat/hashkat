@@ -15,6 +15,7 @@ src/socialsim
 callgrind.out.*
 POSITIONS*
 output/*
+.libs
 *.a
 *.o
 *.so

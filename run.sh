@@ -72,8 +72,9 @@ if handle_flag "--debug-std" ; then
 fi
 
 # Install lua dependencies (lua-repl and lua-linenoise):
+rm -r .libs
 mkdir -p ".libs"
-cp -r "./src/dependencies/lua-repl/repl/" "./.libs/"
+cp -r "./src/dependencies/lua-repl/repl/" "./.libs/repl/"
 cp "./src/dependencies/lua-repl/repl.lua" "./.libs/repl.lua"
 cp "./src/interrupt_menu.lua" "./.libs/"
 
