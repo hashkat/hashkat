@@ -34,9 +34,18 @@ struct InterruptMenuState {
     }
 
     void sync_state() {
-        LuaValue globals = luawrap::globals(L);
-        globals["n_entities"] = state->network.n_entities;
-        globals["max_entities"] = state->network.max_entities;
+        LuaValue G = luawrap::globals(L);
+        G["n_entities"] = state->network.n_entities;
+        G["max_entities"] = state->network.max_entities;
+        G["time"] = state->time;
+
+        // Output from stats:
+        auto& S = state->stats;
+        G["rate_total"] = S.event_rate;
+        G["rate_add"] = S.event_rate * S.prob_add;
+        G["rate_follow"] = S.event_rate * S.prob_follow;
+        G["rate_retweet"] = S.event_rate * S.prob_retweet;
+        G["rate_tweet"] = S.event_rate * S.prob_tweet;
     }
 
     /* Returns false if user has called exit() or quit()*/
