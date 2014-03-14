@@ -48,6 +48,8 @@
 
 #include "mersenne-simd/SFMT.h"
 
+#include "dependencies/lcommon/perf_timer.h"
+
 // AD: Intrusive, but had to be done for quick implementation of serialization:
 #include "../DataReadWrite.h"
 
@@ -182,26 +184,31 @@ public:
 
     /* generates a random number on [0,0xffffffff]-interval */
     unsigned int genrand_uint32(void) {
+        PERF_TIMER();
         return sfmt_genrand_uint32(&state);
     }
 
     /* generates a random number on [0,1]-real-interval */
     double genrand_real1(void) {
+        PERF_TIMER();
         return sfmt_genrand_real1(&state);
     }
 
     /* generates a random number on [0,1)-real-interval */
     double genrand_real2(void) {
+        PERF_TIMER();
         return sfmt_genrand_real2(&state);
     }
 
     /* generates a random number on (0,1)-real-interval */
     double genrand_real3(void) {
+        PERF_TIMER();
         return sfmt_genrand_real3(&state);
     }
 
     /* generates a random number on [0,1) with 53-bit resolution*/
     double genrand_res53(void) {
+        PERF_TIMER();
         return sfmt_genrand_res53(&state);
     }
 
@@ -209,6 +216,7 @@ public:
 
     /* Grab an integer from 0 to max, non-inclusive (ie appropriate for array lengths). */
     int rand_int(int max) {
+        PERF_TIMER();
         //AD: Modified to remove modulo-bias problem. Inspired by Java's nextInt implementation.
         long long raw = genrand_uint32();
 

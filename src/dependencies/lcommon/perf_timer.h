@@ -25,4 +25,18 @@ double perf_timer_average_time(const char* funcname);
 void perf_timer_clear();
 void perf_print_results();
 
+struct PerfCount {
+    PerfCount(const char* funcname) : funcname(funcname){
+        perf_timer_begin(funcname);
+    }
+    ~PerfCount() {
+        perf_timer_end(funcname);
+    }
+private:
+    const char* funcname;
+};
+
+#define PERF_TIMER() PerfCount __perf_count(FUNCNAME)
+
+
 #endif /* LCOMMON_PERF_TIMER_H_ */

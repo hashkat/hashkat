@@ -7,15 +7,6 @@
 
 #include "config_static.h"
 
-/* This file contains properties that differentiate tweets and entities */
-
-// An X-Macro, allowing for syntatic construction via defining X before resolution
-#define X_ALL_LANGUAGES \
-    X(LANG_ENGLISH)\
-    X(LANG_FRENCH_AND_ENGLISH)\
-    X(LANG_FRENCH)
-/* All languages before LANG_FRENCH contain English */
-
 // Helper for location distance:
 inline double wrap_dist(double d1, double d2) {
     double distA = fabs(d2 - d1);
@@ -49,6 +40,14 @@ struct Location {
         rw << x << y;
     }
 };
+/* This file contains properties that differentiate tweets and entities */
+
+// An X-Macro, allowing for syntatic construction via defining X before resolution
+#define X_ALL_LANGUAGES \
+    X(LANG_ENGLISH)\
+    X(LANG_FRENCH_AND_ENGLISH)\
+    X(LANG_FRENCH)
+/* All languages before LANG_FRENCH contain English */
 
 #define X(x) x, /* Resolve for enum */
 enum Language {

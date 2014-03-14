@@ -81,6 +81,16 @@ struct CompileTimeRateSwitch<1> {
     typedef double repr_t; // N_ELEMS == 1, use 'double'
 };
 
+template <int N_ELEMS>
+inline double get_subrate(const RateTuple<N_ELEMS>& d, int idx) {
+    DEBUG_CHECK(idx >= 0 && idx < N_ELEMS, "Logic error");
+    return d.rates[idx];
+}
+
+inline double get_subrate(const double& d, int idx) {
+    DEBUG_CHECK(idx == 0, "Logic error");
+    return d;
+}
 
 // A set that dynamically picks its implementation based on the load.
 // For
@@ -365,7 +375,7 @@ struct LeafNode {
         return elem;
     }
 
-    bool pick_random_weighted(MTwist& rng, ElemT& elem) {
+    bool pick_random_weighted(MTwist& rng, ElemT& elem, int sub_rate = 0) {
         // Same thing for LeafNode's
         return pick_random_uniform(rng, elem);
     }
@@ -583,13 +593,13 @@ struct TreeNode {
         return elem;
     }
 
-    bool pick_random_weighted(MTwist& rng, value_type& elem) {
+    bool pick_random_weighted(MTwist& rng, value_type& elem, int sub_rate = 0) {
         if (total_rate == 0.0 || size() == 0 ) {
             return false;
         }
         // Same thing for LeafNode's
-        SubCat& sub_cat = cats[random_weighted_bin(rng)];
-        return sub_cat.pick_random_weighted(rng, elem);
+        SubCat& sub_cat = cats[random_weighted_bin(rng, sub_rate)];
+        return sub_cat.pick_random_weighted(rng, elem, sub_rate);
     }
 
     value_type pick_random_weighted(MTwist& rng) {
@@ -644,10 +654,10 @@ struct TreeNode {
         return -1;
     }
     /* Principal KMC method, choose with respect to bin rates. */
-    int random_weighted_bin(MTwist& rng) {
+    int random_weighted_bin(MTwist& rng, int sub_rate = 0) {
         double num = rng.genrand_real2() * total_rate;
         for (int i = 0; i < cats.size(); i++) {
-            num -= cats[i].get_total_rate();
+            num -= get_subrate(cats[i].get_total_rate(), sub_rate);
             if (num <= 0) {
                 return i;
             }

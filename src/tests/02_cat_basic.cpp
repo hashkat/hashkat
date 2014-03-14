@@ -28,6 +28,7 @@ TEST(leaf_node) {
 }
 
 TEST(leaf_node_rate_tuple) {
+    MTwist rng;
     using namespace cats;
     MockNetwork N;
     LeafNode<int, 2> leaf;
@@ -36,6 +37,9 @@ TEST(leaf_node_rate_tuple) {
         CHECK(leaf.add(N, RateTuple<2>(1.0), delta, elem));
         CHECK(!leaf.add(N, RateTuple<2>(1.0), delta, elem));
     }
+    int elem;
+    bool found = leaf.pick_random_weighted(rng, elem);
+    CHECK(found);
     CHECK(leaf.get_total_rate() == RateTuple<2>(1000));
     CHECK(delta == RateTuple<2>(1.0));
 }

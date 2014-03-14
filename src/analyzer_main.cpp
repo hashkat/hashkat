@@ -289,6 +289,7 @@ struct Analyzer {
         smartptr<TweetContent> ti(new TweetContent);
         ti->id_original_author = id_original_author;
         ti->time_of_tweet = time;
+        ti->humour_bin = e_original_author.humour_bin;
         // TODO: Pick
         ti->language = e_original_author.language; // TODO: AD -- Bilingual tweets make no sense
         return ti;
@@ -403,13 +404,17 @@ struct Analyzer {
                 complete = action_create_entity(time, N);
                 perf_timer_end("action_create_entity");
             } else if (subtract_var(r, stats.prob_follow) <= ZEROTOL) {
+                perf_timer_begin("analyzer_select_entity(FOLLOW_SELECT)");
                 int entity = analyzer_select_entity(state, FOLLOW_SELECT);
+                perf_timer_end("analyzer_select_entity(FOLLOW_SELECT)");
                 perf_timer_begin("action_follow_entity");
                 complete = analyzer_follow_entity(state, entity, N, time);
                 perf_timer_end("action_follow_entity");
             } else if (subtract_var(r, stats.prob_tweet) <= ZEROTOL) {
                 // The tweet event
+                perf_timer_begin("analyzer_select_entity(TWEET_SELECT)");
                 int entity = analyzer_select_entity(state, TWEET_SELECT);
+                perf_timer_end("analyzer_select_entity(TWEET_SELECT)");
                 perf_timer_begin("action_tweet");
                 complete = action_tweet(entity);
                 perf_timer_end("action_tweet");
