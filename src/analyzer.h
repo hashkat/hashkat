@@ -128,7 +128,7 @@ struct AnalysisState {
         follow_ranks.visit(rw);
         retweet_ranks.visit(rw);
         age_ranks.visit(rw);
-//        tweet_bank.visit(rw);
+        tweet_bank.visit(rw);
         stats.visit(rw);
 
         rw.visit_objs(entity_types);

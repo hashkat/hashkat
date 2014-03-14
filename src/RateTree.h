@@ -1,6 +1,8 @@
 #ifndef RATETREE_H_
 #define RATETREE_H_
 
+#include "DataReadWrite.h"
+
 // 100 bytes / entity overhead
 // Make global choice based on tree
 // Time dependency checked based on thresholds
@@ -53,6 +55,9 @@ struct RateVec {
         ret.sub(*this);
         return ret;
     }
+    VISIT0(rw) {
+        rw << tuple << tuple_sum;
+    }
 };
 
 template <typename T, int N_ELEM, int N_CHILDREN = 10>
@@ -72,6 +77,13 @@ struct RateTree {
         RateVec<N_ELEM> rates;
 
         ref_t children[N_CHILDREN]; // INVALID if not allocated
+
+        VISIT0(rw) {
+            rw << parent << depth << is_leaf << is_allocated;
+            data.visit(rw);
+            rates.visit(rw);
+            rw << children;
+        }
 
         double debug_rate_sum(RateTree& tree) { // Inefficient
             if (is_leaf) {
@@ -185,8 +197,6 @@ struct RateTree {
         }
         /* Principal KMC method, choose with respect to bin rates. */
         ref_t random_weighted_bin(RateTree& tree, MTwist& rng) {
-            const double ZEROTOL = 1e-16;
-
             double num = rng.rand_real_not1() * rates.tuple_sum;
             for (int i = 0; i < N_CHILDREN; i++) {
                 int c = children[i];
@@ -237,20 +247,17 @@ struct RateTree {
 
     // Debug methods:
     void debug_check_rates() {
-#ifndef NDEBUG
         std::vector<Node*> v = as_node_vector(/*all:*/ true);
         int occurrences = 0;
         for (int i = 0; i < v.size(); i++) {
             double calc_sum = v[i]->debug_rate_sum(*this);
             double stored_sum = v[i]->rates.tuple_sum;
-            DEBUG_CHECK(fabs(calc_sum - stored_sum) < 1.0e-6, "Should be (fairly) equal!");
+            ASSERT(fabs(calc_sum - stored_sum) < 10e-10, "Should be (fairly) equal!");
         }
-#endif
     }
     void debug_check_reachability(ref_t ref) {
-#ifndef NDEBUG
         std::vector<Node*> nv = as_node_vector();
-        DEBUG_CHECK(nv.size() == size(), "Size mismatch!");
+        ASSERT(nv.size() == size(), "Size mismatch!");
         std::vector<Node*> v = as_node_vector(/*all:*/ true);
         int occurrences = 0;
         for (int i = 0; i < v.size(); i++) {
@@ -258,8 +265,7 @@ struct RateTree {
                 occurrences++;
             }
         }
-        DEBUG_CHECK(occurrences == 1, "Should occur exactly once in reachability list!")
-#endif
+        ASSERT(occurrences == 1, "Should occur exactly once in reachability list!")
     }
 
     RateTree() {
@@ -383,6 +389,19 @@ struct RateTree {
     }
     size_t size() const {
         return n_elems;
+    }
+
+    VISIT0(rw) {
+        rw << n_elems;
+        rw << free_list; //Freed nodes
+        rw.visit_objs(node_pool);
+        rw.visit_size(vacancy_list);
+        for (auto& list : vacancy_list) {
+            rw << list;
+        }
+        printf("Checking tweet/retweet RateTree structure integrity...\n");
+        debug_check_rates();
+        printf("Tweet/retweet RateTree structure integrity checks out.\n");
     }
 private:
     typedef std::vector<ref_t> ref_list;

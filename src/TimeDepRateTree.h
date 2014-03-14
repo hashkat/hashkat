@@ -16,6 +16,8 @@
 #include "cat_nodes.h"
 #include "RateTree.h"
 
+#include "DataReadWrite.h"
+
 // Logarithmically organizes elements using RateTree
 template <typename T, int N_ELEM, typename RateDeterminer, int N_CHILDREN = 10>
 struct TimeDepRateTree {
@@ -142,6 +144,17 @@ struct TimeDepRateTree {
         return tree.pick_random_weighted(rng);
     }
 
+    VISIT0(rw) {
+        rw << last_rate << initial_resolution;
+        rw << delete_list;
+        rw << number_of_bins;
+
+        rw.visit_size(time_sets);
+        for (auto& time_set : time_sets) {
+            visit_set(rw, time_set);
+        }
+        tree.visit(rw);
+    }
 private:
     RateDeterminer determiner;
     double last_rate, initial_resolution;

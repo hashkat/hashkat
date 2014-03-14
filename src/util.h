@@ -55,7 +55,7 @@ inline std::vector<double> parse_numlist(std::string s) {
 	return ret;
 }
 
-static inline bool file_exists(const std::string& name) {
+inline bool file_exists(const std::string& name) {
     if (FILE *file = fopen(name.c_str(), "r")) {
         fclose(file);
         return true;

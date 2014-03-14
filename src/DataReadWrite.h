@@ -9,6 +9,8 @@
 #include "lcommon/SerializeBuffer.h"
 #include "lcommon/smartptr.h"
 
+#include "util.h"
+
 struct AnalysisState;
 
 /* Passed to objects visit() method during writing: */
@@ -29,14 +31,28 @@ struct DataWriter {
         buffer->write_container(obj);
     }
 
+    /**
+     * 'check_visit' saves a value, to be checked up reload.
+     * This should be some derived quantity, to be used as a sanity check.
+     */
+    template <typename T>
+    void check_visit(const T& obj) {
+        visit(obj);
+    }
+
     template <typename T>
     void visit_smartptr(const smartptr<T>& obj) {
+        if (obj.empty()) {
+            *this << (void*)NULL << false;
+            return;
+        }
         void* raw_ptr = (void*)obj.get();
         bool added = false;
         if (ptr_map[raw_ptr].empty()) {
             added = true;
         }
         *this << raw_ptr << added;
+//        printf("Placing %p add=%d\n", raw_ptr, added);
         if (added) {
             ptr_map[raw_ptr] = smartptr<void*>(obj);
             obj->visit(*this);
@@ -65,6 +81,12 @@ struct DataWriter {
         for (T& obj : objs) {
             obj.visit(*this);
         }
+    }
+
+    template <typename T>
+    void visit_size(T& obj) {
+        size_t size = obj.size();
+        (*this) << size;
     }
 
     bool is_reading() {
@@ -100,16 +122,31 @@ struct DataReader {
         buffer->read(obj);
     }
 
+    /**
+     * 'check_visit' saves a value, to be checked up reload.
+     * This should be some derived quantity, to be used as a sanity check.
+     */
+    template <typename T>
+    void check_visit(const T& obj) {
+        T val;
+        visit(val);
+        ASSERT(val == obj, "Values do not match!");
+    }
+
     template <typename T>
     void visit_smartptr(smartptr<T>& obj) {
         void* old_ptr = NULL;
         bool added = false;
         (*this) << old_ptr << added;
+//        printf("Retrieving %p add=%d\n", old_ptr);
         if (added) {
+//            printf("Recreating %p\n", old_ptr);
             T val;
             val.visit(*this);
             obj.set(new T(val));
             ptr_map[old_ptr] = smartptr<void*>(obj);
+        } else if (old_ptr == NULL) {
+            obj.clear();
         } else {
             obj = ptr_map[old_ptr];
         }
@@ -128,6 +165,13 @@ struct DataReader {
         for (T& obj : objs) {
             obj.visit(*this);
         }
+    }
+
+    template <typename T>
+    void visit_size(T& obj) {
+        size_t size = -1;
+        (*this) << size;
+        obj.resize(size);
     }
 
     template <typename T>
@@ -171,5 +215,24 @@ private:
     template <typename Visitor> \
     void previsit(Visitor& rw)
 
+
+template <typename Visitor, typename Set>
+inline void visit_set(Visitor& rw, Set& set) {
+    if (rw.is_reading()) {
+        size_t size = -1;
+        rw << size;
+        for (int i = 0 ; i < size; i++) {
+            int used;
+            rw << used;
+            set.insert(used);
+        }
+    } else {
+        // Writing:
+        rw << set.size();
+        for (int used : set) {
+            rw << used;
+        }
+    }
+}
 
 #endif
