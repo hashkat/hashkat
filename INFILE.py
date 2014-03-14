@@ -163,6 +163,10 @@ generated = {
 
 CONFIG["GENERATED"] = generated
 
+for val in "max_time", "max_real_time", "max_entities", "initial_entities":
+    if isinstance(CONFIG["analysis"][val], str):
+        CONFIG["analysis"][val] = eval(CONFIG["analysis"][val])
+
 yaml.dump(CONFIG, open(INPUT_FILE_NAME + "-generated", "w"))
 
 print("INFILE.py -- Done generating rates")

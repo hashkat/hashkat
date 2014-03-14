@@ -57,7 +57,8 @@ private:
 struct ParsedConfig {
     // 'analysis' config options
     int initial_entities, max_entities;
-    double max_time;
+    double max_sim_time;
+    double max_real_time;
     bool use_random_time_increment;
     bool use_preferential_follow;
     bool use_flawed_followback;
@@ -102,7 +103,8 @@ struct ParsedConfig {
     ParsedConfig() {
         initial_entities = 0;
         max_entities = 1000;
-        max_time = INFINITY;
+        max_sim_time = INFINITY;
+        max_real_time = INFINITY;
 
         entity_stats = false;
         use_random_time_increment = false;

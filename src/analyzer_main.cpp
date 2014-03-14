@@ -87,6 +87,8 @@ struct Analyzer {
     ofstream retweet_data;
     double& time;
 
+    Timer max_sim_timer;
+
     /***************************************************************************
      * Initialization functions
      ***************************************************************************/
@@ -120,7 +122,7 @@ struct Analyzer {
     }
 
     void set_future_add_rates(Add_Rates& add_rates) {
-        int projected_months = config.max_time / APPROX_MONTH;
+        int projected_months = config.max_sim_time / APPROX_MONTH;
         if (add_rates.RF.function_type == "constant" ) {
             for (int i = 0; i <= projected_months; i ++) {
                 add_rates.RF.monthly_rates.push_back(add_rates.RF.const_val);
@@ -140,7 +142,7 @@ struct Analyzer {
 		}
 	}
 	void set_future_rates(EntityType& et, int event) {
-        int projected_months = config.max_time / APPROX_MONTH;
+        int projected_months = config.max_sim_time / APPROX_MONTH;
         if (et.RF[event].function_type == "not specified" && event == 0) {
             error_exit("FATAL: Follow rate function for entity \""+ et.name + "\" was not specified.");
         } else if (et.RF[event].function_type == "not specified" && event == 1) {
@@ -189,10 +191,20 @@ struct Analyzer {
         return time;
     }
 
+    bool sim_time_check() {
+        return (time < config.max_sim_time);
+    }
+    bool real_time_check() {
+        return (max_sim_timer.get_microseconds() < (config.max_real_time * 1000));
+    }
+    bool interrupt_check() {
+        return (SIGNAL_ATTEMPTS == 0);
+    }
+
     // ROOT ANALYSIS ROUTINE
     /* Run the main analysis routine using this config. */
     void run_network_simulation() {
-        while ( LIKELY(time < config.max_time && network.n_entities < config.max_entities && SIGNAL_ATTEMPTS == 0) ) {
+        while ( LIKELY(sim_time_check() && real_time_check() && interrupt_check()) ) {
             perf_timer_begin("analyzer.step_analysis");
         	step_analysis();
         	perf_timer_end("analyzer.step_analysis");

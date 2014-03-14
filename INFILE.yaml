@@ -3,6 +3,8 @@ analysis:
     1001
   max_time:
     100000.0 # 1/10 year
+  max_real_time:
+    60 * 60 * 1000 # ms
   initial_entities:
     1000
   use_barabasi: false # if this is set to 1, the global follow rate will be ignored. Follow thresholds not needed.

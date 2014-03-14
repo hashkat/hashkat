@@ -40,10 +40,12 @@ void output_network_statistics(AnalysisState& state) {
     if (C.output_stdout_basic) {
         if (SIGNAL_ATTEMPTS > 0) {
             cout << "\nSimulation (Gracefully) Interrupted: ctrl-c was pressed\n";
-        } else if (state.end_time >= C.max_time) {
+        } else if (state.end_time >= C.max_sim_time) {
             cout << "\nSimulation Completed: desired duration reached\n";
-        } else {
+        } else if (network.n_entities >= C.max_entities) {
             cout << "\nSimulation Completed: desired entity amount reached\n";
+        } else {
+            cout << "\nSimulation Completed: desired wall-clock time reached\n";
         }
         cout << "\nCreating analysis files -- press ctrl-c multiple times to abort ... \n";
     }

@@ -152,7 +152,8 @@ static FollowerSetRatesDeterminer parse_tweet_react_rates(const Node& node) {
 static void parse_analysis_configuration(ParsedConfig& config, const Node& node) {
     parse(node, "max_entities", config.max_entities);
     parse(node, "initial_entities", config.initial_entities);
-    parse(node, "max_time", config.max_time);
+    parse(node, "max_time", config.max_sim_time);
+    parse(node, "max_real_time", config.max_real_time);
     parse(node, "unfollow_tweet_rate", config.unfollow_tweet_rate);
     parse(node, "use_barabasi", config.use_barabasi);
     parse(node, "use_flawed_followback", config.use_flawed_followback);
