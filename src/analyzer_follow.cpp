@@ -1,5 +1,7 @@
 #include <iostream>
 
+#include "lcommon/perf_timer.h"
+
 #include "analyzer.h"
 
 using namespace std;
@@ -57,6 +59,8 @@ struct AnalyzerFollow {
             // find a random entity within [0:number of entities - 1]
             entity_to_follow = rng.rand_int(n_entities);
         } else if (config.follow_model == PREFERENTIAL_FOLLOW && config.use_barabasi) {
+            perf_timer_begin("AnalyzerFollower.follow_entity(barabasi_preferential_follow)");
+
             // if we want to use a preferential follow method
             double sum_of_weights = 0;
             updating_follow_probabilities.resize(follow_probabilities.size());
@@ -85,7 +89,10 @@ struct AnalyzerFollow {
                 // part of the above search
                 rand_num -= updating_follow_probabilities[i];
             }
+            perf_timer_end("AnalyzerFollower.follow_entity(barabasi_preferential_follow)");
         } else if(config.follow_model == PREFERENTIAL_FOLLOW && !config.use_barabasi) {
+            perf_timer_begin("AnalyzerFollower.follow_entity(preferential_follow)");
+
             double rand_num = rng.rand_real_not0();
             double prob_sum = 0;
             auto& updating_probs = updating_follow_probabilities;
@@ -109,7 +116,9 @@ struct AnalyzerFollow {
                 rand_num -= p;
                 i++;
             }
+            perf_timer_end("AnalyzerFollower.follow_entity(preferential_follow)");
         } else if (config.follow_model == ENTITY_FOLLOW) {
+            perf_timer_begin("AnalyzerFollower.follow_entity(entity_follow)");
             // if we want to follow by entity class
             /* search through the probabilities for each entity and find the right bin to land in */
             for (auto& type : entity_types) {
@@ -125,10 +134,13 @@ struct AnalyzerFollow {
                 // part of the above search
                 rand_num -= type.prob_follow;
             }
+            perf_timer_end("AnalyzerFollower.follow_entity(entity_follow)");
         } else if (config.follow_model == PREFERENTIAL_ENTITY_FOLLOW) {
+            perf_timer_begin("AnalyzerFollower.follow_entity(preferential_entity_follow)");
             double rand_num = rng.rand_real_not0();
             for (int i = 0; i < entity_types.size(); i++) {
-                if (rand_num <= entity_types[i].prob_follow) {                    
+                if (rand_num <= entity_types[i].prob_follow) {
+
                     double another_rand_num = rng.rand_real_not0();
                     // make sure we're not pulling from an empty list
                     EntityType& et = entity_types[i];
@@ -159,10 +171,13 @@ struct AnalyzerFollow {
                 // part of the above search
                 rand_num -= entity_types[i].prob_follow;
             }
+            perf_timer_end("AnalyzerFollower.follow_entity(preferential_entity_follow)");
         }
 
         // check and make sure we are not following ourself, or we are following entity -1
         if (LIKELY(entity != entity_to_follow && entity_to_follow != -1)) {
+
+            perf_timer_begin("AnalyzerFollower.follow_entity(handle_follow)");
             // point to the entity who is being followed
             if (handle_follow(entity, entity_to_follow)) {
                 /* FEATURE: Follow-back based on target's prob_followback.
@@ -183,6 +198,7 @@ struct AnalyzerFollow {
                 entity_types[target.entity_type].n_followers ++;
                 return true;
             }
+            perf_timer_end("AnalyzerFollower.follow_entity(handle_follow)");
         }
 
         return false; // Completion failure: Restart the event

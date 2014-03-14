@@ -63,6 +63,11 @@ struct Network {
     size_t n_followers(int id) {
         return follower_set(id).size();
     }
+
+    // 'Visits' every node, eg for serialization or testing
+    void visit() {
+
+    }
 };
 
 #endif

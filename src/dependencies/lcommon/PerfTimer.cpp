@@ -65,7 +65,7 @@ void PerfTimer::print_results() {
 		float stddev = sqrt(mpp.qvalue / mpp.total_calls) / 1000.0f;
 		float stddev_percentage = (stddev / avg) * 100.0f;
 		printf("func %s:\n"
-				"\ttotal %.4fms"
+				"\t>> total %.4fms"
 				"\n\tcalls %d"
 		        "\n\taverage %.4fms"
 		        "\n\tmax %.4fms"

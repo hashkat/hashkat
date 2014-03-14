@@ -193,7 +193,9 @@ struct Analyzer {
     /* Run the main analysis routine using this config. */
     void run_network_simulation() {
         while ( LIKELY(time < config.max_time && network.n_entities < config.max_entities && SIGNAL_ATTEMPTS == 0) ) {
+            perf_timer_begin("analyzer.step_analysis");
         	step_analysis();
+        	perf_timer_end("analyzer.step_analysis");
         }
     }
 
@@ -296,11 +298,13 @@ struct Analyzer {
 	// Causes 'id_unfollowed' to lose a follower
 	// Returns true if a follower was removed, false if there was no follower to remove
 	bool action_unfollow(int id_unfollowed) {
+	    perf_timer_begin("action_unfollow");
 		Entity& e_unfollowed = network[id_unfollowed]; // The entity which is unfollowed
 		FollowerSet& candidate_followers = e_unfollowed.follower_set;
 
 		int id_lost_follower = -1; // The entity to unfollow us
 		if (!candidate_followers.pick_random_uniform(rng, id_lost_follower)) {
+		    perf_timer_end("action_unfollow");
 		    return false; // Empty
 		}
 
@@ -316,7 +320,7 @@ struct Analyzer {
 		Entity& e_lost_follower = network[id_lost_follower];
 		bool had_follow = e_lost_follower.follow_set.remove(state, id_unfollowed);
 		DEBUG_CHECK(had_follow, "unfollow: Did not exist in follow list");
-
+		perf_timer_end("action_unfollow");
 		return true;
 	}
 
@@ -513,9 +517,7 @@ void analyzer_main(AnalysisState& state) {
     if (state.config.handle_ctrlc) {
         signal_handlers_install(state);
     }
-    perf_timer_end("analyzer.main");
     analyzer.main();
-    perf_timer_end("analyzer.main");
     signal_handlers_uninstall(state);
     printf("'analyzer_main' took %.2f milliseconds.\n", timer.get_microseconds() / 1000.0);
 }
