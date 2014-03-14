@@ -294,12 +294,14 @@ struct Analyzer {
         return ti;
     }
 
-    Tweet generate_tweet(int id_tweeter, const smartptr<TweetContent>& content) {
+    Tweet generate_tweet(int id_tweeter, int id_link, int generation, const smartptr<TweetContent>& content) {
         Entity& e_tweeter = network[id_tweeter];
         Tweet tweet;
         tweet.content = content;
         tweet.creation_time = time;
         tweet.id_tweeter = id_tweeter;
+        tweet.id_link = id_link;
+        tweet.generation = generation;
         if (network.n_followers(id_tweeter) != 0) {
             state.tweet_bank.add(tweet);
         }
@@ -314,7 +316,7 @@ struct Analyzer {
         tweet_ranks.categorize(id_tweeter, e.n_tweets);
         stats.n_tweets ++;
         if (network.n_followers(id_tweeter) > 0) {
-            generate_tweet(id_tweeter, generate_tweet_content(id_tweeter));
+            generate_tweet(id_tweeter, id_tweeter, 0, generate_tweet_content(id_tweeter));
             // Generate the tweet content:
             // increase the number of tweets the entity had by one
             e.n_tweets++;
@@ -335,7 +337,7 @@ struct Analyzer {
 		Entity& e_observer = network[choice.id_observer];
 		Entity& e_author = network[choice.id_author];
 
-		generate_tweet(choice.id_observer, *choice.content);
+		Tweet tweet = generate_tweet(choice.id_observer, choice.id_link, choice.generation, *choice.content);
         entity_types[e_observer.entity_type].n_retweets ++;
         e_observer.n_retweets ++;
         stats.n_retweets ++;

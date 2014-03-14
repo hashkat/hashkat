@@ -142,16 +142,20 @@ enum SelectionType {
 };
 
 struct RetweetChoice {
+    // See Tweet for details:
     int id_author;
     int id_observer;
+    int id_link;
+    int generation;
+
     // We could have used 'smartptr', however the tweet is not going anywhere
     // in the short while we retweet, so a pointer is safe.
     smartptr<TweetContent>* content;
     RetweetChoice() :
-        id_author(-1), id_observer(-1), content(NULL) {
+            id_author(-1), id_observer(-1), id_link(-1), generation(-1), content(NULL) {
     }
-    RetweetChoice(int id_author, int id_observer, smartptr<TweetContent>* tweet) :
-            id_author(id_author), id_observer(id_observer), content(tweet) {
+    RetweetChoice(int id_author, int id_observer, int id_link, int generation, smartptr<TweetContent>* tweet) :
+            id_author(id_author), id_observer(id_observer), id_link(id_link), generation(generation), content(tweet) {
     }
     bool valid() {
         return (id_author != -1);

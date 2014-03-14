@@ -29,7 +29,6 @@ struct TweetContent {
 
     VISIT0(rw) {
         rw << time_of_tweet << language << id_original_author;
-
 //        printf("GOT AT %.2f %d %d size=%d\n", time_of_tweet, language,
 //                id_original_author, used_entities.size());
     }
@@ -42,20 +41,28 @@ struct TweetContent {
 struct Tweet {
     // The entity broadcasting the tweet
     int id_tweeter;
+
+    // The 'linking' entity the tweet was retweeted from (a following of id_tweeter)
+    // Equal to id_tweeter if the tweet was original content.
+    int id_link;
+    // The generation of the tweet, 0 if the tweet was original content
+    int generation;
     // A tweet is an orignal tweet if tweeter_id == content.author_id
     smartptr<TweetContent> content;
     double creation_time;
     explicit Tweet(const smartptr<TweetContent>& content = smartptr<TweetContent>()) : content(content) {
         id_tweeter = -1;
+        id_link = -1;
+        generation = -1;
         creation_time = 0;
     }
     void print() {
-        printf("(Tweeter = %d, Original Author = %d, Created = %.2f\n)",
-                id_tweeter, content->id_original_author, creation_time);
+        printf("(Tweeter = %d, Link = %d, Original Author = %d, Created = %.2f\n)",
+                id_tweeter, id_link, content->id_original_author, creation_time);
     }
 
     VISIT0(rw) {
-        rw << id_tweeter << creation_time;
+        rw << id_tweeter << creation_time << id_link << generation;
         rw.visit_smartptr(content);
     }
 };
@@ -105,7 +112,7 @@ struct TweetRateDeterminer {
 
 struct TweetBank {
     typedef TimeDepRateTree<Tweet, RETWEET_RATE_ELEMENTS /*Just one rate for now*/, TweetRateDeterminer> RateTree;
-    TimeDepRateTree<Tweet, RETWEET_RATE_ELEMENTS /*Just one rate for now*/, TweetRateDeterminer> tree;
+    RateTree tree;
 
     double get_total_rate() {
         return tree.rate_summary().tuple_sum;

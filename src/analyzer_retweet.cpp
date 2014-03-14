@@ -56,6 +56,8 @@ struct AnalyzerRetweet {
             return RetweetChoice(
                 tweet.content->id_original_author,
                 entity_retweeting,
+                tweet.id_tweeter,
+                tweet.generation + 1,
                 &tweet.content // Returning pointer is small optimization
             );
         }

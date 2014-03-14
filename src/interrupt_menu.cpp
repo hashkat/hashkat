@@ -6,11 +6,6 @@
 #include <iostream>
 #include <luawrap-lib/include/luawrap/luawrap.h>
 
-/**
- * Configure a lua-state ready to pick up whatever libraries
- * are in '.libs'. We connect to lua-repl for an interactive
- * with command-completion.
- */
 static lua_State* init_lua_state();
 
 struct InterruptMenuState {
@@ -57,32 +52,69 @@ struct InterruptMenuState {
 
 static InterruptMenuState state;
 
-/* Interrupt menu functions: */
-static std::vector<int> followers(int entity) {
-    std::vector<int> ret;
-    for (int id : state->network.follower_set(entity)) {
-        ret.push_back(id);
+struct InterruptMenuFunctions {
+    static void install_functions(lua_State* L) {
+        LuaValue G = luawrap::globals(L);
+        G["followers"].bind_function(followers);
+        G["followings"].bind_function(followings);
+        G["followers_print"].bind_function(followers_print);
+        G["tweets"].bind_function(tweets);
     }
-    return ret;
-}
-static std::vector<int> followings(int entity) {
-    std::vector<int> ret;
-    for (int id : state->network.following_set(entity)) {
-        ret.push_back(id);
+    /* Interrupt menu functions: */
+    static std::vector<int> followers(int entity) {
+        std::vector<int> ret;
+        for (int id : state->network.follower_set(entity)) {
+            ret.push_back(id);
+        }
+        return ret;
     }
-    return ret;
-}
+    static std::vector<int> followings(int entity) {
+        std::vector<int> ret;
+        for (int id : state->network.following_set(entity)) {
+            ret.push_back(id);
+        }
+        return ret;
+    }
 
-static void followers_print(int entity) {
-    FollowerSet::Context context(*state, entity);
-    state->network.follower_set(entity).print(context);
-}
+    static LuaValue tweet_to_table(Tweet& tweet) {
+        LuaValue value = LuaValue::newtable(state.L);
+        value["id_tweeter"] = tweet.id_tweeter;
+        value["id_link"] = tweet.id_link;
+        value["generation"] = tweet.generation;
+        value["creation_time"] = tweet.creation_time;
+        value["id_original_author"] = tweet.content->id_original_author;
+        value["language_id"] = (int)tweet.content->language;
+        value["language_name"] = language_name(tweet.content->language);
+
+        return value;
+    }
+    static LuaValue tweets() {
+        LuaValue value = LuaValue::newtable(state.L);
+
+        for (Tweet tweet : state->tweet_bank.as_vector()) {
+            value[value.objlen() + 1] = tweet_to_table(tweet);
+        }
+
+        return value;
+    }
+    static void followers_print(int entity) {
+        FollowerSet::Context context(*state, entity);
+        state->network.follower_set(entity).print(context);
+    }
+};
+
 
 extern "C" {
 // Defined in dependencies/lua-linenoise:
 int luaopen_linenoise(lua_State *L);
 }
 
+
+/**
+ * Configure a lua-state ready to pick up whatever libraries
+ * are in '.libs'. We connect to lua-repl for an interactive
+ * with command-completion.
+ */
 static lua_State* init_lua_state() {
     lua_State* L = lua_open();
     luaL_openlibs(L);
@@ -92,11 +124,7 @@ static lua_State* init_lua_state() {
     package["path"] = package["path"].as<std::string>() + ";./.libs/?.lua";
     package["cpath"] = package["cpath"].as<std::string>() + ";./.libs/?.so";
     package["preload"]["linenoise"].bind_function(luaopen_linenoise);
-
-    globals["followers"].bind_function(followers);
-    globals["followings"].bind_function(followings);
-    globals["followers_print"].bind_function(followers_print);
-
+    InterruptMenuFunctions::install_functions(L);
     return L;
 }
 

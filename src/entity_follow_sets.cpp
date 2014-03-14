@@ -18,10 +18,7 @@ int FollowerSet::LanguageComponent::classify(Context& N, int entity_id) {
 }
 
 std::string FollowerSet::LanguageComponent::cat_name(Context& N, int bin) {
-    #define X(x) if (bin == x) return #x;
-    X_ALL_LANGUAGES
-    #undef X
-    return NULL;
+    return language_name(bin);
 }
 
 // Compute order of distance between tweeter and follower

@@ -58,6 +58,12 @@ enum Language {
 };
 #undef X
 
+inline const char* language_name(int bin) {
+    #define X(x) if (bin == x) return #x;
+    X_ALL_LANGUAGES
+    #undef X
+    return NULL;
+}
 
 inline bool contains_english(Language lang) {
     return (lang < LANG_FRENCH); // All languages before LANG_FRENCH contain English
