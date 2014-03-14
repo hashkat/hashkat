@@ -1,12 +1,12 @@
 analysis:
   max_entities: 
-    5001
+    10001
   max_time:
     100000.0 # 1/10 year
   max_real_time:
     60 * 60 * 1000 # ms
   initial_entities:
-    1000
+    10000
   use_barabasi: false # if this is set to 1, the global follow rate will be ignored. Follow thresholds not needed.
   use_random_time_increment: true # increments by 1/sum(rates) on average
   use_flawed_followback: false
@@ -15,7 +15,7 @@ analysis:
 
 rates:
   # Rate for creating entities
-  add: {function: constant, value: 0.5}
+  add: {function: constant, value: 0.0}
 
 output:
   save_network_on_timeout: # Should we save all our data if we hit >= max_real_time?

@@ -114,8 +114,8 @@ struct EntityType {
     VISIT0(rw) {
         rw << name << prob_add << prob_follow << prob_followback;
         rw << new_entities << n_tweets << n_follows << n_followers << n_retweets;
-        for (int i = 0; i < number_of_diff_events; i++){
-            rw << RF[i];
+        for (auto& rf : RF) {
+            rf.visit(rw);
         }
         rw << entity_cap << entity_list;
         age_ranks.visit(rw);
