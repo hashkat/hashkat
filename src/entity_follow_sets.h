@@ -105,8 +105,7 @@ private:
     Followers implementation;
 };
 
-// TODO: Rename FollowerSet
-struct FollowSet {
+struct FollowingSet {
     typedef cats::LeafNode<int> Followings;
     typedef cats::NodeIterator<Followings> iterator;
 

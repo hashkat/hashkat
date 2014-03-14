@@ -45,8 +45,8 @@ struct Network {
     }
 
     // Convenient network queries:
-    FollowSet& follow_set(int id) {
-        return entities[id].follow_set;
+    FollowingSet& following_set(int id) {
+        return entities[id].following_set;
     }
 
     bool is_valid_id(int id) {
@@ -58,7 +58,7 @@ struct Network {
     }
 
     size_t n_following(int id) {
-        return follow_set(id).size();
+        return following_set(id).size();
     }
     size_t n_followers(int id) {
         return follower_set(id).size();

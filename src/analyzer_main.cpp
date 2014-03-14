@@ -318,7 +318,7 @@ struct Analyzer {
 
         // Remove our unfollowed person from our target's followers:
 		Entity& e_lost_follower = network[id_lost_follower];
-		bool had_follow = e_lost_follower.follow_set.remove(state, id_unfollowed);
+		bool had_follow = e_lost_follower.following_set.remove(state, id_unfollowed);
 		DEBUG_CHECK(had_follow, "unfollow: Did not exist in follow list");
 		perf_timer_end("action_unfollow");
 		return true;

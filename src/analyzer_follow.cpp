@@ -34,7 +34,7 @@ struct AnalyzerFollow {
    bool handle_follow(int id_actor, int id_target) {
        Entity& A = network[id_actor];
        Entity& T = network[id_target];
-       bool was_added = A.follow_set.add(state, id_target);
+       bool was_added = A.following_set.add(state, id_target);
        if (was_added) {
            FollowerSet::Context context(state, id_target);
            FollowerSet::Rates& rates = config.follower_rates.get_rates(A);

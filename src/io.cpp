@@ -100,7 +100,7 @@ void output_position(Network& network, int n_entities) {
         }
         output1 << "</nodes>\n" << "<edges>\n";
         for (int id = 0; id < n_entities; id++) {
-            for (int id_fol : network.follow_set(id)) {
+            for (int id_fol : network.following_set(id)) {
                 output1 << "<edge id=\"" << count << "\" source=\"" << id
                         << "\" target=\"" << id_fol << "\"/>\n";
                 count++;
@@ -123,7 +123,7 @@ void output_position(Network& network, int n_entities) {
                 Entity& p = network[id];
                 output1 << "<node id=\"" << id << "\" label=\"" << p.entity_type << "\" />\n";
 
-                for (int id_fol : network.follow_set(id)) {
+                for (int id_fol : network.following_set(id)) {
                     Entity& p1 = network[id_fol];
                     output1 << "<node id=\"" << id_fol << "\" label=\"" << p1.entity_type << " - followed"<< "\" />\n";
                 }
@@ -131,7 +131,7 @@ void output_position(Network& network, int n_entities) {
         output1 << "</nodes>\n" << "<edges>\n";
         int count = 0;
         for (int& id : user_ids) {
-            for (int id_fol : network.follow_set(id)) {
+            for (int id_fol : network.following_set(id)) {
                 output1 << "<edge id=\"" << count << "\" source=\""
                         << id << "\" target=\"" << id_fol << "\"/>\n";
                 count++;
@@ -440,7 +440,7 @@ static void whos_following_who(EntityTypeVector& types, EntityType& type, Networ
         }
 
         // Analyze outs == follows
-        for (int id_fol : network.follow_set(id)) {
+        for (int id_fol : network.following_set(id)) {
             Entity& et = network[id_fol];
             who_followers[et.entity_type] ++;
             followers_sum ++;

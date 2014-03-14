@@ -19,9 +19,6 @@ const int FOLLOW_LIST_THRESHOLD1 = 256; // Initial follow-set size-limit before 
 const int FOLLOWER_LIST_THRESHOLD1 = 256; // Initial follower-set size-limit before data-structure is switched to google's sparsehash
 // TODO Somewhat arbitrarily chosen
 
-const int FOLLOW_SET_MEM_PER_USER = 512 * 4 * 8;
-// Allocate enough space for 512 follows for each entity. Increase for a more dense follow network.
-
 const int TIME_CAT_FREQ = 30 * 24 * 60;
 
 // Output frequency:

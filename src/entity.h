@@ -29,7 +29,7 @@ struct Entity {
     int humour_bin;
 
     // Store the two directions of the follow relationship
-    FollowSet follow_set;
+    FollowingSet following_set;
     FollowerSet follower_set;
 
     Entity() {
