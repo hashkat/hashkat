@@ -217,9 +217,8 @@ struct FlexibleSet {
         }
         // Must scan for element, linearly
         // Luckily, we are below THRESHOLD, and thus should be fairly small
-        const int nElem = vector_impl.size();
-        for (int i = 0; i < nElem; i++) {
-            if (UNLIKELY(vector_impl[i] == elem)) {
+        for (T& data : vector_impl) {
+            if (UNLIKELY(data == elem)) {
                 // Already in our set!
                 return false;
             }
@@ -245,6 +244,9 @@ private:
         hash_impl = new HashSet(size()*2);
         // MUST be done to use erase() with Google's HashSet:
         hash_impl->set_deleted_key((T)-1);
+        for (T& val : vector_impl) {
+            hash_impl->insert(val);
+        }
         // Ensure our vector's memory is reclaimed:
         vector_impl = std::vector<T>();
     }
@@ -332,7 +334,7 @@ struct LeafNode {
         } else {
             repr = format("%s (Bin %d)", name.c_str(), bin);
         }
-        printf("[%s][leaf] (Total %.2f; N_elems %d; Rate %.2f) ",
+        printf("[%s][leaf] (Total %f; N_elems %d; Rate %f) ",
                 repr.c_str(),
                 float(total_rate),
                 rate,
@@ -402,7 +404,7 @@ template <typename T, int N_ELEMS>
 struct StaticVector {
     void resize(int amount) {
         if (amount > N_ELEMS) {
-            error_exit("Category out-of-bounds! See comment above.");
+            throw "Category out-of-bounds! See comment above.";
         }
     }
     // Number of categories
@@ -680,7 +682,7 @@ struct TreeNode {
                 repr = format("%s (Bin %d)", name.c_str(), bin);
             }
         }
-        printf("[%s][%s] (Total %.2f; N_elems %d) \n",
+        printf("[%s][%s] (Total %f; N_elems %d) \n",
                 repr.c_str(),
                 cpp_type_name_no_namespace(C).c_str(),
                 float(total_rate),

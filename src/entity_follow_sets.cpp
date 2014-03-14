@@ -47,3 +47,7 @@ std::string FollowerSet::PreferenceClassComponent::cat_name(Context& N, int bin)
     }
     return P[bin].name.c_str();
 }
+
+FollowerSet::Context::Context(AnalysisState& N, int owner_id) : N(N),
+        R(N.config.follower_rates.get_rates(N.network[owner_id])), owner_id(owner_id){
+}

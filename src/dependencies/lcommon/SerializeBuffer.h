@@ -213,6 +213,13 @@ public:
 			write(*it);
 		}
 	}
+    template<class T>
+    void write_container(T& t) {
+        write((int)t.size());
+        for (typename T::iterator it = t.begin(); it != t.end(); ++it) {
+            write(*it);
+        }
+    }
 	template<class T>
 	void read_container(T& t) {
 		int size;

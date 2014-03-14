@@ -12,20 +12,6 @@
 struct AnalysisState;
 
 struct FollowerSet {
-    /*****************************************************************************
-     * The context option is used during the nested-classification so that
-     * we can refer to the owned of the FollowerSet.
-     *
-     * We need to pass AnalysisState for most lookups (eg Entity variables),
-     * but we also need owner_id so that we may calculate distance.
-     *****************************************************************************/
-    struct Context {
-        Context(AnalysisState& N, int owner_id) :
-                N(N), owner_id(owner_id) {
-        }
-        AnalysisState& N; // Analysis state
-        int owner_id; // Owner of the follower set
-    };
 
     /******************************************************************************
      * Nested category definitions. These define the necessary classification
@@ -41,6 +27,7 @@ struct FollowerSet {
      * The methods are implemented in entity_follow_sets.cpp.
      *****************************************************************************/
 
+    struct Context;
     struct PreferenceClassComponent: cats::StaticLeafClass<int, N_BIN_PREFERENCE_CLASS> {
         int classify(Context& N, int entity_id); // Defined in entity.cpp
         std::string cat_name(Context& N, int bin);
@@ -55,13 +42,29 @@ struct FollowerSet {
         int classify(Context& N, int entity_id); // Defined in entity.cpp
     };
 
-    /*****************************************************************************
-     * Public methods:
-     ******************************************************************************/
-
     typedef LanguageComponent Rates;
     typedef LanguageComponent::CatGroup Followers;
     typedef cats::NodeIterator<Followers> iterator;
+
+    /*****************************************************************************
+     * The context option is used during the nested-classification so that
+     * we can refer to the owned of the FollowerSet.
+     *
+     * We need to pass AnalysisState for most lookups (eg Entity variables),
+     * but we also need owner_id so that we may calculate distance.
+     *****************************************************************************/
+
+    struct Context {
+        Context(AnalysisState& N, int owner_id); // Implemented in cpp file
+
+        AnalysisState& N; // Analysis state
+        Rates& R;
+        int owner_id; // Owner of the follower set
+    };
+
+    /*****************************************************************************
+     * Public methods:
+     ******************************************************************************/
 
     iterator begin() {
         return iterator::begin(&implementation);
@@ -71,12 +74,12 @@ struct FollowerSet {
         return iterator::end(&implementation);
     }
 
-    bool add(Context& C, Rates& R, int id) {
-        return implementation.add(C, R, id);
+    bool add(Context& C, int id) {
+        return implementation.add(C, C.R, id);
     }
 
-    bool remove(Context& C, Rates& R, int id) {
-        return implementation.remove(C, R, id);
+    bool remove(Context& C, int id) {
+        return implementation.remove(C, C.R, id);
     }
 
     bool pick_random_weighted(MTwist& rng, int& id) {
@@ -87,8 +90,8 @@ struct FollowerSet {
         return implementation.pick_random_uniform(rng, id);
     }
 
-    void print(Context& C, Rates& R) {
-        implementation.print(C, R);
+    void print(Context& C) {
+        implementation.print(C, C.R);
     }
 
     size_t size() const {
@@ -143,6 +146,7 @@ struct FollowingSet {
         return implementation.size();
     }
 
+private:
     Followings implementation;
 };
 

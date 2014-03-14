@@ -28,7 +28,7 @@ void output_network_statistics(AnalysisState& state) {
         printf("(EntityType %s)\n", et.name.c_str());
         printf("------------------------------------------------------------------------\n", i);
         FollowerSet::Context context(state, i);
-        e.follower_set.print(context, state.config.follower_rates.get_rates(e));
+        e.follower_set.print(context);
     }
     ParsedConfig& C = state.config;
     EntityTypeVector& et_vec = state.entity_types;

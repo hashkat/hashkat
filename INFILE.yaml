@@ -75,7 +75,6 @@ tweet_relevance:
         retweet_relevance:
           all: 0 # Can be any valid Python code
 
-
 entities:
   - name: Standard
     weights:

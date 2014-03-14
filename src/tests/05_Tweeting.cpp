@@ -41,7 +41,7 @@ SUITE(TweetStore) {
         Tree vec_tree;
         vec.tuple[0] = 1.0;
         vec.tuple_sum = 1.0;
-        for (int z = 0; z < 250; z++) {
+        for (int z = 0; z < 2; z++) {
             std::vector<int> elemsA;
             std::vector<int> elemsB;
             for (int i = 0; i < 9001; i++) {
@@ -54,7 +54,7 @@ SUITE(TweetStore) {
                 }
                 int r = vec_tree.pick_random_weighted(rng);
             }
-            vec_tree.print();
+            //vec_tree.print();
             for (int i = 0; i < elemsA.size(); i++) {
                 vec_tree.remove(elemsA[i]);
                 basic_check(vec_tree);
@@ -64,8 +64,8 @@ SUITE(TweetStore) {
                 basic_check(vec_tree);
                 elemsB.push_back(elem);
             }
-            printf("AFTER\n");
-            vec_tree.print();
+            //printf("AFTER\n");
+            //vec_tree.print();
             for (int i = 0; i < elemsB.size(); i++) {
                 vec_tree.remove(elemsB[i]);
                 basic_check(vec_tree);

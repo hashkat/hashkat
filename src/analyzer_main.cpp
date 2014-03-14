@@ -311,8 +311,7 @@ struct Analyzer {
 	// Returns true if a follower was removed, false if there was no follower to remove
 	bool action_unfollow(int id_unfollowed) {
 	    perf_timer_begin("action_unfollow");
-		Entity& e_unfollowed = network[id_unfollowed]; // The entity which is unfollowed
-		FollowerSet& candidate_followers = e_unfollowed.follower_set;
+		FollowerSet& candidate_followers = network.follower_set(id_unfollowed);
 
 		int id_lost_follower = -1; // The entity to unfollow us
 		if (!candidate_followers.pick_random_uniform(rng, id_lost_follower)) {
@@ -325,7 +324,7 @@ struct Analyzer {
 		// Necessary for use with follower set:
         FollowerSet::Context context(state, id_unfollowed);
         // Remove our target from our actor's follows:
-        bool had_follower = candidate_followers.remove(context, config.follower_rates.get_rates(e_unfollowed), id_lost_follower);
+        bool had_follower = candidate_followers.remove(context, id_lost_follower);
 		DEBUG_CHECK(had_follower, "unfollow: Did not exist in follower list");
 
         // Remove our unfollowed person from our target's followers:

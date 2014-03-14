@@ -37,8 +37,7 @@ struct AnalyzerFollow {
        bool was_added = A.following_set.add(state, id_target);
        if (was_added) {
            FollowerSet::Context context(state, id_target);
-           FollowerSet::Rates& rates = config.follower_rates.get_rates(A);
-           bool was_added = T.follower_set.add(context, rates, id_actor);
+           bool was_added = T.follower_set.add(context, id_actor);
            ASSERT(was_added, "Follow/follower-set asymmetry detected!");
            return true;
        }

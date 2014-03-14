@@ -16,6 +16,8 @@
 
 #include "tweets.h"
 
+#include "DataReadWrite.h"
+
 // Forward declare, to prevent circular header inclusion:
 struct AnalysisState;
 
@@ -40,6 +42,28 @@ struct Entity {
         language = (Language)-1; // Initialize with invalid language
         n_retweets = 0;
         humour_bin = -1; // Initialize with invalid humour bin
+    }
+
+    VISIT(rw, context) {
+        rw << entity_type << preference_class
+           << n_tweets << n_retweets << creation_time
+           << location << language
+           << humour_bin;
+
+        if (rw.is_reading()) {
+            std::vector<int> followings;
+            std::vector<int> followers;
+            rw << followings << followers;
+            for (int id_fol : followings) {
+                following_set.add(rw.state, id_fol); 
+            }
+            for (int id_fol : followers) {
+                follower_set.add(context, id_fol); 
+            }
+        } else if (rw.is_writing()) {
+            rw.write_container(following_set);
+            rw.write_container(follower_set);
+        }
     }
 private:
     // Ban the copy constructor:
