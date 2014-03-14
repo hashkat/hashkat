@@ -20,6 +20,20 @@
 #include <netinet/in.h>
 #endif
 
+#ifdef __APPLE__
+   static inline unsigned long long be64toh(unsigned long long value) {
+        int num = 42;
+        if (*(char *)&num == 42) {
+            uint32_t high_part = htonl((uint32_t)(value >> 32));
+            uint32_t low_part = htonl((uint32_t)(value & 0xFFFFFFFFLL));
+            return (((uint64_t)low_part) << 32) | high_part;
+        } else {
+            return value;
+        }
+    }
+#  define be16toh(x) htons(x)
+#  define be32toh(x) htonl(x)
+#else
 # if __BYTE_ORDER == __LITTLE_ENDIAN
 #  define htobe16(x) __bswap_16 (x)
 #  define htole16(x) (x)
@@ -51,7 +65,7 @@
 #   define be64toh(x) (x)
 #   define le64toh(x) __bswap_64 (x)
 #endif
-
+#endif
 const int MAX_ALLOC_SIZE = 32 * 1024 * 1024; //32MB
 const int MAX_BUFFER_SIZE = 128 * 1024; //128kb
 
