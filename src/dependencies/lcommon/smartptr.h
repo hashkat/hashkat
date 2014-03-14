@@ -46,6 +46,7 @@ namespace _lcommon_private {
 
 class smartptr_impl {
 public:
+    friend class smartptr;
 	/*
 	 Conversion/casting operators
 	 */
@@ -86,7 +87,6 @@ public:
 		release();
 	}
 
-protected:
 
 	// Keep function around for deletion purposes so that we can work on incomplete types
 	template<typename T>
@@ -103,8 +103,8 @@ protected:
 
 	};
 
-	void* rawPtr;
 	RefHandler* refhandler;
+	void* rawPtr;
 
 	smartptr_impl(void* raw, RefHandler* c) :
 			rawPtr(raw), refhandler(c) {
@@ -114,7 +114,6 @@ protected:
 		}
 
 	}
-
 
 	void init(void* raw, delete_function_ptr deleter) {
 		rawPtr = raw;
@@ -153,6 +152,7 @@ protected:
 template<typename X>
 class smartptr : public _lcommon_private::smartptr_impl{
 public:
+    friend class _lcommon_private::smartptr_impl;
 	typedef X element_type;
 
 	smartptr() :
@@ -205,7 +205,7 @@ public:
 	smartptr& operator=(const smartptr<Y>& otherPtr) {
 		if (this != (smartptr<X>*)&otherPtr) {
 			release();
-			acquire(otherPtr.counter);
+			acquire(otherPtr.refhandler);
 			rawPtr = otherPtr.get();
 		}
 		return *this;

@@ -30,6 +30,8 @@ struct TweetContent {
     VISIT0(rw) {
         rw << time_of_tweet << language << id_original_author;
         rw.visit_container(used_entities);
+        printf("GOT AT %.2f %d %d size=%d\n", time_of_tweet, language,
+                id_original_author, used_entities.size());
     }
 };
 
@@ -53,7 +55,8 @@ struct Tweet {
     }
 
     VISIT0(rw) {
-        rw << id_tweeter << content << creation_time;
+        rw << id_tweeter << creation_time;
+        rw.visit_smartptr(content);
     }
 };
 
@@ -142,11 +145,12 @@ struct TweetBank {
     }
 
     VISIT0(rw) {
+        std::vector<Tweet> tweets;
         if (rw.is_writing()) {
-            rw << as_vector();
-        } else {
-            std::vector<Tweet> tweets;
-            rw << tweets;
+            tweets = as_vector();
+        }
+        rw.visit_objs(tweets);
+        if (rw.is_reading()) {
             for (Tweet& tweet : tweets) {
                 add(tweet);
             }

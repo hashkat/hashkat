@@ -115,23 +115,23 @@ struct AnalysisState {
     // For network reading/writing:
     VISIT0(rw) {
         network.visit(rw);
-//
-//        rw << time;
-//        rw << follow_probabilities;
-//        rw << updating_follow_probabilities;
-//
-//        rw << entity_cap;
-//        rw << n_follows << r_follow_norm << end_time;
-//
-//        rng.visit(rw);
-//        tweet_ranks.visit(rw);
-//        follow_ranks.visit(rw);
-//        retweet_ranks.visit(rw);
-//        age_ranks.visit(rw);
+
+        rw << time;
+        rw << follow_probabilities;
+        rw << updating_follow_probabilities;
+
+        rw << entity_cap;
+        rw << n_follows << r_follow_norm << end_time;
+
+        rng.visit(rw);
+        tweet_ranks.visit(rw);
+        follow_ranks.visit(rw);
+        retweet_ranks.visit(rw);
+        age_ranks.visit(rw);
 //        tweet_bank.visit(rw);
-//        stats.visit(rw);
-//
-//        rw.visit_objs(entity_types);
+        stats.visit(rw);
+
+        rw.visit_objs(entity_types);
     }
 };
 

@@ -21,7 +21,6 @@ struct DataWriter {
 
     template <typename T>
     void visit(const T& obj) {
-        printf("WRITING %d\n", *(int*)&obj);
         buffer->write(obj);
     }
 
@@ -31,15 +30,15 @@ struct DataWriter {
     }
 
     template <typename T>
-    void visit(const smartptr<T>& obj) {
+    void visit_smartptr(const smartptr<T>& obj) {
         void* raw_ptr = (void*)obj.get();
         bool added = false;
-        if (ptr_map.find(raw_ptr) == ptr_map.end()) {
+        if (ptr_map[raw_ptr].empty()) {
             added = true;
         }
         *this << raw_ptr << added;
         if (added) {
-            ptr_map[raw_ptr] = (smartptr<void*>&)obj;
+            ptr_map[raw_ptr] = smartptr<void*>(obj);
             obj->visit(*this);
         }
     }
@@ -98,26 +97,21 @@ struct DataReader {
 
     template <typename T>
     void visit(T& obj) {
-        printf("READING %d\n", *(int*)&obj);
         buffer->read(obj);
     }
 
     template <typename T>
-    void visit(smartptr<T>& obj) {
-        void* raw_ptr = NULL;
+    void visit_smartptr(smartptr<T>& obj) {
+        void* old_ptr = NULL;
         bool added = false;
-        (*this) << raw_ptr << added;
-        if (added) {
-            T data;
-            data.visit(*this);
-        }
+        (*this) << old_ptr << added;
         if (added) {
             T val;
-            val->visit(this);
+            val.visit(*this);
             obj.set(new T(val));
-            ptr_map[raw_ptr] = (smartptr<void*>&)obj;
+            ptr_map[old_ptr] = smartptr<void*>(obj);
         } else {
-            obj = ptr_map[raw_ptr];
+            obj = ptr_map[old_ptr];
         }
     }
 

@@ -19,7 +19,7 @@ using namespace std;
 /* After 'analyze', print the results of the computations. */
 void output_network_statistics(AnalysisState& state) {
     Network& network = state.network;
-    for (int i = 0; i < min(10, network.n_entities); i++) {
+    for (int i = 0; i < min(/*For now:*/0, network.n_entities); i++) {
         Entity& e = network[i];
         EntityType& et = state.entity_types[e.entity_type];
 
