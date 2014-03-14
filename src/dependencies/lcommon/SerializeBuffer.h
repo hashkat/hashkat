@@ -20,28 +20,36 @@
 #include <netinet/in.h>
 #endif
 
-#if defined(__OpenBSD__) || defined( __ANDROID_API__)
-#  include <sys/types.h>
-#  define be16toh(x) betoh16(x)
-#  define be32toh(x) betoh32(x)
-#  define be64toh(x) betoh64(x)
-#elif defined(__linux__)
-#  include <endian.h>
-#elif defined(__FreeBSD__) || defined(__NetBSD__)
-#  include <sys/endian.h>
+# if __BYTE_ORDER == __LITTLE_ENDIAN
+#  define htobe16(x) __bswap_16 (x)
+#  define htole16(x) (x)
+#  define be16toh(x) __bswap_16 (x)
+#  define le16toh(x) (x)
+
+#  define htobe32(x) __bswap_32 (x)
+#  define htole32(x) (x)
+#  define be32toh(x) __bswap_32 (x)
+#  define le32toh(x) (x)
+
+#   define htobe64(x) __bswap_64 (x)
+#   define htole64(x) (x)
+#   define be64toh(x) __bswap_64 (x)
+#   define le64toh(x) (x)
 #else
-   static inline unsigned long long be64toh(unsigned long long value) {
-		int num = 42;
-		if (*(char *)&num == 42) {
-			uint32_t high_part = htonl((uint32_t)(value >> 32));
-			uint32_t low_part = htonl((uint32_t)(value & 0xFFFFFFFFLL));
-			return (((uint64_t)low_part) << 32) | high_part;
-		} else {
-			return value;
-		}
-	}
-#  define be16toh(x) htons(x)
-#  define be32toh(x) htonl(x)
+#  define htobe16(x) (x)
+#  define htole16(x) __bswap_16 (x)
+#  define be16toh(x) (x)
+#  define le16toh(x) __bswap_16 (x)
+
+#  define htobe32(x) (x)
+#  define htole32(x) __bswap_32 (x)
+#  define be32toh(x) (x)
+#  define le32toh(x) __bswap_32 (x)
+
+#   define htobe64(x) (x)
+#   define htole64(x) __bswap_64 (x)
+#   define be64toh(x) (x)
+#   define le64toh(x) __bswap_64 (x)
 #endif
 
 const int MAX_ALLOC_SIZE = 32 * 1024 * 1024; //32MB
