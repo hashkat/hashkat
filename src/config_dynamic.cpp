@@ -125,17 +125,17 @@ static FollowerSetRatesDeterminer parse_tweet_react_rates(const Node& node) {
     parse_vector(generated["rel_function"], input_func   );
 
     // Rates for every entity-type X humour-bin
-    vector< vector<FollowerSetRates> > total_rates;
+    vector< vector<FollowerSet::Rates> > total_rates;
 
     // Loop over entity-type layer:
     for (int i = 0; i < input_func.size(); i++) {
-        vector<FollowerSetRates> evec;
+        vector<FollowerSet::Rates> evec;
         entity_rel_function_t& entity_func = input_func[i];
 
         // Loop over humour-bin layer:
         for (int j = 0; j < entity_func.size(); j++) {
             entity_humour_rel_function_t& eh_func = entity_func[j];
-            FollowerSetRates react_rates;
+            FollowerSet::Rates react_rates;
             // Fill the same rates for every language (slightly memory inefficient):
             for (int k = 0; k < eh_func.size(); k++) {
                 react_rates.get(/*Dummy value:*/react_rates, k).fill_rates(eh_func);
@@ -353,6 +353,6 @@ ParsedConfig parse_yaml_configuration(const char* file_name) {
 }
 
 // Declared in .h file
-FollowerSetRates& FollowerSetRatesDeterminer::get_rates(Entity& entity) {
+FollowerSet::Rates& FollowerSetRatesDeterminer::get_rates(Entity& entity) {
     return rates[entity.entity_type][entity.humour_bin];
 }

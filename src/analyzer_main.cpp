@@ -306,14 +306,14 @@ struct Analyzer {
 		DEBUG_CHECK(id_lost_follower != -1, "Should not be -1 after choice!");
 
 		// Necessary for use with follower set:
-        follower_set::Context context(state, id_unfollowed);
+        FollowerSet::Context context(state, id_unfollowed);
         // Remove our target from our actor's follows:
         bool had_follower = candidate_followers.remove(context, config.follower_rates.get_rates(e_unfollowed), id_lost_follower);
 		DEBUG_CHECK(had_follower, "unfollow: Did not exist in follower list");
 
         // Remove our unfollowed person from our target's followers:
 		Entity& e_lost_follower = network[id_lost_follower];
-		bool had_follow = e_lost_follower.follow_set.remove(context, /*Dummy rate*/ 1.0, id_unfollowed);
+		bool had_follow = e_lost_follower.follow_set.remove(state, id_unfollowed);
 		DEBUG_CHECK(had_follow, "unfollow: Did not exist in follow list");
 
 		return true;

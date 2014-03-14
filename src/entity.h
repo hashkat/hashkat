@@ -4,8 +4,6 @@
 #include <string>
 #include <vector>
 
-#include "cat_classes.h"
-#include "cat_nodes.h"
 #include "CategoryGrouper.h"
 
 #include "lcommon/smartptr.h"
@@ -13,54 +11,13 @@
 
 #include "events.h"
 
-#include "config_static.h"
-
+#include "entity_follow_sets.h"
 #include "entity_properties.h"
 
 #include "tweets.h"
 
-typedef cats::LeafNode<int> FollowSet;
-
+// Forward declare, to prevent circular header inclusion:
 struct AnalysisState;
-
-namespace follower_set {
-    struct Context {
-        Context(AnalysisState& N, int owner_id) :
-                N(N), owner_id(owner_id) {
-        }
-        AnalysisState& N; // Analysis state
-        int owner_id; // Owner of the follower set
-    };
-
-    struct PreferenceClassComponent: cats::StaticLeafClass<int, N_BIN_PREFERENCE_CLASS> {
-        int classify(Context& N, int entity_id); // Defined in entity.cpp
-        std::string cat_name(Context& N, int bin);
-    };
-    // The distance you are to your followers is a categorization dimension
-    struct DistanceComponent: cats::StaticTreeClass<PreferenceClassComponent, N_BIN_DISTANCE> {
-        std::string cat_name(Context& N, int bin);
-        int classify(Context& N, int entity_id); // Defined in entity.cpp
-    };
-    struct LanguageComponent: cats::StaticTreeClass<DistanceComponent, N_LANGS> {
-        std::string cat_name(Context& N, int bin);
-        int classify(Context& N, int entity_id); // Defined in entity.cpp
-    };
-}
-
-typedef follower_set::LanguageComponent FollowerSetRates;
-typedef FollowerSetRates::CatGroup FollowerSet;
-
-
-// Helper to achieve syntactic terseness below
-template <typename Layer, typename OuterLayer>
-static inline bool for_lang_helper(Layer& layer, int id, OuterLayer& outer) {
-    if (id < outer.n_bins()) {
-        // Avoid operator-bound problem
-        layer = &outer[id];
-        return true;
-    }
-    return false;
-}
 
 struct Entity {
     int entity_type;

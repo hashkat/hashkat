@@ -1,15 +1,15 @@
 #ifndef CONFIG_DYNAMIC_H_
 #define CONFIG_DYNAMIC_H_
 
+#include <cmath>
+#include "network.h"
+
 enum FollowModel {
     RANDOM_FOLLOW,
     PREFERENTIAL_FOLLOW,
     ENTITY_FOLLOW,
     PREFERENTIAL_ENTITY_FOLLOW
 };
-
-#include <cmath>
-#include "network.h"
 
 struct EntityPreferenceClass {
     std::string name;
@@ -36,7 +36,7 @@ struct TweetObservationPDF {
 //TODO AD: Better name
 // First layer: entity_type
 // Second layer: humour bin
-typedef std::vector< std::vector<FollowerSetRates> > FollowerSetRatesVec;
+typedef std::vector< std::vector<FollowerSet::Rates> > FollowerSetRatesVec;
 
 //TODO AD: Better name
 struct FollowerSetRatesDeterminer {
@@ -47,7 +47,7 @@ struct FollowerSetRatesDeterminer {
     }
 
     // Defined in .cpp file
-    FollowerSetRates& get_rates(Entity& entity);
+    FollowerSet::Rates& get_rates(Entity& entity);
 
 private:
     FollowerSetRatesVec rates;

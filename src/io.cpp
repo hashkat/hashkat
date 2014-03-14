@@ -27,7 +27,7 @@ void output_network_statistics(AnalysisState& state) {
         printf("(Entity %d)\n", i);
         printf("(EntityType %s)\n", et.name.c_str());
         printf("------------------------------------------------------------------------\n", i);
-        follower_set::Context context(state, i);
+        FollowerSet::Context context(state, i);
         e.follower_set.print(context, state.config.follower_rates.get_rates(e));
     }
     ParsedConfig& C = state.config;
@@ -99,11 +99,10 @@ void output_position(Network& network, int n_entities) {
                 output1 << "<node id=\"" << i << "\" label=\"" << p.entity_type << "\" />\n";
         }
         output1 << "</nodes>\n" << "<edges>\n";
-        for (int i = 0; i < n_entities; i++) {
-            FollowSet& follow_set = network.follow_set(i);
-            for (FollowSet::iterator it; follow_set.iterate(it);) {
-                output1 << "<edge id=\"" << count << "\" source=\"" << i
-                        << "\" target=\"" << it.get() << "\"/>\n";
+        for (int id = 0; id < n_entities; id++) {
+            for (int id_fol : network.follow_set(id)) {
+                output1 << "<edge id=\"" << count << "\" source=\"" << id
+                        << "\" target=\"" << id_fol << "\"/>\n";
                 count++;
             }
         }
@@ -116,27 +115,26 @@ void output_position(Network& network, int n_entities) {
         rng.init_genrand(/* Fixed seed */ 2);
         int fraction_users = 10000;
         vector<int> user_ids (fraction_users);
-        for (int i = 0; i < fraction_users; i ++) {
-            user_ids[i] = rng.rand_int(n_entities);
+        for (int& id : user_ids) {
+            id = rng.rand_int(n_entities);
         }
 
-        for (int i = 0; i < fraction_users; i++) {
-                Entity& p = network[user_ids[i]];
-                output1 << "<node id=\"" << user_ids[i] << "\" label=\"" << p.entity_type << "\" />\n";
 
-                FollowSet& follow_set = network.follow_set(user_ids[i]);
-                for (FollowSet::iterator it; follow_set.iterate(it);) {
-                    Entity& p1 = network[it.get()];
-                    output1 << "<node id=\"" << it.get() << "\" label=\"" << p1.entity_type << " - followed"<< "\" />\n";
+        for (int& id : user_ids) {
+                Entity& p = network[id];
+                output1 << "<node id=\"" << id << "\" label=\"" << p.entity_type << "\" />\n";
+
+                for (int id_fol : network.follow_set(id)) {
+                    Entity& p1 = network[id_fol];
+                    output1 << "<node id=\"" << id_fol << "\" label=\"" << p1.entity_type << " - followed"<< "\" />\n";
                 }
         }
         output1 << "</nodes>\n" << "<edges>\n";
         int count = 0;
-        for (int i = 0; i < fraction_users; i++) {
-            FollowSet& follow_set = network.follow_set(i);
-            for (FollowSet::iterator it; follow_set.iterate(it);) {
+        for (int& id : user_ids) {
+            for (int id_fol : network.follow_set(id)) {
                 output1 << "<edge id=\"" << count << "\" source=\""
-                        << user_ids[i] << "\" target=\"" << it.get() << "\"/>\n";
+                        << id << "\" target=\"" << id_fol << "\"/>\n";
                 count++;
             }
         }
@@ -146,11 +144,9 @@ void output_position(Network& network, int n_entities) {
 
     ofstream output;
     output.open("network.dat");
-    for (int i = 0; i < n_entities; i ++) {
-
-        FollowerSet& follower_set = network.follower_set(i);
-        for (FollowerSet::iterator it; follower_set.iterate(it);) {
-            output << i << "\t" << it.get() << "\n";
+    for (int id = 0; id < n_entities; id++) {
+        for (int id_fol : network.follower_set(id)) {
+            output << id << "\t" << id_fol << "\n";
         }
     }
     output.close();
@@ -438,17 +434,15 @@ static void whos_following_who(EntityTypeVector& types, EntityType& type, Networ
         entity_degree[in_degree + out_degree] ++;
 
         // Analyze ins == followers
-        FollowerSet& ins = network.follower_set(id);
-        for (FollowerSet::iterator it; ins.iterate(it);) {
-            Entity& et = network[it.get()];
+        for (int id_fol : network.follower_set(id)) {
+            Entity& et = network[id_fol];
             who_following[et.entity_type] ++;
             following_sum ++;
         }
 
         // Analyze outs == follows
-        FollowSet& outs = network.follow_set(id);
-        for (FollowSet::iterator it; outs.iterate(it);) {
-            Entity& et = network[it.get()];
+        for (int id_fol : network.follow_set(id)) {
+            Entity& et = network[id_fol];
             who_followers[et.entity_type] ++;
             followers_sum ++;
         }
@@ -499,16 +493,14 @@ void visualize_most_popular_tweet(MostPopularTweet& mpt, Network& network) {
             << "<graph mode=\"static\" defaultedgetype=\"directed\">\n"
             << "<nodes>\n";
             
-    UsedEntities& used = t.content->used_entities;
-    for (UsedEntities::iterator it = used.begin(); it != used.end(); ++it) {
-        Entity& p = network[*it];
-        output << "<node id=\"" << *it << "\" label=\"" << "Retweeters" << "\">\n";
+    UsedEntities& used_set = t.content->used_entities;
+    for (int id_used : used_set) {
+        output << "<node id=\"" << id_used << "\" label=\"" << "Retweeters" << "\">\n";
         output << "<viz:size value=\"2.5\"/>\n";
         output << "</node>\n";
-        FollowerSet& follower_set = network.follower_set(*it);
-        for (FollowerSet::iterator i; follower_set.iterate(i);) {
-            Entity& e = network[i.get()];
-            output << "<node id=\"" << i.get() << "\" label=\"" << "Non-Retweeters" << "\" >\n";
+        for (int id_fol : network.follower_set(id_used)) {
+            Entity& e = network[id_fol];
+            output << "<node id=\"" << id_fol << "\" label=\"" << "Non-Retweeters" << "\" >\n";
             output << "<viz:size value=\"2.0\"/>\n";
             output << "</node>\n";
         }
@@ -518,17 +510,16 @@ void visualize_most_popular_tweet(MostPopularTweet& mpt, Network& network) {
     output << "</node>\n";
     int count = 0;
     output << "</nodes>\n" << "<edges>\n";
-    FollowerSet& follower_set = network.follower_set(t.id_tweeter);
-    for (FollowerSet::iterator i; follower_set.iterate(i);) {
-        output << "<edge id=\"" << count << "\" source=\"" << i.get()
+
+    for (int id : network.follower_set(t.id_tweeter)) {
+        output << "<edge id=\"" << count << "\" source=\"" << id
                 << "\" target=\"" << t.id_tweeter << "\"/>\n";
         count ++;
     }
-    for (UsedEntities::iterator it = used.begin(); it != used.end(); ++it) {
-        FollowerSet& follower_set = network.follower_set(*it);
-        for (FollowerSet::iterator i; follower_set.iterate(i);) {
-            output << "<edge id=\"" << count << "\" source=\"" << i.get()
-                    << "\" target=\"" << *it << "\"/>\n";
+    for (int id_used : used_set) {
+        for (int id_fol : network.follower_set(id_used)) {
+            output << "<edge id=\"" << count << "\" source=\"" << id_fol
+                    << "\" target=\"" << id_used << "\"/>\n";
             count ++;
         }
     }

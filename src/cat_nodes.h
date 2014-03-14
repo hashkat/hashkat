@@ -271,7 +271,11 @@ struct LeafNode {
     LeafNode() : total_rate(0) {
     }
 
-    int size() {
+    int n_bins() const {
+        return size();
+    }
+
+    int size() const {
         return elems.size();
     }
 
@@ -318,7 +322,7 @@ struct LeafNode {
     }
 
     template <typename StateT>
-    void print(StateT& N, rate_t rate, int bin, int layer, std::string name = std::string()) {
+    void print(StateT& N, rate_t rate, int bin = 0 , int layer = 0, std::string name = std::string()) {
         for (int i = 0; i < layer; i++) {
             printf("  ");
         }
@@ -436,6 +440,7 @@ struct TreeNode {
 
     typedef typename SubCat::iterator sub_iterator;
     typedef typename SubCat::value_type value_type;
+    typedef CatDataT child_type;
 
     double debug_size() { // Inefficient
         int n_elems = 0.0;
@@ -457,10 +462,11 @@ struct TreeNode {
         ASSERT(debug_rate_sum() == total_rate, "Rates don't match!");
     }
     struct iterator {
-        int bin;
+        typedef typename sub_iterator::value_type value_type;
+        int slot;
         sub_iterator sub_iter;
         iterator() {
-            bin = 0;
+            slot = 0;
         }
         value_type get() {
             return sub_iter.get();
@@ -468,7 +474,7 @@ struct TreeNode {
     };
 
     bool iterate(iterator& iter) {
-        int& bin = iter.bin;
+        int& bin = iter.slot;
         while (bin < cats.size()) {
             if (cats[bin].iterate(iter.sub_iter)) {
                 return true;
@@ -483,7 +489,7 @@ struct TreeNode {
         total_rate = 0;
         n_elems = 0;
     }
-    int size() {
+    int size() const {
         return n_elems;
     }
 
@@ -695,6 +701,61 @@ private:
     int n_elems;
     CatDataT cats;
 };
+
+
+/* Helper class for implementing begin() & end() semantics in wrapping classes.
+ * Implements the minimal iterator interface used by C++11 iteration. */
+template <typename CatGroup>
+struct NodeIterator {
+    typedef typename CatGroup::iterator Iter;
+
+    NodeIterator(CatGroup* cats, const Iter& it) {
+        this->cats = cats;
+        this->it = it;
+        have_next = true;
+    }
+
+    NodeIterator& operator++() {
+//        printf("GOT TO SLOT %d\n", it.slot);
+        have_next = cats->iterate(it);
+//        printf("HAVE NEXT?  %d\n", have_next);
+        return *this;
+    }
+
+    bool operator==(const NodeIterator& o) {
+        if (!have_next && !o.have_next) {
+            return true; // Hack to finish iteration
+        }
+        return cats == o.cats && it.slot == o.it.slot && have_next == o.have_next;
+    }
+    bool operator!=(const NodeIterator& o) {
+        return !(*this == o);
+    }
+    static NodeIterator begin(CatGroup* cats) {
+        auto ret = NodeIterator(cats, Iter());
+        if (cats->size() == 0) {
+            ret.have_next = false;
+        } else {
+            ++ret;
+        }
+        return ret;
+    }
+    static NodeIterator end(CatGroup* cats) {
+        auto ret = begin(cats);
+        ret.have_next = false;
+        return ret;
+    }
+
+    typename Iter::value_type operator*() {
+        return it.get();
+    }
+
+private:
+    Iter it;
+    CatGroup* cats;
+    bool have_next;
+};
+
 
 }
 
