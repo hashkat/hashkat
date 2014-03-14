@@ -16,6 +16,9 @@ callgrind.out.*
 POSITIONS*
 output/*
 *.a
+*.o
+*.so
+*.sav
 *.dat
 *.xyz
 *.csv

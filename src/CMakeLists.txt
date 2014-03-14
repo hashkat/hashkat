@@ -6,6 +6,8 @@ include_directories(
 	"." 
 	dependencies
 	dependencies/yaml-cpp/include
+        dependencies/luawrap-lib/include/
+	dependencies/lua/
 	dependencies/libuv/include
 )
 
@@ -66,5 +68,8 @@ target_link_libraries (
 	UnitTest++
 	yaml-cpp
 	libuv
+        lualinenoise
+        lua
+        luawrap
         ${UV_LIBS}
 )

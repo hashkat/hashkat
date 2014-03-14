@@ -71,6 +71,11 @@ if handle_flag "--debug-std" ; then
     export BUILD_FLAGS="$BUILD_FLAGS -D_GLIBCXX_DEBUG"
 fi
 
+# Install lua dependencies (lua-repl and lua-linenoise):
+mkdir -p ".libs"
+cp -r "./src/dependencies/lua-repl/repl/" "./.libs/"
+cp "./src/dependencies/lua-repl/repl.lua" "./.libs/repl.lua"
+cp "./src/interrupt_menu.lua" "./.libs/"
 
 # Create eclipse-project-files
 if handle_flag "--eclipse" || handle_flag "-e" ; then

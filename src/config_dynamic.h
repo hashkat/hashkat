@@ -101,6 +101,8 @@ struct ParsedConfig {
 
     std::vector<EntityPreferenceClass> pref_classes;
 
+    bool enable_interactive_mode;
+
     // command-line config options
     bool handle_ctrlc;
 
@@ -126,6 +128,7 @@ struct ParsedConfig {
         follow_model = RANDOM_FOLLOW;
 
         rate_add = 0;
+        enable_interactive_mode = false;
 
         output_stdout_basic = output_stdout_summary = true;
         output_visualize = false;

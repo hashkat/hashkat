@@ -20,6 +20,8 @@
 #include "dependencies/lcommon/Timer.h"
 #include "dependencies/lcommon/perf_timer.h"
 
+#include "interrupt_menu.h"
+
 #include <signal.h>
 
 using namespace std;
@@ -199,6 +201,9 @@ struct Analyzer {
     bool real_time_check() {
         return (max_sim_timer.get_microseconds() < (config.max_real_time * 1000));
     }
+    void interrupt_reset() {
+        SIGNAL_ATTEMPTS = 0;
+    }
     bool interrupt_check() {
         return (SIGNAL_ATTEMPTS == 0);
     }
@@ -224,7 +229,17 @@ struct Analyzer {
     // ROOT ANALYSIS ROUTINE
     /* Run the main analysis routine using this config. */
     void run_network_simulation() {
-        while ( LIKELY(sim_time_check() && real_time_check() && interrupt_check()) ) {
+        while ( LIKELY(sim_time_check() && real_time_check()) ) {
+            if (!interrupt_check()) {
+                interrupt_reset();
+                if (!config.enable_interactive_mode) {
+                    break;
+                }
+                // Has the user requested an exit?
+                if (!show_interrupt_menu(state)) {
+                    break;
+                }
+            }
             perf_timer_begin("analyzer.step_analysis");
         	step_analysis();
         	perf_timer_end("analyzer.step_analysis");
