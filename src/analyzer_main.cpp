@@ -513,7 +513,9 @@ void analyzer_main(AnalysisState& state) {
     if (state.config.handle_ctrlc) {
         signal_handlers_install(state);
     }
+    perf_timer_end("analyzer.main");
     analyzer.main();
+    perf_timer_end("analyzer.main");
     signal_handlers_uninstall(state);
     printf("'analyzer_main' took %.2f milliseconds.\n", timer.get_microseconds() / 1000.0);
 }

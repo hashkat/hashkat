@@ -26,11 +26,11 @@ trap "" INT
     | colout '(func )(.*):' yellow,white faint,faint \
     | colout '\#Time.*Spent' blue bold \
     | colout 'Analysis complete!' white faint \
-    | colout '^Simulation.*:.*' white faint \
+    | colout '^Simulation.*:.*' white  \
     | colout 'Analysis took .*ms\.' white faint \
-    | colout '(average\s+)([\.\d]+)(ms)' cyan,white,cyan faint,normal,normal \
-    | colout '(total\s+)([\.\d]+)(ms)' cyan,white,cyan faint,normal,faint \
-    | colout '(calls\s+)([\.\d]+)' yellow,white faint,bold \
-    | colout '(max\s+)([\.\d]+)(ms)' cyan,white,cyan faint,normal,faint \
-    | colout '(std\.dev\s+)\+-([\.\d]+)(ms), \+-([\.\d]+%)' cyan,white,white,white faint,normal
+    | colout '(average\s+)([\.\d]+)(ms)' cyan,white,cyan normal,normal,normal \
+    | colout '(total\s+)([\.\d]+)(ms)' cyan,white,cyan normal,normal,normal \
+    | colout '(calls\s+)([\.\d]+)' cyan,white normal,normal \
+    | colout '(max\s+)([\.\d]+)(ms)' cyan,white,cyan normal,normal,normal \
+    | colout '(std\.dev\s+)\+-([\.\d]+)(ms), \+-([\.\d]+%)' cyan,white,cyan,red normal,normal,normal,bold
 
