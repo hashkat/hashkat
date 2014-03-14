@@ -97,6 +97,9 @@ struct FollowerSet {
     size_t size() const {
         return implementation.size();
     }
+    double get_total_rate() {
+        return implementation.get_total_rate();
+    }
 
     /* Return an iterable collection of
      * the children categories of the first layer: */

@@ -44,6 +44,7 @@ struct Entity {
         humour_bin = -1; // Initialize with invalid humour bin
     }
 
+    // 'Visits' every node, eg for serialization or testing
     VISIT(rw, context) {
         rw << entity_type << preference_class
            << n_tweets << n_retweets << creation_time
@@ -60,9 +61,13 @@ struct Entity {
             for (int id_fol : followers) {
                 follower_set.add(context, id_fol); 
             }
+            double rate;
+            rw << rate;
+            ASSERT(follower_set.get_total_rate() == rate, "Serialization error!");
         } else if (rw.is_writing()) {
             rw.write_container(following_set);
             rw.write_container(follower_set);
+            rw << follower_set.get_total_rate();
         }
     }
 private:

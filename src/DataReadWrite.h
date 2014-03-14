@@ -2,6 +2,7 @@
 #define DATAREADWRITE_H_
 
 #include <cstdio>
+#include <iostream>
 
 #include "lcommon/SerializeBuffer.h"
 #include "lcommon/smartptr.h"
@@ -18,6 +19,7 @@ struct DataWriter {
 
     template <typename T>
     void visit(const T& obj) {
+        printf("WRITING %d\n", *(int*)&obj);
         buffer->write(obj);
     }
 
@@ -65,8 +67,9 @@ struct DataReader {
     }
 
     template <typename T>
-    void visit(T& type) {
-        buffer->read(type);
+    void visit(T& obj) {
+        printf("READING %d\n", *(int*)&obj);
+        buffer->read(obj);
     }
 
     template <typename T>
@@ -100,5 +103,9 @@ private:
 #define VISIT(rw, context) \
     template <typename Visitor, typename Context> \
     void visit(Visitor& rw, Context& context)
+
+#define VISIT0(rw) \
+    template <typename Visitor> \
+    void visit(Visitor& rw)
 
 #endif

@@ -29,7 +29,20 @@ SUITE(serialization) {
         CHECK(test_num == read_val);
     }
 
-    TEST(entity) {
+    void check_eq(Entity& test, Entity& read) {
+        CHECK(test.creation_time == read.creation_time);
+        CHECK(test.entity_type == read.entity_type);
+        CHECK(test.humour_bin == read.humour_bin);
+        CHECK(test.language == read.language);
+        CHECK(test.preference_class == read.preference_class);
+        CHECK(test.n_tweets == read.n_tweets);
+        CHECK(test.n_retweets == read.n_retweets);
+
+        CHECK(read.follower_set.size() == test.follower_set.size());
+        CHECK(read.following_set.size() == read.following_set.size());
+    }
+
+    TEST(network) {
         ParsedConfig config = parse_yaml_configuration("INFILE.yaml-generated");
         AnalysisState state(config, /*seed*/ 1);
         int N_GENERATED = 3;
@@ -64,13 +77,7 @@ SUITE(serialization) {
             read.visit(reader, context);
         }
 
-        CHECK(test.creation_time == read.creation_time);
-        CHECK(test.entity_type == read.entity_type);
-        CHECK(test.humour_bin == read.humour_bin);
-        CHECK(test.language == read.language);
-        CHECK(test.preference_class == read.preference_class);
-        CHECK(test.n_tweets == read.n_tweets);
-        CHECK(test.n_retweets == read.n_retweets);
+        check_eq(test, read);
 
         for (int id_fol : test.follower_set) {
             CHECK(id_fol == 1);
@@ -79,8 +86,20 @@ SUITE(serialization) {
             CHECK(id_fol == 2);
         }
 
-        CHECK(read.follower_set.size() == 1);
-        CHECK(read.following_set.size() == 1);
+        /*Test network serialization:*/ {
+            DataWriter writer(state, file_name);
+            state.network.visit(writer);
+        }
+        {
+            DataReader reader(state, file_name);
+            Network network;
+            network.visit(reader);
+            CHECK(network.n_entities == state.network.n_entities);
+            CHECK(network.max_entities == state.network.max_entities);
+            for (int i = 0; i < network.n_entities; i++) {
+                check_eq(network[i], state.network[i]);
+            }
+        }
     }
 }
 

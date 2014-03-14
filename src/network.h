@@ -63,10 +63,18 @@ struct Network {
     size_t n_followers(int id) {
         return follower_set(id).size();
     }
-
+    
     // 'Visits' every node, eg for serialization or testing
-    void visit() {
-
+    VISIT0(rw) {
+        std::cout << "HELLO WORLD!?";
+        rw << n_entities << max_entities;
+        if (rw.is_reading()) {
+            allocate(n_entities);
+        }
+        for (int i = 0; i < n_entities; i++) {
+            FollowerSet::Context context(rw.state, i);
+            entities[i].visit(rw, context);
+        }
     }
 };
 
