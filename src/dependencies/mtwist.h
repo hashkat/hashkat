@@ -48,6 +48,9 @@
 
 #include "mersenne-simd/SFMT.h"
 
+// AD: Intrusive, but had to be done for quick implementation of serialization:
+#include "../DataReadWrite.h"
+
 // Mersenne twister random number generator
 class MTwistClassic {
 public:
@@ -148,6 +151,9 @@ public:
         return genrand_real1();
     }
 
+    VISIT0(rw) {
+        rw << mt << mti;
+    }
 private:
     unsigned int mt[N];
     int mti;

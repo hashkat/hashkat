@@ -185,8 +185,10 @@ struct Analyzer {
      * after the messy configuration and allocation is done.
      * Returns end-time. */
     double main() {
+        if (file_exists(config.save_file)) {
+            load_network_state();
+        }
         run_network_simulation();
-        // TEMPORARY COMMENT AD: Added here after seeing no tweet come up in the MostPopularTweet struct
         find_most_popular_tweet();
         return time;
     }
@@ -201,6 +203,22 @@ struct Analyzer {
         return (SIGNAL_ATTEMPTS == 0);
     }
 
+    void load_network_state() {
+        DataReader reader(state, config.save_file.c_str());
+        string previous_config_file;
+        reader << previous_config_file;
+        if (previous_config_file != config.entire_config_file) {
+            error_exit("Error, config file does not match the one being loaded from! Exiting...");
+        }
+        state.visit(reader);
+    }
+
+    void save_network_state() {
+        DataWriter writer(state, config.save_file.c_str());
+        writer << config.entire_config_file;
+        state.visit(writer);
+    }
+
     // ROOT ANALYSIS ROUTINE
     /* Run the main analysis routine using this config. */
     void run_network_simulation() {
@@ -208,6 +226,9 @@ struct Analyzer {
             perf_timer_begin("analyzer.step_analysis");
         	step_analysis();
         	perf_timer_end("analyzer.step_analysis");
+        }
+        if (!real_time_check()) {
+            save_network_state();
         }
     }
 

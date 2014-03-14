@@ -18,6 +18,10 @@ rates:
   add: {function: constant, value: 0.0}
 
 output:
+  save_network_on_timeout: # Should we save all our data if we hit >= max_real_time?
+     true
+  save_file: # File to save to, and load from
+    network_state.sav
   stdout_basic: true
   stdout_summary: true
   visualize: true

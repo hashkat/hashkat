@@ -2,6 +2,8 @@
 #define CATEGORYGROUPER_H_
 
 #include "util.h"
+#include "DataReadWrite.h"
+
 #include <vector>
 
 // Each category is defined with respect to a series of bounds
@@ -15,13 +17,17 @@ struct Cat {
 	Cat(int g = -1, int i = -1) {
 		category = g, index = i;
 	}
+
+    VISIT0(rw) {
+        rw << category << index;
+    }
 };
 
 struct CategoryEntityList {
 	// Upper bound that fits into this category
 	double threshold, /*Optional*/ prob;
 	std::vector<int> entities;
-	CategoryEntityList(double t, double p = 0) {
+	CategoryEntityList(double t = 0, double p = 0) {
 		threshold = t, prob = p;
 	}
 	size_t size() const {
@@ -29,6 +35,10 @@ struct CategoryEntityList {
 	}
 	int operator[](size_t idx) const {
 	    return entities[idx];
+	}
+
+	VISIT0(rw) {
+	    rw << threshold << prob << entities;
 	}
 };
 
@@ -74,6 +84,11 @@ struct CategoryGrouper {
 		CategoryEntityList& C = categories.at(new_cat);
 		C.entities.push_back(entity);
 		return Cat(new_cat, C.entities.size() - 1);
+	}
+
+	VISIT0(rw) {
+	    rw.visit_objs(categorizations);
+	    rw.visit_objs(categories);
 	}
 };
 

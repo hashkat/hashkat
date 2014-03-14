@@ -70,10 +70,12 @@ SUITE(serialization) {
         const char* file_name = "output/test_serialize_entity.sav";
         {
             DataWriter writer(state, file_name);
+            test.previsit(writer);
             test.visit(writer, context);
         }
         {
             DataReader reader(state, file_name);
+            read.previsit(reader);
             read.visit(reader, context);
         }
 

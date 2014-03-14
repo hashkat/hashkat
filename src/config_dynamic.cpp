@@ -181,6 +181,9 @@ static void parse_output_configuration(ParsedConfig& config, const Node& node) {
     parse(node, "visualize", config.output_visualize);
     parse(node, "verbose", config.output_verbose);
     parse(node, "entity_stats", config.entity_stats);
+
+    parse(node, "save_network_on_timeout", config.save_network_on_timeout);
+    parse(node, "save_file", config.save_file);
     
     parse(node, "degree_distributions", config.degree_distributions);
 
@@ -335,6 +338,18 @@ static void parse_all_configuration(ParsedConfig& config, const Node& node) {
     parse_category_configurations(config, node);
 }
 
+static void save_file_contents(ParsedConfig& config, const char* file_name) {
+    // Re-read file, this time merely storing its entire contents
+    // for sanity-check purposes on network resume:
+    fstream file(file_name, fstream::in);
+    string file_contents = "";
+    string line;
+    while (std::getline(file, line)) {
+        file_contents += line + "\n";
+    }
+    config.entire_config_file = file_contents;
+}
+
 ParsedConfig parse_yaml_configuration(const char* file_name) {
     try {
         fstream file(file_name, fstream::in);
@@ -345,6 +360,8 @@ ParsedConfig parse_yaml_configuration(const char* file_name) {
         parser.GetNextDocument(root);
 
         parse_all_configuration(config, root);
+        file.close();
+        save_file_contents(config, file_name);
         return config;
     } catch (const exception& e) {
         printf("Exception occurred while reading '%s': %s\n", file_name,

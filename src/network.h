@@ -66,10 +66,13 @@ struct Network {
     
     // 'Visits' every node, eg for serialization or testing
     VISIT0(rw) {
-        std::cout << "HELLO WORLD!?";
         rw << n_entities << max_entities;
         if (rw.is_reading()) {
             allocate(n_entities);
+        }
+        /* First, 'previsit' every entity so that we can init their basic data, needed by their visit() method afterwards. */
+        for (int i = 0; i < n_entities; i++) {
+            entities[i].previsit(rw);
         }
         for (int i = 0; i < n_entities; i++) {
             FollowerSet::Context context(rw.state, i);

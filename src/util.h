@@ -55,6 +55,15 @@ inline std::vector<double> parse_numlist(std::string s) {
 	return ret;
 }
 
+static inline bool file_exists(const std::string& name) {
+    if (FILE *file = fopen(name.c_str(), "r")) {
+        fclose(file);
+        return true;
+    } else {
+        return false;
+    }
+}
+
 inline double parse_num(std::string s) {
     double ret = 0.0;
     std::stringstream string_converter(s); //** Think of this like 'cin', but instead of standard input its an arbitrary string.

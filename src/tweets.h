@@ -13,6 +13,7 @@
 #include "events.h"
 #include "entity_properties.h"
 
+#include "DataReadWrite.h"
 
 // information for when a user tweets
 struct TweetContent {
@@ -24,6 +25,11 @@ struct TweetContent {
         time_of_tweet = -1;
         language = N_LANGS; // Set to invalid
         id_original_author = -1;
+    }
+
+    VISIT0(rw) {
+        rw << time_of_tweet << language << id_original_author;
+        rw.visit_container(used_entities);
     }
 };
 
@@ -45,6 +51,10 @@ struct Tweet {
         printf("(Tweeter = %d, Original Author = %d, Created = %.2f\n)",
                 id_tweeter, content->id_original_author, creation_time);
     }
+
+    VISIT0(rw) {
+        rw << id_tweeter << content << creation_time;
+    }
 };
 
 typedef std::vector<Tweet> TweetList;
@@ -58,6 +68,10 @@ struct MostPopularTweet {
     int global_max;
     MostPopularTweet() {
         global_max = 0;
+    }
+    VISIT0(rw) {
+        rw << global_max;
+        most_popular_tweet.visit(rw);
     }
 };
 
@@ -125,6 +139,18 @@ struct TweetBank {
     Tweet& pick_random_weighted(MTwist& rng) {
         ref_t ref = tree.pick_random_weighted(rng);
         return tree.get(ref).data;
+    }
+
+    VISIT0(rw) {
+        if (rw.is_writing()) {
+            rw << as_vector();
+        } else {
+            std::vector<Tweet> tweets;
+            rw << tweets;
+            for (Tweet& tweet : tweets) {
+                add(tweet);
+            }
+        }
     }
 };
 

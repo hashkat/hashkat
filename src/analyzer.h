@@ -9,6 +9,8 @@
 #include "config_dynamic.h"
 #include "network.h"
 
+#include "DataReadWrite.h"
+
 extern volatile int SIGNAL_ATTEMPTS;
 
 struct AnalysisStats {
@@ -31,6 +33,13 @@ struct AnalysisStats {
         n_outputs = 0;
         n_steps = 0, n_follows = 0, n_tweets = 0, n_retweets = 0;
         event_rate = 0;
+    }
+
+    VISIT0(rw) {
+        rw << prob_add << prob_follow << prob_retweet << prob_tweet;
+        rw << n_outputs << n_steps << n_follows << n_tweets << n_retweets;
+        rw << event_stats.stats_array;
+        rw << event_rate;
     }
 };
 
@@ -103,6 +112,26 @@ struct AnalysisState {
         return time / APPROX_MONTH;
     }
 
+    // For network reading/writing:
+    VISIT0(rw) {
+        rw << time;
+        rw << follow_probabilities;
+        rw << updating_follow_probabilities;
+
+        rw << entity_cap;
+        rw << n_follows << r_follow_norm << end_time;
+
+        rng.visit(rw);
+        network.visit(rw);
+        tweet_ranks.visit(rw);
+        follow_ranks.visit(rw);
+        retweet_ranks.visit(rw);
+        age_ranks.visit(rw);
+        tweet_bank.visit(rw);
+        stats.visit(rw);
+
+        rw.visit_objs(entity_types);
+    }
 };
 
 enum SelectionType {

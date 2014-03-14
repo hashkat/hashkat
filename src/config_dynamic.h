@@ -55,6 +55,11 @@ private:
 
 // Config variables, read from INFILE.yaml
 struct ParsedConfig {
+    // Used for serialization to be *extra sure* we aren't simulating a corrupted network.
+    // If the entire config file being used does not match, we do not attempt to restart execution.
+    // This is only safe.
+    std::string entire_config_file;
+
     // 'analysis' config options
     int initial_entities, max_entities;
     double max_sim_time;
@@ -67,6 +72,9 @@ struct ParsedConfig {
     FollowModel follow_model;
 
     FollowerSetRatesDeterminer follower_rates;
+
+    bool save_network_on_timeout;
+    std::string save_file;
 
     // 'rates' config options
     double rate_add;
@@ -113,6 +121,7 @@ struct ParsedConfig {
         use_flawed_followback = false;
         output_verbose = false;
 
+        save_network_on_timeout = false;
         unfollow_tweet_rate = 0.0;
         follow_model = RANDOM_FOLLOW;
 

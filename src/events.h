@@ -22,7 +22,7 @@ struct EntityEventStats {
     EntityEventStats() {
         memset(stats_array, 0, sizeof(double) * N_EVENTS);
     }
-private:
+
     // AD: TODO move all rates into this struct
     double stats_array[N_EVENTS];
 };
@@ -37,6 +37,10 @@ struct Rate_Function {
     Rate_Function() {
         slope = y_intercept = const_val = amplitude = exp_factor = -1;
         function_type = "not specified";
+    }
+
+    VISIT0(rw) {
+        rw << function_type << slope << y_intercept << const_val << amplitude << exp_factor << monthly_rates;
     }
 };
 

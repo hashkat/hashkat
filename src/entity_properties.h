@@ -44,6 +44,10 @@ struct Location {
         bin = std::min(bin, N_BIN_DISTANCE - 1);
         return bin;
     }
+
+    VISIT0(rw) {
+        rw << x << y;
+    }
 };
 
 #define X(x) x, /* Resolve for enum */
@@ -105,6 +109,18 @@ struct EntityType {
         new_entities = 0;
         n_tweets = n_follows = n_followers = n_retweets = 0;
         prob_add = prob_follow = prob_followback = 0;
+    }
+
+    VISIT0(rw) {
+        rw << name << prob_add << prob_follow << prob_followback;
+        rw << new_entities << n_tweets << n_follows << n_followers << n_retweets;
+        for (int i = 0; i < number_of_diff_events; i++){
+            rw << RF[i];
+        }
+        rw << entity_cap << entity_list;
+        age_ranks.visit(rw);
+        follow_ranks.visit(rw);
+        rw << updating_probs << event_stats.stats_array;
     }
 };
 
