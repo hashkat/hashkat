@@ -119,7 +119,6 @@ void output_position(Network& network, int n_entities) {
             id = rng.rand_int(n_entities);
         }
 
-
         for (int& id : user_ids) {
                 Entity& p = network[id];
                 output1 << "<node id=\"" << id << "\" label=\"" << p.entity_type << "\" />\n";
@@ -143,7 +142,7 @@ void output_position(Network& network, int n_entities) {
     }
 
     ofstream output;
-    output.open("network.dat");
+    output.open("output/network.dat");
     for (int id = 0; id < n_entities; id++) {
         for (int id_fol : network.follower_set(id)) {
             output << id << "\t" << id_fol << "\n";
@@ -176,9 +175,9 @@ void degree_distributions(Network& network) {
 
     // open some files
     ofstream outdd, indd, cumuldd;
-    outdd.open("out-degree_distribution.dat");
-    indd.open("in-degree_distribution.dat");
-    cumuldd.open("cumulative_distribution.dat");
+    outdd.open("output/out-degree_distribution.dat");
+    indd.open("output/in-degree_distribution.dat");
+    cumuldd.open("output/cumulative_distribution.dat");
 
     outdd << "# This is the out-degree distribution. The data order is:\n# degree, normalized probability, log of degree, log of normalized probability\n\n";
     indd << "# This is the in-degree distribution. The data order is:\n# degree, normalized probability, log of degree, log of normalized probability\n\n";
@@ -238,7 +237,7 @@ static void category_print(ofstream& output, const char* name, CategoryGrouper& 
 
 void Categories_Check(CategoryGrouper& tweeting, CategoryGrouper& following, CategoryGrouper& retweeting) {
     ofstream output;
-    output.open("Categories_Distro.dat");
+    output.open("output/Categories_Distro.dat");
     category_print(output, "Tweeting", tweeting);
     category_print(output, "Following", following);
     category_print(output, "Retweeting", retweeting);
@@ -248,7 +247,7 @@ void Categories_Check(CategoryGrouper& tweeting, CategoryGrouper& following, Cat
 // produces an output file with entity type statistics, makes sure things are working properly
 void entity_statistics(Network& network, int n_follows, int n_entities, int max_entities, EntityType* entitytype) {
     ofstream output;
-    output.open("entity_percentages.dat");
+    output.open("output/entity_percentages.dat");
     vector<int> entity_counts(max_entities);
     vector<int> average_followers_from_network(max_entities);
     vector<int> average_followers_from_lists(max_entities);
@@ -306,8 +305,8 @@ void entity_statistics(Network& network, int n_follows, int n_entities, int max_
 // function to see the distribution of tweets and retweets
 void tweets_distribution(Network& network, int n_users) {
     ofstream tweet_output, retweet_output;
-    tweet_output.open("tweets_distro.dat");
-    retweet_output.open("retweets_distro.dat");
+    tweet_output.open("output/tweets_distro.dat");
+    retweet_output.open("output/retweets_distro.dat");
 
     int max_tweets = 0, max_retweets = 0;
     double tweets_sum = 0, retweets_sum = 0;
@@ -406,7 +405,7 @@ bool entity_checks(EntityTypeVector& ets, Network& network, AnalysisState& state
 }
 
 static void whos_following_who(EntityTypeVector& types, EntityType& type, Network& network) {
-    string filename = type.name + "_info.dat";
+    string filename = "output/" + type.name + "_info.dat";
     ofstream output;
     output.open(filename.c_str());
     int max_degree = 0;
@@ -479,7 +478,7 @@ void whos_following_who(EntityTypeVector& types, Network& network) {
 
 void visualize_most_popular_tweet(MostPopularTweet& mpt, Network& network) {
     ofstream output;
-    output.open("retweet_viz.gexf");
+    output.open("output/retweet_viz.gexf");
     Tweet& t = mpt.most_popular_tweet;
     if (t.content.empty()) {
         return; // Nothing to see here

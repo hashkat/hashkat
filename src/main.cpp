@@ -10,6 +10,7 @@
 #include "dependencies/lcommon.h"
 
 #include "dependencies/lcommon/typename.h"
+#include "dependencies/lcommon/perf_timer.h"
 
 #include "config_static.h"
 #include "config_dynamic.h"
@@ -82,6 +83,7 @@ int main(int argc, char** argv) {
         analyzer_main(analysis_state);
         output_network_statistics(analysis_state);
 
+        perf_print_results();
 		printf("Analysis took %.2fms.\n", t.get_microseconds() / 1000.0);
 
 		return 0;

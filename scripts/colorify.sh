@@ -20,5 +20,17 @@ trap "" INT
     | colout 'dist:.*' red normal \
     | colout 'Parent Node.*' blue normal \
     | colout 'Tweeter = \d+' white bold \
-    | colout '\d*------------------------------------------------------------------------' blue bold
+    | colout '\d*------------------------------------------------------------------------' blue bold \
+    | colout '\*\*\*\* START.*\*\*\*\*' white \
+    | colout '\*\*\*\* END.*\*\*\*\*' white \
+    | colout '(func )(.*):' yellow,white faint,faint \
+    | colout '\#Time.*Spent' blue bold \
+    | colout 'Analysis complete!' white faint \
+    | colout '^Simulation.*:.*' white faint \
+    | colout 'Analysis took .*ms\.' white faint \
+    | colout '(average\s+)([\.\d]+)(ms)' cyan,white,cyan faint,normal,normal \
+    | colout '(total\s+)([\.\d]+)(ms)' cyan,white,cyan faint,normal,faint \
+    | colout '(calls\s+)([\.\d]+)' yellow,white faint,bold \
+    | colout '(max\s+)([\.\d]+)(ms)' cyan,white,cyan faint,normal,faint \
+    | colout '(std\.dev\s+)\+-([\.\d]+)(ms), \+-([\.\d]+%)' cyan,white,white,white faint,normal
 

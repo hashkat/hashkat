@@ -14,6 +14,7 @@ src/main
 src/socialsim
 callgrind.out.*
 POSITIONS*
+output/*
 *.a
 *.dat
 *.xyz

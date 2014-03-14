@@ -18,6 +18,7 @@
 #include "config_static.h"
 
 #include "dependencies/lcommon/Timer.h"
+#include "dependencies/lcommon/perf_timer.h"
 
 #include <signal.h>
 
@@ -106,11 +107,11 @@ struct Analyzer {
         network.allocate(config.max_entities);
 
         DATA_TIME.open("DATA_vs_TIME");
-        add_data.open("entity_populations.dat");
-        following_data.open("entity_following.dat");
-        followers_data.open("entity_followers.dat");
-        tweet_data.open("entity_tweets.dat");
-        retweet_data.open("entity_retweets.dat");
+        add_data.open("output/entity_populations.dat");
+        following_data.open("output/entity_following.dat");
+        followers_data.open("output/entity_followers.dat");
+        tweet_data.open("output/entity_tweets.dat");
+        retweet_data.open("output/entity_retweets.dat");
 		
         set_initial_entities();
         set_future_add_rates(add_rates);
@@ -345,18 +346,26 @@ struct Analyzer {
             // DECIDE WHAT TO DO:
             if (subtract_var(r, stats.prob_add) <= ZEROTOL) {
                 // If we find ourselves in the add entity chuck of our cumulative function:
+                perf_timer_begin("action_create_entity");
                 complete = action_create_entity(time, N);
+                perf_timer_end("action_create_entity");
             } else if (subtract_var(r, stats.prob_follow) <= ZEROTOL) {
                 int entity = analyzer_select_entity(state, FOLLOW_SELECT);
+                perf_timer_begin("action_follow_entity");
                 complete = analyzer_follow_entity(state, entity, N, time);
+                perf_timer_end("action_follow_entity");
             } else if (subtract_var(r, stats.prob_tweet) <= ZEROTOL) {
                 // The tweet event
                 int entity = analyzer_select_entity(state, TWEET_SELECT);
+                perf_timer_begin("action_tweet");
                 complete = action_tweet(entity);
+                perf_timer_end("action_tweet");
             } else if (subtract_var(r, stats.prob_retweet) <= ZEROTOL ) {
                 RetweetChoice choice = analyzer_select_tweet_to_retweet(state, RETWEET_SELECT);
                 if (choice.id_author != -1) {
+                    perf_timer_begin("action_retweet");
                     complete = action_retweet(choice, time);
+                    perf_timer_end("action_retweet");
                 }
             } else {
                 error_exit("step_analysis: event out of bounds");
@@ -423,7 +432,7 @@ struct Analyzer {
     void output_tweets() {
         vector<Tweet> atl = tweet_bank.as_vector();
         ofstream output;
-        output.open("tweets.dat");
+        output.open("output/tweets.dat");
         output << "\nID\t\torigID\t\ttime\t\torigtime\n\n";
         for (auto& t : atl) {
             output << t.id_tweeter << "\t\t" << t.content->id_original_author << "\t\t" << t.creation_time << "\t\t" << t.content->time_of_tweet << "\n";

@@ -702,7 +702,6 @@ private:
     CatDataT cats;
 };
 
-
 /* Helper class for implementing begin() & end() semantics in wrapping classes.
  * Implements the minimal iterator interface used by C++11 iteration. */
 template <typename CatGroup>

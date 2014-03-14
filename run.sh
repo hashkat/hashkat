@@ -104,6 +104,9 @@ if ! handle_flag "--no-ctrlc" ; then
     args="$args --handle-ctrlc"
 fi
 
+# Ensure folder exists for output
+mkdir -p output/
+
 if handle_flag "--gdb" || handle_flag "-g" ; then
     # Wrap the gdb around the program with -g:
     echo "Wrapping in GDB:" | colorify '1;35'
