@@ -114,23 +114,24 @@ struct AnalysisState {
 
     // For network reading/writing:
     VISIT0(rw) {
-        rw << time;
-        rw << follow_probabilities;
-        rw << updating_follow_probabilities;
-
-        rw << entity_cap;
-        rw << n_follows << r_follow_norm << end_time;
-
-        rng.visit(rw);
         network.visit(rw);
-        tweet_ranks.visit(rw);
-        follow_ranks.visit(rw);
-        retweet_ranks.visit(rw);
-        age_ranks.visit(rw);
-        tweet_bank.visit(rw);
-        stats.visit(rw);
-
-        rw.visit_objs(entity_types);
+//
+//        rw << time;
+//        rw << follow_probabilities;
+//        rw << updating_follow_probabilities;
+//
+//        rw << entity_cap;
+//        rw << n_follows << r_follow_norm << end_time;
+//
+//        rng.visit(rw);
+//        tweet_ranks.visit(rw);
+//        follow_ranks.visit(rw);
+//        retweet_ranks.visit(rw);
+//        age_ranks.visit(rw);
+//        tweet_bank.visit(rw);
+//        stats.visit(rw);
+//
+//        rw.visit_objs(entity_types);
     }
 };
 
@@ -172,7 +173,5 @@ double analyzer_total_retweet_rate(AnalysisState& state);
 // this is for the retweet entity selection
 RetweetChoice analyzer_select_tweet_to_retweet(AnalysisState& state, SelectionType type);
 void update_retweets(AnalysisState& state);
-
-const double ZEROTOL = 1e-16; // enough precision for really really low add rate
 
 #endif

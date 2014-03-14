@@ -1,6 +1,6 @@
 analysis:
   max_entities: 
-    1001
+    5001
   max_time:
     100000.0 # 1/10 year
   max_real_time:
@@ -15,7 +15,7 @@ analysis:
 
 rates:
   # Rate for creating entities
-  add: {function: constant, value: 0.0}
+  add: {function: constant, value: 0.5}
 
 output:
   save_network_on_timeout: # Should we save all our data if we hit >= max_real_time?

@@ -214,7 +214,9 @@ struct Analyzer {
     }
 
     void save_network_state() {
-        DataWriter writer(state, config.save_file.c_str());
+        const char* fname = config.save_file.c_str();
+        printf("SAVING NETWORK STATE TO %s\n", fname);
+        DataWriter writer(state, fname);
         writer << config.entire_config_file;
         state.visit(writer);
     }
@@ -227,9 +229,7 @@ struct Analyzer {
         	step_analysis();
         	perf_timer_end("analyzer.step_analysis");
         }
-        if (!real_time_check()) {
-            save_network_state();
-        }
+        save_network_state();
     }
 
     Language entity_pick_language() {

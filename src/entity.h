@@ -44,7 +44,6 @@ struct Entity {
         humour_bin = -1; // Initialize with invalid humour bin
     }
 
-
     PREVISIT0(rw) {
         rw << entity_type << preference_class
            << n_tweets << n_retweets << creation_time
@@ -56,20 +55,32 @@ struct Entity {
     VISIT(rw, context) {
         if (rw.is_reading()) {
             std::vector<int> followings;
-            std::vector<int> followers;
-            rw << followings << followers;
+            rw << followings;
             for (int id_fol : followings) {
                 following_set.add(rw.state, id_fol); 
             }
-            for (int id_fol : followers) {
+
+            int size = 0;
+            rw << size;
+            for (int i = 0; i < size; i++) {
+                int id_fol = -1;
+                rw << id_fol;
                 follower_set.add(context, id_fol); 
             }
+
             double rate;
             rw << rate;
-            ASSERT(follower_set.get_total_rate() == rate, "Serialization error!");
+            ASSERT(fabs(follower_set.get_total_rate() - rate) < ZEROTOL, "Serialization error!");
         } else if (rw.is_writing()) {
             rw.write_container(following_set);
-            rw.write_container(follower_set);
+            int size = follower_set.size();
+            rw << size;
+            int n = 0;
+            for (int id_fol : follower_set) {
+                rw << id_fol;
+                n++;
+            }
+            ASSERT(n == size, "Follower set iteration did not result in size() entries!");
             rw << follower_set.get_total_rate();
         }
     }

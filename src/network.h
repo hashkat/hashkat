@@ -40,6 +40,9 @@ struct Network {
     }
 
     void allocate(int n) {
+        if (entities) {
+            delete[] entities;
+        }
         max_entities = n;
         entities = new Entity[max_entities];
     }
@@ -68,7 +71,7 @@ struct Network {
     VISIT0(rw) {
         rw << n_entities << max_entities;
         if (rw.is_reading()) {
-            allocate(n_entities);
+            allocate(max_entities);
         }
         /* First, 'previsit' every entity so that we can init their basic data, needed by their visit() method afterwards. */
         for (int i = 0; i < n_entities; i++) {

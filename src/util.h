@@ -71,6 +71,8 @@ inline double parse_num(std::string s) {
     return ret;
 }
 
+const double ZEROTOL = 1e-16; // enough precision for really really low add rate
+
 #define LOG(msg, ...) \
     printf(msg, ...);
 
