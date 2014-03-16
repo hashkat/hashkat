@@ -1,16 +1,9 @@
-local repl          = require 'repl.console'
-
+local repl = require 'repl.console'
 for _, plugin in ipairs { 'linenoise', 'history', 'completion', 'autoreturn' } do
     repl:loadplugin(plugin)
 end
 
 local M = {}
-local keep_going = true
-
-function exit() 
-    keep_going = false 
-end
-quit = exit
 
 --- Get a  human-readable string from a lua value. The resulting value is generally valid lua.
 -- Note that the paramaters should typically not used directly, except for perhaps 'packed'.
@@ -86,29 +79,41 @@ function pretty(...)
     print(unpack(args))
 end
 
--- Override
-function repl:run()
-    self:prompt(1)
-    for line in self:lines() do
-        local level = self:handleline(line)
-        self:prompt(level)
-        if not keep_going then 
-            break 
-        end
-    end
-    self:shutdown()
-end
+local function repl_run()
+    local keep_going = true
+    local R = repl:clone()
 
-function repl:displayresults(results)
-    if results.n == 0 then return end
-    pretty(unpack(results, 1, results.n))
+    function exit() 
+        keep_going = false 
+    end
+    quit = exit
+
+    -- Override
+    function R:run()
+        self:prompt(1)
+        for line in self:lines() do
+            local level = self:handleline(line)
+            self:prompt(level)
+            if not keep_going then 
+                break 
+            end
+        end
+        self:shutdown()
+    end
+
+    function R:displayresults(results)
+        if results.n == 0 then return end
+        pretty(unpack(results, 1, results.n))
+    end
+
+    R:run()
+    return keep_going
 end
 
 function M.show_menu()
     print("Welcome to Simulator Interactive Mode.")
     print("Type exit() or quit() to (gracefully) finish the simulation.")
-    repl:run()
-    return keep_going
+    return repl_run()
 end
 
 return M

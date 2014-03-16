@@ -144,7 +144,7 @@ struct TimeDepRateTree {
         return tree.pick_random_weighted(rng);
     }
 
-    VISIT0(rw) {
+    READ_WRITE(rw) {
         rw << last_rate << initial_resolution;
         rw << delete_list;
         rw << number_of_bins;

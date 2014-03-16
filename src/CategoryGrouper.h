@@ -18,7 +18,7 @@ struct Cat {
 		category = g, index = i;
 	}
 
-    VISIT0(rw) {
+    READ_WRITE(rw) {
         rw << category << index;
     }
 };
@@ -37,7 +37,7 @@ struct CategoryEntityList {
 	    return entities[idx];
 	}
 
-	VISIT0(rw) {
+	READ_WRITE(rw) {
 	    rw << threshold << prob << entities;
 	}
 };
@@ -86,7 +86,7 @@ struct CategoryGrouper {
 		return Cat(new_cat, C.entities.size() - 1);
 	}
 
-	VISIT0(rw) {
+	READ_WRITE(rw) {
 	    rw.visit_objs(categorizations);
 	    rw.visit_objs(categories);
 	}

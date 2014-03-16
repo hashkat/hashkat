@@ -79,7 +79,7 @@ tweet_relevance:
           all: 1 # Can be any valid Python code
       - name: HateEverything
         retweet_relevance:
-          all: 0 # Can be any valid Python code
+          all: 1 # Can be any valid Python code
 
 entities:
   - name: Standard

@@ -153,7 +153,7 @@ public:
         return genrand_real1();
     }
 
-    VISIT0(rw) {
+    READ_WRITE(rw) {
         rw << mt << mti;
     }
 private:

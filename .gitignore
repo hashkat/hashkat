@@ -8,6 +8,7 @@ DATA_vs_TIME
 *.gexf
 *.yaml-generated
 cmake_install.cmake
+CTestTestfile.cmake
 main
 socialsim
 src/main

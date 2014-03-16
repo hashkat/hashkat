@@ -39,7 +39,7 @@ struct Rate_Function {
         function_type = "not specified";
     }
 
-    VISIT0(rw) {
+    READ_WRITE(rw) {
         rw << function_type << slope << y_intercept << const_val << amplitude << exp_factor << monthly_rates;
     }
 };

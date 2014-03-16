@@ -55,7 +55,7 @@ struct RateVec {
         ret.sub(*this);
         return ret;
     }
-    VISIT0(rw) {
+    READ_WRITE(rw) {
         rw << tuple << tuple_sum;
     }
 };
@@ -78,7 +78,7 @@ struct RateTree {
 
         ref_t children[N_CHILDREN]; // INVALID if not allocated
 
-        VISIT0(rw) {
+        READ_WRITE(rw) {
             rw << parent << depth << is_leaf << is_allocated;
             data.visit(rw);
             rates.visit(rw);
@@ -391,7 +391,7 @@ struct RateTree {
         return n_elems;
     }
 
-    VISIT0(rw) {
+    READ_WRITE(rw) {
         rw << n_elems;
         rw << free_list; //Freed nodes
         rw.visit_objs(node_pool);

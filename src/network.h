@@ -68,7 +68,7 @@ struct Network {
     }
     
     // 'Visits' every node, eg for serialization or testing
-    VISIT0(rw) {
+    READ_WRITE(rw) {
         rw << n_entities << max_entities;
         if (rw.is_reading()) {
             allocate(max_entities);

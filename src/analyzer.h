@@ -35,7 +35,7 @@ struct AnalysisStats {
         event_rate = 0;
     }
 
-    VISIT0(rw) {
+    READ_WRITE(rw) {
         rw << prob_add << prob_follow << prob_retweet << prob_tweet;
         rw << n_outputs << n_steps << n_follows << n_tweets << n_retweets;
         rw << event_stats.stats_array;
@@ -113,7 +113,7 @@ struct AnalysisState {
     }
 
     // For network reading/writing:
-    VISIT0(rw) {
+    READ_WRITE(rw) {
         network.visit(rw);
 
         rw << time;

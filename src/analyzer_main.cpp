@@ -519,10 +519,6 @@ struct Analyzer {
             most_pop_tweet.global_max = local_max;
             most_pop_tweet.most_popular_tweet = local_tweet;
         }
-
-//        if (!active_tweet_list.empty()) {
-//            ASSERT(!most_pop_tweet.most_popular_tweet.content.empty(), "Should have a most popular tweet!");
-//        }
     }
     
     void output_tweets() {

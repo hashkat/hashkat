@@ -203,15 +203,16 @@ private:
     smartptr<SerializeBuffer> buffer;
 };
 
-#define VISIT(rw, context) \
+// Read-write macro with 1 variable:
+#define READ_WRITE1(rw, context) \
     template <typename Visitor, typename Context> \
     void visit(Visitor& rw, Context& context)
 
-#define VISIT0(rw) \
+#define READ_WRITE(rw) \
     template <typename Visitor> \
     void visit(Visitor& rw)
 
-#define PREVISIT0(rw) \
+#define PREREAD_WRITE(rw) \
     template <typename Visitor> \
     void previsit(Visitor& rw)
 

@@ -29,7 +29,7 @@ struct TweetContent {
         humour_bin = -1;
     }
 
-    VISIT0(rw) {
+    READ_WRITE(rw) {
         rw << time_of_tweet << language << id_original_author;
 //        printf("GOT AT %.2f %d %d size=%d\n", time_of_tweet, language,
 //                id_original_author, used_entities.size());
@@ -63,7 +63,7 @@ struct Tweet {
                 id_tweeter, id_link, content->id_original_author, creation_time);
     }
 
-    VISIT0(rw) {
+    READ_WRITE(rw) {
         rw << id_tweeter << creation_time << id_link << generation;
         rw.visit_smartptr(content);
     }
@@ -81,7 +81,7 @@ struct MostPopularTweet {
     MostPopularTweet() {
         global_max = 0;
     }
-    VISIT0(rw) {
+    READ_WRITE(rw) {
         rw << global_max;
         most_popular_tweet.visit(rw);
     }
@@ -153,7 +153,7 @@ struct TweetBank {
         return tree.get(ref).data;
     }
 
-    VISIT0(rw) {
+    READ_WRITE(rw) {
         tree.visit(rw);
         rw.check_visit(get_total_rate());
     }

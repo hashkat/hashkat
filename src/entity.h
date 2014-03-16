@@ -44,7 +44,7 @@ struct Entity {
         humour_bin = -1; // Initialize with invalid humour bin
     }
 
-    PREVISIT0(rw) {
+    PREREAD_WRITE(rw) {
         rw << entity_type << preference_class
            << n_tweets << n_retweets << creation_time
            << location << language
@@ -52,7 +52,7 @@ struct Entity {
     }
 
     // 'Visits' every node, eg for serialization or testing
-    VISIT(rw, context) {
+    READ_WRITE1(rw, context) {
         if (rw.is_reading()) {
             std::vector<int> followings;
             rw << followings;

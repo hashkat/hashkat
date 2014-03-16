@@ -36,7 +36,7 @@ struct Location {
         return bin;
     }
 
-    VISIT0(rw) {
+    READ_WRITE(rw) {
         rw << x << y;
     }
 };
@@ -116,7 +116,7 @@ struct EntityType {
         prob_add = prob_follow = prob_followback = 0;
     }
 
-    VISIT0(rw) {
+    READ_WRITE(rw) {
         rw << name << prob_add << prob_follow << prob_followback;
         rw << new_entities << n_tweets << n_follows << n_followers << n_retweets;
         for (auto& rf : RF) {
