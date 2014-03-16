@@ -396,6 +396,11 @@ struct Analyzer {
         while (!complete) {
             double r = rng.rand_real_not0(); // get the first number with-in [0,1).
             int N = network.n_entities;
+            if (!retweet_checks() && stats.n_retweets != 0) {
+                cout << "\n------Error in retweets-------\n";
+            }
+            find_most_popular_tweet();
+            
 
             // DECIDE WHAT TO DO:
             if (subtract_var(r, stats.prob_add) <= ZEROTOL) {
@@ -465,7 +470,40 @@ struct Analyzer {
     /***************************************************************************
      * Helper functions
      ***************************************************************************/
-
+    bool is_following(int& follower, int& followee) {
+        FollowingSet& fs = network.following_set(follower);
+        for (int id: fs) {
+            if (id == followee) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    bool is_following_tweeter(Tweet& t, vector<Tweet>& atl) {
+        for (auto& tweet: atl) {
+            if (t.content == tweet.content && t.creation_time != tweet.creation_time) {
+                if (is_following(t.id_tweeter, tweet.id_tweeter)) {
+                    return true;
+                }
+            } else if (t.content->id_original_author == t.id_tweeter) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    bool retweet_checks() {
+        // atl --- active tweet list
+        vector<Tweet> atl = tweet_bank.as_vector();
+        for (auto& tweet : atl) {
+            if (is_following_tweeter(tweet, atl)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
     void find_most_popular_tweet() {
         int local_max = -1;
         Tweet local_tweet;
@@ -556,7 +594,6 @@ struct Analyzer {
         output_summary_stats(DATA_TIME);
         if (stats.n_outputs % STDOUT_OUTPUT_RATE == 0) {
         	output_summary_stats(cout, stdout_milestone_timer.get_microseconds() / 1000.0);
-            find_most_popular_tweet();
             stdout_milestone_timer.start(); // Restart the timer
         }
 

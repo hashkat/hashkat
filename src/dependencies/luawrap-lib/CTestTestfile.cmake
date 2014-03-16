@@ -1,6 +1,6 @@
 # CMake generated Testfile for 
-# Source directory: /home/adomurad/KMC/src/dependencies/luawrap-lib
-# Build directory: /home/adomurad/KMC/src/dependencies/luawrap-lib
+# Source directory: /Users/kryczko/git/KMC/src/dependencies/luawrap-lib
+# Build directory: /Users/kryczko/git/KMC/src/dependencies/luawrap-lib
 # 
 # This file includes the relevant testing commands required for 
 # testing this directory and lists subdirectories to be tested as well.
