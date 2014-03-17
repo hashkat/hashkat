@@ -191,7 +191,7 @@ struct Analyzer {
             load_network_state();
         }
         run_network_simulation();
-        find_most_popular_tweet();
+        //find_most_popular_tweet();
         return time;
     }
 
@@ -396,12 +396,10 @@ struct Analyzer {
         while (!complete) {
             double r = rng.rand_real_not0(); // get the first number with-in [0,1).
             int N = network.n_entities;
-            if (!retweet_checks() && stats.n_retweets != 0) {
+            /*if (!retweet_checks() && stats.n_retweets != 0) {
                 cout << "\n------Error in retweets-------\n";
-            }
-            find_most_popular_tweet();
+            } */           
             
-
             // DECIDE WHAT TO DO:
             if (subtract_var(r, stats.prob_add) <= ZEROTOL) {
                 // If we find ourselves in the add entity chuck of our cumulative function:

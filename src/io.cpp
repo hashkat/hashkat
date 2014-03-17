@@ -86,7 +86,7 @@ void output_network_statistics(AnalysisState& state) {
 // edgelist created for R (analysis) and python executable (drawing) and gephi outputfile
 void output_position(Network& network, int n_entities) {
     ofstream output1;
-    output1.open("network.gexf");
+    output1.open("output/network.gexf");
     output1 << "<gexf version=\"1.2\">\n"
             << "<meta lastmodifieddate=\"2013-11-21\">\n"
             << "<creator> Kevin Ryczko </creator>\n"
