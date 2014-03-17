@@ -470,9 +470,10 @@ struct Analyzer {
     /***************************************************************************
      * Helper functions
      ***************************************************************************/
+    
     bool is_following(int& follower, int& followee) {
         FollowingSet& fs = network.following_set(follower);
-        for (int id: fs) {
+        for (int id : fs) {
             if (id == followee) {
                 return true;
             }
@@ -480,13 +481,17 @@ struct Analyzer {
         return false;
     }
     
-    bool is_following_tweeter(Tweet& t, vector<Tweet>& atl) {
-        for (auto& tweet: atl) {
-            if (t.content == tweet.content && t.creation_time != tweet.creation_time) {
-                if (is_following(t.id_tweeter, tweet.id_tweeter)) {
-                    return true;
-                }
-            } else if (t.content->id_original_author == t.id_tweeter) {
+    bool is_path(Tweet& tweet, vector<Tweet>& atl) {
+        int gen = tweet.generation;
+        vector<Tweet> tweet_list;
+        for (auto& t : atl) {
+            if (t.content == tweet.content && t.id_tweeter != tweet.id_tweeter && t.generation == gen - 1) {
+                tweet_list.push_back(t);
+            }
+        }
+        // check and see if we are connected to the previous generation
+        for (auto& t : tweet_list) {
+            if (is_following(tweet.id_tweeter, t.id_tweeter)) {
                 return true;
             }
         }
@@ -497,7 +502,12 @@ struct Analyzer {
         // atl --- active tweet list
         vector<Tweet> atl = tweet_bank.as_vector();
         for (auto& tweet : atl) {
-            if (is_following_tweeter(tweet, atl)) {
+            // if it is a retweet
+            if (tweet.creation_time != tweet.content->time_of_tweet) {
+                if (is_path(tweet, atl)) {
+                    return true;
+                } 
+            } else if (tweet.creation_time == tweet.content->time_of_tweet) {
                 return true;
             }
         }
@@ -505,12 +515,13 @@ struct Analyzer {
     }
     
     void find_most_popular_tweet() {
-        int local_max = -1;
+        int local_max = 0;
         Tweet local_tweet;
         vector<Tweet> active_tweet_list = tweet_bank.as_vector();
         for (auto& tweet : active_tweet_list) {
             UsedEntities& ue = tweet.content->used_entities;
             if (ue.size() > local_max) {
+                if (tweet.creation_time == tweet.content->time_of_tweet)
                 local_max = ue.size();
                 local_tweet = tweet;
             }
