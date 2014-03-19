@@ -98,6 +98,7 @@ public:
 
     /* Grab an integer from 0 to max, non-inclusive (ie appropriate for array lengths). */
     int rand_int(int max) {
+        PERF_TIMER();
         //AD: Modified to remove modulo-bias problem. Inspired by Java's nextInt implementation.
         int raw = genrand_int31();
 
@@ -229,7 +230,6 @@ public:
             raw = genrand_uint32();
             val = raw % max;
         }
-
         return val;
     }
     int rand_int(int min, int max) {

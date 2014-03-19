@@ -106,7 +106,7 @@ struct TweetRateDeterminer {
     TweetReactRateVec get_rate(const Tweet& tweet, int bin);
 
     double get_cat_threshold(int bin) {
-        return pow(2, bin) * 90;
+        return (1 << bin) * 90.0;
     }
 
     AnalysisState& state;

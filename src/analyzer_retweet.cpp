@@ -26,6 +26,7 @@ struct AnalyzerRetweet {
     }
     
     void update_all_retweets() {
+        PERF_TIMER();
         TweetBank& tweet_bank = state.tweet_bank;
         handle_old_tweet_and_retweet_IDs(tweet_bank);
     }
@@ -35,6 +36,7 @@ struct AnalyzerRetweet {
     }
 
     RetweetChoice tweet_to_retweet_selection() {
+        PERF_TIMER();
         TweetBank& tweet_bank = state.tweet_bank;
 
         double rand_num = rng.rand_real_not0();

@@ -5,6 +5,7 @@ src/tests/INFILE_temporary.yaml
 INFILE-generated.yaml
 Makefile
 DATA_vs_TIME
+luawrap_tests
 *.gexf
 *.yaml-generated
 cmake_install.cmake

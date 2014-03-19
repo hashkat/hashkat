@@ -335,6 +335,7 @@ struct Analyzer {
 	}
 
 	bool action_retweet(RetweetChoice choice, double time_of_retweet) {
+	    PERF_TIMER();
 		Entity& e_observer = network[choice.id_observer];
 		Entity& e_author = network[choice.id_author];
 
@@ -392,6 +393,7 @@ struct Analyzer {
          *
          * Luckily, this should be (relatively) rare.
          */
+        int retries = 0;
         bool complete = false;
         while (!complete) {
             double r = rng.rand_real_not0(); // get the first number with-in [0,1).
@@ -424,9 +426,7 @@ struct Analyzer {
             } else if (subtract_var(r, stats.prob_retweet) <= ZEROTOL ) {
                 RetweetChoice choice = analyzer_select_tweet_to_retweet(state, RETWEET_SELECT);
                 if (choice.id_author != -1) {
-                    perf_timer_begin("action_retweet");
                     complete = action_retweet(choice, time);
-                    perf_timer_end("action_retweet");
                 }
             } else {
                 error_exit("step_analysis: event out of bounds");
