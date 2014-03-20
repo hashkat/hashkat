@@ -184,6 +184,46 @@ struct AnalyzerFollow {
        }
        return -1;
    }
+   int twitter_follow_model() {
+       double rand_num = rng.rand_real_not0();
+       /* different follow models:
+           0 - random follow
+           1 - preferential follow
+           2 - entity type follow
+           3 - preferential entity follow
+       */
+       int n_follow_models = 4;
+       vector<double> follow_weights(n_follow_models);
+       // all even weights for now, better organization after
+       follow_weights[0] = 25.0;
+       follow_weights[1] = 25.0;
+       follow_weights[2] = 25.0;
+       follow_weights[3] = 25.0;
+       double sum_of_weights = 0;
+       for (auto& weight : follow_weights) {
+           sum_of_weights += weight;
+       } for (auto& weight : follow_weights) {
+           weight /= sum_of_weights;
+       } 
+       int follow_method = -1;
+       for (int i = 0; i < follow_weights.size(); i ++) {
+           if (rand_num <= follow_weights[i]) {
+           follow_method = i;
+           break;    
+           } 
+           rand_num -= follow_weights[i];
+       }
+       if (follow_method == 0) {
+           return random_follow_method(network.n_entities);
+       } else if (follow_method == 1) {
+           return preferential_follow_method();
+       } else if (follow_method == 2) {
+           return entity_follow_method();
+       } else {
+           return preferential_entity_follow_method();
+       }
+       return -1;
+    }
     
    // Returns false to signify that we must retry the KMC event
     bool follow_entity(int entity, int n_entities, double time_of_follow) {
@@ -210,6 +250,10 @@ struct AnalyzerFollow {
             perf_timer_begin("AnalyzerFollower.follow_entity(preferential_entity_follow)");
             entity_to_follow = preferential_entity_follow_method();
             perf_timer_end("AnalyzerFollower.follow_entity(preferential_entity_follow)");
+        } else if (config.follow_model == TWITTER_FOLLOW) {
+            perf_timer_begin("AnalyzerFollower.follow_entity(Twitter_model)");
+            entity_to_follow = twitter_follow_model();
+            perf_timer_end("AnalyzerFollower.follow_entity(Twitter_model)");
         }
         // if the stage1_follow is set to true in the inputfile
         if (config.stage1_unfollow) {
@@ -220,7 +264,7 @@ struct AnalyzerFollow {
                 if (action_unfollow(entity_unfollowed, entity)) {
                     chatties.erase(chatties.begin() + index);
                 } else {
-                    cout << "Error in stage1_unfollow_method\n.";
+                    DEBUG_CHECK(action_unfollow(entity_unfollowed, entity), "Error in stage1_unfollow method.");
                 }
             }
         }

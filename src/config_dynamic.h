@@ -8,7 +8,8 @@ enum FollowModel {
     RANDOM_FOLLOW,
     PREFERENTIAL_FOLLOW,
     ENTITY_FOLLOW,
-    PREFERENTIAL_ENTITY_FOLLOW
+    PREFERENTIAL_ENTITY_FOLLOW,
+        TWITTER_FOLLOW
 };
 
 struct EntityPreferenceClass {
