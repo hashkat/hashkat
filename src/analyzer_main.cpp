@@ -372,6 +372,7 @@ struct Analyzer {
 		bool had_follow = e_lost_follower.following_set.remove(state, id_unfollowed);
 		DEBUG_CHECK(had_follow, "unfollow: Did not exist in follow list");
 		perf_timer_end("action_unfollow");
+        stats.n_unfollows ++;
 		return true;
 	}
 
@@ -547,6 +548,7 @@ struct Analyzer {
                 << stats.n_follows << "\t\t"
                 << stats.n_tweets << "\t\t"
                 << stats.n_retweets << "(" << state.tweet_bank.n_active_tweets() << ")\t"
+                << stats.n_unfollows << "\t\t"
                 << stats.event_rate << "\t\t";
         if (time_spent != -1) {
             stream << time_spent << "ms\t";
@@ -555,7 +557,7 @@ struct Analyzer {
     }
     void output_summary_stats() {
 
-		const char* HEADER = "\n#Time\t\tUsers\t\tFollows\t\tTweets\t\tRetweets\tR\tReal Time Spent\n\n";
+		const char* HEADER = "\n#Time\t\tUsers\t\tFollows\t\tTweets\t\tRetweets\tUnfollows\tR\tReal Time Spent\n\n";
         if (stats.n_outputs % (25 * STDOUT_OUTPUT_RATE) == 0) {
         	cout << HEADER;
         }

@@ -69,6 +69,7 @@ struct ParsedConfig {
     bool use_flawed_followback;
     bool use_barabasi;
     bool entity_stats;
+    bool stage1_unfollow;
     FollowModel follow_model;
 
     FollowerSetRatesDeterminer follower_rates;

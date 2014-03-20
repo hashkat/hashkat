@@ -26,9 +26,14 @@ struct Entity {
     int preference_class;
     int n_tweets, n_retweets;
     double creation_time;
+    // this is the average chatiness of the entities following list
+    double avg_chatiness;
     Location location;
     Language language;
     int humour_bin;
+    
+    // list of flagged chatty people
+    std::vector<int> chatty_entities;
 
     // Store the two directions of the follow relationship
     FollowingSet following_set;
@@ -38,6 +43,7 @@ struct Entity {
         entity_type = 0;
         preference_class = 0;
         creation_time = 0.0;
+        avg_chatiness = -1.0;
         n_tweets = 0;
         language = (Language)-1; // Initialize with invalid language
         n_retweets = 0;
@@ -46,7 +52,7 @@ struct Entity {
 
     PREREAD_WRITE(rw) {
         rw << entity_type << preference_class
-           << n_tweets << n_retweets << creation_time
+           << n_tweets << n_retweets << creation_time << avg_chatiness
            << location << language
            << humour_bin;
     }

@@ -30,15 +30,32 @@ struct AnalyzerFollow {
    /***************************************************************************
     * Entity mutation routines
     ***************************************************************************/
-   // Returns true if a follow is added that was not already added
+ 
+    void flag_chatty_entity(Entity& actor, int id_target) {
+        actor.chatty_entities.push_back(id_target);
+    }
+    
+    void update_chatiness(Entity& actor, int id_target) {
+       double targets_chatiness = entity_types[network[id_target].entity_type].RF[1].const_val;
+       // arbitrary factor greater than the average chatiness
+       if (actor.avg_chatiness*2 < targets_chatiness) {
+           flag_chatty_entity(actor, id_target);
+       }
+        actor.avg_chatiness = (actor.avg_chatiness*(actor.following_set.size() - 1) + targets_chatiness) / (double) actor.following_set.size();
+    }
+    // Returns true if a follow is added that was not already added
    bool handle_follow(int id_actor, int id_target) {
        Entity& A = network[id_actor];
        Entity& T = network[id_target];
        bool was_added = A.following_set.add(state, id_target);
+       // if the follow is possible
        if (was_added) {
            FollowerSet::Context context(state, id_target);
            bool was_added = T.follower_set.add(context, id_actor);
            ASSERT(was_added, "Follow/follower-set asymmetry detected!");
+           if (config.stage1_unfollow) {
+               update_chatiness(A, id_target);
+           }
            return true;
        }
        return false;
@@ -47,7 +64,127 @@ struct AnalyzerFollow {
    /***************************************************************************
     * Entity observation routines
     ***************************************************************************/
+    
+   int random_follow_method(int n_entities) {
+       return rng.rand_int(n_entities);
+   }
+   int preferential_barabasi_follow_method() {
+       double rand_num = rng.rand_real_not0();
+       // if we want to use a preferential follow method
+       int entity_to_follow = -1;
+       double sum_of_weights = 0;
+       updating_follow_probabilities.resize(follow_probabilities.size());
+       /* search through the probabilities for each threshold and find
+          the right bin to land in */
+       for (int i = 0; i < follow_probabilities.size(); i ++){
+           // look at each category
+           CategoryEntityList& C = follow_ranks.categories[i];
+           updating_follow_probabilities[i] = follow_probabilities[i]*C.entities.size();
+           sum_of_weights += C.entities.size()*follow_probabilities[i];
+       }
+       for (int i = 0; i < follow_probabilities.size(); i ++ ){
+           updating_follow_probabilities[i] /= sum_of_weights;
+       }
+       for (int i = 0; i < updating_follow_probabilities.size(); i ++) {
+           if (rand_num <= updating_follow_probabilities[i]) {
+               // point to the category we landed in
+               CategoryEntityList& C = follow_ranks.categories[i];
+               // make sure we're not pulling a entity from an empty list
+               if (C.entities.size() != 0) {
+                   // pull a random entity from whatever bin we landed in and break so we do not continue this loop
+                   entity_to_follow = C.entities[rng.rand_int(C.entities.size())];
+                   return entity_to_follow;
+               }
+           }
+           // part of the above search
+           rand_num -= updating_follow_probabilities[i];
+       }
+       return -1;
+   }
+   int preferential_follow_method() {
+       double rand_num = rng.rand_real_not0();
+       double prob_sum = 0;
+       auto& updating_probs = updating_follow_probabilities;
+       updating_probs.resize(follow_ranks.categories.size());
+       for (int i = 0; i < follow_ranks.categories.size(); i ++) {
+           CategoryEntityList& C = follow_ranks.categories[i];
+           updating_probs[i] = follow_ranks.categories[i].prob * C.entities.size();
+           prob_sum += follow_ranks.categories[i].prob * C.entities.size();
+       }
+       for (auto& p : updating_probs) {
+           p /= prob_sum;
+       }
+       int i = 0;
+       for (auto& p : updating_probs) {
+           if (rand_num <= p) {
+               CategoryEntityList& C = follow_ranks.categories[i];
+               // pull a random entity from whatever bin we landed in and break so we do not continue this loop
+               int entity_to_follow = C.entities[rng.rand_int(C.entities.size())];
+               return entity_to_follow;
+           }
+           rand_num -= p;
+           i++;
+       }
+       return -1;
+   }
+   int entity_follow_method() {
+       // if we want to follow by entity class
+       /* search through the probabilities for each entity and find the right bin to land in */
+       double rand_num = rng.rand_real_not0();
+       for (auto& type : entity_types) {
+           if (rand_num <= type.prob_follow) {
+               // make sure we're not pulling from an empty list
+               if (type.entity_list.size() != 0) {
+                   // pull the entity from whatever bin we landed in and break so we dont continue this loop
+                   int n = rng.rand_int(type.entity_list.size());
+                   int entity_to_follow = type.entity_list[n];
+                   return entity_to_follow;
+               }
+           }
+           // part of the above search
+           rand_num -= type.prob_follow;
+       }
+       return -1;
+   }
+   int preferential_entity_follow_method() {
+       int entity_to_follow = -1;
+       double rand_num = rng.rand_real_not0();
+       for (int i = 0; i < entity_types.size(); i++) {
+           if (rand_num <= entity_types[i].prob_follow) {
 
+               double another_rand_num = rng.rand_real_not0();
+               // make sure we're not pulling from an empty list
+               EntityType& et = entity_types[i];
+               vector<double>& up = et.updating_probs;
+               up.resize(et.follow_ranks.categories.size());
+               double prob_sum = 0;
+               for (int j = 0; j < et.follow_ranks.categories.size(); j ++) {
+                   CategoryEntityList& C = et.follow_ranks.categories[j];
+                   up[j] = et.follow_ranks.categories[j].prob * C.entities.size();
+                   prob_sum += et.follow_ranks.categories[j].prob * C.entities.size();
+               }
+               for (int j = 0; j < up.size(); j ++) {                        
+                   up[j] /= prob_sum;
+               }
+               for (int j = 0; j < up.size(); j ++) {
+                   if (another_rand_num <= up[j]) {
+                       CategoryEntityList& C = et.follow_ranks.categories[j];
+                       // pull a random entity from whatever bin we landed in and break so we do not continue this loop                            
+                       entity_to_follow = C.entities[rng.rand_int(C.entities.size())];
+                       break;
+                   }
+                   another_rand_num -= up[j];
+               }
+           }
+           if (entity_to_follow != -1){
+               return entity_to_follow;
+           }
+           // part of the above search
+           rand_num -= entity_types[i].prob_follow;
+       }
+       return -1;
+   }
+    
    // Returns false to signify that we must retry the KMC event
     bool follow_entity(int entity, int n_entities, double time_of_follow) {
         Entity& e1 = network[entity];
@@ -56,121 +193,36 @@ struct AnalyzerFollow {
         // if we want to do random follows
         if (config.follow_model == RANDOM_FOLLOW) {
             // find a random entity within [0:number of entities - 1]
-            entity_to_follow = rng.rand_int(n_entities);
+            entity_to_follow = random_follow_method(n_entities);
         } else if (config.follow_model == PREFERENTIAL_FOLLOW && config.use_barabasi) {
             perf_timer_begin("AnalyzerFollower.follow_entity(barabasi_preferential_follow)");
-
-            // if we want to use a preferential follow method
-            double sum_of_weights = 0;
-            updating_follow_probabilities.resize(follow_probabilities.size());
-            /* search through the probabilities for each threshold and find
-               the right bin to land in */
-            for (int i = 0; i < follow_probabilities.size(); i ++){
-                // look at each category
-                CategoryEntityList& C = follow_ranks.categories[i];
-                updating_follow_probabilities[i] = follow_probabilities[i]*C.entities.size();
-                sum_of_weights += C.entities.size()*follow_probabilities[i];
-            }
-            for (int i = 0; i < follow_probabilities.size(); i ++ ){
-                updating_follow_probabilities[i] /= sum_of_weights;
-            }
-            for (int i = 0; i < updating_follow_probabilities.size(); i ++) {
-                if (rand_num <= updating_follow_probabilities[i]) {
-                    // point to the category we landed in
-                    CategoryEntityList& C = follow_ranks.categories[i];
-                    // make sure we're not pulling a entity from an empty list
-                    if (C.entities.size() != 0) {
-                        // pull a random entity from whatever bin we landed in and break so we do not continue this loop
-                        entity_to_follow = C.entities[rng.rand_int(C.entities.size())];
-                        break;
-                    }
-                }
-                // part of the above search
-                rand_num -= updating_follow_probabilities[i];
-            }
+            entity_to_follow = preferential_barabasi_follow_method();
             perf_timer_end("AnalyzerFollower.follow_entity(barabasi_preferential_follow)");
         } else if(config.follow_model == PREFERENTIAL_FOLLOW && !config.use_barabasi) {
             perf_timer_begin("AnalyzerFollower.follow_entity(preferential_follow)");
-
-            double rand_num = rng.rand_real_not0();
-            double prob_sum = 0;
-            auto& updating_probs = updating_follow_probabilities;
-            updating_probs.resize(follow_ranks.categories.size());
-            for (int i = 0; i < follow_ranks.categories.size(); i ++) {
-                CategoryEntityList& C = follow_ranks.categories[i];
-                updating_probs[i] = follow_ranks.categories[i].prob * C.entities.size();
-                prob_sum += follow_ranks.categories[i].prob * C.entities.size();
-            }
-            for (auto& p : updating_probs) {
-                p /= prob_sum;
-            }
-            int i = 0;
-            for (auto& p : updating_probs) {
-                if (rand_num <= p) {
-                    CategoryEntityList& C = follow_ranks.categories[i];
-                    // pull a random entity from whatever bin we landed in and break so we do not continue this loop
-                    entity_to_follow = C.entities[rng.rand_int(C.entities.size())];
-                    break;
-                }
-                rand_num -= p;
-                i++;
-            }
+            entity_to_follow = preferential_follow_method();
             perf_timer_end("AnalyzerFollower.follow_entity(preferential_follow)");
         } else if (config.follow_model == ENTITY_FOLLOW) {
             perf_timer_begin("AnalyzerFollower.follow_entity(entity_follow)");
-            // if we want to follow by entity class
-            /* search through the probabilities for each entity and find the right bin to land in */
-            for (auto& type : entity_types) {
-                if (rand_num <= type.prob_follow) {
-                    // make sure we're not pulling from an empty list
-                    if (type.entity_list.size() != 0) {
-                        // pull the entity from whatever bin we landed in and break so we dont continue this loop
-                        int n = rng.rand_int(type.entity_list.size());
-                        entity_to_follow = type.entity_list[n];
-                        break;
-                    }
-                }
-                // part of the above search
-                rand_num -= type.prob_follow;
-            }
+            entity_to_follow = entity_follow_method();
             perf_timer_end("AnalyzerFollower.follow_entity(entity_follow)");
         } else if (config.follow_model == PREFERENTIAL_ENTITY_FOLLOW) {
             perf_timer_begin("AnalyzerFollower.follow_entity(preferential_entity_follow)");
-            double rand_num = rng.rand_real_not0();
-            for (int i = 0; i < entity_types.size(); i++) {
-                if (rand_num <= entity_types[i].prob_follow) {
-
-                    double another_rand_num = rng.rand_real_not0();
-                    // make sure we're not pulling from an empty list
-                    EntityType& et = entity_types[i];
-                    vector<double>& up = et.updating_probs;
-                    up.resize(et.follow_ranks.categories.size());
-                    double prob_sum = 0;
-                    for (int j = 0; j < et.follow_ranks.categories.size(); j ++) {
-                        CategoryEntityList& C = et.follow_ranks.categories[j];
-                        up[j] = et.follow_ranks.categories[j].prob * C.entities.size();
-                        prob_sum += et.follow_ranks.categories[j].prob * C.entities.size();
-                    }
-                    for (int j = 0; j < up.size(); j ++) {                        
-                        up[j] /= prob_sum;
-                    }
-                    for (int j = 0; j < up.size(); j ++) {
-                        if (another_rand_num <= up[j]) {
-                            CategoryEntityList& C = et.follow_ranks.categories[j];
-                            // pull a random entity from whatever bin we landed in and break so we do not continue this loop                            
-                            entity_to_follow = C.entities[rng.rand_int(C.entities.size())];
-                            break;
-                        }
-                        another_rand_num -= up[j];
-                    }
-                }
-                if (entity_to_follow != -1){
-                    break;
-                }
-                // part of the above search
-                rand_num -= entity_types[i].prob_follow;
-            }
+            entity_to_follow = preferential_entity_follow_method();
             perf_timer_end("AnalyzerFollower.follow_entity(preferential_entity_follow)");
+        }
+        // if the stage1_follow is set to true in the inputfile
+        if (config.stage1_unfollow) {
+            vector<int>& chatties = e1.chatty_entities;
+            if (chatties.size() > 0) {
+                int index = rng.rand_int(chatties.size());
+                int entity_unfollowed = chatties[index];
+                if (action_unfollow(entity_unfollowed, entity)) {
+                    chatties.erase(chatties.begin() + index);
+                } else {
+                    cout << "Error in stage1_unfollow_method\n.";
+                }
+            }
         }
 
         // check and make sure we are not following ourself, or we are following entity -1
@@ -218,6 +270,27 @@ struct AnalyzerFollow {
         }
         return false; // Completion failure: Can be ignored for followback, largely
     }
+        
+	bool action_unfollow(int id_unfollowed, int id_unfollower) {
+	    perf_timer_begin("action_unfollow");
+		FollowerSet& candidate_followers = network.follower_set(id_unfollowed);
+
+		DEBUG_CHECK(id_unfollower != -1, "Should not be -1 after choice!");
+
+		// Necessary for use with follower set:
+        FollowerSet::Context context(state, id_unfollowed);
+        // Remove our target from our actor's follows:
+        bool had_follower = candidate_followers.remove(context, id_unfollower);
+		DEBUG_CHECK(had_follower, "unfollow: Did not exist in follower list");
+
+        // Remove our unfollowed person from our target's followers:
+		Entity& e_lost_follower = network[id_unfollower];
+		bool had_follow = e_lost_follower.following_set.remove(state, id_unfollowed);
+		DEBUG_CHECK(had_follow, "unfollow: Did not exist in follow list");
+		perf_timer_end("action_unfollow");
+        stats.n_unfollows ++;
+		return true;
+	}
 };
 
 bool analyzer_follow_entity(AnalysisState& state, int entity, int n_entities, double time_of_follow) {

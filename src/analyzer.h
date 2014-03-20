@@ -20,7 +20,7 @@ struct AnalysisStats {
     double prob_retweet;
 
     int n_outputs;
-    int64 n_steps, n_follows, n_tweets, n_retweets;
+    int64 n_steps, n_follows, n_tweets, n_retweets, n_unfollows;
     EntityEventStats event_stats;
 
     double event_rate;
@@ -31,13 +31,13 @@ struct AnalysisStats {
         prob_retweet = 0;
 
         n_outputs = 0;
-        n_steps = 0, n_follows = 0, n_tweets = 0, n_retweets = 0;
+        n_steps = 0, n_follows = 0, n_tweets = 0, n_retweets = 0, n_unfollows = 0;
         event_rate = 0;
     }
 
     READ_WRITE(rw) {
         rw << prob_add << prob_follow << prob_retweet << prob_tweet;
-        rw << n_outputs << n_steps << n_follows << n_tweets << n_retweets;
+        rw << n_outputs << n_steps << n_follows << n_tweets << n_retweets << n_unfollows;
         rw << event_stats.stats_array;
         rw << event_rate;
     }
