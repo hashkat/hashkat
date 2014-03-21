@@ -4,12 +4,15 @@ To install kOSN, you will need to have the following:
 
 - yaml (try 'pip install pyyaml')
 
+- networkx (for analysis)
+- matplotlib (for analysis)
+
 #### OS X
 
 Both cmake and yaml are available through brew
 
 brew install cmake
-brew intall pyyaml
-
+pip install pyyaml
+pip install networkx
 
 
