@@ -1,17 +1,18 @@
 #!/usr/bin/env python
 
-import yaml
-import sys
-
-from pprint import pprint
-from math import *
-
 #################################################################
 # Generates INFILE parameters that are tricky to alter by hand
 # By creating value tables with a Python script, we are able to
 # simplify the logic in the C++, not worrying about the various
 # functions a user might want to supply.
 #################################################################
+
+import yaml
+import sys
+
+from pprint import pprint
+from math import *
+from scipy.integrate import quad # For observation PDF integration
 
 def get_var_arg(test, default_val):
     for i in range(len(sys.argv) - 1): 
@@ -23,7 +24,7 @@ INPUT_FILE_NAME = get_var_arg("--input", "INFILE.yaml")
 
 print("INFILE.py -- Generating rates for " + INPUT_FILE_NAME)
 
-######################
+#################################################################
 # Load the relevant pieces of the config.
 # We will add a 'generated' node to this, and emit it as INFILE-generated.yaml
 
@@ -31,15 +32,21 @@ CONFIG = yaml.load(open(INPUT_FILE_NAME, "r"))
 
 entities = CONFIG["entities"]
 
+#################################################################
 # Both functions are computed from a lookup table generated below.
 # Note that the relevance factor is a many-dimensional function,
 # whilst tweet_obs takes only time.
 
 obs_pdf = CONFIG["tweet_observation"]
 
-tweet_obs_half_life = obs_pdf["half_life"]
+def load_observation_pdf(content):
+    exec('def __TEMP(x): return ' + str(content))
+    return __TEMP # A hack
+
+tweet_obs_density_function = load_observation_pdf(obs_pdf["density_function"])
+tweet_obs_x_start = obs_pdf["x_start"]
+tweet_obs_x_end = obs_pdf["x_end"]
 tweet_obs_initial_resolution = obs_pdf["initial_resolution"]
-tweet_obs_final_rate = obs_pdf["final_rate"]
 
 tweet_rel = CONFIG["tweet_relevance"]
 distance_bins = tweet_rel["distance_bins"]
@@ -73,19 +80,14 @@ def load_relevance_functions():
 
 profile_funcs = load_relevance_functions()
 
-#######################
+#################################################################
 # Rate derivation
 
-# If this is changed, the code must be updated accordingly:
-
-# We define 'tweet_observation_pdf' to be a probability definition function that
-# controls the rate at which a tweet is observed, as a function of time.
-# It is scaled by the relevance factor.
-def tweet_observation_pdf(t):
-    hl = tweet_obs_half_life
+def tweet_observation_integral(x1, x2):
+    val = quad(tweet_obs_density_function, x1, x2)
 
     val = exp(-t / hl * log(2))
-    #print(str(t) + ' ' + str(val)) #Uncomment for simple, plottable data
+    print(str(t) + ' ' + str(val)) #Uncomment for simple, plottable data
     return val
 
 # We compute all bins over a..b at (a+b)/2, ie the midpoint rule
@@ -108,7 +110,7 @@ def compute_tweet_obs():
 
     return rates
 
-#######################
+#################################################################
 # Relevance lookup table generation
 
 def make_object(dict):
@@ -153,7 +155,7 @@ def relevance_entity_type_component():
 def compute_relevance_table(): # N-dimensional array
     return relevance_entity_type_component()
 
-#######################
+#################################################################
 # YAML emission
 
 generated = {
