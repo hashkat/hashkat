@@ -76,6 +76,7 @@ struct ParsedConfig {
     FollowerSetRatesDeterminer follower_rates;
 
     bool save_network_on_timeout, load_network_on_startup;
+    bool ignore_load_config_check;
     std::string save_file;
 
     // 'rates' config options
@@ -125,6 +126,7 @@ struct ParsedConfig {
         use_flawed_followback = false;
         output_verbose = false;
 
+        ignore_load_config_check = false;
         save_network_on_timeout = false;
         load_network_on_startup = false;
 

@@ -212,8 +212,9 @@ struct Analyzer {
         DataReader reader(state, config.save_file.c_str());
         string previous_config_file;
         reader << previous_config_file;
-        if (previous_config_file != config.entire_config_file) {
-            error_exit("Error, config file does not match the one being loaded from! Exiting...");
+        if (!config.ignore_load_config_check && previous_config_file != config.entire_config_file) {
+            error_exit("Error, config file does not exactly match the one being loaded from!\n"
+                    "If you do not care, please set output.ignore_load_config_check to true.\nExitting...");
         }
         state.visit(reader);
     }

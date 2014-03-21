@@ -30,7 +30,21 @@ struct TweetContent {
     }
 
     READ_WRITE(rw) {
-        rw << time_of_tweet << language << id_original_author;
+        std::vector<int> ids;
+        if (rw.is_writing()) {
+            for (int id : used_entities) {
+                ids.push_back(id);
+            }
+        }
+        rw << ids;
+        if (rw.is_reading()){
+            for (int id : ids) {
+                size_t prev_size = used_entities.size();
+                used_entities.insert(id);
+                ASSERT(used_entities.size() > prev_size, "'id' should be unique!");
+            }
+        }
+        rw << time_of_tweet << language << id_original_author << humour_bin;
 //        printf("GOT AT %.2f %d %d size=%d\n", time_of_tweet, language,
 //                id_original_author, used_entities.size());
     }
@@ -51,20 +65,30 @@ struct Tweet {
     int generation;
     // A tweet is an orignal tweet if tweeter_id == content.author_id
     smartptr<TweetContent> content;
+
+    // The time the tweet was tweeted
     double creation_time;
+
+    // Based on creation_time and the current time
+    // Determines the 'omega' observation PDF dropoff rate of
+    // the tweet's retweetability.
+    int retweet_time_bin;
+
     explicit Tweet(const smartptr<TweetContent>& content = smartptr<TweetContent>()) : content(content) {
         id_tweeter = -1;
         id_link = -1;
         generation = -1;
         creation_time = 0;
+        retweet_time_bin = -1;
     }
+
     void print() {
         printf("(Tweeter = %d, Link = %d, Original Author = %d, Created = %.2f\n)",
                 id_tweeter, id_link, content->id_original_author, creation_time);
     }
 
     READ_WRITE(rw) {
-        rw << id_tweeter << creation_time << id_link << generation;
+        rw << id_tweeter << creation_time << retweet_time_bin << id_link << generation;
         rw.visit_smartptr(content);
     }
 };
