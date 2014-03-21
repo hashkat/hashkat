@@ -8,7 +8,7 @@ analysis:
   initial_entities:
     100
   enable_interactive_mode:
-    true # Whether to stop analysis, or to continue on
+    false # Whether to stop analysis, or to continue on
   use_barabasi: false # if this is set to 1, the global follow rate will be ignored. Follow thresholds not needed.
   use_random_time_increment: true # increments by 1/sum(rates) on average
   use_flawed_followback: false
@@ -21,8 +21,10 @@ rates:
   add: {function: constant, value: 1.0}
 
 output:
-  save_network_on_timeout: # Should we save all our data if we hit >= max_real_time?
-     true
+  save_network_on_timeout: 
+    false
+  load_network_on_startup:
+    false
   save_file: # File to save to, and load from
     network_state.sav
   stdout_basic: true

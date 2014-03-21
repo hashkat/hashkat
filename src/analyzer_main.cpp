@@ -187,7 +187,7 @@ struct Analyzer {
      * after the messy configuration and allocation is done.
      * Returns end-time. */
     double main() {
-        if (file_exists(config.save_file)) {
+        if (config.load_network_on_startup && file_exists(config.save_file)) {
             load_network_state();
         }
         run_network_simulation();
@@ -244,7 +244,9 @@ struct Analyzer {
         	step_analysis();
         	perf_timer_end("analyzer.step_analysis");
         }
-        save_network_state();
+        if (config.save_network_on_timeout) {
+            save_network_state();
+        }
     }
 
     Language entity_pick_language() {

@@ -187,6 +187,7 @@ static void parse_output_configuration(ParsedConfig& config, const Node& node) {
     parse(node, "entity_stats", config.entity_stats);
 
     parse(node, "save_network_on_timeout", config.save_network_on_timeout);
+    parse(node, "load_network_on_startup", config.load_network_on_startup);
     parse(node, "save_file", config.save_file);
     
     parse(node, "degree_distributions", config.degree_distributions);

@@ -75,7 +75,7 @@ struct ParsedConfig {
 
     FollowerSetRatesDeterminer follower_rates;
 
-    bool save_network_on_timeout;
+    bool save_network_on_timeout, load_network_on_startup;
     std::string save_file;
 
     // 'rates' config options
@@ -126,6 +126,8 @@ struct ParsedConfig {
         output_verbose = false;
 
         save_network_on_timeout = false;
+        load_network_on_startup = false;
+
         unfollow_tweet_rate = 0.0;
         follow_model = RANDOM_FOLLOW;
 
