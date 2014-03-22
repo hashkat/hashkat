@@ -7,7 +7,6 @@
 #include "lcommon/smartptr.h"
 #include "mtwist.h"
 
-#include "TimeDepRateTree.h"
 #include "cat_classes.h"
 
 #include "events.h"
@@ -74,12 +73,16 @@ struct Tweet {
     // the tweet's retweetability.
     int retweet_time_bin;
 
+    // Next time to consider rebinning, always more than creation_time
+    double retweet_next_rebin_time;
+
     explicit Tweet(const smartptr<TweetContent>& content = smartptr<TweetContent>()) : content(content) {
         id_tweeter = -1;
         id_link = -1;
         generation = -1;
         creation_time = 0;
         retweet_time_bin = -1;
+        retweet_next_rebin_time = -1;
     }
 
     void print() {
@@ -88,7 +91,7 @@ struct Tweet {
     }
 
     READ_WRITE(rw) {
-        rw << id_tweeter << creation_time << retweet_time_bin << id_link << generation;
+        rw << id_tweeter << creation_time << retweet_time_bin << retweet_next_rebin_time << id_link << generation;
         rw.visit_smartptr(content);
     }
 };
@@ -108,78 +111,6 @@ struct MostPopularTweet {
     READ_WRITE(rw) {
         rw << global_max;
         most_popular_tweet.visit(rw);
-    }
-};
-
-
-/* From the follower list, we can reason about:
- *  - preference class, language, distance
- * From the retweet, we can reason about:
- *  - distance, humour
- * Each tweeter's follower list has homogenous (ie, same):
- *  - entity type (of tweeter)
- * */
-const int RETWEET_RATE_ELEMENTS = 1;
-typedef RateVec<RETWEET_RATE_ELEMENTS> TweetReactRateVec;
-
-struct TweetRateDeterminer {
-    TweetRateDeterminer(AnalysisState& state) : state(state){
-    }
-    double get_age(const Tweet& tweet);
-    void update_rate(TweetReactRateVec& rates, const Tweet& tweet, int bin);
-    TweetReactRateVec get_rate(const Tweet& tweet, int bin);
-
-    double get_cat_threshold(int bin) {
-        return (1 << bin) * 90.0;
-    }
-
-    AnalysisState& state;
-};
-
-struct TweetBank {
-    typedef TimeDepRateTree<Tweet, RETWEET_RATE_ELEMENTS /*Just one rate for now*/, TweetRateDeterminer> RateTree;
-    RateTree tree;
-
-    double get_total_rate() {
-        return tree.rate_summary().tuple_sum;
-    }
-
-    TweetBank(AnalysisState& state);
-
-    /*
-     * Add an tweet. TweetRateDeterminer determines the reaction rate (follow or retweet) associated.
-     */
-    void add(const Tweet& data) {
-//        static int ITER = 1;
-        tree.add(data);
-//        printf("Tweet %d: \n", ITER);
-//        printf("------------------------------------------------------------------------\n");
-//        print();
-//        ITER++;
-    }
-
-    std::vector<Tweet> as_vector() {
-        auto vec = tree.as_vector();
-        for (int i = 0; i < vec.size(); i++) {
-            DEBUG_CHECK(!vec[i].content.empty(), "Tweet has no content!");
-        }
-        return vec;
-    }
-
-    void print() {
-        tree.print();
-    }
-    int n_active_tweets() const {
-        return tree.size();
-    }
-    Tweet& pick_random_weighted(MTwist& rng) {
-        ref_t ref = tree.pick_random_weighted(rng);
-        return tree.get(ref).data;
-    }
-
-    READ_WRITE(rw) {
-        tree.visit(rw);
-        rw.check_visit(get_total_rate());
     }
 };
 

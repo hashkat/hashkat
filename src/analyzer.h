@@ -10,6 +10,7 @@
 #include "network.h"
 
 #include "DataReadWrite.h"
+#include "TweetBank.h"
 
 extern volatile int SIGNAL_ATTEMPTS;
 

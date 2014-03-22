@@ -306,6 +306,11 @@ struct Analyzer {
         tweet.id_tweeter = id_tweeter;
         tweet.id_link = id_link;
         tweet.generation = generation;
+
+        // Always start in the first retweet time bin:
+        tweet.retweet_time_bin = 0;
+        tweet.retweet_next_rebin_time = time + config.tweet_obs.initial_resolution;
+
         if (network.n_followers(id_tweeter) != 0) {
             state.tweet_bank.add(tweet);
         }

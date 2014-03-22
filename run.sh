@@ -118,8 +118,8 @@ if handle_flag "--gdb" || handle_flag "-g" ; then
     echo "Wrapping in GDB:" | colorify '1;35'
     gdb -silent  \
         -ex='set confirm off' \
-        -ex="handle SIGINT nostop noprint pass" \
         -ex="handle 31 nostop noprint pass" -ex=r --args src/socialsim $args 
+    #    -ex="handle SIGINT nostop noprint pass" \
 elif handle_flag "--lldb" || handle_flag "-l" ; then
     # Wrap lldb around the program with -l:
     echo "Wrapping in LLDB:" | colorify '1;35'
