@@ -30,6 +30,7 @@
  * */
 const int RETWEET_RATE_ELEMENTS = 1;
 const int RETWEET_TREE_N_CHILDREN = 10;
+const double RETWEET_REBIN_TIME_INTERVAL = 1.0;
 
 typedef RateVec<RETWEET_RATE_ELEMENTS> TweetReactRateVec;
 typedef RateTree<Tweet, RETWEET_RATE_ELEMENTS, RETWEET_TREE_N_CHILDREN> TweetRateTree;
@@ -51,10 +52,11 @@ struct TweetRateDeterminer {
 struct TimeDepRateTree {
 
     TimeDepRateTree(TweetRateDeterminer determiner, double initial_resolution, int number_of_bins) :
-        determiner(determiner), initial_resolution(initial_resolution), binner(number_of_bins) {
-        ASSERT(number_of_bins > 0, "Need more than 0 bins!");
-        last_rate = 0;
-        time = 0;
+        periodic(RETWEET_REBIN_TIME_INTERVAL), determiner(determiner),
+        initial_resolution(initial_resolution), binner(number_of_bins) {
+            ASSERT(number_of_bins > 0, "Need more than 0 bins!");
+            last_rate = 0;
+            time = 0;
     }
 
     /*
@@ -90,6 +92,10 @@ struct TimeDepRateTree {
 
     void update(double time) {
         this->time = time;
+        if (!periodic.has_past(time)) {
+            return;
+        }
+        binner.update(checker());
 
     }
 
@@ -107,9 +113,12 @@ struct TimeDepRateTree {
     }
 
     READ_WRITE(rw) {
-        rw << last_rate << initial_resolution;
+        rw << last_rate << initial_resolution << time;
         tree.visit(rw);
         binner.visit(rw);
+    }
+    int n_bins() {
+        return binner.get_bins().size();
     }
 private:
 
@@ -132,8 +141,13 @@ private:
             if (elapsed > t.retweet_next_rebin_time) {
                 // Move to a new bin:
                 t.retweet_time_bin++;
-                printf("MOVING TO BIN %d\n", t.retweet_time_bin);
-                t.retweet_next_rebin_time = tree.determiner.get_cat_threshold(t.retweet_time_bin);
+                if (t.retweet_time_bin >= tree.n_bins()) {
+                    printf("BOOTING NODE %d AT BIN %d\n", id,  t.retweet_time_bin);
+                    tree.tree.remove(id);
+                } else {
+                    printf("MOVING TO BIN %d\n", t.retweet_time_bin);
+                    t.retweet_next_rebin_time = tree.determiner.get_cat_threshold(t.retweet_time_bin);
+                }
                 return false;
             }
             return true;
@@ -154,6 +168,9 @@ private:
     ElementChecker checker() {
         return ElementChecker(*this, time);
     }
+
+    // Checks whether we should update all elements
+    TimePeriodChecker periodic;
 
     TweetRateDeterminer determiner;
     double last_rate, initial_resolution;

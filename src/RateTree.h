@@ -252,7 +252,10 @@ struct RateTree {
         for (int i = 0; i < v.size(); i++) {
             double calc_sum = v[i]->debug_rate_sum(*this);
             double stored_sum = v[i]->rates.tuple_sum;
-            ASSERT(fabs(calc_sum - stored_sum) < 10e-10, "Should be (fairly) equal!");
+            if (fabs(calc_sum - stored_sum) >= 10e-5) {
+                printf("GOT calc_sum= %f vs stored_sum= %f\b", calc_sum, stored_sum);
+                ASSERT(false, "Should be (fairly) equal!");
+            }
         }
     }
     void debug_check_reachability(ref_t ref) {
