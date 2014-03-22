@@ -51,19 +51,53 @@ languages:
     French: 25
     French+English: 25
 
+#################################################################
+# tweet_observation: 
+#  Configures an observation probability density function that gives 
+#  the probability that a tweet is observed at a certain time by an 'ideal observer'. 
+#  An 'ideal observer' is one which always sees a tweet, eventually.'
+#  The observation PDF is used for both retweeting and follow-from-tweet.
+#  We combine this with a relevance factor, r, where 0 <= r <= 1.0, we in turn
+#  determines the probability that a given entity will act on a given tweet, with enough time.
+#
+# density_function:
+#    Probability 'density' function to sample logarithmatically.
+#    Provided as if a Python function of 'x'. It is integrated using the scipy.integrate module. Note technically not a true PDF because one does NOT need to have an integral range that sums to 1.0 -- will be normalized for you!
+# x_start:
+#   The beginning x-value to integrate from.
+# x_end:
+#   The end x-value to integrate to.
+# initial_resolution:
+#   In minutes, the initial binning resolution. Ie, the time-step with which to begin binning -- we decrease the binning resolution from there on.
+#################################################################
+
 tweet_observation: # 'Omega'
-   # Configures an observation probability density function that gives 
-   # the probability that a tweet is observed at a certain time by an 'ideal observer'. 
-   # An 'ideal observer' is one which always sees a tweet, eventually.'
-   # The observation PDF is used for both retweeting and follow-from-tweet.
-   # We combine this with a relevance factor, r, where 0 <= r <= 1.0, we in turn
-   # determines the probability that a given entity will act on a given tweet.
+   density_function: 1.66 / x 
+   x_start: 5
+   x_end: 600
+   initial_resolution: 1.0 
 
-   half_life: 22.5 # In minutes. Determines half-life of exponetial decay.
-   initial_resolution: 0.01 # In minutes. The time-step with which to begin binning.
-   final_rate: 0.001 # A final value when to stop binning our omega function.
+#################################################################
+# tweet_relevance: 
+#  Configures an observation probability density function that gives 
+#  the probability that a tweet is observed at a certain time by an 'ideal observer'. 
+#  An 'ideal observer' is one which always sees a tweet, eventually.'
+#  The observation PDF is used for both retweeting and follow-from-tweet.
+#  We combine this with a relevance factor, r, where 0 <= r <= 1.0, we in turn
+#  determines the probability that a given entity will act on a given tweet, with enough time.
+#
+# density_function:
+#    Probability 'density' function to sample logarithmatically.
+#    Provided as if a Python function of 'x'. It is integrated using the scipy.integrate module. Note technically not a true PDF because one does NOT need to have an integral range that sums to 1.0 -- will be normalized for you!
+# x_start:
+#   The beginning x-value to integrate from.
+# x_end:
+#   The end x-value to integrate to.
+# initial_resolution:
+#   In minutes, the initial binning resolution. Ie, the time-step with which to begin binning -- we decrease the binning resolution from there on.
+#################################################################
 
-tweet_relevance:
+tweet_relevance: # 'Transmission probability'
     # Determine amount of discrete bins
     # These values should match your C++ config_static.h limits!!
     # Distance is the value [0...1] determined by a modular distance function.
@@ -81,7 +115,7 @@ tweet_relevance:
     preference_classes:
       - name: LoveEverything
         retweet_relevance:
-          all: 0.51 # Can be any valid Python code
+          all: 1 # Can be any valid Python code
       - name: HateEverything
         retweet_relevance:
           all: 0 # Can be any valid Python code
