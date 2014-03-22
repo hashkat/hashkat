@@ -52,6 +52,7 @@ entities = CONFIG["entities"]
 # whilst tweet_obs takes only time.
 
 obs_pdf = CONFIG["tweet_observation"]
+regions = CONFIG["regions"]
 
 def load_observation_pdf(content):
     exec('def __TEMP(x): return ' + str(content))
@@ -72,6 +73,75 @@ distance_bins = tweet_rel["distance_bins"]
 humour_bins = tweet_rel["humour_bins"]
 
 pref_classes = tweet_rel["preference_classes"]
+
+#################################################################
+# Make the region data easier to parse for the C++:
+
+def weights_to_probs(weights, map, n):
+    ret = []
+    for i in range(n): ret.append(0)
+    total_sum = 0
+    for k in weights:
+        total_sum += weights[k]
+    for k in weights:
+        ret[map[k]] = weights[k] / float(total_sum)
+    return ret
+
+lang_order = {
+    "English" : 0,
+    "French" : 1,
+    "French+English" : 2
+}
+lang_n = 3
+ideo_order,pref_order = {},{}
+ideo_n, pref_n  = 0, 0
+for p in CONFIG["ideologies"]:
+    ideo_order[p["name"]] = ideo_n
+    ideo_n += 1
+for p in CONFIG["preference_classes"]:
+    pref_order[p["name"]] = pref_n
+    pref_n += 1
+
+def preprocess_weights(ret,orig):
+    if "ideology_weights" in orig:
+        ret["ideology_probs"] = weights_to_probs(orig["ideology_weights"], ideo_order, ideo_n)
+    if "language_weights" in orig:
+        ret["language_probs"] = weights_to_probs(orig["language_weights"], lang_order, lang_n)
+    if "preference_class_weights" in orig:
+        ret["preference_class_probs"] = weights_to_probs(orig["preference_class_weights"], pref_order, pref_n)
+    return ret
+
+def preprocess_subregion(template, subregion, add_weight_total):
+    ret = template.copy()
+    ret["name"] = subregion["name"]
+    ret["add_prob"] = subregion["add_weight"] / add_weight_total
+    preprocess_weights(ret, subregion)
+    return ret
+
+def preprocess_subregions(template, subregions):
+    ret = []
+    total_weight = 0.0
+    for subregion in subregions: total_weight += subregion["add_weight"]
+    for subregion in subregions:
+        ret.append(preprocess_subregion(template, subregion, total_weight))
+    return ret
+
+def preprocess_region(region, add_weight_total):
+     # First, init only things which should be inherited
+    ret = {}
+    preprocess_weights(ret, region)
+    ret["subregions"] = preprocess_subregions(ret, region["subregions"])
+    ret["name"] = region["name"]
+    ret["add_prob"] = region["add_weight"] / add_weight_total
+    return ret
+
+def preprocess_regions():
+    ret = []
+    total_weight = 0.0
+    for region in regions: total_weight += region["add_weight"]
+    for region in regions:
+        ret.append(preprocess_region(region, total_weight))
+    return ret
 
 def load_relevance_function(content):
     exec('def __TEMP(entity_type, humour, distance): return ' + str(content))
@@ -207,7 +277,8 @@ obs_function, obs_bin_bounds = compute_tweet_obs()
 generated = {
     "obs_function" : obs_function,
     "obs_bin_bounds" : obs_bin_bounds,
-    "rel_function" : compute_relevance_table()
+    "rel_function" : compute_relevance_table(),
+    "regions" : preprocess_regions()
 }
 
 CONFIG["GENERATED"] = generated

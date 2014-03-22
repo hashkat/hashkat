@@ -195,7 +195,10 @@ languages:
 regions:
   - name: Canada
     add_weight: 1
+
+    #Inherited:
     preference_class_weights: {Standard: 100}
+    entity_class_weights: {Standard: 100}
     ideology_weights: {Red: 100, Blue: 100}
 
     subregions: 
@@ -208,7 +211,10 @@ regions:
 
   - name: USA
     add_weight: 5
+
+    #Inherited:
     preference_class_weights: {Standard: 100}
+    entity_class_weights: {Standard: 100}
     language_weights: {English: 100, French: 10, French+English: 10}
     ideology_weights: {Red: 100, Blue: 100}
 
@@ -255,10 +261,14 @@ preference_classes:
       Standard: 0.01
       Celebrity: 0.05
       else: 0
-   tweet_follow_relevance: 
+   tweet_follow_relevance: &standard_tf_rel
       Standard: 0.01
       Celebrity: 0.05
       else: 0
+ - name: NoRetweet
+   tweet_retweet_relevance: 
+      all: 0
+   tweet_follow_relevance: *standard_tf_rel
 
 tweet_relevance: # 'Transmission probability'
     humour_bins: 2

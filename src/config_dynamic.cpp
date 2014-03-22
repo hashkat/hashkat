@@ -30,7 +30,6 @@ static inline void parse_opt(const Node& node, const char* key, T& value, bool o
     parse(node, key, value, true);
 }
 
-
 /* Convert from a text node to the number representing
  * the follow model. */
 static FollowModel parse_follow_model(const Node& node) {
@@ -336,12 +335,53 @@ static EntityTypeVector parse_entities_configuration(const Node& node) {
     return vec;
 }
 
+static void parse_subregion(Region& r, const Node& node) {
+    Subregion s;
+    parse(node, "name", s.name);
+    parse_vector(node["ideology_probs"], s.ideology_probs);
+    parse_vector(node["language_probs"], s.language_probs);
+    parse_vector(node["preference_class_probs"], s.preference_class_probs);
+
+    double add_prob = -1;
+    parse(node, "add_prob", add_prob);
+
+    r.add_probs.push_back(add_prob);
+    r.subregions.push_back(s);
+}
+
+static void parse_subregions(Region& r, const Node& node) {
+    for (int i = 0; i < node.size(); i++) {
+        parse_subregion(r, node[i]);
+    }
+}
+
+static void parse_region(Regions& ret, const Node& node) {
+    Region r;
+    parse(node, "name", r.name);
+    parse_subregions(r, node["subregions"]);
+
+    double add_prob = -1;
+    parse(node, "add_prob", add_prob);
+
+    ret.add_probs.push_back(add_prob);
+    ret.regions.push_back(r);
+}
+static Regions parse_regions(const Node& node) {
+    Regions ret;
+    for (int i = 0; i < node.size(); i++) {
+        parse_region(ret, node[i]);
+    }
+    return ret;
+}
+
 static void parse_all_configuration(ParsedConfig& config, const Node& node) {
     parse_analysis_configuration(config, node["analysis"]);
     config.lang_probs = parse_language_configuration(node["languages"]);
     config.pref_classes = parse_preference_classes(node);
     config.tweet_obs = parse_tweet_obs_pdf(node);
     config.follower_rates = parse_tweet_react_rates(node);
+
+    config.regions = parse_regions(node["GENERATED"]["regions"]);
     config.add_rates = parse_rates_configuration(config, node["rates"]["add"]);
     parse_output_configuration(config, node["output"]);
     config.entity_types = parse_entities_configuration(node["entities"]);

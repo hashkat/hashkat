@@ -130,6 +130,9 @@ public:
         }
         return len - 1; // Assume floating point error
     }
+    inline int kmc_select(std::vector<double>& probs) {
+        return kmc_select(&probs[0], probs.size());
+    }
 
     /* Grab a real number within [0,1) with 53-bit resolution */
     double rand_real_not1() {

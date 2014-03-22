@@ -1,4 +1,4 @@
-#include "interrupt_menu.h"
+#include "interactive_mode.h"
 #include "analyzer.h"
 
 #include <lua.hpp>
@@ -18,7 +18,7 @@ struct InterruptMenuState {
     void ensure_init(AnalysisState& s) {
         if (L == NULL) {
             L = init_lua_state();
-            menu_object = luawrap::dofile(L, "./.libs/interrupt_menu.lua");
+            menu_object = luawrap::dofile(L, "./.libs/interactive_mode.lua");
         }
         state = &s;
     }
@@ -110,6 +110,10 @@ struct InterruptMenuFunctions {
         auto value = LuaValue::newtable(state.L);
         DUMP(e, entity_type);
         DUMP(e, preference_class);
+        DUMP(e, region_bin);
+        DUMP(e, subregion_bin);
+        DUMP(e, ideology_tweet_percent);
+        DUMP(e, ideology_bin);
         DUMP(e, n_tweets);
         DUMP(e, n_retweets);
         DUMP(e, creation_time);
@@ -172,13 +176,11 @@ struct InterruptMenuFunctions {
     }
 };
 
-
 extern "C" {
 // Linenoise dependency provides history and tab-completion.
 // Defined in dependencies/lua-linenoise.
 int luaopen_linenoise(lua_State *L);
 }
-
 
 /**
  * Configure a lua-state ready to pick up whatever libraries
@@ -201,7 +203,7 @@ static lua_State* init_lua_state() {
     return L;
 }
 
-bool show_interrupt_menu(AnalysisState& s) {
+bool show_interactive_menu(AnalysisState& s) {
     state.ensure_init(s);
     state.sync_state();
     bool menu = false;

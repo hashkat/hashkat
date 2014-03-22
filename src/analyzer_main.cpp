@@ -20,7 +20,7 @@
 #include "dependencies/lcommon/Timer.h"
 #include "dependencies/lcommon/perf_timer.h"
 
-#include "interrupt_menu.h"
+#include "interactive_mode.h"
 
 #include <signal.h>
 
@@ -239,7 +239,7 @@ struct Analyzer {
                     break;
                 }
                 // Has the user requested an exit?
-                if (!show_interrupt_menu(state)) {
+                if (!show_interactive_menu(state)) {
                     break;
                 }
             }
@@ -270,34 +270,48 @@ struct Analyzer {
         network.n_entities++;
 
         double creation_time = time;
-		Entity& e = network[index];
-		e.creation_time = creation_time;
-		e.language = entity_pick_language();
-		// For now, either always mark ideology, or never
-		e.ideology_tweet_percent = rng.random_chance(0.5) ? 1.0 : 0.0;
-		e.humour_bin = 0; // For now, no humour
-		e.uses_hashtags = true; // For now
-//		e.humour_bin = rng.rand_int(N_BIN_HUMOUR); // Uniform
-		e.preference_class = rng.rand_int(config.pref_classes.size());
-		// Place the entity in a random location
-		// TODO: Location choosing scheme
-		e.location.x = rng.rand_real_with01();
-		e.location.y = rng.rand_real_with01();
-		double rand_num = rng.rand_real_not0();
-		for (int et = 0; et < entity_types.size(); et++) {
-		    EntityType& type = entity_types[et];
-			if (rand_num <= type.prob_add) {
-				e.entity_type = et;
+        Entity& e = network[index];
+
+        // Determine abstract location:
+        auto& R = state.config.regions;
+        DEBUG_CHECK(R.regions.size() == N_BIN_REGIONS, "Should match!");
+        int region_bin = rng.kmc_select(R.add_probs);
+        auto& region = R.regions[region_bin];
+        auto& S = region.subregions;
+        DEBUG_CHECK(S.size() == N_BIN_SUBREGIONS, "Should match!");
+        int subregion_bin = rng.kmc_select(region.add_probs);
+        auto& subregion = S[subregion_bin];
+
+        e.region_bin = region_bin;
+        e.subregion_bin = subregion_bin;
+        e.ideology_bin = rng.kmc_select(subregion.ideology_probs);
+        e.creation_time = creation_time;
+        e.language = (Language) rng.kmc_select(subregion.language_probs);
+        // For now, either always mark ideology, or never
+        e.ideology_tweet_percent = rng.random_chance(0.5) ? 1.0 : 0.0;
+        e.humour_bin = rng.random_chance(0.5) ? 1.0 : 0.0;
+        e.uses_hashtags = rng.random_chance(0.5) ? 1.0 : 0.0;
+        e.preference_class = rng.kmc_select(subregion.preference_class_probs);
+
+        // Place the entity in a random location
+        // TODO: Location choosing scheme
+        e.location.x = rng.rand_real_with01();
+        e.location.y = rng.rand_real_with01();
+        double rand_num = rng.rand_real_not0();
+        for (int et = 0; et < entity_types.size(); et++) {
+            EntityType& type = entity_types[et];
+            if (rand_num <= type.prob_add) {
+                e.entity_type = et;
                 type.entity_list.push_back(index);
-				follow_ranks.categorize(index, e.follower_set.size());
+                follow_ranks.categorize(index, e.follower_set.size());
                 type.follow_ranks.categorize(index, e.follower_set.size());
-				break;
-			}
-			rand_num -= entity_types[et].prob_add;
-		}
-		if (config.use_barabasi){
-			analyzer_follow_entity(state, index, creation_time);
-		}
+                break;
+            }
+            rand_num -= entity_types[et].prob_add;
+        }
+        if (config.use_barabasi){
+                analyzer_follow_entity(state, index, creation_time);
+        }
         return true;
     }
 

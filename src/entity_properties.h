@@ -17,10 +17,8 @@ inline double wrap_dist(double d1, double d2) {
 
 /* Represents a Location object that wraps around in (x = 0 to 1) X (y = 0 to 1) space*/
 struct Location {
-    double x, y;
-    Location() {
-        x = 0, y = 0;
-    }
+    double x = 0, y = 0;
+
     double distance(const Location& o) {
         double dx = wrap_dist(x, o.x);
         double dy = wrap_dist(y, o.y);
@@ -40,6 +38,7 @@ struct Location {
         rw << x << y;
     }
 };
+
 /* This file contains properties that differentiate tweets and entities */
 
 // An X-Macro, allowing for syntatic construction via defining X before resolution

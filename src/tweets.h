@@ -16,19 +16,12 @@
 
 // information for when a user tweets
 struct TweetContent {
-    double time_of_tweet;
+    double time_of_tweet = -1;
     UsedEntities used_entities;
-    Language language;
-    int humour_bin;
-    int ideology_bin; // 0 == no ideology
-    int id_original_author; // The entity that created the original content
-    TweetContent() {
-        time_of_tweet = -1;
-        language = N_LANGS; // Set to invalid
-        id_original_author = -1;
-        humour_bin = -1;
-        ideology_bin = -1;
-    }
+    Language language = N_LANGS; // Set to invalid
+    int humour_bin = -1;
+    int ideology_bin = -1; // 0 == no ideology
+    int id_original_author = -1; // The entity that created the original content
 
     READ_WRITE(rw) {
         std::vector<int> ids;
@@ -57,34 +50,29 @@ struct TweetContent {
 // A tweet is an orignal tweet if tweeter_id == content.author_id
 struct Tweet {
     // The entity broadcasting the tweet
-    int id_tweeter;
+    int id_tweeter = -1;
 
     // The 'linking' entity the tweet was retweeted from (a following of id_tweeter)
     // Equal to id_tweeter if the tweet was original content.
-    int id_link;
+    int id_link = -1;
     // The generation of the tweet, 0 if the tweet was original content
-    int generation;
+    int generation = -1;
     // A tweet is an orignal tweet if tweeter_id == content.author_id
     smartptr<TweetContent> content;
 
     // The time the tweet was tweeted
-    double creation_time;
+    double creation_time = 0;
 
     // Based on creation_time and the current time
     // Determines the 'omega' observation PDF dropoff rate of
     // the tweet's retweetability.
-    int retweet_time_bin;
+    int retweet_time_bin = -1;
 
     // Next time to consider rebinning, always more than creation_time
-    double retweet_next_rebin_time;
+    double retweet_next_rebin_time = -1;
 
-    explicit Tweet(const smartptr<TweetContent>& content = smartptr<TweetContent>()) : content(content) {
-        id_tweeter = -1;
-        id_link = -1;
-        generation = -1;
-        creation_time = 0;
-        retweet_time_bin = -1;
-        retweet_next_rebin_time = -1;
+    explicit Tweet(const smartptr<TweetContent>& content = smartptr<TweetContent>()) {
+        this->content = content;
     }
 
     void print() {
@@ -106,10 +94,8 @@ struct MostPopularTweet {
     // this is the most retweeted tweet
     Tweet most_popular_tweet;
     // The max number of retweets for one tweet
-    int global_max;
-    MostPopularTweet() {
-        global_max = 0;
-    }
+    int global_max = 0;
+
     READ_WRITE(rw) {
         rw << global_max;
         most_popular_tweet.visit(rw);
