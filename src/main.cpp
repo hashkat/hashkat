@@ -43,7 +43,6 @@ const char* get_var_arg(int argc, char** argv, std::string test, const char* def
 
 //** we avoid creating a header by pasting the 'test_main' prototype here:
 int test_main(int argc, char** argv); // Defined in tests/main.cpp
-int uv_main(int argc, char** argv); // Defined in tests/libuv-learning.cpp
 
 int main(int argc, char** argv) {
 
@@ -53,9 +52,7 @@ int main(int argc, char** argv) {
         cout.setf(std::ios::unitbuf);
     }
 
-	if (has_flag(argc, argv, "--uv")) {
-	    return uv_main(argc, argv);
-	} else if (has_flag(argc, argv, "--tests")) {
+	if (has_flag(argc, argv, "--tests")) {
 		// running tests:
 		return test_main(argc, argv);
 	} else {

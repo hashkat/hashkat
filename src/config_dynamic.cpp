@@ -108,9 +108,9 @@ static TweetObservationPDF parse_tweet_obs_pdf(const Node& node) {
     parse_vector(func, ret.values);
     parse_vector(bin_bounds, ret.thresholds);
 
-    for (int i = 0; i < ret.values.size(); i++ ) {
-        printf("VALUE IS %g (< %g)\n", ret.values[i], ret.thresholds[i]);
-    }
+//    for (int i = 0; i < ret.values.size(); i++ ) {
+//        printf("VALUE IS %g (< %g)\n", ret.values[i], ret.thresholds[i]);
+//    }
     return ret;
 }
 

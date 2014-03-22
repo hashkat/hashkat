@@ -13,6 +13,8 @@ CTestTestfile.cmake
 main
 socialsim
 src/main
+build
+build/*
 src/socialsim
 callgrind.out.*
 POSITIONS*

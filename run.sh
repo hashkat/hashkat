@@ -91,11 +91,13 @@ fi
 
 # Pass the -f flag to avoid building:
 if ! handle_flag "-f" && ! handle_flag "--force" ; then
-    cmake . | colorify '1;33'
+    cd build
+    cmake .. | colorify '1;33'
     if handle_flag "--clean" ; then
         make clean
     fi
     make -j$((cores+1))
+    cd ..
 fi
 
 # Clear all existing generated YAML files:
@@ -118,18 +120,18 @@ if handle_flag "--gdb" || handle_flag "-g" ; then
     echo "Wrapping in GDB:" | colorify '1;35'
     gdb -silent  \
         -ex='set confirm off' \
-        -ex="handle 31 nostop noprint pass" -ex=r --args src/socialsim $args 
+        -ex="handle 31 nostop noprint pass" -ex=r --args build/src/socialsim $args 
 #        -ex="handle SIGINT nostop noprint pass" \
 elif handle_flag "--lldb" || handle_flag "-l" ; then
     # Wrap lldb around the program with -l:
     echo "Wrapping in LLDB:" | colorify '1;35'
-    lldb src/socialsim $args
+    lldb build/src/socialsim $args
 elif handle_flag "--oprofile" || handle_flag "--oprof" ; then
     # Requires installation of oprofile!
     # Profile the program (requires oprofile) with -p:
     echo "Profiling with oprofile:" | colorify '1;35'
-    operf src/socialsim $args
-    opreport --exclude-dependent --demangle=smart --symbols src/socialsim | less
+    operf build/src/socialsim $args
+    opreport --exclude-dependent --demangle=smart --symbols build/src/socialsim | less
 elif handle_flag "--valgrind" || handle_flag "--vprof"; then
     # Requires installation of valgrind and kCacheGrind!
     echo "Profiling with valgrind:" | colorify '1;35'
@@ -141,10 +143,10 @@ elif handle_flag "--valgrind" || handle_flag "--vprof"; then
 
     trap showOutput INT
 
-    valgrind --tool=callgrind src/socialsim $args
+    valgrind --tool=callgrind build/src/socialsim $args
 
     showOutput
 else
     # Normal execution
-    src/socialsim $args
+    build/src/socialsim $args
 fi

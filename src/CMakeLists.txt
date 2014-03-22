@@ -11,7 +11,6 @@ include_directories(
 	dependencies/libuv/include
 )
 
-
 add_definitions(-Wuninitialized -std=c++11)
 
 # Find source files
@@ -21,7 +20,7 @@ aux_source_directory(
 )
 
 aux_source_directory(
-	"tests" 
+	"unit_tests" 
 	networksim_tests
 )
 
@@ -41,7 +40,6 @@ set_source_files_properties(
         PROPERTIES COMPILE_FLAGS 
         "-pedantic-errors -Wno-long-long -Wno-variadic-macros -Wno-sign-compare -Wno-reorder"
 )
-
 
 aux_source_directory(
 	"dependencies/lcommon" 
