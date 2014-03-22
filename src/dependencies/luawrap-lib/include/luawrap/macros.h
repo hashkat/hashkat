@@ -14,6 +14,18 @@
 
 #define LUAWRAP_SET_TYPE(x) typedef x LuawrapMacroTypeToWrap;
 
+//// Allows for one line function wrapping
+//// TODO: Argument typecheck
+#define LUAWRAP_FUNCTION(table, func_name, body) \
+    struct MacroGeneratedFunction_##func_name { \
+        static int FUNC##func_name (lua_State* L) { \
+            int nargs = lua_gettop(L); \
+            body ; \
+            return lua_gettop(L) - nargs; \
+        } \
+    }; \
+    table[ #func_name ].bind_function( MacroGeneratedFunction_##func_name :: FUNC##func_name )
+
 //// Allows for one line method wrapping
 //// TODO: Argument typecheck
 #define LUAWRAP_METHOD(table, func_name, body) \

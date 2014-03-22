@@ -19,19 +19,9 @@ struct EntityPreferenceClass {
 // Also referred to as the Omega function, see INFILE.yaml for details:
 struct TweetObservationPDF {
     double initial_resolution;
-    std::vector<double> values;
 
-    // Inverse of our exponential function:
-    int get_probability_bin(double time) {
-        const double log2 = 0.30102999566;
-        double R = initial_resolution;
-        double L = log( (R+time) / (3.0 * R));
-        int bin = (int)ceil((L - log2) / log2);
-        if (bin >= values.size()) {
-            return values.size() - 1;
-        }
-        return bin;
-    }
+    std::vector<double> values;
+    std::vector<double> thresholds;
 };
 
 //TODO AD: Better name
@@ -73,8 +63,6 @@ struct ParsedConfig {
     bool stage1_unfollow;
     FollowModel follow_model;
 
-    FollowerSetRatesDeterminer follower_rates;
-
     bool save_network_on_timeout, load_network_on_startup;
     bool ignore_load_config_check;
     std::string save_file;
@@ -104,13 +92,26 @@ struct ParsedConfig {
 
     std::vector<EntityPreferenceClass> pref_classes;
 
+
     bool enable_interactive_mode;
 
     // command-line config options
     bool handle_ctrlc;
 
-    // Tweet relevance functions
+    // tweet_obs: 
+    //  An observation probability density function that gives 
+    //  the probability that a tweet is observed at a certain time by an 'ideal observer'. 
+    //  An 'ideal observer' is one which always sees a tweet, eventually.'
+    //  The observation PDF is used for both retweeting and follow-from-tweet.
+    //  We combine this with a relevance factor, r, where 0 <= r <= 1.0, we in turn
+    //  determines the probability that a given entity will act on a given tweet, with enough time.
     TweetObservationPDF tweet_obs;
+
+    // follower_rates: 
+    //  The transmission probability for a person of a certain preference class towards
+    //  a tweet of a given origin & content.
+
+    FollowerSetRatesDeterminer follower_rates;
 
     /* Most config values are optional -- place defaults here. */
     ParsedConfig() {

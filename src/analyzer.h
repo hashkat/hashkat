@@ -46,11 +46,16 @@ struct AnalysisStats {
 
 const int APPROX_MONTH = 30 * 24 * 60;
 
+struct Analyzer;
+
 // All the state passed to - and - from analyze.cpp.
 // Essentially this encapsulates all the information required for the post-analysis routines.
 // This is 'conceptually cleaner' than passing along the entire contents of the Analyzer struct.
 
 struct AnalysisState {
+    // A back-pointer to the Analyzer structure.
+    // NULL if analysis is not active!
+    Analyzer* analyzer;
     // The current simulation time
     double time;
     ParsedConfig config;
@@ -82,6 +87,7 @@ struct AnalysisState {
     AnalysisStats stats;
     AnalysisState(const ParsedConfig& config, int seed) :
             config(config), tweet_bank(*this){
+        analyzer = NULL;
         n_follows = 0;
         r_follow_norm = end_time = 0;
         tweet_ranks = config.tweet_ranks;
@@ -168,15 +174,20 @@ struct RetweetChoice {
 int analyzer_select_entity(AnalysisState& state, SelectionType type);
 void analyzer_rate_update(AnalysisState& state);
 // Follow a specific user
-bool analyzer_follow_entity(AnalysisState& state, int entity, int n_entities, double time_of_follow);
+bool analyzer_follow_entity(AnalysisState& state, int entity, double time_of_follow);
 // Implements a follow-back
 bool analyzer_followback(AnalysisState& state, int follower, int followed);
 // Run a network simulation using the given input file's parameters
 void analyzer_main(AnalysisState& state);
 // this returns the total retweet rate
 double analyzer_total_retweet_rate(AnalysisState& state);
+
 // this is for the retweet entity selection
 RetweetChoice analyzer_select_tweet_to_retweet(AnalysisState& state, SelectionType type);
+
+// Create an entity
+bool analyzer_create_entity(AnalysisState& state);
+
 void update_retweets(AnalysisState& state);
 
 #endif

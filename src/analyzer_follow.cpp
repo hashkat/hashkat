@@ -69,6 +69,8 @@ struct AnalyzerFollow {
        return rng.rand_int(n_entities);
    }
    int preferential_barabasi_follow_method() {
+       PERF_TIMER();
+
        double rand_num = rng.rand_real_not0();
        // if we want to use a preferential follow method
        int entity_to_follow = -1;
@@ -102,6 +104,8 @@ struct AnalyzerFollow {
        return -1;
    }
    int preferential_follow_method() {
+       PERF_TIMER();
+
        double rand_num = rng.rand_real_not0();
        double prob_sum = 0;
        auto& updating_probs = updating_follow_probabilities;
@@ -128,6 +132,8 @@ struct AnalyzerFollow {
        return -1;
    }
    int entity_follow_method() {
+       PERF_TIMER();
+
        // if we want to follow by entity class
        /* search through the probabilities for each entity and find the right bin to land in */
        double rand_num = rng.rand_real_not0();
@@ -147,6 +153,8 @@ struct AnalyzerFollow {
        return -1;
    }
    int preferential_entity_follow_method() {
+       PERF_TIMER();
+
        int entity_to_follow = -1;
        double rand_num = rng.rand_real_not0();
        for (int i = 0; i < entity_types.size(); i++) {
@@ -185,6 +193,8 @@ struct AnalyzerFollow {
        return -1;
    }
    int twitter_follow_model() {
+       PERF_TIMER();
+
        double rand_num = rng.rand_real_not0();
        /* different follow models:
            0 - random follow
@@ -205,14 +215,7 @@ struct AnalyzerFollow {
        } for (auto& weight : follow_weights) {
            weight /= sum_of_weights;
        } 
-       int follow_method = -1;
-       for (int i = 0; i < follow_weights.size(); i ++) {
-           if (rand_num <= follow_weights[i]) {
-           follow_method = i;
-           break;    
-           } 
-           rand_num -= follow_weights[i];
-       }
+       int follow_method = rng.kmc_select(&follow_weights[0], n_follow_models);
        if (follow_method == 0) {
            return random_follow_method(network.n_entities);
        } else if (follow_method == 1) {
@@ -226,14 +229,14 @@ struct AnalyzerFollow {
     }
     
    // Returns false to signify that we must retry the KMC event
-    bool follow_entity(int entity, int n_entities, double time_of_follow) {
+    bool follow_entity(int entity, double time_of_follow) {
         Entity& e1 = network[entity];
         int entity_to_follow = -1;
         double rand_num = rng.rand_real_not0();
         // if we want to do random follows
         if (config.follow_model == RANDOM_FOLLOW) {
             // find a random entity within [0:number of entities - 1]
-            entity_to_follow = random_follow_method(n_entities);
+            entity_to_follow = random_follow_method(network.n_entities);
         } else if (config.follow_model == PREFERENTIAL_FOLLOW && config.use_barabasi) {
             perf_timer_begin("AnalyzerFollower.follow_entity(barabasi_preferential_follow)");
             entity_to_follow = preferential_barabasi_follow_method();
@@ -316,7 +319,8 @@ struct AnalyzerFollow {
     }
         
 	bool action_unfollow(int id_unfollowed, int id_unfollower) {
-	    perf_timer_begin("action_unfollow");
+	    PERF_TIMER();
+
 		FollowerSet& candidate_followers = network.follower_set(id_unfollowed);
 
 		DEBUG_CHECK(id_unfollower != -1, "Should not be -1 after choice!");
@@ -331,18 +335,19 @@ struct AnalyzerFollow {
 		Entity& e_lost_follower = network[id_unfollower];
 		bool had_follow = e_lost_follower.following_set.remove(state, id_unfollowed);
 		DEBUG_CHECK(had_follow, "unfollow: Did not exist in follow list");
-		perf_timer_end("action_unfollow");
         stats.n_unfollows ++;
 		return true;
 	}
 };
 
-bool analyzer_follow_entity(AnalysisState& state, int entity, int n_entities, double time_of_follow) {
+bool analyzer_follow_entity(AnalysisState& state, int entity, double time_of_follow) {
+    PERF_TIMER();
     AnalyzerFollow analyzer(state);
-    return analyzer.follow_entity(entity, n_entities, time_of_follow);
+    return analyzer.follow_entity(entity, time_of_follow);
 }
 
 bool analyzer_followback(AnalysisState& state, int follower, int followed) {
+    PERF_TIMER();
     AnalyzerFollow analyzer(state);
     return analyzer.followback(follower, followed);
 }

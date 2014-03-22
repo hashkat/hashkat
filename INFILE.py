@@ -7,6 +7,20 @@
 # functions a user might want to supply.
 #################################################################
 
+#################################################################
+# PLACE CONVENIENCE FUNTIONS FOR INFILE.yaml HERE
+#################################################################
+
+# Convenience rates, in minutes
+minute = 1
+hour = minute * 60
+day = 24 * hour
+year = 365 * day
+
+#################################################################
+# CEASE PLACING CONVENIENCE FUNCTIONS.
+#################################################################
+
 import yaml
 import sys
 
@@ -47,6 +61,8 @@ tweet_obs_density_function = load_observation_pdf(obs_pdf["density_function"])
 tweet_obs_x_start = obs_pdf["x_start"]
 tweet_obs_x_end = obs_pdf["x_end"]
 tweet_obs_initial_resolution = obs_pdf["initial_resolution"]
+tweet_obs_resolution_growth_factor = obs_pdf["resolution_growth_factor"]
+tweet_obs_time_span = obs_pdf["time_span"]
 
 tweet_rel = CONFIG["tweet_relevance"]
 distance_bins = tweet_rel["distance_bins"]
@@ -81,34 +97,59 @@ def load_relevance_functions():
 profile_funcs = load_relevance_functions()
 
 #################################################################
-# Rate derivation
+# Tweet observation probability function integration and binning
+# Using 'compute_tweet_obs', we compute the rate bins that correspond 
+# to the time that a tweet has been active. These bins control how the
+# relevance function below drops off over time. 
+#
+# If the relevance function is 1 for a person viewing a tweet, in theory 
+# that person will always retweet it, given enough time. 
+# Note, however, that due to the random-select nature of KMC this cannot be guaranteed.
 
 def tweet_observation_integral(x1, x2):
-    val = quad(tweet_obs_density_function, x1, x2)
-
-    val = exp(-t / hl * log(2))
-    print(str(t) + ' ' + str(val)) #Uncomment for simple, plottable data
+    val,err = quad(tweet_obs_density_function, x1, x2)
     return val
 
-# We compute all bins over a..b at (a+b)/2, ie the midpoint rule
+# Since we bin logarithmatically, we must do a weighted normalization considering
+# the span of the observation bin.
+def normalize_tweet_obs(rates, spans):
+    rate_sum = 0
+    # Computed a weighted sum according to the span of the bin:
+    for i in range(len(rates)):
+        rate_sum += rates[i] * spans[i]
+
+    # Normalize the rates to form a PDF:
+    for i in range(len(rates)):
+        rates[i] /= rate_sum
+        #print(str(spans[i]) + ' ' + str(rates[i])) #Uncomment for simple, plottable data
+
+def x_bound_to_time_bound(x_bound):
+    span = (tweet_obs_x_end - tweet_obs_x_start)
+    mult = tweet_obs_time_span / float(span)
+    return (x_bound - tweet_obs_x_start) * mult
+
 def compute_tweet_obs():
     rates = []
+    spans = []
+    bounds = []
 
-    prev_bound = 0
-    bound = 0
+    prev_bound = tweet_obs_x_start 
+    bound = prev_bound
     res = tweet_obs_initial_resolution
 
-    while True:
+    while bound < tweet_obs_x_end:
         bound += res
-        # Compute the value of the function, using the function's midpoint
-        obs = tweet_observation_pdf((bound + prev_bound) / 2)
-        prev_bound = bound
-        res *= 2.0 # Increase the resolution by double
+        bound = min(bound, tweet_obs_x_end)
+        obs = tweet_observation_integral(prev_bound, bound)
         rates.append(obs)
-        if obs <= tweet_obs_final_rate:
-            break
+        spans.append(res)
+        bounds.append(x_bound_to_time_bound(bound))
 
-    return rates
+        prev_bound = bound # Set current bound to new previous
+        res *= tweet_obs_resolution_growth_factor # Increase the resolution by the growth factor
+
+    normalize_tweet_obs(rates, spans)
+    return rates, bounds
 
 #################################################################
 # Relevance lookup table generation
@@ -158,8 +199,11 @@ def compute_relevance_table(): # N-dimensional array
 #################################################################
 # YAML emission
 
+obs_function, obs_bin_bounds = compute_tweet_obs()
+
 generated = {
-    "obs_function" : compute_tweet_obs(),
+    "obs_function" : obs_function,
+    "obs_bin_bounds" : obs_bin_bounds,
     "rel_function" : compute_relevance_table()
 }
 

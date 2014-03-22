@@ -1,12 +1,5 @@
-/*
- * TimeDepRateTree.h
- *
- *  Created on: Feb 17, 2014
- *      Author: adomurad
- */
-
-#ifndef TIMEDEPRATETREE_H_
-#define TIMEDEPRATETREE_H_
+#ifndef TWEETBANK_H_
+#define TWEETBANK_H_
 
 #include <cmath>
 #include <vector>
@@ -42,9 +35,7 @@ struct TweetRateDeterminer {
     void update_rate(TweetReactRateVec& rates, const Tweet& tweet, int bin);
     TweetReactRateVec get_rate(const Tweet& tweet, int bin);
 
-    double get_cat_threshold(int bin) {
-        return (1 << bin) * 90.0;
-    }
+    double get_cat_threshold(int bin);
 
     AnalysisState& state;
 };
@@ -84,10 +75,7 @@ struct TimeDepRateTree {
     }
 
     double get_cat_threshold(int i) {
-        if (i == 0) {
-            return 0;
-        }
-        return initial_resolution* pow(2, i);
+        return determiner.get_cat_threshold(i);
     }
 
     void update(double time) {
@@ -101,9 +89,13 @@ struct TimeDepRateTree {
         for (auto& bin : binner.get_bins()) {
             i++;
             double time = determiner.get_cat_threshold(i);
-            std::cout << "IN BIN " << i << " HAVE " << bin.size() << std::endl;
-            std::cout << "THEY HAVE elapsed-time < " << time << std::endl;
+//            std::cout << "IN BIN " << i << " HAVE " << bin.size() << std::endl;
+//            std::cout << "THEY HAVE elapsed-time < " << time << std::endl;
         }
+    }
+
+    std::vector<TweetRateTree::Node*> as_node_vector() {
+        return tree.as_node_vector();
     }
 
     std::vector<Tweet> as_vector() {
@@ -195,6 +187,10 @@ struct TweetBank {
 //        ITER++;
     }
 
+    std::vector<TweetRateTree::Node*> as_node_vector() {
+        return tree.as_node_vector();
+    }
+
     std::vector<Tweet> as_vector() {
         auto vec = tree.as_vector();
         for (int i = 0; i < vec.size(); i++) {
@@ -220,4 +216,4 @@ struct TweetBank {
     }
 };
 
-#endif /* TIMEDEPRATETREE_H_ */
+#endif

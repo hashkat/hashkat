@@ -34,8 +34,7 @@ struct Network {
         delete[] entities;
     }
     Entity& operator[](int index) { //** This allows us to index our Network struct as if it were an array.
-        // Note that we allow accessing the tail unallocated element (hence the <= instead of <):
-        DEBUG_CHECK(index >= 0 && index <= n_entities, "Network out-of-bounds entity access");
+        DEBUG_CHECK(index >= 0 && index < n_entities, "Network out-of-bounds entity access");
         return entities[index];
     }
 
@@ -58,6 +57,11 @@ struct Network {
 
     FollowerSet& follower_set(int id) {
         return entities[id].follower_set;
+    }
+
+    // Return last entity:
+    Entity& back() {
+        return (*this)[n_entities - 1];
     }
 
     size_t n_following(int id) {

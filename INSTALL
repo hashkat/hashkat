@@ -9,6 +9,7 @@ To install kOSN, you will need to have the following:
 
 #### OS X
 
+AD -- TODO: Notes about scipy
 Both cmake and yaml are available through brew
 
 brew install cmake

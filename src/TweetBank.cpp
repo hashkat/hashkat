@@ -14,6 +14,10 @@ void TweetRateDeterminer::update_rate(TweetReactRateVec& rates, const Tweet& twe
     rates = get_rate(tweet, bin);
 }
 
+double TweetRateDeterminer::get_cat_threshold(int bin) {
+    return state.config.tweet_obs.thresholds[bin];
+}
+
 TweetReactRateVec TweetRateDeterminer::get_rate(const Tweet& tweet, int bin) {
     Entity& entity = state.network[tweet.id_tweeter];
     Language lang = entity.language;
@@ -61,7 +65,7 @@ TweetReactRateVec TweetRateDeterminer::get_rate(const Tweet& tweet, int bin) {
 bool TimeDepRateTree::ElementChecker::check(ref_t id) {
     AnalysisState& state = tree.determiner.state;
     Tweet& t = tree.get(id).data;
-    //            printf("CHECKING %d elapsed(%f) > t.retweet_next_rebin_time(%f)\n", id, time, t.retweet_next_rebin_time);
+//        printf("CHECKING %d time(%f) > t.retweet_next_rebin_time(%f)\n", id, time, t.retweet_next_rebin_time);
     if (time > t.retweet_next_rebin_time) {
         // Move to a new bin:
         t.retweet_time_bin++;
@@ -70,15 +74,12 @@ bool TimeDepRateTree::ElementChecker::check(ref_t id) {
             tree.tree.remove(id);
         } else {
             //                    printf("MOVING TO BIN %d\n", t.retweet_time_bin);
-            printf("RATE BEFORE %f\n",
-                    state.config.tweet_obs.values[t.retweet_time_bin-1]);
+//            printf("RATE BEFORE %f\n", tree.get(id).rates.tuple_sum);
             t.retweet_next_rebin_time = t.creation_time
                     + tree.determiner.get_cat_threshold(t.retweet_time_bin);
-            TweetReactRateVec rates = tree.determiner.get_rate(t,
-                    t.retweet_time_bin);
+            TweetReactRateVec rates = tree.determiner.get_rate(t, t.retweet_time_bin);
             tree.tree.replace_rate(id, rates);
-            printf("RATE AFTER %f\n",
-                    state.config.tweet_obs.values[t.retweet_time_bin]);
+//            printf("RATE AFTER %f\n", tree.get(id).rates.tuple_sum);
         }
         return false;
     }

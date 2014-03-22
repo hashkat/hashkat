@@ -102,11 +102,15 @@ static void parse_vector(const Node& node, std::vector<T>& vec, int tab =0) {
 static TweetObservationPDF parse_tweet_obs_pdf(const Node& node) {
     const Node& tweet_obs = node["tweet_observation"];
     const Node& func = node["GENERATED"]["obs_function"];
+    const Node& bin_bounds = node["GENERATED"]["obs_bin_bounds"];
     TweetObservationPDF ret; 
+
     parse(tweet_obs, "initial_resolution", ret.initial_resolution);
     parse_vector(func, ret.values);
+    parse_vector(bin_bounds, ret.thresholds);
+
     for (int i = 0; i < ret.values.size(); i++ ) {
-        printf("VALUE IS %.2f\n", ret.values[i]);
+        printf("VALUE IS %g (< %g)\n", ret.values[i], ret.thresholds[i]);
     }
     return ret;
 }

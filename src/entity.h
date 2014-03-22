@@ -54,7 +54,7 @@ struct Entity {
         rw << entity_type << preference_class
            << n_tweets << n_retweets << creation_time << avg_chatiness
            << location << language
-           << humour_bin;
+           << humour_bin << chatty_entities;
     }
 
     // 'Visits' every node, eg for serialization or testing

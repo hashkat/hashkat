@@ -174,7 +174,7 @@ struct Analyzer {
 	}
     void set_initial_entities() {
         for (int i = 0; i < config.initial_entities; i++) {
-             action_create_entity(0.0, i);
+             action_create_entity();
         }
     }
 
@@ -198,8 +198,10 @@ struct Analyzer {
     bool sim_time_check() {
         return (time < config.max_sim_time);
     }
+
     bool real_time_check() {
-        return (max_sim_timer.get_microseconds() < (config.max_real_time * 1000));
+        const int MINUTE_TO_MICROSECOND = 1000LL * 1000LL * 60LL;
+        return (max_sim_timer.get_microseconds() < (config.max_real_time * MINUTE_TO_MICROSECOND));
     }
     void interrupt_reset() {
         SIGNAL_ATTEMPTS = 0;
@@ -230,7 +232,7 @@ struct Analyzer {
     // ROOT ANALYSIS ROUTINE
     /* Run the main analysis routine using this config. */
     void run_network_simulation() {
-        while ( LIKELY(sim_time_check() && real_time_check()) ) {
+        while (sim_time_check() && real_time_check()) {
             if (!interrupt_check()) {
                 interrupt_reset();
                 if (!config.enable_interactive_mode) {
@@ -256,7 +258,18 @@ struct Analyzer {
 
     /* Create a entity at the given index.
      * The index should be an empty entity slot. */
-    bool action_create_entity(double creation_time, int index) {
+    bool action_create_entity() {
+        PERF_TIMER();
+
+        if (network.n_entities == network.max_entities) {
+            // Make sure we do not try to add!
+            return false;
+        }
+
+        int index = network.n_entities;
+        network.n_entities++;
+
+        double creation_time = time;
 		Entity& e = network[index];
 		e.creation_time = creation_time;
 		e.language = entity_pick_language();
@@ -280,10 +293,9 @@ struct Analyzer {
 			rand_num -= entity_types[et].prob_add;
 		}
 		if (config.use_barabasi){
-			analyzer_follow_entity(state, index, index, creation_time);
+			analyzer_follow_entity(state, index, creation_time);
 		}
-        network.n_entities++;
-        return true; // Always succeeds, for now.
+        return true;
     }
 
     smartptr<TweetContent> generate_tweet_content(int id_original_author) {
@@ -319,6 +331,8 @@ struct Analyzer {
 
 	// function to handle the tweeting
 	bool action_tweet(int id_tweeter) {
+	    PERF_TIMER();
+
         // This is the entity tweeting
 		Entity& e = network[id_tweeter];
         entity_types[e.entity_type].n_tweets++;
@@ -402,11 +416,9 @@ struct Analyzer {
          *
          * Luckily, this should be (relatively) rare.
          */
-        int retries = 0;
         bool complete = false;
         while (!complete) {
             double r = rng.rand_real_not0(); // get the first number with-in [0,1).
-            int N = network.n_entities;
             /*if (!retweet_checks() && stats.n_retweets != 0) {
                 cout << "\n------Error in retweets-------\n";
             } */           
@@ -414,24 +426,22 @@ struct Analyzer {
             // DECIDE WHAT TO DO:
             if (subtract_var(r, stats.prob_add) <= ZEROTOL) {
                 // If we find ourselves in the add entity chuck of our cumulative function:
-                perf_timer_begin("action_create_entity");
-                complete = action_create_entity(time, N);
-                perf_timer_end("action_create_entity");
+                complete = action_create_entity();
             } else if (subtract_var(r, stats.prob_follow) <= ZEROTOL) {
+
                 perf_timer_begin("analyzer_select_entity(FOLLOW_SELECT)");
                 int entity = analyzer_select_entity(state, FOLLOW_SELECT);
                 perf_timer_end("analyzer_select_entity(FOLLOW_SELECT)");
-                perf_timer_begin("action_follow_entity");
-                complete = analyzer_follow_entity(state, entity, N, time);
-                perf_timer_end("action_follow_entity");
+
+                complete = analyzer_follow_entity(state, entity, time);
             } else if (subtract_var(r, stats.prob_tweet) <= ZEROTOL) {
                 // The tweet event
+
                 perf_timer_begin("analyzer_select_entity(TWEET_SELECT)");
                 int entity = analyzer_select_entity(state, TWEET_SELECT);
                 perf_timer_end("analyzer_select_entity(TWEET_SELECT)");
-                perf_timer_begin("action_tweet");
+
                 complete = action_tweet(entity);
-                perf_timer_end("action_tweet");
             } else if (subtract_var(r, stats.prob_retweet) <= ZEROTOL ) {
                 RetweetChoice choice = analyzer_select_tweet_to_retweet(state, RETWEET_SELECT);
                 if (choice.id_author != -1) {
@@ -616,14 +626,32 @@ struct Analyzer {
     }
 };
 
+bool analyzer_create_entity(AnalysisState& state) {
+    ASSERT(state.analyzer != NULL, "Analysis is not active!");
+    return state.analyzer->action_create_entity();
+}
+
 // Run a network simulation using the given input file's parameters
 void analyzer_main(AnalysisState& state) {
+    // We maintain a back-pointer to Analyzer so that we can access its methods
+    // from other files, during analysis.
+
     Timer timer;
     Analyzer analyzer(state);
+    state.analyzer = &analyzer; // Install back-pointer
+
     if (state.config.handle_ctrlc) {
         signal_handlers_install(state);
     }
+
+    // >> The main analysis function:
     analyzer.main();
+
+    // Make our back-pointer is no longer accessible, as our object will go out of scope
+    state.analyzer = NULL;
+
     signal_handlers_uninstall(state);
+
+    // Print summary time:
     printf("'analyzer_main' took %.2f milliseconds.\n", timer.get_microseconds() / 1000.0);
 }

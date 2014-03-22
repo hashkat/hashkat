@@ -4,7 +4,9 @@
 #include <lua.hpp>
 #include <stdexcept>
 #include <iostream>
+
 #include <luawrap-lib/include/luawrap/luawrap.h>
+#include <luawrap-lib/include/luawrap/macros.h>
 
 static lua_State* init_lua_state();
 
@@ -57,9 +59,20 @@ struct InterruptMenuFunctions {
         LuaValue G = luawrap::globals(L);
         G["followers"].bind_function(followers);
         G["followings"].bind_function(followings);
+
+        // One-line function definition, using above 'state' global.
+        // Dereferencing this will bring you to AnalysisState.
+        LUAWRAP_FUNCTION(G, create_entity,
+                if (analyzer_create_entity(*state)) {
+                    luawrap::push(state.L, entity_to_table(state->network.back()));
+                } else {
+                    lua_pushnil(state.L);
+                }
+        );
         G["followers_print"].bind_function(followers_print);
         G["tweets"].bind_function(tweets);
     }
+
     /* Interrupt menu functions: */
     static std::vector<int> followers(int entity) {
         std::vector<int> ret;
@@ -76,10 +89,37 @@ struct InterruptMenuFunctions {
         return ret;
     }
 
+#define DUMP(obj, member) \
+    value[#member] = obj. member
+
+    static LuaValue entity_to_table(Entity& e) {
+        auto value = LuaValue::newtable(state.L);
+        DUMP(e, entity_type);
+        DUMP(e, preference_class);
+        DUMP(e, n_tweets);
+        DUMP(e, n_retweets);
+        DUMP(e, creation_time);
+        DUMP(e, avg_chatiness);
+        DUMP(e, humour_bin);
+        DUMP(e, chatty_entities);
+
+        auto table = LuaValue::newtable(state.L);
+        table["x"] = e.location.x;
+        table["y"] = e.location.x;
+        value["location"] = table;
+
+        value["language_id"] = (int)e.language;
+        value["language_name"] = language_name(e.language);
+
+        return value;
+    }
+
     static LuaValue tweet_to_table(Tweet& tweet) {
-        LuaValue value = LuaValue::newtable(state.L);
+        auto value = LuaValue::newtable(state.L);
         value["id_tweeter"] = tweet.id_tweeter;
         value["id_link"] = tweet.id_link;
+        value["retweet_next_rebin_time"] = tweet.retweet_next_rebin_time;
+        value["retweet_time_bin"] = tweet.retweet_time_bin;
         value["generation"] = tweet.generation;
         value["creation_time"] = tweet.creation_time;
         value["id_original_author"] = tweet.content->id_original_author;
@@ -88,15 +128,19 @@ struct InterruptMenuFunctions {
 
         return value;
     }
-    static LuaValue tweets() {
-        LuaValue value = LuaValue::newtable(state.L);
 
-        for (Tweet tweet : state->tweet_bank.as_vector()) {
-            value[value.objlen() + 1] = tweet_to_table(tweet);
+    static LuaValue tweets() {
+        auto value = LuaValue::newtable(state.L);
+
+        for (auto* node : state->tweet_bank.as_node_vector()) {
+            auto table = tweet_to_table(node->data);
+            table["rate_react_total"] = node->rates.tuple_sum;
+            value[value.objlen() + 1] = table;
         }
 
         return value;
     }
+
     static void followers_print(int entity) {
         FollowerSet::Context context(*state, entity);
         state->network.follower_set(entity).print(context);
@@ -105,7 +149,8 @@ struct InterruptMenuFunctions {
 
 
 extern "C" {
-// Defined in dependencies/lua-linenoise:
+// Linenoise dependency provides history and tab-completion.
+// Defined in dependencies/lua-linenoise.
 int luaopen_linenoise(lua_State *L);
 }
 
@@ -123,7 +168,10 @@ static lua_State* init_lua_state() {
     LuaValue package = globals["package"];
     package["path"] = package["path"].as<std::string>() + ";./.libs/?.lua";
     package["cpath"] = package["cpath"].as<std::string>() + ";./.libs/?.so";
+
+    // Linenoise loading, see above.
     package["preload"]["linenoise"].bind_function(luaopen_linenoise);
+
     InterruptMenuFunctions::install_functions(L);
     return L;
 }

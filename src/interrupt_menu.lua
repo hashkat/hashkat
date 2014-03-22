@@ -79,10 +79,14 @@ function pretty(...)
     print(unpack(args))
 end
 
+local long_print = false
 local function repl_run()
     local keep_going = true
     local R = repl:clone()
 
+    function toggle_long_print() 
+        long_print = not long_print
+    end
     function exit() 
         keep_going = false 
     end
@@ -103,7 +107,13 @@ local function repl_run()
 
     function R:displayresults(results)
         if results.n == 0 then return end
-        pretty(unpack(results, 1, results.n))
+        if long_print then
+            for i=1,results.n do
+                print(pretty_tostring(results[i]))
+            end
+        else
+            pretty(unpack(results, 1, results.n))
+        end
     end
 
     R:run()
