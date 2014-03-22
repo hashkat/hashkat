@@ -101,13 +101,13 @@ private:
         int element = bin1.pop(checker);
 
         if (bin + 1 < bins.size()) {
-            printf("MOVING %d from %d to %d\n", element, bin, bin +1);
+//            printf("MOVING %d from %d to %d\n", element, bin, bin +1);
             auto& bin2 = bins[bin + 1];
             checker.set_bin(bin + 1);
             bin2.add(checker, element);
             checker.set_bin(bin); // Reset for 'update'
         } else {
-            printf("BOOTING %d\n", element);
+//            printf("BOOTING %d\n", element);
         }
     }
 

@@ -58,6 +58,34 @@ TweetReactRateVec TweetRateDeterminer::get_rate(const Tweet& tweet, int bin) {
     return rates;
 }
 
+bool TimeDepRateTree::ElementChecker::check(ref_t id) {
+    AnalysisState& state = tree.determiner.state;
+    Tweet& t = tree.get(id).data;
+    //            printf("CHECKING %d elapsed(%f) > t.retweet_next_rebin_time(%f)\n", id, time, t.retweet_next_rebin_time);
+    if (time > t.retweet_next_rebin_time) {
+        // Move to a new bin:
+        t.retweet_time_bin++;
+        if (t.retweet_time_bin >= tree.n_bins()) {
+            //                    printf("BOOTING NODE %d AT BIN %d\n", id,  t.retweet_time_bin);
+            tree.tree.remove(id);
+        } else {
+            //                    printf("MOVING TO BIN %d\n", t.retweet_time_bin);
+            printf("RATE BEFORE %f\n",
+                    state.config.tweet_obs.values[t.retweet_time_bin-1]);
+            t.retweet_next_rebin_time = t.creation_time
+                    + tree.determiner.get_cat_threshold(t.retweet_time_bin);
+            TweetReactRateVec rates = tree.determiner.get_rate(t,
+                    t.retweet_time_bin);
+            tree.tree.replace_rate(id, rates);
+            printf("RATE AFTER %f\n",
+                    state.config.tweet_obs.values[t.retweet_time_bin]);
+        }
+        return false;
+    }
+    return true;
+}
+
+
 TweetBank::TweetBank(AnalysisState& state) :
         tree(TweetRateDeterminer(state),
                 state.config.tweet_obs.initial_resolution,

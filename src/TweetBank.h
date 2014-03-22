@@ -97,6 +97,13 @@ struct TimeDepRateTree {
         }
         binner.update(checker());
 
+        int i = 0;
+        for (auto& bin : binner.get_bins()) {
+            i++;
+            double time = determiner.get_cat_threshold(i);
+            std::cout << "IN BIN " << i << " HAVE " << bin.size() << std::endl;
+            std::cout << "THEY HAVE elapsed-time < " << time << std::endl;
+        }
     }
 
     std::vector<Tweet> as_vector() {
@@ -135,27 +142,14 @@ private:
         int bin;
 
         // Bin-move-check function for TimeDepBinner:
-        bool check(ref_t id) {
-            Tweet& t = tree.get(id).data;
-            double elapsed = time - t.creation_time;
-            if (elapsed > t.retweet_next_rebin_time) {
-                // Move to a new bin:
-                t.retweet_time_bin++;
-                if (t.retweet_time_bin >= tree.n_bins()) {
-                    printf("BOOTING NODE %d AT BIN %d\n", id,  t.retweet_time_bin);
-                    tree.tree.remove(id);
-                } else {
-                    printf("MOVING TO BIN %d\n", t.retweet_time_bin);
-                    t.retweet_next_rebin_time = tree.determiner.get_cat_threshold(t.retweet_time_bin);
-                }
-                return false;
-            }
-            return true;
-        }
+    bool check(ref_t id);
 
         // Comparison function for TimeDepBinner:
-        bool operator()(ref_t a, ref_t b) {
-            return a > b;
+        bool operator()(ref_t id1, ref_t id2) {
+            Tweet& t1 = tree.get(id1).data;
+            Tweet& t2 = tree.get(id2).data;
+            // Ensure the heap in TimeDepBinner is a min-heap:
+            return t1.creation_time > t2.creation_time;
         }
 
         int initial_bin(ref_t a) {
