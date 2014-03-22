@@ -25,11 +25,15 @@ struct Entity {
     int entity_type;
     int preference_class;
     int n_tweets, n_retweets;
+    double ideology_tweet_percent;
     double creation_time;
+
     // this is the average chatiness of the entities following list
     double avg_chatiness;
     Location location;
+    bool uses_hashtags;
     Language language;
+    int ideology_bin;
     int humour_bin;
     
     // list of flagged chatty people
@@ -47,6 +51,7 @@ struct Entity {
         n_tweets = 0;
         language = (Language)-1; // Initialize with invalid language
         n_retweets = 0;
+        uses_hashtags = false;
         humour_bin = -1; // Initialize with invalid humour bin
     }
 

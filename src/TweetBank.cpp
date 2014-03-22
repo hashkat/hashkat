@@ -37,7 +37,7 @@ TweetReactRateVec TweetRateDeterminer::get_rate(const Tweet& tweet, int bin) {
      * with which a given category reacts to the tweeter.
      * We scale by 'obs_prob'.
      ********************************************************************/
-    
+
     TweetReactRateVec rates;
 
     // Assumption: Our rate vector is in the same order as

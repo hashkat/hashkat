@@ -273,7 +273,10 @@ struct Analyzer {
 		Entity& e = network[index];
 		e.creation_time = creation_time;
 		e.language = entity_pick_language();
+		// For now, either always mark ideology, or never
+		e.ideology_tweet_percent = rng.random_chance(0.5) ? 1.0 : 0.0;
 		e.humour_bin = 0; // For now, no humour
+		e.uses_hashtags = true; // For now
 //		e.humour_bin = rng.rand_int(N_BIN_HUMOUR); // Uniform
 		e.preference_class = rng.rand_int(config.pref_classes.size());
 		// Place the entity in a random location
@@ -306,7 +309,13 @@ struct Analyzer {
         ti->time_of_tweet = time;
         ti->humour_bin = e_original_author.humour_bin;
         // TODO: Pick
-        ti->language = e_original_author.language; // TODO: AD -- Bilingual tweets make no sense
+        Language lang = e_original_author.language;
+
+        // For bilingual tweeters, tweet both languages with equal probability:
+        if (lang == LANG_FRENCH_AND_ENGLISH) {
+            lang = rng.random_chance(0.5) ? LANG_ENGLISH : LANG_FRENCH;
+        }
+        ti->language = e_original_author.language;
         return ti;
     }
 

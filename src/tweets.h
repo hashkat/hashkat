@@ -20,12 +20,14 @@ struct TweetContent {
     UsedEntities used_entities;
     Language language;
     int humour_bin;
+    int ideology_bin; // 0 == no ideology
     int id_original_author; // The entity that created the original content
     TweetContent() {
         time_of_tweet = -1;
         language = N_LANGS; // Set to invalid
         id_original_author = -1;
         humour_bin = -1;
+        ideology_bin = -1;
     }
 
     READ_WRITE(rw) {

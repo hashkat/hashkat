@@ -64,13 +64,20 @@ struct Network {
         return (*this)[n_entities - 1];
     }
 
-    size_t n_following(int id) {
+    size_t n_followings(int id) {
         return following_set(id).size();
     }
     size_t n_followers(int id) {
         return follower_set(id).size();
     }
-    
+
+    // To allow for-each style loops:
+    Entity* begin() {
+        return entities;
+    }
+    Entity* end() {
+        return entities + n_entities;
+    }
     // 'Visits' every node, eg for serialization or testing
     READ_WRITE(rw) {
         rw << n_entities << max_entities;

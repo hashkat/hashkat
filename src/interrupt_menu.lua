@@ -80,12 +80,21 @@ function pretty(...)
 end
 
 local long_print = false
+local first_run = true
+
+local function load_user_functions()
+    print "Loading 'custom_functions.lua'"
+    require "custom_functions"
+end
+
 local function repl_run()
     local keep_going = true
     local R = repl:clone()
-
-    function toggle_long_print() 
-        long_print = not long_print
+    function long_print_on() 
+        long_print = true
+    end
+    function long_print_off() 
+        long_print = false
     end
     function exit() 
         keep_going = false 
@@ -114,6 +123,11 @@ local function repl_run()
         else
             pretty(unpack(results, 1, results.n))
         end
+    end
+
+    if first_run then
+        load_user_functions()
+        first_run = false
     end
 
     R:run()

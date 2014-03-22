@@ -64,6 +64,9 @@ tweet_obs_initial_resolution = obs_pdf["initial_resolution"]
 tweet_obs_resolution_growth_factor = obs_pdf["resolution_growth_factor"]
 tweet_obs_time_span = obs_pdf["time_span"]
 
+if isinstance(tweet_obs_time_span, str): # Allow for time constants
+    tweet_obs_time_span = eval(tweet_obs_time_span)
+
 tweet_rel = CONFIG["tweet_relevance"]
 distance_bins = tweet_rel["distance_bins"]
 humour_bins = tweet_rel["humour_bins"]
@@ -172,14 +175,14 @@ def relevance_rate_vector(entity_type, humour, distance):
 def relevance_distance_component(entity_type, humour):
     results = []
     for i in range(distance_bins):
-        res = relevance_rate_vector(entity_type, humour, i / float(distance_bins))
+        res = relevance_rate_vector(entity_type, humour, i / float(distance_bins - 1))
         results.append(res)
     return results
 
 def relevance_humour_component(entity_type):
     results = []
     for i in range(humour_bins):
-        res = relevance_distance_component(entity_type, i / float(humour_bins))
+        res = relevance_distance_component(entity_type, i / float(humour_bins - 1))
         results.append(res)
     return results
 

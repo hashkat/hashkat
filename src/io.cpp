@@ -163,8 +163,8 @@ const int POUT_CAP = 1000; // AD: Rough work
 void degree_distributions(Network& network) {
     int max_following = 0, max_followers = 0;
     for (int i = 0; i < network.n_entities; i ++) {
-        if (network.n_following(i) >= max_following) {
-            max_following = network.n_following(i) + 1;
+        if (network.n_followings(i) >= max_following) {
+            max_following = network.n_followings(i) + 1;
         }
         if (network.n_followers(i) >= max_followers) {
             max_followers = network.n_followers(i) + 1;
@@ -201,9 +201,9 @@ void degree_distributions(Network& network) {
 
     //go through network and generate distributions
     for (int i = 0; i < network.n_entities; i ++) {
-        out_degree_distro[network.n_following(i)] ++;
+        out_degree_distro[network.n_followings(i)] ++;
         in_degree_distro[network.n_followers(i)] ++;
-        cumulative_distro[network.n_followers(i) + network.n_following(i)] ++;
+        cumulative_distro[network.n_followers(i) + network.n_followings(i)] ++;
     }
     // output the distributions
     for (int i = 0; i < max_following; i ++) {
@@ -412,7 +412,7 @@ static void whos_following_who(EntityTypeVector& types, EntityType& type, Networ
     output.open(filename.c_str());
     int max_degree = 0;
     for (int i = 0; i < type.entity_list.size(); i ++) {
-        int degree = network.n_following(type.entity_list[i]) + network.n_followers(type.entity_list[i]);
+        int degree = network.n_followings(type.entity_list[i]) + network.n_followers(type.entity_list[i]);
         if (degree > max_degree) {
             max_degree = degree;
         }
@@ -429,7 +429,7 @@ static void whos_following_who(EntityTypeVector& types, EntityType& type, Networ
     for (int i = 0; i < type.entity_list.size(); i ++) {
         int id = type.entity_list[i];
         int in_degree = network.n_followers(id);
-        int out_degree = network.n_following(id);
+        int out_degree = network.n_followings(id);
         entity_followers[in_degree] ++;
         entity_following[out_degree] ++;
         entity_degree[in_degree + out_degree] ++;

@@ -56,12 +56,25 @@ static InterruptMenuState state;
 
 struct InterruptMenuFunctions {
     static void install_functions(lua_State* L) {
-        LuaValue G = luawrap::globals(L);
+        using namespace luawrap;
+
+        LuaValue G = globals(L);
         G["followers"].bind_function(followers);
         G["followings"].bind_function(followings);
 
-        // One-line function definition, using above 'state' global.
+        // Inline function definition, using above 'state' global.
         // Dereferencing this will bring you to AnalysisState.
+        LUAWRAP_FUNCTION(G, n_followers,
+                int id = get<int>(state.L, 1);
+                push(state.L, state->network.n_followers(id))
+        );
+
+        LUAWRAP_FUNCTION(G, entity,
+                int id = get<int>(state.L, 1);
+                push(state.L, entity_to_table(state->network[id]))
+        );
+
+        LUAWRAP_FUNCTION(G, n_followings, state->network.n_followings(get<int>(state.L, 1)));
         LUAWRAP_FUNCTION(G, create_entity,
                 if (analyzer_create_entity(*state)) {
                     luawrap::push(state.L, entity_to_table(state->network.back()));
@@ -71,6 +84,7 @@ struct InterruptMenuFunctions {
         );
         G["followers_print"].bind_function(followers_print);
         G["tweets"].bind_function(tweets);
+        G["entities"].bind_function(entities);
     }
 
     /* Interrupt menu functions: */
@@ -100,6 +114,7 @@ struct InterruptMenuFunctions {
         DUMP(e, n_retweets);
         DUMP(e, creation_time);
         DUMP(e, avg_chatiness);
+        DUMP(e, uses_hashtags);
         DUMP(e, humour_bin);
         DUMP(e, chatty_entities);
 
@@ -125,6 +140,16 @@ struct InterruptMenuFunctions {
         value["id_original_author"] = tweet.content->id_original_author;
         value["language_id"] = (int)tweet.content->language;
         value["language_name"] = language_name(tweet.content->language);
+
+        return value;
+    }
+
+    static LuaValue entities() {
+        auto value = LuaValue::newtable(state.L);
+
+        for (auto& entity : state->network) {
+            value[value.objlen() + 1] = entity_to_table(entity);
+        }
 
         return value;
     }
