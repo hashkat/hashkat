@@ -79,10 +79,23 @@ function pretty(...)
     print(unpack(args))
 end
 
+local long_print = false
+local first_run = true
+
+local function load_user_functions()
+    print "Loading 'custom_functions.lua'"
+    require "custom_functions"
+end
+
 local function repl_run()
     local keep_going = true
     local R = repl:clone()
-
+    function long_print_on() 
+        long_print = true
+    end
+    function long_print_off() 
+        long_print = false
+    end
     function exit() 
         keep_going = false 
     end
@@ -103,7 +116,18 @@ local function repl_run()
 
     function R:displayresults(results)
         if results.n == 0 then return end
-        pretty(unpack(results, 1, results.n))
+        if long_print then
+            for i=1,results.n do
+                print(pretty_tostring(results[i]))
+            end
+        else
+            pretty(unpack(results, 1, results.n))
+        end
+    end
+
+    if first_run then
+        load_user_functions()
+        first_run = false
     end
 
     R:run()

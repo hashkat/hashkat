@@ -22,15 +22,27 @@
 struct AnalysisState;
 
 struct Entity {
-    int entity_type;
-    int preference_class;
-    int n_tweets, n_retweets;
-    double creation_time;
+    //** AD: The ability to put initializers right in the class
+    //** is new in C++11
+
+    int entity_type = 0;
+    int preference_class = 0;
+    int n_tweets = 0, n_retweets = 0;
+
+    // Abstract location:
+    int region_bin = -1, subregion_bin = -1;
+
+    double ideology_tweet_percent = 0;
+    double creation_time = 0;
+
     // this is the average chatiness of the entities following list
-    double avg_chatiness;
+    double avg_chatiness = -1.0;
     Location location;
-    Language language;
-    int humour_bin;
+    Language language = (Language)-1;
+
+    int humour_bin = -1;
+    int ideology_bin = -1;
+    bool uses_hashtags = false;
     
     // list of flagged chatty people
     std::vector<int> chatty_entities;
@@ -39,22 +51,20 @@ struct Entity {
     FollowingSet following_set;
     FollowerSet follower_set;
 
-    Entity() {
-        entity_type = 0;
-        preference_class = 0;
-        creation_time = 0.0;
-        avg_chatiness = -1.0;
-        n_tweets = 0;
-        language = (Language)-1; // Initialize with invalid language
-        n_retweets = 0;
-        humour_bin = -1; // Initialize with invalid humour bin
-    }
-
     PREREAD_WRITE(rw) {
-        rw << entity_type << preference_class
-           << n_tweets << n_retweets << creation_time << avg_chatiness
+        rw << entity_type << preference_class 
+           << n_tweets << n_retweets 
+           << region_bin << subregion_bin
+           << ideology_tweet_percent << creation_time
+           << avg_chatiness
            << location << language
+<<<<<<< HEAD
            << humour_bin << chatty_entities;
+=======
+           << humour_bin << ideology_bin << uses_hashtags
+           << chatty_entities;
+        // following_set and follower_set are specially handled below
+>>>>>>> edd144ecfb5d4aed25639e1b4e7b90af0919a968
     }
 
     // 'Visits' every node, eg for serialization or testing
@@ -90,9 +100,7 @@ struct Entity {
             rw << follower_set.get_total_rate();
         }
     }
-private:
-    // Ban the copy constructor:
-    Entity(const Entity&);
+
 };
 
 #endif

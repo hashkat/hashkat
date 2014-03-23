@@ -1,17 +1,32 @@
 #!/usr/bin/env python
 
-import yaml
-import sys
-
-from pprint import pprint
-from math import *
-
 #################################################################
 # Generates INFILE parameters that are tricky to alter by hand
 # By creating value tables with a Python script, we are able to
 # simplify the logic in the C++, not worrying about the various
 # functions a user might want to supply.
 #################################################################
+
+#################################################################
+# PLACE CONVENIENCE FUNTIONS FOR INFILE.yaml HERE
+#################################################################
+
+# Convenience rates, in minutes
+minute = 1
+hour = minute * 60
+day = 24 * hour
+year = 365 * day
+
+#################################################################
+# CEASE PLACING CONVENIENCE FUNCTIONS.
+#################################################################
+
+import yaml
+import sys
+
+from pprint import pprint
+from math import *
+from scipy.integrate import quad # For observation PDF integration
 
 def get_var_arg(test, default_val):
     for i in range(len(sys.argv) - 1): 
@@ -23,7 +38,7 @@ INPUT_FILE_NAME = get_var_arg("--input", "INFILE.yaml")
 
 print("INFILE.py -- Generating rates for " + INPUT_FILE_NAME)
 
-######################
+#################################################################
 # Load the relevant pieces of the config.
 # We will add a 'generated' node to this, and emit it as INFILE-generated.yaml
 
@@ -31,21 +46,102 @@ CONFIG = yaml.load(open(INPUT_FILE_NAME, "r"))
 
 entities = CONFIG["entities"]
 
+#################################################################
 # Both functions are computed from a lookup table generated below.
 # Note that the relevance factor is a many-dimensional function,
 # whilst tweet_obs takes only time.
 
 obs_pdf = CONFIG["tweet_observation"]
+regions = CONFIG["regions"]
 
-tweet_obs_half_life = obs_pdf["half_life"]
+def load_observation_pdf(content):
+    exec('def __TEMP(x): return ' + str(content))
+    return __TEMP # A hack
+
+tweet_obs_density_function = load_observation_pdf(obs_pdf["density_function"])
+tweet_obs_x_start = obs_pdf["x_start"]
+tweet_obs_x_end = obs_pdf["x_end"]
 tweet_obs_initial_resolution = obs_pdf["initial_resolution"]
-tweet_obs_final_rate = obs_pdf["final_rate"]
+tweet_obs_resolution_growth_factor = obs_pdf["resolution_growth_factor"]
+tweet_obs_time_span = obs_pdf["time_span"]
+
+if isinstance(tweet_obs_time_span, str): # Allow for time constants
+    tweet_obs_time_span = eval(tweet_obs_time_span)
 
 tweet_rel = CONFIG["tweet_relevance"]
 distance_bins = tweet_rel["distance_bins"]
 humour_bins = tweet_rel["humour_bins"]
 
 pref_classes = tweet_rel["preference_classes"]
+
+#################################################################
+# Make the region data easier to parse for the C++:
+
+def weights_to_probs(weights, map, n):
+    ret = []
+    for i in range(n): ret.append(0)
+    total_sum = 0
+    for k in weights:
+        total_sum += weights[k]
+    for k in weights:
+        ret[map[k]] = weights[k] / float(total_sum)
+    return ret
+
+lang_order = {
+    "English" : 0,
+    "French" : 1,
+    "French+English" : 2
+}
+lang_n = 3
+ideo_order,pref_order = {},{}
+ideo_n, pref_n  = 0, 0
+for p in CONFIG["ideologies"]:
+    ideo_order[p["name"]] = ideo_n
+    ideo_n += 1
+for p in CONFIG["preference_classes"]:
+    pref_order[p["name"]] = pref_n
+    pref_n += 1
+
+def preprocess_weights(ret,orig):
+    if "ideology_weights" in orig:
+        ret["ideology_probs"] = weights_to_probs(orig["ideology_weights"], ideo_order, ideo_n)
+    if "language_weights" in orig:
+        ret["language_probs"] = weights_to_probs(orig["language_weights"], lang_order, lang_n)
+    if "preference_class_weights" in orig:
+        ret["preference_class_probs"] = weights_to_probs(orig["preference_class_weights"], pref_order, pref_n)
+    return ret
+
+def preprocess_subregion(template, subregion, add_weight_total):
+    ret = template.copy()
+    ret["name"] = subregion["name"]
+    ret["add_prob"] = subregion["add_weight"] / add_weight_total
+    preprocess_weights(ret, subregion)
+    return ret
+
+def preprocess_subregions(template, subregions):
+    ret = []
+    total_weight = 0.0
+    for subregion in subregions: total_weight += subregion["add_weight"]
+    for subregion in subregions:
+        ret.append(preprocess_subregion(template, subregion, total_weight))
+    return ret
+
+def preprocess_region(region, add_weight_total):
+     # First, init only things which should be inherited
+    ret = {}
+    preprocess_weights(ret, region)
+    ret["subregions"] = preprocess_subregions(ret, region["subregions"])
+    ret["name"] = region["name"]
+    ret["add_prob"] = region["add_weight"] / add_weight_total
+    return ret
+
+def preprocess_regions():
+    ret = []
+    total_weight = 0.0
+    for region in regions: total_weight += region["add_weight"]
+    for region in regions:
+        ret.append(preprocess_region(region, total_weight))
+    return ret
 
 def load_relevance_function(content):
     exec('def __TEMP(entity_type, humour, distance): return ' + str(content))
@@ -73,42 +169,62 @@ def load_relevance_functions():
 
 profile_funcs = load_relevance_functions()
 
-#######################
-# Rate derivation
+#################################################################
+# Tweet observation probability function integration and binning
+# Using 'compute_tweet_obs', we compute the rate bins that correspond 
+# to the time that a tweet has been active. These bins control how the
+# relevance function below drops off over time. 
+#
+# If the relevance function is 1 for a person viewing a tweet, in theory 
+# that person will always retweet it, given enough time. 
+# Note, however, that due to the random-select nature of KMC this cannot be guaranteed.
 
-# If this is changed, the code must be updated accordingly:
-
-# We define 'tweet_observation_pdf' to be a probability definition function that
-# controls the rate at which a tweet is observed, as a function of time.
-# It is scaled by the relevance factor.
-def tweet_observation_pdf(t):
-    hl = tweet_obs_half_life
-
-    val = exp(-t / hl * log(2))
-    #print(str(t) + ' ' + str(val)) #Uncomment for simple, plottable data
+def tweet_observation_integral(x1, x2):
+    val,err = quad(tweet_obs_density_function, x1, x2)
     return val
 
-# We compute all bins over a..b at (a+b)/2, ie the midpoint rule
+# Since we bin logarithmatically, we must do a weighted normalization considering
+# the span of the observation bin.
+def normalize_tweet_obs(rates, spans):
+    rate_sum = 0
+    # Computed a weighted sum according to the span of the bin:
+    for i in range(len(rates)):
+        rate_sum += rates[i] * spans[i]
+
+    # Normalize the rates to form a PDF:
+    for i in range(len(rates)):
+        rates[i] /= rate_sum
+        #print(str(spans[i]) + ' ' + str(rates[i])) #Uncomment for simple, plottable data
+
+def x_bound_to_time_bound(x_bound):
+    span = (tweet_obs_x_end - tweet_obs_x_start)
+    mult = tweet_obs_time_span / float(span)
+    return (x_bound - tweet_obs_x_start) * mult
+
 def compute_tweet_obs():
     rates = []
+    spans = []
+    bounds = []
 
-    prev_bound = 0
-    bound = 0
+    prev_bound = tweet_obs_x_start 
+    bound = prev_bound
     res = tweet_obs_initial_resolution
 
-    while True:
+    while bound < tweet_obs_x_end:
         bound += res
-        # Compute the value of the function, using the function's midpoint
-        obs = tweet_observation_pdf((bound + prev_bound) / 2)
-        prev_bound = bound
-        res *= 2.0 # Increase the resolution by double
+        bound = min(bound, tweet_obs_x_end)
+        obs = tweet_observation_integral(prev_bound, bound)
         rates.append(obs)
-        if obs <= tweet_obs_final_rate:
-            break
+        spans.append(res)
+        bounds.append(x_bound_to_time_bound(bound))
 
-    return rates
+        prev_bound = bound # Set current bound to new previous
+        res *= tweet_obs_resolution_growth_factor # Increase the resolution by the growth factor
 
-#######################
+    normalize_tweet_obs(rates, spans)
+    return rates, bounds
+
+#################################################################
 # Relevance lookup table generation
 
 def make_object(dict):
@@ -129,14 +245,14 @@ def relevance_rate_vector(entity_type, humour, distance):
 def relevance_distance_component(entity_type, humour):
     results = []
     for i in range(distance_bins):
-        res = relevance_rate_vector(entity_type, humour, i / float(distance_bins))
+        res = relevance_rate_vector(entity_type, humour, i / float(distance_bins - 1))
         results.append(res)
     return results
 
 def relevance_humour_component(entity_type):
     results = []
     for i in range(humour_bins):
-        res = relevance_distance_component(entity_type, i / float(humour_bins))
+        res = relevance_distance_component(entity_type, i / float(humour_bins - 1))
         results.append(res)
     return results
 
@@ -153,12 +269,16 @@ def relevance_entity_type_component():
 def compute_relevance_table(): # N-dimensional array
     return relevance_entity_type_component()
 
-#######################
+#################################################################
 # YAML emission
 
+obs_function, obs_bin_bounds = compute_tweet_obs()
+
 generated = {
-    "obs_function" : compute_tweet_obs(),
-    "rel_function" : compute_relevance_table()
+    "obs_function" : obs_function,
+    "obs_bin_bounds" : obs_bin_bounds,
+    "rel_function" : compute_relevance_table(),
+    "regions" : preprocess_regions()
 }
 
 CONFIG["GENERATED"] = generated

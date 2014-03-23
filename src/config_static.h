@@ -40,4 +40,11 @@ const int N_BIN_PREFERENCE_CLASS = 10;
 const int N_BIN_HUMOUR = 2;
 const int N_BIN_DISTANCE = 4;
 
+const int N_BIN_REGIONS = 2;
+const int N_BIN_SUBREGIONS = 2;
+const int N_IDEOLOGIES = 2;
+
+// Account for 'no ideology' being represented by 0.
+const int N_BIN_IDEOLOGIES = N_IDEOLOGIES + 1;
+
 #endif

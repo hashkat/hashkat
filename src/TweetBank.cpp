@@ -14,6 +14,10 @@ void TweetRateDeterminer::update_rate(TweetReactRateVec& rates, const Tweet& twe
     rates = get_rate(tweet, bin);
 }
 
+double TweetRateDeterminer::get_cat_threshold(int bin) {
+    return state.config.tweet_obs.thresholds[bin];
+}
+
 TweetReactRateVec TweetRateDeterminer::get_rate(const Tweet& tweet, int bin) {
     Entity& entity = state.network[tweet.id_tweeter];
     Language lang = entity.language;
@@ -33,7 +37,7 @@ TweetReactRateVec TweetRateDeterminer::get_rate(const Tweet& tweet, int bin) {
      * with which a given category reacts to the tweeter.
      * We scale by 'obs_prob'.
      ********************************************************************/
-    
+
     TweetReactRateVec rates;
 
     // Assumption: Our rate vector is in the same order as
@@ -57,6 +61,31 @@ TweetReactRateVec TweetRateDeterminer::get_rate(const Tweet& tweet, int bin) {
     DEBUG_CHECK(n_elems == followers.size(), "Amount of entities in the follower set don't match up!");
     return rates;
 }
+
+bool TimeDepRateTree::ElementChecker::check(ref_t id) {
+    AnalysisState& state = tree.determiner.state;
+    Tweet& t = tree.get(id).data;
+//        printf("CHECKING %d time(%f) > t.retweet_next_rebin_time(%f)\n", id, time, t.retweet_next_rebin_time);
+    if (time > t.retweet_next_rebin_time) {
+        // Move to a new bin:
+        t.retweet_time_bin++;
+        if (t.retweet_time_bin >= tree.n_bins()) {
+            //                    printf("BOOTING NODE %d AT BIN %d\n", id,  t.retweet_time_bin);
+            tree.tree.remove(id);
+        } else {
+            //                    printf("MOVING TO BIN %d\n", t.retweet_time_bin);
+//            printf("RATE BEFORE %f\n", tree.get(id).rates.tuple_sum);
+            t.retweet_next_rebin_time = t.creation_time
+                    + tree.determiner.get_cat_threshold(t.retweet_time_bin);
+            TweetReactRateVec rates = tree.determiner.get_rate(t, t.retweet_time_bin);
+            tree.tree.replace_rate(id, rates);
+//            printf("RATE AFTER %f\n", tree.get(id).rates.tuple_sum);
+        }
+        return false;
+    }
+    return true;
+}
+
 
 TweetBank::TweetBank(AnalysisState& state) :
         tree(TweetRateDeterminer(state),

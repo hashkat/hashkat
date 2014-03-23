@@ -20,6 +20,7 @@ output/*
 .libs
 *.a
 *.o
+*.swp
 *.so
 *.sav
 *.dat

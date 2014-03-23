@@ -67,28 +67,28 @@ SUITE(cat_time_rates) {
 //        CHECK(delta == i);
         }
         // Compare print out for minor details
-        cat_group.print(N, time_class);
+//        cat_group.print(N, time_class);
         CHECK(cat_group.get_total_rate() == 550);
-        printf("MOVING THE TIME COHORTS\n");
+//        printf("MOVING THE TIME COHORTS\n");
         cat_group.shift_and_recalc_rates(N, time_class);
         // Simulate a month going by, in a model where rates go up over time.
         CHECK(cat_group.get_total_rate() == 640);
-        cat_group.print(N, time_class);
+//        cat_group.print(N, time_class);
 
         MTwist rng;
         rng.init_genrand(29);
         int elem = -1;
         for (int i = 0; i < 100; i++) {
             cat_group.pick_random_weighted(rng, elem);
-            printf("Random pick: %d\n", elem);
+//            printf("Random pick: %d\n", elem);
         }
         {
             // Iteration sub-test
             int i = 0, elem = -1;
             for (TimeClass::iterator it; cat_group.iterate(it);) {
-                printf("Element %d: %d\n", i++, it.get());
+//                printf("Element %d: %d\n", i++, it.get());
             }
-            printf("Sizeof leaf-node: %d\n", sizeof(LeafNode<int>));
+//            printf("Sizeof leaf-node: %d\n", sizeof(LeafNode<int>));
         }
     }
 }

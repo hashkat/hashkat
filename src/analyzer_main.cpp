@@ -20,7 +20,7 @@
 #include "dependencies/lcommon/Timer.h"
 #include "dependencies/lcommon/perf_timer.h"
 
-#include "interrupt_menu.h"
+#include "interactive_mode.h"
 
 #include <signal.h>
 
@@ -174,7 +174,7 @@ struct Analyzer {
 	}
     void set_initial_entities() {
         for (int i = 0; i < config.initial_entities; i++) {
-             action_create_entity(0.0, i);
+             action_create_entity();
         }
     }
 
@@ -187,7 +187,7 @@ struct Analyzer {
      * after the messy configuration and allocation is done.
      * Returns end-time. */
     double main() {
-        if (file_exists(config.save_file)) {
+        if (config.load_network_on_startup && file_exists(config.save_file)) {
             load_network_state();
         }
         run_network_simulation();
@@ -198,8 +198,10 @@ struct Analyzer {
     bool sim_time_check() {
         return (time < config.max_sim_time);
     }
+
     bool real_time_check() {
-        return (max_sim_timer.get_microseconds() < (config.max_real_time * 1000));
+        const int MINUTE_TO_MICROSECOND = 1000LL * 1000LL * 60LL;
+        return (max_sim_timer.get_microseconds() < (config.max_real_time * MINUTE_TO_MICROSECOND));
     }
     void interrupt_reset() {
         SIGNAL_ATTEMPTS = 0;
@@ -212,8 +214,9 @@ struct Analyzer {
         DataReader reader(state, config.save_file.c_str());
         string previous_config_file;
         reader << previous_config_file;
-        if (previous_config_file != config.entire_config_file) {
-            error_exit("Error, config file does not match the one being loaded from! Exiting...");
+        if (!config.ignore_load_config_check && previous_config_file != config.entire_config_file) {
+            error_exit("Error, config file does not exactly match the one being loaded from!\n"
+                    "If you do not care, please set output.ignore_load_config_check to true.\nExitting...");
         }
         state.visit(reader);
     }
@@ -229,14 +232,14 @@ struct Analyzer {
     // ROOT ANALYSIS ROUTINE
     /* Run the main analysis routine using this config. */
     void run_network_simulation() {
-        while ( LIKELY(sim_time_check() && real_time_check()) ) {
+        while (sim_time_check() && real_time_check()) {
             if (!interrupt_check()) {
                 interrupt_reset();
                 if (!config.enable_interactive_mode) {
                     break;
                 }
                 // Has the user requested an exit?
-                if (!show_interrupt_menu(state)) {
+                if (!show_interactive_menu(state)) {
                     break;
                 }
             }
@@ -244,7 +247,9 @@ struct Analyzer {
         	step_analysis();
         	perf_timer_end("analyzer.step_analysis");
         }
-        save_network_state();
+        if (config.save_network_on_timeout) {
+            save_network_state();
+        }
     }
 
     Language entity_pick_language() {
@@ -253,34 +258,61 @@ struct Analyzer {
 
     /* Create a entity at the given index.
      * The index should be an empty entity slot. */
-    bool action_create_entity(double creation_time, int index) {
-		Entity& e = network[index];
-		e.creation_time = creation_time;
-		e.language = entity_pick_language();
-		e.humour_bin = 0; // For now, no humour
-//		e.humour_bin = rng.rand_int(N_BIN_HUMOUR); // Uniform
-		e.preference_class = rng.rand_int(config.pref_classes.size());
-		// Place the entity in a random location
-		// TODO: Location choosing scheme
-		e.location.x = rng.rand_real_with01();
-		e.location.y = rng.rand_real_with01();
-		double rand_num = rng.rand_real_not0();
-		for (int et = 0; et < entity_types.size(); et++) {
-		    EntityType& type = entity_types[et];
-			if (rand_num <= type.prob_add) {
-				e.entity_type = et;
-                type.entity_list.push_back(index);
-				follow_ranks.categorize(index, e.follower_set.size());
-                type.follow_ranks.categorize(index, e.follower_set.size());
-				break;
-			}
-			rand_num -= entity_types[et].prob_add;
-		}
-		if (config.use_barabasi){
-			analyzer_follow_entity(state, index, index, creation_time);
-		}
+    bool action_create_entity() {
+        PERF_TIMER();
+
+        if (network.n_entities == network.max_entities) {
+            // Make sure we do not try to add!
+            return false;
+        }
+
+        int index = network.n_entities;
         network.n_entities++;
-        return true; // Always succeeds, for now.
+
+        double creation_time = time;
+        Entity& e = network[index];
+
+        // Determine abstract location:
+        auto& R = state.config.regions;
+        DEBUG_CHECK(R.regions.size() == N_BIN_REGIONS, "Should match!");
+        int region_bin = rng.kmc_select(R.add_probs);
+        auto& region = R.regions[region_bin];
+        auto& S = region.subregions;
+        DEBUG_CHECK(S.size() == N_BIN_SUBREGIONS, "Should match!");
+        int subregion_bin = rng.kmc_select(region.add_probs);
+        auto& subregion = S[subregion_bin];
+
+        e.region_bin = region_bin;
+        e.subregion_bin = subregion_bin;
+        e.ideology_bin = rng.kmc_select(subregion.ideology_probs);
+        e.creation_time = creation_time;
+        e.language = (Language) rng.kmc_select(subregion.language_probs);
+        // For now, either always mark ideology, or never
+        e.ideology_tweet_percent = rng.random_chance(0.5) ? 1.0 : 0.0;
+        e.humour_bin = rng.random_chance(0.5) ? 1.0 : 0.0;
+        e.uses_hashtags = rng.random_chance(0.5) ? 1.0 : 0.0;
+        e.preference_class = rng.kmc_select(subregion.preference_class_probs);
+
+        // Place the entity in a random location
+        // TODO: Location choosing scheme
+        e.location.x = rng.rand_real_with01();
+        e.location.y = rng.rand_real_with01();
+        double rand_num = rng.rand_real_not0();
+        for (int et = 0; et < entity_types.size(); et++) {
+            EntityType& type = entity_types[et];
+            if (rand_num <= type.prob_add) {
+                e.entity_type = et;
+                type.entity_list.push_back(index);
+                follow_ranks.categorize(index, e.follower_set.size());
+                type.follow_ranks.categorize(index, e.follower_set.size());
+                break;
+            }
+            rand_num -= entity_types[et].prob_add;
+        }
+        if (config.use_barabasi){
+                analyzer_follow_entity(state, index, creation_time);
+        }
+        return true;
     }
 
     smartptr<TweetContent> generate_tweet_content(int id_original_author) {
@@ -291,7 +323,13 @@ struct Analyzer {
         ti->time_of_tweet = time;
         ti->humour_bin = e_original_author.humour_bin;
         // TODO: Pick
-        ti->language = e_original_author.language; // TODO: AD -- Bilingual tweets make no sense
+        Language lang = e_original_author.language;
+
+        // For bilingual tweeters, tweet both languages with equal probability:
+        if (lang == LANG_FRENCH_AND_ENGLISH) {
+            lang = rng.random_chance(0.5) ? LANG_ENGLISH : LANG_FRENCH;
+        }
+        ti->language = e_original_author.language;
         return ti;
     }
 
@@ -303,6 +341,11 @@ struct Analyzer {
         tweet.id_tweeter = id_tweeter;
         tweet.id_link = id_link;
         tweet.generation = generation;
+
+        // Always start in the first retweet time bin:
+        tweet.retweet_time_bin = 0;
+        tweet.retweet_next_rebin_time = time + config.tweet_obs.initial_resolution;
+
         if (network.n_followers(id_tweeter) != 0) {
             state.tweet_bank.add(tweet);
         }
@@ -311,6 +354,8 @@ struct Analyzer {
 
 	// function to handle the tweeting
 	bool action_tweet(int id_tweeter) {
+	    PERF_TIMER();
+
         // This is the entity tweeting
 		Entity& e = network[id_tweeter];
         entity_types[e.entity_type].n_tweets++;
@@ -394,11 +439,9 @@ struct Analyzer {
          *
          * Luckily, this should be (relatively) rare.
          */
-        int retries = 0;
         bool complete = false;
         while (!complete) {
             double r = rng.rand_real_not0(); // get the first number with-in [0,1).
-            int N = network.n_entities;
             /*if (!retweet_checks() && stats.n_retweets != 0) {
                 cout << "\n------Error in retweets-------\n";
             } */           
@@ -406,24 +449,22 @@ struct Analyzer {
             // DECIDE WHAT TO DO:
             if (subtract_var(r, stats.prob_add) <= ZEROTOL) {
                 // If we find ourselves in the add entity chuck of our cumulative function:
-                perf_timer_begin("action_create_entity");
-                complete = action_create_entity(time, N);
-                perf_timer_end("action_create_entity");
+                complete = action_create_entity();
             } else if (subtract_var(r, stats.prob_follow) <= ZEROTOL) {
+
                 perf_timer_begin("analyzer_select_entity(FOLLOW_SELECT)");
                 int entity = analyzer_select_entity(state, FOLLOW_SELECT);
                 perf_timer_end("analyzer_select_entity(FOLLOW_SELECT)");
-                perf_timer_begin("action_follow_entity");
-                complete = analyzer_follow_entity(state, entity, N, time);
-                perf_timer_end("action_follow_entity");
+
+                complete = analyzer_follow_entity(state, entity, time);
             } else if (subtract_var(r, stats.prob_tweet) <= ZEROTOL) {
                 // The tweet event
+
                 perf_timer_begin("analyzer_select_entity(TWEET_SELECT)");
                 int entity = analyzer_select_entity(state, TWEET_SELECT);
                 perf_timer_end("analyzer_select_entity(TWEET_SELECT)");
-                perf_timer_begin("action_tweet");
+
                 complete = action_tweet(entity);
-                perf_timer_end("action_tweet");
             } else if (subtract_var(r, stats.prob_retweet) <= ZEROTOL ) {
                 RetweetChoice choice = analyzer_select_tweet_to_retweet(state, RETWEET_SELECT);
                 if (choice.id_author != -1) {
@@ -608,14 +649,32 @@ struct Analyzer {
     }
 };
 
+bool analyzer_create_entity(AnalysisState& state) {
+    ASSERT(state.analyzer != NULL, "Analysis is not active!");
+    return state.analyzer->action_create_entity();
+}
+
 // Run a network simulation using the given input file's parameters
 void analyzer_main(AnalysisState& state) {
+    // We maintain a back-pointer to Analyzer so that we can access its methods
+    // from other files, during analysis.
+
     Timer timer;
     Analyzer analyzer(state);
+    state.analyzer = &analyzer; // Install back-pointer
+
     if (state.config.handle_ctrlc) {
         signal_handlers_install(state);
     }
+
+    // >> The main analysis function:
     analyzer.main();
+
+    // Make our back-pointer is no longer accessible, as our object will go out of scope
+    state.analyzer = NULL;
+
     signal_handlers_uninstall(state);
+
+    // Print summary time:
     printf("'analyzer_main' took %.2f milliseconds.\n", timer.get_microseconds() / 1000.0);
 }

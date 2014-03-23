@@ -7,7 +7,6 @@
 #include "lcommon/smartptr.h"
 #include "mtwist.h"
 
-#include "TimeDepRateTree.h"
 #include "cat_classes.h"
 
 #include "events.h"
@@ -17,20 +16,29 @@
 
 // information for when a user tweets
 struct TweetContent {
-    double time_of_tweet;
+    double time_of_tweet = -1;
     UsedEntities used_entities;
-    Language language;
-    int humour_bin;
-    int id_original_author; // The entity that created the original content
-    TweetContent() {
-        time_of_tweet = -1;
-        language = N_LANGS; // Set to invalid
-        id_original_author = -1;
-        humour_bin = -1;
-    }
+    Language language = N_LANGS; // Set to invalid
+    int humour_bin = -1;
+    int ideology_bin = -1; // 0 == no ideology
+    int id_original_author = -1; // The entity that created the original content
 
     READ_WRITE(rw) {
-        rw << time_of_tweet << language << id_original_author;
+        std::vector<int> ids;
+        if (rw.is_writing()) {
+            for (int id : used_entities) {
+                ids.push_back(id);
+            }
+        }
+        rw << ids;
+        if (rw.is_reading()){
+            for (int id : ids) {
+                size_t prev_size = used_entities.size();
+                used_entities.insert(id);
+                ASSERT(used_entities.size() > prev_size, "'id' should be unique!");
+            }
+        }
+        rw << time_of_tweet << language << id_original_author << humour_bin;
 //        printf("GOT AT %.2f %d %d size=%d\n", time_of_tweet, language,
 //                id_original_author, used_entities.size());
     }
@@ -42,29 +50,38 @@ struct TweetContent {
 // A tweet is an orignal tweet if tweeter_id == content.author_id
 struct Tweet {
     // The entity broadcasting the tweet
-    int id_tweeter;
+    int id_tweeter = -1;
 
     // The 'linking' entity the tweet was retweeted from (a following of id_tweeter)
     // Equal to id_tweeter if the tweet was original content.
-    int id_link;
+    int id_link = -1;
     // The generation of the tweet, 0 if the tweet was original content
-    int generation;
+    int generation = -1;
     // A tweet is an orignal tweet if tweeter_id == content.author_id
     smartptr<TweetContent> content;
-    double creation_time;
-    explicit Tweet(const smartptr<TweetContent>& content = smartptr<TweetContent>()) : content(content) {
-        id_tweeter = -1;
-        id_link = -1;
-        generation = -1;
-        creation_time = 0;
+
+    // The time the tweet was tweeted
+    double creation_time = 0;
+
+    // Based on creation_time and the current time
+    // Determines the 'omega' observation PDF dropoff rate of
+    // the tweet's retweetability.
+    int retweet_time_bin = -1;
+
+    // Next time to consider rebinning, always more than creation_time
+    double retweet_next_rebin_time = -1;
+
+    explicit Tweet(const smartptr<TweetContent>& content = smartptr<TweetContent>()) {
+        this->content = content;
     }
+
     void print() {
         printf("(Tweeter = %d, Link = %d, Original Author = %d, Created = %.2f\n)",
                 id_tweeter, id_link, content->id_original_author, creation_time);
     }
 
     READ_WRITE(rw) {
-        rw << id_tweeter << creation_time << id_link << generation;
+        rw << id_tweeter << creation_time << retweet_time_bin << retweet_next_rebin_time << id_link << generation;
         rw.visit_smartptr(content);
     }
 };
@@ -77,85 +94,11 @@ struct MostPopularTweet {
     // this is the most retweeted tweet
     Tweet most_popular_tweet;
     // The max number of retweets for one tweet
-    int global_max;
-    MostPopularTweet() {
-        global_max = 0;
-    }
+    int global_max = 0;
+
     READ_WRITE(rw) {
         rw << global_max;
         most_popular_tweet.visit(rw);
-    }
-};
-
-
-/* From the follower list, we can reason about:
- *  - preference class, language, distance
- * From the retweet, we can reason about:
- *  - distance, humour
- * Each tweeter's follower list has homogenous (ie, same):
- *  - entity type (of tweeter)
- * */
-const int RETWEET_RATE_ELEMENTS = 1;
-typedef RateVec<RETWEET_RATE_ELEMENTS> TweetReactRateVec;
-
-struct TweetRateDeterminer {
-    TweetRateDeterminer(AnalysisState& state) : state(state){
-    }
-    double get_age(const Tweet& tweet);
-    void update_rate(TweetReactRateVec& rates, const Tweet& tweet, int bin);
-    TweetReactRateVec get_rate(const Tweet& tweet, int bin);
-
-    double get_cat_threshold(int bin) {
-        return (1 << bin) * 90.0;
-    }
-
-    AnalysisState& state;
-};
-
-struct TweetBank {
-    typedef TimeDepRateTree<Tweet, RETWEET_RATE_ELEMENTS /*Just one rate for now*/, TweetRateDeterminer> RateTree;
-    RateTree tree;
-
-    double get_total_rate() {
-        return tree.rate_summary().tuple_sum;
-    }
-
-    TweetBank(AnalysisState& state);
-
-    /*
-     * Add an tweet. TweetRateDeterminer determines the reaction rate (follow or retweet) associated.
-     */
-    void add(const Tweet& data) {
-//        static int ITER = 1;
-        tree.add(data);
-//        printf("Tweet %d: \n", ITER);
-//        printf("------------------------------------------------------------------------\n");
-//        print();
-//        ITER++;
-    }
-
-    std::vector<Tweet> as_vector() {
-        auto vec = tree.as_vector();
-        for (int i = 0; i < vec.size(); i++) {
-            DEBUG_CHECK(!vec[i].content.empty(), "Tweet has no content!");
-        }
-        return vec;
-    }
-
-    void print() {
-        tree.print();
-    }
-    int n_active_tweets() const {
-        return tree.size();
-    }
-    Tweet& pick_random_weighted(MTwist& rng) {
-        ref_t ref = tree.pick_random_weighted(rng);
-        return tree.get(ref).data;
-    }
-
-    READ_WRITE(rw) {
-        tree.visit(rw);
-        rw.check_visit(get_total_rate());
     }
 };
 
