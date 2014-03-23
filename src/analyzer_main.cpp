@@ -183,7 +183,9 @@ struct Analyzer {
             load_network_state();
         }
         run_network_simulation();
-        //find_most_popular_tweet();
+        if (config.retweet_viz) {
+            find_most_popular_tweet();
+        }
         return time;
     }
 
@@ -540,7 +542,7 @@ struct Analyzer {
         }
         return false;
     }
-    
+
     void find_most_popular_tweet() {
         int local_max = 0;
         Tweet local_tweet;
@@ -575,7 +577,7 @@ struct Analyzer {
                 << network.n_entities << "\t\t"
                 << stats.n_follows << "\t\t"
                 << stats.n_tweets << "\t\t"
-                << stats.n_retweets << "(" << state.tweet_bank.n_active_tweets() << ")\t"
+                << stats.n_retweets << "(" << state.tweet_bank.n_active_tweets() << ")\t\t"
                 << stats.n_unfollows << "\t\t"
                 << stats.event_rate << "\t\t";
         if (time_spent != -1) {

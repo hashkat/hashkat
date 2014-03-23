@@ -194,28 +194,14 @@ struct AnalyzerFollow {
    }
    int twitter_follow_model() {
        PERF_TIMER();
-
-       double rand_num = rng.rand_real_not0();
        /* different follow models:
            0 - random follow
            1 - preferential follow
            2 - entity type follow
            3 - preferential entity follow
        */
-       int n_follow_models = 4;
-       vector<double> follow_weights(n_follow_models);
-       // all even weights for now, better organization after
-       follow_weights[0] = 25.0;
-       follow_weights[1] = 25.0;
-       follow_weights[2] = 25.0;
-       follow_weights[3] = 25.0;
-       double sum_of_weights = 0;
-       for (auto& weight : follow_weights) {
-           sum_of_weights += weight;
-       } for (auto& weight : follow_weights) {
-           weight /= sum_of_weights;
-       } 
-       int follow_method = rng.kmc_select(&follow_weights[0], n_follow_models);
+       int follow_method = rng.kmc_select(&config.model_weights[0], N_FOLLOW_MODELS);
+       cout << follow_method << "\n";
        if (follow_method == 0) {
            return random_follow_method(network.n_entities);
        } else if (follow_method == 1) {
