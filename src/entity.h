@@ -58,13 +58,9 @@ struct Entity {
            << ideology_tweet_percent << creation_time
            << avg_chatiness
            << location << language
-<<<<<<< HEAD
-           << humour_bin << chatty_entities;
-=======
            << humour_bin << ideology_bin << uses_hashtags
            << chatty_entities;
         // following_set and follower_set are specially handled below
->>>>>>> edd144ecfb5d4aed25639e1b4e7b90af0919a968
     }
 
     // 'Visits' every node, eg for serialization or testing

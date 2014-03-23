@@ -20,7 +20,7 @@ Starting simulation with seed '1'.
 Number of Months = 0
 
 
-#Time		Users		Follows		Tweets		Retweets	Unfollows	R	Real Time Spent
+Time		Users		Follows		Tweets		Retweets	Unfollows	R	Real Time Spent
 
 0.15		101		0		0		0(0)	0		1.20		60.73ms	
 600.94		712		219		180		8(19)	35		2.35		361.05ms	

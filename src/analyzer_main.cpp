@@ -162,15 +162,7 @@ struct Analyzer {
 					et.RF[event].monthly_rates.push_back(0);
 				}
 			}
-		} else if (et.RF[event].function_type == "exponential") {
-			for (int i = 0; i <= projected_months; i ++) {
-				if (et.RF[event].amplitude*exp(et.RF[event].exp_factor*i) >= 0) {
-					et.RF[event].monthly_rates.push_back(et.RF[event].amplitude*exp(et.RF[event].exp_factor*i));
-				} else {
-					et.RF[event].monthly_rates.push_back(0);
-				}
-			}
-		}
+		} 
 	}
     void set_initial_entities() {
         for (int i = 0; i < config.initial_entities; i++) {
@@ -500,11 +492,6 @@ struct Analyzer {
         if (config.output_stdout_summary && (floor(time) > prev_integer || config.output_verbose)) {
           output_summary_stats();
         } 
-        /*if (stats.n_outputs % (STDOUT_OUTPUT_RATE*50 + 1)  == 0 && stats.n_outputs != 0) {
-            cout << "\n\nPerforming mid-simulation calculations...\n\n";
-            output_network_statistics(state);
-            cout << "Done.\n";
-        }*/
     }
 
     /***************************************************************************
