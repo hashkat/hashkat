@@ -77,10 +77,10 @@ tweet_relevance:
     preference_classes:
       - name: LoveEverything
         retweet_relevance:
-          all: 1 # Can be any valid Python code
+          all: 0.01 # Can be any valid Python code
       - name: HateEverything
         retweet_relevance:
-          all: 1 # Can be any valid Python code
+          all: 0 # Can be any valid Python code
 
 entities:
   - name: Standard
