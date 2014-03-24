@@ -201,7 +201,6 @@ struct AnalyzerFollow {
            3 - preferential entity follow
        */
        int follow_method = rng.kmc_select(&config.model_weights[0], N_FOLLOW_MODELS);
-       cout << follow_method << "\n";
        if (follow_method == 0) {
            return random_follow_method(network.n_entities);
        } else if (follow_method == 1) {
