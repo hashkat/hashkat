@@ -83,6 +83,7 @@ struct ParsedConfig {
     bool entity_stats = false;
     bool stage1_unfollow = false;
     FollowModel follow_model = RANDOM_FOLLOW;
+    std::vector<double> model_weights;
 
     bool save_network_on_timeout = false, load_network_on_startup = false;
     bool ignore_load_config_check = false;
@@ -98,6 +99,7 @@ struct ParsedConfig {
     bool degree_distributions = false;
     bool output_tweet_analysis = false;
     bool output_verbose = false;
+    bool retweet_viz = false;
     // 'X_category' config options
 
     // Thresholds are filled, entity lists empty

@@ -79,8 +79,9 @@ void output_network_statistics(AnalysisState& state) {
     if (C.degree_distributions) {
         degree_distributions(network);
     }
-   visualize_most_popular_tweet(mpt, network);
-//    retweet_analysis(stats, tb);
+    if (C.retweet_viz) {
+        visualize_most_popular_tweet(mpt, network);
+    }
 }
 
 // edgelist created for R (analysis) and python executable (drawing) and gephi outputfile

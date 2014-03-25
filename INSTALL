@@ -12,6 +12,8 @@ To install kOSN, you will need to have the following:
 AD -- TODO: Notes about scipy
 Both cmake and yaml are available through brew
 
+(sudo)
+port install cmake
 brew install cmake
 pip install pyyaml
 pip install networkx

@@ -162,15 +162,7 @@ struct Analyzer {
 					et.RF[event].monthly_rates.push_back(0);
 				}
 			}
-		} else if (et.RF[event].function_type == "exponential") {
-			for (int i = 0; i <= projected_months; i ++) {
-				if (et.RF[event].amplitude*exp(et.RF[event].exp_factor*i) >= 0) {
-					et.RF[event].monthly_rates.push_back(et.RF[event].amplitude*exp(et.RF[event].exp_factor*i));
-				} else {
-					et.RF[event].monthly_rates.push_back(0);
-				}
-			}
-		}
+		} 
 	}
     void set_initial_entities() {
         for (int i = 0; i < config.initial_entities; i++) {
@@ -191,7 +183,9 @@ struct Analyzer {
             load_network_state();
         }
         run_network_simulation();
-        //find_most_popular_tweet();
+        if (config.retweet_viz) {
+            find_most_popular_tweet();
+        }
         return time;
     }
 
@@ -500,11 +494,6 @@ struct Analyzer {
         if (config.output_stdout_summary && (floor(time) > prev_integer || config.output_verbose)) {
           output_summary_stats();
         } 
-        /*if (stats.n_outputs % (STDOUT_OUTPUT_RATE*50 + 1)  == 0 && stats.n_outputs != 0) {
-            cout << "\n\nPerforming mid-simulation calculations...\n\n";
-            output_network_statistics(state);
-            cout << "Done.\n";
-        }*/
     }
 
     /***************************************************************************
@@ -553,7 +542,7 @@ struct Analyzer {
         }
         return false;
     }
-    
+
     void find_most_popular_tweet() {
         int local_max = 0;
         Tweet local_tweet;
@@ -588,7 +577,7 @@ struct Analyzer {
                 << network.n_entities << "\t\t"
                 << stats.n_follows << "\t\t"
                 << stats.n_tweets << "\t\t"
-                << stats.n_retweets << "(" << state.tweet_bank.n_active_tweets() << ")\t"
+                << stats.n_retweets << "(" << state.tweet_bank.n_active_tweets() << ")\t\t"
                 << stats.n_unfollows << "\t\t"
                 << stats.event_rate << "\t\t";
         if (time_spent != -1) {

@@ -153,6 +153,20 @@ static FollowerSetRatesDeterminer parse_tweet_react_rates(const Node& node) {
     }
     return FollowerSetRatesDeterminer(total_rates);
 }
+static vector<double> parse_follow_weights(const Node& node) {
+    vector<double> weights(N_FOLLOW_MODELS);
+    parse(node, "random", weights[0]);
+    parse(node, "preferential", weights[1]);
+    parse(node, "entity", weights[2]);
+    parse(node, "preferential_entity", weights[3]);
+    double weight_sum = 0;
+    for (auto& w : weights) {
+        weight_sum += w;
+    } for (auto& w : weights) {
+        w /= weight_sum;
+    }
+    return weights;
+}
 
 static void parse_analysis_configuration(ParsedConfig& config, const Node& node) {
     parse(node, "max_entities", config.max_entities);
@@ -166,6 +180,8 @@ static void parse_analysis_configuration(ParsedConfig& config, const Node& node)
     parse(node, "use_random_time_increment", config.use_random_time_increment);
     parse(node, "enable_interactive_mode", config.enable_interactive_mode);
     config.follow_model = parse_follow_model(node);
+    const Node& follow_model = node["model_weights"];
+    config.model_weights = parse_follow_weights(follow_model);
 }
 
 static Add_Rates parse_rates_configuration(ParsedConfig& config, const Node& node) {
@@ -197,6 +213,7 @@ static void parse_output_configuration(ParsedConfig& config, const Node& node) {
     parse(node, "degree_distributions", config.degree_distributions);
 
     parse(node, "tweet_analysis", config.output_tweet_analysis);
+    parse(node, "retweet_visualization", config.retweet_viz);
 }
 
 static CategoryGrouper parse_category_thresholds(const Node& node) {
