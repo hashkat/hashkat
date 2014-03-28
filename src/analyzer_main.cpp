@@ -74,6 +74,7 @@ struct Analyzer {
     Add_Rates& add_rates;
     TweetBank& tweet_bank;
     MostPopularTweet& most_pop_tweet;
+    HashTags& hashtags;
 
     /* Mersenne-twister random number generator */
     MTwist& rng;
@@ -105,7 +106,7 @@ struct Analyzer {
             entity_types(state.entity_types), network(state.network),
             tweet_ranks(state.tweet_ranks), follow_ranks(state.follow_ranks), retweet_ranks(state.retweet_ranks),
             rng(state.rng), time(state.time), add_rates(state.add_rates), tweet_bank(state.tweet_bank),
-            most_pop_tweet(state.most_pop_tweet) {
+            most_pop_tweet(state.most_pop_tweet), hashtags(state.hashtags) {
 
         // The following allocates a memory chunk proportional to max_entities:
         network.allocate(config.max_entities);
@@ -284,7 +285,6 @@ struct Analyzer {
         // For now, either always mark ideology, or never
         e.ideology_tweet_percent = rng.random_chance(0.5) ? 1.0 : 0.0;
         e.humour_bin = rng.random_chance(0.5) ? 1.0 : 0.0;
-        e.uses_hashtags = rng.random_chance(0.5) ? 1.0 : 0.0;
         e.preference_class = rng.kmc_select(subregion.preference_class_probs);
 
         // Place the entity in a random location
@@ -326,6 +326,14 @@ struct Analyzer {
         ti->language = e_original_author.language;
         return ti;
     }
+    
+    bool include_hashtag() {
+        double rand_num = rng.rand_real_not0();
+        if (rand_num <= config.hashtag_prob) {
+            return true;
+        }
+        return false;
+    }
 
     Tweet generate_tweet(int id_tweeter, int id_link, int generation, const smartptr<TweetContent>& content) {
         Entity& e_tweeter = network[id_tweeter];
@@ -335,6 +343,16 @@ struct Analyzer {
         tweet.id_tweeter = id_tweeter;
         tweet.id_link = id_link;
         tweet.generation = generation;
+        if (include_hashtag()) {
+            tweet.hashtag = true;
+            hashtags.tweets_w_hashtags.push_back(tweet);
+            /* the fact that the hashtag list is arbitrary, but it
+                is much less costly than checking the times of every 
+               tweet to make sure we have updated tweets. */
+            if (hashtags.tweets_w_hashtags.size() > 100) {
+                hashtags.tweets_w_hashtags.erase(hashtags.tweets_w_hashtags.begin());
+            }
+        }
 
         // Always start in the first retweet time bin:
         tweet.retweet_time_bin = 0;

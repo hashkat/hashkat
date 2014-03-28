@@ -9,6 +9,7 @@ enum FollowModel {
     PREFERENTIAL_FOLLOW,
     ENTITY_FOLLOW,
     PREFERENTIAL_ENTITY_FOLLOW,
+    HASHTAG_FOLLOW,
         TWITTER_FOLLOW
 };
 
@@ -82,6 +83,7 @@ struct ParsedConfig {
     bool use_barabasi = false;
     bool entity_stats = false;
     bool stage1_unfollow = false;
+    double hashtag_prob = 0;
     FollowModel follow_model = RANDOM_FOLLOW;
     std::vector<double> model_weights;
 

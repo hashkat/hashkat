@@ -42,7 +42,6 @@ struct Entity {
 
     int humour_bin = -1;
     int ideology_bin = -1;
-    bool uses_hashtags = false;
     
     // list of flagged chatty people
     std::vector<int> chatty_entities;
@@ -58,7 +57,7 @@ struct Entity {
            << ideology_tweet_percent << creation_time
            << avg_chatiness
            << location << language
-           << humour_bin << ideology_bin << uses_hashtags
+           << humour_bin << ideology_bin 
            << chatty_entities;
         // following_set and follower_set are specially handled below
     }

@@ -18,13 +18,14 @@ struct AnalyzerFollow {
 
     EntityTypeVector& entity_types;
     MTwist& rng;
+    HashTags& hashtags;
     // There are multiple 'Analyzer's, they each operate on parts of AnalysisState.
     AnalyzerFollow(AnalysisState& state) :
             network(state.network), state(state), stats(state.stats),
             config(state.config), follow_ranks(state.follow_ranks),
             follow_probabilities(state.follow_probabilities),
             updating_follow_probabilities(state.updating_follow_probabilities),
-            entity_types(state.entity_types), rng(state.rng) {
+            entity_types(state.entity_types), rng(state.rng), hashtags(state.hashtags) {
     }
 
    /***************************************************************************
@@ -192,6 +193,17 @@ struct AnalyzerFollow {
        }
        return -1;
    }
+   
+   int hashtag_follow_method() {
+       /* This method is totally random, but it allows for connections to happen based
+          based on entities having a hashtag in their tweet. */
+       if (hashtags.tweets_w_hashtags.size() > 0) {
+           int rnd_index = rng.rand_int(hashtags.tweets_w_hashtags.size());
+           return hashtags.tweets_w_hashtags.at(rnd_index).id_tweeter;
+       }
+       return -1;
+   }
+   
    int twitter_follow_model() {
        PERF_TIMER();
        /* different follow models:
@@ -199,6 +211,7 @@ struct AnalyzerFollow {
            1 - preferential follow
            2 - entity type follow
            3 - preferential entity follow
+           4 - hashtag follow
        */
        int follow_method = rng.kmc_select(&config.model_weights[0], N_FOLLOW_MODELS);
        if (follow_method == 0) {
@@ -207,8 +220,10 @@ struct AnalyzerFollow {
            return preferential_follow_method();
        } else if (follow_method == 2) {
            return entity_follow_method();
-       } else {
+       } else if (follow_method == 3) {
            return preferential_entity_follow_method();
+       } else {
+           hashtag_follow_method();
        }
        return -1;
     }
@@ -241,6 +256,10 @@ struct AnalyzerFollow {
         } else if (config.follow_model == TWITTER_FOLLOW) {
             perf_timer_begin("AnalyzerFollower.follow_entity(Twitter_model)");
             entity_to_follow = twitter_follow_model();
+            perf_timer_end("AnalyzerFollower.follow_entity(Twitter_model)");
+        } else if (config.follow_model == HASHTAG_FOLLOW) {
+            perf_timer_begin("AnalyzerFollower.follow_entity(Twitter_model)");
+            entity_to_follow = hashtag_follow_method();
             perf_timer_end("AnalyzerFollower.follow_entity(Twitter_model)");
         }
         // if the stage1_follow is set to true in the inputfile

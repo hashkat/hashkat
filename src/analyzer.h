@@ -80,6 +80,7 @@ struct AnalysisState {
 
     TweetBank tweet_bank;
     MostPopularTweet most_pop_tweet;
+    HashTags hashtags;
     std::vector<double> follow_probabilities, updating_follow_probabilities;
 
     MTwist rng;

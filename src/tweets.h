@@ -67,6 +67,9 @@ struct Tweet {
     // Determines the 'omega' observation PDF dropoff rate of
     // the tweet's retweetability.
     int retweet_time_bin = -1;
+    
+    // does this tweet include a hashtag, set false as default
+    bool hashtag = false;
 
     // Next time to consider rebinning, always more than creation_time
     double retweet_next_rebin_time = -1;
@@ -100,6 +103,15 @@ struct MostPopularTweet {
         rw << global_max;
         most_popular_tweet.visit(rw);
     }
+};
+
+struct HashTags {
+    // this is the list of tweets with hashtags
+    std::vector<Tweet> tweets_w_hashtags;
+    
+    /*READ_WRITE(rw) {
+        
+    }*/
 };
 
 #endif
