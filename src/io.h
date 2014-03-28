@@ -21,5 +21,6 @@ bool quick_rate_check(EntityTypeVector& ets, double& correct_val, int& i, int& j
 bool entity_checks(EntityTypeVector& ets, Network& network, AnalysisState& state, Add_Rates& add_rates, int& initial_entities);
 void whos_following_who(EntityTypeVector& ets, Network& network);
 void visualize_most_popular_tweet(MostPopularTweet& mpt, Network& network);
+void network_statistics(Network& n, AnalysisStats& stats, EntityTypeVector& etv);
 
 #endif

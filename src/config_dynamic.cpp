@@ -43,6 +43,8 @@ static FollowModel parse_follow_model(const Node& node) {
         return ENTITY_FOLLOW;
     } else if (follow_model == "preferential-entity") {
         return PREFERENTIAL_ENTITY_FOLLOW;
+    } else if (follow_model == "hashtag") {
+        return HASHTAG_FOLLOW;
     } else if (follow_model == "twitter" ) {
         return TWITTER_FOLLOW;
     } else {
@@ -159,6 +161,7 @@ static vector<double> parse_follow_weights(const Node& node) {
     parse(node, "preferential", weights[1]);
     parse(node, "entity", weights[2]);
     parse(node, "preferential_entity", weights[3]);
+    parse(node, "hashtag", weights[4]);
     double weight_sum = 0;
     for (auto& w : weights) {
         weight_sum += w;
@@ -175,6 +178,7 @@ static void parse_analysis_configuration(ParsedConfig& config, const Node& node)
     parse(node, "max_real_time", config.max_real_time);
     parse(node, "unfollow_tweet_rate", config.unfollow_tweet_rate);
     parse(node, "stage1_unfollow", config.stage1_unfollow);
+    parse(node, "use_hashtag_probability", config.hashtag_prob);
     parse(node, "use_barabasi", config.use_barabasi);
     parse(node, "use_flawed_followback", config.use_flawed_followback);
     parse(node, "use_random_time_increment", config.use_random_time_increment);
@@ -214,6 +218,7 @@ static void parse_output_configuration(ParsedConfig& config, const Node& node) {
 
     parse(node, "tweet_analysis", config.output_tweet_analysis);
     parse(node, "retweet_visualization", config.retweet_viz);
+    parse(node, "main_statistics", config.main_stats);
 }
 
 static CategoryGrouper parse_category_thresholds(const Node& node) {
