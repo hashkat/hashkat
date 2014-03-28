@@ -102,6 +102,7 @@ struct ParsedConfig {
     bool output_tweet_analysis = false;
     bool output_verbose = false;
     bool retweet_viz = false;
+    bool main_stats = false;
     // 'X_category' config options
 
     // Thresholds are filled, entity lists empty

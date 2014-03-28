@@ -218,6 +218,7 @@ static void parse_output_configuration(ParsedConfig& config, const Node& node) {
 
     parse(node, "tweet_analysis", config.output_tweet_analysis);
     parse(node, "retweet_visualization", config.retweet_viz);
+    parse(node, "main_statistics", config.main_stats);
 }
 
 static CategoryGrouper parse_category_thresholds(const Node& node) {

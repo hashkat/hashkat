@@ -344,11 +344,12 @@ struct Analyzer {
         tweet.id_link = id_link;
         tweet.generation = generation;
         if (include_hashtag()) {
+            stats.n_hashtags ++;
             tweet.hashtag = true;
             hashtags.tweets_w_hashtags.push_back(tweet);
-            /* the fact that the hashtag list is arbitrary, but it
-                is much less costly than checking the times of every 
-               tweet to make sure we have updated tweets. */
+            /* the fact that the hashtag list is 100 tweets long is 
+                arbitrary, but it is much less costly than checking 
+                the times of every tweet to make sure we have updated tweets. */
             if (hashtags.tweets_w_hashtags.size() > 100) {
                 hashtags.tweets_w_hashtags.erase(hashtags.tweets_w_hashtags.begin());
             }
@@ -372,7 +373,6 @@ struct Analyzer {
 		Entity& e = network[id_tweeter];
         entity_types[e.entity_type].n_tweets++;
         tweet_ranks.categorize(id_tweeter, e.n_tweets);
-        stats.n_tweets ++;
         if (network.n_followers(id_tweeter) > 0) {
             generate_tweet(id_tweeter, id_tweeter, 0, generate_tweet_content(id_tweeter));
             // Generate the tweet content:
@@ -383,11 +383,11 @@ struct Analyzer {
             }
             entity_types[e.entity_type].n_tweets++;
             tweet_ranks.categorize(id_tweeter, e.n_tweets);
-            stats.n_tweets ++;
         }
         // Else, no followers -- no need to create a tweet
         //** AD: Still consider a success for now, re-evaluate later
         //** AD: Maybe we may want to discount the possibility of such tweets and just restart
+        stats.n_tweets ++;
 		return true; // Always succeeds
 	}
 

@@ -67,6 +67,7 @@ struct AnalyzerFollow {
     ***************************************************************************/
     
    int random_follow_method(int n_entities) {
+       stats.n_random_follows ++;
        return rng.rand_int(n_entities);
    }
    int preferential_barabasi_follow_method() {
@@ -125,6 +126,7 @@ struct AnalyzerFollow {
                CategoryEntityList& C = follow_ranks.categories[i];
                // pull a random entity from whatever bin we landed in and break so we do not continue this loop
                int entity_to_follow = C.entities[rng.rand_int(C.entities.size())];
+               stats.n_preferential_follows ++;
                return entity_to_follow;
            }
            rand_num -= p;
@@ -145,6 +147,7 @@ struct AnalyzerFollow {
                    // pull the entity from whatever bin we landed in and break so we dont continue this loop
                    int n = rng.rand_int(type.entity_list.size());
                    int entity_to_follow = type.entity_list[n];
+                   stats.n_entity_follows ++;
                    return entity_to_follow;
                }
            }
@@ -186,6 +189,7 @@ struct AnalyzerFollow {
                }
            }
            if (entity_to_follow != -1){
+               stats.n_pref_entity_follows ++;
                return entity_to_follow;
            }
            // part of the above search
@@ -199,6 +203,7 @@ struct AnalyzerFollow {
           based on entities having a hashtag in their tweet. */
        if (hashtags.tweets_w_hashtags.size() > 0) {
            int rnd_index = rng.rand_int(hashtags.tweets_w_hashtags.size());
+           stats.n_hashtag_follows ++;
            return hashtags.tweets_w_hashtags.at(rnd_index).id_tweeter;
        }
        return -1;

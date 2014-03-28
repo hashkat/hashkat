@@ -82,6 +82,9 @@ void output_network_statistics(AnalysisState& state) {
     if (C.retweet_viz) {
         visualize_most_popular_tweet(mpt, network);
     }
+    if (C.main_stats) {
+        network_statistics(network, stats, et_vec);
+    }
 }
 
 // edgelist created for R (analysis) and python executable (drawing) and gephi outputfile
@@ -526,5 +529,39 @@ void visualize_most_popular_tweet(MostPopularTweet& mpt, Network& network) {
         }
     }
     output << "</edges>\n" << "</graph>\n" << "</gexf>";
+    output.close();
+}
+
+void network_statistics(Network& n, AnalysisStats& stats, EntityTypeVector& etv) {
+    ofstream output;
+    output.open("output/main_stats.dat");
+    output << "--------------------\n| MAIN NETWORK STATS |\n--------------------\n\n";
+    output << "USERS\n_____\n\n";
+    output << "Total: " << n.n_entities << "\n";
+    for (auto& et : etv) {
+        output << et.name << ": " << et.entity_list.size() << "\t(" << et.entity_list.size() / (double) n.n_entities << "% of total entities)\n";
+    }
+    output << "\nTWEETS\n_____\n\n";
+    output << "Total: " << stats.n_tweets << "\n";
+    output << "Hashtags: " << stats.n_hashtags << "\t(" << stats.n_hashtags / (double) stats.n_tweets << "% of total tweets)\n";
+    for (auto& et : etv) {
+        output << et.name << ": " << et.n_tweets << "\t(" << et.n_tweets / (double) stats.n_tweets << "% of total tweets)\n";
+    }
+    output << "\nRETWEETS\n_______\n\n";
+    output << "Total: " << stats.n_retweets << "\n";
+    for (auto& et : etv) {
+        output << et.name << ": " << et.n_retweets << "\t(" << et.n_retweets / (double) stats.n_retweets << "% of total retweets)\n";
+    }
+    output << "\nFOLLOWS\n_______\n\n";
+    output << "Total: " << stats.n_follows << "\n";
+    output << "Random: " << stats.n_random_follows << "\t(" << stats.n_random_follows / (double) stats.n_follows << "% of total follows)\n";
+    output << "Preferential: " << stats.n_preferential_follows << "\t(" << stats.n_preferential_follows / (double) stats.n_follows << "% of total follows)\n";
+    output << "Entity: " << stats.n_entity_follows << "\t(" << stats.n_entity_follows / (double) stats.n_follows << "% of total follows)\n";
+    output << "Preferential-entity: " << stats.n_pref_entity_follows << "\t(" << stats.n_pref_entity_follows / (double) stats.n_follows << "% of total follows)\n";
+    output << "Retweet: " << stats.n_retweet_follows << "\t(" << stats.n_retweet_follows / (double) stats.n_follows << "% of total follows)\n";
+    output << "Hashtag: " << stats.n_hashtag_follows << "\t(" << stats.n_hashtag_follows / (double) stats.n_follows << "% of total follows)\n";
+    for (auto& et : etv) {
+        output << et.name << ": " << et.n_follows << "\t(" << et.n_follows / (double) stats.n_follows << "% of total follows)\n";
+    }
     output.close();
 }

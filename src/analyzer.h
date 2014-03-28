@@ -22,6 +22,8 @@ struct AnalysisStats {
 
     int n_outputs;
     int64 n_steps, n_follows, n_tweets, n_retweets, n_unfollows;
+    int64 n_random_follows, n_preferential_follows, n_entity_follows, n_pref_entity_follows, n_retweet_follows, n_hashtag_follows;
+    int64 n_hashtags;
     EntityEventStats event_stats;
 
     double event_rate;
@@ -33,12 +35,16 @@ struct AnalysisStats {
 
         n_outputs = 0;
         n_steps = 0, n_follows = 0, n_tweets = 0, n_retweets = 0, n_unfollows = 0;
+        n_random_follows = 0, n_preferential_follows = 0, n_entity_follows = 0, n_pref_entity_follows = 0, n_retweet_follows = 0,n_hashtag_follows = 0;
+        n_hashtags = 0;
         event_rate = 0;
     }
 
     READ_WRITE(rw) {
         rw << prob_add << prob_follow << prob_retweet << prob_tweet;
         rw << n_outputs << n_steps << n_follows << n_tweets << n_retweets << n_unfollows;
+        rw << n_random_follows << n_preferential_follows << n_entity_follows << n_pref_entity_follows << n_retweet_follows << n_hashtag_follows;
+        rw << n_hashtags;
         rw << event_stats.stats_array;
         rw << event_rate;
     }

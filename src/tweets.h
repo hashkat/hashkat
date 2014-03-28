@@ -109,9 +109,9 @@ struct HashTags {
     // this is the list of tweets with hashtags
     std::vector<Tweet> tweets_w_hashtags;
     
-    /*READ_WRITE(rw) {
-        
-    }*/
+    READ_WRITE(rw) {
+        rw.visit_objs(tweets_w_hashtags);
+    }
 };
 
 #endif

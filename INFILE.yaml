@@ -34,7 +34,7 @@
 
 analysis:
   initial_entities:
-    100000
+    10000
   max_entities: 
     100001
   max_time: 
@@ -102,6 +102,8 @@ output:
     true
   retweet_visualization:
     false
+  main_statistics:
+    true
 
 #################################################################
 # >> *_ranks:
@@ -319,7 +321,7 @@ entities:
     followback_probability: 40
     rates: 
         # Rate for follows from this entity:
-        follow: {function: constant, value: 0.1}
+        follow: {function: constant, value: 0.01}
         # Rate for tweets from this entity:
         tweet: {function: constant, value: 0.01}
 
@@ -327,19 +329,19 @@ entities:
     weights: {add: 5, follow: 80}
     followback_probability: 0
     rates:
-        follow: {function: constant, value: 0.1}
+        follow: {function: constant, value: 0.01}
         tweet: {function: constant, value: 0.01}
         
   - name: Bot
     weights: {add: 5, follow: 0}
     followback_probability: 0
     rates:
-        follow: {function: constant, value: 0.1}
+        follow: {function: constant, value: 0.01}
         tweet: {function: constant, value: 0.01}
 
   - name: Organization
     weights: {add: 10, follow: 15}
     followback_probability: 0
     rates:
-        follow: {function: constant, value: 0.1}
+        follow: {function: constant, value: 0.01}
         tweet: {function: constant, value: 0.01}
