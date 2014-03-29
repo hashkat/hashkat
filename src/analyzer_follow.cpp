@@ -199,12 +199,16 @@ struct AnalyzerFollow {
    }
    
    int hashtag_follow_method() {
+       PERF_TIMER();
        /* This method is totally random, but it allows for connections to happen based
           based on entities having a hashtag in their tweet. */
        if (hashtags.tweets_w_hashtags.size() > 0) {
            int rnd_index = rng.rand_int(hashtags.tweets_w_hashtags.size());
-           stats.n_hashtag_follows ++;
-           return hashtags.tweets_w_hashtags.at(rnd_index).id_tweeter;
+           int entity_to_follow = hashtags.tweets_w_hashtags.at(rnd_index).id_tweeter;
+           if (entity_to_follow != -1) {
+               stats.n_hashtag_follows ++;
+               return entity_to_follow;
+           }
        }
        return -1;
    }
