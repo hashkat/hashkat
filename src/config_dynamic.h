@@ -45,22 +45,15 @@ private:
     FollowerSetRatesVec rates;
 };
 
-
-struct Subregion {
+struct Region {
     std::string name;
     std::vector<double> ideology_probs;
     std::vector<double> language_probs;
     std::vector<double> preference_class_probs;
 };
 
-struct Region {
-    std::string name;
-    std::vector<double> add_probs; // For the subregions
-    std::vector<Subregion> subregions;
-};
-
 struct Regions {
-    std::vector<double> add_probs; // For the regions
+    std::vector<double> add_probs; // For choosing a region, sums to 1
     std::vector<Region> regions;
 };
 
@@ -108,7 +101,6 @@ struct ParsedConfig {
     // Thresholds are filled, entity lists empty
     CategoryGrouper tweet_ranks, follow_ranks;
     CategoryGrouper retweet_ranks;
-    LanguageProbabilities lang_probs;
 
     std::vector<double> follow_probabilities;
     Regions regions;

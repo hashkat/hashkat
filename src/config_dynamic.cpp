@@ -53,28 +53,6 @@ static FollowModel parse_follow_model(const Node& node) {
     }
 }
 
-static LanguageProbabilities parse_language_configuration(const Node& node) {
-    map<int,string> lang_map;
-    lang_map[LANG_ENGLISH] = "English";
-    lang_map[LANG_FRENCH] = "French";
-    lang_map[LANG_FRENCH_AND_ENGLISH] = "French+English";
-
-    const Node& weights = node["weights"];
-    LanguageProbabilities probs;
-    double total = 0.0; // For normalization
-    for (int i = 0; i < N_LANGS; i++) {
-        string str = lang_map[i];
-        parse(weights, str.c_str(), probs[i]);
-        total += probs[i];
-    }
-    ASSERT(total > 0, "Total must be greater than 0");
-    for (int i = 0; i < N_LANGS; i++) {
-        probs[i] /= total; // Normalize
-    }
-
-    return probs;
-}
-
 static std::vector<EntityPreferenceClass> parse_preference_classes(const Node& node) {
     const Node& tweet_rel = node["tweet_relevance"];
     const Node& pref_classes = tweet_rel["preference_classes"];
@@ -357,30 +335,12 @@ static EntityTypeVector parse_entities_configuration(const Node& node) {
     return vec;
 }
 
-static void parse_subregion(Region& r, const Node& node) {
-    Subregion s;
-    parse(node, "name", s.name);
-    parse_vector(node["ideology_probs"], s.ideology_probs);
-    parse_vector(node["language_probs"], s.language_probs);
-    parse_vector(node["preference_class_probs"], s.preference_class_probs);
-
-    double add_prob = -1;
-    parse(node, "add_prob", add_prob);
-
-    r.add_probs.push_back(add_prob);
-    r.subregions.push_back(s);
-}
-
-static void parse_subregions(Region& r, const Node& node) {
-    for (int i = 0; i < node.size(); i++) {
-        parse_subregion(r, node[i]);
-    }
-}
-
 static void parse_region(Regions& ret, const Node& node) {
     Region r;
     parse(node, "name", r.name);
-    parse_subregions(r, node["subregions"]);
+    parse_vector(node["ideology_probs"], r.ideology_probs);
+    parse_vector(node["language_probs"], r.language_probs);
+    parse_vector(node["preference_class_probs"], r.preference_class_probs);
 
     double add_prob = -1;
     parse(node, "add_prob", add_prob);
@@ -398,7 +358,6 @@ static Regions parse_regions(const Node& node) {
 
 static void parse_all_configuration(ParsedConfig& config, const Node& node) {
     parse_analysis_configuration(config, node["analysis"]);
-    config.lang_probs = parse_language_configuration(node["languages"]);
     config.pref_classes = parse_preference_classes(node);
     config.tweet_obs = parse_tweet_obs_pdf(node);
     config.follower_rates = parse_tweet_react_rates(node);

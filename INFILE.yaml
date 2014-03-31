@@ -183,10 +183,8 @@ ideologies:
 # Additionally, it is required that every region have exactly N_BIN_SUBREGIONS subregions.
 #
 # add_weight:
-#   Required for each region and subregion. The weight with which 
-#   this region or subregion is chosen. The weights for all
-#   subregions of a region are considered once the region
-#   has been chosen.
+#   Required for each region. The weight with which 
+#   this region is chosen.
 #
 # The following are definable for each subregion.
 # If specified in the region, it will be an inherited default.
@@ -197,28 +195,16 @@ ideologies:
 
 #################################################################
 
-# Temporary:
-languages:
-  weights: {English: 100, French: 0, French+English: 0}
-
 regions:
-  - name: Canada
+  - name: Ontario
     add_weight: 1
 
-    #Inherited:
     preference_class_weights: {Standard: 100}
     entity_class_weights: {Standard: 100}
     ideology_weights: {Red: 100, Blue: 100}
+    language_weights: {English: 100, French: 25, French+English: 25}
 
-    subregions: 
-     - name: Toronto
-       add_weight: 1
-       language_weights: {English: 100, French: 25, French+English: 25}
-     - name: Montreal
-       add_weight: 1
-       language_weights: {English: 25,  French: 100, French+English: 25}
-
-  - name: USA
+  - name: Quebec
     add_weight: 5
 
     #Inherited:
@@ -226,12 +212,6 @@ regions:
     entity_class_weights: {Standard: 100}
     language_weights: {English: 100, French: 10, French+English: 10}
     ideology_weights: {Red: 100, Blue: 100}
-
-    subregions: 
-     - name: Washington
-       add_weight: 1
-     - name: Chicago
-       add_weight: 1
 
 # These values MUST match config_static.h!
 config_static:
@@ -254,7 +234,7 @@ config_static:
 # using Python. The strings provided can be any valid Python, as if wrapped by a
 # Python function as such:
 #
-# def FOO(same_region, same_subregion, entity_type, humour): 
+# def FOO(same_region, same_ideology, entity_type, humour): 
 #   return $FOO
 # Where:
 #   same_region: Whether you are in the same region as the (original) tweeter

@@ -23,9 +23,7 @@ std::string FollowerSet::LanguageComponent::cat_name(Context& N, int bin) {
 
 // Compute order of distance between tweeter and follower
 int FollowerSet::DistanceComponent::classify(Context& N, int entity_id) {
-    Entity& own = owner(N);
-    Entity& follower = entity(N, entity_id);
-    return own.location.distance_bin(follower.location);
+    return 0;
 }
 
 std::string FollowerSet::DistanceComponent::cat_name(Context& N, int bin) {

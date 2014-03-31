@@ -7,80 +7,24 @@
 
 #include "config_static.h"
 
-// Helper for location distance:
-inline double wrap_dist(double d1, double d2) {
-    double distA = fabs(d2 - d1);
-    double distB = fabs(d2 - d1 + 1);
-    double distC = fabs(d2 - d1 - 1);
-    return std::min(distA, std::min(distB, distC));
-}
-
-/* Represents a Location object that wraps around in (x = 0 to 1) X (y = 0 to 1) space*/
-struct Location {
-    double x = 0, y = 0;
-
-    double distance(const Location& o) {
-        double dx = wrap_dist(x, o.x);
-        double dy = wrap_dist(y, o.y);
-        double d= sqrt(dx*dx + dy*dy);
-        return d;
-    }
-    int distance_bin(const Location& o) {
-        // We normalize to 0..1 by multiplying by 2, as
-        // 0.5 is the maximum distance with modular coordinates.
-        int bin = (int) (distance(o) * 2.0 * N_BIN_DISTANCE);
-        DEBUG_CHECK(bin >= 0, "Cannot have negative bin!");
-        bin = std::min(bin, N_BIN_DISTANCE - 1);
-        return bin;
-    }
-
-    READ_WRITE(rw) {
-        rw << x << y;
-    }
-};
-
 /* This file contains properties that differentiate tweets and entities */
 
-// An X-Macro, allowing for syntatic construction via defining X before resolution
-#define X_ALL_LANGUAGES \
-    X(LANG_ENGLISH)\
-    X(LANG_FRENCH_AND_ENGLISH)\
-    X(LANG_FRENCH)
-/* All languages before LANG_FRENCH contain English */
-
-#define X(x) x, /* Resolve for enum */
 enum Language {
     // Resolves using X above, fills enum:
-    X_ALL_LANGUAGES
+    LANG_ENGLISH,
+    LANG_FRENCH_AND_ENGLISH,
+    LANG_FRENCH,
+    /* All languages before LANG_FRENCH contain English */
     N_LANGS // Not a real entry; evaluates to amount of languages
 };
 #undef X
 
 inline const char* language_name(int bin) {
-    #define X(x) if (bin == x) return #x;
-    X_ALL_LANGUAGES
-    #undef X
+    if (bin == LANG_ENGLISH) return "LANG_ENGLISH";
+    if (bin == LANG_FRENCH_AND_ENGLISH) return "LANG_FRENCH_AND_ENGLISH";
+    if (bin == LANG_FRENCH) return "LANG_FRENCH";
     return NULL;
 }
-
-inline bool contains_english(Language lang) {
-    return (lang < LANG_FRENCH); // All languages before LANG_FRENCH contain English
-}
-
-struct LanguageProbabilities {
-    double& operator[](int index) {
-        DEBUG_CHECK(index >= 0 && index < N_LANGS, "Out of bounds!");
-        return probs[index];
-    }
-    LanguageProbabilities() {
-        memset(probs, 0, sizeof(double) * N_LANGS);
-    }
-    Language kmc_select(MTwist& rng) {
-        return (Language)rng.kmc_select(probs, N_LANGS);
-    }
-private:
-    double probs[N_LANGS];
-};
 
 /*
  * An entity type is a static class of entity, determined at creation.

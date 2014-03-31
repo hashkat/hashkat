@@ -20,15 +20,11 @@ struct AnalyzerRetweet {
             network(state.network), state(state), stats(state.stats),
             config(state.config), entity_types(state.entity_types), rng(state.rng) {
     }
-
-    void handle_old_tweet_and_retweet_IDs(TweetBank& tweet_bank) {
-        tweet_bank.tree.update(state.time);
-    }
-    
     void update_all_retweets() {
         PERF_TIMER();
         TweetBank& tweet_bank = state.tweet_bank;
-        handle_old_tweet_and_retweet_IDs(tweet_bank);
+
+        tweet_bank.tree.update(state.time);
     }
 
     double total_retweet_rate() {

@@ -103,34 +103,14 @@ for p in CONFIG["preference_classes"]:
     pref_n += 1
 
 def preprocess_weights(ret,orig):
-    if "ideology_weights" in orig:
-        ret["ideology_probs"] = weights_to_probs(orig["ideology_weights"], ideo_order, ideo_n)
-    if "language_weights" in orig:
-        ret["language_probs"] = weights_to_probs(orig["language_weights"], lang_order, lang_n)
-    if "preference_class_weights" in orig:
-        ret["preference_class_probs"] = weights_to_probs(orig["preference_class_weights"], pref_order, pref_n)
-    return ret
-
-def preprocess_subregion(template, subregion, add_weight_total):
-    ret = template.copy()
-    ret["name"] = subregion["name"]
-    ret["add_prob"] = subregion["add_weight"] / add_weight_total
-    preprocess_weights(ret, subregion)
-    return ret
-
-def preprocess_subregions(template, subregions):
-    ret = []
-    total_weight = 0.0
-    for subregion in subregions: total_weight += subregion["add_weight"]
-    for subregion in subregions:
-        ret.append(preprocess_subregion(template, subregion, total_weight))
+    ret["ideology_probs"] = weights_to_probs(orig["ideology_weights"], ideo_order, ideo_n)
+    ret["language_probs"] = weights_to_probs(orig["language_weights"], lang_order, lang_n)
+    ret["preference_class_probs"] = weights_to_probs(orig["preference_class_weights"], pref_order, pref_n)
     return ret
 
 def preprocess_region(region, add_weight_total):
-     # First, init only things which should be inherited
     ret = {}
     preprocess_weights(ret, region)
-    ret["subregions"] = preprocess_subregions(ret, region["subregions"])
     ret["name"] = region["name"]
     ret["add_prob"] = region["add_weight"] / add_weight_total
     return ret

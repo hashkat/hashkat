@@ -247,10 +247,6 @@ struct Analyzer {
         }
     }
 
-    Language entity_pick_language() {
-        return config.lang_probs.kmc_select(rng);
-    }
-
     /* Create a entity at the given index.
      * The index should be an empty entity slot. */
     bool action_create_entity() {
@@ -272,25 +268,16 @@ struct Analyzer {
         DEBUG_CHECK(R.regions.size() == N_BIN_REGIONS, "Should match!");
         int region_bin = rng.kmc_select(R.add_probs);
         auto& region = R.regions[region_bin];
-        auto& S = region.subregions;
-        DEBUG_CHECK(S.size() == N_BIN_SUBREGIONS, "Should match!");
-        int subregion_bin = rng.kmc_select(region.add_probs);
-        auto& subregion = S[subregion_bin];
 
         e.region_bin = region_bin;
-        e.subregion_bin = subregion_bin;
-        e.ideology_bin = rng.kmc_select(subregion.ideology_probs);
+        e.ideology_bin = rng.kmc_select(region.ideology_probs);
         e.creation_time = creation_time;
-        e.language = (Language) rng.kmc_select(subregion.language_probs);
+        e.language = (Language) rng.kmc_select(region.language_probs);
         // For now, either always mark ideology, or never
         e.ideology_tweet_percent = rng.random_chance(0.5) ? 1.0 : 0.0;
         e.humour_bin = rng.random_chance(0.5) ? 1.0 : 0.0;
-        e.preference_class = rng.kmc_select(subregion.preference_class_probs);
+        e.preference_class = rng.kmc_select(region.preference_class_probs);
 
-        // Place the entity in a random location
-        // TODO: Location choosing scheme
-        e.location.x = rng.rand_real_with01();
-        e.location.y = rng.rand_real_with01();
         double rand_num = rng.rand_real_not0();
         for (int et = 0; et < entity_types.size(); et++) {
             EntityType& type = entity_types[et];

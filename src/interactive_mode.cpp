@@ -111,7 +111,6 @@ struct InterruptMenuFunctions {
         DUMP(e, entity_type);
         DUMP(e, preference_class);
         DUMP(e, region_bin);
-        DUMP(e, subregion_bin);
         DUMP(e, ideology_tweet_percent);
         DUMP(e, ideology_bin);
         DUMP(e, n_tweets);
@@ -122,8 +121,6 @@ struct InterruptMenuFunctions {
         DUMP(e, chatty_entities);
 
         auto table = LuaValue::newtable(state.L);
-        table["x"] = e.location.x;
-        table["y"] = e.location.x;
         value["location"] = table;
 
         value["language_id"] = (int)e.language;

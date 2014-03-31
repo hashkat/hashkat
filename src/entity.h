@@ -30,14 +30,13 @@ struct Entity {
     int n_tweets = 0, n_retweets = 0;
 
     // Abstract location:
-    int region_bin = -1, subregion_bin = -1;
+    int region_bin = -1;
 
     double ideology_tweet_percent = 0;
     double creation_time = 0;
 
     // this is the average chatiness of the entities following list
     double avg_chatiness = -1.0;
-    Location location;
     Language language = (Language)-1;
 
     int humour_bin = -1;
@@ -53,10 +52,9 @@ struct Entity {
     PREREAD_WRITE(rw) {
         rw << entity_type << preference_class 
            << n_tweets << n_retweets 
-           << region_bin << subregion_bin
+           << region_bin
            << ideology_tweet_percent << creation_time
            << avg_chatiness
-           << location << language
            << humour_bin << ideology_bin 
            << chatty_entities;
         // following_set and follower_set are specially handled below
