@@ -381,8 +381,6 @@ struct Analyzer {
             if (e.n_tweets / (time - e.creation_time) >= config.unfollow_tweet_rate) {
                 action_unfollow(id_tweeter);
             }
-            entity_types[e.entity_type].n_tweets++;
-            tweet_ranks.categorize(id_tweeter, e.n_tweets);
         }
         // Else, no followers -- no need to create a tweet
         //** AD: Still consider a success for now, re-evaluate later

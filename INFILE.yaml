@@ -25,7 +25,7 @@
 #  use_flawed_followback: 
 #    Whether to follow-back by a fixed 40%.
 #  follow_model: 
-#    Accepted models: 'random', 'preferential', 'entity', 'preferential-entity', 'twitter'
+#    Accepted models: 'random', 'preferential', 'entity', 'preferential-entity', 'hashtag' 'twitter'
 #  stage1_unfollow: 
 #    Whether to have an unfollow model assuming constant 'chattiness', compares the chatiness of an entity wrt to the following set.
 #  unfollow_tweet_rate: 
@@ -34,7 +34,7 @@
 
 analysis:
   initial_entities:
-    10000
+    100000
   max_entities: 
     100001
   max_time: 
@@ -50,7 +50,7 @@ analysis:
   use_flawed_followback: 
     false
   follow_model: # See notes above
-    twitter
+    random
   # model weights ONLY necessary for follow method 'twitter'    
   model_weights: {random: 0.20, preferential: 0.20, entity: 0.20, preferential_entity: 0.20, hashtag: 0.20}
   
@@ -267,12 +267,12 @@ config_static:
 preference_classes:
  - name: Standard
    tweet_retweet_relevance: 
-      Standard: 0.01
-      Celebrity: 0.05
+      Standard: 0.00
+      Celebrity: 0.00
       else: 0
    tweet_follow_relevance: &standard_tf_rel
-      Standard: 0.01
-      Celebrity: 0.05
+      Standard: 0.00
+      Celebrity: 0.00
       else: 0
  - name: NoRetweet
    tweet_retweet_relevance: 
@@ -298,10 +298,10 @@ tweet_relevance: # 'Transmission probability'
     preference_classes:
       - name: LoveEverything
         retweet_relevance:
-          all: 0.01 # Can be any valid Python code
+          all: 0.00 # Can be any valid Python code
       - name: HateEverything
         retweet_relevance:
-          all: 1 # Can be any valid Python code
+          all: 0 # Can be any valid Python code
 
 #################################################################
 # >> entities: 
