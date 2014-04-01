@@ -3,7 +3,7 @@
 
 #include "DataReadWrite.h"
 
-// 100 bytes / entity overhead
+// 100 bytes / tweet overhead
 // Make global choice based on tree
 // Time dependency checked based on thresholds
 //  - Same binning throughout?

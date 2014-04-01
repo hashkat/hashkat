@@ -238,9 +238,7 @@ struct Analyzer {
                     break;
                 }
             }
-            perf_timer_begin("analyzer.step_analysis");
         	step_analysis();
-        	perf_timer_end("analyzer.step_analysis");
         }
         if (config.save_network_on_timeout) {
             save_network_state();
@@ -392,7 +390,8 @@ struct Analyzer {
 	// Causes 'id_unfollowed' to lose a follower
 	// Returns true if a follower was removed, false if there was no follower to remove
 	bool action_unfollow(int id_unfollowed) {
-	    perf_timer_begin("action_unfollow");
+	    PERF_TIMER();
+
 		FollowerSet& candidate_followers = network.follower_set(id_unfollowed);
 
 		int id_lost_follower = -1; // The entity to unfollow us
@@ -413,7 +412,6 @@ struct Analyzer {
 		Entity& e_lost_follower = network[id_lost_follower];
 		bool had_follow = e_lost_follower.following_set.remove(state, id_unfollowed);
 		DEBUG_CHECK(had_follow, "unfollow: Did not exist in follow list");
-		perf_timer_end("action_unfollow");
         stats.n_unfollows ++;
 		return true;
 	}
@@ -428,6 +426,7 @@ struct Analyzer {
     // Performs one step of the analysis routine.
     // Takes old time, returns new time
     void step_analysis() {
+        PERF_TIMER();
         /*
          * Our step is wrapped in a loop to enabling restarting of events.
          * Often, there will be no way to resolve an event failure at the moment it occurs.

@@ -141,7 +141,7 @@ follow_ranks:
 #
 #  initial_resolution:
 #    In arbitrary units. The initial binning resolution. 
-#    That is, the time-step with which to begin binning. The binning resolution is decreased from there on.
+#    That is, the x-step with which to begin binning. The binning resolution is decreased from there on.
 #  resolution_growth_factor:
 #    How quickly the resolution grows from one bin to the next. 
 #    Quicker is more efficient, but with less precise rates in later bins.
@@ -213,11 +213,15 @@ regions:
     language_weights: {English: 100, French: 10, French+English: 10}
     ideology_weights: {Red: 100, Blue: 100}
 
+#################################################################
+# >> config_static: 
+# Manually duplicated values from config_static.h. 
 # These values MUST match config_static.h!
+#################################################################
+
 config_static:
-      # Determine amount of discrete bins
     # These values should match your C++ config_static.h limits!!
-    humour_bins: 2
+    humour_bins: 2 # Amount of discrete bins for humour
 
 #################################################################
 # >> preference_classes: 
@@ -237,8 +241,8 @@ config_static:
 # def FOO(same_region, same_ideology, entity_type, humour): 
 #   return $FOO
 # Where:
-#   same_region: Whether you are in the same region as the (original) tweeter
-#   same_subregion: Whether you are in the same region AND subregion as the (original) tweeter
+#   same_region: 1 if you are in the same region as the (original) tweeter, 0 otherwise.
+#   same_ideology: 1 you are the same ideology as the (original) tweeter, 0 otherwise.
 #   entity_type: The entity type of the original tweeter. Alternative to having a definition per entity type.
 #   humour: The humour value of a tweet (0 to 1). Resolution determined by humour_bins.
  

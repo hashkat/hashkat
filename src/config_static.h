@@ -14,6 +14,23 @@
  * Configurable values that must be available at compile time for efficiency reasons.
  */
 
+enum Language {
+    // Resolves using X above, fills enum:
+    LANG_ENGLISH,
+    LANG_FRENCH_AND_ENGLISH,
+    LANG_FRENCH,
+    /* All languages before LANG_FRENCH contain English */
+    N_LANGS // Not a real entry; evaluates to amount of languages
+};
+#undef X
+
+inline const char* language_name(int bin) {
+    if (bin == LANG_ENGLISH) return "LANG_ENGLISH";
+    if (bin == LANG_FRENCH_AND_ENGLISH) return "LANG_FRENCH_AND_ENGLISH";
+    if (bin == LANG_FRENCH) return "LANG_FRENCH";
+    return NULL;
+}
+
 // Follow set allocation tuning:
 const int FOLLOW_LIST_THRESHOLD1 = 256; // Initial follow-set size-limit before data-structure is switched to google's sparsehash
 const int FOLLOWER_LIST_THRESHOLD1 = 256; // Initial follower-set size-limit before data-structure is switched to google's sparsehash

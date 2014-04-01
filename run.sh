@@ -91,6 +91,7 @@ fi
 
 # Pass the -f flag to avoid building:
 if ! handle_flag "-f" && ! handle_flag "--force" ; then
+    mkdir -p build
     cd build
     cmake .. | colorify '1;33'
     if handle_flag "--clean" ; then

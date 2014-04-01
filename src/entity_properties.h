@@ -7,25 +7,6 @@
 
 #include "config_static.h"
 
-/* This file contains properties that differentiate tweets and entities */
-
-enum Language {
-    // Resolves using X above, fills enum:
-    LANG_ENGLISH,
-    LANG_FRENCH_AND_ENGLISH,
-    LANG_FRENCH,
-    /* All languages before LANG_FRENCH contain English */
-    N_LANGS // Not a real entry; evaluates to amount of languages
-};
-#undef X
-
-inline const char* language_name(int bin) {
-    if (bin == LANG_ENGLISH) return "LANG_ENGLISH";
-    if (bin == LANG_FRENCH_AND_ENGLISH) return "LANG_FRENCH_AND_ENGLISH";
-    if (bin == LANG_FRENCH) return "LANG_FRENCH";
-    return NULL;
-}
-
 /*
  * An entity type is a static class of entity, determined at creation.
  * Entity types are intended to represent different kinds of network participants,
