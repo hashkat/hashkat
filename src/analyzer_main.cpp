@@ -255,11 +255,13 @@ struct Analyzer {
             return false;
         }
 
-        int index = network.n_entities;
+        int id = network.n_entities;
         network.n_entities++;
 
         double creation_time = time;
-        Entity& e = network[index];
+        Entity& e = network[id];
+
+        e.id = id;
 
         // Determine abstract location:
         auto& R = state.config.regions;
@@ -281,15 +283,15 @@ struct Analyzer {
             EntityType& type = entity_types[et];
             if (rand_num <= type.prob_add) {
                 e.entity_type = et;
-                type.entity_list.push_back(index);
-                follow_ranks.categorize(index, e.follower_set.size());
-                type.follow_ranks.categorize(index, e.follower_set.size());
+                type.entity_list.push_back(id);
+                follow_ranks.categorize(id, e.follower_set.size());
+                type.follow_ranks.categorize(id, e.follower_set.size());
                 break;
             }
             rand_num -= entity_types[et].prob_add;
         }
         if (config.use_barabasi){
-                analyzer_follow_entity(state, index, creation_time);
+                analyzer_follow_entity(state, id, creation_time);
         }
         return true;
     }
@@ -343,6 +345,9 @@ struct Analyzer {
         // Always start in the first retweet time bin:
         tweet.retweet_time_bin = 0;
         tweet.retweet_next_rebin_time = time + config.tweet_obs.initial_resolution;
+
+        /* Determines reaction weights for the tweet: */
+        e_tweeter.follower_set.determine_tweet_weights(config.tweet_react_rates, tweet, tweet.react_weights);
 
         if (network.n_followers(id_tweeter) != 0) {
             state.tweet_bank.add(tweet);
@@ -402,10 +407,8 @@ struct Analyzer {
 
 		DEBUG_CHECK(id_lost_follower != -1, "Should not be -1 after choice!");
 
-		// Necessary for use with follower set:
-        FollowerSet::Context context(state, id_unfollowed);
         // Remove our target from our actor's follows:
-        bool had_follower = candidate_followers.remove(context, id_lost_follower);
+        bool had_follower = candidate_followers.remove(network[id_lost_follower]);
 		DEBUG_CHECK(had_follower, "unfollow: Did not exist in follower list");
 
         // Remove our unfollowed person from our target's followers:

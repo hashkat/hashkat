@@ -81,6 +81,7 @@ public:
 
 	static LuaValue pop_value(lua_State* L);
 	static LuaValue newtable(lua_State* L);
+	static LuaValue nil(lua_State* L);
 
 private:
 	_luawrap_private::_LuaValueImpl* impl;

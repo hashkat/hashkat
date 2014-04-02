@@ -60,40 +60,41 @@ struct InterruptMenuFunctions {
 
         LuaValue G = globals(L);
         G["followers"].bind_function(followers);
+        G["n_followers"].bind_function(n_followers);
         G["followings"].bind_function(followings);
+        G["n_followings"].bind_function(n_followings);
 
-        // Inline function definition, using above 'state' global.
-        // Dereferencing this will bring you to AnalysisState.
-        LUAWRAP_FUNCTION(G, n_followers,
-                int id = get<int>(state.L, 1);
-                push(state.L, state->network.n_followers(id))
-        );
-
-        LUAWRAP_FUNCTION(G, entity,
-                int id = get<int>(state.L, 1);
-                push(state.L, entity_to_table(state->network[id]))
-        );
-
-        LUAWRAP_FUNCTION(G, n_followings, state->network.n_followings(get<int>(state.L, 1)));
-        LUAWRAP_FUNCTION(G, create_entity,
-                if (analyzer_create_entity(*state)) {
-                    luawrap::push(state.L, entity_to_table(state->network.back()));
-                } else {
-                    lua_pushnil(state.L);
-                }
-        );
         G["followers_print"].bind_function(followers_print);
         G["tweets"].bind_function(tweets);
+
+        G["entity"].bind_function(entity);
+        G["create_entity"].bind_function(create_entity);
         G["entities"].bind_function(entities);
     }
 
+
     /* Interrupt menu functions: */
-    static std::vector<int> followers(int entity) {
-        std::vector<int> ret;
-        for (int id : state->network.follower_set(entity)) {
-            ret.push_back(id);
+    static int n_followers(int id) {
+        return state->network.n_followers(id);
+    }
+
+    static LuaValue entity(int id) {
+        return entity_to_table(state->network[id]);
+    }
+
+    static LuaValue create_entity(int id) {
+        if (analyzer_create_entity(*state)) {
+            return entity_to_table(state->network.back());
         }
-        return ret;
+        return LuaValue::nil(state.L);
+    }
+
+    static int n_followings(int entity) {
+        return state->network.n_followings(entity);
+    }
+
+    static std::vector<int> followers(int entity) {
+        return state->network.follower_set(entity).as_vector();
     }
     static std::vector<int> followings(int entity) {
         std::vector<int> ret;
@@ -167,8 +168,8 @@ struct InterruptMenuFunctions {
     }
 
     static void followers_print(int entity) {
-        FollowerSet::Context context(*state, entity);
-        state->network.follower_set(entity).print(context);
+//        FollowerSet::Context context(*state, entity);
+//        state->network.follower_set(entity).print(context);
     }
 };
 

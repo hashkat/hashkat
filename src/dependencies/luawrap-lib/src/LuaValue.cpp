@@ -344,3 +344,10 @@ LuaValue LuaValue::newtable(lua_State* L) {
 	val.newtable();
 	return val;
 }
+
+LuaValue LuaValue::nil(lua_State* L) {
+    LuaValue val(L);
+    lua_pushnil(L);
+    val.pop();
+    return val;
+}

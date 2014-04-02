@@ -43,7 +43,8 @@ struct AnalyzerRetweet {
 
         Entity& e = network[tweet.id_tweeter];
         int entity_retweeting = -1;
-        if (!e.follower_set.pick_random_weighted(rng, entity_retweeting)) {
+
+        if (!e.follower_set.pick_random_weighted(rng, tweet.react_weights, entity_retweeting)) {
             return RetweetChoice();
         }
 

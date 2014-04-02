@@ -47,18 +47,19 @@ TweetReactRateVec TweetRateDeterminer::get_rate(const Tweet& tweet, int bin) {
     // with the rates for each terminal bin in follower-set,
     // and will decode it in the same order when making a retweet decision.
 
-    int n_elems = 0;
-    for (auto& lang_cat : followers.children()) {
-        for (auto& dist_cat : lang_cat.children()) {
-            for (auto& pref_cat : dist_cat.children()) {
-                double rate = pref_cat.get_total_rate();
-                rates.add(0, rate); // TODO: Remove 'magic' 0 (only element in rates 'vector')
-                n_elems += pref_cat.size();
-            }
-        }
-    }
+//    int n_elems = 0;
+//    for (auto& lang_cat : followers.children()) {
+//        for (auto& dist_cat : lang_cat.children()) {
+//            for (auto& pref_cat : dist_cat.children()) {
+//                double rate = pref_cat.get_total_rate();
+//                rates.add(0, rate); // TODO: Remove 'magic' 0 (only element in rates 'vector')
+//                n_elems += pref_cat.size();
+//            }
+//        }
+//    }
+//    DEBUG_CHECK(n_elems == followers.size(), "Amount of entities in the follower set don't match up!");
 
-    DEBUG_CHECK(n_elems == followers.size(), "Amount of entities in the follower set don't match up!");
+
     return rates;
 }
 

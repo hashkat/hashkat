@@ -89,8 +89,7 @@ struct Network {
             entities[i].previsit(rw);
         }
         for (int i = 0; i < n_entities; i++) {
-            FollowerSet::Context context(rw.state, i);
-            entities[i].visit(rw, context);
+            entities[i].visit(rw);
         }
     }
 };

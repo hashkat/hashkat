@@ -33,6 +33,8 @@ SUITE(serialization) {
         CHECK(test.creation_time == read.creation_time);
         CHECK(test.entity_type == read.entity_type);
         CHECK(test.humour_bin == read.humour_bin);
+        CHECK(test.ideology_bin == read.ideology_bin);
+        CHECK(test.region_bin == read.region_bin);
         CHECK(test.language == read.language);
         CHECK(test.preference_class == read.preference_class);
         CHECK(test.n_tweets == read.n_tweets);
@@ -51,18 +53,20 @@ SUITE(serialization) {
 
         for (int i = 0; i < N_GENERATED; i++) {
             Entity& e = state.network[i];
+            e.id = i;
             e.creation_time = 1;
             e.entity_type = 0;
             e.humour_bin = 0;
             e.language = LANG_FRENCH;
+            e.region_bin = 0;
+            e.ideology_bin = 0;
             e.preference_class = 0;
             e.n_tweets = 3;
             e.n_retweets = 4;
         }
 
-        FollowerSet::Context context(state, /*entity id*/ 0);
         Entity& test = state.network[0];
-        test.follower_set.add(context, 1);
+        test.follower_set.add(state.network[1]);
         test.following_set.add(state, 2);
 
         Entity read;
@@ -71,17 +75,17 @@ SUITE(serialization) {
         {
             DataWriter writer(state, file_name);
             test.previsit(writer);
-            test.visit(writer, context);
+            test.visit(writer);
         }
         {
             DataReader reader(state, file_name);
             read.previsit(reader);
-            read.visit(reader, context);
+            read.visit(reader);
         }
 
         check_eq(test, read);
 
-        for (int id_fol : test.follower_set) {
+        for (int id_fol : test.follower_set.as_vector()) {
             CHECK(id_fol == 1);
         }
         for (int id_fol : test.following_set) {

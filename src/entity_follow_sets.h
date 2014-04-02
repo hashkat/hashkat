@@ -11,7 +11,7 @@
 // Forward declare, to prevent circular header inclusion:
 struct AnalysisState;
 
-struct FollowerSet {
+struct OldFollowerSet {
 
     /******************************************************************************
      * Nested category definitions. These define the necessary classification
@@ -48,7 +48,7 @@ struct FollowerSet {
 
     /*****************************************************************************
      * The context option is used during the nested-classification so that
-     * we can refer to the owned of the FollowerSet.
+     * we can refer to the owned of the OldFollowerSet.
      *
      * We need to pass AnalysisState for most lookups (eg Entity variables),
      * but we also need owner_id so that we may calculate distance.

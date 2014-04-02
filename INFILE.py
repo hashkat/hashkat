@@ -69,9 +69,14 @@ if isinstance(tweet_obs_time_span, str): # Allow for time constants
     tweet_obs_time_span = eval(tweet_obs_time_span)
 
 tweet_rel = CONFIG["tweet_relevance"]
-distance_bins = tweet_rel["distance_bins"]
-humour_bins = tweet_rel["humour_bins"]
 
+distance_bins = tweet_rel["distance_bins"]
+
+config_static = CONFIG["config_static"]
+
+humour_bins = config_static["humour_bins"]
+
+pref_classes2 = CONFIG["preference_classes"]
 pref_classes = tweet_rel["preference_classes"]
 
 #################################################################
@@ -148,6 +153,31 @@ def load_relevance_functions():
     return funcs
 
 profile_funcs = load_relevance_functions()
+
+def load_relevance_function2(content):
+    exec('def __TEMP(same_region, same_ideology, entity_type, humour): return ' + str(content))
+    return __TEMP # A hack
+
+def load_relevance_functions2():
+    funcs = []
+    for p in pref_classes2:
+        tt = p.tweet_transmission
+        func_set = {}
+        # Load all the functions based on the different entity types
+        # Defaults to the 'else' node.
+        for e in entities:
+            name = e["name"]
+            if name in retweet_rel:
+                func_str = retweet_rel[name]
+            elif "all" in retweet_rel:
+                func_str = retweet_rel["all"]
+            else:
+                func_str = retweet_rel["else"]
+            func = load_relevance_function(func_str)
+            func_set[name] = func
+        funcs.append(func_set)
+    return funcs
+
 
 #################################################################
 # Tweet observation probability function integration and binning

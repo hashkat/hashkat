@@ -4,6 +4,8 @@
 #include <cmath>
 #include "network.h"
 
+#include "FollowerSet.h"
+
 enum FollowModel {
     RANDOM_FOLLOW,
     PREFERENTIAL_FOLLOW,
@@ -23,26 +25,6 @@ struct TweetObservationPDF {
 
     std::vector<double> values;
     std::vector<double> thresholds;
-};
-
-//TODO AD: Better name
-// First layer: entity_type
-// Second layer: humour bin
-typedef std::vector< std::vector<FollowerSet::Rates> > FollowerSetRatesVec;
-
-//TODO AD: Better name
-struct FollowerSetRatesDeterminer {
-    FollowerSetRatesDeterminer() {
-    }
-
-    FollowerSetRatesDeterminer(const FollowerSetRatesVec& rates) : rates(rates){
-    }
-
-    // Defined in .cpp file
-    FollowerSet::Rates& get_rates(Entity& entity);
-
-private:
-    FollowerSetRatesVec rates;
 };
 
 struct Region {
@@ -126,11 +108,10 @@ struct ParsedConfig {
     //  determines the probability that a given entity will act on a given tweet, with enough time.
     TweetObservationPDF tweet_obs;
 
-    // follower_rates: 
-    //  The transmission probability for a person of a certain preference class towards
-    //  a tweet of a given origin & content.
-
-    FollowerSetRatesDeterminer follower_rates;
+    // tweet_react_rates:
+    //  The rates with which a tweet is reacted to, accounting for both
+    //  characteristics of the tweeter, and the entity.
+    FollowerSet::WeightDeterminer tweet_react_rates;
 };
 
 ParsedConfig parse_yaml_configuration(const char* file_name);

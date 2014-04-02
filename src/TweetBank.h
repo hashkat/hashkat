@@ -21,12 +21,10 @@
  * Each tweeter's follower list has homogenous (ie, same):
  *  - entity type (of tweeter)
  * */
-const int RETWEET_RATE_ELEMENTS = 1;
-const int RETWEET_TREE_N_CHILDREN = 10;
 const double RETWEET_REBIN_TIME_INTERVAL = 1.0;
 
-typedef RateVec<RETWEET_RATE_ELEMENTS> TweetReactRateVec;
-typedef RateTree<Tweet, RETWEET_RATE_ELEMENTS, RETWEET_TREE_N_CHILDREN> TweetRateTree;
+typedef RateVec</*Rates per: */ 1> TweetReactRateVec;
+typedef RateTree<Tweet, /*Rates per: */ 1, /*Branching factor:*/ 10> TweetRateTree;
 
 struct TweetRateDeterminer {
     TweetRateDeterminer(AnalysisState& state) : state(state){

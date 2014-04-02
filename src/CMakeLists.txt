@@ -35,11 +35,11 @@ set_source_files_properties(
 	PROPERTIES LANGUAGE CXX
 )
 
-set_source_files_properties(
-        ${networksim_src}
-        PROPERTIES COMPILE_FLAGS 
-        "-pedantic-errors -Wno-long-long -Wno-variadic-macros -Wno-sign-compare -Wno-reorder"
-)
+#set_source_files_properties(
+    #        ${networksim_src}
+        #        PROPERTIES COMPILE_FLAGS 
+        #        "-Wformat=0 -pedantic-errors -Wno-long-long -Wno-variadic-macros -Wno-sign-compare -Wno-reorder"
+        #)
 
 aux_source_directory(
 	"dependencies/lcommon" 

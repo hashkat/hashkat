@@ -14,6 +14,8 @@
 
 #include "DataReadWrite.h"
 
+#include "FollowerSet.h"
+
 // information for when a user tweets
 struct TweetContent {
     double time_of_tweet = -1;
@@ -44,12 +46,10 @@ struct TweetContent {
     }
 };
 
-// information for when a user retweets
-
-// TODO Clear all temporary comments eventually
-// A tweet is an orignal tweet if tweeter_id == content.author_id
+// Represents a tweet, either original, or a rebroadcast.
 struct Tweet {
     // The entity broadcasting the tweet
+    // A tweet is an orignal tweet if tweeter_id == content.author_id
     int id_tweeter = -1;
 
     // The 'linking' entity the tweet was retweeted from (a following of id_tweeter)
@@ -74,6 +74,9 @@ struct Tweet {
     // Next time to consider rebinning, always more than creation_time
     double retweet_next_rebin_time = -1;
 
+    /* Rates with which this tweet is retweeted: */
+    FollowerSet::Weights react_weights;
+
     explicit Tweet(const smartptr<TweetContent>& content = smartptr<TweetContent>()) {
         this->content = content;
     }
@@ -88,8 +91,6 @@ struct Tweet {
         rw.visit_smartptr(content);
     }
 };
-
-typedef std::vector<Tweet> TweetList;
 
 struct AnalysisState;
 

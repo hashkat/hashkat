@@ -19,7 +19,7 @@ using namespace std;
 /* After 'analyze', print the results of the computations. */
 void output_network_statistics(AnalysisState& state) {
     Network& network = state.network;
-    for (int i = 0; i < min(/*For now:*/0, network.n_entities); i++) {
+    for (int i = 0; i < min(/*For now:*/10, network.n_entities); i++) {
         Entity& e = network[i];
         EntityType& et = state.entity_types[e.entity_type];
 
@@ -27,8 +27,7 @@ void output_network_statistics(AnalysisState& state) {
         printf("(Entity %d)\n", i);
         printf("(EntityType %s)\n", et.name.c_str());
         printf("------------------------------------------------------------------------\n", i);
-        FollowerSet::Context context(state, i);
-        e.follower_set.print(context);
+        e.follower_set.print();
     }
     ParsedConfig& C = state.config;
     EntityTypeVector& et_vec = state.entity_types;
@@ -150,14 +149,12 @@ void output_position(Network& network, int n_entities) {
     ofstream output;
     output.open("output/network.dat");
     for (int id = 0; id < n_entities; id++) {
-        for (int id_fol : network.follower_set(id)) {
+        for (int id_fol : network.follower_set(id).as_vector()) {
             output << id << "\t" << id_fol << "\n";
         }
     }
     output.close();
 } 
-
-const int POUT_CAP = 1000; // AD: Rough work
 
 /* This is a function that gives you the probability of a entity following a
  a given number of people. If you want to use this function, simply put
@@ -439,7 +436,7 @@ static void whos_following_who(EntityTypeVector& types, EntityType& type, Networ
         entity_degree[in_degree + out_degree] ++;
 
         // Analyze ins == followers
-        for (int id_fol : network.follower_set(id)) {
+        for (int id_fol : network.follower_set(id).as_vector()) {
             Entity& et = network[id_fol];
             who_following[et.entity_type] ++;
             following_sum ++;
@@ -503,7 +500,7 @@ void visualize_most_popular_tweet(MostPopularTweet& mpt, Network& network) {
         output << "<node id=\"" << id_used << "\" label=\"" << "Retweeters" << "\">\n";
         output << "<viz:size value=\"2.5\"/>\n";
         output << "</node>\n";
-        for (int id_fol : network.follower_set(id_used)) {
+        for (int id_fol : network.follower_set(id_used).as_vector()) {
             Entity& e = network[id_fol];
             output << "<node id=\"" << id_fol << "\" label=\"" << "Non-Retweeters" << "\" >\n";
             output << "<viz:size value=\"2.0\"/>\n";
@@ -516,13 +513,13 @@ void visualize_most_popular_tweet(MostPopularTweet& mpt, Network& network) {
     int count = 0;
     output << "</nodes>\n" << "<edges>\n";
 
-    for (int id : network.follower_set(t.id_tweeter)) {
+    for (int id : network.follower_set(t.id_tweeter).as_vector()) {
         output << "<edge id=\"" << count << "\" source=\"" << id
                 << "\" target=\"" << t.id_tweeter << "\"/>\n";
         count ++;
     }
     for (int id_used : used_set) {
-        for (int id_fol : network.follower_set(id_used)) {
+        for (int id_fol : network.follower_set(id_used).as_vector()) {
             output << "<edge id=\"" << count << "\" source=\"" << id_fol
                     << "\" target=\"" << id_used << "\"/>\n";
             count ++;

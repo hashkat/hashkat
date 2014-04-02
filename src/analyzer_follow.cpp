@@ -51,8 +51,7 @@ struct AnalyzerFollow {
        bool was_added = A.following_set.add(state, id_target);
        // if the follow is possible
        if (was_added) {
-           FollowerSet::Context context(state, id_target);
-           bool was_added = T.follower_set.add(context, id_actor);
+           bool was_added = T.follower_set.add(network[id_actor]);
            ASSERT(was_added, "Follow/follower-set asymmetry detected!");
            if (config.stage1_unfollow) {
                update_chatiness(A, id_target);
@@ -338,10 +337,8 @@ struct AnalyzerFollow {
 
 		DEBUG_CHECK(id_unfollower != -1, "Should not be -1 after choice!");
 
-		// Necessary for use with follower set:
-        FollowerSet::Context context(state, id_unfollowed);
         // Remove our target from our actor's follows:
-        bool had_follower = candidate_followers.remove(context, id_unfollower);
+        bool had_follower = candidate_followers.remove(network[id_unfollower]);
 		DEBUG_CHECK(had_follower, "unfollow: Did not exist in follower list");
 
         // Remove our unfollowed person from our target's followers:
