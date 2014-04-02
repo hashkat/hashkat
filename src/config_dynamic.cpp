@@ -54,8 +54,7 @@ static FollowModel parse_follow_model(const Node& node) {
 }
 
 static vector<EntityPreferenceClass> parse_preference_classes(const Node& node) {
-    const Node& tweet_rel = node["tweet_relevance"];
-    const Node& pref_classes = tweet_rel["preference_classes"];
+    const Node& pref_classes = node["preference_classes"];
     vector<EntityPreferenceClass> ret;
     for (int i = 0; i < pref_classes.size(); i++) {
         EntityPreferenceClass pref_class;
@@ -406,9 +405,9 @@ static void check_configuration_integrity(ParsedConfig& config) {
             "N_BIN_PREFERENCE_CLASS", N_BIN_PREFERENCE_CLASS, config.pref_classes.size());
     check_integrity("Number of entity types",
                 "N_BIN_ENTITY_TYPES", N_BIN_ENTITY_TYPES, config.entity_types.size());
-    check_integrity("Number of entity types",
-                    "N_BIN_REGIONS", N_BIN_REGIONS, config.entity_types.size());
-    check_integrity("Number of entity types",
+    check_integrity("Number of regions",
+                    "N_BIN_REGIONS", N_BIN_REGIONS, config.regions.regions.size());
+    check_integrity("Number of ideologies",
                     "N_BIN_IDEOLOGIES", N_BIN_IDEOLOGIES, config.ideologies.size());
 }
 

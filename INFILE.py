@@ -183,49 +183,7 @@ def compute_tweet_obs():
     return rates, bounds
 
 #################################################################
-# Relevance lookup table generation
-
-def make_object(dict):
-    class Struct: # Helper
-        def __init__(self, **entries):
-            self.__dict__.update(entries)
-    obj = Struct(**dict)
-    return obj
-
-def relevance_rate_vector(entity_type, humour, distance):
-    results = []
-    for func_set in profile_funcs:
-        f = func_set[entity_type.name]
-        res = f(entity_type, humour, distance) 
-        results.append(res)
-    return results
-
-def relevance_distance_component(entity_type, humour):
-    results = []
-    for i in range(distance_bins):
-        res = relevance_rate_vector(entity_type, humour, i / float(distance_bins - 1))
-        results.append(res)
-    return results
-
-def relevance_humour_component(entity_type):
-    results = []
-    for i in range(humour_bins):
-        res = relevance_distance_component(entity_type, i / float(humour_bins - 1))
-        results.append(res)
-    return results
-
-def relevance_entity_type_component():
-    results = []
-    n_types = len(entities)
-
-    for i in range(n_types):
-        entity_type = make_object(entities[i])
-        res = relevance_humour_component(entity_type)
-        results.append(res)
-    return results
-
-def compute_relevance_table(): # N-dimensional array
-    return relevance_entity_type_component()
+# Relevance Python function generation
 
 def load_relevance_function(content):
     exec('def __TEMP(entity_type, humour, distance): return ' + str(content))
@@ -254,6 +212,65 @@ def load_relevance_functions():
 profile_funcs = load_relevance_functions()
 
 #################################################################
+# Relevance lookup table generation
+# Factors in:
+#   Entity preference class
+#   X Same/Diff region
+#   X Same/Diff ideology
+#   X Original tweeter entity type
+#   X Tweet humour level
+
+_bools = [False, True]
+_humour_vals = [i / float(humour_bins - 1) for i in range(humour_bins)]
+
+def relevance_rate_vector(entity_type, humour, distance):
+    results = []
+    for func_set in profile_funcs:
+        f = func_set[entity_type.name]
+        res = f(entity_type, humour, distance) 
+        results.append(res)
+    return results
+
+def relevance_humour_component(entity_type):
+    results = []
+    for i in range(humour_bins):
+        res = relevance_rate_vector(entity_type, i / float(humour_bins - 1))
+        results.append(res)
+    return results
+
+def relevance_preference_class():
+    results = []
+    n_types = len(entities)
+
+    for i in range(n_types):
+        entity_type = make_object(entities[i])
+        res = relevance_humour_component(entity_type)
+        results.append(res)
+    return results
+
+# The preference class and its associated reaction function:
+def _tweet_react_pref(func_set): 
+	return [
+		[
+			[
+				[
+					[
+						func_set[entity_type["name"]](
+							same_ideology, same_region, humour
+						)
+					] for humour in _humour_vals
+				] for entity_type in entities
+			] for same_region in _bools
+		] for same_ideology in _bools
+	]
+
+def tweet_react_lookup_table(): 
+	# N-dimensional array represents lookup table for 5 independent factors (above)
+	return [
+		_tweet_react_pref(func_set) for func_set in profile_funcs
+	]
+
+#################################################################
 # YAML emission
 
 obs_function, obs_bin_bounds = compute_tweet_obs()
@@ -261,7 +278,7 @@ obs_function, obs_bin_bounds = compute_tweet_obs()
 generated = {
     "obs_function" : obs_function,
     "obs_bin_bounds" : obs_bin_bounds,
-    "rel_function" : compute_relevance_table(),
+    "tweet_react_table" : tweet_react_lookup_table(),
     "regions" : preprocess_regions()
 }
 
