@@ -24,7 +24,7 @@
 const double RETWEET_REBIN_TIME_INTERVAL = 1.0;
 
 typedef RateVec</*Rates per: */ 1> TweetReactRateVec;
-typedef RateTree<Tweet, /*Rates per: */ 1, /*Branching factor:*/ 10> TweetRateTree;
+typedef RateTree<Tweet, /*Rates per: */ 1, /*Branching factor:*/ 2> TweetRateTree;
 
 struct TweetRateDeterminer {
     TweetRateDeterminer(AnalysisState& state) : state(state){

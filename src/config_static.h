@@ -31,7 +31,6 @@ inline const char* language_name(int bin) {
     return NULL;
 }
 
-
 const int TIME_CAT_FREQ = 30 * 24 * 60;
 
 // Output frequency:

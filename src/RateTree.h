@@ -60,7 +60,7 @@ struct RateVec {
     }
 };
 
-template <typename T, int N_ELEM, int N_CHILDREN = 10>
+template <typename T, int N_ELEM, int N_CHILDREN = 2>
 struct RateTree {
     typedef int ref_t;
     enum {

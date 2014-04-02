@@ -1,6 +1,7 @@
 #include "FollowerSet.h"
 
 #include "lcommon/typename.h"
+#include "lcommon/perf_timer.h"
 
 #include "entity.h"
 
@@ -219,32 +220,45 @@ void FollowerSet::print() {
     print_layer(followers, 0);
 }
 
-void determine_tweet_weights(FollowerSet& set, FollowerSet::Weights& weights, Tweet& tweet) {
-//
-//    // Reach into all the layers:
-//    auto& a = followers;
-//    for (auto& b : a.sublayers) {
-//        for (auto& c : b.sublayers) {
-//            for (auto& d : c.sublayers) {
-//                for (FlexibleSet<int>& set : d.sublayers) {
-//                    FlexibleSet<int>::iterator iter;
-//                    while (set.iterate(iter)) {
-//                        ret.push_back(iter.get());
-//                    }
-//                }
-//            }
-//        }
-//    }
+static double determine_leaf_weight(Entity& author, EntityTypeWeightDet& w_entity, TweetContent& content, int n_followers) {
+    auto& w_humour = w_entity.subdeterminers[author.entity_type];
+    return w_humour.weights[content.humour_bin] * n_followers;
 }
 
-void FollowerSet::determine_tweet_weights(WeightDeterminer& determiner, Tweet& tweet, /*Weights placed here:*/ Weights& output) {
-    for (double& w : output.weights) { w = 1.0; }
-    for (auto& s1 : output.subweights) {
-        for (double& w : s1.weights) { w = 1.0; }
-        for (auto& s2 : s1.subweights) {
-            for (double& w : s2.weights) { w = 1.0; }
-            for (auto& s3 : s2.subweights) {
-                for (double& w : s3.weights) { w = 1.0; }
+void FollowerSet::determine_tweet_weights(Entity& author, TweetContent& content, WeightDeterminer& w_root, /*Weights placed here:*/ Weights& o_root) {
+    PERF_TIMER();
+
+    auto& f_root = followers;
+
+    // Language spoken:
+    for (int lang = 0; lang < N_LANGS; lang++) {
+
+        for (int i = 0; i < N_BIN_PREFERENCE_CLASS; i++) {
+            double& r1 = o_root.weights[i];
+
+            auto& o_region = o_root.subweights[i];
+            auto& w_region = w_root.subdeterminers[i];
+            auto& f_region = f_root.sublayers[i];
+
+            // Same region or not:
+            for (int i = 0; i < 2; i++) {
+                double& r2 = o_region.weights[i];
+
+                auto& o_ideology = o_region.subweights[i];
+                auto& w_ideology = w_region.subdeterminers[i];
+                auto& f_ideology = f_region.sublayers[i];
+
+                // Same ideology or not:
+                for (int i = 0; i < 2; i++) {
+                    double& r3 = o_ideology.weights[i];
+
+                    auto& w_entity = w_ideology.subdeterminers[i];
+                    int n_followers = f_ideology.sublayers[i].n_elems;
+
+                    double val = determine_leaf_weight(author, w_entity, content, n_followers);
+
+                    r1 += val, r2 += val, r3 += val;
+                }
             }
         }
     }

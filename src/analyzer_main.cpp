@@ -324,6 +324,8 @@ struct Analyzer {
 
     Tweet generate_tweet(int id_tweeter, int id_link, int generation, const smartptr<TweetContent>& content) {
         Entity& e_tweeter = network[id_tweeter];
+        Entity& e_author = network[content->id_original_author];
+
         Tweet tweet;
         tweet.content = content;
         tweet.creation_time = time;
@@ -347,7 +349,7 @@ struct Analyzer {
         tweet.retweet_next_rebin_time = time + config.tweet_obs.initial_resolution;
 
         /* Determines reaction weights for the tweet: */
-        e_tweeter.follower_set.determine_tweet_weights(config.tweet_react_rates, tweet, tweet.react_weights);
+        e_tweeter.follower_set.determine_tweet_weights(e_author, *content, config.tweet_react_rates, tweet.react_weights);
 
         if (network.n_followers(id_tweeter) != 0) {
             state.tweet_bank.add(tweet);

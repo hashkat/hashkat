@@ -1,8 +1,11 @@
 #include "lcommon/strformat.h"
 
+#include <iostream>
 #include "analyzer.h"
 #include "tweets.h"
 #include "entity.h"
+
+using namespace std;
 
 double TweetRateDeterminer::get_age(const Tweet& tweet) {
     double age = (state.time - tweet.creation_time);
@@ -38,29 +41,15 @@ TweetReactRateVec TweetRateDeterminer::get_rate(const Tweet& tweet, int bin) {
      * We scale by 'obs_prob'.
      ********************************************************************/
 
-    TweetReactRateVec rates;
+    // Assumption: react_weights is initialized to the appropriate
+    // weights for this tweet.
 
-    // Assumption: Our rate vector is in the same order as
-    // our follower-set traversal.
-    //
-    // In other words, we assume that we can fill 'rates'
-    // with the rates for each terminal bin in follower-set,
-    // and will decode it in the same order when making a retweet decision.
+    double weight_sum = 0;
+    for (double d : tweet.react_weights.weights) {
+        weight_sum += d;
+    }
 
-//    int n_elems = 0;
-//    for (auto& lang_cat : followers.children()) {
-//        for (auto& dist_cat : lang_cat.children()) {
-//            for (auto& pref_cat : dist_cat.children()) {
-//                double rate = pref_cat.get_total_rate();
-//                rates.add(0, rate); // TODO: Remove 'magic' 0 (only element in rates 'vector')
-//                n_elems += pref_cat.size();
-//            }
-//        }
-//    }
-//    DEBUG_CHECK(n_elems == followers.size(), "Amount of entities in the follower set don't match up!");
-
-
-    return rates;
+    return TweetReactRateVec(obs_prob * weight_sum);
 }
 
 bool TimeDepRateTree::ElementChecker::check(ref_t id) {

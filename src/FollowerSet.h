@@ -13,6 +13,7 @@
 // Forward declarations to prevent circular imports:
 struct Entity;
 struct Tweet;
+struct TweetContent;
 
 /*****************************************************************************
  * Categorization layers of the follower set.
@@ -29,10 +30,9 @@ struct Tweet;
  *   X Tweet humour level
  *****************************************************************************/
 
-
 // Leaf weight determiners:
 struct HumourWeightDet {
-    double weights[N_BIN_HUMOUR];
+    double weights[N_BIN_HUMOUR] = {0};
 };
 
 struct EntityTypeWeightDet {
@@ -147,7 +147,7 @@ struct FollowerSet {
         return followers.n_elems;
     }
 
-    void determine_tweet_weights(WeightDeterminer& determiner, Tweet& tweet, /*Weights placed here: */ Weights& output);
+    void determine_tweet_weights(Entity& author, TweetContent& content, WeightDeterminer& determiner, /*Weights placed here: */ Weights& output);
 
 private:
     // Holds the actual followers:

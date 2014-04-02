@@ -6,6 +6,7 @@
 
 #include <yaml-cpp/yaml.h>
 
+#include "dependencies/prettyprint.hpp"
 #include "util.h"
 
 #include "CategoryGrouper.h"
@@ -103,46 +104,6 @@ static TweetObservationPDF parse_tweet_obs_pdf(const Node& node) {
 //    }
     return ret;
 }
-
-//static FollowerSetRatesDeterminer parse_tweet_react_rates(const Node& node) {
-//    // Nesting is as follows:
-//    // Each (entity-type X humour-bin) has its own rate object which has rates for:
-//    //  (language X distance X pref-class)
-//    typedef vector< vector< double > > entity_humour_rel_function_t;
-//    typedef vector<entity_humour_rel_function_t> entity_rel_function_t;
-//    typedef vector<entity_rel_function_t> rel_function_t;
-//
-//    const Node& generated = node["GENERATED"];
-//    // Assumption: The vector we read from state.config.follower_rates
-//    // is in the same order as expected by FollowerSetRates (which is a category component type)
-//
-//    rel_function_t input_func; // Multi-dimensional vector, see above
-//    parse_vector(generated["rel_function"], input_func   );
-////
-////    // Rates for every entity-type X humour-bin
-////    vector< vector<FollowerSet::Rates> > total_rates;
-////
-////    // Loop over entity-type layer:
-////    for (int i = 0; i < input_func.size(); i++) {
-////        vector<FollowerSet::Rates> evec;
-////        entity_rel_function_t& entity_func = input_func[i];
-////
-////        // Loop over humour-bin layer:
-////        for (int j = 0; j < entity_func.size(); j++) {
-////            entity_humour_rel_function_t& eh_func = entity_func[j];
-////            FollowerSet::Rates react_rates;
-////            // Fill the same rates for every language (slightly memory inefficient):
-////            for (int k = 0; k < eh_func.size(); k++) {
-////                react_rates.get(/*Dummy value:*/react_rates, k).fill_rates(eh_func);
-////            }
-//////            react_rates.print(/*Dummy value:*/react_rates);
-////            evec.push_back(react_rates);
-////        }
-////
-////        total_rates.push_back(evec);
-////    }
-//    return FollowerSetRatesDeterminer();
-//}
 
 static vector<double> parse_follow_weights(const Node& node) {
     vector<double> weights(N_FOLLOW_MODELS);
@@ -367,12 +328,42 @@ static Regions parse_regions(const Node& node) {
     return ret;
 }
 
+static FollowerSet::WeightDeterminer parse_tweet_react_rates(const Node& n_root) {
+    FollowerSet::WeightDeterminer w_root;
+    ASSERT(n_root.size() <= N_BIN_PREFERENCE_CLASS, "Too many preference classes!");
+    for (int i = 0; i < n_root.size(); i++) {
+        auto& n_region = n_root[i];
+        auto& w_region = w_root.subdeterminers[i];
+        // Same region or not:
+        for (int i = 0; i < 2; i++) {
+            auto& n_ideology = n_region[i];
+            auto& w_ideology = w_region.subdeterminers[i];
+            // Same ideology or not:
+            for (int i = 0; i < 2; i++) {
+                auto& n_entity = n_ideology[i];
+                auto& w_entity = w_ideology.subdeterminers[i];
+                // Entity type bins:
+                for (int i = 0; i < n_entity.size(); i++) {
+                    auto& n_humour = n_entity[i];
+                    auto& w_humour = w_entity.subdeterminers[i];
+                    // Humour bins:
+                    for (int i = 0; i < N_BIN_HUMOUR; i++) {
+                        n_humour[i] >> w_humour.weights[i];
+                    }
+                }
+            }
+        }
+    }
+
+    return w_root;
+}
+
 static void parse_all_configuration(ParsedConfig& config, const Node& node) {
     parse_analysis_configuration(config, node["analysis"]);
     config.pref_classes = parse_preference_classes(node);
     config.ideologies = parse_ideologies(node);
     config.tweet_obs = parse_tweet_obs_pdf(node);
-//    config.follower_rates = parse_tweet_react_rates(node);
+    config.tweet_react_rates = parse_tweet_react_rates(node["GENERATED"]["tweet_react_table"]);
 
     config.regions = parse_regions(node["GENERATED"]["regions"]);
     config.add_rates = parse_rates_configuration(config, node["rates"]["add"]);

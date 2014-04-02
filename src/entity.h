@@ -11,9 +11,9 @@
 
 #include "events.h"
 
+#include "FollowingSet.h"
 #include "FollowerSet.h"
 
-#include "entity_follow_sets.h"
 #include "entity_properties.h"
 
 #include "tweets.h"

@@ -256,15 +256,22 @@ preference_classes:
   # Determines the probability that a tweet is reacted to by this 
   # preference class:
    tweet_transmission: 
-      Standard: 1.00
-      Celebrity: 1.00
-      else: 0.5
+      Standard: 1.0
+      Celebrity: 0
+      else: 0
+   # Probability that we will follow as a reaction:
+   follow_reaction_prob:
+      0.5
 
  - name: NoRetweetPref
    tweet_transmission: 
-      Standard: 1.00
-      Celebrity: 1.00
-      else: 0.5
+      Standard: 0.00
+      Celebrity: 0.00
+      else: 0.0
+  # Probability that we will follow as a reaction:
+  # TODO: Integrate
+   follow_reaction_prob:
+      0.5
 
 #################################################################
 # >> entities: 

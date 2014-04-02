@@ -223,52 +223,20 @@ profile_funcs = load_relevance_functions()
 _bools = [False, True]
 _humour_vals = [i / float(humour_bins - 1) for i in range(humour_bins)]
 
-def relevance_rate_vector(entity_type, humour, distance):
-    results = []
-    for func_set in profile_funcs:
-        f = func_set[entity_type.name]
-        res = f(entity_type, humour, distance) 
-        results.append(res)
-    return results
-
-def relevance_humour_component(entity_type):
-    results = []
-    for i in range(humour_bins):
-        res = relevance_rate_vector(entity_type, i / float(humour_bins - 1))
-        results.append(res)
-    return results
-
-def relevance_preference_class():
-    results = []
-    n_types = len(entities)
-
-    for i in range(n_types):
-        entity_type = make_object(entities[i])
-        res = relevance_humour_component(entity_type)
-        results.append(res)
-    return results
-
 # The preference class and its associated reaction function:
 def _tweet_react_pref(func_set): 
-	return [
-		[
-			[
-				[
-					[
-						func_set[entity_type["name"]](
-							same_ideology, same_region, humour
-						)
-					] for humour in _humour_vals
-				] for entity_type in entities
-			] for same_region in _bools
-		] for same_ideology in _bools
-	]
+        return [[[[
+           func_set[entity_type["name"]](same_region, same_ideology, humour)
+            for humour in _humour_vals]
+            for entity_type in entities]
+            for same_ideology in _bools]
+            for same_region in _bools]
 
 def tweet_react_lookup_table(): 
-	# N-dimensional array represents lookup table for 5 independent factors (above)
-	return [
-		_tweet_react_pref(func_set) for func_set in profile_funcs
-	]
+        # N-dimensional array represents lookup table for 5 independent factors (above)
+        return [
+                _tweet_react_pref(func_set) for func_set in profile_funcs
+        ]
 
 #################################################################
 # YAML emission
