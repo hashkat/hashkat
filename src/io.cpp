@@ -12,6 +12,8 @@
 #include "util.h"
 #include "tweets.h"
 
+#include "util/StatCalc.h"
+
 using namespace std;
 
 
@@ -19,22 +21,14 @@ using namespace std;
 /* After 'analyze', print the results of the computations. */
 void output_network_statistics(AnalysisState& state) {
     Network& network = state.network;
-    for (int i = 0; i < min(/*For now:*/10, network.n_entities); i++) {
-        Entity& e = network[i];
-        EntityType& et = state.entity_types[e.entity_type];
-
-        printf("------------------------------------------------------------------------\n", i);
-        printf("(Entity %d)\n", i);
-        printf("(EntityType %s)\n", et.name.c_str());
-        printf("------------------------------------------------------------------------\n", i);
-        e.follower_set.print();
-    }
     ParsedConfig& C = state.config;
     EntityTypeVector& et_vec = state.entity_types;
     AnalysisStats& stats = state.stats;
     TweetBank& tb = state.tweet_bank;
     MostPopularTweet& mpt = state.most_pop_tweet;
-    
+
+    brief_entity_statistics(state);
+
     // Print why program stopped
     if (C.output_stdout_basic) {
         if (SIGNAL_ATTEMPTS > 0) {
@@ -84,6 +78,57 @@ void output_network_statistics(AnalysisState& state) {
     if (C.main_stats) {
         network_statistics(network, stats, et_vec);
     }
+}
+
+static void output_stat_calc(const char* name, StatCalc& calc) {
+    cout << "Average " << name << ": " << calc.average << " (+-" << calc.standard_deviation() << ")" << endl;
+}
+
+void brief_entity_statistics(AnalysisState& state) {
+    Network& network = state.network;
+    ParsedConfig& config = state.config;
+
+    for (int i = 0; i < min(/*For now:*/2, network.n_entities); i++) {
+       Entity& e = network[i];
+       EntityType& et = state.entity_types[e.entity_type];
+
+       printf("------------------------------------------------------------------------\n", i);
+       printf("(Entity %d)\n", i);
+       printf("(EntityType %s)\n", et.name.c_str());
+       printf("------------------------------------------------------------------------\n", i);
+       e.follower_set.print();
+    }
+
+    DiscreteDist langs, ideos, regions, prefs;
+    StatCalc follows, followers, tweets, retweets;
+    for (Entity& e : network) {
+        // Discrete options:
+        langs.add_element(e.language);
+        ideos.add_element(e.ideology_bin);
+        regions.add_element(e.region_bin);
+        prefs.add_element(e.preference_class);
+
+        // General statistics:
+        follows.add_element(e.follower_set.size());
+        followers.add_element(e.following_set.size());
+        tweets.add_element(e.n_tweets);
+        retweets.add_element(e.n_retweets);
+    }
+
+    cout << "Language statistics:" << endl;
+    for (int i = 0; i < N_LANGS; i++) {
+        langs.print_bin(language_name(i), i);
+    }
+
+    cout << "Ideology statistics:" << endl;
+    for (int i = 0; i < config.ideologies.size(); i++) {
+        ideos.print_bin(config.ideologies[i].name, i);
+    }
+
+    output_stat_calc("Follows", follows);
+    output_stat_calc("Followers", followers);
+    output_stat_calc("Tweets", tweets);
+    output_stat_calc("Retweets", retweets);
 }
 
 // edgelist created for R (analysis) and python executable (drawing) and gephi outputfile

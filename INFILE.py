@@ -5,6 +5,10 @@
 # By creating value tables with a Python script, we are able to
 # simplify the logic in the C++, not worrying about the various
 # functions a user might want to supply.
+#
+# Dependencies:
+#   PyYAML
+#   SciPY
 #################################################################
 
 #################################################################
@@ -68,16 +72,11 @@ tweet_obs_time_span = obs_pdf["time_span"]
 if isinstance(tweet_obs_time_span, str): # Allow for time constants
     tweet_obs_time_span = eval(tweet_obs_time_span)
 
-tweet_rel = CONFIG["tweet_relevance"]
-
-distance_bins = tweet_rel["distance_bins"]
-
 config_static = CONFIG["config_static"]
 
 humour_bins = config_static["humour_bins"]
 
-pref_classes2 = CONFIG["preference_classes"]
-pref_classes = tweet_rel["preference_classes"]
+pref_classes = CONFIG["preference_classes"]
 
 #################################################################
 # Make the region data easier to parse for the C++:
@@ -127,57 +126,6 @@ def preprocess_regions():
     for region in regions:
         ret.append(preprocess_region(region, total_weight))
     return ret
-
-def load_relevance_function(content):
-    exec('def __TEMP(entity_type, humour, distance): return ' + str(content))
-    return __TEMP # A hack
-
-def load_relevance_functions():
-    funcs = []
-    for p in pref_classes:
-        func_set = {}
-        # Load all the functions based on the different entity types
-        # Defaults to the 'else' node.
-        for e in entities:
-            name = e["name"]
-            retweet_rel = p["retweet_relevance"]
-            if name in retweet_rel:
-                func_str = retweet_rel[name]
-            elif "all" in retweet_rel:
-                func_str = retweet_rel["all"]
-            else:
-                func_str = retweet_rel["else"]
-            func = load_relevance_function(func_str)
-            func_set[name] = func
-        funcs.append(func_set)
-    return funcs
-
-profile_funcs = load_relevance_functions()
-
-def load_relevance_function2(content):
-    exec('def __TEMP(same_region, same_ideology, entity_type, humour): return ' + str(content))
-    return __TEMP # A hack
-
-def load_relevance_functions2():
-    funcs = []
-    for p in pref_classes2:
-        tt = p.tweet_transmission
-        func_set = {}
-        # Load all the functions based on the different entity types
-        # Defaults to the 'else' node.
-        for e in entities:
-            name = e["name"]
-            if name in retweet_rel:
-                func_str = retweet_rel[name]
-            elif "all" in retweet_rel:
-                func_str = retweet_rel["all"]
-            else:
-                func_str = retweet_rel["else"]
-            func = load_relevance_function(func_str)
-            func_set[name] = func
-        funcs.append(func_set)
-    return funcs
-
 
 #################################################################
 # Tweet observation probability function integration and binning
@@ -278,6 +226,32 @@ def relevance_entity_type_component():
 
 def compute_relevance_table(): # N-dimensional array
     return relevance_entity_type_component()
+
+def load_relevance_function(content):
+    exec('def __TEMP(entity_type, humour, distance): return ' + str(content))
+    return __TEMP # A hack
+
+def load_relevance_functions():
+    funcs = []
+    for p in pref_classes:
+        func_set = {}
+        # Load all the functions based on the different entity types
+        # Defaults to the 'else' node.
+        for e in entities:
+            name = e["name"]
+            retweet_rel = p["tweet_transmission"]
+            if name in retweet_rel:
+                func_str = retweet_rel[name]
+            elif "all" in retweet_rel:
+                func_str = retweet_rel["all"]
+            else:
+                func_str = retweet_rel["else"]
+            func = load_relevance_function(func_str)
+            func_set[name] = func
+        funcs.append(func_set)
+    return funcs
+
+profile_funcs = load_relevance_functions()
 
 #################################################################
 # YAML emission

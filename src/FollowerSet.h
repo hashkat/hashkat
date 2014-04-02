@@ -15,8 +15,29 @@ struct Entity;
 struct Tweet;
 
 /*****************************************************************************
- * Categorization layers of the follower set:
+ * Categorization layers of the follower set.
+ * The categorization layers are:
+ *   Language
+ *   X Preference class
+ *   X Ideology
+ *
+ * The weight determiner layers are:
+ *   Entity preference class
+ *   X Same/Diff region
+ *   X Same/Diff ideology
+ *   X Original tweeter entity type
+ *   X Tweet humour level
  *****************************************************************************/
+
+
+// Leaf weight determiners:
+struct HumourWeightDet {
+    double weights[N_BIN_HUMOUR];
+};
+
+struct EntityTypeWeightDet {
+    HumourWeightDet subdeterminers[N_BIN_ENTITY_TYPES];
+};
 
 // Leaf layer
 struct IdeologyLayer {
@@ -27,7 +48,8 @@ struct IdeologyLayer {
     };
 
     struct WeightDeterminer {
-        double humour_bins[N_BIN_HUMOUR] = {1, 1};
+        // Encodes 0 for same-ideology, 1 for diff-ideology
+        EntityTypeWeightDet subdeterminers[2];
     };
 
     static int classify(Entity& entity);
@@ -46,7 +68,8 @@ struct RegionLayer {
     };
 
     struct WeightDeterminer {
-        double humour_bins[N_BIN_HUMOUR];
+        // Encodes 0 for same-region, 1 for diff-region
+        ChildLayer::WeightDeterminer subdeterminers[2];
     };
 
     static int classify(Entity& entity);
@@ -65,7 +88,8 @@ struct PreferenceClassLayer {
     };
 
     struct WeightDeterminer {
-        double humour_bins[N_BIN_HUMOUR];
+        // One for each preference class
+        ChildLayer::WeightDeterminer subdeterminers[N_SUBLAYERS];
     };
 
     static int classify(Entity& entity);
@@ -84,9 +108,9 @@ struct LanguageLayer {
         double weights[N_SUBLAYERS] = {0};
     };
 
-    struct WeightDeterminer {
-        ChildLayer::WeightDeterminer preference_class_bins[N_BIN_HUMOUR];
-    };
+    // Language layer does not need its own weight determiner layer,
+    // it is a hard all-or-nothing cutoff for tweet reaction.
+    typedef ChildLayer::WeightDeterminer WeightDeterminer;
 
     static int classify(Entity& entity);
 

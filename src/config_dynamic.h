@@ -34,6 +34,10 @@ struct Region {
     std::vector<double> preference_class_probs;
 };
 
+struct Ideology {
+    std::string name;
+};
+
 struct Regions {
     std::vector<double> add_probs; // For choosing a region, sums to 1
     std::vector<Region> regions;
@@ -92,7 +96,7 @@ struct ParsedConfig {
     Add_Rates add_rates;
 
     std::vector<EntityPreferenceClass> pref_classes;
-
+    std::vector<Ideology> ideologies;
 
     bool enable_interactive_mode = false;
 

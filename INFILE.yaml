@@ -264,30 +264,6 @@ preference_classes:
       Celebrity: 1.00
       else: 0.5
 
-tweet_relevance: # 'Transmission probability'
-    humour_bins: 2
-    distance_bins: 4
-      # Determine traits relevant to the relevance determination function 
-    # Relevance functions are automatically converted into the necessary tables
-    # using Python. The strings provided can be any valid Python, as if wrapped by a
-    # Python function as such:
-    #
-    # def FOO(same_region, same_subregion, same_ideology, entity_type, humour): 
-    #   return $FOO
-    # Where:
-    #   same_region: Whether you are in the same region as the (original) tweeter
-    #   same_subregion: Whether you are in the same region AND subregion as the (original) tweeter
-    #   entity_type: The entity type of the original tweeter. Alternative to having a definition per entity type.
-    #   humour: The humour value of a tweet (0 to 1). Resolution determined by humour_bins.
- 
-    preference_classes:
-      - name: LoveEverything
-        retweet_relevance:
-          all: 0.00 # Can be any valid Python code
-      - name: HateEverything
-        retweet_relevance:
-          all: 0 # Can be any valid Python code
-
 #################################################################
 # >> entities: 
 #

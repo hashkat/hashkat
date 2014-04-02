@@ -33,7 +33,7 @@ static inline void parse_opt(const Node& node, const char* key, T& value) {
 /* Convert from a text node to the number representing
  * the follow model. */
 static FollowModel parse_follow_model(const Node& node) {
-    std::string follow_model = "random";
+    string follow_model = "random";
     parse(node, "follow_model", follow_model);
     if (follow_model == "random") {
         return RANDOM_FOLLOW;
@@ -53,14 +53,25 @@ static FollowModel parse_follow_model(const Node& node) {
     }
 }
 
-static std::vector<EntityPreferenceClass> parse_preference_classes(const Node& node) {
+static vector<EntityPreferenceClass> parse_preference_classes(const Node& node) {
     const Node& tweet_rel = node["tweet_relevance"];
     const Node& pref_classes = tweet_rel["preference_classes"];
-    std::vector<EntityPreferenceClass> ret;
+    vector<EntityPreferenceClass> ret;
     for (int i = 0; i < pref_classes.size(); i++) {
         EntityPreferenceClass pref_class;
         parse(pref_classes[i], "name", pref_class.name);
         ret.push_back(pref_class);
+    }
+    return ret;
+}
+
+static vector<Ideology> parse_ideologies(const Node& node) {
+    const Node& ideologies = node["ideologies"];
+    vector<Ideology> ret;
+    for (int i = 0; i < ideologies.size(); i++) {
+        Ideology ideology;
+        parse(ideologies[i], "name", ideology.name);
+        ret.push_back(ideology);
     }
     return ret;
 }
@@ -71,7 +82,7 @@ static void parse_vector(const Node& node, double& val, int tab =0) {
 }
 
 template <typename T>
-static void parse_vector(const Node& node, std::vector<T>& vec, int tab =0) {
+static void parse_vector(const Node& node, vector<T>& vec, int tab =0) {
     vec.resize(node.size());
     for (int i = 0; i < node.size(); i++) {
         parse_vector(node[i], vec[i], tab + 1);
@@ -93,7 +104,7 @@ static TweetObservationPDF parse_tweet_obs_pdf(const Node& node) {
 //    }
     return ret;
 }
-//
+
 //static FollowerSetRatesDeterminer parse_tweet_react_rates(const Node& node) {
 //    // Nesting is as follows:
 //    // Each (entity-type X humour-bin) has its own rate object which has rates for:
@@ -133,6 +144,7 @@ static TweetObservationPDF parse_tweet_obs_pdf(const Node& node) {
 ////    }
 //    return FollowerSetRatesDeterminer();
 //}
+
 static vector<double> parse_follow_weights(const Node& node) {
     vector<double> weights(N_FOLLOW_MODELS);
     parse(node, "random", weights[0]);
@@ -359,6 +371,7 @@ static Regions parse_regions(const Node& node) {
 static void parse_all_configuration(ParsedConfig& config, const Node& node) {
     parse_analysis_configuration(config, node["analysis"]);
     config.pref_classes = parse_preference_classes(node);
+    config.ideologies = parse_ideologies(node);
     config.tweet_obs = parse_tweet_obs_pdf(node);
 //    config.follower_rates = parse_tweet_react_rates(node);
 
@@ -375,10 +388,28 @@ static void save_file_contents(ParsedConfig& config, const char* file_name) {
     fstream file(file_name, fstream::in);
     string file_contents = "";
     string line;
-    while (std::getline(file, line)) {
+    while (getline(file, line)) {
         file_contents += line + "\n";
     }
     config.entire_config_file = file_contents;
+}
+
+static void check_integrity(const char* desc, const char* var, int limit, int val) {
+    if (val > limit) {
+        printf("%s must not be more than %s (%d)! Please adjust src/config_static.h.\n", desc, var, limit);
+        throw "Error";
+    }
+}
+// Does the configuration violate compile-time bounds?
+static void check_configuration_integrity(ParsedConfig& config) {
+    check_integrity("Number of preference classes",
+            "N_BIN_PREFERENCE_CLASS", N_BIN_PREFERENCE_CLASS, config.pref_classes.size());
+    check_integrity("Number of entity types",
+                "N_BIN_ENTITY_TYPES", N_BIN_ENTITY_TYPES, config.entity_types.size());
+    check_integrity("Number of entity types",
+                    "N_BIN_REGIONS", N_BIN_REGIONS, config.entity_types.size());
+    check_integrity("Number of entity types",
+                    "N_BIN_IDEOLOGIES", N_BIN_IDEOLOGIES, config.ideologies.size());
 }
 
 ParsedConfig parse_yaml_configuration(const char* file_name) {
@@ -393,6 +424,7 @@ ParsedConfig parse_yaml_configuration(const char* file_name) {
         parse_all_configuration(config, root);
         file.close();
         save_file_contents(config, file_name);
+        check_configuration_integrity(config);
         return config;
     } catch (const exception& e) {
         printf("Exception occurred while reading '%s': %s\n", file_name,

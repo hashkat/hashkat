@@ -8,7 +8,7 @@
 
 
 void output_position(Network& network, int end_time);
-
+void brief_entity_statistics(AnalysisState& state);
 void output_network_statistics(AnalysisState& state);
 
 int factorial(int input_number);
