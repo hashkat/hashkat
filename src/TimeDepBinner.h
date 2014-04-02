@@ -10,6 +10,7 @@
 #include "DataReadWrite.h"
 
 #include "dependencies/prettyprint.hpp"
+#include "lcommon/perf_timer.h"
 
 struct TimeDepBin {
     typedef std::vector<int> Heap;
@@ -61,6 +62,7 @@ public:
 
     template <typename Checker>
     void add(Checker checker, int id) {
+        PERF_TIMER();
         int bin = checker.initial_bin(id);
         bins[bin].add(checker, id);
     }

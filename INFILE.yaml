@@ -34,9 +34,9 @@
 
 analysis:
   initial_entities:
-    100
+    100001
   max_entities: 
-    100
+    100001
   max_time: 
     year * 0.1
   max_real_time: 

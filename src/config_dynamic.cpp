@@ -54,12 +54,13 @@ static FollowModel parse_follow_model(const Node& node) {
     }
 }
 
-static vector<EntityPreferenceClass> parse_preference_classes(const Node& node) {
+static vector<PreferenceClass> parse_preference_classes(const Node& node) {
     const Node& pref_classes = node["preference_classes"];
-    vector<EntityPreferenceClass> ret;
+    vector<PreferenceClass> ret;
     for (int i = 0; i < pref_classes.size(); i++) {
-        EntityPreferenceClass pref_class;
+        PreferenceClass pref_class;
         parse(pref_classes[i], "name", pref_class.name);
+        parse(pref_classes[i], "follow_reaction_prob", pref_class.follow_reaction_prob);
         ret.push_back(pref_class);
     }
     return ret;

@@ -24,7 +24,7 @@
 const double RETWEET_REBIN_TIME_INTERVAL = 1.0;
 
 typedef RateVec</*Rates per: */ 1> TweetReactRateVec;
-typedef RateTree<Tweet, /*Rates per: */ 1, /*Branching factor:*/ 2> TweetRateTree;
+typedef RateTree<Tweet, /*Rates per: */ 1, /*Branching factor:*/ 4> TweetRateTree;
 
 struct TweetRateDeterminer {
     TweetRateDeterminer(AnalysisState& state) : state(state){
@@ -163,7 +163,6 @@ private:
     TimeDepBinner binner;
 };
 
-
 struct TweetBank {
     TimeDepRateTree tree;
 
@@ -177,12 +176,8 @@ struct TweetBank {
      * Add an tweet. TweetRateDeterminer determines the reaction rate (follow or retweet) associated.
      */
     void add(const Tweet& data) {
-//        static int ITER = 1;
+        PERF_TIMER();
         tree.add(data);
-//        printf("Tweet %d: \n", ITER);
-//        printf("------------------------------------------------------------------------\n");
-//        print();
-//        ITER++;
     }
 
     std::vector<TweetRateTree::Node*> as_node_vector() {

@@ -46,6 +46,7 @@ struct AnalyzerFollow {
     }
     // Returns true if a follow is added that was not already added
    bool handle_follow(int id_actor, int id_target) {
+       PERF_TIMER();
        Entity& A = network[id_actor];
        Entity& T = network[id_target];
        bool was_added = A.following_set.add(state, id_target);
@@ -246,29 +247,17 @@ struct AnalyzerFollow {
             // find a random entity within [0:number of entities - 1]
             entity_to_follow = random_follow_method(network.n_entities);
         } else if (config.follow_model == PREFERENTIAL_FOLLOW && config.use_barabasi) {
-            perf_timer_begin("AnalyzerFollower.follow_entity(barabasi_preferential_follow)");
             entity_to_follow = preferential_barabasi_follow_method();
-            perf_timer_end("AnalyzerFollower.follow_entity(barabasi_preferential_follow)");
         } else if(config.follow_model == PREFERENTIAL_FOLLOW && !config.use_barabasi) {
-            perf_timer_begin("AnalyzerFollower.follow_entity(preferential_follow)");
             entity_to_follow = preferential_follow_method();
-            perf_timer_end("AnalyzerFollower.follow_entity(preferential_follow)");
         } else if (config.follow_model == ENTITY_FOLLOW) {
-            perf_timer_begin("AnalyzerFollower.follow_entity(entity_follow)");
             entity_to_follow = entity_follow_method();
-            perf_timer_end("AnalyzerFollower.follow_entity(entity_follow)");
         } else if (config.follow_model == PREFERENTIAL_ENTITY_FOLLOW) {
-            perf_timer_begin("AnalyzerFollower.follow_entity(preferential_entity_follow)");
             entity_to_follow = preferential_entity_follow_method();
-            perf_timer_end("AnalyzerFollower.follow_entity(preferential_entity_follow)");
         } else if (config.follow_model == TWITTER_FOLLOW) {
-            perf_timer_begin("AnalyzerFollower.follow_entity(Twitter_model)");
             entity_to_follow = twitter_follow_model();
-            perf_timer_end("AnalyzerFollower.follow_entity(Twitter_model)");
         } else if (config.follow_model == HASHTAG_FOLLOW) {
-            perf_timer_begin("AnalyzerFollower.follow_entity(Twitter_model)");
             entity_to_follow = hashtag_follow_method();
-            perf_timer_end("AnalyzerFollower.follow_entity(Twitter_model)");
         }
         // if the stage1_follow is set to true in the inputfile
         if (config.stage1_unfollow) {
@@ -349,6 +338,12 @@ struct AnalyzerFollow {
 		return true;
 	}
 };
+
+bool analyzer_handle_follow(AnalysisState& state, int id_actor, int id_target) {
+    PERF_TIMER();
+    AnalyzerFollow analyzer(state);
+    return analyzer.handle_follow(id_actor, id_target);
+}
 
 bool analyzer_follow_entity(AnalysisState& state, int entity, double time_of_follow) {
     PERF_TIMER();

@@ -12,11 +12,13 @@ enum FollowModel {
     ENTITY_FOLLOW,
     PREFERENTIAL_ENTITY_FOLLOW,
     HASHTAG_FOLLOW,
-        TWITTER_FOLLOW
+    TWITTER_FOLLOW
 };
 
-struct EntityPreferenceClass {
+struct PreferenceClass {
     std::string name;
+    // Probability that a tweet reaction results in a follow, rather than a retweet:
+    double follow_reaction_prob;
 };
 
 // Also referred to as the Omega function, see INFILE.yaml for details:
@@ -95,7 +97,7 @@ struct ParsedConfig {
     EntityTypeVector entity_types;
     Add_Rates add_rates;
 
-    std::vector<EntityPreferenceClass> pref_classes;
+    std::vector<PreferenceClass> pref_classes;
     std::vector<Ideology> ideologies;
 
     bool enable_interactive_mode = false;

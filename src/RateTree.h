@@ -409,6 +409,7 @@ struct RateTree {
 private:
     typedef std::vector<ref_t> ref_list;
     ref_t alloc_node() {
+        PERF_TIMER();
         ref_t n;
         if (!free_list.empty()) {
             // Reuse deallocated nodes before anything else:
@@ -432,6 +433,7 @@ private:
     }
 
     ref_t find_vacancy(int depth, ref_list& sub_list) {
+        PERF_TIMER();
         while (!sub_list.empty()) {
             ref_t vacancy = sub_list.back();
             // We assume we need to pop the element, we re-add as necessary (eg in alloc_with_next_vacancy or right below)

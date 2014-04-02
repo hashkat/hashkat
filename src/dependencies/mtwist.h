@@ -150,7 +150,7 @@ public:
     }
 
     bool random_chance(double probability) {
-        return (genrand_real1() < probability);
+        return (rand_real_not1() < probability);
     }
     /* Using Mersenne-twister, grab a real number within [0,1] */
     double rand_real_with01() {

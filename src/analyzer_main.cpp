@@ -290,6 +290,7 @@ struct Analyzer {
             }
             rand_num -= entity_types[et].prob_add;
         }
+        analyzer_follow_entity(state, id, creation_time);
         if (config.use_barabasi){
                 analyzer_follow_entity(state, id, creation_time);
         }
@@ -310,19 +311,16 @@ struct Analyzer {
         if (lang == LANG_FRENCH_AND_ENGLISH) {
             lang = rng.random_chance(0.5) ? LANG_ENGLISH : LANG_FRENCH;
         }
-        ti->language = e_original_author.language;
+        ti->language = lang;
         return ti;
     }
     
     bool include_hashtag() {
-        double rand_num = rng.rand_real_not0();
-        if (rand_num <= config.hashtag_prob) {
-            return true;
-        }
-        return false;
+        return rng.random_chance(config.hashtag_prob);
     }
 
     Tweet generate_tweet(int id_tweeter, int id_link, int generation, const smartptr<TweetContent>& content) {
+        PERF_TIMER();
         Entity& e_tweeter = network[id_tweeter];
         Entity& e_author = network[content->id_original_author];
 
@@ -381,17 +379,31 @@ struct Analyzer {
 		return true; // Always succeeds
 	}
 
+	// Despite being called action_retweet, may result in follow
+	// depending on probability encoded in PreferenceClass, if not first-generation tweet.
 	bool action_retweet(RetweetChoice choice, double time_of_retweet) {
 	    PERF_TIMER();
 		Entity& e_observer = network[choice.id_observer];
 		Entity& e_author = network[choice.id_author];
 
-		Tweet tweet = generate_tweet(choice.id_observer, choice.id_link, choice.generation, *choice.content);
+		PreferenceClass& obs_pref_class = config.pref_classes[e_observer.preference_class];
+
+		if (choice.generation > 0) {
+		    // Not first-generation tweet? Attempt folloAw.
+		    // Note this is not attempted for first-generation tweets because the observer
+		    // would necessarily be in the authors follower set already.
+            if (rng.random_chance(obs_pref_class.follow_reaction_prob)) {
+                // Return success of follow:
+                return analyzer_handle_follow(state, choice.id_observer, choice.id_author);
+            }
+		}
+
+		generate_tweet(choice.id_observer, choice.id_link, choice.generation, *choice.content);
         entity_types[e_observer.entity_type].n_retweets ++;
         e_observer.n_retweets ++;
         stats.n_retweets ++;
 
-        return true; // Always succeeds
+        return true;
 	}
 
 	// Causes 'id_unfollowed' to lose a follower

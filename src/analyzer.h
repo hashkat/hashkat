@@ -181,6 +181,8 @@ struct RetweetChoice {
 int analyzer_select_entity(AnalysisState& state, SelectionType type);
 void analyzer_rate_update(AnalysisState& state);
 // Follow a specific user
+bool analyzer_handle_follow(AnalysisState& state, int id_actor, int id_target);
+
 bool analyzer_follow_entity(AnalysisState& state, int entity, double time_of_follow);
 // Implements a follow-back
 bool analyzer_followback(AnalysisState& state, int follower, int followed);

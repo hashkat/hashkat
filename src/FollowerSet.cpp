@@ -168,7 +168,7 @@ static bool pick_uniform(MTwist& rng, Layer& layer, int& id) {
     for (auto& sublayer : layer.sublayers) {
         R -= sublayer.n_elems;
         if (R < 0) {
-            return pick_uniform(rng, layer, id);
+            return pick_uniform(rng, sublayer, id);
         }
     }
     return false;
@@ -227,11 +227,18 @@ static double determine_leaf_weight(Entity& author, EntityTypeWeightDet& w_entit
 
 void FollowerSet::determine_tweet_weights(Entity& author, TweetContent& content, WeightDeterminer& w_root, /*Weights placed here:*/ Weights& o_root) {
     PERF_TIMER();
+    // Weights are assumed to start 0-initialized.
 
     auto& f_root = followers;
 
+    DEBUG_CHECK(content.language != LANG_FRENCH_AND_ENGLISH, "Invalid tweet language!");
+
     // Language spoken:
     for (int lang = 0; lang < N_LANGS; lang++) {
+
+        if (!language_understandable((Language)lang, content.language)) {
+            break;
+        }
 
         for (int i = 0; i < N_BIN_PREFERENCE_CLASS; i++) {
             double& r1 = o_root.weights[i];

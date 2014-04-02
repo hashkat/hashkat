@@ -24,6 +24,16 @@ enum Language {
 };
 #undef X
 
+inline bool language_understandable(Language known, Language seen) {
+    if (known == seen) {
+        return true;
+    }
+    // Otherwise, we can only understand this language if we know
+    // English and French. Since English&French are the only considered
+    // languages, we must understand the language in this case.
+    return (known == LANG_FRENCH_AND_ENGLISH);
+}
+
 inline const char* language_name(int bin) {
     if (bin == LANG_ENGLISH) return "LANG_ENGLISH";
     if (bin == LANG_FRENCH_AND_ENGLISH) return "LANG_FRENCH_AND_ENGLISH";
