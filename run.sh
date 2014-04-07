@@ -126,7 +126,7 @@ if handle_flag "--gdb" || handle_flag "-g" ; then
 elif handle_flag "--lldb" || handle_flag "-l" ; then
     # Wrap lldb around the program with -l:
     echo "Wrapping in LLDB:" | colorify '1;35'
-    lldb build/src/socialsim $args
+    lldb build/src/socialsim 
 elif handle_flag "--oprofile" || handle_flag "--oprof" ; then
     # Requires installation of oprofile!
     # Profile the program (requires oprofile) with -p:

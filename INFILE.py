@@ -16,7 +16,7 @@
 #################################################################
 
 # Convenience rates, in minutes
-minute = 1
+minute = 60 * 1000
 hour = minute * 60
 day = 24 * hour
 year = 365 * day

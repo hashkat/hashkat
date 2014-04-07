@@ -34,23 +34,23 @@
 
 analysis:
   initial_entities:
-    100001
+    20
   max_entities: 
     100001
   max_time: 
-    year * 0.1
+    hour
   max_real_time: 
     hour
   enable_interactive_mode:
     true
   use_barabasi: 
-    false 
+    true 
   use_random_time_increment: 
     true
   use_flawed_followback: 
     false
   follow_model: # See notes above
-    random
+    twitter
   # model weights ONLY necessary for follow method 'twitter'    
   model_weights: {random: 0.20, preferential: 0.20, entity: 0.20, preferential_entity: 0.20, hashtag: 0.20}
   
@@ -59,7 +59,7 @@ analysis:
   unfollow_tweet_rate: 
     10
   use_hashtag_probability:
-    0.5 
+    1
 
 #################################################################
 # >> rates:
@@ -68,7 +68,7 @@ analysis:
 #################################################################
 
 rates:
-  add: {function: constant, value: 0.0}
+  add: {function: constant, value: 1.0}
 
 #################################################################
 # >> output:
@@ -152,7 +152,7 @@ follow_ranks:
 
 tweet_observation: # 'Omega'
    density_function: 
-       2.45 / (x)**-1.1 
+       2.45 / (x)**1.1 
    x_start: 
        5
    x_end: 
@@ -291,27 +291,27 @@ entities:
     followback_probability: 40
     rates: 
         # Rate for follows from this entity:
-        follow: {function: constant, value: 0.01}
+        follow: {function: constant, value: 0.001}
         # Rate for tweets from this entity:
-        tweet: {function: constant, value: 0.01}
+        tweet: {function: constant, value: 0.001}
 
   - name: Celebrity
     weights: {add: 5, follow: 80}
     followback_probability: 0
     rates:
-        follow: {function: constant, value: 0.01}
-        tweet: {function: constant, value: 0.01}
+        follow: {function: constant, value: 0.001}
+        tweet: {function: constant, value: 0.001}
         
   - name: Bot
     weights: {add: 5, follow: 0}
     followback_probability: 0
     rates:
-        follow: {function: constant, value: 0.01}
-        tweet: {function: constant, value: 0.01}
+        follow: {function: constant, value: 0.001}
+        tweet: {function: constant, value: 0.001}
 
   - name: Organization
     weights: {add: 10, follow: 15}
     followback_probability: 0
     rates:
-        follow: {function: constant, value: 0.01}
-        tweet: {function: constant, value: 0.01}
+        follow: {function: constant, value: 0.001}
+        tweet: {function: constant, value: 0.001}

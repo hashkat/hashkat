@@ -198,22 +198,21 @@ struct AnalyzerFollow {
        return -1;
    }
    
-   int hashtag_follow_method() {
+   int hashtag_follow_method(Entity& follower) {
        PERF_TIMER();
        /* This method is totally random, but it allows for connections to happen based
           based on entities having a hashtag in their tweet. */
-       if (hashtags.tweets_w_hashtags.size() > 0) {
-           int rnd_index = rng.rand_int(hashtags.tweets_w_hashtags.size());
-           int entity_to_follow = hashtags.tweets_w_hashtags.at(rnd_index).id_tweeter;
-           if (entity_to_follow != -1) {
+       int ideology_bin = follower.ideology_bin;
+       int region_bin = follower.region_bin;
+       if (!hashtags.hashtag_groups[ideology_bin][region_bin].circ_buffer.empty()) {
+           int entity_to_follow = hashtags.hashtag_groups[ideology_bin][region_bin].circ_buffer.pick_random_uniform(rng);
                stats.n_hashtag_follows ++;
                return entity_to_follow;
-           }
        }
        return -1;
    }
    
-   int twitter_follow_model() {
+   int twitter_follow_model(Entity& e) {
        PERF_TIMER();
        /* different follow models:
            0 - random follow
@@ -232,7 +231,7 @@ struct AnalyzerFollow {
        } else if (follow_method == 3) {
            return preferential_entity_follow_method();
        } else {
-           hashtag_follow_method();
+           hashtag_follow_method(e);
        }
        return -1;
     }
@@ -255,9 +254,9 @@ struct AnalyzerFollow {
         } else if (config.follow_model == PREFERENTIAL_ENTITY_FOLLOW) {
             entity_to_follow = preferential_entity_follow_method();
         } else if (config.follow_model == TWITTER_FOLLOW) {
-            entity_to_follow = twitter_follow_model();
+            entity_to_follow = twitter_follow_model(e1);
         } else if (config.follow_model == HASHTAG_FOLLOW) {
-            entity_to_follow = hashtag_follow_method();
+            entity_to_follow = hashtag_follow_method(e1);
         }
         // if the stage1_follow is set to true in the inputfile
         if (config.stage1_unfollow) {

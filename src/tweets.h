@@ -11,6 +11,7 @@
 
 #include "events.h"
 #include "entity_properties.h"
+#include "CircularBuffer.h"
 
 #include "DataReadWrite.h"
 
@@ -23,6 +24,7 @@ struct TweetContent {
     Language language = N_LANGS; // Set to invalid
     int humour_bin = -1;
     int ideology_bin = -1; // 0 == no ideology
+    int hashtag_bin = -1;
     int id_original_author = -1; // The entity that created the original content
 
     READ_WRITE(rw) {
@@ -106,13 +108,19 @@ struct MostPopularTweet {
     }
 };
 
+struct HashtagGroup {
+    // circular buffer with 10 elements
+    CircularBuffer<int, 10> circ_buffer;
+
+};
+
 struct HashTags {
-    // this is the list of tweets with hashtags
-    std::vector<Tweet> tweets_w_hashtags;
+    // this is the set of bins for idealogies and regions
+    HashtagGroup hashtag_groups[N_BIN_IDEOLOGIES][N_BIN_REGIONS];
     
-    READ_WRITE(rw) {
+    /*READ_WRITE(rw) {
         rw.visit_objs(tweets_w_hashtags);
-    }
+    }*/
 };
 
 #endif

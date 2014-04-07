@@ -277,7 +277,6 @@ struct Analyzer {
         e.ideology_tweet_percent = rng.random_chance(0.5) ? 1.0 : 0.0;
         e.humour_bin = rng.random_chance(0.5) ? 1.0 : 0.0;
         e.preference_class = rng.kmc_select(region.preference_class_probs);
-
         double rand_num = rng.rand_real_not0();
         for (int et = 0; et < entity_types.size(); et++) {
             EntityType& type = entity_types[et];
@@ -290,7 +289,6 @@ struct Analyzer {
             }
             rand_num -= entity_types[et].prob_add;
         }
-        analyzer_follow_entity(state, id, creation_time);
         if (config.use_barabasi){
                 analyzer_follow_entity(state, id, creation_time);
         }
@@ -330,16 +328,12 @@ struct Analyzer {
         tweet.id_tweeter = id_tweeter;
         tweet.id_link = id_link;
         tweet.generation = generation;
-        if (include_hashtag()) {
+        // if this is a hashtag and not a retweet, we have to add the entity id into 
+        // the circular buffer. 
+        if (include_hashtag() && generation == 0) {
             stats.n_hashtags ++;
             tweet.hashtag = true;
-            hashtags.tweets_w_hashtags.push_back(tweet);
-            /* the fact that the hashtag list is 100 tweets long is 
-                arbitrary, but it is much less costly than checking 
-                the times of every tweet to make sure we have updated tweets. */
-            if (hashtags.tweets_w_hashtags.size() > 100) {
-                hashtags.tweets_w_hashtags.erase(hashtags.tweets_w_hashtags.begin());
-            }
+            hashtags.hashtag_groups[e_author.ideology_bin][e_author.region_bin].circ_buffer.add(e_author.id);
         }
 
         // Always start in the first retweet time bin:
@@ -363,15 +357,14 @@ struct Analyzer {
 		Entity& e = network[id_tweeter];
         entity_types[e.entity_type].n_tweets++;
         tweet_ranks.categorize(id_tweeter, e.n_tweets);
-        if (network.n_followers(id_tweeter) > 0) {
-            generate_tweet(id_tweeter, id_tweeter, 0, generate_tweet_content(id_tweeter));
-            // Generate the tweet content:
-            // increase the number of tweets the entity had by one
-            e.n_tweets++;
-            if (e.n_tweets / (time - e.creation_time) >= config.unfollow_tweet_rate) {
-                action_unfollow(id_tweeter);
-            }
+        e.n_tweets++;
+        generate_tweet(id_tweeter, id_tweeter, 0, generate_tweet_content(id_tweeter));
+        // Generate the tweet content:
+        // increase the number of tweets the entity had by one
+        if (e.n_tweets / (time - e.creation_time) >= config.unfollow_tweet_rate) {
+            action_unfollow(id_tweeter);
         }
+
         // Else, no followers -- no need to create a tweet
         //** AD: Still consider a success for now, re-evaluate later
         //** AD: Maybe we may want to discount the possibility of such tweets and just restart
@@ -394,6 +387,7 @@ struct Analyzer {
 		    // would necessarily be in the authors follower set already.
             if (rng.random_chance(obs_pref_class.follow_reaction_prob)) {
                 // Return success of follow:
+                stats.n_retweet_follows ++;
                 return analyzer_handle_follow(state, choice.id_observer, choice.id_author);
             }
 		}
