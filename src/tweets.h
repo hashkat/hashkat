@@ -111,16 +111,21 @@ struct MostPopularTweet {
 struct HashtagGroup {
     // circular buffer with 10 elements
     CircularBuffer<int, 10> circ_buffer;
-
 };
 
 struct HashTags {
     // this is the set of bins for idealogies and regions
     HashtagGroup hashtag_groups[N_BIN_IDEOLOGIES][N_BIN_REGIONS];
     
-    /*READ_WRITE(rw) {
-        rw.visit_objs(tweets_w_hashtags);
-    }*/
+    READ_WRITE(rw) {
+        for (auto& outer : hashtag_groups) {
+            for (auto& groups : outer) {
+                // Note: works because HashtagGroup contains no pointers internally:
+                rw << groups;
+            }
+
+        }
+    }
 };
 
 #endif

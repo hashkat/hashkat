@@ -144,7 +144,7 @@ struct AnalysisState {
         age_ranks.visit(rw);
         tweet_bank.visit(rw);
         stats.visit(rw);
-
+        hashtags.visit(rw);
         rw.visit_objs(entity_types);
     }
 };
