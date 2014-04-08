@@ -83,13 +83,13 @@ struct TimeDepRateTree {
         }
         binner.update(checker());
 
-        int i = 0;
-        for (auto& bin : binner.get_bins()) {
-            i++;
-            double time = determiner.get_cat_threshold(i);
+//        int i = 0;
+//        for (auto& bin : binner.get_bins()) {
+//            i++;
+//            double time = determiner.get_cat_threshold(i);
 //            std::cout << "IN BIN " << i << " HAVE " << bin.size() << std::endl;
 //            std::cout << "THEY HAVE elapsed-time < " << time << std::endl;
-        }
+//        }
     }
 
     std::vector<TweetRateTree::Node*> as_node_vector() {

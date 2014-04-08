@@ -24,7 +24,7 @@ double TweetRateDeterminer::get_cat_threshold(int bin) {
 TweetReactRateVec TweetRateDeterminer::get_rate(const Tweet& tweet, int bin) {
     Entity& entity = state.network[tweet.id_tweeter];
     Language lang = entity.language;
-    FollowerSet followers = entity.follower_set;
+    FollowerSet& followers = entity.follower_set;
 
     /********************************************************************
      * Determine the 'Omega' observation PDF.

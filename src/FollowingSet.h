@@ -21,7 +21,6 @@ struct FollowingSet {
 
     void print(AnalysisState& S, int id) {
         implementation.add(S, /*Dummy: */ 1.0, id);
-
     }
 
     bool add(AnalysisState& S, int id) {

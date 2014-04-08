@@ -24,6 +24,8 @@ struct FlexibleSet {
     ~FlexibleSet() {
         clear();
     }
+
+    FlexibleSet(const FlexibleSet& set) = delete;
     FlexibleSet() {
         hash_impl = NULL;
         vector_impl.reserve(INITIAL);
