@@ -20,6 +20,8 @@ using namespace std;
 // ROOT OUTPUT ROUTINE
 /* After 'analyze', print the results of the computations. */
 void output_network_statistics(AnalysisState& state) {
+    perf_print_results();
+
     Network& network = state.network;
     ParsedConfig& C = state.config;
     EntityTypeVector& et_vec = state.entity_types;
@@ -125,10 +127,35 @@ void brief_entity_statistics(AnalysisState& state) {
         ideos.print_bin(config.ideologies[i].name, i);
     }
 
+    cout << "Entity stats distributions:" << endl;
     output_stat_calc("Follows", follows);
     output_stat_calc("Followers", followers);
     output_stat_calc("Tweets", tweets);
     output_stat_calc("Retweets", retweets);
+
+    cout << "Final tweet stats:" << endl;
+
+    int n_humourous = 0, n_musical = 0, n_ideological = 0, n_plain = 0, n_total = 0;
+    for (Tweet tweet : state.tweet_bank.as_vector()) {
+        TweetType type = tweet.content->type;
+        n_total++;
+        if (type == TWEET_STANDARD) {
+            n_plain++;
+        } else if (type == TWEET_IDEOLOGICAL) {
+            n_ideological++;
+        } else if (type == TWEET_MUSICAL) {
+            n_musical++;
+        } else if (type == TWEET_HUMOUROUS) {
+            n_humourous++;
+        } else {
+            ASSERT(false, "LOGIC ERROR!");
+        }
+    }
+    cout << "n_humourous: " << n_humourous << endl
+        << "n_musical: " << n_musical << endl
+        << "n_ideological: " << n_ideological << endl
+        << "n_plain: " << n_plain << endl
+        << "n_total: " << n_total << endl;
 }
 
 // edgelist created for R (analysis) and python executable (drawing) and gephi outputfile

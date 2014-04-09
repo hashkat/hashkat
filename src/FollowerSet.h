@@ -24,20 +24,9 @@ struct TweetContent;
  *
  * The weight determiner layers are:
  *   Entity preference class
- *   X Same/Diff region
- *   X Same/Diff ideology
+ *   X Tweet type (for ideological tweets, whether ideologies match)
  *   X Original tweeter entity type
- *   X Tweet humour level
  *****************************************************************************/
-
-// Leaf weight determiners:
-struct HumourWeightDet {
-    double weights[N_BIN_HUMOUR] = {0};
-};
-
-struct EntityTypeWeightDet {
-    HumourWeightDet subdeterminers[N_BIN_ENTITY_TYPES];
-};
 
 // Leaf layer
 struct IdeologyLayer {
@@ -45,11 +34,6 @@ struct IdeologyLayer {
 
     struct Weights {
         double weights[N_SUBLAYERS] = {0};
-    };
-
-    struct WeightDeterminer {
-        // Encodes 0 for same-ideology, 1 for diff-ideology
-        EntityTypeWeightDet subdeterminers[2];
     };
 
     static int classify(Entity& entity);
@@ -67,11 +51,6 @@ struct RegionLayer {
         double weights[N_SUBLAYERS] = {0};
     };
 
-    struct WeightDeterminer {
-        // Encodes 0 for same-region, 1 for diff-region
-        ChildLayer::WeightDeterminer subdeterminers[2];
-    };
-
     static int classify(Entity& entity);
 
     int n_elems = 0; // Total
@@ -85,11 +64,6 @@ struct PreferenceClassLayer {
     struct Weights {
         ChildLayer::Weights subweights[N_SUBLAYERS];
         double weights[N_SUBLAYERS] = {0};
-    };
-
-    struct WeightDeterminer {
-        // One for each preference class
-        ChildLayer::WeightDeterminer subdeterminers[N_SUBLAYERS];
     };
 
     static int classify(Entity& entity);
@@ -108,10 +82,6 @@ struct LanguageLayer {
         double weights[N_SUBLAYERS] = {0};
     };
 
-    // Language layer does not need its own weight determiner layer,
-    // it is a hard all-or-nothing cutoff for tweet reaction.
-    typedef ChildLayer::WeightDeterminer WeightDeterminer;
-
     static int classify(Entity& entity);
 
     int n_elems = 0; // Total
@@ -125,7 +95,21 @@ struct LanguageLayer {
 struct FollowerSet {
     typedef LanguageLayer TopLayer;
     typedef TopLayer::Weights Weights;
-    typedef TopLayer::WeightDeterminer WeightDeterminer;
+
+    // Weights for determining whether a tweet has a reaction (follow/retweet).
+    // Note that this is primarily decided by a tweet type, observer preference class,
+    // and author's entity type. Note that for TWEET_IDEOLOGICAL, we resolve first whether it should be
+    // TWEET_IDEOLOGICAL_DIFFERENT, otherwise tweet ideology is matching.
+    // Language layer does not need its own weight determiner layer,
+    // it is a hard all-or-nothing cutoff for tweet reaction.
+    struct WeightDeterminer {
+        double weights[N_BIN_PREFERENCE_CLASS][N_TWEET_TYPES][N_BIN_ENTITY_TYPES];
+        WeightDeterminer() {
+            memset(weights, 0, sizeof(double) * N_BIN_PREFERENCE_CLASS * N_TWEET_TYPES * N_BIN_ENTITY_TYPES);
+        }
+
+        double get_weight(Entity& author, TweetContent& content);
+    };
 
     std::vector<int> as_vector();
 

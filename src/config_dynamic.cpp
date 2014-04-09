@@ -267,11 +267,28 @@ static void parse_category_configurations(ParsedConfig& config, const Node& node
     config.retweet_ranks = parse_category_thresholds(node["retweet_ranks"]["thresholds"]);
 }
 
+static void parse_entity_tweet_type_probabilities(EntityType& et, const Node& node) {
+    double plain = 0, ideological = 0, musical = 0, humourous = 0;
+
+    parse(node, "ideological", ideological, /*Optional:*/ true);
+    parse(node, "plain", plain, /*Optional:*/ true);
+    parse(node, "musical", musical, /*Optional:*/ true);
+    parse(node, "humourous", humourous, /*Optional:*/ true);
+
+    double sum = (ideological + plain + musical + humourous);
+
+    // Must match up with definition of TweetType in config_static.h!
+    double probs[N_TWEET_TYPES] = {plain / sum, ideological / sum, musical / sum, humourous / sum, /*Not valid:*/ 0};
+    for (int i = 0; i < N_TWEET_TYPES; i++) {
+        et.tweet_type_probs[i] = probs[i];
+    }
+}
 static EntityTypeVector parse_entities_configuration(const Node& node) {
     EntityTypeVector vec;
     double add_total = 0, follow_total = 0;
     for (int i = 0; i < node.size(); i++) {
         EntityType et;
+        et.tweet_type_probs;
         const Node& child = node[i];
         parse(child, "name", et.name);
         parse(child, "followback_probability", et.prob_followback);
@@ -280,6 +297,8 @@ static EntityTypeVector parse_entities_configuration(const Node& node) {
         parse(weights, "follow", et.prob_follow);
 		const Node& follow_rate = child["rates"]["follow"];
 		const Node& tweet_rate = child["rates"]["tweet"];
+
+		parse_entity_tweet_type_probabilities(et, weights["tweet_type"]);
 		
 		parse(follow_rate, "function", et.RF[0].function_type);
 		if (et.RF[0].function_type == "constant") {
@@ -333,25 +352,17 @@ static FollowerSet::WeightDeterminer parse_tweet_react_rates(const Node& n_root)
     FollowerSet::WeightDeterminer w_root;
     ASSERT(n_root.size() <= N_BIN_PREFERENCE_CLASS, "Too many preference classes!");
     for (int i = 0; i < n_root.size(); i++) {
-        auto& n_region = n_root[i];
-        auto& w_region = w_root.subdeterminers[i];
+        auto& n_prefs = n_root[i];
+        auto& w_prefs = w_root.weights[i];
+
         // Same region or not:
-        for (int i = 0; i < 2; i++) {
-            auto& n_ideology = n_region[i];
-            auto& w_ideology = w_region.subdeterminers[i];
-            // Same ideology or not:
-            for (int i = 0; i < 2; i++) {
-                auto& n_entity = n_ideology[i];
-                auto& w_entity = w_ideology.subdeterminers[i];
-                // Entity type bins:
-                for (int i = 0; i < n_entity.size(); i++) {
-                    auto& n_humour = n_entity[i];
-                    auto& w_humour = w_entity.subdeterminers[i];
-                    // Humour bins:
-                    for (int i = 0; i < N_BIN_HUMOUR; i++) {
-                        n_humour[i] >> w_humour.weights[i];
-                    }
-                }
+        ASSERT(n_prefs.size() == N_TWEET_TYPES, "Not enough tweet types in react table!");
+        for (int i = 0; i < N_TWEET_TYPES; i++) {
+            auto& n_etypes = n_prefs[i];
+            auto& w_etypes = w_prefs[i];
+            // Entity type bins:
+            for (int i = 0; i < n_etypes.size(); i++) {
+                n_etypes[i] >> w_etypes[i];
             }
         }
     }

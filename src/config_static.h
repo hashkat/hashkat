@@ -14,6 +14,17 @@
  * Configurable values that must be available at compile time for efficiency reasons.
  */
 
+enum TweetType {
+    TWEET_STANDARD,
+    TWEET_IDEOLOGICAL,
+    // Note: Treated the same as standard retweeting.
+    TWEET_MUSICAL,
+    TWEET_HUMOUROUS,
+    // Note: Used only for disambiguating matching and mismatching ideology, for retweeting.
+    TWEET_IDEOLOGICAL_DIFFERENT,
+    N_TWEET_TYPES
+};
+
 enum Language {
     // Resolves using X above, fills enum:
     LANG_ENGLISH,
@@ -22,7 +33,6 @@ enum Language {
     /* All languages before LANG_FRENCH contain English */
     N_LANGS // Not a real entry; evaluates to amount of languages
 };
-#undef X
 
 inline bool language_understandable(Language known, Language seen) {
     if (known == seen) {

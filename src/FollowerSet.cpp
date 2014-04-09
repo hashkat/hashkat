@@ -220,12 +220,7 @@ void FollowerSet::print() {
     print_layer(followers, 0);
 }
 
-static double determine_leaf_weight(Entity& author, EntityTypeWeightDet& w_entity, TweetContent& content, int n_followers) {
-    auto& w_humour = w_entity.subdeterminers[author.entity_type];
-    return w_humour.weights[content.humour_bin] * n_followers;
-}
-
-void FollowerSet::determine_tweet_weights(Entity& author, TweetContent& content, WeightDeterminer& w_root, /*Weights placed here:*/ Weights& o_root) {
+void FollowerSet::determine_tweet_weights(Entity& author, TweetContent& content, WeightDeterminer& d_root, /*Weights placed here:*/ Weights& w_root) {
     PERF_TIMER();
     // Weights are assumed to start 0-initialized.
 
@@ -240,33 +235,35 @@ void FollowerSet::determine_tweet_weights(Entity& author, TweetContent& content,
             break;
         }
 
-        for (int i = 0; i < N_BIN_PREFERENCE_CLASS; i++) {
-            double& r1 = o_root.weights[i];
+        auto& f_prefs = f_root.sublayers[lang];
+        for (int i_pref = 0; i_pref < N_BIN_PREFERENCE_CLASS; i_pref++) {
+            auto& f_regions = f_prefs.sublayers[i_pref];
+            auto& w_regions = w_root.subweights[i_pref];
 
-            auto& o_region = o_root.subweights[i];
-            auto& w_region = w_root.subdeterminers[i];
-            auto& f_region = f_root.sublayers[i];
+            double incr1 = 0;
+            for (int i_region = 0; i_region < N_BIN_REGIONS; i_region++) {
+                auto& f_bins = f_regions.sublayers[i_region];
+                auto& w_bins = w_regions.subweights[i_region];
+                double incr2 = 0;
+                for (int i_ideo = 0; i_ideo < N_BIN_IDEOLOGIES; i_ideo++) {
+                    auto& f_leaf = f_bins.sublayers[i_ideo];
+                    auto& w_leaf = w_bins.subweights[i_ideo];
+                    TweetType type = content.type;
 
-            // Same region or not:
-            for (int i = 0; i < 2; i++) {
-                double& r2 = o_region.weights[i];
+                    if (type == TWEET_IDEOLOGICAL && i_ideo == content.ideology_bin) {
+                        type = TWEET_IDEOLOGICAL_DIFFERENT;
+                    }
+                    double weight = d_root.weights[i_pref][type][author.entity_type];
 
-                auto& o_ideology = o_region.subweights[i];
-                auto& w_ideology = w_region.subdeterminers[i];
-                auto& f_ideology = f_region.sublayers[i];
-
-                // Same ideology or not:
-                for (int i = 0; i < 2; i++) {
-                    double& r3 = o_ideology.weights[i];
-
-                    auto& w_entity = w_ideology.subdeterminers[i];
-                    int n_followers = f_ideology.sublayers[i].n_elems;
-
-                    double val = determine_leaf_weight(author, w_entity, content, n_followers);
-
-                    r1 += val, r2 += val, r3 += val;
+                    double incr3 = weight * f_leaf.size();
+                    w_leaf.weights[i_ideo] += incr3;
+                    incr2 += incr3;
                 }
+                w_bins.weights[i_region] += incr2;
+                incr1 += incr2;
             }
+            w_regions.weights[i_pref] += incr1;
         }
+
     }
 }

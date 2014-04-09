@@ -118,7 +118,6 @@ struct InterruptMenuFunctions {
         DUMP(e, n_retweets);
         DUMP(e, creation_time);
         DUMP(e, avg_chatiness);
-        DUMP(e, humour_bin);
         DUMP(e, chatty_entities);
 
         auto table = LuaValue::newtable(state.L);

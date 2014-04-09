@@ -96,6 +96,7 @@ lang_order = {
     "French" : 1,
     "French+English" : 2
 }
+
 lang_n = 3
 ideo_order,pref_order = {},{}
 ideo_n, pref_n  = 0, 0
@@ -183,60 +184,45 @@ def compute_tweet_obs():
     return rates, bounds
 
 #################################################################
-# Relevance Python function generation
+# Relevance lookup table generation
+# Factors:
+#   Entity preference class
+#   X Tweet type (for ideological tweets, whether ideologies match)
+#   X Original tweeter entity type
 
 def load_relevance_function(content):
-    exec('def __TEMP(entity_type, humour, distance): return ' + str(content))
+    exec('def __TEMP(): return ' + str(content))
     return __TEMP # A hack
 
-def load_relevance_functions():
-    funcs = []
-    for p in pref_classes:
-        func_set = {}
-        # Load all the functions based on the different entity types
-        # Defaults to the 'else' node.
-        for e in entities:
-            name = e["name"]
-            retweet_rel = p["tweet_transmission"]
-            if name in retweet_rel:
-                func_str = retweet_rel[name]
-            elif "all" in retweet_rel:
-                func_str = retweet_rel["all"]
-            else:
-                func_str = retweet_rel["else"]
-            func = load_relevance_function(func_str)
-            func_set[name] = func
-        funcs.append(func_set)
-    return funcs
+def load_relevance_weights():
+    weights = []
+    for pref in pref_classes:
+        # NOTE: *MUST* be in same order as TweetType in config_static.h!
 
-profile_funcs = load_relevance_functions()
-
-#################################################################
-# Relevance lookup table generation
-# Factors in:
-#   Entity preference class
-#   X Same/Diff region
-#   X Same/Diff ideology
-#   X Original tweeter entity type
-#   X Tweet humour level
-
-_bools = [False, True]
-_humour_vals = [i / float(humour_bins - 1) for i in range(humour_bins)]
-
-# The preference class and its associated reaction function:
-def _tweet_react_pref(func_set): 
-        return [[[[
-           func_set[entity_type["name"]](same_region, same_ideology, humour)
-            for humour in _humour_vals]
-            for entity_type in entities]
-            for same_ideology in _bools]
-            for same_region in _bools]
-
-def tweet_react_lookup_table(): 
-        # N-dimensional array represents lookup table for 5 independent factors (above)
-        return [
-                _tweet_react_pref(func_set) for func_set in profile_funcs
-        ]
+        pref_weights = []
+        for tweet_type in ["plain", "same_ideology", "plain", "humourous", "different_ideology"]:
+        
+            weight_set = []
+            print(tweet_type, "=>", weight_set)
+            retweet_rel = pref["tweet_transmission"][tweet_type]
+            # Load all the functions based on the different entity types
+            # Defaults to the 'else' node.
+            for e in entities:
+                name = e["name"]
+                if name in retweet_rel:
+                    func_str = retweet_rel[name]
+                elif "all" in retweet_rel:
+                    func_str = retweet_rel["all"]
+                else:
+                    func_str = retweet_rel["else"]
+                func = load_relevance_function(func_str)
+                weight_set.append(func())
+            print(tweet_type, "=>", weight_set)
+            pref_weights.append(weight_set)
+    
+        print("pref_weights", pref_weights)
+        weights.append(pref_weights)
+    return weights
 
 #################################################################
 # YAML emission
@@ -246,7 +232,7 @@ obs_function, obs_bin_bounds = compute_tweet_obs()
 generated = {
     "obs_function" : obs_function,
     "obs_bin_bounds" : obs_bin_bounds,
-    "tweet_react_table" : tweet_react_lookup_table(),
+    "tweet_react_table" : load_relevance_weights(),
     "regions" : preprocess_regions()
 }
 

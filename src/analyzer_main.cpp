@@ -275,7 +275,6 @@ struct Analyzer {
         e.language = (Language) rng.kmc_select(region.language_probs);
         // For now, either always mark ideology, or never
         e.ideology_tweet_percent = rng.random_chance(0.5) ? 1.0 : 0.0;
-        e.humour_bin = rng.random_chance(0.5) ? 1.0 : 0.0;
         e.preference_class = rng.kmc_select(region.preference_class_probs);
         double rand_num = rng.rand_real_not0();
         for (int et = 0; et < entity_types.size(); et++) {
@@ -297,11 +296,15 @@ struct Analyzer {
 
     smartptr<TweetContent> generate_tweet_content(int id_original_author) {
         Entity& e_original_author = network[id_original_author];
+        int entity = e_original_author.entity_type;
+        EntityType& entity_type = entity_types[entity];
 
         smartptr<TweetContent> ti(new TweetContent);
         ti->id_original_author = id_original_author;
         ti->time_of_tweet = time;
-        ti->humour_bin = e_original_author.humour_bin;
+//        ti->type = entity_type;
+        ti->ideology_bin = e_original_author.ideology_bin;
+        ti->type = (TweetType)rng.kmc_select(entity_type.tweet_type_probs, N_TWEET_TYPES);
         // TODO: Pick
         Language lang = e_original_author.language;
 

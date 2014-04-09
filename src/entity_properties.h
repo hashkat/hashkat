@@ -31,6 +31,7 @@ struct EntityType {
     CategoryGrouper age_ranks;
     CategoryGrouper follow_ranks;
     std::vector<double> updating_probs;
+    double tweet_type_probs[N_TWEET_TYPES];
 
     EntityEventStats event_stats;
 

@@ -32,7 +32,6 @@ SUITE(serialization) {
     void check_eq(Entity& test, Entity& read) {
         CHECK(test.creation_time == read.creation_time);
         CHECK(test.entity_type == read.entity_type);
-        CHECK(test.humour_bin == read.humour_bin);
         CHECK(test.ideology_bin == read.ideology_bin);
         CHECK(test.region_bin == read.region_bin);
         CHECK(test.language == read.language);
@@ -56,7 +55,6 @@ SUITE(serialization) {
             e.id = i;
             e.creation_time = 1;
             e.entity_type = 0;
-            e.humour_bin = 0;
             e.language = LANG_FRENCH;
             e.region_bin = 0;
             e.ideology_bin = 0;

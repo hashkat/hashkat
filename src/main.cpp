@@ -80,7 +80,6 @@ int main(int argc, char** argv) {
         analyzer_main(analysis_state);
         output_network_statistics(analysis_state);
 
-        perf_print_results();
 		printf("Analysis took %.2fms.\n", t.get_microseconds() / 1000.0);
 
 		return 0;

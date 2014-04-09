@@ -19,10 +19,10 @@
 
 // information for when a user tweets
 struct TweetContent {
+    TweetType type = (TweetType)-1;
     double time_of_tweet = -1;
     UsedEntities used_entities;
     Language language = N_LANGS; // Set to invalid
-    int humour_bin = -1;
     int ideology_bin = -1; // 0 == no ideology
     int hashtag_bin = -1;
     int id_original_author = -1; // The entity that created the original content
@@ -42,9 +42,7 @@ struct TweetContent {
                 ASSERT(used_entities.size() > prev_size, "'id' should be unique!");
             }
         }
-        rw << time_of_tweet << language << id_original_author << humour_bin;
-//        printf("GOT AT %.2f %d %d size=%d\n", time_of_tweet, language,
-//                id_original_author, used_entities.size());
+        rw << time_of_tweet << language << ideology_bin << hashtag_bin << id_original_author;
     }
 };
 
