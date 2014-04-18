@@ -284,7 +284,7 @@ struct AnalyzerFollow {
                 EntityType& et = entity_types[et_id];
                 
                 // TODO this followback process has to be another follow method that happens naturally at some other time, possibly another 'spike' in the rate
-                if (config.use_flawed_followback && rng.random_chance(et.prob_followback)) {
+                if (config.use_followback && rng.random_chance(et.prob_followback)) {
                     analyzer_followback(state, entity, entity_to_follow);
                 }
                 // based on the number of followers the followed-entity has, check to make sure we're still categorized properly

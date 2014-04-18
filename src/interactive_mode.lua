@@ -83,11 +83,11 @@ local long_print = false
 local first_run = true
 
 local function load_user_functions()
-    print "Loading 'custom_functions.lua'"
     require "custom_functions"
 end
 
-local function repl_run()
+-- Exported global function for starting the interactive interpreter.
+function repl_run()
     local keep_going = true
     local R = repl:clone()
     function long_print_on() 
@@ -133,12 +133,4 @@ local function repl_run()
     R:run()
     return keep_going
 end
-
-function M.show_menu()
-    print("Welcome to Simulator Interactive Mode.")
-    print("Type exit() or quit() to (gracefully) finish the simulation.")
-    return repl_run()
-end
-
-return M
 

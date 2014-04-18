@@ -53,7 +53,7 @@ SUITE(infile_tests) {
 //        C["initial_entities"] = "9999";
 //        C["followback_probability"] = "1.0";
 //        C["add_rate"] = "0.0"; // Don't add any users
-//        C["use_flawed_followback"] = "true";
+//        C["use_followback"] = "true";
 //
 //        C["english_weight"] = "0";
 //        C["french_weight"] = "0";

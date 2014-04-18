@@ -4,6 +4,9 @@
 #include <string>
 #include <map>
 #include <vector>
+
+#include <lcommon/Timer.h>
+
 #include "dependencies/mtwist.h"
 
 #include "config_dynamic.h"
@@ -54,6 +57,20 @@ const int APPROX_MONTH = 30 * 24 * 60;
 
 struct Analyzer;
 
+struct InteractiveModeState {
+    // Interactive mode allows for controlling the simulation using Lua.
+    // we run the interactive_mode Lua function, defined typically
+    // in the INTERACT.lua file, or the script file specified in the input file.
+
+    // If real_time_target != 0 then once the real_time_since passes real_time_target,
+    // we begin interactive mode.
+    double real_time_target = 0;
+    Timer real_time_since;
+
+    // If AnalysisState.time > sim_time_target, we begin interactive mode.
+    double sim_time_target = 0;
+};
+
 // All the state passed to - and - from analyze.cpp.
 // Essentially this encapsulates all the information required for the post-analysis routines.
 // This is 'conceptually cleaner' than passing along the entire contents of the Analyzer struct.
@@ -61,13 +78,16 @@ struct Analyzer;
 struct AnalysisState {
     // A back-pointer to the Analyzer structure.
     // NULL if analysis is not active!
+    // Used to call Analyzer methods outside of analyzer_main.cpp.
     Analyzer* analyzer;
+
     // The current simulation time
     double time;
     ParsedConfig config;
 
     // The full contents of the simulated network.
     Network network;
+
     // Various categorizations of users.
     CategoryGrouper tweet_ranks;
     CategoryGrouper follow_ranks;
@@ -80,18 +100,54 @@ struct AnalysisState {
     // while the list of users within is derived from
     EntityTypeVector entity_types;
     std::vector<int> entity_cap;
+
     // Add any values that must be extracted from 'analyze' here.
     int n_follows;
     double r_follow_norm, end_time;
 
+    /* tweet_bank: The central tweeting data-structure.
+   
+     Holds all the incoming 'tweets', abstract packages of information that are 
+     propagated through an entity'network by entity connections. 
+     
+     Those subscribing to (following) another entity are elligible for tweet 
+     reaction upon observing their 'feed'
+    
+     and organizes them into a tree-structure.
+     This structure contains rate summaries for each node of the tree, allowing
+     for selection via a number of weighted steps.
+
+     Complexity:
+       - O(log N), insertion into the tweet bank via add(tweet object)
+       - O(log N), weighted selection for a tweet via pick_random_uniform(RNG object) */
+
     TweetBank tweet_bank;
+
+    /* most_pop_tweet: The most popular tweet, by number of retweets. */
+
     MostPopularTweet most_pop_tweet;
+
+    /* HashTags: 
+     An abstraction of global, topic-oriented discussion lists taking place 
+     in the social network. This can result in information passing across the 
+     entire network. 
+     
+     A small window of 'tweets' are kept for each topic, and every entity has
+     a chance of propagating a given tweet in their own immediate network. */
+
     HashTags hashtags;
     std::vector<double> follow_probabilities, updating_follow_probabilities;
 
+    /* InteractiveModeState: 
+     State for determining when to begin interactive mode. See above. */
+    InteractiveModeState interactive_mode_state;
+
     MTwist rng;
 
+    /* AnalysisStats:
+     Various statistics gathered for analysis purposes. */
     AnalysisStats stats;
+
     AnalysisState(const ParsedConfig& config, int seed) :
             config(config), tweet_bank(*this){
         analyzer = NULL;
@@ -180,14 +236,18 @@ struct RetweetChoice {
 // Select based on any SelectionType
 int analyzer_select_entity(AnalysisState& state, SelectionType type);
 void analyzer_rate_update(AnalysisState& state);
+
 // Follow a specific user
 bool analyzer_handle_follow(AnalysisState& state, int id_actor, int id_target);
 
 bool analyzer_follow_entity(AnalysisState& state, int entity, double time_of_follow);
+
 // Implements a follow-back
 bool analyzer_followback(AnalysisState& state, int follower, int followed);
+
 // Run a network simulation using the given input file's parameters
 void analyzer_main(AnalysisState& state);
+
 // this returns the total retweet rate
 double analyzer_total_retweet_rate(AnalysisState& state);
 

@@ -22,7 +22,7 @@
 #    If true, the global follow rate is ignored. Follow thresholds not needed.
 #  use_random_time_increment: 
 #    Increments by 1/sum(rates) on average
-#  use_flawed_followback: 
+#  use_followback: 
 #    Whether to follow-back by a fixed 40%.
 #  follow_model: 
 #    Accepted models: 'random', 'preferential', 'entity', 'preferential-entity', 'twitter'
@@ -47,7 +47,7 @@ analysis:
     false 
   use_random_time_increment: 
     true
-  use_flawed_followback: 
+  use_followback: 
     false
   follow_model: # See notes above
     twitter 

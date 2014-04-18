@@ -7,7 +7,7 @@ analysis:
     9999
   use_barabasi: false # if this is set to 1, the global follow rate will be ignored. Follow thresholds not needed.
   use_random_time_increment: false # increments by 1/sum(rates) on average
-  use_flawed_followback: true
+  use_followback: true
   follow_model: preferential # Accepted models: 'random', 'preferential', 'entity'
 
 rates:

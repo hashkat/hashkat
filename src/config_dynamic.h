@@ -60,7 +60,7 @@ struct ParsedConfig {
     double max_real_time = INFINITY;
     bool use_random_time_increment = false;
     bool use_preferential_follow = false;
-    bool use_flawed_followback = false;
+    bool use_followback = false;
     bool use_barabasi = false;
     bool entity_stats = false;
     bool stage1_unfollow = false;

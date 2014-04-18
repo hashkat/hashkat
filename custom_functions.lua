@@ -55,6 +55,7 @@ function tweet_tweeter(t)
     return entity(t.id_tweeter)
 end
 
+-- Resolve entity id's and return actual entity objects
 function entities(t)
     if t == nil then
         return builtin_entities()

@@ -47,8 +47,8 @@ analysis:
     true 
   use_random_time_increment: 
     true
-  use_flawed_followback: 
-    false
+  use_followback: 
+    true
   follow_model: # See notes above
     twitter
   # model weights ONLY necessary for follow method 'twitter'    

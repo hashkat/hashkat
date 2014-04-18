@@ -13,7 +13,7 @@ analysis:
 # Determines the time progression, if false, the timestep is constant.
   use_random_time_increment: true 
 # Entities tend to follow eachother back in a real life social network, but it is set to false for now.
-  use_flawed_followback: false
+  use_followback: false
 # We want to produce a random graph, therefore our follow model is 'random'.
   follow_model: random 
 # the unfollow rate is set to something absurd (10 tweets / min) so no unfollowing happens.

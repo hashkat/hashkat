@@ -6,19 +6,22 @@
 #include <iostream>
 
 #include <luawrap-lib/include/luawrap/luawrap.h>
-#include <luawrap-lib/include/luawrap/macros.h>
 
 static lua_State* init_lua_state();
 
-struct InterruptMenuState {
+/*
+  State of the interactive mode. Holds a Lua context.
+ */
+
+struct InteractiveModeLuaState {
     lua_State* L = NULL;
-    LuaValue menu_object;
     AnalysisState* state;
 
     void ensure_init(AnalysisState& s) {
         if (L == NULL) {
             L = init_lua_state();
-            menu_object = luawrap::dofile(L, "./.libs/interactive_mode.lua");
+            luawrap::dofile(L, "./.libs/interactive_mode.lua");
+            luawrap::dofile(L, "./INTERACT.lua");
         }
         state = &s;
     }
@@ -47,14 +50,23 @@ struct InterruptMenuState {
 
     /* Returns false if user has called exit() or quit()*/
     bool show_menu() {
-        menu_object["show_menu"].push();
+        luawrap::globals(L)["interact"].push();
         return luawrap::call<bool>(L);
     }
 };
 
-static InterruptMenuState state;
+static InteractiveModeLuaState state;
 
-struct InterruptMenuFunctions {
+/*
+ * Bindings for interactive mode.
+ * Essentially, functions are installed once,
+ * and values are copied over whenever the simulation is paused.
+ *
+ * The interactive mode script is expected to return after (optionally)
+ * setting the next time (real, or in simulation-time) in order to analyze
+ * the simulation over time. Setting
+ * */
+struct InteractiveModeBindings {
     static void install_functions(lua_State* L) {
         using namespace luawrap;
 
@@ -167,8 +179,7 @@ struct InterruptMenuFunctions {
     }
 
     static void followers_print(int entity) {
-//        FollowerSet::Context context(*state, entity);
-//        state->network.follower_set(entity).print(context);
+        state->network.follower_set(entity).print();
     }
 };
 
@@ -195,7 +206,7 @@ static lua_State* init_lua_state() {
     // Linenoise loading, see above.
     package["preload"]["linenoise"].bind_function(luaopen_linenoise);
 
-    InterruptMenuFunctions::install_functions(L);
+    InteractiveModeBindings::install_functions(L);
     return L;
 }
 

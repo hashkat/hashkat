@@ -7,7 +7,7 @@ analysis:
     1
   use_barabasi: true # if this is set to 1, the global follow rate will be ignored. Follow thresholds not needed.
   use_random_time_increment: true # increments by 1/sum(rates) on average
-  use_flawed_followback: false
+  use_followback: false
   follow_model: preferential # Accepted models: 'random', 'preferential', 'entity', 'preferential-entity'
   unfollow_tweet_rate: 10 # 10 tweets/day
 
