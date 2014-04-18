@@ -9,9 +9,7 @@
 
 static lua_State* init_lua_state();
 
-/*
-  State of the interactive mode. Holds a Lua context.
- */
+/* State of the interactive mode. Holds a Lua context. */
 
 struct InteractiveModeLuaState {
     lua_State* L = NULL;
@@ -33,21 +31,6 @@ struct InteractiveModeLuaState {
         return state;
     }
 
-    void sync_state() {
-        LuaValue G = luawrap::globals(L);
-        G["n_entities"] = state->network.n_entities;
-        G["max_entities"] = state->network.max_entities;
-        G["time"] = state->time;
-
-        // Output from stats:
-        auto& S = state->stats;
-        G["rate_total"] = S.event_rate;
-        G["rate_add"] = S.event_rate * S.prob_add;
-        G["rate_follow"] = S.event_rate * S.prob_follow;
-        G["rate_retweet"] = S.event_rate * S.prob_retweet;
-        G["rate_tweet"] = S.event_rate * S.prob_tweet;
-    }
-
     /* Returns false if user has called exit() or quit()*/
     bool show_menu() {
         luawrap::globals(L)["interact"].push();
@@ -64,9 +47,29 @@ static InteractiveModeLuaState state;
  *
  * The interactive mode script is expected to return after (optionally)
  * setting the next time (real, or in simulation-time) in order to analyze
- * the simulation over time. Setting
+ * the simulation over time.
+ *
+ * Using set_next_sim_time(1) consistently will allow
+ * a script
  * */
 struct InteractiveModeBindings {
+    static void sync_state(lua_State* L) {
+        using namespace luawrap;
+
+        LuaValue G = globals(L);
+        G["n_entities"] = state->network.n_entities;
+        G["max_entities"] = state->network.max_entities;
+        G["time"] = state->time;
+
+        // Output from stats:
+        auto& S = state->stats;
+        G["rate_total"] = S.event_rate;
+        G["rate_add"] = S.event_rate * S.prob_add;
+        G["rate_follow"] = S.event_rate * S.prob_follow;
+        G["rate_retweet"] = S.event_rate * S.prob_retweet;
+        G["rate_tweet"] = S.event_rate * S.prob_tweet;
+    }
+
     static void install_functions(lua_State* L) {
         using namespace luawrap;
 
@@ -116,6 +119,8 @@ struct InteractiveModeBindings {
         return ret;
     }
 
+    // Can be used if simply dumping a direct member by name,
+    // otherwise must use value["member-name"] = expression...;
 #define DUMP(obj, member) \
     value[#member] = obj. member
 
@@ -143,12 +148,13 @@ struct InteractiveModeBindings {
 
     static LuaValue tweet_to_table(Tweet& tweet) {
         auto value = LuaValue::newtable(state.L);
-        value["id_tweeter"] = tweet.id_tweeter;
-        value["id_link"] = tweet.id_link;
-        value["retweet_next_rebin_time"] = tweet.retweet_next_rebin_time;
-        value["retweet_time_bin"] = tweet.retweet_time_bin;
-        value["generation"] = tweet.generation;
-        value["creation_time"] = tweet.creation_time;
+        DUMP(tweet, id_tweeter);
+        DUMP(tweet, id_link);
+        DUMP(tweet, retweet_next_rebin_time);
+        DUMP(tweet, retweet_time_bin);
+        DUMP(tweet, generation);
+        DUMP(tweet, creation_time);
+
         value["id_original_author"] = tweet.content->id_original_author;
         value["language_id"] = (int)tweet.content->language;
         value["language_name"] = language_name(tweet.content->language);
@@ -183,6 +189,8 @@ struct InteractiveModeBindings {
     }
 };
 
+/** Initialization code below **/
+
 extern "C" {
 // Linenoise dependency provides history and tab-completion.
 // Defined in dependencies/lua-linenoise.
@@ -210,9 +218,9 @@ static lua_State* init_lua_state() {
     return L;
 }
 
-bool show_interactive_menu(AnalysisState& s) {
+bool start_interactive_mode(AnalysisState& s) {
     state.ensure_init(s);
-    state.sync_state();
+    InteractiveModeBindings::sync_state(state.L);
     bool menu = false;
     try {
         menu = state.show_menu();

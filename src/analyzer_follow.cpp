@@ -12,7 +12,7 @@ struct AnalyzerFollow {
     ParsedConfig& config;
     //** Mind the StatE/StatS difference. They are entirely different structs.
     AnalysisState& state;
-    AnalysisStats& stats;
+    NetworkStats& stats;
     CategoryGrouper& follow_ranks;
     vector<double>& follow_probabilities, updating_follow_probabilities;
 

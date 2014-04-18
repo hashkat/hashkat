@@ -59,7 +59,7 @@ struct Analyzer {
 
     AnalysisState& state;
     ParsedConfig& config;
-    AnalysisStats& stats;
+    NetworkStats& stats;
     
     // struct for the entity classes, see network.h for specifications
     EntityTypeVector& entity_types;
@@ -234,7 +234,7 @@ struct Analyzer {
                     break;
                 }
                 // Has the user requested an exit?
-                if (!show_interactive_menu(state)) {
+                if (!start_interactive_mode(state)) {
                     break;
                 }
             }

@@ -17,38 +17,43 @@
 
 extern volatile int SIGNAL_ATTEMPTS;
 
-struct AnalysisStats {
+struct EntityStats {
+    int64 n_steps = 0, n_follows = 0, n_tweets = 0, n_retweets = 0, n_unfollows = 0;
+    int64 n_random_follows = 0, n_preferential_follows = 0;
+    int64 n_entity_follows = 0, n_pref_entity_follows = 0;
+    int64 n_retweet_follows = 0, n_hashtag_follows = 0;
+    int64 n_hashtags = 0;
+};
+
+// Records in both entity type struct and global struct:
+#define RECORD_STAT(state, , stat) \
+
+
+struct NetworkStats {
     double prob_add;
     double prob_follow;
     double prob_tweet;
     double prob_retweet;
 
     int n_outputs;
-    int64 n_steps, n_follows, n_tweets, n_retweets, n_unfollows;
-    int64 n_random_follows, n_preferential_follows, n_entity_follows, n_pref_entity_follows, n_retweet_follows, n_hashtag_follows;
-    int64 n_hashtags;
-    EntityEventStats event_stats;
+    EntityStats global_stats;
 
     double event_rate;
-    AnalysisStats() {
+    NetworkStats() {
         prob_add = 0;
         prob_follow = 0;
         prob_tweet = 0;
         prob_retweet = 0;
 
         n_outputs = 0;
-        n_steps = 0, n_follows = 0, n_tweets = 0, n_retweets = 0, n_unfollows = 0;
-        n_random_follows = 0, n_preferential_follows = 0, n_entity_follows = 0, n_pref_entity_follows = 0, n_retweet_follows = 0,n_hashtag_follows = 0;
-        n_hashtags = 0;
         event_rate = 0;
     }
 
     READ_WRITE(rw) {
         rw << prob_add << prob_follow << prob_retweet << prob_tweet;
-        rw << n_outputs << n_steps << n_follows << n_tweets << n_retweets << n_unfollows;
-        rw << n_random_follows << n_preferential_follows << n_entity_follows << n_pref_entity_follows << n_retweet_follows << n_hashtag_follows;
-        rw << n_hashtags;
-        rw << event_stats.stats_array;
+        rw << n_outputs;
+        // Valid because only full of primitive types:
+        rw << global_stats;
         rw << event_rate;
     }
 };
@@ -146,7 +151,7 @@ struct AnalysisState {
 
     /* AnalysisStats:
      Various statistics gathered for analysis purposes. */
-    AnalysisStats stats;
+    NetworkStats stats;
 
     AnalysisState(const ParsedConfig& config, int seed) :
             config(config), tweet_bank(*this){

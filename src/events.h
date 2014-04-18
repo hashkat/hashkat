@@ -7,26 +7,6 @@
 
 typedef google::sparse_hash_set<int, cats::Hasher> UsedEntities;
 
-// The different events covered by the statistics gathering
-enum EventID {
-    // AD: TODO move all rates into this form
-    EV_FOLLOWBACK,
-    N_EVENTS // Not a real entry; evaluates to amount of events
-};
-
-struct EntityEventStats {
-    double& operator[](int index) {
-        DEBUG_CHECK(index >= 0 && index < N_EVENTS, "Out of bounds!");
-        return stats_array[index];
-    }
-    EntityEventStats() {
-        memset(stats_array, 0, sizeof(double) * N_EVENTS);
-    }
-
-    // AD: TODO move all rates into this struct
-    double stats_array[N_EVENTS];
-};
-
 // 0 - add, 1 - follow, 2 - tweet
 const int number_of_diff_events = 2;
 

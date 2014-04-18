@@ -25,7 +25,7 @@ void output_network_statistics(AnalysisState& state) {
     Network& network = state.network;
     ParsedConfig& C = state.config;
     EntityTypeVector& et_vec = state.entity_types;
-    AnalysisStats& stats = state.stats;
+    NetworkStats& stats = state.stats;
     TweetBank& tb = state.tweet_bank;
     MostPopularTweet& mpt = state.most_pop_tweet;
 
@@ -601,7 +601,7 @@ void visualize_most_popular_tweet(MostPopularTweet& mpt, Network& network) {
     output.close();
 }
 
-void network_statistics(Network& n, AnalysisStats& stats, EntityTypeVector& etv) {
+void network_statistics(Network& n, NetworkStats& stats, EntityTypeVector& etv) {
     ofstream output;
     output.open("output/main_stats.dat");
     output << "--------------------\n| MAIN NETWORK STATS |\n--------------------\n\n";

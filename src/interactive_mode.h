@@ -3,6 +3,6 @@
 
 struct AnalysisState;
 
-bool show_interactive_menu(AnalysisState& state);
+bool start_interactive_mode(AnalysisState& state);
 
 #endif

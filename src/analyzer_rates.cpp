@@ -27,7 +27,7 @@ struct AnalyzerRates {
     ParsedConfig& config;
     //** Mind the StatE/StatS difference. They are entirely different structs.
     AnalysisState& state;
-    AnalysisStats& stats;
+    NetworkStats& stats;
     EntityTypeVector& entity_types;
     Add_Rates& add_rates;
     // There are multiple 'Analyzer's, they each operate on parts of AnalysisState.
