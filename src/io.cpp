@@ -421,17 +421,17 @@ void tweets_distribution(Network& network, int n_users) {
 }
 
 // group the quick_rate_check and entity_checks together, they're dependent on one another
-bool quick_rate_check(EntityTypeVector& ets, double& correct_val, int& i, int& j) {
+bool quick_rate_check(EntityType& et, double& correct_val, int j) {
     double tolerence = 0.05;
-    if (j == 1 && abs(correct_val - ets[i].n_follows) / correct_val >= tolerence) {
+    if (j == 1 && abs(correct_val - et.stats.n_follows) / correct_val >= tolerence) {
         //cout << "\nNumber of follows for entity type \'" << ets[i].name << "\' is not correct. " << correct_val << " is the right number.\n";
         //cout << "Was: " << ets[i].n_follows << endl;
         return false;
-    } else if (j == 2 && abs(correct_val - ets[i].n_tweets) / correct_val >= tolerence) {
+    } else if (j == 2 && abs(correct_val - et.stats.n_tweets) / correct_val >= tolerence) {
         //cout << "\nNumber of tweets for entity type \'" << ets[i].name << "\' is not correct. " << correct_val << " is the right number.\n";
         //cout << "Was: " << ets[i].n_tweets << endl;
         return false;
-    } else if (j == 3 && abs(correct_val - ets[i].n_retweets) / correct_val >= tolerence) {
+    } else if (j == 3 && abs(correct_val - et.stats.n_retweets) / correct_val >= tolerence) {
         //cout << "\nNumber of retweets for entity type \'" << ets[i].name << "\' is not correct. " << correct_val << " is the right number.\n";
         //cout << "Was: " << ets[i].n_retweets << endl;
         return false;
@@ -444,30 +444,30 @@ bool entity_checks(EntityTypeVector& ets, Network& network, AnalysisState& state
     int final_check = 0;
     int check_count = 0;
     double rate_add = add_rates.RF.monthly_rates[state.n_months()];
-    for (int i = 0; i < ets.size(); i ++) {
-        double add_correct = network.n_entities * ets[i].prob_add;
-        if (abs(add_correct - ets[i].entity_list.size()) / add_correct >= tolerence) {
+    for (auto& et : ets) {
+        double add_correct = network.n_entities * et.prob_add;
+        if (abs(add_correct - et.entity_list.size()) / add_correct >= tolerence) {
             //cout << "\nNumber of entity type \'" << ets[i].name << "\' is not correct. " << (int) add_correct << " is the right number.\n";
             //cout << "was: " << ets[i].entity_list.size() << "\n";
             final_check += false;
             check_count ++;
         }
         for (int j = 0; j < number_of_diff_events; j ++) {
-            if (rate_add == 0 && ets[i].RF[j].function_type == "constant") {
-                double correct_val = ets[i].RF[j].const_val * state.time * network.n_entities * ets[i].prob_add;
-                final_check += quick_rate_check(ets, correct_val, i, j);
+            if (rate_add == 0 && et.RF[j].function_type == "constant") {
+                double correct_val = et.RF[j].const_val * state.time * network.n_entities * et.prob_add;
+                final_check += quick_rate_check(et, correct_val, j);
                 check_count ++;
-            } else if (rate_add == 0 && ets[i].RF[j].function_type == "linear" ) {
-                double correct_val = (ets[i].RF[j].y_intercept + 0.5 * ets[i].RF[j].slope * state.n_months()) * state.time * network.n_entities * ets[i].prob_add;
-                final_check += quick_rate_check(ets, correct_val, i, j);
+            } else if (rate_add == 0 && et.RF[j].function_type == "linear" ) {
+                double correct_val = (et.RF[j].y_intercept + 0.5 * et.RF[j].slope * state.n_months()) * state.time * network.n_entities * et.prob_add;
+                final_check += quick_rate_check(et, correct_val, j);
                 check_count ++;
-            } else if (rate_add != 0 && ets[i].RF[j].function_type == "constant") {
-                double correct_val = 0.5 * (ets[i].RF[j].const_val / rate_add) * ((rate_add * rate_add) * ets[i].prob_add * (state.time * state.time) + (rate_add * state.time) - (initial_entities - 1) * initial_entities);
-                final_check += quick_rate_check(ets, correct_val, i, j);
+            } else if (rate_add != 0 && et.RF[j].function_type == "constant") {
+                double correct_val = 0.5 * (et.RF[j].const_val / rate_add) * ((rate_add * rate_add) * et.prob_add * (state.time * state.time) + (rate_add * state.time) - (initial_entities - 1) * initial_entities);
+                final_check += quick_rate_check(et, correct_val, j);
                 check_count ++;
-            } else if (rate_add != 0 && ets[i].RF[j].function_type == "linear" ) {
-                double correct_val = (0.5 * ets[i].RF[j].y_intercept * rate_add * ets[i].prob_add * state.time * state.time) + 0.25 * ets[i].RF[j].slope * state.n_months() * state.time + 0.3333 * rate_add * ets[i].RF[j].slope * state.n_months() * ets[i].prob_add * state.time * state.time * 0.5 + 0.5 * ets[i].RF[j].y_intercept * state.time - (initial_entities - 1) * initial_entities;
-                final_check += quick_rate_check(ets, correct_val, i, j);
+            } else if (rate_add != 0 && et.RF[j].function_type == "linear" ) {
+                double correct_val = (0.5 * et.RF[j].y_intercept * rate_add * et.prob_add * state.time * state.time) + 0.25 * et.RF[j].slope * state.n_months() * state.time + 0.3333 * rate_add * et.RF[j].slope * state.n_months() * et.prob_add * state.time * state.time * 0.5 + 0.5 * et.RF[j].y_intercept * state.time - (initial_entities - 1) * initial_entities;
+                final_check += quick_rate_check(et, correct_val, j);
                 check_count ++;
                 
             } 
@@ -601,7 +601,7 @@ void visualize_most_popular_tweet(MostPopularTweet& mpt, Network& network) {
     output.close();
 }
 
-void network_statistics(Network& n, NetworkStats& stats, EntityTypeVector& etv) {
+void network_statistics(Network& n, NetworkStats& net_stats, EntityTypeVector& etv) {
     ofstream output;
     output.open("output/main_stats.dat");
     output << "--------------------\n| MAIN NETWORK STATS |\n--------------------\n\n";
@@ -610,16 +610,22 @@ void network_statistics(Network& n, NetworkStats& stats, EntityTypeVector& etv) 
     for (auto& et : etv) {
         output << et.name << ": " << et.entity_list.size() << "\t(" << 100*et.entity_list.size() / (double) n.n_entities << "% of total entities)\n";
     }
+
+    EntityStats& stats = net_stats.global_stats;
+
     output << "\nTWEETS\n_____\n\n";
     output << "Total: " << stats.n_tweets << "\n";
     output << "Hashtags: " << stats.n_hashtags << "\t(" << 100*stats.n_hashtags / (double) stats.n_tweets << "% of total tweets)\n";
     for (auto& et : etv) {
-        output << et.name << ": " << et.n_tweets << "\t(" << 100*et.n_tweets / (double) stats.n_tweets << "% of total tweets)\n";
+        output << et.name << ": " << et.stats.n_tweets << "\t("
+               << 100*et.stats.n_tweets / (double) stats.n_tweets << "% of total tweets)\n";
     }
     output << "\nRETWEETS\n_______\n\n";
     output << "Total: " << stats.n_retweets << "\n";
     for (auto& et : etv) {
-        output << et.name << ": " << et.n_retweets << "\t(" << et.n_retweets / (double) stats.n_retweets << "% of total retweets)\n";
+        output << et.name << ": "
+                << et.stats.n_retweets
+                << "\t(" << et.stats.n_retweets / (double) stats.n_retweets << "% of total retweets)\n";
     }
     double total_follow_calls = stats.n_random_follows + stats.n_preferential_follows + stats.n_entity_follows + stats.n_pref_entity_follows + stats.n_retweet_follows + stats.n_hashtag_follows;
     output << "\nFOLLOWS\n_______\n\n";
@@ -632,7 +638,9 @@ void network_statistics(Network& n, NetworkStats& stats, EntityTypeVector& etv) 
     output << "Retweet: " << stats.n_retweet_follows << "\t(" << 100*stats.n_retweet_follows / total_follow_calls << "% of total follows attempts)\n";
     output << "Hashtag: " << stats.n_hashtag_follows << "\t(" << 100*stats.n_hashtag_follows / total_follow_calls << "% of total follows attempts)\n";
     for (auto& et : etv) {
-        output << et.name << ": " << et.n_follows << "\t(" << 100*et.n_follows / (double) stats.n_follows << "% of total follows)\n";
+        output << et.name << ": "
+                << et.stats.n_follows << "\t("
+                << 100*et.stats.n_follows / (double) stats.n_follows << "% of total follows)\n";
     }
     output.close();
 }

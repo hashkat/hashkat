@@ -14,8 +14,6 @@
 #include "FollowingSet.h"
 #include "FollowerSet.h"
 
-#include "entity_properties.h"
-
 #include "tweets.h"
 
 #include "DataReadWrite.h"
@@ -52,7 +50,6 @@ struct Entity {
 
     // Store the two directions of the follow relationship
     FollowingSet following_set;
-
     FollowerSet follower_set;
 
     PREREAD_WRITE(rw) {
@@ -99,5 +96,63 @@ struct Entity {
     }
 
 };
+
+struct EntityStats {
+    int64 n_follows = 0, n_followers = 0, n_tweets = 0, n_retweets = 0, n_unfollows = 0;
+    int64 n_followback = 0;
+    int64 n_random_follows = 0, n_preferential_follows = 0;
+    int64 n_entity_follows = 0, n_pref_entity_follows = 0;
+    int64 n_retweet_follows = 0, n_hashtag_follows = 0;
+    int64 n_hashtags = 0;
+};
+
+/*
+ * An entity type is a static class of entity, determined at creation.
+ * Entity types are intended to represent different kinds of network participants,
+ *
+ * For a network like Twitter, example entity types include 'Standard User', 'Celebrity', etc.
+ */
+
+struct EntityType {
+    std::string name;
+    double prob_add; // When a entity is added, how likely is it that it is this entity type ?
+    double prob_follow; // When a entity is followed, how likely is it that it is this entity type ?
+    double prob_followback;
+    int new_entities; // the number of new users in this entity type
+    Rate_Function RF[number_of_diff_events];
+
+    // number of entities for each discrete value of the rate(time)
+    std::vector<int> entity_cap;
+    // list of entity ID's
+    std::vector<int> entity_list;
+    // categorize the entities by age
+    CategoryGrouper age_ranks;
+    CategoryGrouper follow_ranks;
+    std::vector<double> updating_probs;
+    double tweet_type_probs[N_TWEET_TYPES];
+
+    EntityStats stats;
+
+    EntityType() {
+        new_entities = 0;
+        prob_add = prob_follow = prob_followback = 0;
+    }
+
+    READ_WRITE(rw) {
+        rw << name << prob_add << prob_follow << prob_followback;
+        rw << new_entities;
+        for (auto& rf : RF) {
+            rf.visit(rw);
+        }
+        rw << entity_cap << entity_list;
+        age_ranks.visit(rw);
+        follow_ranks.visit(rw);
+        rw << updating_probs << stats;
+    }
+};
+
+// 'EntityTypeVector' acts exactly as a 'vector'
+typedef std::vector<EntityType> EntityTypeVector;
+
 
 #endif

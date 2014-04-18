@@ -66,8 +66,8 @@ struct AnalyzerFollow {
     * Entity observation routines
     ***************************************************************************/
     
-   int random_follow_method(int n_entities) {
-       stats.n_random_follows ++;
+   int random_follow_method(Entity& e, int n_entities) {
+       RECORD_STAT(state, e.entity_type, n_random_follows);
        return rng.rand_int(n_entities);
    }
    int preferential_barabasi_follow_method() {
@@ -105,7 +105,7 @@ struct AnalyzerFollow {
        }
        return -1;
    }
-   int preferential_follow_method() {
+   int preferential_follow_method(Entity& e) {
        PERF_TIMER();
 
        double rand_num = rng.rand_real_not0();
@@ -126,7 +126,8 @@ struct AnalyzerFollow {
                CategoryEntityList& C = follow_ranks.categories[i];
                // pull a random entity from whatever bin we landed in and break so we do not continue this loop
                int entity_to_follow = C.entities[rng.rand_int(C.entities.size())];
-               stats.n_preferential_follows ++;
+
+               RECORD_STAT(state, e.entity_type, n_preferential_follows);
                return entity_to_follow;
            }
            rand_num -= p;
@@ -134,7 +135,7 @@ struct AnalyzerFollow {
        }
        return -1;
    }
-   int entity_follow_method() {
+   int entity_follow_method(Entity& e) {
        PERF_TIMER();
 
        // if we want to follow by entity class
@@ -147,7 +148,7 @@ struct AnalyzerFollow {
                    // pull the entity from whatever bin we landed in and break so we dont continue this loop
                    int n = rng.rand_int(type.entity_list.size());
                    int entity_to_follow = type.entity_list[n];
-                   stats.n_entity_follows ++;
+                   RECORD_STAT(state, e.entity_type, n_entity_follows);
                    return entity_to_follow;
                }
            }
@@ -156,7 +157,7 @@ struct AnalyzerFollow {
        }
        return -1;
    }
-   int preferential_entity_follow_method() {
+   int preferential_entity_follow_method(Entity& e) {
        PERF_TIMER();
 
        int entity_to_follow = -1;
@@ -189,7 +190,7 @@ struct AnalyzerFollow {
                }
            }
            if (entity_to_follow != -1){
-               stats.n_pref_entity_follows ++;
+               RECORD_STAT(state, e.entity_type, n_pref_entity_follows);
                return entity_to_follow;
            }
            // part of the above search
@@ -206,7 +207,7 @@ struct AnalyzerFollow {
        int region_bin = follower.region_bin;
        if (!hashtags.hashtag_groups[ideology_bin][region_bin].circ_buffer.empty()) {
            int entity_to_follow = hashtags.hashtag_groups[ideology_bin][region_bin].circ_buffer.pick_random_uniform(rng);
-               stats.n_hashtag_follows ++;
+               RECORD_STAT(state, follower.entity_type, n_hashtag_follows);
                return entity_to_follow;
        }
        return -1;
@@ -223,13 +224,14 @@ struct AnalyzerFollow {
        */
        int follow_method = rng.kmc_select(&config.model_weights[0], N_FOLLOW_MODELS);
        if (follow_method == 0) {
-           return random_follow_method(network.n_entities);
+           // Random follow method:
+           return random_follow_method(e, network.n_entities);
        } else if (follow_method == 1) {
-           return preferential_follow_method();
+           return preferential_follow_method(e);
        } else if (follow_method == 2) {
-           return entity_follow_method();
+           return entity_follow_method(e);
        } else if (follow_method == 3) {
-           return preferential_entity_follow_method();
+           return preferential_entity_follow_method(e);
        } else {
            hashtag_follow_method(e);
        }
@@ -237,47 +239,47 @@ struct AnalyzerFollow {
     }
     
    // Returns false to signify that we must retry the KMC event
-    bool follow_entity(int entity, double time_of_follow) {
-        Entity& e1 = network[entity];
+    bool follow_entity(int id_follower, double time_of_follow) {
+        Entity& e = network[id_follower];
         int entity_to_follow = -1;
         double rand_num = rng.rand_real_not0();
         // if we want to do random follows
         if (config.follow_model == RANDOM_FOLLOW) {
             // find a random entity within [0:number of entities - 1]
-            entity_to_follow = random_follow_method(network.n_entities);
+            entity_to_follow = random_follow_method(e, network.n_entities);
         } else if (config.follow_model == PREFERENTIAL_FOLLOW && config.use_barabasi) {
             entity_to_follow = preferential_barabasi_follow_method();
         } else if(config.follow_model == PREFERENTIAL_FOLLOW && !config.use_barabasi) {
-            entity_to_follow = preferential_follow_method();
+            entity_to_follow = preferential_follow_method(e);
         } else if (config.follow_model == ENTITY_FOLLOW) {
-            entity_to_follow = entity_follow_method();
+            entity_to_follow = entity_follow_method(e);
         } else if (config.follow_model == PREFERENTIAL_ENTITY_FOLLOW) {
-            entity_to_follow = preferential_entity_follow_method();
+            entity_to_follow = preferential_entity_follow_method(e);
         } else if (config.follow_model == TWITTER_FOLLOW) {
-            entity_to_follow = twitter_follow_model(e1);
+            entity_to_follow = twitter_follow_model(e);
         } else if (config.follow_model == HASHTAG_FOLLOW) {
-            entity_to_follow = hashtag_follow_method(e1);
+            entity_to_follow = hashtag_follow_method(e);
         }
         // if the stage1_follow is set to true in the inputfile
         if (config.stage1_unfollow) {
-            vector<int>& chatties = e1.chatty_entities;
+            vector<int>& chatties = e.chatty_entities;
             if (chatties.size() > 0) {
                 int index = rng.rand_int(chatties.size());
                 int entity_unfollowed = chatties[index];
-                if (action_unfollow(entity_unfollowed, entity)) {
+                if (action_unfollow(entity_unfollowed, id_follower)) {
                     chatties.erase(chatties.begin() + index);
                 } else {
-                    DEBUG_CHECK(action_unfollow(entity_unfollowed, entity), "Error in stage1_unfollow method.");
+                    DEBUG_CHECK(action_unfollow(entity_unfollowed, id_follower), "Error in stage1_unfollow method.");
                 }
             }
         }
 
         // check and make sure we are not following ourself, or we are following entity -1
-        if (LIKELY(entity != entity_to_follow && entity_to_follow != -1)) {
+        if (LIKELY(id_follower != entity_to_follow && entity_to_follow != -1)) {
 
             perf_timer_begin("AnalyzerFollower.follow_entity(handle_follow)");
             // point to the entity who is being followed
-            if (handle_follow(entity, entity_to_follow)) {
+            if (handle_follow(id_follower, entity_to_follow)) {
                 /* FEATURE: Follow-back based on target's prob_followback.
                  * Set in INFILE.yaml as followback_probability. */
                 int et_id = network[entity_to_follow].entity_type;
@@ -285,15 +287,16 @@ struct AnalyzerFollow {
                 
                 // TODO this followback process has to be another follow method that happens naturally at some other time, possibly another 'spike' in the rate
                 if (config.use_followback && rng.random_chance(et.prob_followback)) {
-                    analyzer_followback(state, entity, entity_to_follow);
+                    analyzer_followback(state, id_follower, entity_to_follow);
                 }
                 // based on the number of followers the followed-entity has, check to make sure we're still categorized properly
                 Entity& target = network[entity_to_follow];
+                // We were able to add the follow:
                 et.follow_ranks.categorize(entity_to_follow, target.follower_set.size());
                 follow_ranks.categorize(entity_to_follow, target.follower_set.size());
-                stats.n_follows++; // We were able to add the follow; almost always the case.
-                entity_types[e1.entity_type].n_follows ++;
-                entity_types[target.entity_type].n_followers ++;
+
+                RECORD_STAT(state, e.entity_type, n_follows);
+                RECORD_STAT(state, target.entity_type, n_followers);
                 return true;
             }
             perf_timer_end("AnalyzerFollower.follow_entity(handle_follow)");
@@ -311,8 +314,7 @@ struct AnalyzerFollow {
             EntityType& et = entity_types[et_id];
             et.follow_ranks.categorize(prev_actor_id, prev_actor.follower_set.size());
             follow_ranks.categorize(prev_actor_id, prev_actor.follower_set.size());
-            stats.n_follows++; // We were able to add the follow; usually the case.
-            state.event_stat_log(prev_target_id, EV_FOLLOWBACK);
+            RECORD_STAT(state, prev_target.entity_type, n_followback);
             return true;
         }
         return false; // Completion failure: Can be ignored for followback, largely
@@ -333,7 +335,7 @@ struct AnalyzerFollow {
 		Entity& e_lost_follower = network[id_unfollower];
 		bool had_follow = e_lost_follower.following_set.remove(state, id_unfollowed);
 		DEBUG_CHECK(had_follow, "unfollow: Did not exist in follow list");
-        stats.n_unfollows ++;
+		RECORD_STAT(state, e_lost_follower.entity_type, n_unfollows);
 		return true;
 	}
 };

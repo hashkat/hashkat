@@ -5,7 +5,6 @@
 #include "cat_nodes.h"
 
 #include "events.h"
-#include "entity_properties.h"
 #include "config_static.h"
 
 // Forward declare, to prevent circular header inclusion:

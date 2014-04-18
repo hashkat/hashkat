@@ -334,7 +334,7 @@ struct Analyzer {
         // if this is a hashtag and not a retweet, we have to add the entity id into 
         // the circular buffer. 
         if (include_hashtag() && generation == 0) {
-            stats.n_hashtags ++;
+            RECORD_STAT(state, e_tweeter.entity_type, n_hashtags);
             tweet.hashtag = true;
             hashtags.hashtag_groups[e_author.ideology_bin][e_author.region_bin].circ_buffer.add(e_author.id);
         }
@@ -358,7 +358,6 @@ struct Analyzer {
 
         // This is the entity tweeting
 		Entity& e = network[id_tweeter];
-        entity_types[e.entity_type].n_tweets++;
         tweet_ranks.categorize(id_tweeter, e.n_tweets);
         e.n_tweets++;
         generate_tweet(id_tweeter, id_tweeter, 0, generate_tweet_content(id_tweeter));
@@ -368,10 +367,8 @@ struct Analyzer {
             action_unfollow(id_tweeter);
         }
 
-        // Else, no followers -- no need to create a tweet
-        //** AD: Still consider a success for now, re-evaluate later
-        //** AD: Maybe we may want to discount the possibility of such tweets and just restart
-        stats.n_tweets ++;
+        RECORD_STAT(state, e.entity_type, n_tweets);
+
 		return true; // Always succeeds
 	}
 
@@ -390,15 +387,15 @@ struct Analyzer {
 		    // would necessarily be in the authors follower set already.
             if (rng.random_chance(obs_pref_class.follow_reaction_prob)) {
                 // Return success of follow:
-                stats.n_retweet_follows ++;
+                RECORD_STAT(state, e_observer.entity_type, n_retweet_follows);
                 return analyzer_handle_follow(state, choice.id_observer, choice.id_author);
             }
 		}
 
 		generate_tweet(choice.id_observer, choice.id_link, choice.generation, *choice.content);
-        entity_types[e_observer.entity_type].n_retweets ++;
+
+        RECORD_STAT(state, e_observer.entity_type, n_retweets);
         e_observer.n_retweets ++;
-        stats.n_retweets ++;
 
         return true;
 	}
@@ -426,7 +423,9 @@ struct Analyzer {
 		Entity& e_lost_follower = network[id_lost_follower];
 		bool had_follow = e_lost_follower.following_set.remove(state, id_unfollowed);
 		DEBUG_CHECK(had_follow, "unfollow: Did not exist in follow list");
-        stats.n_unfollows ++;
+
+		RECORD_STAT(state, e_lost_follower.entity_type, n_unfollows);
+
 		return true;
 	}
 
@@ -591,10 +590,10 @@ struct Analyzer {
         stream << fixed << setprecision(2)
                 << time << "\t\t"
                 << network.n_entities << "\t\t"
-                << stats.n_follows << "\t\t"
-                << stats.n_tweets << "\t\t"
-                << stats.n_retweets << "(" << state.tweet_bank.n_active_tweets() << ")\t\t"
-                << stats.n_unfollows << "\t\t"
+                << stats.global_stats.n_follows << "\t\t"
+                << stats.global_stats.n_tweets << "\t\t"
+                << stats.global_stats.n_retweets << "(" << state.tweet_bank.n_active_tweets() << ")\t\t"
+                << stats.global_stats.n_unfollows << "\t\t"
                 << stats.event_rate << "\t\t";
         if (time_spent != -1) {
             stream << time_spent << "ms\t";
@@ -633,10 +632,10 @@ struct Analyzer {
             retweet_data << time << "\t";
             add_data << time << "\t";
             for (auto& type : entity_types) {
-                following_data << type.n_follows << "\t";
-                followers_data << type.n_followers << "\t";
-                tweet_data << type.n_tweets << "\t";
-                retweet_data << type.n_retweets << "\t";
+                following_data << type.stats.n_follows << "\t";
+                followers_data << type.stats.n_followers << "\t";
+                tweet_data << type.stats.n_tweets << "\t";
+                retweet_data << type.stats.n_retweets << "\t";
                 add_data << type.entity_list.size() << "\t";
             }
         following_data << "\n";

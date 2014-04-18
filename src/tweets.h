@@ -10,7 +10,6 @@
 #include "cat_classes.h"
 
 #include "events.h"
-#include "entity_properties.h"
 #include "CircularBuffer.h"
 
 #include "DataReadWrite.h"

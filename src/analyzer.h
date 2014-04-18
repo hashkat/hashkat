@@ -11,52 +11,39 @@
 
 #include "config_dynamic.h"
 #include "network.h"
+#include "entity.h"
 
 #include "DataReadWrite.h"
 #include "TweetBank.h"
 
 extern volatile int SIGNAL_ATTEMPTS;
 
-struct EntityStats {
-    int64 n_steps = 0, n_follows = 0, n_tweets = 0, n_retweets = 0, n_unfollows = 0;
-    int64 n_random_follows = 0, n_preferential_follows = 0;
-    int64 n_entity_follows = 0, n_pref_entity_follows = 0;
-    int64 n_retweet_follows = 0, n_hashtag_follows = 0;
-    int64 n_hashtags = 0;
-};
-
-// Records in both entity type struct and global struct:
-#define RECORD_STAT(state, , stat) \
-
-
+// Global network stats
 struct NetworkStats {
-    double prob_add;
-    double prob_follow;
-    double prob_tweet;
-    double prob_retweet;
+    double prob_add = 0;
+    double prob_follow = 0;
+    double prob_tweet = 0;
+    double prob_retweet = 0;
 
-    int n_outputs;
+    double event_rate = 0;
+
+    int n_steps = 0, n_outputs = 0;
+
     EntityStats global_stats;
-
-    double event_rate;
-    NetworkStats() {
-        prob_add = 0;
-        prob_follow = 0;
-        prob_tweet = 0;
-        prob_retweet = 0;
-
-        n_outputs = 0;
-        event_rate = 0;
-    }
 
     READ_WRITE(rw) {
         rw << prob_add << prob_follow << prob_retweet << prob_tweet;
-        rw << n_outputs;
+        rw << event_rate << n_steps << n_outputs;
+
         // Valid because only full of primitive types:
         rw << global_stats;
-        rw << event_rate;
     }
 };
+
+// Records in the EntityStats member found both in the entity type struct and global struct:
+#define RECORD_STAT(state, entity_type, stat) \
+    state.entity_types[entity_type].stats. stat ++; \
+    state.stats.global_stats. stat ++;
 
 const int APPROX_MONTH = 30 * 24 * 60;
 
@@ -175,14 +162,6 @@ struct AnalysisState {
         return entity_types[network[entity_id].entity_type];
     }
 
-    void event_stat_log(int entity_id, EventID event, double increment = 1.0) {
-        EntityType& type = entity_type(entity_id);
-        // Increment per-type
-        type.event_stats[event] += increment;
-        // Increment per-event
-        stats.event_stats[event] += increment;
-    }
-
     int n_months() {
         return time / APPROX_MONTH;
     }
@@ -236,6 +215,8 @@ struct RetweetChoice {
         return (id_author != -1);
     }
 };
+
+/** Function prototypes **/
 
 // 'analyzer_select_entity' and 'analyzer_set_rates' implement time-dependent rates
 // Select based on any SelectionType
