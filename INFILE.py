@@ -39,14 +39,56 @@ def get_var_arg(test, default_val):
     return default_val
 
 INPUT_FILE_NAME = get_var_arg("--input", "INFILE.yaml")
+DEFAULT_FILE_NAME = "DEFAULT.yaml"
 
+print("INFILE.py -- Loading defaults from " + DEFAULT_FILE_NAME)
 print("INFILE.py -- Generating rates for " + INPUT_FILE_NAME)
 
 #################################################################
 # Load the relevant pieces of the config.
 # We will add a 'generated' node to this, and emit it as INFILE-generated.yaml
 
+DEFAULT_CONFIG = yaml.load(open(DEFAULT_FILE_NAME, "r"))
 CONFIG = yaml.load(open(INPUT_FILE_NAME, "r"))
+
+# Merges all not found in 'dst'
+def merge_part(src, dst, label):
+    if label not in dst:
+        dst[label] = src[label]
+        return
+    else:
+        dst, src = dst[label],src[label]
+    for k in src: 
+        if k not in dst:
+            dst[k] = src[k]
+
+def default_check(src, dst, label):
+    if label not in dst:
+        dst[label] = src[label]
+
+# Merges all not found in 'dst'
+def merge_config(src, dst):
+    # Mimics structure of INFILE.yaml
+    merge_part(src, dst, "analysis")
+    merge_part(src, dst, "rates")
+    merge_part(src, dst, "output")
+    merge_part(src, dst, "tweet_ranks")
+    merge_part(src, dst, "retweet_ranks")
+    merge_part(src, dst, "follow_ranks")
+    merge_part(src, dst, "tweet_observation")
+
+    default_check(src, dst, "ideologies")
+    default_check(src, dst, "regions")
+
+    merge_part(src, dst, "config_static")
+
+    default_check(src, dst, "preference_classes")
+    default_check(src, dst, "entities")
+    
+merge_config(DEFAULT_CONFIG, CONFIG)
+
+for k in DEFAULT_CONFIG:
+	print k
 
 entities = CONFIG["entities"]
 
