@@ -1,5 +1,5 @@
 
--- Default interact file. You may edit this directly, or
+-- Default interaction script. You may edit this directly, or
 -- create additional files to point to.
 --
 -- Called every time interactive mode starts again.
@@ -10,8 +10,12 @@
 --
 -- It is recommended that you keep utility functions in custom_functions.lua.
 
-function interact()
+function network_out()
+
+end
+
+function interact() -- Return true to continue, false to exit
     print("Welcome to Simulator Interactive Mode.")
     print("Type exit() or quit() to (gracefully) finish the simulation.")
-    return repl_run()
+    return repl_run() 
 end
