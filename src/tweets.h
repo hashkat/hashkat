@@ -71,6 +71,7 @@ struct TweetContent {
 
 // Represents a tweet, either original, or a rebroadcast.
 struct Tweet {
+    int id_tweet = -1; // The tweet number
     // The entity broadcasting the tweet
     // A tweet is an orignal tweet if tweeter_id == content.author_id
     int id_tweeter = -1;
@@ -105,12 +106,14 @@ struct Tweet {
     }
 
     void print() {
-        printf("(Tweeter = %d, Link = %d, Original Author = %d, Created = %.2f\n)",
-                id_tweeter, id_link, content->id_original_author, creation_time);
+        printf("(#%d, Tweeter = %d, Link = %d, Original Author = %d, Created = %.2f\n)",
+                id_tweet, id_tweeter, id_link, content->id_original_author, creation_time);
     }
 
     READ_WRITE(rw) {
-        rw << id_tweeter << creation_time << retweet_time_bin << retweet_next_rebin_time << id_link << generation;
+        rw << id_tweet << id_tweeter << creation_time
+           << retweet_time_bin << retweet_next_rebin_time
+           << id_link << generation;
         rw.visit_smartptr(content);
     }
 };

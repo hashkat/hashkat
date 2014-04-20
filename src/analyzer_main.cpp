@@ -350,6 +350,7 @@ struct Analyzer {
         Entity& e_author = network[content->id_original_author];
 
         Tweet tweet;
+        tweet.id_tweet = stats.global_stats.n_tweets;
         tweet.content = content;
         tweet.creation_time = time;
         tweet.id_tweeter = id_tweeter;

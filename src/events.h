@@ -52,4 +52,13 @@ struct Add_Rates {
     Rate_Function RF;
 };
 
+struct AnalysisState; // Forward declare
+
+// Defined in events.cpp, handled by WATCH.lua:
+
+void log_follow(AnalysisState& state, int id_follower, int id_followed);
+void log_add(AnalysisState& state, int id_follower);
+void log_unfollow(AnalysisState& state, int id_follower, int id_followed);
+void log_tweet(AnalysisState& state, int id_follower, int id_followed);
+
 #endif

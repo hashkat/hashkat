@@ -31,7 +31,7 @@
 
 #include <luawrap-lib/include/luawrap/luawrap.h>
 
-static lua_State* init_lua_state();
+lua_State* init_lua_state();
 
 /* State of the interactive mode. Holds a Lua context. */
 
@@ -226,7 +226,7 @@ int luaopen_linenoise(lua_State *L);
  * are in '.libs'. We connect to lua-repl for an interactive
  * with command-completion.
  */
-static lua_State* init_lua_state() {
+lua_State* init_lua_state() {
     lua_State* L = lua_open();
     luaL_openlibs(L);
     // configure_lua_packages:

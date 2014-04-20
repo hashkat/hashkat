@@ -121,6 +121,8 @@ struct ParsedConfig {
     EntityTypeVector entity_types;
     Add_Rates add_rates;
 
+    bool enable_logging = true; // TODO: Add to infile
+
     std::vector<PreferenceClass> pref_classes;
     std::vector<Ideology> ideologies;
 
