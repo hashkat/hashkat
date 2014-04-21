@@ -10,6 +10,9 @@
 --
 -- It is recommended that you keep utility functions in custom_functions.lua.
 
+
+local gexf = require "gexf" -- Graph serialization minilibrary, found in src/gexf.lua
+
 --
 -- Configuration
 --
@@ -20,18 +23,44 @@ long_print_on() -- Print objects over multiple lines in repl_run()
 -- Event loggers
 --
 
+local graph = gexf.new("graph.json")
 function on_add(id) 
+    local e = entity(id)
+    local size,weight = 1,1
+    if e.entity_type == "Celebrity" then 
+        size,weight = 100,100
+    end
+    graph.add_node {
+        name = tostring(id),
+        label = e.entity_type,
+        size = size, weight = weight,
+        t = time
+    }
 end
 
 function on_unfollow(id1, id2) 
-    print("UNFOLLOW: ",id1,id2)
+    graph.delete_edge {
+        name = id1.."->"..id2,
+        t = time
+    }
 end
 
 function on_follow(id1, id2) 
+    graph.add_edge {
+        name = id1.."->"..id2,
+        source = tostring(id1),
+        target = tostring(id2),
+        t = time
+    }
 end
 
 function on_tweet(id1, id2) 
 end
+
+function on_exit() 
+    graph:close()
+end
+
 
 --
 -- Interaction (ie, what happens when ctrl-C is pressed)

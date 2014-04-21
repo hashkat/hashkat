@@ -92,6 +92,10 @@ struct InteractiveModeState {
 // This is 'conceptually cleaner' than passing along the entire contents of the Analyzer struct.
 
 struct AnalysisState {
+
+    AnalysisState( const AnalysisState& other ) = delete; // non construction-copyable
+    AnalysisState& operator=( const AnalysisState& ) = delete; // non copyable
+
     // A back-pointer to the Analyzer structure.
     // NULL if analysis is not active!
     // Used to call Analyzer methods outside of analyzer_main.cpp.

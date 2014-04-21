@@ -2,7 +2,7 @@
 
 analysis:
   initial_entities:
-    2000
+    100
   max_entities: 
     100001
   max_time: 
@@ -20,7 +20,7 @@ analysis:
   follow_model: # See notes above
     twitter
   # model weights ONLY necessary for follow method 'twitter'    
-  model_weights: {random: 0.20, preferential: 0.20, entity: 0.20, preferential_entity: 0.20, hashtag: 0.20}
+  model_weights: {random: 0.01, preferential: 0.99, entity: 0.00, preferential_entity: 0.0, hashtag: 0.00}
   
   stage1_unfollow: 
     true

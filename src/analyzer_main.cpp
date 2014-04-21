@@ -532,7 +532,6 @@ struct Analyzer {
         } else {
             time += 1.0 / stats.event_rate;
         }
-
         ASSERT(STATIC_TIME < time, "Fail");
         STATIC_TIME = time;
         if (config.output_stdout_summary && (floor(time) > prev_integer || config.output_verbose)) {
@@ -707,6 +706,7 @@ void analyzer_main(AnalysisState& state) {
     state.analyzer = NULL;
 
     signal_handlers_uninstall(state);
+    log_exit(state);
 
     // Print summary time:
     printf("'analyzer_main' took %.2f milliseconds.\n", timer.get_microseconds() / 1000.0);

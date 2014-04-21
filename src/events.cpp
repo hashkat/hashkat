@@ -13,8 +13,10 @@
 // Defined in interactive_mode.cpp:
 lua_State* get_lua_state(AnalysisState& state);
 
-static void log(AnalysisState& state, const char* type, int id1, int id2 = -1) {
+static void log(AnalysisState& state, const char* type, int id1 = -1, int id2 = -1) {
     lua_State* L = get_lua_state(state);
+
+    luawrap::globals(L)["time"] = state.time;
 
     lua_getglobal(L, type);
     lua_pushinteger(L, id1);
@@ -43,6 +45,12 @@ void log_unfollow(AnalysisState& state, int id_follower, int id_followed) {
 void log_tweet(AnalysisState& state, int id_tweeter, int id_tweet) {
     if (state.config.enable_logging) {
         log(state, "on_tweet", id_tweeter, id_tweet);
+    }
+}
+
+void log_exit(AnalysisState& state) {
+    if (state.config.enable_logging) {
+        log(state, "on_exit");
     }
 }
 

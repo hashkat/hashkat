@@ -60,5 +60,6 @@ void log_follow(AnalysisState& state, int id_follower, int id_followed);
 void log_add(AnalysisState& state, int id_follower);
 void log_unfollow(AnalysisState& state, int id_follower, int id_followed);
 void log_tweet(AnalysisState& state, int id_follower, int id_followed);
+void log_exit(AnalysisState& state);
 
 #endif

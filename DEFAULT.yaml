@@ -68,7 +68,7 @@ analysis:
 #################################################################
 
 rates:
-  add: {function: constant, value: 1.0}
+  add: {function: constant, value: 0.01}
 
 #################################################################
 # >> output:
@@ -314,7 +314,7 @@ entities:
         # Rate for follows from this entity:
         follow: {function: constant, value: 0.001}
         # Rate for tweets from this entity:
-        tweet: {function: constant, value: 0.001}
+        tweet: {function: constant, value: 0.000}
 
   - name: Celebrity
     weights: 
@@ -328,7 +328,7 @@ entities:
     followback_probability: 0
     rates:
         follow: {function: constant, value: 0.001}
-        tweet: {function: constant, value: 0.001}
+        tweet: {function: constant, value: 0.000}
         
   - name: Bot
     weights: 
@@ -342,7 +342,7 @@ entities:
     followback_probability: 0
     rates:
         follow: {function: constant, value: 0.001}
-        tweet: {function: constant, value: 0.001}
+        tweet: {function: constant, value: 0.000}
 
   - name: Organization
     weights:
@@ -356,4 +356,4 @@ entities:
     followback_probability: 0
     rates:
         follow: {function: constant, value: 0.001}
-        tweet: {function: constant, value: 0.001}
+        tweet: {function: constant, value: 0.000}

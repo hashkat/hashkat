@@ -156,7 +156,7 @@ struct InteractiveModeBindings {
 
     static LuaValue entity_to_table(Entity& e) {
         auto value = LuaValue::newtable(state.L);
-        DUMP(e, entity_type);
+        value["entity_type"] = state.state->entity_types[e.entity_type].name;
         DUMP(e, preference_class);
         DUMP(e, region_bin);
         DUMP(e, ideology_tweet_percent);
