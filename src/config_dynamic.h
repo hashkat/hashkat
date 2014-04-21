@@ -95,6 +95,7 @@ struct ParsedConfig {
     bool save_network_on_timeout = false, load_network_on_startup = false;
     bool ignore_load_config_check = false;
     std::string save_file;
+    std::string logging_script = "LOGGING.lua"; // TODO add to infile
 
     // 'rates' config options
     double rate_add = 0;

@@ -10,11 +10,34 @@
 --
 -- It is recommended that you keep utility functions in custom_functions.lua.
 
-function network_out()
+--
+-- Configuration
+--
 
+long_print_on() -- Print objects over multiple lines in repl_run()
+
+--
+-- Event loggers
+--
+
+function on_add(id) 
 end
 
-function interact() -- Return true to continue, false to exit
+function on_unfollow(id1, id2) 
+    print("UNFOLLOW: ",id1,id2)
+end
+
+function on_follow(id1, id2) 
+end
+
+function on_tweet(id1, id2) 
+end
+
+--
+-- Interaction (ie, what happens when ctrl-C is pressed)
+--
+
+function on_interact() -- Return true to continue, false to exit
     print("Welcome to Simulator Interactive Mode.")
     print("Type exit() or quit() to (gracefully) finish the simulation.")
     return repl_run() 

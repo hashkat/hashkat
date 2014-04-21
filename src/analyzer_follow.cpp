@@ -26,6 +26,7 @@
 
 #include "lcommon/perf_timer.h"
 
+#include "events.h"
 #include "analyzer.h"
 
 using namespace std;
@@ -81,6 +82,7 @@ struct AnalyzerFollow {
            if (config.stage1_unfollow) {
                update_chatiness(A, id_target);
            }
+           log_follow(state, id_actor, id_target);
            return true;
        }
        return false;

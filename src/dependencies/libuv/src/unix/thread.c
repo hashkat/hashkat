@@ -163,14 +163,16 @@ int uv_rwlock_trywrlock(uv_rwlock_t* rwlock) {
 
 
 void uv_rwlock_wrunlock(uv_rwlock_t* rwlock) {
-  if (pthread_rwlock_unlock(rwlock))
+  if (pthread_rwlock_unlock(rwlock)) {
     abort();
+  }
 }
 
 
 void uv_once(uv_once_t* guard, void (*callback)(void)) {
-  if (pthread_once(guard, callback))
+  if (pthread_once(guard, callback)) {
     abort();
+  }
 }
 
 #if defined(__APPLE__) && defined(__MACH__)
@@ -278,12 +280,6 @@ int uv_cond_init(uv_cond_t* cond) {
 #else /* !(defined(__APPLE__) && defined(__MACH__)) */
 
 int uv_cond_init(uv_cond_t* cond) {
-    // AD: TOTAL HACK:
-    // This was added when a linking error occurred.
-    // This should be revaluated.
-   exit(-1);
-   return 0;
-   /*
    pthread_condattr_t attr;
 
   if (pthread_condattr_init(&attr))
@@ -304,7 +300,7 @@ error:
   pthread_cond_destroy(cond);
 error2:
   pthread_condattr_destroy(&attr);
-  return -1;*/
+  return -1;
 }
 
 #endif /* defined(__APPLE__) && defined(__MACH__) */

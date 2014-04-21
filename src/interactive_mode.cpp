@@ -31,7 +31,8 @@
 
 #include <luawrap-lib/include/luawrap/luawrap.h>
 
-lua_State* init_lua_state();
+lua_State* init_lua_state(bool minimal = false);
+lua_State* get_lua_state(AnalysisState& state);
 
 /* State of the interactive mode. Holds a Lua context. */
 
@@ -57,12 +58,17 @@ struct InteractiveModeLuaState {
 
     /* Returns false if user has called exit() or quit()*/
     bool show_menu() {
-        luawrap::globals(L)["interact"].push();
+        luawrap::globals(L)["on_interact"].push();
         return luawrap::call<bool>(L);
     }
 };
 
 static InteractiveModeLuaState state;
+
+lua_State* get_lua_state(AnalysisState& as) {
+    state.ensure_init(as);
+    return state.L;
+}
 
 /*
  * Bindings for interactive mode.
@@ -226,7 +232,7 @@ int luaopen_linenoise(lua_State *L);
  * are in '.libs'. We connect to lua-repl for an interactive
  * with command-completion.
  */
-lua_State* init_lua_state() {
+lua_State* init_lua_state(bool minimal) {
     lua_State* L = lua_open();
     luaL_openlibs(L);
     // configure_lua_packages:
@@ -235,10 +241,12 @@ lua_State* init_lua_state() {
     package["path"] = package["path"].as<std::string>() + ";./.libs/?.lua";
     package["cpath"] = package["cpath"].as<std::string>() + ";./.libs/?.so";
 
-    // Linenoise loading, see above.
-    package["preload"]["linenoise"].bind_function(luaopen_linenoise);
+    if (!minimal) {
+        // Linenoise loading, see above.
+        package["preload"]["linenoise"].bind_function(luaopen_linenoise);
 
-    InteractiveModeBindings::install_functions(L);
+        InteractiveModeBindings::install_functions(L);
+    }
     return L;
 }
 

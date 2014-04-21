@@ -46,6 +46,8 @@ else()
     endif()
 endif()
 
+add_definitions(-pthread)
+
 if(APPLE)
    set(UV_LIBS m "-framework CoreFoundation" "-framework CoreServices")
 elseif(CMAKE_SYSTEM_NAME STREQUAL "FreeBSD")

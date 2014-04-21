@@ -23,7 +23,7 @@ analysis:
   model_weights: {random: 0.20, preferential: 0.20, entity: 0.20, preferential_entity: 0.20, hashtag: 0.20}
   
   stage1_unfollow: 
-    false
+    true
   unfollow_tweet_rate: 
     10
   use_hashtag_probability:

@@ -75,8 +75,10 @@ fi
 rm -rf .libs
 mkdir -p ".libs"
 cp -r "./src/dependencies/lua-repl/repl/" "./.libs/repl/"
-cp "./src/dependencies/lua-repl/repl.lua" "./.libs/repl.lua"
+cp "./src/dependencies/lua-repl/repl.lua" "./.libs/"
+cp "./src/dependencies/lua-misc/json.lua" "./.libs/"
 cp "./src/interactive_mode.lua" "./.libs/"
+cp "./src/gexf.lua" "./.libs/"
 
 # Create eclipse-project-files
 if handle_flag "--eclipse" || handle_flag "-e" ; then

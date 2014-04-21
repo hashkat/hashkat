@@ -269,8 +269,7 @@ struct Analyzer {
         }
     }
 
-    /* Create a entity at the given index.
-     * The index should be an empty entity slot. */
+    /* Create a new entity at the next index. */
     bool action_create_entity() {
         PERF_TIMER();
 
@@ -300,6 +299,7 @@ struct Analyzer {
         // For now, either always mark ideology, or never
         e.ideology_tweet_percent = rng.random_chance(0.5) ? 1.0 : 0.0;
         e.preference_class = rng.kmc_select(region.preference_class_probs);
+
         double rand_num = rng.rand_real_not0();
         for (int et = 0; et < entity_types.size(); et++) {
             EntityType& type = entity_types[et];
@@ -312,8 +312,11 @@ struct Analyzer {
             }
             rand_num -= entity_types[et].prob_add;
         }
+
+        log_add(state, id);
+
         if (config.use_barabasi){
-                analyzer_follow_entity(state, id, creation_time);
+             analyzer_follow_entity(state, id, creation_time);
         }
         return true;
     }
@@ -449,6 +452,7 @@ struct Analyzer {
 		bool had_follow = e_lost_follower.following_set.remove(state, id_unfollowed);
 		DEBUG_CHECK(had_follow, "unfollow: Did not exist in follow list");
 
+		log_unfollow(state, id_lost_follower, id_unfollowed);
 		RECORD_STAT(state, e_lost_follower.entity_type, n_unfollows);
 
 		return true;

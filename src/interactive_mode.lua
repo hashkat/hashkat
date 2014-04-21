@@ -81,21 +81,18 @@ end
 
 local long_print = false
 local first_run = true
-
-local function load_user_functions()
-    require "custom_functions"
+function long_print_on() 
+    long_print = true
+end
+function long_print_off() 
+    long_print = false
 end
 
 -- Exported global function for starting the interactive interpreter.
 function repl_run()
     local keep_going = true
     local R = repl:clone()
-    function long_print_on() 
-        long_print = true
-    end
-    function long_print_off() 
-        long_print = false
-    end
+
     function exit() 
         keep_going = false 
     end
@@ -125,12 +122,81 @@ function repl_run()
         end
     end
 
-    if first_run then
-        load_user_functions()
-        first_run = false
-    end
-
     R:run()
     return keep_going
 end
 
+----------------------------------------------------------------------------------------
+-- Place custom Lua functions, to be made accessible during Interactive Mode.
+-- Any functions placed in the global namespace will, thanks to LuaREPL, be 
+-- avaible via tab-selection.
+----------------------------------------------------------------------------------------
+
+-- Startup commands:
+
+local builtin_entities = entities
+
+-- Allows for live function addition/change:
+function reload_functions()
+    entities = builtin_entities
+end
+
+append = table.insert -- Less verbose
+
+-- Helpers for filtering tables:
+function filter(table, attr, f)
+    local new_table = {}
+    for _,v in pairs(table) do
+        if f(v[attr]) then
+            append(new_table, v)
+        end
+    end
+    return new_table
+end
+
+function filter_less(table, attr, val)
+    return filter(table, attr, function(x) return x < val end)
+end
+
+function filter_greater(table, attr, val)
+    return filter(table, attr, function(x) return x > val end)
+end
+
+function filter_equal(table, attr, val)
+    return filter(table, attr, function(x) return x == val end)
+end
+
+-- Tweet analysis functions:
+function tweets_of_gen(gen)
+    local t = tweets()
+    return filter_equal(t, "generation", gen)
+end
+
+function tweet_author(t)
+    return entity(t.id_original_author)
+end
+
+function tweet_tweeter(t)
+    return entity(t.id_tweeter)
+end
+
+-- Resolve entity id's and return actual entity objects
+function entities(t)
+    if t == nil then
+        return builtin_entities()
+    else
+        local tab = {}
+        for _,id in ipairs(t) do
+            append(tab, entity(id))
+        end
+        return tab
+    end
+end
+
+function followings_e(id)
+    return entities(followings(id))
+end
+
+function followers_e(id)
+    return entities(followers(id))
+end

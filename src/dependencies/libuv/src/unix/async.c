@@ -146,7 +146,7 @@ static void uv__async_io(uv_loop_t* loop, uv__io_t* w, unsigned int events) {
 #if defined(__linux__)
   if (wa->wfd == -1) {
     uint64_t val;
-    assert(n == sizeof(val));
+    //assert(n == sizeof(val));
     memcpy(&val, buf, sizeof(val));  /* Avoid alignment issues. */
     wa->cb(loop, wa, val);
     return;

@@ -54,7 +54,7 @@ struct Add_Rates {
 
 struct AnalysisState; // Forward declare
 
-// Defined in events.cpp, handled by WATCH.lua:
+// Defined in events.cpp, handled by INTERACT.lua.
 
 void log_follow(AnalysisState& state, int id_follower, int id_followed);
 void log_add(AnalysisState& state, int id_follower);
