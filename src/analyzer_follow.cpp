@@ -23,6 +23,7 @@
  */
 
 #include <iostream>
+#include <iomanip>
 
 #include "lcommon/perf_timer.h"
 
@@ -64,10 +65,12 @@ struct AnalyzerFollow {
     void update_chatiness(Entity& actor, int id_target) {
        double targets_chatiness = entity_types[network[id_target].entity_type].RF[1].const_val;
        // arbitrary factor greater than the average chatiness
-       if (actor.avg_chatiness*2 < targets_chatiness) {
+       actor.avg_chatiness = (actor.avg_chatiness*(actor.following_set.size() - 1) + targets_chatiness) / (double) actor.following_set.size();       
+       if (actor.avg_chatiness*2 < targets_chatiness && actor.following_set.size() != 0) {
            flag_chatty_entity(actor, id_target);
+           // reset the average chattiness
+           actor.avg_chatiness = (actor.avg_chatiness*(actor.following_set.size() - 1) + targets_chatiness) / (double) actor.following_set.size();
        }
-        actor.avg_chatiness = (actor.avg_chatiness*(actor.following_set.size() - 1) + targets_chatiness) / (double) actor.following_set.size();
     }
     // Returns true if a follow is added that was not already added
    bool handle_follow(int id_actor, int id_target) {
@@ -227,16 +230,12 @@ struct AnalyzerFollow {
    
    int hashtag_follow_method(Entity& follower) {
        PERF_TIMER();
-       /* This method is totally random, but it allows for connections to happen based
-          based on entities having a hashtag in their tweet. */
-       int ideology_bin = follower.ideology_bin;
-       int region_bin = follower.region_bin;
-       if (!hashtags.hashtag_groups[ideology_bin][region_bin].circ_buffer.empty()) {
-           int entity_to_follow = hashtags.hashtag_groups[ideology_bin][region_bin].circ_buffer.pick_random_uniform(rng);
-               RECORD_STAT(state, follower.entity_type, n_hashtag_follows);
-               return entity_to_follow;
-       }
-       return -1;
+       bool region_choice = entity_types[follower.entity_type].care_about_region;
+       bool ideology_choice = entity_types[follower.entity_type].care_about_ideology;
+       int default_region = follower.region_bin;
+       int default_ideology = follower.ideology_bin;
+       RECORD_STAT(state, follower.entity_type, n_hashtag_follows);
+       return hashtags.select_entity(region_choice, ideology_choice, default_region, default_ideology);
    }
    
    int twitter_follow_model(Entity& e) {
@@ -259,7 +258,7 @@ struct AnalyzerFollow {
        } else if (follow_method == 3) {
            return preferential_entity_follow_method(e);
        } else {
-           hashtag_follow_method(e);
+           return hashtag_follow_method(e);
        }
        return -1;
     }

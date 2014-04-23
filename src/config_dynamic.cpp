@@ -307,6 +307,7 @@ static void parse_entity_tweet_type_probabilities(EntityType& et, const Node& no
         et.tweet_type_probs[i] = probs[i];
     }
 }
+
 static EntityTypeVector parse_entities_configuration(const Node& node) {
     EntityTypeVector vec;
     double add_total = 0, follow_total = 0;
@@ -316,6 +317,9 @@ static EntityTypeVector parse_entities_configuration(const Node& node) {
         const Node& child = node[i];
         parse(child, "name", et.name);
         parse(child, "followback_probability", et.prob_followback);
+    	const Node& hashtag_options = child["hashtag_follow_options"];
+        parse(hashtag_options, "care_about_region", et.care_about_region);
+        parse(hashtag_options, "care_about_ideology", et.care_about_ideology);
         const Node& weights = child["weights"];
         parse(weights, "add", et.prob_add);
         parse(weights, "follow", et.prob_follow);
@@ -348,6 +352,7 @@ static EntityTypeVector parse_entities_configuration(const Node& node) {
         vec[i].prob_add /= add_total;
         vec[i].prob_follow /= follow_total;
     }
+
     return vec;
 }
 

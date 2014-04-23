@@ -140,6 +140,24 @@ struct HashtagGroup {
 struct HashTags {
     // this is the set of bins for idealogies and regions
     HashtagGroup hashtag_groups[N_BIN_IDEOLOGIES][N_BIN_REGIONS];
+    MTwist rng;
+    
+    int choose_bin(bool choice, int default_bin, const int n_choices) {
+    if (!choice) {
+        return rng.rand_int((int)n_choices);
+    }
+    return default_bin;
+    }
+
+    int select_entity(bool region_choice, bool ideology_choice, int default_region, int default_ideology) {
+        int region_bin = choose_bin(region_choice, default_region, N_BIN_REGIONS);
+        int ideology_bin = choose_bin(ideology_choice, default_ideology, N_BIN_IDEOLOGIES);
+        if (!hashtag_groups[ideology_bin][region_bin].circ_buffer.empty()) {
+            int entity_to_follow = hashtag_groups[ideology_bin][region_bin].circ_buffer.pick_random_uniform(rng);
+            return entity_to_follow;
+        }
+        return -1;
+    }
     
     READ_WRITE(rw) {
         for (auto& outer : hashtag_groups) {

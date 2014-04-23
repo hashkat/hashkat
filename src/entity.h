@@ -63,7 +63,7 @@ struct Entity {
     double creation_time = 0;
 
     // this is the average chatiness of the entities following list
-    double avg_chatiness = -1.0;
+    double avg_chatiness = 0.0;
     Language language = (Language)-1;
 
    // Abstract ideology:
@@ -144,7 +144,7 @@ struct EntityType {
     double prob_followback;
     int new_entities; // the number of new users in this entity type
     Rate_Function RF[number_of_diff_events];
-
+    bool care_about_region, care_about_ideology;
     // number of entities for each discrete value of the rate(time)
     std::vector<int> entity_cap;
     // list of entity ID's
@@ -168,6 +168,7 @@ struct EntityType {
         for (auto& rf : RF) {
             rf.visit(rw);
         }
+        rw << care_about_region << care_about_ideology;
         rw << entity_cap << entity_list;
         age_ranks.visit(rw);
         follow_ranks.visit(rw);

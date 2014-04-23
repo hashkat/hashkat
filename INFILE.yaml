@@ -18,9 +18,9 @@ analysis:
   use_followback: 
     true
   follow_model: # See notes above
-    twitter
+    hashtag
   # model weights ONLY necessary for follow method 'twitter'    
-  model_weights: {random: 0.01, preferential: 0.99, entity: 0.00, preferential_entity: 0.0, hashtag: 0.00}
+  model_weights: {random: 0.33, preferential: 0.33, entity: 0.00, preferential_entity: 0.0, hashtag: 0.33}
   
   stage1_unfollow: 
     true

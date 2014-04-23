@@ -10,6 +10,7 @@ luawrap_tests
 *.yaml-generated
 cmake_install.cmake
 CTestTestfile.cmake
+graph*
 main
 socialsim
 src/main
