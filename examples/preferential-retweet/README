@@ -1,0 +1,1 @@
+This input file INFILE.yaml creates a graph with the preferential attachment model. There is tweeting involved which means retweets are allowed. This will cause the size of the graph to be much smaller than just the preferential graph.

@@ -44,13 +44,13 @@ analysis:
   enable_interactive_mode:
     true
   use_barabasi: 
-    true 
+    false 
   use_random_time_increment: 
     true
   use_followback: 
     false
   follow_model: # See notes above
-    random
+    preferential
   # model weights ONLY necessary for follow method 'twitter'    
   model_weights: {random: 0.20, preferential: 0.20, entity: 0.20, preferential_entity: 0.20, hashtag: 0.20}
   
@@ -317,7 +317,7 @@ entities:
         # Rate for follows from this entity:
         follow: {function: constant, value: 0.00052}
         # Rate for tweets from this entity:
-        tweet: {function: constant, value: 0.00}
+        tweet: {function: constant, value: 0.00138}
 
   - name: Celebrity
     weights: 
@@ -334,7 +334,7 @@ entities:
       care_about_ideology: false # does the entiy care about which ideology the entity has?
     rates:
         follow: {function: constant, value: 0.00052}
-        tweet: {function: constant, value: 0.00}
+        tweet: {function: constant, value: 0.00138}
         
   - name: Bot
     weights: 
@@ -351,7 +351,7 @@ entities:
       care_about_ideology: false # does the entiy care about which ideology the entity has?
     rates:
         follow: {function: constant, value: 0.00052}
-        tweet: {function: constant, value: 0.00}
+        tweet: {function: constant, value: 0.00138}
 
   - name: Organization
     weights:
@@ -368,4 +368,4 @@ entities:
       care_about_ideology: false # does the entiy care about which ideology the entity has?
     rates:
         follow: {function: constant, value: 0.00052}
-        tweet: {function: constant, value: 0.00}
+        tweet: {function: constant, value: 0.00138}

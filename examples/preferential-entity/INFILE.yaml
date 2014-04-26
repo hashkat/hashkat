@@ -44,13 +44,13 @@ analysis:
   enable_interactive_mode:
     true
   use_barabasi: 
-    true 
+    false 
   use_random_time_increment: 
     true
   use_followback: 
     false
   follow_model: # See notes above
-    random
+    preferential-entity
   # model weights ONLY necessary for follow method 'twitter'    
   model_weights: {random: 0.20, preferential: 0.20, entity: 0.20, preferential_entity: 0.20, hashtag: 0.20}
   
