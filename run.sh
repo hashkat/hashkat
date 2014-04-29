@@ -47,6 +47,46 @@ else
     cores=4 # Guess -- may want to manually edit if above fails.
 fi
 
+if handle_flag "--help" || handle_flag "help" ; then
+        echo "#KAT is a program for simulation of large social networks such as those found in Twitter.
+
+To use, alter INFILE.yaml, consulting DEFAULT.yaml for options.
+
+Command line options for run.sh below:
+
+Configuration options:
+    --input <FILE, default ./INFILE.yaml>, load network configuration options from the given input file (options for this file not discussed here).
+
+Build options:
+    --eclipse (or -e), create Eclipse project files in sibling directory ‘../KMCEclipse’
+    --force (or -f), do not rebuild (can be used to run last without compilation error)
+
+Optimization options:
+    --optimize (or -O), build with optimization. Prevents debugging.
+The following imply --optimize (ie, specifying --optimization will have no further effect):
+    --profile-gen (or --pgen), run and generate data for profile-guided optimization (PGO)
+    --profile-use (or --puse), run using PGO (provides best known performance)
+
+Profiling (ie, performance analysis, not PGO as above) options:    
+    --valgrind (or --vprof), requires valgrind and kCacheGrind. Visualizes per-function performance results in a GUI. Valgrind has substantial overhead.
+    --oprofile (or --oprof), requires oprofile. Displays per-function performance results in text format. Oprofile has unnoticable overhead.
+
+Debug options:
+    --lldb (or -l), debug the program in ‘lldb’
+    --gdb (or -g), debug the program in ‘gdb’
+    --sanitize(or -S), build with Address Sanitizer
+    --debug-std, use (slower) error-checking std data-structures for std classes like std::vector
+
+Testing options:
+    --tests, run unit tests from ./src/tests/*.cpp
+
+Misc options:
+    Running ./scripts/colorify.sh will semantically colour the output of run.sh.
+    Running ./scripts/stop.sh will send a SIGUSR1 (user-defined signal) to the binary ‘socialsim’, in effect resulting in graceful termination of the program. This can never result in immediate termination.
+    --no-ctrlc, do not handle Ctrl+C (note, results in immediate termination with Ctrl+C)"
+    exit
+fi
+
 # Handle environment-variable setting convenience flags
 # These are used to communicate with CMake
 # Each flag has an optional shortform, use whichever is preferred.
