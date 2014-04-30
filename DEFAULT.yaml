@@ -44,13 +44,13 @@ analysis:
   enable_interactive_mode:
     true
   use_barabasi: 
-    true 
+    false 
   use_random_time_increment: 
     true
   use_followback: 
     true
   follow_model: # See notes above
-    twitter
+    random
   # model weights ONLY necessary for follow method 'twitter'    
   model_weights: {random: 0.20, preferential: 0.20, entity: 0.20, preferential_entity: 0.20, hashtag: 0.20}
   
@@ -68,7 +68,7 @@ analysis:
 #################################################################
 
 rates:
-  add: {function: linear, slope: 0.01, y_intercept: 0.0}
+  add: {function: constant, value: 0.0}
 
 #################################################################
 # >> output:
@@ -162,7 +162,7 @@ tweet_observation: # 'Omega'
    resolution_growth_factor: 
        1.05
    time_span: 
-       hour
+       8*hour
 
 #################################################################
 # >> ideologies: 
@@ -248,21 +248,21 @@ preference_classes:
   # preference class:
    tweet_transmission: 
       plain: # Also applies to musical tweets
-        Standard: 0.0
-        Celebrity: 0.0
-        else: 0
+        Standard: 10
+        Celebrity: 10
+        else: 10
       different_ideology:
-        Standard: 0.0
-        Celebrity: 0.0
-        else: 0
+        Standard: 10.0
+        Celebrity: 10.0
+        else: 10.0
       same_ideology:
-        Standard: 0.0
-        Celebrity: 0.0
-        else: 0
+        Standard: 10.0
+        Celebrity: 10.0
+        else: 10.0
       humourous:
-        Standard: 0.00 
-        Celebrity: 0.0
-        else: 0
+        Standard: 10.0
+        Celebrity: 10.0
+        else: 10.0
    # Probability that we will follow as a reaction:
    follow_reaction_prob:
       0.5
@@ -315,9 +315,9 @@ entities:
       care_about_ideology: false # does the entiy care about which ideology the entity has?
     rates: 
         # Rate for follows from this entity:
-        follow: {function: constant, value: 0.0001}
+        follow: {function: constant, value: 0.1}
         # Rate for tweets from this entity:
-        tweet: {function: constant, value: 0.0001}
+        tweet: {function: constant, value: 0.01}
 
   - name: Celebrity
     weights: 
@@ -333,8 +333,8 @@ entities:
       care_about_region: true # does the entity care about where the entity they will follow is from?
       care_about_ideology: false # does the entiy care about which ideology the entity has?
     rates:
-        follow: {function: constant, value: 0.0001}
-        tweet: {function: constant, value: 0.0001}
+        follow: {function: constant, value: 0.1}
+        tweet: {function: constant, value: 0.01}
         
   - name: Bot
     weights: 
@@ -350,8 +350,8 @@ entities:
       care_about_region: true # does the entity care about where the entity they will follow is from?
       care_about_ideology: false # does the entiy care about which ideology the entity has?
     rates:
-        follow: {function: constant, value: 0.0001}
-        tweet: {function: constant, value: 0.0001}
+        follow: {function: constant, value: 0.1}
+        tweet: {function: constant, value: 0.01}
 
   - name: Organization
     weights:
@@ -367,5 +367,5 @@ entities:
       care_about_region: true # does the entity care about where the entity they will follow is from?
       care_about_ideology: false # does the entiy care about which ideology the entity has?
     rates:
-        follow: {function: constant, value: 0.0001}
-        tweet: {function: constant, value: 0.0001}
+        follow: {function: constant, value: 0.1}
+        tweet: {function: constant, value: 0.01}
