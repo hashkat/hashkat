@@ -1,6 +1,9 @@
-set -e # Good practice -- exit completely on any bad exit code
+# Good practice -- exit completely on any bad exit code:
+set -e 
 
-args="$@"
+###############################################################################
+# Helper functions for conditionally coloring text.
+###############################################################################
 
 function is_mac() {
     if [ "$(uname)" == "Darwin" ]; then
@@ -21,9 +24,13 @@ function colorify() {
     fi 
 }
 
+###############################################################################
 # Bash function to check for a flag in 'args' and remove it.
-# Treats 'args' as one long string.
+# Treats 'args' as one long string. 
 # Returns true if flag was removed.
+###############################################################################
+
+args="$@" # Create a mutable copy of the program arguments
 function handle_flag(){
     flag=$1
     local new_args
@@ -41,16 +48,16 @@ function handle_flag(){
     return $got # False!
 }
 
-if [[ -e /proc/cpuinfo ]] ; then
-    cores=$(grep -c ^processor /proc/cpuinfo)
-else
-    cores=4 # Guess -- may want to manually edit if above fails.
-fi
+###############################################################################
+# Show help for run.sh options available.
+#  --help/help: Show options available.
+###############################################################################
 
 if handle_flag "--help" || handle_flag "help" ; then
         echo "#KAT is a program for simulation of large social networks such as those found in Twitter.
 
 To use, alter INFILE.yaml, consulting DEFAULT.yaml for options.
+Alter INTERACT.lua to configure callbacks into the program, and interactive-mode behaviour.
 
 Command line options for run.sh below:
 
@@ -87,6 +94,26 @@ Misc options:
     exit
 fi
 
+###############################################################################
+# Eclipse options
+#   --eclipse/-e: Create eclipse project files
+###############################################################################
+
+# Create eclipse-project-files
+if handle_flag "--eclipse" || handle_flag "-e" ; then
+    src=$(pwd)
+    rm -f CMakeCache.txt
+    mkdir ../KMCEclipse -p
+    cd ../KMCEclipse
+    # Eclipse project creation
+    cmake -G"Eclipse CDT4 - Unix Makefiles" $src
+    exit
+fi
+
+###############################################################################
+# Compiling and setting up runtime directory structure
+###############################################################################
+
 # Handle environment-variable setting convenience flags
 # These are used to communicate with CMake
 # Each flag has an optional shortform, use whichever is preferred.
@@ -111,6 +138,14 @@ if handle_flag "--debug-std" ; then
     export BUILD_FLAGS="$BUILD_FLAGS -D_GLIBCXX_DEBUG"
 fi
 
+
+# Configure amount of cores used
+if [[ -e /proc/cpuinfo ]] ; then
+    cores=$(grep -c ^processor /proc/cpuinfo)
+else
+    cores=4 # Guess -- may want to manually edit if above fails.
+fi
+
 # Install lua dependencies (lua-repl and lua-linenoise):
 rm -rf .libs
 mkdir -p ".libs"
@@ -120,18 +155,10 @@ cp "./src/dependencies/lua-misc/json.lua" "./.libs/"
 cp "./src/interactive_mode.lua" "./.libs/"
 cp "./src/gexf.lua" "./.libs/"
 
-# Create eclipse-project-files
-if handle_flag "--eclipse" || handle_flag "-e" ; then
-    src=$(pwd)
-    rm -f CMakeCache.txt
-    mkdir ../KMCEclipse -p
-    cd ../KMCEclipse
-    # Eclipse project creation
-    cmake -G"Eclipse CDT4 - Unix Makefiles" $src
-    exit
-fi
+# Ensure folder exists for output
+mkdir -p output/
 
-# Pass the -f flag to avoid building:
+#   --force/-f: Do not build (use last successful compiled binary)
 if ! handle_flag "-f" && ! handle_flag "--force" ; then
     mkdir -p build
     cd build
@@ -143,20 +170,29 @@ if ! handle_flag "-f" && ! handle_flag "--force" ; then
     cd ..
 fi
 
+###############################################################################
+# Generating YAML files by expansion of Python
+#   --input <FILE>, the input file to use. Defaults to INFILE.yaml.
+###############################################################################
+
 # Clear all existing generated YAML files:
 rm -f *yaml-generated
 
-# We must generate INFILE-generated.yaml from INFILE.yaml:
-# NOTE: Requires python and the pyyaml package
-python './INFILE.py' "$@"
+# We must generate X-generated.yaml from X.yaml (defaults
+# NOTE: Requires python as well as the pyyaml & scipy packages
+
+python INFILE.py "$@"
 
 # If the flag is NOT present
 if ! handle_flag "--no-ctrlc" ; then
     args="$args --handle-ctrlc"
 fi
 
-# Ensure folder exists for output
-mkdir -p output/
+###############################################################################
+# Running the program. Options exist for running within a gdb, lldb, oprofile, 
+# or valgrind context.  
+#   Use '--help' or 'help' for details.
+###############################################################################
 
 if handle_flag "--gdb" || handle_flag "-g" ; then
     # Wrap the gdb around the program with -g:
