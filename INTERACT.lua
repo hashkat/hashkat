@@ -23,7 +23,7 @@ long_print_on() -- Print objects over multiple lines in repl_run()
 -- Event loggers
 --
 
-local graph = gexf.new("graph.json")
+local graph = gexf.new("pregraph.json")
 function on_add(id) 
     local e = entity(id)
     local size,weight = 1,1

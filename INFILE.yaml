@@ -1,10 +1,11 @@
 # See DEFAULT.yaml for full configuration options and documentation!
+# It is recommended that it is used as a reference when editting this file.
 
 analysis:
   initial_entities:
-    100
+    1
   max_entities: 
-    100001
+    1
   max_time: 
     hour
   max_real_time: 
@@ -17,7 +18,7 @@ analysis:
     true
   use_followback: 
     true
-  follow_model: # See notes above
+  follow_model: # See notes in DEFAULT.yaml
     random
   # model weights ONLY necessary for follow method 'twitter'    
   model_weights: {random: 0.33, preferential: 0.33, entity: 0.00, preferential_entity: 0.0, hashtag: 0.33}

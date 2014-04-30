@@ -173,6 +173,9 @@ struct AnalysisState {
         analyzer = NULL;
         n_follows = 0;
         r_follow_norm = end_time = 0;
+
+        // CategoryGrouper carries both state and configuration.
+        // We copy over the data so that we can operate on it.
         tweet_ranks = config.tweet_ranks;
         follow_ranks = config.follow_ranks;
         retweet_ranks = config.retweet_ranks;

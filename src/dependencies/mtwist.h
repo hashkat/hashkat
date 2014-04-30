@@ -116,6 +116,7 @@ public:
     }
     int rand_int(int min, int max) {
         int range = max - min;
+        DEBUG_CHECK(range != 0, "Cannot make random decision when min == max.");
         return rand_int(range) + min;
     }
 

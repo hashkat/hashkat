@@ -34,7 +34,6 @@ struct AnalyzerSelect {
     //** Note: Only use reference types here!!
     Network& network;
     ParsedConfig& config;
-    //** Mind the StatE/StatS difference. They are entirely different structs.
     AnalysisState& state;
     NetworkStats& stats;
     EntityTypeVector& entity_types;
@@ -45,7 +44,7 @@ struct AnalyzerSelect {
             config(state.config), entity_types(state.entity_types), rng(state.rng) {
     }
 
-    vector<double>& selection_vector(EntityType& type, SelectionType event) {
+    vector<double>& selection_rate_vector(EntityType& type, SelectionType event) {
         if (event == FOLLOW_SELECT) {
             return type.RF[0].monthly_rates;
         } else if (event == TWEET_SELECT) {
@@ -57,15 +56,17 @@ struct AnalyzerSelect {
     double calc_rate_sum(SelectionType event) {
         double rate_sum = 0;
         if (stats.prob_add == 0) {
-            for (int e = 0; e < entity_types.size(); e++) {
-                vector<double>& vec = selection_vector(entity_types[e], event);
-                rate_sum += vec[state.n_months()] * entity_types[e].prob_add;
+            for (EntityType& et : entity_types) {
+                vector<double>& rates = selection_rate_vector(et, event);
+                // TODO Comment Why is state.n_months() used?
+                rate_sum += rates[state.n_months()] * et.prob_add;
             }
         } else {
-            for (int e = 0; e < entity_types.size(); e++) {
-                vector<double>& vec = selection_vector(entity_types[e], event);
+            for (EntityType& et : entity_types) {
+                vector<double>& rates = selection_rate_vector(et, event);
                 for (int i = 0; i <= state.n_months(); i++) {
-                    rate_sum += vec[i] * entity_types[e].prob_add;
+                    // TODO Comment Why is state.n_months() used?
+                    rate_sum += rates[state.n_months()] * et.prob_add;
                 }
             }
         }
@@ -77,32 +78,44 @@ struct AnalyzerSelect {
         return entity;
     }
 
-    int entity_selection(EntityType& et, vector<double>& vec, double& rand_num, double rate_sum) {
+    int entity_selection(EntityType& et, vector<double>& rates, double& rand_num, double rate_sum) {
         if (stats.prob_add == 0) {
-            if (rand_num <= ((vec[state.n_months()] * et.prob_add) / rate_sum)) {
-                int entity = rng.pick_random_uniform(et.entity_list);
-                return CHECK(entity);
-            } else {
-                rand_num -= ((vec[state.n_months()] * et.prob_add) / rate_sum);
-            }
+            // If add rate is 0, we do not need to consider the different months of user addition
+            int entity = rng.pick_random_uniform(et.entity_list);
+            return CHECK(entity);
         } else {
-            vector<int>& e_vec = et.entity_cap;
-            for (int i = 0, e_i = e_vec.size() - 1; i <= state.n_months(); i++, e_i--) {
-                if (rand_num <= ((vec[i] * et.prob_add) / rate_sum) && i == 0) {
-                    int entity = -1;
-                    if (state.n_months() == 0) {
-                        entity = et.entity_list[rng.rand_int(et.new_entities)];
-                        DEBUG_CHECK(network.is_valid_id(entity), "Invalid entity selection!");
+            vector<int>& caps = et.entity_cap;
+            int cap_i = caps.size() - 1; // Iterate backwards
+            bool first_month = true;
+            for (int i = 0; i <= state.n_months(); i++) {
+                double adjusted_add_rate = (rates[i] * et.prob_add) / rate_sum;
+                if (rand_num <= adjusted_add_rate) {
+                    if (first_month) {
+                        int entity = -1;
+                        if (state.n_months() == 0) {
+                            entity = et.entity_list[rng.rand_int(et.new_entities)];
+                            DEBUG_CHECK(network.is_valid_id(entity), "Invalid entity selection!");
+                        } else {
+                            if (et.entity_list.empty()) {
+                                return -1;
+                            }
+                            entity = et.entity_list[et.entity_list.size() - 1 - rng.rand_int(et.new_entities)];
+                        }
+                        return CHECK(entity);
                     } else {
-                        entity = et.entity_list[et.entity_list.size() - 1 - rng.rand_int(et.new_entities)];
+                        int range_min = caps.at(cap_i), range_max = caps.at(cap_i + 1);
+                        if (range_min == range_max) {
+                            return -1; // Have nothing to choose
+                        }
+                        int entity = et.entity_list[rng.rand_int(range_min, range_max)];
+                        return CHECK(entity);
                     }
-                    return CHECK(entity);
-                } else if (rand_num <= ((vec[i] * et.prob_add) / rate_sum)) {
-                    int range_min = e_vec.at(e_i), range_max = e_vec.at(e_i + 1);
-                    int entity = et.entity_list[rng.rand_int(range_min, range_max)];
-                    return CHECK(entity);
                 }
-                rand_num -= ((vec[i] * et.prob_add)/ rate_sum);
+                // Since probabilities are not cumulative, we subtract the previous add rates.
+                // This allows us to choose within the appropriate month.
+                rand_num -= adjusted_add_rate;
+                first_month = false;
+                cap_i--;
             }
         }
         return -1;
@@ -111,21 +124,21 @@ struct AnalyzerSelect {
     int entity_selection(SelectionType event) {
         double rate_sum = calc_rate_sum(event);
         double rand_num = rng.rand_real_not0();
-    
+
         for (int e = 0; e < entity_types.size(); e++) {
-            vector<double>& vec = selection_vector(entity_types[e], event);
-            int entity = entity_selection(entity_types[e], vec, rand_num, rate_sum);
+            vector<double>& rates = selection_rate_vector(entity_types[e], event);
+            int entity = entity_selection(entity_types[e], rates, rand_num, rate_sum);
             if (entity != -1) {
                 return entity;
             }
-        }   
-    
-    error_exit("Logic error selecting entity to act or target");
-    return -1;
+        }
+
+        return -1;
     }
 };
 
 int analyzer_select_entity(AnalysisState& state, SelectionType type) {
+    PERF_TIMER();
     AnalyzerSelect analyzer(state);
     return analyzer.entity_selection(type);
 }

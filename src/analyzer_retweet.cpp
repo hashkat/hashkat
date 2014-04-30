@@ -31,10 +31,9 @@
 using namespace std;
 
 struct AnalyzerRetweet {
-    //** Note: Only use reference types here!!
+    //** Note: Only use reference types here! State will not persist.
     Network& network;
     ParsedConfig& config;
-    //** Mind the StatE/StatS difference. They are entirely different structs.
     AnalysisState& state;
     NetworkStats& stats;
     EntityTypeVector& entity_types;

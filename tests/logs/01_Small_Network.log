@@ -1,0 +1,55 @@
+Building debug... performance will not be optimal.
+[1;33m-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/adomurad/KMC/build[0m
+[  2%] Built target lualinenoise
+[ 14%] Built target UnitTest++
+[ 21%] Built target luawrap
+[ 50%] [ 72%] [ 76%] Built target lua
+Built target libuv
+Built target yaml-cpp
+[ 82%] Built target luawrap_tests
+[100%] Built target socialsim
+INFILE.py -- Loading defaults from DEFAULT.yaml
+INFILE.py -- Generating rates for tests/01_Small_Network/INFILE.yaml
+tweet_observation
+retweet_ranks
+tweet_ranks
+config_static
+regions
+entities
+rates
+analysis
+ideologies
+preference_classes
+output
+follow_ranks
+('plain', '=>', [])
+('plain', '=>', [0.0, 0.0, 0, 0])
+('same_ideology', '=>', [])
+('same_ideology', '=>', [0.0, 0.0, 0, 0])
+('plain', '=>', [])
+('plain', '=>', [0.0, 0.0, 0, 0])
+('humourous', '=>', [])
+('humourous', '=>', [0.0, 0.0, 0, 0])
+('different_ideology', '=>', [])
+('different_ideology', '=>', [0.0, 0.0, 0, 0])
+('pref_weights', [[0.0, 0.0, 0, 0], [0.0, 0.0, 0, 0], [0.0, 0.0, 0, 0], [0.0, 0.0, 0, 0], [0.0, 0.0, 0, 0]])
+('plain', '=>', [])
+('plain', '=>', [0.0, 0, 0, 0])
+('same_ideology', '=>', [])
+('same_ideology', '=>', [0, 0, 0, 0])
+('plain', '=>', [])
+('plain', '=>', [0.0, 0, 0, 0])
+('humourous', '=>', [])
+('humourous', '=>', [0, 0, 0, 0])
+('different_ideology', '=>', [])
+('different_ideology', '=>', [0, 0, 0, 0])
+('pref_weights', [[0.0, 0, 0, 0], [0, 0, 0, 0], [0.0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]])
+INFILE.py -- Done generating rates
+terminate called after throwing an instance of 'char const*'
+Network simulation started.
+Loading input configuration from 'tests/01_Small_Network/INFILE.yaml-generated'.
+Starting simulation with seed '1'.
+FAILED CHECK: Logic error (/home/adomurad/KMC/src/CategoryGrouper.h:90)
+./run.sh: line 231:  8519 Aborted                 (core dumped) build/src/socialsim $args

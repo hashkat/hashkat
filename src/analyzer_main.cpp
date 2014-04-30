@@ -489,20 +489,16 @@ struct Analyzer {
                 // If we find ourselves in the add entity chuck of our cumulative function:
                 complete = action_create_entity();
             } else if (subtract_var(r, stats.prob_follow) <= ZEROTOL) {
-
-                perf_timer_begin("analyzer_select_entity(FOLLOW_SELECT)");
                 int entity = analyzer_select_entity(state, FOLLOW_SELECT);
-                perf_timer_end("analyzer_select_entity(FOLLOW_SELECT)");
-
-                complete = analyzer_follow_entity(state, entity, time);
+                if (entity != -1) {
+                    complete = analyzer_follow_entity(state, entity, time);
+                }
             } else if (subtract_var(r, stats.prob_tweet) <= ZEROTOL) {
                 // The tweet event
-
-                perf_timer_begin("analyzer_select_entity(TWEET_SELECT)");
                 int entity = analyzer_select_entity(state, TWEET_SELECT);
-                perf_timer_end("analyzer_select_entity(TWEET_SELECT)");
-
-                complete = action_tweet(entity);
+                if (entity != -1) {
+                    complete = action_tweet(entity);
+                }
             } else if (subtract_var(r, stats.prob_retweet) <= ZEROTOL ) {
                 RetweetChoice choice = analyzer_select_tweet_to_retweet(state, RETWEET_SELECT);
                 if (choice.id_author != -1) {

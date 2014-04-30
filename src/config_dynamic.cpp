@@ -270,7 +270,8 @@ void parse_category_weights(const Node& node, CategoryGrouper& group) {
 static void parse_category_configurations(ParsedConfig& config, const Node& node) {
     ASSERT(!config.entity_types.empty(), "Must have entity types!");
     if (config.use_barabasi) {
-        for (int i = 1; i < config.max_entities; i ++) {
+        // One category per potential entity:
+        for (int i = 1; i < config.max_entities + 1; i ++) {
             CategoryEntityList cat(i-1, i);
             config.follow_ranks.categories.push_back(cat);
             config.follow_probabilities.push_back(i);

@@ -1,0 +1,7 @@
+# See DEFAULT.yaml for full configuration options and documentation!
+
+analysis:
+  initial_entities:
+    1
+  max_entities: 
+    1

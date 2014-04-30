@@ -39,7 +39,7 @@
 // Dirt simple error handling, exits the program:
 inline static void error_exit(const std::string& msg) {
     fprintf(stderr, "%s\n", msg.c_str());
-    exit(2); // Return with error code
+    abort();
 }
 
 //** AD: This is what I was talking about with giving the compiler hints about the path the a conditional will take.
