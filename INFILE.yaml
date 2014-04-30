@@ -3,9 +3,9 @@
 
 analysis:
   initial_entities:
-    1
+    100
   max_entities: 
-    1
+    1001
   max_time: 
     hour
   max_real_time: 

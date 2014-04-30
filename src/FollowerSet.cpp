@@ -244,7 +244,7 @@ void FollowerSet::print() {
     print_layer(followers, 0);
 }
 
-void FollowerSet::determine_tweet_weights(Entity& author, TweetContent& content, WeightDeterminer& d_root, /*Weights placed here:*/ Weights& w_root) {
+double FollowerSet::determine_tweet_weights(Entity& author, TweetContent& content, WeightDeterminer& d_root, /*Weights placed here:*/ Weights& w_root) {
     PERF_TIMER();
     // Weights are assumed to start 0-initialized.
 
@@ -252,13 +252,14 @@ void FollowerSet::determine_tweet_weights(Entity& author, TweetContent& content,
 
     DEBUG_CHECK(content.language != LANG_FRENCH_AND_ENGLISH, "Invalid tweet language!");
 
+    double total = 0;
     // Language spoken:
     for (int lang = 0; lang < N_LANGS; lang++) {
 
         if (!language_understandable((Language)lang, content.language)) {
             break;
         }
-
+        double incr0 = 0;
         auto& f_prefs = f_root.sublayers[lang];
         for (int i_pref = 0; i_pref < N_BIN_PREFERENCE_CLASS; i_pref++) {
             auto& f_regions = f_prefs.sublayers[i_pref];
@@ -287,7 +288,12 @@ void FollowerSet::determine_tweet_weights(Entity& author, TweetContent& content,
                 incr1 += incr2;
             }
             w_regions.weights[i_pref] += incr1;
+            incr0 += incr1;
         }
 
+        w_root.weights[lang] += incr0;
+        total += incr0;
     }
+
+    return total;
 }

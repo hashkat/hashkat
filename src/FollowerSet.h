@@ -155,7 +155,7 @@ struct FollowerSet {
         return followers.n_elems;
     }
 
-    void determine_tweet_weights(Entity& author, TweetContent& content, WeightDeterminer& determiner, /*Weights placed here: */ Weights& output);
+    double determine_tweet_weights(Entity& author, TweetContent& content, WeightDeterminer& determiner, /*Weights placed here: */ Weights& output);
 
 private:
     // Holds the actual followers:

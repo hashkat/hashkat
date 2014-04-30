@@ -47,6 +47,7 @@ print("INFILE.py -- Generating rates for " + INPUT_FILE_NAME)
 #################################################################
 # Load the relevant pieces of the config.
 # We will add a 'generated' node to this, and emit it as INFILE-generated.yaml
+#################################################################
 
 DEFAULT_CONFIG = yaml.load(open(DEFAULT_FILE_NAME, "r"))
 CONFIG = yaml.load(open(INPUT_FILE_NAME, "r"))
@@ -96,6 +97,7 @@ entities = CONFIG["entities"]
 # Both functions are computed from a lookup table generated below.
 # Note that the relevance factor is a many-dimensional function,
 # whilst tweet_obs takes only time.
+#################################################################
 
 obs_pdf = CONFIG["tweet_observation"]
 regions = CONFIG["regions"]
@@ -122,6 +124,7 @@ pref_classes = CONFIG["preference_classes"]
 
 #################################################################
 # Make the region data easier to parse for the C++:
+#################################################################
 
 def weights_to_probs(weights, map, n):
     ret = []
@@ -179,6 +182,7 @@ def preprocess_regions():
 # If the relevance function is 1 for a person viewing a tweet, in theory 
 # that person will always retweet it, given enough time. 
 # Note, however, that due to the random-select nature of KMC this cannot be guaranteed.
+#################################################################
 
 def tweet_observation_integral(x1, x2):
     val,err = quad(tweet_obs_density_function, x1, x2)
@@ -231,6 +235,7 @@ def compute_tweet_obs():
 #   Entity preference class
 #   X Tweet type (for ideological tweets, whether ideologies match)
 #   X Original tweeter entity type
+#################################################################
 
 def load_relevance_function(content):
     exec('def __TEMP(): return ' + str(content))
@@ -268,6 +273,7 @@ def load_relevance_weights():
 
 #################################################################
 # YAML emission
+#################################################################
 
 obs_function, obs_bin_bounds = compute_tweet_obs()
 

@@ -372,11 +372,13 @@ struct Analyzer {
         tweet.retweet_next_rebin_time = time + config.tweet_obs.initial_resolution;
 
         /* Determines reaction weights for the tweet: */
-        e_tweeter.follower_set.determine_tweet_weights(e_author, *content, config.tweet_react_rates, tweet.react_weights);
+        double total_weight = e_tweeter.follower_set.determine_tweet_weights(e_author, *content, config.tweet_react_rates, tweet.react_weights);
 
-        if (network.n_followers(id_tweeter) != 0) {
+        /* Only consider tweets that can actually be retweeted. */
+        if (total_weight != 0) {
             state.tweet_bank.add(tweet);
         }
+
         return tweet;
     }
 
