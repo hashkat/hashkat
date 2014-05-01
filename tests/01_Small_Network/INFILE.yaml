@@ -1,6 +1,8 @@
 # See DEFAULT.yaml for full configuration options and documentation!
 
 analysis:
+  max_time: 
+    hour / 60.0
   initial_entities:
     1
   max_entities: 
