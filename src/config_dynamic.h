@@ -95,7 +95,7 @@ struct ParsedConfig {
     bool save_network_on_timeout = false, load_network_on_startup = false;
     bool ignore_load_config_check = false;
     std::string save_file;
-    std::string logging_script = "LOGGING.lua"; // TODO add to infile
+    std::string lua_script = "INTERACT.lua"; // TODO add to infile
 
     // 'rates' config options
     double rate_add = 0;
@@ -122,12 +122,12 @@ struct ParsedConfig {
     EntityTypeVector entity_types;
     Add_Rates add_rates;
 
-    bool enable_logging = true; // TODO: Add to infile
 
     std::vector<PreferenceClass> pref_classes;
     std::vector<Ideology> ideologies;
 
     bool enable_interactive_mode = false;
+    bool enable_lua_hooks = false;
 
     // command-line config options
     bool handle_ctrlc = false;

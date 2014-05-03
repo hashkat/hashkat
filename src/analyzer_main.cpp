@@ -313,7 +313,7 @@ struct Analyzer {
             rand_num -= entity_types[et].prob_add;
         }
 
-        log_add(state, id);
+        lua_hook_add(state, id);
 
         if (config.use_barabasi){
              analyzer_follow_entity(state, id, creation_time);
@@ -454,7 +454,7 @@ struct Analyzer {
 		bool had_follow = e_lost_follower.following_set.remove(state, id_unfollowed);
 		DEBUG_CHECK(had_follow, "unfollow: Did not exist in follow list");
 
-		log_unfollow(state, id_lost_follower, id_unfollowed);
+		lua_hook_unfollow(state, id_lost_follower, id_unfollowed);
 		RECORD_STAT(state, e_lost_follower.entity_type, n_unfollows);
 
 		return true;
@@ -704,7 +704,7 @@ void analyzer_main(AnalysisState& state) {
     state.analyzer = NULL;
 
     signal_handlers_uninstall(state);
-    log_exit(state);
+    lua_hook_exit(state);
 
     // Print summary time:
     printf("'analyzer_main' took %.2f milliseconds.\n", timer.get_microseconds() / 1000.0);

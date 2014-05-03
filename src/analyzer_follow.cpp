@@ -84,7 +84,7 @@ struct AnalyzerFollow {
            if (config.stage1_unfollow) {
                update_chatiness(A, id_target);
            }
-           log_follow(state, id_actor, id_target);
+           lua_hook_follow(state, id_actor, id_target);
            return true;
        }
        return false;

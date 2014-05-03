@@ -44,7 +44,7 @@ struct InteractiveModeLuaState {
         if (L == NULL) {
             L = init_lua_state();
             luawrap::dofile(L, "./.libs/interactive_mode.lua");
-            luawrap::dofile(L, "./INTERACT.lua");
+            luawrap::dofile(L, s.config.lua_script.c_str());
         }
         state = &s;
     }

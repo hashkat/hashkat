@@ -3,7 +3,8 @@
 # >> analysis:
 #
 # Attributes for controlling the duration and type of analysis.
-#
+#  initial_entities:
+#    The initial entity amount to create.
 #  max_entities: 
 #    The maximum amount of entities for which to allocate. Once the network
 #    has grown to this amount, the entity add rate will artifically drop to 0.
@@ -15,10 +16,13 @@
 #    The maximum real-time for the simulation. Once it has elapsed, the simulation halts.
 #    Note that interacting with the simulation DOES detract from this time.
 #    In seconds.
-#  initial_entities:
-#    The initial entity amount to create.
 #  enable_interactive_mode:
 #    Whether interactive mode should be triggered by Ctrl+C or ./scripts/stop.sh (triggers SIGUSR1).
+#  enable_lua_hooks:
+#    Whether to use runtime Lua functions that can react to events. **Slow!**
+#    Hooks are availble for running on every tweet, retweet, follow, etc.
+#  lua_script:
+#    Script to use to define the behaviour of interactive mode as well as lua hooks.
 #  use_barabasi: 
 #    If true, the global follow rate is ignored. Follow thresholds not needed.
 #  use_random_time_increment: 
@@ -44,6 +48,10 @@ analysis:
     hour
   enable_interactive_mode:
     true
+  enable_lua_hooks: # Defined in same file as interactive_mode. Can slow down simulation considerably.
+    false
+  lua_script: # Defines behaviour of interactive mode & lua hooks
+    INTERACT.lua
   use_barabasi: 
     false 
   use_random_time_increment: 

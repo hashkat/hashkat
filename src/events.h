@@ -54,12 +54,12 @@ struct Add_Rates {
 
 struct AnalysisState; // Forward declare
 
-// Defined in events.cpp, handled by INTERACT.lua.
+// Defined in events.cpp, handled by specified lua_script, eg INTERACT.lua.
 
-void log_follow(AnalysisState& state, int id_follower, int id_followed);
-void log_add(AnalysisState& state, int id_follower);
-void log_unfollow(AnalysisState& state, int id_follower, int id_followed);
-void log_tweet(AnalysisState& state, int id_follower, int id_followed);
-void log_exit(AnalysisState& state);
+void lua_hook_follow(AnalysisState& state, int id_follower, int id_followed);
+void lua_hook_add(AnalysisState& state, int id_follower);
+void lua_hook_unfollow(AnalysisState& state, int id_follower, int id_followed);
+void lua_hook_tweet(AnalysisState& state, int id_follower, int id_followed);
+void lua_hook_exit(AnalysisState& state);
 
 #endif

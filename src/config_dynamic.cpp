@@ -158,6 +158,8 @@ static void parse_analysis_configuration(ParsedConfig& config, const Node& node)
     parse(node, "use_followback", config.use_followback);
     parse(node, "use_random_time_increment", config.use_random_time_increment);
     parse(node, "enable_interactive_mode", config.enable_interactive_mode);
+    parse(node, "enable_lua_hooks", config.enable_lua_hooks);
+    parse(node, "lua_script", config.lua_script);
     config.follow_model = parse_follow_model(node);
     const Node& follow_model = node["model_weights"];
     config.model_weights = parse_follow_weights(follow_model);
