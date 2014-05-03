@@ -35,6 +35,8 @@ class Configuration:
                 follow_model, 
                 use_tweeting, 
                 use_retweeting, 
+                use_follow, 
+                use_tweet_follow, 
                 use_unfollow, 
                 use_followback,
                 use_saving,
@@ -44,6 +46,8 @@ class Configuration:
             self.follow_model = follow_model
             self.use_tweeting = use_tweeting 
             self.use_retweeting = use_retweeting 
+            self.use_follow = use_follow
+            self.use_tweet_follow = use_tweet_follow 
             self.use_unfollow = use_unfollow 
             self.use_followback = use_followback
             self.use_saving = use_saving
@@ -61,35 +65,39 @@ class Configuration:
         add_rate = "+Add Rate: on" if self.use_add_rate else "-Add Rate: OFF"
 
         return "[Follow-model=%s, %s %s %s %s %s, Initial=%d, Max=%d]" % (
-            follow_model, 
+            self.follow_model, 
             tweet, retweet, followback, saving, add_rate,
             self.initial_entities, MAX_ENTITIES
         )
 
-FOLLOW_MODELS = ['barabasi', 'random', 'preferential', 'entity', 'preferential-entity', 'hashtag', 'twitter']
+FOLLOW_MODELS = ['none', 'barabasi', 'random', 'preferential', 'entity', 'preferential-entity', 'hashtag', 'twitter']
 
 configurations = []
 
 for follow_model in FOLLOW_MODELS:
-#    for use_tweeting in [False,True]: # TODO implement tweet toggle
-#        for use_retweeting in [False,True]: # TODO implement retweet toggle
-            for use_unfollow in [False,True]:
-                for use_followback in [False,True]:
-#                    for use_saving in [False,True]: #TODO implement saving tests
-                        for use_hashtags in [False,True]:
-                            for use_add_rate in [False,True]:
-                                configurations.append(
-                                    Configuration(
-                                        follow_model, 
-                                        True, #use_tweeting, 
-                                        True, #use_retweeting, 
-                                        use_unfollow,
-                                        use_followback,
-                                        False, #use_saving,
-                                        use_hashtags,
-                                        use_add_rate
-                                    )
-                                )
+    for use_tweeting in [False,True]: 
+        for use_retweeting in [False,True]: 
+            for use_tweet_follow in [False,True]: 
+                for use_follow in [False,True]: 
+                    for use_unfollow in [False,True]:
+                        for use_followback in [False,True]:
+        #                    for use_saving in [False,True]: #TODO implement saving tests
+                                for use_hashtags in [False,True]:
+                                    for use_add_rate in [False,True]:
+                                        configurations.append(
+                                            Configuration(
+                                                follow_model, 
+                                                use_tweeting, 
+                                                use_retweeting,
+                                                use_follow,
+                                                use_tweet_follow,
+                                                use_unfollow,
+                                                use_followback,
+                                                False, #use_saving,
+                                                use_hashtags,
+                                                use_add_rate
+                                            )
+                                        )
 
 #for config in configurations:
 #    print(config.description())
@@ -101,11 +109,15 @@ for follow_model in FOLLOW_MODELS:
 def config_to_yaml(C):
     follow_model = C.follow_model
 
-    if follow_model == 'barabasi':
+    if follow_model == 'barabasi' or follow_model == 'none':
         follow_model = 'random'
 
     use_hashtag_probability = 1 if C.use_hashtags else 0
     add_rate = 0.1 if C.use_add_rate else 0
+    follow_weight = 0 if C.follow_model == 'none' else 5
+    retweet_rate = 0 if C.use_retweeting else 0
+    tweet_follow_probability = 0.5 if C.use_tweet_follow else 0
+    followback_probability = 0.44 if C.use_followback else 0
 
     return {
       "analysis": {
@@ -123,10 +135,10 @@ def config_to_yaml(C):
           "preferential": 0.2,
           "entity": 0.2,
           "preferential_entity": 0.2,
-          "hashtag": 0.2
+          "hashtag": 0.2 if C.use_hashtags else 0
         },
         "stage1_unfollow": C.use_unfollow,
-        "unfollow_tweet_rate": 10,
+        "unfollow_tweet_rate": 0.1,
         "use_hashtag_probability": use_hashtag_probability,
       },
       "rates": {
@@ -134,12 +146,73 @@ def config_to_yaml(C):
           "function": "constant",
           "value": add_rate
         }
-      }
+      },
+      "preference_classes": [
+        {
+          "name": "StandardPref",
+          "tweet_transmission": {
+            "plain": {
+              "Standard": retweet_rate,
+              "Celebrity": retweet_rate,
+              "else": retweet_rate
+            },
+            "different_ideology": {
+              "Standard": retweet_rate,
+              "Celebrity": retweet_rate,
+              "else": retweet_rate
+            },
+            "same_ideology": {
+              "Standard": retweet_rate,
+              "Celebrity": retweet_rate,
+              "else": retweet_rate
+            },
+            "humourous": {
+              "Standard": retweet_rate, 
+              "Celebrity": retweet_rate,
+              "else": retweet_rate
+            }
+          },
+          "follow_reaction_prob": tweet_follow_probability 
+        },
+       ],
+       "entities": [
+        {
+          "name": "Standard",
+          "weights": {
+            "add": 80,
+            "follow": 5,
+            "tweet_type": {
+              "ideological": 1,
+              "plain": 1,
+              "musical": 1,
+              "humourous": 1
+            }
+          },
+          "followback_probability": followback_probability,
+          "hashtag_follow_options": {
+            "care_about_region": C.use_hashtags,
+            "care_about_ideology": C.use_hashtags
+          },
+          "rates": {
+            "follow": {
+              "function": "constant",
+              "value": 0.1 if C.use_follow else 0
+            },
+            "tweet": {
+              "function": "constant",
+              "value": 0.01 if C.use_tweeting else 0
+            }
+          }
+        }
+      ]
     }
 
 #################################################################
 # Run tests, and gather statistics.
 #################################################################
+
+# Clear old logs
+call(["bash", "clear_logs.sh"])
 
 def run_config_as_test(test_id, C):
     dict = config_to_yaml(C)

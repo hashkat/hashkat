@@ -262,7 +262,9 @@ struct Analyzer {
                     break;
                 }
             }
-        	step_analysis();
+        	if (!step_analysis()) {
+        	    break;
+        	}
         }
         if (config.save_network_on_timeout) {
             save_network_state();
@@ -469,8 +471,9 @@ struct Analyzer {
 
     // Performs one step of the analysis routine.
     // Takes old time, returns new time
-    void step_analysis() {
+    bool step_analysis() {
         PERF_TIMER();
+
         /*
          * Our step is wrapped in a loop to enabling restarting of events.
          * Often, there will be no way to resolve an event failure at the moment it occurs.
@@ -480,7 +483,22 @@ struct Analyzer {
          * Luckily, this should be (relatively) rare.
          */
         bool complete = false;
+        const int MAX_TRIES = 1000;
+        int tries = 0;
         while (!complete) {
+            tries++;
+
+            // Bail conditions. We opt to inform the user of a stagnant network
+            // rather than trying continuously.
+            if (stats.event_rate == 0) {
+                cout << "ANAMOLY: Stagnant network! Nothing to do. Exitting." << endl;
+                return false;
+            }
+            if (tries > MAX_TRIES) {
+                cout << "ANAMOLY: Stagnant network! Restarted event " << tries << "times. Exitting." << endl;
+                return false;
+            }
+
             double r = rng.rand_real_not0(); // get the first number with-in [0,1).
             /*if (!retweet_checks() && stats.n_retweets != 0) {
                 cout << "\n------Error in retweets-------\n";
@@ -515,6 +533,8 @@ struct Analyzer {
         stats.n_steps++;
         //update the rates if n_entities has changed
         analyzer_rate_update(state);
+
+        return true;
     }
 
     /* Step our KMC simulation proportionally to the global event rate. */

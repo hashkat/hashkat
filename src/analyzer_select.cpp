@@ -93,6 +93,9 @@ struct AnalyzerSelect {
                     if (first_month) {
                         int entity = -1;
                         if (state.n_months() == 0) {
+                            if (et.new_entities == 0) {
+                                return -1;
+                            }
                             entity = et.entity_list[rng.rand_int(et.new_entities)];
                             DEBUG_CHECK(network.is_valid_id(entity), "Invalid entity selection!");
                         } else {
