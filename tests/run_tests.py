@@ -71,21 +71,21 @@ FOLLOW_MODELS = ['barabasi', 'random', 'preferential', 'entity', 'preferential-e
 configurations = []
 
 for follow_model in FOLLOW_MODELS:
-    for use_tweeting in [False,True]:
-        for use_retweeting in [False,True]:
+#    for use_tweeting in [False,True]: # TODO implement tweet toggle
+#        for use_retweeting in [False,True]: # TODO implement retweet toggle
             for use_unfollow in [False,True]:
                 for use_followback in [False,True]:
-                    for use_saving in [False,True]:
+#                    for use_saving in [False,True]: #TODO implement saving tests
                         for use_hashtags in [False,True]:
                             for use_add_rate in [False,True]:
                                 configurations.append(
                                     Configuration(
                                         follow_model, 
-                                        use_tweeting, 
-                                        use_retweeting, 
+                                        True, #use_tweeting, 
+                                        True, #use_retweeting, 
                                         use_unfollow,
                                         use_followback,
-                                        use_saving,
+                                        False, #use_saving,
                                         use_hashtags,
                                         use_add_rate
                                     )
@@ -148,7 +148,7 @@ def run_config_as_test(test_id, C):
     f.write(text)
     f.close()
 
-    code = call(["bash", "run_test.sh", test_id, C.description(), 'TEST.yaml', RUN_SH_FLAGS])
+    code = call(["bash", "wrapper.sh", test_id, C.description(), 'TEST.yaml', RUN_SH_FLAGS])
 
 num = 1
 print("Running " + str(len(configurations)) + " tests.")

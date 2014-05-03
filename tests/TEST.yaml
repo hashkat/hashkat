@@ -1,17 +1,17 @@
 analysis:
   enable_interactive_mode: false
-  follow_model: random
+  follow_model: preferential
   initial_entities: 1000
   max_entities: 1000
   max_real_time: hour
   max_time: minute/2
   model_weights: {entity: 0.2, hashtag: 0.2, preferential: 0.2, preferential_entity: 0.2,
     random: 0.2}
-  stage1_unfollow: true
+  stage1_unfollow: false
   unfollow_tweet_rate: 10
-  use_barabasi: true
-  use_followback: false
-  use_hashtag_probability: 1
+  use_barabasi: false
+  use_followback: true
+  use_hashtag_probability: 0
   use_random_time_increment: false
 rates:
   add: {function: constant, value: 0}
