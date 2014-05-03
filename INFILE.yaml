@@ -3,9 +3,9 @@
 
 analysis:
   initial_entities:
-    100
+    50
   max_entities: 
-    1001
+    100001
   max_time: 
     hour
   max_real_time: 
@@ -13,11 +13,11 @@ analysis:
   enable_interactive_mode:
     true
   use_barabasi: 
-    true 
+    false 
   use_random_time_increment: 
     true
   use_followback: 
-    true
+    false
   follow_model: # See notes in DEFAULT.yaml
     random
   # model weights ONLY necessary for follow method 'twitter'    
