@@ -139,12 +139,12 @@ struct EntityStats {
 
 struct EntityType {
     std::string name;
-    double prob_add; // When a entity is added, how likely is it that it is this entity type ?
-    double prob_follow; // When a entity is followed, how likely is it that it is this entity type ?
-    double prob_followback;
-    int new_entities; // the number of new users in this entity type
+    double prob_add = 0; // When a entity is added, how likely is it that it is this entity type ?
+    double prob_follow = 0; // When a entity is followed, how likely is it that it is this entity type ?
+    double prob_followback = 0;
+    int new_entities = 0; // the number of new users in this entity type
     Rate_Function RF[number_of_diff_events];
-    bool care_about_region, care_about_ideology;
+    bool care_about_region = false, care_about_ideology = false;
     // number of entities for each discrete value of the rate(time)
     std::vector<int> entity_cap;
     // list of entity ID's
@@ -156,11 +156,6 @@ struct EntityType {
     double tweet_type_probs[N_TWEET_TYPES];
 
     EntityStats stats;
-
-    EntityType() {
-        new_entities = 0;
-        prob_add = prob_follow = prob_followback = 0;
-    }
 
     READ_WRITE(rw) {
         rw << name << prob_add << prob_follow << prob_followback;
