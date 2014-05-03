@@ -44,8 +44,6 @@
 #include "events.h"
 #include "tweets.h"
 
-//[[AD -- TEMPORARY NOTE]] TweetBank was moved to tweets.h
-
 struct Network {
     Entity* entities; //** This is a pointer - used to create a dynamic array
     int n_entities, max_entities;

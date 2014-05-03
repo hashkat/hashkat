@@ -6,8 +6,6 @@ INFILE-generated.yaml
 Makefile
 DATA_vs_TIME
 luawrap_tests
-*.gexf
-*.yaml-generated
 cmake_install.cmake
 CTestTestfile.cmake
 graph*
@@ -28,5 +26,10 @@ output/*
 *.sav
 *.dat
 *.xyz
+*.json
+*.gexf
+*.yaml-generated
 *.csv
 yaml-cpp.pc
+tests/pass_logs
+tests/fail_logs

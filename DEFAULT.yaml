@@ -7,13 +7,14 @@
 #  max_entities: 
 #    The maximum amount of entities for which to allocate. Once the network
 #    has grown to this amount, the entity add rate will artifically drop to 0.
-#    AD: TEMPORARY NOTE Simulation no longer halts at 'max_entities'.
 #  max_time:
 #    The maximum simulation-time for the simulation. Once it has elapsed, the simulation halts.
 #    Interacting with the simulation does not alter the simulation-time.
+#    In seconds.
 #  max_real_time:
 #    The maximum real-time for the simulation. Once it has elapsed, the simulation halts.
 #    Note that interacting with the simulation DOES detract from this time.
+#    In seconds.
 #  initial_entities:
 #    The initial entity amount to create.
 #  enable_interactive_mode:
