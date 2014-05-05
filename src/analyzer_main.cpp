@@ -704,6 +704,11 @@ bool analyzer_create_entity(AnalysisState& state) {
     return state.analyzer->action_create_entity();
 }
 
+bool analyzer_sim_time_check(AnalysisState& state) {
+    ASSERT(!state.analyzer.empty(), "Analysis is not active!");
+    return state.analyzer->sim_time_check();
+}
+
 bool analyzer_real_time_check(AnalysisState& state) {
     ASSERT(!state.analyzer.empty(), "Analysis is not active!");
     return state.analyzer->real_time_check();

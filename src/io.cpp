@@ -65,6 +65,8 @@ void output_network_statistics(AnalysisState& state) {
             cout << "\nSimulation Completed: desired entity amount reached\n";
         } else if (!analyzer_real_time_check(state)) {
             cout << "\nSimulation Completed: desired wall-clock time reached\n";
+        } else if (!analyzer_sim_time_check(state)) {
+            cout << "\nSimulation Completed: desired simulation time reached\n";
         } else {
             cout << "\nSimulation Completed: stagnant network (ie, no entity has anything to do) \n";
         }

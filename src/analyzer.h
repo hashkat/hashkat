@@ -257,6 +257,7 @@ void analyzer_rate_update(AnalysisState& state);
 // Follow a specific user
 bool analyzer_handle_follow(AnalysisState& state, int id_actor, int id_target);
 
+bool analyzer_sim_time_check(AnalysisState& state);
 bool analyzer_real_time_check(AnalysisState& state);
 bool analyzer_follow_entity(AnalysisState& state, int entity, double time_of_follow);
 
