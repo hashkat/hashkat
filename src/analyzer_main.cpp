@@ -483,7 +483,7 @@ struct Analyzer {
          * Luckily, this should be (relatively) rare.
          */
         bool complete = false;
-        const int MAX_TRIES = 1000;
+        const int MAX_TRIES = 100000;
         int tries = 0;
         while (!complete) {
             tries++;
@@ -700,8 +700,13 @@ struct Analyzer {
 };
 
 bool analyzer_create_entity(AnalysisState& state) {
-    ASSERT(state.analyzer != NULL, "Analysis is not active!");
+    ASSERT(!state.analyzer.empty(), "Analysis is not active!");
     return state.analyzer->action_create_entity();
+}
+
+bool analyzer_real_time_check(AnalysisState& state) {
+    ASSERT(!state.analyzer.empty(), "Analysis is not active!");
+    return state.analyzer->real_time_check();
 }
 
 // Run a network simulation using the given input file's parameters
@@ -710,18 +715,14 @@ void analyzer_main(AnalysisState& state) {
     // from other files, during analysis.
 
     Timer timer;
-    Analyzer analyzer(state);
-    state.analyzer = &analyzer; // Install back-pointer
+    state.analyzer.set(new Analyzer(state)); // Install back-pointer
 
     if (state.config.handle_ctrlc) {
         signal_handlers_install(state);
     }
 
     // >> The main analysis function:
-    analyzer.main();
-
-    // Make our back-pointer is no longer accessible, as our object will go out of scope
-    state.analyzer = NULL;
+    state.analyzer->main();
 
     signal_handlers_uninstall(state);
     lua_hook_exit(state);

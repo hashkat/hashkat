@@ -39,4 +39,5 @@ output:
     false
   save_file: # File to save to, and load from
     network_state.sav
-
+  verbose:
+    false

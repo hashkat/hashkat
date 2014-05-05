@@ -30,8 +30,9 @@
 #include <vector>
 
 #include <lcommon/Timer.h>
+#include <lcommon/smartptr.h>
 
-#include "dependencies/mtwist.h"
+#include <dependencies/mtwist.h>
 
 #include "config_dynamic.h"
 #include "network.h"
@@ -97,9 +98,9 @@ struct AnalysisState {
     AnalysisState& operator=( const AnalysisState& ) = delete; // non copyable
 
     // A back-pointer to the Analyzer structure.
-    // NULL if analysis is not active!
+    // Empty if analysis is has not started!
     // Used to call Analyzer methods outside of analyzer_main.cpp.
-    Analyzer* analyzer;
+    smartptr<Analyzer> analyzer;
 
     // The current simulation time
     double time;
@@ -170,7 +171,6 @@ struct AnalysisState {
 
     AnalysisState(const ParsedConfig& config, int seed) :
             config(config), tweet_bank(*this){
-        analyzer = NULL;
         n_follows = 0;
         r_follow_norm = end_time = 0;
 
@@ -257,6 +257,7 @@ void analyzer_rate_update(AnalysisState& state);
 // Follow a specific user
 bool analyzer_handle_follow(AnalysisState& state, int id_actor, int id_target);
 
+bool analyzer_real_time_check(AnalysisState& state);
 bool analyzer_follow_entity(AnalysisState& state, int entity, double time_of_follow);
 
 // Implements a follow-back

@@ -63,8 +63,10 @@ void output_network_statistics(AnalysisState& state) {
             cout << "\nSimulation Completed: desired duration reached\n";
         } else if (network.n_entities >= C.max_entities) {
             cout << "\nSimulation Completed: desired entity amount reached\n";
-        } else {
+        } else if (!analyzer_real_time_check(state)) {
             cout << "\nSimulation Completed: desired wall-clock time reached\n";
+        } else {
+            cout << "\nSimulation Completed: stagnant network (ie, no entity has anything to do) \n";
         }
         cout << "\nCreating analysis files -- press ctrl-c multiple times to abort ... \n";
     }
