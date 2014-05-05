@@ -219,7 +219,8 @@ struct Analyzer {
     }
 
     bool real_time_check() {
-        const int SECOND_TO_MICROSECOND = 1000LL * 60LL;
+        const int SECOND_TO_MICROSECOND = 1000000LL;
+        cout << max_sim_timer.get_microseconds() << "\t" << config.max_real_time * SECOND_TO_MICROSECOND << "\n";
         return (max_sim_timer.get_microseconds() < (config.max_real_time * SECOND_TO_MICROSECOND));
     }
     void interrupt_reset() {
