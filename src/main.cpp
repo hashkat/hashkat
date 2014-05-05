@@ -69,6 +69,8 @@ const char* get_var_arg(int argc, char** argv, std::string test, const char* def
 int test_main(int argc, char** argv); // Defined in tests/main.cpp
 
 int main(int argc, char** argv) {
+    std::locale loc("");
+    std::cout.imbue(loc);
 
     if (has_flag(argc, argv, "--stdout-nobuffer")) {
         // Important mainly for colorization tool

@@ -5,11 +5,11 @@ analysis:
   initial_entities:
     50
   max_entities: 
-    100001
+    10000001
   max_time: 
-    hour
+    year
   max_real_time: 
-    hour
+    24*hour
   enable_interactive_mode:
     true
   use_barabasi: 
@@ -41,3 +41,8 @@ output:
     network_state.sav
   verbose:
     false
+
+rates:
+  add: {function: constant, value: 500.0}
+
+
