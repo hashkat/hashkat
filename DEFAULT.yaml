@@ -257,21 +257,21 @@ preference_classes:
   # preference class:
    tweet_transmission: 
       plain: # Also applies to musical tweets
-        Standard: 10
-        Celebrity: 10
-        else: 10
+        Standard: 0
+        Celebrity: 0
+        else: 0
       different_ideology:
-        Standard: 10.0
-        Celebrity: 10.0
-        else: 10.0
+        Standard: 0.0
+        Celebrity: 0.0
+        else: 0.0
       same_ideology:
-        Standard: 10.0
-        Celebrity: 10.0
-        else: 10.0
+        Standard: 0.0
+        Celebrity: 0.0
+        else: 0.0
       humourous:
-        Standard: 10.0
-        Celebrity: 10.0
-        else: 10.0
+        Standard: 0.0
+        Celebrity: 0.0
+        else: 0.0
    # Probability that we will follow as a reaction:
    follow_reaction_prob:
       0.5

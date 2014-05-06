@@ -543,14 +543,14 @@ struct Analyzer {
 
         double prev_time = time;
         double prev_integer = floor(time);
-        double increment = -log(rng.rand_real_not0()) / stats.event_rate;
         if (config.use_random_time_increment) {
             // increment by random time
+            double increment = -log(rng.rand_real_not0()) / stats.event_rate;
             time += increment;
         } else {
             time += 1.0 / stats.event_rate;
         }
-        ASSERT(STATIC_TIME < time, "Fail");
+        ASSERT(STATIC_TIME <= time, "Fail");
         STATIC_TIME = time;
         if (config.output_stdout_summary && (floor(time) > prev_integer || config.output_verbose)) {
           output_summary_stats();
