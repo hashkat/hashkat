@@ -147,10 +147,11 @@ static vector<double> parse_follow_weights(const Node& node) {
 }
 
 static void truncate_max_sim_time(double& max_sim_time) {
-    const int MAX_YEARS = 25;
-    const int SECONDS_TO_YEAR = 60 * 24 * 365;
+    const double MAX_YEARS = 25;
+    const double SECONDS_TO_YEAR = 60 * 60 * 24 * 365;
     if (max_sim_time > MAX_YEARS * SECONDS_TO_YEAR) {
-        cout << "INFO: Simulation time given is more than " << MAX_YEARS << " years. Truncating.\n";
+        cout << "INFO: Simulation time given (" << (max_sim_time / SECONDS_TO_YEAR) << " years)";
+        cout << " is more than " << MAX_YEARS << " years. Truncating.\n";
         max_sim_time = MAX_YEARS * SECONDS_TO_YEAR;
     }
 }
