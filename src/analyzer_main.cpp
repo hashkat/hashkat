@@ -205,7 +205,7 @@ struct Analyzer {
      * Returns end-time. */
     double main() {
         if (config.load_network_on_startup && file_exists(config.save_file)) {
-            load_network_state();
+            load_network_state(config.save_file.c_str());
         } else {
             lua_hook_new_network(state);
         }
@@ -231,8 +231,9 @@ struct Analyzer {
         return (SIGNAL_ATTEMPTS == 0);
     }
 
-    void load_network_state() {
-        DataReader reader(state, config.save_file.c_str());
+    void load_network_state(const char* fname) {
+        printf("LOADING NETWORK STATE FROM %s\n", fname);
+        DataReader reader(state, fname);
         string previous_config_file;
         reader << previous_config_file;
         if (!config.ignore_load_config_check && previous_config_file != config.entire_config_file) {
@@ -244,9 +245,8 @@ struct Analyzer {
         lua_hook_load_network(state);
     }
 
-    void save_network_state() {
+    void save_network_state(const char* fname) {
         lua_hook_save_network(state);
-        const char* fname = config.save_file.c_str();
         printf("SAVING NETWORK STATE TO %s\n", fname);
         DataWriter writer(state, fname);
         writer << config.entire_config_file;
@@ -274,7 +274,7 @@ struct Analyzer {
         	}
         }
         if (config.save_network_on_timeout) {
-            save_network_state();
+            save_network_state(config.save_file.c_str());
         }
     }
 
@@ -500,11 +500,11 @@ struct Analyzer {
             // Bail conditions. We opt to inform the user of a stagnant network
             // rather than trying continuously.
             if (stats.event_rate == 0) {
-                cout << "ANAMOLY: Stagnant network! Nothing to do. Exitting." << endl;
+                cout << "ANAMOLY: Stagnant network! Nothing to do. Exiting." << endl;
                 return false;
             }
             if (tries > MAX_TRIES) {
-                cout << "ANAMOLY: Stagnant network! Restarted event " << tries << "times. Exitting." << endl;
+                cout << "ANAMOLY: Stagnant network! Restarted event " << tries << " times. Exiting." << endl;
                 return false;
             }
 
@@ -719,6 +719,16 @@ bool analyzer_create_entity(AnalysisState& state) {
 bool analyzer_sim_time_check(AnalysisState& state) {
     ASSERT(!state.analyzer.empty(), "Analysis is not active!");
     return state.analyzer->sim_time_check();
+}
+
+void analyzer_save_network_state(AnalysisState& state, const char* fname) {
+    ASSERT(!state.analyzer.empty(), "Analysis is not active!");
+    state.analyzer->save_network_state(fname);
+}
+
+void analyzer_load_network_state(AnalysisState& state, const char* fname) {
+    ASSERT(!state.analyzer.empty(), "Analysis is not active!");
+    state.analyzer->load_network_state(fname);
 }
 
 bool analyzer_real_time_check(AnalysisState& state) {

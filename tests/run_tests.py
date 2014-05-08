@@ -16,7 +16,7 @@ from subprocess import call
 #################################################################
 
 MAX_ENTITIES = 1000
-MAX_ANALYSIS_STEPS = 10000 # Increase for longer test simulation duration
+MAX_ANALYSIS_STEPS = 100000# Increase for longer test simulation duration
 ANALYSIS_STEP_SAVE_POINT = MAX_ANALYSIS_STEPS * 3/4 # For saving tests, when should we save to disk?
 MAX_REAL_TIME = "hour" # Increase for longer test time allowance
 RAND_TIME_INCR = False
@@ -122,7 +122,7 @@ def config_to_yaml(C):
         "max_entities": MAX_ENTITIES,
         "max_time": "unlimited",
         "max_real_time": MAX_REAL_TIME,
-        "max_analysis_step": MAX_ANALYSIS_STEPS,
+        "max_analysis_steps": MAX_ANALYSIS_STEPS,
         "enable_interactive_mode": False,
         "enable_lua_hooks": True,
         # The TEST_INTERACT.lua file gives extra control over the test behaviour.
@@ -223,7 +223,7 @@ def run_config_as_test(test_id, C):
     f.write(text)
     f.close()
 
-    code = call(["bash", "wrapper.sh", test_id, C.description(), 'TEST.yaml', RUN_SH_FLAGS])
+    code = call(["bash", "wrapper.sh", test_id, C.description(), 'TEST.yaml', RUN_SH_FLAGS, str(MAX_ANALYSIS_STEPS)])
 
 num = 1
 print("Running " + str(len(configurations)) + " tests.")

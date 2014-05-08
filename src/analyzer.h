@@ -260,6 +260,8 @@ bool analyzer_handle_follow(AnalysisState& state, int id_actor, int id_target);
 
 bool analyzer_sim_time_check(AnalysisState& state);
 bool analyzer_real_time_check(AnalysisState& state);
+void analyzer_save_network_state(AnalysisState& state, const char* fname);
+void analyzer_load_network_state(AnalysisState& state, const char* fname);
 bool analyzer_follow_entity(AnalysisState& state, int entity, double time_of_follow);
 
 // Implements a follow-back

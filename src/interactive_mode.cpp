@@ -116,11 +116,22 @@ struct InteractiveModeBindings {
         G["entity"].bind_function(entity);
         G["create_entity"].bind_function(create_entity);
         G["entities"].bind_function(entities);
+
+        G["save_network_state"].bind_function(save_network_state);
+        G["load_network_state"].bind_function(load_network_state);
     }
 
     /* Interrupt menu functions: */
     static int n_followers(int id) {
         return state->network.n_followers(id);
+    }
+
+    static void save_network_state(const char* fname) {
+        analyzer_save_network_state(*state, fname);
+    }
+
+    static void load_network_state(const char* fname) {
+        analyzer_load_network_state(*state, fname);
     }
 
     static LuaValue entity(int id) {
