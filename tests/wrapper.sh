@@ -56,9 +56,17 @@ function run_test() {
     elif grep -q "ANAMOLY: Stagnant network!" "$FAIL_LOG"; then
         echo "$test_id$SUFFIX STAGNANT. Finished with nothing to do! This may be expected if many features are off. ($description)"
         mv $FAIL_LOG $STAGNANT_LOG
+        if $HASHKAT_CREATE_OBSERVABLES ; then
+            echo "Not attempting saving & loading tests on stagnant network."
+            exit # We can get inconsistent results with stagnant networks
+        fi
     else
         echo "$test_id$SUFFIX passed ($description)"
         mv $FAIL_LOG $PASS_LOG
+        if $HASHKAT_CREATE_OBSERVABLES ; then
+            echo "Not attempting saving & loading tests on failed network."
+            exit # We can get inconsistent results with failed networks
+        fi
     fi
 }
 

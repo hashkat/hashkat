@@ -10,7 +10,6 @@ function on_load_network(id)
 end
 
 function on_step_analysis(id) 
-    print "Step... step... step."
 end
 
 function on_add(id) 

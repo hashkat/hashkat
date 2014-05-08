@@ -21,7 +21,7 @@ entities:
   hashtag_follow_options: {care_about_ideology: false, care_about_region: false}
   name: Standard
   rates:
-    follow: {function: constant, value: 0}
+    follow: {function: constant, value: 0.1}
     tweet: {function: constant, value: 0}
   weights:
     add: 80

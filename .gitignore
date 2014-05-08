@@ -34,3 +34,4 @@ yaml-cpp.pc
 tests/pass_logs
 tests/fail_logs
 tests/stagnant_logs
+tests/observables

@@ -146,10 +146,21 @@ static vector<double> parse_follow_weights(const Node& node) {
     return weights;
 }
 
+static void truncate_max_sim_time(double& max_sim_time) {
+    const int MAX_YEARS = 25;
+    const int SECONDS_TO_YEAR = 60 * 24 * 365;
+    if (max_sim_time > MAX_YEARS * SECONDS_TO_YEAR) {
+        cout << "INFO: Simulation time given is more than " << MAX_YEARS << " years. Truncating.\n";
+        max_sim_time = MAX_YEARS * SECONDS_TO_YEAR;
+    }
+}
+
 static void parse_analysis_configuration(ParsedConfig& config, const Node& node) {
     parse(node, "max_entities", config.max_entities);
     parse(node, "initial_entities", config.initial_entities);
     parse(node, "max_time", config.max_sim_time);
+    truncate_max_sim_time(config.max_sim_time);
+
     parse(node, "max_real_time", config.max_real_time);
 
     // Parse max analysis steps. Since YAML++ doesn't support 'long long' we store 
