@@ -5,6 +5,7 @@
 #include "tests.h"
 
 #include "tweets.h"
+#include "RateTree.h"
 
 using namespace std;
 

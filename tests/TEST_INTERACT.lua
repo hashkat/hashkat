@@ -62,28 +62,32 @@ function on_tweet(id_tweeter, id_tweet)
 end
 
 function on_exit() 
+    local obj = {
+        n_entities = n_entities,
+        max_entities = max_entities,
+        rate_total = rate_total,
+        rate_add = rate_add,
+        rate_follow = rate_follow,
+        rate_retweet = rate_retweet,
+        rate_tweet = rate_tweet,
+        analysis_step = analysis_step
+    }
+
     if create_observables then
-        save_json("tests/TEST_observables.json", {
-            n_entities = n_entities,
-            max_entities = max_entities,
-            rate_total = rate_total,
-            rate_add = rate_add,
-            rate_follow = rate_follow,
-            rate_retweet = rate_retweet,
-            rate_tweet = rate_tweet,
-            analysis_step = analysis_step
-        })
+        save_json("tests/TEST_observables.json", obj)
     elseif load_network then
+        pretty_print("Previous object:", obj)
         -- We have loaded the network. Test that all our observables are the same.
-        local obj = load_json("tests/TEST_observables.json")
-        assert(obj.n_entities == n_entities)
-        assert(obj.max_entities == max_entities)
-        assert(obj.rate_total == rate_total)
-        assert(obj.rate_add == rate_add)
-        assert(obj.rate_follow == rate_follow)
-        assert(obj.rate_retweet == rate_retweet)
-        assert(obj.rate_tweet == rate_tweet)
-        assert(obj.analysis_step == analysis_step)
+        local loaded = load_json("tests/TEST_observables.json")
+        pretty_print("Post-loading object:", loaded)
+        assert(loaded.n_entities == n_entities)
+        assert(loaded.max_entities == max_entities)
+        assert(loaded.rate_total == rate_total)
+        assert(loaded.rate_add == rate_add)
+        assert(loaded.rate_follow == rate_follow)
+        assert(loaded.rate_retweet == rate_retweet)
+        assert(loaded.rate_tweet == rate_tweet)
+        assert(loaded.analysis_step == analysis_step)
     end
 end
 
