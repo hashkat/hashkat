@@ -74,7 +74,7 @@ configurations = []
 # Saving is implemented by saving numbers into 'observables'
 # and comparing the corresponding numbers when implementing saving
 for follow_model in FOLLOW_MODELS:
-    for use_tweeting in [False,True]: 
+    for use_tweeting in [True, False]: 
         for use_retweeting in [False,True]: 
             for use_tweet_follow in [False,True]: 
                 for use_follow in [False,True]: 
@@ -214,7 +214,7 @@ def config_to_yaml(C):
 #################################################################
 
 # Clear old logs
-call(["bash", "clear_logs.sh"])
+call(["bash", "clean_tests.sh"])
 
 def run_config_as_test(test_id, C):
     dict = config_to_yaml(C)
@@ -223,10 +223,11 @@ def run_config_as_test(test_id, C):
     f.write(text)
     f.close()
 
-    code = call(["bash", "wrapper.sh", test_id, C.description(), 'TEST.yaml', RUN_SH_FLAGS, str(MAX_ANALYSIS_STEPS)])
+    code = call(["bash", "wrapper.sh", test_id, C.description(), 'TEST.yaml', RUN_SH_FLAGS, str(ANALYSIS_STEP_SAVE_POINT)])
 
 num = 1
 print("Running " + str(len(configurations)) + " tests.")
 for config in configurations:
     run_config_as_test("Test_" + str(num), config)
     num += 1
+    if num > 2: break

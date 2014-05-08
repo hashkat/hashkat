@@ -5,17 +5,17 @@ local json = (require "json")
 ----------------------------------------------------------------------------------
 
 function save_json(fname, obj) 
-    -- Open file for writing:
     local file = io.open(fname, "wb") 
     file:write(json.generate(obj))
     file:close()
 end
 
 function load_json(fname) 
-    -- Open file for writing:
     local file = io.open(fname, "rb") 
     local as_string = file:read("*all")
-    return json.parse(as_string)
+    local ok, obj = json.parse(as_string)
+    assert(ok, "Not a valid JSON object! (Got " .. as_string .. ")")
+    return obj
 end
 
 ----------------------------------------------------------------------------------
@@ -73,6 +73,17 @@ function on_exit()
             rate_tweet = rate_tweet,
             analysis_step = analysis_step
         })
+    elseif load_network then
+        -- We have loaded the network. Test that all our observables are the same.
+        local obj = load_json("tests/TEST_observables.json")
+        assert(obj.n_entities == n_entities)
+        assert(obj.max_entities == max_entities)
+        assert(obj.rate_total == rate_total)
+        assert(obj.rate_add == rate_add)
+        assert(obj.rate_follow == rate_follow)
+        assert(obj.rate_retweet == rate_retweet)
+        assert(obj.rate_tweet == rate_tweet)
+        assert(obj.analysis_step == analysis_step)
     end
 end
 
