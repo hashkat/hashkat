@@ -206,6 +206,8 @@ struct Analyzer {
     double main() {
         if (config.load_network_on_startup && file_exists(config.save_file)) {
             load_network_state();
+        } else {
+            lua_hook_new_network(state);
         }
         run_network_simulation();
         if (config.retweet_viz) {
@@ -238,9 +240,12 @@ struct Analyzer {
                     "If you do not care, please set output.ignore_load_config_check to true.\nExitting...");
         }
         state.visit(reader);
+
+        lua_hook_load_network(state);
     }
 
     void save_network_state() {
+        lua_hook_save_network(state);
         const char* fname = config.save_file.c_str();
         printf("SAVING NETWORK STATE TO %s\n", fname);
         DataWriter writer(state, fname);
@@ -393,6 +398,7 @@ struct Analyzer {
         tweet_ranks.categorize(id_tweeter, e.n_tweets);
         e.n_tweets++;
         generate_tweet(id_tweeter, id_tweeter, 0, generate_tweet_content(id_tweeter));
+        lua_hook_tweet(state, id_tweeter, e.n_tweets);
         // Generate the tweet content:
         // increase the number of tweets the entity had by one
         if (e.n_tweets / (time - e.creation_time) >= config.unfollow_tweet_rate) {

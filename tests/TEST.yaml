@@ -1,7 +1,9 @@
 analysis:
   enable_interactive_mode: false
-  follow_model: entity
+  enable_lua_hooks: true
+  follow_model: random
   initial_entities: 1000
+  lua_script: tests/TEST_INTERACT.lua
   max_entities: 1000
   max_real_time: hour
   max_time: minute/2
@@ -10,16 +12,16 @@ analysis:
   stage1_unfollow: false
   unfollow_tweet_rate: 0.1
   use_barabasi: false
-  use_followback: true
+  use_followback: false
   use_hashtag_probability: 0
   use_random_time_increment: false
 entities:
-- followback_probability: 0.44
+- followback_probability: 0
   hashtag_follow_options: {care_about_ideology: false, care_about_region: false}
   name: Standard
   rates:
     follow: {function: constant, value: 0}
-    tweet: {function: constant, value: 0.01}
+    tweet: {function: constant, value: 0}
   weights:
     add: 80
     follow: 5

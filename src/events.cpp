@@ -54,4 +54,20 @@ void lua_hook_exit(AnalysisState& state) {
     }
 }
 
+void lua_hook_new_network(AnalysisState& state) {
+    if (state.config.enable_lua_hooks) {
+        lua_hook(state, "on_new_network");
+    }
+}
 
+void lua_hook_load_network(AnalysisState& state) {
+    if (state.config.enable_lua_hooks) {
+        lua_hook(state, "on_load_network");
+    }
+}
+
+void lua_hook_save_network(AnalysisState& state) {
+    if (state.config.enable_lua_hooks) {
+        lua_hook(state, "on_save_network");
+    }
+}

@@ -17,6 +17,7 @@ from subprocess import call
 
 MAX_ENTITIES = 1000
 MAX_SIM_TIME = "minute/2" # Increase for longer test simulation duration
+SIM_TIME_SAVE_POINT = "minute/4" # For saving tests, when should we save to disk?
 MAX_REAL_TIME = "hour" # Increase for longer test time allowance
 RAND_TIME_INCR = False
 
@@ -39,7 +40,6 @@ class Configuration:
                 use_tweet_follow, 
                 use_unfollow, 
                 use_followback,
-                use_saving,
                 use_hashtags,
                 use_add_rate):
 
@@ -50,7 +50,6 @@ class Configuration:
             self.use_tweet_follow = use_tweet_follow 
             self.use_unfollow = use_unfollow 
             self.use_followback = use_followback
-            self.use_saving = use_saving
             self.use_hashtags = use_hashtags
             self.use_add_rate = use_add_rate
             self.initial_entities = MAX_ENTITIES if not use_add_rate else 0
@@ -60,13 +59,12 @@ class Configuration:
         retweet = "+Retweets: on" if self.use_retweeting else "-Retweets: OFF"
         unfollow = "+Unfollows: on" if self.use_unfollow else "-Unfollows: OFF"
         followback = "+Followback: on" if self.use_followback else "-Retweets: OFF"
-        saving = "+Saving: on" if self.use_saving else "-Saving: OFF"
         hashtags = "+Hashtags: on" if self.use_hashtags else "-Hashtags: OFF"
         add_rate = "+Add Rate: on" if self.use_add_rate else "-Add Rate: OFF"
 
-        return "[Follow-model=%s, %s %s %s %s %s, Initial=%d, Max=%d]" % (
+        return "[Follow-model=%s, %s %s %s %s, Initial=%d, Max=%d]" % (
             self.follow_model, 
-            tweet, retweet, followback, saving, add_rate,
+            tweet, retweet, followback, add_rate,
             self.initial_entities, MAX_ENTITIES
         )
 
@@ -74,6 +72,8 @@ FOLLOW_MODELS = ['none', 'barabasi', 'random', 'preferential', 'entity', 'prefer
 
 configurations = []
 
+# Saving is implemented by saving numbers into 'observables'
+# and comparing the corresponding numbers when implementing saving
 for follow_model in FOLLOW_MODELS:
     for use_tweeting in [False,True]: 
         for use_retweeting in [False,True]: 
@@ -81,7 +81,6 @@ for follow_model in FOLLOW_MODELS:
                 for use_follow in [False,True]: 
                     for use_unfollow in [False,True]:
                         for use_followback in [False,True]:
-        #                    for use_saving in [False,True]: #TODO implement saving tests
                                 for use_hashtags in [False,True]:
                                     for use_add_rate in [False,True]:
                                         configurations.append(
@@ -93,7 +92,6 @@ for follow_model in FOLLOW_MODELS:
                                                 use_tweet_follow,
                                                 use_unfollow,
                                                 use_followback,
-                                                False, #use_saving,
                                                 use_hashtags,
                                                 use_add_rate
                                             )
@@ -126,6 +124,10 @@ def config_to_yaml(C):
         "max_time": MAX_SIM_TIME,
         "max_real_time": MAX_REAL_TIME,
         "enable_interactive_mode": False,
+        "enable_lua_hooks": True,
+        # The TEST_INTERACT.lua file gives extra control over the test behaviour.
+        # Specifically, the file allows for Lua to save and load the network
+        "lua_script": "tests/TEST_INTERACT.lua",
         "use_barabasi": (C.follow_model == 'barabasi'),
         "use_random_time_increment": RAND_TIME_INCR,
         "use_followback": C.use_followback,
@@ -228,4 +230,3 @@ print("Running " + str(len(configurations)) + " tests.")
 for config in configurations:
     run_config_as_test("Test_" + str(num), config)
     num += 1
-

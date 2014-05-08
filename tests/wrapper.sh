@@ -10,36 +10,62 @@ test_id=$1
 description=$2
 yaml_file=$3
 run_args=$4
-
+sim_time_save_point=$5 # At what simulation-time to perform saving?
+ 
 cd .. # Navigate to folder with run.sh
 
 mkdir -p $test_dir/pass_logs
 mkdir -p $test_dir/fail_logs
 mkdir -p $test_dir/stagnant_logs
+mkdir -p $test_dir/observables
 
-PASS_LOG=$test_dir/pass_logs/$test_id.log # Log file location
-FAIL_LOG=$test_dir/fail_logs/$test_id.log # Log file location
-STAGNANT_LOG=$test_dir/stagnant_logs/$test_id.log # Log file location
+# Export for the interaction Lua file:
 
-failed=false
-echo "LOG FILE for $test_id WITH PARAMETERS: $description." > $FAIL_LOG
-if ! ./run.sh --input "$test_dir/$yaml_file" $run_args &>> "$FAIL_LOG"; then
-    failed=true
-fi
+function run_test() {
+    export HASHKAT_TEST_ID="$test_id"
+    export HASHKAT_SAVE_NETWORK=$1
+    export HASHKAT_LOAD_NETWORK=$2
 
-# Check for extra failure conditions, such as when using gdb:
-if grep -q "Program received signal" "$FAIL_LOG"; then
-    failed=true
-fi
+    # Whether to save values such as #follows, #followings, etc to a file
+    # for comparison with the same network grown after network loading
+    export HASHKAT_CREATE_OBSERVABLES=$3
+    export HASHKAT_SIM_TIME_SAVE_POINT=$sim_time_save_point
 
-if $failed ; then
-    echo -e "$test_id has FAILED.\nDescription: $description"
-    exit 1 #Failure
-elif grep -q "ANAMOLY: Stagnant network!" "$FAIL_LOG"; then
-    echo "$test_id STAGNANT. Finished with nothing to do! This may be expected if many features are off. ($description)"
-    mv $FAIL_LOG $STAGNANT_LOG
-else
-    echo "$test_id passed ($description)"
-    mv $FAIL_LOG $PASS_LOG
-fi
-exit 0
+    # Used to distinguish logs for the normal run, the saving run, and the loading run.
+    SUFFIX=$4
+
+    PASS_LOG=$test_dir/pass_logs/$test_id$SUFFIX.log # Log file location
+    FAIL_LOG=$test_dir/fail_logs/$test_id$SUFFIX.log # Log file location
+    STAGNANT_LOG=$test_dir/stagnant_logs/$test_id$SUFFIX.log # Log file location
+
+    failed=false
+    echo "LOG FILE for $test_id$SUFFIX WITH PARAMETERS: $description." > $FAIL_LOG
+    if ! ./run.sh --input "$test_dir/$yaml_file" $run_args &>> "$FAIL_LOG"; then
+        failed=true
+    fi
+
+    # Check for extra failure conditions, such as when using gdb:
+    if grep -q "Program received signal" "$FAIL_LOG"; then
+        failed=true
+    elif grep -q "exited with code" "$FAIL_LOG"; then
+        failed=true
+    fi
+
+    if $failed ; then
+        echo -e "$test_id$SUFFIX has FAILED.\nDescription: $description"
+    elif grep -q "ANAMOLY: Stagnant network!" "$FAIL_LOG"; then
+        echo "$test_id$SUFFIX STAGNANT. Finished with nothing to do! This may be expected if many features are off. ($description)"
+        mv $FAIL_LOG $STAGNANT_LOG
+    else
+        echo "$test_id$SUFFIX passed ($description)"
+        mv $FAIL_LOG $PASS_LOG
+    fi
+}
+
+# First, run a normal test run, and save some 'observables' like the number of users at the end
+# Second, run a test run with the same parameters, but save someway through it
+# Third, run a test run, loading the second run, and comparing the 'observables' when the run ends
+
+run_test false false true "-normal" # Don't load or save, create observables
+run_test false false false "-saving" # Don't load; save
+run_test true  false false "-loading" # Don't save; load
