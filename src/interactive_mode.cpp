@@ -89,7 +89,8 @@ struct InteractiveModeBindings {
         LuaValue G = globals(L);
         G["n_entities"] = state->network.n_entities;
         G["max_entities"] = state->network.max_entities;
-        G["time"] = state->time;
+        G["analysis_time"] = state->time;
+        G["analysis_step"] = state->stats.n_steps;
 
         // Output from stats:
         auto& S = state->stats;
@@ -116,7 +117,6 @@ struct InteractiveModeBindings {
         G["create_entity"].bind_function(create_entity);
         G["entities"].bind_function(entities);
     }
-
 
     /* Interrupt menu functions: */
     static int n_followers(int id) {
@@ -250,9 +250,12 @@ lua_State* init_lua_state(bool minimal) {
     return L;
 }
 
+void sync_lua_state(AnalysisState& s) {
+    InteractiveModeBindings::sync_state(get_lua_state(s));
+}
+
 bool start_interactive_mode(AnalysisState& s) {
-    state.ensure_init(s);
-    InteractiveModeBindings::sync_state(state.L);
+    sync_lua_state(s);
     bool menu = false;
     try {
         menu = state.show_menu();

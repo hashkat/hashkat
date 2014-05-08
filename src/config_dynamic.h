@@ -82,6 +82,7 @@ struct ParsedConfig {
     int initial_entities = 0, max_entities = 1;
     double max_sim_time = INFINITY;
     double max_real_time = INFINITY;
+    long long max_analysis_steps = (1LL << 53); // 2**53; impossibly large number.
     bool use_random_time_increment = false;
     bool use_preferential_follow = false;
     bool use_followback = false;
@@ -95,7 +96,7 @@ struct ParsedConfig {
     bool save_network_on_timeout = false, load_network_on_startup = false;
     bool ignore_load_config_check = false;
     std::string save_file;
-    std::string lua_script = "INTERACT.lua"; // TODO add to infile
+    std::string lua_script = "INTERACT.lua";
 
     // 'rates' config options
     double rate_add = 0;
@@ -121,7 +122,6 @@ struct ParsedConfig {
     // Note: Weights are filled, entity lists empty
     EntityTypeVector entity_types;
     Add_Rates add_rates;
-
 
     std::vector<PreferenceClass> pref_classes;
     std::vector<Ideology> ideologies;

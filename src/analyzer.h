@@ -53,6 +53,7 @@ struct NetworkStats {
     double event_rate = 0;
 
     int n_steps = 0, n_outputs = 0;
+    bool user_did_exit = false;
 
     EntityStats global_stats;
 

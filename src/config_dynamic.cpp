@@ -151,6 +151,13 @@ static void parse_analysis_configuration(ParsedConfig& config, const Node& node)
     parse(node, "initial_entities", config.initial_entities);
     parse(node, "max_time", config.max_sim_time);
     parse(node, "max_real_time", config.max_real_time);
+
+    // Parse max analysis steps. Since YAML++ doesn't support 'long long' we store 
+    // in a double first (the most precise data type available).
+    double max_analysis_steps_holder = -1;
+    parse(node, "max_analysis_steps", max_analysis_steps_holder);
+    config.max_analysis_steps = max_analysis_steps_holder;
+
     parse(node, "unfollow_tweet_rate", config.unfollow_tweet_rate);
     parse(node, "stage1_unfollow", config.stage1_unfollow);
     parse(node, "use_hashtag_probability", config.hashtag_prob);
@@ -176,7 +183,6 @@ static Add_Rates parse_rates_configuration(ParsedConfig& config, const Node& nod
     } 
     return add_rates;
 }
-
 
 static void parse_output_configuration(ParsedConfig& config, const Node& node) {
     parse(node, "stdout_basic", config.output_stdout_basic);

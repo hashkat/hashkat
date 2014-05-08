@@ -62,6 +62,7 @@ void lua_hook_unfollow(AnalysisState& state, int id_follower, int id_followed);
 void lua_hook_tweet(AnalysisState& state, int id_follower, int id_followed);
 void lua_hook_exit(AnalysisState& state);
 void lua_hook_new_network(AnalysisState& state);
+void lua_hook_step_analysis(AnalysisState& state);
 void lua_hook_load_network(AnalysisState& state);
 void lua_hook_save_network(AnalysisState& state);
 

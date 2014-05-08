@@ -74,7 +74,7 @@ static void signal_handlers_install(AnalysisState& state) {
    signal(SIGUSR1, signal_handler); // For custom interaction
 }
 
-/* The Analyze struct encapsulates the many-parameter analyze function, and its state. */
+/* The Analyzer struct encapsulates the many-parameter analyze function, and its state. */
 struct Analyzer {
 
     /***************************************************************************
@@ -260,10 +260,12 @@ struct Analyzer {
             if (!interrupt_check()) {
                 interrupt_reset();
                 if (!config.enable_interactive_mode) {
+                    stats.user_did_exit = true;
                     break;
                 }
                 // Has the user requested an exit?
                 if (!start_interactive_mode(state)) {
+                    stats.user_did_exit = true;
                     break;
                 }
             }
@@ -393,21 +395,21 @@ struct Analyzer {
 	bool action_tweet(int id_tweeter) {
 	    PERF_TIMER();
 
-        // This is the entity tweeting
-		Entity& e = network[id_tweeter];
-        tweet_ranks.categorize(id_tweeter, e.n_tweets);
-        e.n_tweets++;
-        generate_tweet(id_tweeter, id_tweeter, 0, generate_tweet_content(id_tweeter));
-        lua_hook_tweet(state, id_tweeter, e.n_tweets);
-        // Generate the tweet content:
-        // increase the number of tweets the entity had by one
-        if (e.n_tweets / (time - e.creation_time) >= config.unfollow_tweet_rate) {
-            action_unfollow(id_tweeter);
-        }
+            // This is the entity tweeting
+                    Entity& e = network[id_tweeter];
+            tweet_ranks.categorize(id_tweeter, e.n_tweets);
+            e.n_tweets++;
+            generate_tweet(id_tweeter, id_tweeter, 0, generate_tweet_content(id_tweeter));
+            lua_hook_tweet(state, id_tweeter, e.n_tweets);
+            // Generate the tweet content:
+            // increase the number of tweets the entity had by one
+            if (e.n_tweets / (time - e.creation_time) >= config.unfollow_tweet_rate) {
+                action_unfollow(id_tweeter);
+            }
 
-        RECORD_STAT(state, e.entity_type, n_tweets);
+            RECORD_STAT(state, e.entity_type, n_tweets);
 
-		return true; // Always succeeds
+            return true; // Always succeeds
 	}
 
 	// Despite being called action_retweet, may result in follow
@@ -480,6 +482,7 @@ struct Analyzer {
     bool step_analysis() {
         PERF_TIMER();
 
+        lua_hook_step_analysis(state);
         /*
          * Our step is wrapped in a loop to enabling restarting of events.
          * Often, there will be no way to resolve an event failure at the moment it occurs.
@@ -508,7 +511,7 @@ struct Analyzer {
             double r = rng.rand_real_not0(); // get the first number with-in [0,1).
             /*if (!retweet_checks() && stats.n_retweets != 0) {
                 cout << "\n------Error in retweets-------\n";
-            } */           
+            } */
             
             // DECIDE WHAT TO DO:
             if (subtract_var(r, stats.prob_add) <= ZEROTOL) {
@@ -537,6 +540,9 @@ struct Analyzer {
 
         step_time();
         stats.n_steps++;
+        if (stats.n_steps >= config.max_analysis_steps) {
+            return false;
+        }
         //update the rates if n_entities has changed
         analyzer_rate_update(state);
 

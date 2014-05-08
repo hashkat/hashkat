@@ -60,7 +60,7 @@ struct AnalyzerRates {
             config(state.config), entity_types(state.entity_types), add_rates(state.add_rates) {
     }
 	
-	bool create_new_month_if_needed(EntityType& et) {
+    bool create_new_month_if_needed(EntityType& et) {
         int n_months = state.n_months();
 
         if (n_months == et.entity_cap.size() || state.time == 0) {
@@ -79,8 +79,7 @@ struct AnalyzerRates {
 
     void create_new_months_if_needed() {
         bool crossed_month = false;
-        for (int e = 0; e < entity_types.size(); e++) {
-            EntityType& et = entity_types[e];
+        for (auto& et : entity_types) {
             crossed_month |= create_new_month_if_needed(et);
         }
 
@@ -117,9 +116,9 @@ struct AnalyzerRates {
         create_new_months_if_needed();
         
         Rates global(0, 0);
-        for (int e = 0; e < entity_types.size(); e++) {
-            set_rates (entity_types[e]);
-            Rates rates = set_rates(entity_types[e]);
+        for (auto& et : entity_types) {
+            set_rates (et);
+            Rates rates = set_rates(et);
             global.add(rates); // Sum the rates
         }
         update_retweets(state);

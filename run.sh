@@ -196,8 +196,8 @@ fi
 
 if handle_flag "--stacktrace" ; then
     gdb -silent -batch \
-        -ex "run" \
-        -ex "bt" --args build/src/socialsim $args 2>&1
+           -ex "run" \
+           -ex "bt" --args build/src/socialsim $args 2>&1
 elif handle_flag "--gdb" || handle_flag "-g" ; then
     # Wrap the gdb around the program with -g:
     echo "Wrapping in GDB:" | colorify '1;35'

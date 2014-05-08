@@ -12,17 +12,19 @@
 
 // Defined in interactive_mode.cpp:
 lua_State* get_lua_state(AnalysisState& state);
+void sync_lua_state(AnalysisState& state);
 
 static void lua_hook(AnalysisState& state, const char* type, int id1 = -1, int id2 = -1) {
     lua_State* L = get_lua_state(state);
-
-    luawrap::globals(L)["time"] = state.time;
+    sync_lua_state(state);
 
     lua_getglobal(L, type);
     lua_pushinteger(L, id1);
     lua_pushinteger(L, id2);
     lua_call(L, 2, 0);
 }
+
+// Lua hook implementations. Note that they all follow the same simple structure.
 
 void lua_hook_follow(AnalysisState& state, int id_follower, int id_followed) {
     if (state.config.enable_lua_hooks) {
@@ -63,6 +65,12 @@ void lua_hook_new_network(AnalysisState& state) {
 void lua_hook_load_network(AnalysisState& state) {
     if (state.config.enable_lua_hooks) {
         lua_hook(state, "on_load_network");
+    }
+}
+
+void lua_hook_step_analysis(AnalysisState& state) {
+    if (state.config.enable_lua_hooks) {
+        lua_hook(state, "on_step_analysis");
     }
 }
 

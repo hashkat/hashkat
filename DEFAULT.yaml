@@ -44,6 +44,8 @@ analysis:
     100001
   max_time: 
     hour
+  max_analysis_steps: 
+    unlimited
   max_real_time: 
     hour
   enable_interactive_mode:

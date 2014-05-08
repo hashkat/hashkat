@@ -21,6 +21,9 @@ hour = minute * 60
 day = 24 * hour
 year = 365 * day
 
+# Very large number representable comfortably as signed 64bit integer:
+unlimited = 2L**53 
+
 #################################################################
 # CEASE PLACING CONVENIENCE FUNCTIONS.
 #################################################################
@@ -87,9 +90,6 @@ def merge_config(src, dst):
     default_check(src, dst, "entities")
     
 merge_config(DEFAULT_CONFIG, CONFIG)
-
-for k in DEFAULT_CONFIG:
-	print k
 
 entities = CONFIG["entities"]
 
@@ -250,7 +250,7 @@ def load_relevance_weights():
         for tweet_type in ["plain", "same_ideology", "plain", "humourous", "different_ideology"]:
         
             weight_set = []
-            print(tweet_type, "=>", weight_set)
+            #print(tweet_type, "=>", weight_set)
             retweet_rel = pref["tweet_transmission"][tweet_type]
             # Load all the functions based on the different entity types
             # Defaults to the 'else' node.
@@ -264,10 +264,10 @@ def load_relevance_weights():
                     func_str = retweet_rel["else"]
                 func = load_relevance_function(func_str)
                 weight_set.append(func())
-            print(tweet_type, "=>", weight_set)
+            #print(tweet_type, "=>", weight_set)
             pref_weights.append(weight_set)
     
-        print("pref_weights", pref_weights)
+        #print("pref_weights", pref_weights)
         weights.append(pref_weights)
     return weights
 
@@ -286,7 +286,7 @@ generated = {
 
 CONFIG["GENERATED"] = generated
 
-for val in "max_time", "max_real_time", "max_entities", "initial_entities":
+for val in "max_analysis_steps", "max_time", "max_real_time", "max_entities", "initial_entities":
     if isinstance(CONFIG["analysis"][val], str):
         CONFIG["analysis"][val] = eval(CONFIG["analysis"][val])
 

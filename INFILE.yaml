@@ -5,7 +5,7 @@ analysis:
   initial_entities:
     50
   max_entities: 
-    10000001
+    100001
   max_time: 
     year
   max_real_time: 

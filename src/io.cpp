@@ -61,12 +61,16 @@ void output_network_statistics(AnalysisState& state) {
             cout << "\nSimulation (Gracefully) Interrupted: ctrl-c was pressed\n";
         } else if (state.end_time >= C.max_sim_time) {
             cout << "\nSimulation Completed: desired duration reached\n";
-        } else if (network.n_entities >= C.max_entities) {
-            cout << "\nSimulation Completed: desired entity amount reached\n";
+//        } else if (network.n_entities >= C.max_entities) { // AD: No longer an exit condition
+//            cout << "\nSimulation Completed: desired entity amount reached\n";
         } else if (!analyzer_real_time_check(state)) {
             cout << "\nSimulation Completed: desired wall-clock time reached\n";
         } else if (!analyzer_sim_time_check(state)) {
             cout << "\nSimulation Completed: desired simulation time reached\n";
+        } else if (stats.n_steps >= C.max_analysis_steps) {
+            cout << "\nSimulation Completed: desired analysis steps reached\n";
+        } else if (stats.user_did_exit) {
+            cout << "\nSimulation Completed: user demands exit!\n";
         } else {
             cout << "\nSimulation Completed: stagnant network (ie, no entity has anything to do) \n";
         }

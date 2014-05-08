@@ -16,11 +16,10 @@ from subprocess import call
 #################################################################
 
 MAX_ENTITIES = 1000
-MAX_SIM_TIME = "minute/2" # Increase for longer test simulation duration
-SIM_TIME_SAVE_POINT = "minute/4" # For saving tests, when should we save to disk?
+MAX_ANALYSIS_STEPS = 10000 # Increase for longer test simulation duration
+ANALYSIS_STEP_SAVE_POINT = MAX_ANALYSIS_STEPS * 3/4 # For saving tests, when should we save to disk?
 MAX_REAL_TIME = "hour" # Increase for longer test time allowance
 RAND_TIME_INCR = False
-
 RUN_SH_FLAGS = "--debug-std --stacktrace"
 
 #################################################################
@@ -121,8 +120,9 @@ def config_to_yaml(C):
       "analysis": {
         "initial_entities": C.initial_entities,
         "max_entities": MAX_ENTITIES,
-        "max_time": MAX_SIM_TIME,
+        "max_time": "unlimited",
         "max_real_time": MAX_REAL_TIME,
+        "max_analysis_step": MAX_ANALYSIS_STEPS,
         "enable_interactive_mode": False,
         "enable_lua_hooks": True,
         # The TEST_INTERACT.lua file gives extra control over the test behaviour.

@@ -10,7 +10,7 @@ test_id=$1
 description=$2
 yaml_file=$3
 run_args=$4
-sim_time_save_point=$5 # At what simulation-time to perform saving?
+analysis_step_save_point=$5 # At what simulation-time to perform saving?
  
 cd .. # Navigate to folder with run.sh
 
@@ -29,7 +29,7 @@ function run_test() {
     # Whether to save values such as #follows, #followings, etc to a file
     # for comparison with the same network grown after network loading
     export HASHKAT_CREATE_OBSERVABLES=$3
-    export HASHKAT_SIM_TIME_SAVE_POINT=$sim_time_save_point
+    export HASHKAT_ANALYSIS_STEP_SAVE_POINT=$analysis_step_save_point
 
     # Used to distinguish logs for the normal run, the saving run, and the loading run.
     SUFFIX=$4
@@ -66,6 +66,6 @@ function run_test() {
 # Second, run a test run with the same parameters, but save someway through it
 # Third, run a test run, loading the second run, and comparing the 'observables' when the run ends
 
-run_test false false true "-normal" # Don't load or save, create observables
-run_test false false false "-saving" # Don't load; save
-run_test true  false false "-loading" # Don't save; load
+run_test false false true "-normal" # Don't load or save, DO create observables
+run_test false false false "-saving" # Don't load; DO save
+run_test true  false false "-loading" # Don't save; DO load

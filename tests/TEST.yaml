@@ -4,9 +4,10 @@ analysis:
   follow_model: random
   initial_entities: 1000
   lua_script: tests/TEST_INTERACT.lua
+  max_analysis_step: 10000
   max_entities: 1000
   max_real_time: hour
-  max_time: minute/2
+  max_time: unlimited
   model_weights: {entity: 0.2, hashtag: 0, preferential: 0.2, preferential_entity: 0.2,
     random: 0.2}
   stage1_unfollow: false
