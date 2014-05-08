@@ -62,7 +62,7 @@ struct NetworkStats {
         rw << event_rate << n_steps << n_outputs;
 
         // Valid because only full of primitive types:
-        rw << global_stats;
+        rw << global_stats << user_did_exit;
     }
 };
 

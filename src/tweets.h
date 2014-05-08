@@ -44,13 +44,18 @@
 struct TweetContent {
     TweetType type = (TweetType)-1;
     double time_of_tweet = -1;
-    UsedEntities used_entities;
     Language language = N_LANGS; // Set to invalid
     int ideology_bin = -1; // 0 == no ideology
     int hashtag_bin = -1;
     int id_original_author = -1; // The entity that created the original content
+    UsedEntities used_entities;
 
     READ_WRITE(rw) {
+        // Save/load scalars:
+        rw << type;
+        rw << time_of_tweet << language << ideology_bin << hashtag_bin << id_original_author;
+
+        // Save/load used_entities:
         std::vector<int> ids;
         if (rw.is_writing()) {
             for (int id : used_entities) {
@@ -65,7 +70,6 @@ struct TweetContent {
                 ASSERT(used_entities.size() > prev_size, "'id' should be unique!");
             }
         }
-        rw << time_of_tweet << language << ideology_bin << hashtag_bin << id_original_author;
     }
 };
 
@@ -111,10 +115,11 @@ struct Tweet {
     }
 
     READ_WRITE(rw) {
-        rw << id_tweet << id_tweeter << creation_time
-           << retweet_time_bin << retweet_next_rebin_time
-           << id_link << generation;
+        rw << id_tweet << id_tweeter << id_link << generation;
         rw.visit_smartptr(content);
+        rw << creation_time << retweet_time_bin << hashtag << retweet_next_rebin_time;
+        // NOTE: Relies on FollowerSet::Weights being a 'plain' (pointer-free) object!
+        rw << react_weights;
     }
 };
 
@@ -127,8 +132,8 @@ struct MostPopularTweet {
     int global_max = 0;
 
     READ_WRITE(rw) {
-        rw << global_max;
         most_popular_tweet.visit(rw);
+        rw << global_max;
     }
 };
 
@@ -140,18 +145,17 @@ struct HashtagGroup {
 struct HashTags {
     // this is the set of bins for idealogies and regions
     HashtagGroup hashtag_groups[N_BIN_IDEOLOGIES][N_BIN_REGIONS];
-    MTwist rng;
-    
-    int choose_bin(bool choice, int default_bin, const int n_choices) {
-    if (!choice) {
-        return rng.rand_int((int)n_choices);
-    }
-    return default_bin;
+
+    int choose_bin(MTwist& rng, bool choice, int default_bin, const int n_choices) {
+        if (!choice) {
+            return rng.rand_int((int) n_choices);
+        }
+        return default_bin;
     }
 
-    int select_entity(bool region_choice, bool ideology_choice, int default_region, int default_ideology) {
-        int region_bin = choose_bin(region_choice, default_region, N_BIN_REGIONS);
-        int ideology_bin = choose_bin(ideology_choice, default_ideology, N_BIN_IDEOLOGIES);
+    int select_entity(MTwist& rng, bool region_choice, bool ideology_choice, int default_region, int default_ideology) {
+        int region_bin = choose_bin(rng, region_choice, default_region, N_BIN_REGIONS);
+        int ideology_bin = choose_bin(rng, ideology_choice, default_ideology, N_BIN_IDEOLOGIES);
         if (!hashtag_groups[ideology_bin][region_bin].circ_buffer.empty()) {
             int entity_to_follow = hashtag_groups[ideology_bin][region_bin].circ_buffer.pick_random_uniform(rng);
             return entity_to_follow;

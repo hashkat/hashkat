@@ -234,7 +234,7 @@ struct AnalyzerFollow {
        int default_region = follower.region_bin;
        int default_ideology = follower.ideology_bin;
        RECORD_STAT(state, follower.entity_type, n_hashtag_follows);
-       return hashtags.select_entity(region_choice, ideology_choice, default_region, default_ideology);
+       return hashtags.select_entity(rng, region_choice, ideology_choice, default_region, default_ideology);
    }
    
    int twitter_follow_model(Entity& e) {

@@ -80,7 +80,10 @@ struct RateVec {
         return ret;
     }
     READ_WRITE(rw) {
-        rw << tuple << tuple_sum;
+        for (double& val : tuple) {
+            rw << val;
+        }
+        rw << tuple_sum;
     }
 };
 
@@ -106,7 +109,9 @@ struct RateTree {
             rw << parent << depth << is_leaf << is_allocated;
             data.visit(rw);
             rates.visit(rw);
-            rw << children;
+            for (ref_t& child : children) {
+                rw << child;
+            }
         }
 
         double debug_rate_sum(RateTree& tree) { // Inefficient

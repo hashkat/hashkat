@@ -134,6 +134,8 @@ struct TimeDepRateTree {
     }
 
     READ_WRITE(rw) {
+        periodic.visit(rw);
+        // determiner carries no important state
         rw << last_rate << initial_resolution << time;
         tree.visit(rw);
         binner.visit(rw);

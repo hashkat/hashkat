@@ -77,7 +77,7 @@ struct Entity {
     FollowerSet follower_set;
 
     PREREAD_WRITE(rw) {
-        rw << entity_type << preference_class 
+        rw << id << entity_type << preference_class
            << n_tweets << n_retweets 
            << region_bin
            << ideology_tweet_percent << creation_time
@@ -168,6 +168,9 @@ struct EntityType {
         age_ranks.visit(rw);
         follow_ranks.visit(rw);
         rw << updating_probs << stats;
+        for (auto& ttp : tweet_type_probs) {
+            rw << ttp;
+        }
     }
 };
 
