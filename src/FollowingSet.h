@@ -25,33 +25,34 @@
 #ifndef FOLLOWING_SET_H_
 #define FOLLOWING_SET_H_
 
-#include "cat_classes.h"
-#include "cat_nodes.h"
 
 #include "events.h"
 #include "config_static.h"
+
+#include "util/FlexibleSet.h"
 
 // Forward declare, to prevent circular header inclusion:
 struct AnalysisState;
 
 struct FollowingSet {
-    typedef cats::LeafNode<int> Followings;
-    typedef cats::NodeIterator<Followings> iterator;
+    typedef FlexibleSet<int> Followings;
 
-    void print(AnalysisState& S) {
-        implementation.print(S, /*Dummy: */ 1.0);
-    }
+    void print(AnalysisState& S);
 
-    void print(AnalysisState& S, int id) {
-        implementation.add(S, /*Dummy: */ 1.0, id);
+    std::vector<int> as_vector() {
+        return implementation.as_vector();
     }
 
     bool add(AnalysisState& S, int id) {
-        return implementation.add(S, /*Dummy: */ 1.0, id);
+        return implementation.insert(id);
     }
 
     bool remove(AnalysisState& S, int id) {
-        return implementation.remove(S, /*Dummy: */ 1.0, id);
+        return implementation.erase(id);
+    }
+
+    bool contains(int id) {
+        return implementation.contains(id);
     }
 
     // No such thing as pick_random_weighted for FollowingSet
@@ -59,16 +60,12 @@ struct FollowingSet {
         return implementation.pick_random_uniform(rng, id);
     }
 
-    iterator begin() {
-        return iterator::begin(&implementation);
-    }
-
-    iterator end() {
-        return iterator::end(&implementation);
-    }
-
     size_t size() const {
         return implementation.size();
+    }
+
+    READ_WRITE(rw) {
+        implementation.visit(rw);
     }
 
 private:

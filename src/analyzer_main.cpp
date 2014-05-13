@@ -575,12 +575,7 @@ struct Analyzer {
     
     bool is_following(int& follower, int& followee) {
         FollowingSet& fs = network.following_set(follower);
-        for (int id : fs) {
-            if (id == followee) {
-                return true;
-            }
-        }
-        return false;
+        return fs.contains(followee);
     }
     
     bool is_path(Tweet& tweet, vector<Tweet>& atl) {

@@ -30,7 +30,6 @@
 #include <set>
 #include <google/sparse_hash_set>
 
-#include "cat_nodes.h"
 #include "RateTree.h"
 
 #include "DataReadWrite.h"

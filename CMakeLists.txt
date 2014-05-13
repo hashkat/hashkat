@@ -16,6 +16,16 @@ if ($ENV{BUILD_FLAGS})
     add_definitions ($ENV{BUILD_FLAGS})
 endif()
 
+#if ($ENV{BUILD_FOLLOW_SET_AS_VECTOR})
+#    add_definitions(-DVECTOR_FOLLOW_SET_THRESHOLD=2147483647)
+#else()
+#    # From the statistic '95% of users have <100 followers'
+#    # Also, a decent (small) threshold for linear access.
+#    # After this threshold, Google's sparse-hash is used.
+#    add_definitions(-DVECTOR_FOLLOW_SET_THRESHOLD=100)
+#endif()
+
+    add_definitions(-DVECTOR_FOLLOW_SET_THRESHOLD=2147483647)
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
     if(APPLE) 
     elseif ($ENV{BUILD_SANITIZE})

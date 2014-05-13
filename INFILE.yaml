@@ -32,17 +32,17 @@ analysis:
 
 output:
   save_network_on_timeout: 
-    false
+    true
   load_network_on_startup:
-    false
+    true
   ignore_load_config_check: # Whether to abort loading configuration because of (strictly) mismatching configuration
-    false
+    true
   save_file: # File to save to, and load from
     network_state.sav
   verbose:
     false
 
 rates:
-  add: {function: constant, value: 500.0}
+  add: {function: constant, value: 1.0}
 
 

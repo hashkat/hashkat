@@ -76,10 +76,10 @@ function on_exit()
     if create_observables then
         save_json("tests/TEST_observables.json", obj)
     elseif load_network then
-        pretty_print("Previous object:", obj)
+        pretty("Previous object:", obj)
         -- We have loaded the network. Test that all our observables are the same.
         local loaded = load_json("tests/TEST_observables.json")
-        pretty_print("Post-loading object:", loaded)
+        pretty("Post-loading object:", loaded)
         assert(loaded.n_entities == n_entities)
         assert(loaded.max_entities == max_entities)
         assert(loaded.rate_total == rate_total)

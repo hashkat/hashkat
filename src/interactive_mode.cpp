@@ -153,11 +153,7 @@ struct InteractiveModeBindings {
         return state->network.follower_set(entity).as_vector();
     }
     static std::vector<int> followings(int entity) {
-        std::vector<int> ret;
-        for (int id : state->network.following_set(entity)) {
-            ret.push_back(id);
-        }
-        return ret;
+        return state->network.following_set(entity).as_vector();
     }
 
     // Can be used if simply dumping a direct member by name,

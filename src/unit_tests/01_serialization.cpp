@@ -86,7 +86,7 @@ SUITE(serialization) {
         for (int id_fol : test.follower_set.as_vector()) {
             CHECK(id_fol == 1);
         }
-        for (int id_fol : test.following_set) {
+        for (int id_fol : test.following_set.as_vector()) {
             CHECK(id_fol == 2);
         }
 

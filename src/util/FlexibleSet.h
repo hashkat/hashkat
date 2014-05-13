@@ -1,9 +1,11 @@
 #ifndef FLEXIBLESET_H_
 #define FLEXIBLESET_H_
 
+#include <fstream>
 #include "dependencies/mtwist.h"
 #include "lcommon/typename.h"
 #include "lcommon/strformat.h"
+#include "DataReadWrite.h"
 
 #include <google/sparse_hash_set>
 
@@ -18,14 +20,20 @@ struct Hasher {
 template<typename T, typename HasherT = Hasher>
 struct FlexibleSet {
     enum {
-        INITIAL = 0, THRESHOLD = 128
+        INITIAL = 0, THRESHOLD = VECTOR_FOLLOW_SET_THRESHOLD
     };
 
     ~FlexibleSet() {
         clear();
     }
 
-    FlexibleSet(const FlexibleSet& set) = delete;
+    FlexibleSet(const FlexibleSet& set) {
+        vector_impl = set.vector_impl;
+        hash_impl = NULL;
+        if (set.hash_impl) {
+            hash_impl = new HashSet(*set.hash_impl);
+        }
+    }
     FlexibleSet() {
         hash_impl = NULL;
         vector_impl.reserve(INITIAL);
@@ -123,6 +131,21 @@ struct FlexibleSet {
         return true;
     }
 
+    bool contains(const T& elem) {
+        /* Hashtable case: */
+        if (UNLIKELY(hash_impl)) {
+            return (hash_impl->find(elem) != hash_impl->end());
+        }
+        /* Vector case: */
+        const int nElem = vector_impl.size();
+        for (int i = 0; i < nElem; i++) {
+            if (vector_impl[nElem] == elem) {
+                return true;
+            }
+        }
+        return false;
+
+    }
     bool erase(const T& elem) {
         if (UNLIKELY(hash_impl)) {
             return hash_impl->erase(elem);
@@ -174,6 +197,101 @@ struct FlexibleSet {
         hash_impl = NULL;
         vector_impl = std::vector<T>();
     }
+
+    // Helper method
+    static std::string get_file_contents(const char *filename) {
+        std::ifstream in(filename, std::ios::in | std::ios::binary);
+        std::string contents;
+        in.seekg(0, std::ios::end);
+        contents.resize(in.tellg());
+        in.seekg(0, std::ios::beg);
+        in.read(&contents[0], contents.size());
+        in.close();
+        return (contents);
+    }
+
+    static void put_file_contents(const char *filename, const std::string& contents) {
+        std::ofstream out(filename);
+        out << contents;
+        out.close();
+    }
+
+    template <typename Writer>
+    void handle_write(Writer& rw) {
+        rw << vector_impl;
+
+        // Write google sparse hash. Have to struggle with their inflexible API, unfortunately.
+        const char* fname = ".serialize-temp";
+
+        if (hash_impl) {
+            delete hash_impl;
+            hash_impl = NULL;
+        }
+
+        bool has_hash = (hash_impl != NULL);
+        rw << has_hash;
+        if (has_hash) {
+            /* Write to the file. */
+            FILE* file = fopen(fname, "wb");
+            hash_impl->write_metadata(file);
+            hash_impl->write_nopointer_data(file);
+            fclose(file);
+
+            // Write a string representation of the contents:
+            rw << get_file_contents(fname);
+        }
+    }
+
+    template <typename Reader>
+    void handle_read(Reader& rw) {
+        rw << vector_impl;
+
+        // Read google sparse hash. Have to struggle with their inflexible API, unfortunately.
+        const char* fname = ".serialize-temp";
+
+        if (hash_impl) {
+            delete hash_impl;
+            hash_impl = NULL;
+        }
+        bool has_hash = false;
+        rw << has_hash;
+        if (has_hash) {
+            /* Write into file, needed by API below */ {
+                std::string contents;
+                // Read a string representation of the contents:
+                rw << contents;
+                put_file_contents(fname, contents);
+            }
+
+            hash_impl = new HashSet;
+            /* Read from the file. */
+            FILE* file = fopen(fname, "rb");
+            hash_impl->read_metadata(file);
+            hash_impl->read_nopointer_data(file);
+            fclose(file);
+        }
+    }
+
+    READ_WRITE(rw) {
+        if (rw.is_reading()) {
+            handle_read(rw);
+        } else if (rw.is_writing()) {
+            handle_write(rw);
+
+        }
+    }
+
+    std::vector<T> as_vector() {
+        std::vector<T> ret;
+
+        iterator iter;
+        while (iterate(iter)) {
+            ret.push_back(iter.get());
+        }
+
+        return ret;
+    }
+
 private:
     // If we pass THRESHOLD, we should switch to a different implementation
     void switch_to_hash_set() {

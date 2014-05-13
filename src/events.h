@@ -26,10 +26,8 @@
 #define EVENT_H_
 
 #include "dependencies/google/sparse_hash_set"
-#include "cat_nodes.h"
 #include "util.h"
-
-typedef google::sparse_hash_set<int, cats::Hasher> UsedEntities;
+#include "DataReadWrite.h"
 
 // 0 - add, 1 - follow, 2 - tweet
 const int number_of_diff_events = 2;

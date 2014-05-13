@@ -42,6 +42,9 @@ function run_test() {
 
     failed=false
     echo "LOG FILE for $test_id$SUFFIX WITH PARAMETERS: $description." > $FAIL_LOG
+
+    # We build with vector follow sets & et al, to increase determinism:
+    export BUILD_FOLLOW_SET_AS_VECTOR=1
     if ! ./run.sh --input "$test_dir/$yaml_file" $run_args &>> "$FAIL_LOG"; then
         failed=true
     fi

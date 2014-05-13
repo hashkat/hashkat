@@ -157,10 +157,26 @@ struct FollowerSet {
 
     double determine_tweet_weights(Entity& author, TweetContent& content, WeightDeterminer& determiner, /*Weights placed here: */ Weights& output);
 
+    READ_WRITE(rw) {
+        // Reach into all the layers:
+        auto& a = followers;
+        for (auto& b : a.sublayers) {
+            for (auto& c : b.sublayers) {
+                for (auto& d : c.sublayers) {
+                    for (FlexibleSet<int>& set : d.sublayers) {
+                        set.visit(rw);
+                    }
+                    rw << d.n_elems;
+                }
+                rw << c.n_elems;
+            }
+            rw << b.n_elems;
+        }
+        rw << a.n_elems;
+    }
 private:
     // Holds the actual followers:
     TopLayer followers;
 };
-
 
 #endif /* FOLLOWERSET_H_ */

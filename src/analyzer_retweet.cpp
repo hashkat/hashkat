@@ -71,7 +71,7 @@ struct AnalyzerRetweet {
             return RetweetChoice();
         }
 
-        if (used.find(entity_retweeting) == used.end()) {
+        if (!used.contains(entity_retweeting)) {
             // Entity has NOT already retweeted this tweet
             used.insert(entity_retweeting);
             Entity& e = network[entity_retweeting];

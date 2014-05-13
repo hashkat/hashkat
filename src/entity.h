@@ -90,33 +90,8 @@ struct Entity {
 
     // 'Visits' every node, eg for serialization or testing
     READ_WRITE(rw) {
-        if (rw.is_reading()) {
-            std::vector<int> followings;
-            rw << followings;
-            for (int id_fol : followings) {
-                following_set.add(rw.state, id_fol); 
-            }
-
-            int size = 0;
-            rw << size;
-            for (int i = 0; i < size; i++) {
-                int id_fol = -1;
-                rw << id_fol;
-                follower_set.add(rw.state.network[id_fol]);
-            }
-
-        } else if (rw.is_writing()) {
-            rw.write_container(following_set);
-            int size = follower_set.size();
-            rw << size;
-            int n = 0;
-            for (int id_fol : follower_set.as_vector()) {
-                ASSERT(id_fol >= 0 && id_fol < rw.state.network.n_entities, "Bad id!");
-                rw << id_fol;
-                n++;
-            }
-            ASSERT(n == size, "Follower set iteration did not result in size() entries!");
-        }
+        following_set.visit(rw);
+        follower_set.visit(rw);
     }
 
 };

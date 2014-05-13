@@ -31,14 +31,14 @@
 #include "lcommon/smartptr.h"
 #include "mtwist.h"
 
-#include "cat_classes.h"
-
 #include "events.h"
 #include "CircularBuffer.h"
 
 #include "DataReadWrite.h"
 
 #include "FollowerSet.h"
+
+typedef FlexibleSet<int> UsedEntities;
 
 // information for when a user tweets
 struct TweetContent {
@@ -56,20 +56,20 @@ struct TweetContent {
         rw << time_of_tweet << language << ideology_bin << hashtag_bin << id_original_author;
 
         // Save/load used_entities:
-        std::vector<int> ids;
-        if (rw.is_writing()) {
-            for (int id : used_entities) {
-                ids.push_back(id);
-            }
-        }
-        rw << ids;
-        if (rw.is_reading()){
-            for (int id : ids) {
-                size_t prev_size = used_entities.size();
-                used_entities.insert(id);
-                ASSERT(used_entities.size() > prev_size, "'id' should be unique!");
-            }
-        }
+        used_entities.visit(rw);
+//        if (rw.is_writing()) {
+//            for (int id : used_entities) {
+//                ids.push_back(id);
+//            }
+//        }
+//        rw << ids;
+//        if (rw.is_reading()){
+//            for (int id : ids) {
+//                size_t prev_size = used_entities.size();
+//                used_entities.insert(id);
+//                ASSERT(used_entities.size() > prev_size, "'id' should be unique!");
+//            }
+//        }
     }
 };
 

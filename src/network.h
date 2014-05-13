@@ -37,9 +37,6 @@
 
 #include "CategoryGrouper.h"
 
-#include "cat_classes.h"
-#include "cat_nodes.h"
-
 #include "entity.h"
 #include "events.h"
 #include "tweets.h"

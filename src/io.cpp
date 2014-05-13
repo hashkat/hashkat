@@ -209,7 +209,7 @@ void output_position(Network& network, int n_entities) {
         }
         output1 << "</nodes>\n" << "<edges>\n";
         for (int id = 0; id < n_entities; id++) {
-            for (int id_fol : network.following_set(id)) {
+            for (int id_fol : network.following_set(id).as_vector()) {
                 output1 << "<edge id=\"" << count << "\" source=\"" << id
                         << "\" target=\"" << id_fol << "\"/>\n";
                 count++;
@@ -232,7 +232,7 @@ void output_position(Network& network, int n_entities) {
                 Entity& p = network[id];
                 output1 << "<node id=\"" << id << "\" label=\"" << p.entity_type << "\" />\n";
 
-                for (int id_fol : network.following_set(id)) {
+                for (int id_fol : network.following_set(id).as_vector()) {
                     Entity& p1 = network[id_fol];
                     output1 << "<node id=\"" << id_fol << "\" label=\"" << p1.entity_type << " - followed"<< "\" />\n";
                 }
@@ -240,7 +240,7 @@ void output_position(Network& network, int n_entities) {
         output1 << "</nodes>\n" << "<edges>\n";
         int count = 0;
         for (int& id : user_ids) {
-            for (int id_fol : network.following_set(id)) {
+            for (int id_fol : network.following_set(id).as_vector()) {
                 output1 << "<edge id=\"" << count << "\" source=\""
                         << id << "\" target=\"" << id_fol << "\"/>\n";
                 count++;
@@ -547,7 +547,7 @@ static void whos_following_who(EntityTypeVector& types, EntityType& type, Networ
         }
 
         // Analyze outs == follows
-        for (int id_fol : network.following_set(id)) {
+        for (int id_fol : network.following_set(id).as_vector()) {
             Entity& et = network[id_fol];
             who_followers[et.entity_type] ++;
             followers_sum ++;
@@ -600,7 +600,7 @@ void visualize_most_popular_tweet(MostPopularTweet& mpt, Network& network) {
             << "<nodes>\n";
             
     UsedEntities& used_set = t.content->used_entities;
-    for (int id_used : used_set) {
+    for (int id_used : used_set.as_vector()) {
         output << "<node id=\"" << id_used << "\" label=\"" << "Retweeters" << "\">\n";
         output << "<viz:size value=\"2.5\"/>\n";
         output << "</node>\n";
@@ -622,7 +622,7 @@ void visualize_most_popular_tweet(MostPopularTweet& mpt, Network& network) {
                 << "\" target=\"" << t.id_tweeter << "\"/>\n";
         count ++;
     }
-    for (int id_used : used_set) {
+    for (int id_used : used_set.as_vector()) {
         for (int id_fol : network.follower_set(id_used).as_vector()) {
             output << "<edge id=\"" << count << "\" source=\"" << id_fol
                     << "\" target=\"" << id_used << "\"/>\n";
