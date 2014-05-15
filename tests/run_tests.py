@@ -230,4 +230,3 @@ print("Running " + str(len(configurations)) + " tests.")
 for config in configurations:
     run_config_as_test("Test_" + str(num), config)
     num += 1
-    if num > 2: break

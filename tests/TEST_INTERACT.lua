@@ -6,6 +6,7 @@ local json = (require "json")
 
 function save_json(fname, obj) 
     local file = io.open(fname, "wb") 
+    if not file then error("Could not open " .. fname) end
     file:write(json.generate(obj))
     file:close()
 end
@@ -73,21 +74,29 @@ function on_exit()
         analysis_step = analysis_step
     }
 
+    local normal_run, run_after_loading = "tests/TEST_observables1.json", "tests/TEST_observables2.json"
+
     if create_observables then
-        save_json("tests/TEST_observables.json", obj)
+        save_json(normal_run, obj)
     elseif load_network then
-        pretty("Previous object:", obj)
         -- We have loaded the network. Test that all our observables are the same.
-        local loaded = load_json("tests/TEST_observables.json")
-        pretty("Post-loading object:", loaded)
-        assert(loaded.n_entities == n_entities)
-        assert(loaded.max_entities == max_entities)
-        assert(loaded.rate_total == rate_total)
-        assert(loaded.rate_add == rate_add)
-        assert(loaded.rate_follow == rate_follow)
-        assert(loaded.rate_retweet == rate_retweet)
-        assert(loaded.rate_tweet == rate_tweet)
-        assert(loaded.analysis_step == analysis_step)
+        local loaded = load_json(normal_run)
+
+        -- We load the current network observations from JSON as well, to isolate effects of serialization to JSON (ie, rounding)
+        save_json(run_after_loading, obj)
+        local current = load_json(run_after_loading)
+
+        pretty("Normal run observations:", loaded)
+        pretty("Run with loading interruption observations:", current)
+
+        assert(loaded.n_entities == current.n_entities, "n_entities mismatch!")
+        assert(loaded.max_entities == current.max_entities, "max_entities mismatch!")
+        assert(loaded.rate_total == current.rate_total, "rate_total mismatch!")
+        assert(loaded.rate_add == current.rate_add, "rate_add mismatch!")
+        assert(loaded.rate_follow == current.rate_follow, "rate_follow mismatch!")
+        assert(loaded.rate_retweet == current.rate_retweet, "rate_retweet mismatch!")
+        assert(loaded.rate_tweet == current.rate_tweet, "rate_tweet mismatch!")
+        assert(loaded.analysis_step == current.analysis_step, "analysis_step mismatch!")
     end
 end
 
