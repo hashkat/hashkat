@@ -2,23 +2,23 @@ analysis:
   enable_interactive_mode: false
   enable_lua_hooks: true
   follow_model: random
-  initial_entities: 1000
+  initial_entities: 0
   lua_script: tests/TEST_INTERACT.lua
   max_analysis_steps: 100000
   max_entities: 1000
   max_real_time: hour
   max_time: unlimited
-  model_weights: {entity: 0.2, hashtag: 0.2, preferential: 0.2, preferential_entity: 0.2,
+  model_weights: {entity: 0.2, hashtag: 0, preferential: 0.2, preferential_entity: 0.2,
     random: 0.2}
-  stage1_unfollow: false
+  stage1_unfollow: true
   unfollow_tweet_rate: 0.1
-  use_barabasi: false
-  use_followback: true
-  use_hashtag_probability: 1
+  use_barabasi: true
+  use_followback: false
+  use_hashtag_probability: 0
   use_random_time_increment: false
 entities:
-- followback_probability: 0.44
-  hashtag_follow_options: {care_about_ideology: true, care_about_region: true}
+- followback_probability: 0
+  hashtag_follow_options: {care_about_ideology: false, care_about_region: false}
   name: Standard
   rates:
     follow: {function: constant, value: 0}
@@ -36,4 +36,4 @@ preference_classes:
     plain: {Celebrity: 0, Standard: 0, else: 0}
     same_ideology: {Celebrity: 0, Standard: 0, else: 0}
 rates:
-  add: {function: constant, value: 0}
+  add: {function: constant, value: 0.1}

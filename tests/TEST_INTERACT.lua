@@ -71,7 +71,16 @@ function on_exit()
         rate_follow = rate_follow,
         rate_retweet = rate_retweet,
         rate_tweet = rate_tweet,
-        analysis_step = analysis_step
+        analysis_step = analysis_step,
+
+        total_followings = total_followings,
+        total_followers = total_followers,
+        total_hashtags = total_hashtags,
+        total_pref_entity_follows = total_pref_entity_follows,
+        total_preferential_follows = total_preferential_follows,
+        total_random_follows = total_random_follows,
+        total_tweets = total_tweets,
+        total_unfollows = total_unfollows
     }
 
     local normal_run, run_after_loading = "tests/TEST_observables1.json", "tests/TEST_observables2.json"
@@ -97,6 +106,16 @@ function on_exit()
         assert(loaded.rate_retweet == current.rate_retweet, "rate_retweet mismatch!")
         assert(loaded.rate_tweet == current.rate_tweet, "rate_tweet mismatch!")
         assert(loaded.analysis_step == current.analysis_step, "analysis_step mismatch!")
+
+        assert(loaded.total_followings == current.total_followings, "total_followings mismatch!")
+        assert(loaded.total_followers == current.total_followers, "total_followers mismatch!")
+        assert(loaded.total_hashtags == current.total_hashtags, "total_hashtags mismatch!")
+        assert(loaded.total_pref_entity_follows == current.total_pref_entity_follows, "total_pref_entity_follows mismatch!")
+        assert(loaded.total_preferential_follows == current.total_preferential_follows, "total_preferential_follows mismatch!")
+        assert(loaded.total_random_follows == current.total_random_follows, "total_random_follows mismatch!")
+        assert(loaded.total_tweets == current.total_tweets, "total_tweets mismatch!")
+        assert(loaded.total_unfollows == current.total_unfollows, "total_unfollows mismatch!")
+ 
     end
 end
 

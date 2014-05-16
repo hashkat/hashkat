@@ -99,6 +99,15 @@ struct InteractiveModeBindings {
         G["rate_follow"] = S.event_rate * S.prob_follow;
         G["rate_retweet"] = S.event_rate * S.prob_retweet;
         G["rate_tweet"] = S.event_rate * S.prob_tweet;
+
+        G["total_followings"] = S.global_stats.n_follows;
+        G["total_followers"] = S.global_stats.n_followers;
+        G["total_hashtags"] = S.global_stats.n_hashtags;
+        G["total_pref_entity_follows"] = S.global_stats.n_pref_entity_follows;
+        G["total_preferential_follows"] = S.global_stats.n_preferential_follows;
+        G["total_random_follows"] = S.global_stats.n_random_follows;
+        G["total_tweets"] = S.global_stats.n_tweets;
+        G["total_unfollows"] = S.global_stats.n_unfollows;
     }
 
     static void install_functions(lua_State* L) {

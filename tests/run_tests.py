@@ -67,7 +67,7 @@ class Configuration:
             self.initial_entities, MAX_ENTITIES
         )
 
-FOLLOW_MODELS = ['none', 'barabasi', 'random', 'preferential', 'entity', 'preferential-entity', 'hashtag', 'twitter']
+FOLLOW_MODELS = ['barabasi', 'random', 'preferential', 'entity', 'preferential-entity', 'hashtag', 'twitter', 'none']
 
 configurations = []
 

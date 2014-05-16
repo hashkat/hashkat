@@ -19,7 +19,6 @@ cd .. # Navigate to folder with run.sh
 mkdir -p $test_dir/pass_logs
 mkdir -p $test_dir/fail_logs
 mkdir -p $test_dir/stagnant_logs
-mkdir -p $test_dir/observables
 
 # Export for the interaction Lua file:
 
@@ -43,8 +42,8 @@ function run_test() {
     failed=false
     echo "LOG FILE for $test_id$SUFFIX WITH PARAMETERS: $description." > $FAIL_LOG
 
-    # We build with vector follow sets & et al, to increase determinism:
-    export BUILD_FOLLOW_SET_AS_VECTOR=1
+    # Uncomment to build with vector follow sets & et al, to isolate determinism problems:
+#    export BUILD_FOLLOW_SET_AS_VECTOR=1
     if ! ./run.sh --input "$test_dir/$yaml_file" $run_args &>> "$FAIL_LOG"; then
         failed=true
     fi
@@ -72,6 +71,9 @@ function run_test() {
     else
         echo "$test_id$SUFFIX passed ($description)"
         mv $FAIL_LOG $PASS_LOG
+        if [ "$HASHKAT_CREATE_OBSERVABLES" == 1 ] ; then
+            echo "Final observables: $(cat "$test_dir/TEST_observables1.json" | sed 's/"//g')"
+        fi
     fi
 }
 
