@@ -20,7 +20,7 @@ struct Hasher {
 template<typename T, typename HasherT = Hasher>
 struct FlexibleSet {
     enum {
-        INITIAL = 0, THRESHOLD = VECTOR_FOLLOW_SET_THRESHOLD
+        INITIAL = 0, THRESHOLD = 1 //VECTOR_FOLLOW_SET_THRESHOLD
     };
 
     ~FlexibleSet() {
@@ -222,11 +222,6 @@ struct FlexibleSet {
 
         // Write google sparse hash. Have to struggle with their inflexible API, unfortunately.
         const char* fname = ".serialize-temp";
-
-        if (hash_impl) {
-            delete hash_impl;
-            hash_impl = NULL;
-        }
 
         bool has_hash = (hash_impl != NULL);
         rw << has_hash;

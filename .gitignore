@@ -33,5 +33,6 @@ output/*
 yaml-cpp.pc
 tests/pass_logs
 tests/fail_logs
+tests/TEST.yaml
 tests/stagnant_logs
 tests/observables
