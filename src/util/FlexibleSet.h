@@ -259,6 +259,7 @@ struct FlexibleSet {
             }
 
             hash_impl = new HashSet;
+            hash_impl->set_deleted_key((T) -1);
             /* Read from the file. */
             FILE* file = fopen(fname, "rb");
             hash_impl->read_metadata(file);
