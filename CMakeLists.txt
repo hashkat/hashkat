@@ -22,7 +22,7 @@ else()
     # From the statistic '95% of users have <100 followers'
     # Also, a decent (small) threshold for linear access.
     # After this threshold, Google's sparse-hash is used.
-    add_definitions(-DVECTOR_FOLLOW_SET_THRESHOLD=5)
+    add_definitions(-DVECTOR_FOLLOW_SET_THRESHOLD=100)
 endif()
 
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")

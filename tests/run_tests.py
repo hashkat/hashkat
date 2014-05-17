@@ -15,8 +15,8 @@ from subprocess import call
 # 'Constants' shared by all test runs
 #################################################################
 
-MAX_ENTITIES = 1000
-MAX_ANALYSIS_STEPS = 100000# Increase for longer test simulation duration
+MAX_ENTITIES = 10000
+MAX_ANALYSIS_STEPS = 10000# Increase for longer test simulation duration
 ANALYSIS_STEP_SAVE_POINT = MAX_ANALYSIS_STEPS * 3/4 # For saving tests, when should we save to disk?
 MAX_REAL_TIME = "hour" # Increase for longer test time allowance
 RAND_TIME_INCR = False
