@@ -20,7 +20,7 @@
 #include <netinet/in.h>
 #endif
 
-#ifdef __APPLE__
+#if __APPLE__ | __sun
    static inline unsigned long long be64toh(unsigned long long value) {
         int num = 42;
         if (*(char *)&num == 42) {

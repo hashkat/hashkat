@@ -6,6 +6,11 @@
 /* Namespace for Google classes */
 #define GOOGLE_NAMESPACE ::google
 
+// AD: Hacked in for Solaris support
+#ifdef __sun
+typedef unsigned short u_int16_t;
+#endif
+
 /* Define to 1 if you have the <inttypes.h> header file. */
 #define HAVE_INTTYPES_H 1
 

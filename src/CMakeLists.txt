@@ -8,7 +8,6 @@ include_directories(
 	dependencies/yaml-cpp/include
         dependencies/luawrap-lib/include/
 	dependencies/lua/
-	dependencies/libuv/include
 )
 
 add_definitions(-Wuninitialized -std=c++11)
@@ -65,7 +64,6 @@ target_link_libraries (
 	socialsim 
 	UnitTest++
 	yaml-cpp
-	libuv
         lualinenoise
         lua
         luawrap

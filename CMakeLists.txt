@@ -12,11 +12,17 @@ else()
     set(CMAKE_BUILD_TYPE Debug)
 endif()
 
+if (${CMAKE_SYSTEM_NAME} MATCHES "SunOS") 
+    add_definitions(-Du_int16_t="unsigned short")
+endif()
+
 if ($ENV{BUILD_FLAGS})
     add_definitions ($ENV{BUILD_FLAGS})
 endif()
 
 if ($ENV{BUILD_FOLLOW_SET_AS_VECTOR})
+    # Can read this as 'infinite'. Will always be a vector. Only really
+    # useful to rule out Google's sparse-hash as a source of bugs.
     add_definitions(-DVECTOR_FOLLOW_SET_THRESHOLD=2147483647)
 else()
     # From the statistic '95% of users have <100 followers'

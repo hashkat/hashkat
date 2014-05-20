@@ -164,9 +164,9 @@ if ! handle_flag "-f" && ! handle_flag "--force" ; then
     cd build
     cmake .. | colorify '1;33'
     if handle_flag "--clean" ; then
-        make clean
+        gmake clean
     fi
-    make -j$((cores+1))
+    gmake -j$((cores+1))
     cd ..
 fi
 
@@ -175,17 +175,19 @@ fi
 #   --input <FILE>, the input file to use. Defaults to INFILE.yaml.
 ###############################################################################
 
-# Clear all existing generated YAML files:
-rm -f *yaml-generated
+# If Python dependencies are hard to acquire on the target system,
+# the alternative is to copy a *yaml-generated file from a system that
+# can generate it, and run with --no-generate.
 
-# We must generate X-generated.yaml from X.yaml (defaults
-# NOTE: Requires python as well as the pyyaml & scipy packages
+if ! handle_flag "--no-generate" ; then
 
-python INFILE.py "$@"
+    # Clear all existing generated YAML files:
+    rm -f *yaml-generated
 
-# If the flag is NOT present
-if ! handle_flag "--no-ctrlc" ; then
-    args="$args --handle-ctrlc"
+    # We must generate X-generated.yaml from X.yaml (defaults
+    # NOTE: Requires Python as well as the pyyaml & scipy packages
+
+    python INFILE.py "$@"
 fi
 
 ###############################################################################
@@ -193,6 +195,11 @@ fi
 # or valgrind context.  
 #   Use '--help' or 'help' for details.
 ###############################################################################
+
+# If the flag is NOT present, handle ctrl-c
+if ! handle_flag "--no-ctrlc" ; then
+    args="$args --handle-ctrlc"
+fi
 
 if handle_flag "--stacktrace" ; then
     gdb -silent -batch \

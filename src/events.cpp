@@ -2,8 +2,6 @@
 #include <cstdlib>
 #include <unistd.h>
 
-#include <uv.h>
-
 #include "util.h"
 
 #include "analyzer.h"
