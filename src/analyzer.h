@@ -71,8 +71,6 @@ struct NetworkStats {
     state.entity_types[entity_type].stats. stat ++; \
     state.stats.global_stats. stat ++;
 
-const int APPROX_MONTH = 30 * 24 * 60;
-
 struct Analyzer;
 
 struct InteractiveModeState {
@@ -115,7 +113,6 @@ struct AnalysisState {
     CategoryGrouper follow_ranks;
     CategoryGrouper retweet_ranks;
     CategoryGrouper age_ranks;
-    Add_Rates add_rates;
 
     // Our distinct entity classes.
     // Entity probabilities are derived from config,
@@ -125,7 +122,7 @@ struct AnalysisState {
 
     // Add any values that must be extracted from 'analyze' here.
     int n_follows;
-    double r_follow_norm, end_time;
+    double end_time;
 
     /* tweet_bank: The central tweeting data-structure.
    
@@ -158,7 +155,7 @@ struct AnalysisState {
      a chance of propagating a given tweet in their own immediate network. */
 
     HashTags hashtags;
-    std::vector<double> follow_probabilities, updating_follow_probabilities;
+    std::vector<double> updating_follow_probabilities;
 
     /* InteractiveModeState: 
      State for determining when to begin interactive mode. See above. */
@@ -173,7 +170,7 @@ struct AnalysisState {
     AnalysisState(const ParsedConfig& config, int seed) :
             config(config), tweet_bank(*this){
         n_follows = 0;
-        r_follow_norm = end_time = 0;
+        end_time = 0;
 
         // CategoryGrouper carries both state and configuration.
         // We copy over the data so that we can operate on it.
@@ -181,9 +178,6 @@ struct AnalysisState {
         follow_ranks = config.follow_ranks;
         retweet_ranks = config.retweet_ranks;
         entity_types = config.entity_types;
-        add_rates = config.add_rates;
-
-        follow_probabilities = config.follow_probabilities;
 
         rng.init_genrand(seed);
         time = 0.0;
@@ -198,16 +192,29 @@ struct AnalysisState {
         return time / APPROX_MONTH;
     }
 
+
+    /* Synchronize rates from a loaded configuration.
+     * This is done because, although we can load a new configuration,
+     * some rates remain duplicated in our state object. */
+    void sync_rates() {
+        // We must sync anything copied from the 'config' object in the constructor.
+        tweet_ranks.sync_rates(config.tweet_ranks);
+        follow_ranks.sync_rates(config.follow_ranks);
+        retweet_ranks.sync_rates(config.retweet_ranks);
+        for (int i = 0; i < entity_types.size(); i++) {
+            entity_types[i].sync_configuration(config.entity_types[i]);
+        }
+    }
+
     // For network reading/writing:
     READ_WRITE(rw) {
         network.visit(rw);
 
         rw << time;
-        rw << follow_probabilities;
         rw << updating_follow_probabilities;
 
         rw << entity_cap;
-        rw << n_follows << r_follow_norm << end_time;
+        rw << n_follows << end_time;
 
         rng.visit(rw);
         tweet_ranks.visit(rw);

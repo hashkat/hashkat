@@ -48,7 +48,7 @@ struct AnalyzerFollow {
     AnalyzerFollow(AnalysisState& state) :
             network(state.network), state(state), stats(state.stats),
             config(state.config), follow_ranks(state.follow_ranks),
-            follow_probabilities(state.follow_probabilities),
+            follow_probabilities(state.config.follow_probabilities),
             updating_follow_probabilities(state.updating_follow_probabilities),
             entity_types(state.entity_types), rng(state.rng), hashtags(state.hashtags) {
     }

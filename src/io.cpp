@@ -92,7 +92,7 @@ void output_network_statistics(AnalysisState& state) {
     if (C.output_tweet_analysis) {
         tweets_distribution(network, N_ENTITIES);
     }
-    if (entity_checks(et_vec, network, state, state.add_rates, initial_entities)) {
+    if (entity_checks(et_vec, network, state, state.config.add_rates, initial_entities)) {
         //cout << "Number of events are valid.\n";
     } else {
         cout << "Numbers are events are not valid, adjust the tolerance or check for errors.\n";

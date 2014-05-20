@@ -20,7 +20,7 @@ struct Hasher {
 template<typename T, typename HasherT = Hasher>
 struct FlexibleSet {
     enum {
-        INITIAL = 0, THRESHOLD = 1 //VECTOR_FOLLOW_SET_THRESHOLD
+        INITIAL = 0, THRESHOLD = VECTOR_FOLLOW_SET_THRESHOLD
     };
 
     ~FlexibleSet() {

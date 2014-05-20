@@ -75,6 +75,7 @@ inline const char* language_name(int bin) {
     return NULL;
 }
 
+const int APPROX_MONTH = 30 * 24 * 60;
 const int TIME_CAT_FREQ = 30 * 24 * 60;
 
 // Output frequency:

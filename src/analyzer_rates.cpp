@@ -57,7 +57,7 @@ struct AnalyzerRates {
     // There are multiple 'Analyzer's, they each operate on parts of AnalysisState.
     AnalyzerRates(AnalysisState& state) :
             network(state.network), state(state), stats(state.stats),
-            config(state.config), entity_types(state.entity_types), add_rates(state.add_rates) {
+            config(state.config), entity_types(state.entity_types), add_rates(state.config.add_rates) {
     }
 	
     bool create_new_month_if_needed(EntityType& et) {

@@ -464,6 +464,54 @@ static void check_configuration_integrity(ParsedConfig& config) {
                     "N_BIN_IDEOLOGIES", N_BIN_IDEOLOGIES, config.ideologies.size());
 }
 
+/***************************************************************************
+ * Fill the various Add_Rates structures with the data necessary for each month
+ ***************************************************************************/
+
+static void configure_add_rates(ParsedConfig& config) {
+    int projected_months = config.max_sim_time / APPROX_MONTH;
+    auto& add_rates = config.add_rates;
+    if (add_rates.RF.function_type == "constant" ) {
+        for (int i = 0; i <= projected_months; i ++) {
+            add_rates.RF.monthly_rates.push_back(add_rates.RF.const_val);
+        }
+    } else if (add_rates.RF.function_type == "linear") {
+        for (int i = 0; i <= projected_months; i ++) {
+            add_rates.RF.monthly_rates.push_back(add_rates.RF.y_intercept + i*add_rates.RF.slope);
+        }
+    }
+}
+
+static void configure_entity_rates(ParsedConfig& config, EntityType& et, int event) {
+    int projected_months = config.max_sim_time / APPROX_MONTH;
+    if (et.RF[event].function_type == "not specified" && event == 0) {
+        error_exit("FATAL: Follow rate function for entity \""+ et.name + "\" was not specified.");
+    } else if (et.RF[event].function_type == "not specified" && event == 1) {
+        error_exit("FATAL: Follow rate function for entity \""+ et.name + "\" was not specified.");
+    } else if (et.RF[event].function_type == "constant") {
+        ASSERT(et.RF[event].const_val >= 0, "Check your rates, one of them is < 0");
+        for (int i = 0; i <= projected_months; i ++) {
+            et.RF[event].monthly_rates.push_back(et.RF[event].const_val);
+        }
+    } else if (et.RF[event].function_type == "linear") {
+        for (int i = 0; i <= projected_months; i ++) {
+            if (et.RF[event].y_intercept + i * et.RF[event].slope >= 0) {
+                et.RF[event].monthly_rates.push_back(et.RF[event].y_intercept + i * et.RF[event].slope);
+            } else {
+                et.RF[event].monthly_rates.push_back(0);
+            }
+        }
+    }
+}
+
+static void configure_entity_rates(ParsedConfig& config) {
+    for (int i = 0; i < config.entity_types.size(); i ++) {
+        for (int j = 0; j < number_of_diff_events; j ++) {
+            configure_entity_rates(config, config.entity_types[i], j);
+        }
+    }
+}
+
 ParsedConfig parse_yaml_configuration(const char* file_name) {
     try {
         fstream file(file_name, fstream::in);
@@ -476,6 +524,11 @@ ParsedConfig parse_yaml_configuration(const char* file_name) {
         parse_all_configuration(config, root);
         file.close();
         save_file_contents(config, file_name);
+
+        /* Fill the various Add_Rates structures with the data necessary for each month */
+        configure_add_rates(config);
+        configure_entity_rates(config);
+
         check_configuration_integrity(config);
         return config;
     } catch (const exception& e) {

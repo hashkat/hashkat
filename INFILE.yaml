@@ -5,7 +5,7 @@ analysis:
   initial_entities:
     50
   max_entities: 
-    100001
+    1001
   max_time: 
     year
   max_real_time: 
@@ -35,14 +35,63 @@ output:
     true
   load_network_on_startup:
     true
-  ignore_load_config_check: # Whether to abort loading configuration because of (strictly) mismatching configuration
+  ignore_load_config_check: # Whether to allow loading configuration with mismatching configuration (generally OK)
     true
   save_file: # File to save to, and load from
     network_state.sav
   verbose:
-    false
+    true
 
 rates:
   add: {function: constant, value: 1.0}
 
+preference_classes:
+ - name: StandardPref
+ 
+  # Determines the probability that a tweet is reacted to by this 
+  # preference class:
+   tweet_transmission: 
+      plain: # Also applies to musical tweets
+        Standard: 0.0
+        Celebrity: 0.0
+        else: 0.0
+      different_ideology:
+        Standard: 0.0
+        Celebrity: 0.0
+        else: 0.0
+      same_ideology:
+        Standard: 0.0
+        Celebrity: 0.0
+        else: 0.0
+      humourous:
+        Standard: 0.0
+        Celebrity: 0.0
+        else: 0.0
+   # Probability that we will follow as a reaction.
+   # Only applies to 2nd generation retweets, otherwise
+   # the entity would already be a follower.
+   follow_reaction_prob:
+      0.5
 
+entities:
+  - name: Standard
+    weights:
+      # Weight with which this entity is created
+      add: 80 
+      # Weight with which this entity is followed in entity follow
+      follow: 5
+      tweet_type:
+        ideological: 1.0
+        plain: 1.0
+        musical: 1.0
+        humourous: 1.0 # Can be considered the humourousness of the entity type
+    # Probability that following this entity results in a follow-back
+    followback_probability: 44
+    hashtag_follow_options:
+      care_about_region: true # does the entity care about where the entity they will follow is from?
+      care_about_ideology: false # does the entiy care about which ideology the entity has?
+    rates: 
+        # Rate for follows from this entity:
+        follow: {function: constant, value: 0.1}
+        # Rate for tweets from this entity:
+        tweet: {function: constant, value: 0.01}

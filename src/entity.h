@@ -132,6 +132,27 @@ struct EntityType {
 
     EntityStats stats;
 
+    /* Synchronize rates and preferences from a loaded configuration.
+     * This is done because, although we can load a new configuration,
+     * some rates remain duplicated in our state object. */
+    void sync_configuration(EntityType& E) {
+        ASSERT(name == E.name, "Attempting sync_configuration on different entity types! The number and relative orderings of entity types must remain constant.");
+        prob_add = E.prob_add;
+        prob_follow = E.prob_follow;
+        prob_followback = E.prob_followback;
+        for (int i = 0; i < number_of_diff_events; i++) {
+            RF[i] = E.RF[i];
+        }
+
+        // Created on demand, not data (in other words, do not uncomment):
+        // age_ranks.sync_rates(E.age_ranks);
+        follow_ranks.sync_rates(E.follow_ranks);
+
+        for (int i = 0; i < N_TWEET_TYPES; i++) {
+            tweet_type_probs[i] = E.tweet_type_probs[i];
+        }
+    }
+
     READ_WRITE(rw) {
         rw << name << prob_add << prob_follow << prob_followback;
         rw << new_entities;

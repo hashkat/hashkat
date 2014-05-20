@@ -36,3 +36,4 @@ tests/fail_logs
 tests/TEST.yaml
 tests/stagnant_logs
 tests/observables
+.serialize-temp

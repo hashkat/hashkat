@@ -69,6 +69,7 @@ struct CategoryEntityList {
 struct CategoryGrouper {
 	std::vector<Cat> categorizations;
 	std::vector<CategoryEntityList> categories;
+
 	// Incrementally update a categorization
 	void categorize(int entity, double parameter) {
 		if (categorizations.size() <= entity) {
@@ -90,6 +91,7 @@ struct CategoryGrouper {
 		DEBUG_CHECK(false, "Logic error");
 	}
 
+	/* Remove a categorized entity. */
 	void remove(Cat& c) {
 		if (c.category != -1) {
 			CategoryEntityList& C = categories.at(c.category);
@@ -102,6 +104,16 @@ struct CategoryGrouper {
 			// Reset:
 			c = Cat();
 		}
+	}
+
+	/* Synchronize rates from a loaded configuration.
+	 * This is done because, although we can load a new configuration,
+	 * some rates remain duplicated in our state object. */
+	void sync_rates(CategoryGrouper& C) {
+        for (int i = 0; i < categories.size(); i++) {
+            categories[i].prob = C.categories[i].prob;
+            categories[i].threshold = C.categories[i].threshold;
+        }
 	}
 
 	Cat add(int entity, int new_cat) {

@@ -129,7 +129,7 @@ struct Analyzer {
             state(state), stats(state.stats), config(state.config),
             entity_types(state.entity_types), network(state.network),
             tweet_ranks(state.tweet_ranks), follow_ranks(state.follow_ranks), retweet_ranks(state.retweet_ranks),
-            rng(state.rng), time(state.time), add_rates(state.add_rates), tweet_bank(state.tweet_bank),
+            rng(state.rng), time(state.time), add_rates(state.config.add_rates), tweet_bank(state.tweet_bank),
             most_pop_tweet(state.most_pop_tweet), hashtags(state.hashtags) {
 
         // The following allocates a memory chunk proportional to max_entities:
@@ -143,52 +143,9 @@ struct Analyzer {
         retweet_data.open("output/entity_retweets.dat");
 		
         set_initial_entities();
-        set_future_add_rates(add_rates);
-        call_future_rates();
-		analyzer_rate_update(state);
+        analyzer_rate_update(state);
     }
 
-    void set_future_add_rates(Add_Rates& add_rates) {
-        int projected_months = config.max_sim_time / APPROX_MONTH;
-        if (add_rates.RF.function_type == "constant" ) {
-            for (int i = 0; i <= projected_months; i ++) {
-                add_rates.RF.monthly_rates.push_back(add_rates.RF.const_val);
-            }
-        } else if (add_rates.RF.function_type == "linear") {
-            for (int i = 0; i <= projected_months; i ++) {
-                add_rates.RF.monthly_rates.push_back(add_rates.RF.y_intercept + i*add_rates.RF.slope);
-            }
-        }
-    }
-    
-	void call_future_rates() {
-		for (int i = 0; i < entity_types.size(); i ++) {
-			for (int j = 0; j < number_of_diff_events; j ++) {
-				set_future_rates(entity_types[i], j);
-			}
-		}
-	}
-	void set_future_rates(EntityType& et, int event) {
-        int projected_months = config.max_sim_time / APPROX_MONTH;
-        if (et.RF[event].function_type == "not specified" && event == 0) {
-            error_exit("FATAL: Follow rate function for entity \""+ et.name + "\" was not specified.");
-        } else if (et.RF[event].function_type == "not specified" && event == 1) {
-            error_exit("FATAL: Follow rate function for entity \""+ et.name + "\" was not specified.");
-        } else if (et.RF[event].function_type == "constant") {
-			ASSERT(et.RF[event].const_val >= 0, "Check your rates, one of them is < 0");
-			for (int i = 0; i <= projected_months; i ++) {
-                et.RF[event].monthly_rates.push_back(et.RF[event].const_val);
-			}
-		} else if (et.RF[event].function_type == "linear") {
-			for (int i = 0; i <= projected_months; i ++) {
-				if (et.RF[event].y_intercept + i * et.RF[event].slope >= 0) {
-					et.RF[event].monthly_rates.push_back(et.RF[event].y_intercept + i * et.RF[event].slope);
-				} else {
-					et.RF[event].monthly_rates.push_back(0);
-				}
-			}
-		} 
-	}
     void set_initial_entities() {
         for (int i = 0; i < config.initial_entities; i++) {
              action_create_entity();
@@ -241,6 +198,11 @@ struct Analyzer {
                     "If you do not care, please set output.ignore_load_config_check to true.\nExitting...");
         }
         state.visit(reader);
+
+        /* Synchronize rates from the loaded configuration.
+         * This is done because, although we can load a new configuration,
+         * some rates remain duplicated in our state object. */
+        state.sync_rates();
 
         lua_hook_load_network(state);
     }

@@ -93,7 +93,7 @@ output:
     false
   load_network_on_startup:
     false
-  ignore_load_config_check: # Whether to abort loading configuration because of (strictly) mismatching configuration
+  ignore_load_config_check: # Whether to allow loading configuration with mismatching configuration (generally OK)    
     false
   save_file: # File to save to, and load from
     network_state.sav
@@ -274,7 +274,9 @@ preference_classes:
         Standard: 0.0
         Celebrity: 0.0
         else: 0.0
-   # Probability that we will follow as a reaction:
+   # Probability that we will follow as a reaction.
+   # Only applies to 2nd generation retweets, otherwise
+   # the entity would already be a follower.
    follow_reaction_prob:
       0.5
 
@@ -296,7 +298,9 @@ preference_classes:
         Standard: 0
         Celebrity: 0
         else: 0
-  # Probability that we will follow as a reaction:
+   # Probability that we will follow as a reaction.
+   # Only applies to 2nd generation retweets, otherwise
+   # the entity would already be a follower.
    follow_reaction_prob:
       0.5
 
