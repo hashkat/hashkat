@@ -35,6 +35,7 @@
 #include "io.h"
 #include "util.h"
 #include "tweets.h"
+#include "config_static.h"
 
 #include "util/StatCalc.h"
 
@@ -112,6 +113,7 @@ void output_network_statistics(AnalysisState& state) {
     if (C.main_stats) {
         network_statistics(network, stats, et_vec);
     }
+    region_stats(network, state);
 }
 
 static void output_stat_calc(const char* name, StatCalc& calc) {
@@ -303,13 +305,13 @@ void degree_distributions(Network& network) {
     for (int i = 0; i < max_degree; i ++ ) {
         cumulative_distro[i] = 0;
     }
-
     //go through network and generate distributions
     for (int i = 0; i < network.n_entities; i ++) {
         out_degree_distro[network.n_followings(i)] ++;
         in_degree_distro[network.n_followers(i)] ++;
         cumulative_distro[network.n_followers(i) + network.n_followings(i)] ++;
     }
+
     // output the distributions
     for (int i = 0; i < max_following; i ++) {
         outdd << i << "\t" << out_degree_distro[i] / (double) network.n_entities << "\t" << log(i) << "\t" << log(out_degree_distro[i] / (double)network.n_entities) << "\n";
@@ -676,3 +678,51 @@ void network_statistics(Network& n, NetworkStats& net_stats, EntityTypeVector& e
     }
     output.close();
 }
+
+struct holder {
+    vector<int> ids;
+};
+
+bool region_stats(Network& n, AnalysisState& state) {
+    holder region_self[N_BIN_REGIONS];
+    int connections[N_BIN_REGIONS][N_BIN_REGIONS] = {};
+    
+    for (int i = 0; i < n.n_entities; i ++) {
+        Entity& e = n[i];
+        int reg = e.region_bin;
+        region_self[reg].ids.push_back(i);
+        vector<int> following = e.following_set.as_vector();
+        for (int j = 0; j < following.size(); j ++) {
+            Entity& followee = n[following[j]];
+            connections[reg][followee.region_bin] ++;
+        }
+        
+    }
+    double follow_counts[N_BIN_REGIONS] = {};
+    for (int i = 0; i < N_BIN_REGIONS; i ++) {
+        int count = 0;
+        for (int j = 0; j < N_BIN_REGIONS; j ++) {
+            count += connections[i][j];
+        }
+        follow_counts[i] = count;
+    }
+    cout << "Connections:\n";
+    for (int i = 0; i < N_BIN_REGIONS; i ++) {
+        cout << "\t" << i;
+    }
+    cout << "\n";
+    for (int i = 0; i < N_BIN_REGIONS; i ++) {
+        for (int j = 0; j < N_BIN_REGIONS; j ++) {
+            if (j == 0) {
+                cout << "\n" << i;
+            }
+            cout << "\t" << 100.0 * connections[i][j] / follow_counts[i] << "\%";
+            if (j+1 == N_BIN_REGIONS) {
+                cout << "\n";
+            }
+            
+        }
+    }
+    return true;
+}
+

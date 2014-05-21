@@ -54,6 +54,7 @@ enum Language {
     LANG_ENGLISH,
     LANG_FRENCH_AND_ENGLISH,
     LANG_FRENCH,
+    LANG_SPANISH,
     /* All languages before LANG_FRENCH contain English */
     N_LANGS // Not a real entry; evaluates to amount of languages
 };
@@ -72,6 +73,7 @@ inline const char* language_name(int bin) {
     if (bin == LANG_ENGLISH) return "LANG_ENGLISH";
     if (bin == LANG_FRENCH_AND_ENGLISH) return "LANG_FRENCH_AND_ENGLISH";
     if (bin == LANG_FRENCH) return "LANG_FRENCH";
+    if (bin == LANG_SPANISH) return "LANG_SPANISH";
     return NULL;
 }
 
@@ -93,7 +95,7 @@ const int N_BIN_HUMOUR = 2; // Should be exactly as in INFILE.yaml!
 // NOTE WELL: The below limits should be respected by your INFILE.yaml!!
 const int N_BIN_PREFERENCE_CLASS = 2;
 const int N_BIN_ENTITY_TYPES = 5;
-const int N_BIN_REGIONS = 2;
+const int N_BIN_REGIONS = 3;
 const int N_BIN_IDEOLOGIES = 2;
 
 const int N_FOLLOW_MODELS = 5;

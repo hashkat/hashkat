@@ -166,7 +166,7 @@ if ! handle_flag "-f" && ! handle_flag "--force" ; then
     if handle_flag "--clean" ; then
         gmake clean
     fi
-    gmake -j$((cores+1))
+    make -j$((cores+1))
     cd ..
 fi
 

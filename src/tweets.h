@@ -139,7 +139,7 @@ struct MostPopularTweet {
 
 struct HashtagGroup {
     // circular buffer with 10 elements
-    CircularBuffer<int, 10> circ_buffer;
+    CircularBuffer<int, 100> circ_buffer;
 };
 
 struct HashTags {

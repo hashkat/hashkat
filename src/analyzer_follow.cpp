@@ -85,6 +85,8 @@ struct AnalyzerFollow {
                update_chatiness(A, id_target);
            }
            lua_hook_follow(state, id_actor, id_target);
+           RECORD_STAT(state, A.entity_type, n_follows);
+           RECORD_STAT(state, T.entity_type, n_followers);
            return true;
        }
        return false;
@@ -319,8 +321,6 @@ struct AnalyzerFollow {
                 et.follow_ranks.categorize(entity_to_follow, target.follower_set.size());
                 follow_ranks.categorize(entity_to_follow, target.follower_set.size());
 
-                RECORD_STAT(state, e.entity_type, n_follows);
-                RECORD_STAT(state, target.entity_type, n_followers);
                 return true;
             }
             perf_timer_end("AnalyzerFollower.follow_entity(handle_follow)");

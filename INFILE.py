@@ -139,10 +139,11 @@ def weights_to_probs(weights, map, n):
 lang_order = {
     "English" : 0,
     "French" : 1,
-    "French+English" : 2
+    "Spanish" : 2,
+    "French+English" : 3
 }
 
-lang_n = 3
+lang_n = 4
 ideo_order,pref_order = {},{}
 ideo_n, pref_n  = 0, 0
 for p in CONFIG["ideologies"]:

@@ -129,11 +129,14 @@ struct AnalyzerSelect {
         double rand_num = rng.rand_real_not0();
 
         for (int e = 0; e < entity_types.size(); e++) {
-            vector<double>& rates = selection_rate_vector(entity_types[e], event);
-            int entity = entity_selection(entity_types[e], rates, rand_num, rate_sum);
-            if (entity != -1) {
-                return entity;
+            if (rand_num < entity_types[e].prob_add) {
+                vector<double>& rates = selection_rate_vector(entity_types[e], event);
+                int entity = entity_selection(entity_types[e], rates, rand_num, rate_sum);
+                if (entity != -1) {
+                    return entity;
+                }
             }
+            rand_num -= entity_types[e].prob_add;
         }
 
         return -1;
