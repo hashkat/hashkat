@@ -87,6 +87,7 @@ struct ParsedConfig {
     bool use_preferential_follow = false;
     bool use_followback = false;
     bool use_barabasi = false;
+    int barabasi_connections = 1;
     bool entity_stats = false;
     bool stage1_unfollow = false;
     double hashtag_prob = 0;

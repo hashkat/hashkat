@@ -287,7 +287,10 @@ struct Analyzer {
         lua_hook_add(state, id);
 
         if (config.use_barabasi){
-             analyzer_follow_entity(state, id, creation_time);
+            // follow so many times depending on setting
+            for (int i = 0; i < config.barabasi_connections; i ++) {
+                analyzer_follow_entity(state, id, creation_time);
+            }
         }
         return true;
     }

@@ -174,6 +174,7 @@ static void parse_analysis_configuration(ParsedConfig& config, const Node& node)
     parse(node, "stage1_unfollow", config.stage1_unfollow);
     parse(node, "use_hashtag_probability", config.hashtag_prob);
     parse(node, "use_barabasi", config.use_barabasi);
+    parse(node, "barabasi_connections", config.barabasi_connections);
     parse(node, "use_followback", config.use_followback);
     parse(node, "use_random_time_increment", config.use_random_time_increment);
     parse(node, "enable_interactive_mode", config.enable_interactive_mode);
