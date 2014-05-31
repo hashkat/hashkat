@@ -67,7 +67,8 @@ Configuration options:
 Build options:
     --eclipse (or -e), create Eclipse project files in sibling directory ‘../KMCEclipse’
     --force (or -f), do not rebuild (can be used to run last without compilation error)
-
+    --build (or -B), only build (note -f with -B is a no-op)
+ 
 Optimization options:
     --optimize (or -O), build with optimization. Prevents debugging.
 The following imply --optimize (ie, specifying --optimization will have no further effect):
@@ -168,6 +169,10 @@ if ! handle_flag "-f" && ! handle_flag "--force" ; then
     fi
     make -j$((cores+1))
     cd ..
+fi
+
+if handle_flag "-B" || handle_flag "--build" ; then
+    exit # Only do a build
 fi
 
 ###############################################################################
