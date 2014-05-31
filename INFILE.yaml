@@ -41,7 +41,7 @@ analysis:
   initial_entities:
     100
   max_entities: 
-    30000000
+    3000
   max_time: 
     10*year
   max_analysis_steps: 
@@ -100,23 +100,25 @@ output:
   save_file: # File to save to, and load from
     network_state.sav
   stdout_basic: 
-    true
+    false
   stdout_summary: 
     true
+  summary_output_rate: 
+    10000
   visualize: 
-    true
+    false
   verbose: 
-    true
+    false
   entity_stats: 
-    true
+    false
   degree_distributions: 
-    true
+    false
   tweet_analysis: 
-    true
+    false
   retweet_visualization:
     false
   main_statistics:
-    true
+    false
 
 #################################################################
 # >> *_ranks:

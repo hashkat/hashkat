@@ -66,7 +66,7 @@ inline bool language_understandable(Language known, Language seen) {
     // Otherwise, we can only understand this language if we know
     // English and French. Since English&French are the only considered
     // languages, we must understand the language in this case.
-    return (known == LANG_FRENCH_AND_ENGLISH);
+    return (known == LANG_FRENCH_AND_ENGLISH) && (seen != LANG_SPANISH);
 }
 
 inline const char* language_name(int bin) {

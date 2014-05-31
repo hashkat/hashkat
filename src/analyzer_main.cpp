@@ -105,6 +105,7 @@ struct Analyzer {
 
     // Times the interval between prints to the console
     Timer stdout_milestone_timer;
+    TimePeriodChecker output_time_checker;
 
     ofstream DATA_TIME; // Output file to plot data
     ofstream add_data;
@@ -130,12 +131,13 @@ struct Analyzer {
             entity_types(state.entity_types), network(state.network),
             tweet_ranks(state.tweet_ranks), follow_ranks(state.follow_ranks), retweet_ranks(state.retweet_ranks),
             rng(state.rng), time(state.time), add_rates(state.config.add_rates), tweet_bank(state.tweet_bank),
-            most_pop_tweet(state.most_pop_tweet), hashtags(state.hashtags) {
+            most_pop_tweet(state.most_pop_tweet), hashtags(state.hashtags), output_time_checker(state.config.summary_output_rate) {
 
         // The following allocates a memory chunk proportional to max_entities:
         network.allocate(config.max_entities);
 
         DATA_TIME.open("DATA_vs_TIME");
+
         add_data.open("output/entity_populations.dat");
         following_data.open("output/entity_following.dat");
         followers_data.open("output/entity_followers.dat");
@@ -516,10 +518,6 @@ struct Analyzer {
 
     /* Step our KMC simulation proportionally to the global event rate. */
     void step_time() {
-        static double STATIC_TIME = 0.0;
-
-        double prev_time = time;
-        double prev_integer = floor(time);
         if (config.use_random_time_increment) {
             // increment by random time
             double increment = -log(rng.rand_real_not0()) / stats.event_rate;
@@ -527,15 +525,14 @@ struct Analyzer {
         } else {
             time += 1.0 / stats.event_rate;
         }
-        ASSERT(STATIC_TIME <= time, "Fail");
-        STATIC_TIME = time;
-        if (config.output_stdout_summary && (floor(time) > prev_integer || config.output_verbose)) {
-          output_summary_stats();
+
+        if (config.output_stdout_summary && (output_time_checker.has_past(time) || config.output_verbose)) {
+            output_summary_stats();
         } 
     }
 
     /***************************************************************************
-     * Helper functions
+     * Helper functions`
      ***************************************************************************/
     
     bool is_following(int& follower, int& followee) {
@@ -643,19 +640,19 @@ struct Analyzer {
             tweet_data << "\n\n";
             retweet_data << "\n\n";
             add_data << "\n\n";
-            }
-            following_data << time << "\t";
-            followers_data << time << "\t";
-            tweet_data << time << "\t";
-            retweet_data << time << "\t";
-            add_data << time << "\t";
-            for (auto& type : entity_types) {
-                following_data << type.stats.n_follows << "\t";
-                followers_data << type.stats.n_followers << "\t";
-                tweet_data << type.stats.n_tweets << "\t";
-                retweet_data << type.stats.n_retweets << "\t";
-                add_data << type.entity_list.size() << "\t";
-            }
+        }
+        following_data << time << "\t";
+        followers_data << time << "\t";
+        tweet_data << time << "\t";
+        retweet_data << time << "\t";
+        add_data << time << "\t";
+        for (auto& type : entity_types) {
+            following_data << type.stats.n_follows << "\t";
+            followers_data << type.stats.n_followers << "\t";
+            tweet_data << type.stats.n_tweets << "\t";
+            retweet_data << type.stats.n_retweets << "\t";
+            add_data << type.entity_list.size() << "\t";
+        }
         following_data << "\n";
         followers_data << "\n";
         tweet_data << "\n";
@@ -663,7 +660,8 @@ struct Analyzer {
         add_data << "\n";
         output_summary_stats(DATA_TIME);
         if (stats.n_outputs % STDOUT_OUTPUT_RATE == 0) {
-        	output_summary_stats(cout, stdout_milestone_timer.get_microseconds() / 1000.0);
+            output_summary_stats(cout,
+                    stdout_milestone_timer.get_microseconds() / 1000.0);
             stdout_milestone_timer.start(); // Restart the timer
         }
 

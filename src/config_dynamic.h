@@ -111,6 +111,8 @@ struct ParsedConfig {
     bool output_verbose = false;
     bool retweet_viz = false;
     bool main_stats = false;
+    double summary_output_rate = 1;
+
     // 'X_category' config options
 
     // Thresholds are filled, entity lists empty

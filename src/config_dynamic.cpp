@@ -200,6 +200,7 @@ static Add_Rates parse_rates_configuration(ParsedConfig& config, const Node& nod
 static void parse_output_configuration(ParsedConfig& config, const Node& node) {
     parse(node, "stdout_basic", config.output_stdout_basic);
     parse(node, "stdout_summary", config.output_stdout_summary);
+    parse(node, "summary_output_rate", config.summary_output_rate);
 
     parse(node, "visualize", config.output_visualize);
     parse(node, "verbose", config.output_verbose);
@@ -209,7 +210,7 @@ static void parse_output_configuration(ParsedConfig& config, const Node& node) {
     parse(node, "load_network_on_startup", config.load_network_on_startup);
     parse(node, "ignore_load_config_check", config.ignore_load_config_check);
     parse(node, "save_file", config.save_file);
-    
+
     parse(node, "degree_distributions", config.degree_distributions);
 
     parse(node, "tweet_analysis", config.output_tweet_analysis);

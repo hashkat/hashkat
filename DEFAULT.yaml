@@ -101,6 +101,8 @@ output:
     true
   stdout_summary: 
     true
+  summary_output_rate: 
+    1
   visualize: 
     true
   verbose: 
