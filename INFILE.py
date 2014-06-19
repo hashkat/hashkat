@@ -215,11 +215,13 @@ def compute_tweet_obs():
     prev_bound = tweet_obs_x_start 
     bound = prev_bound
     res = tweet_obs_initial_resolution
+    full_int = tweet_observation_integral(tweet_obs_x_start, tweet_obs_x_end)
 
     while bound < tweet_obs_x_end:
         bound += res
         bound = min(bound, tweet_obs_x_end)
         obs = tweet_observation_integral(prev_bound, bound)
+        obs /= full_int
         rates.append(obs)
         spans.append(res)
         bounds.append(x_bound_to_time_bound(bound))
@@ -227,7 +229,7 @@ def compute_tweet_obs():
         prev_bound = bound # Set current bound to new previous
         res *= tweet_obs_resolution_growth_factor # Increase the resolution by the growth factor
 
-    normalize_tweet_obs(rates, spans)
+    #normalize_tweet_obs(rates, spans)
     return rates, bounds
 
 #################################################################
@@ -286,6 +288,15 @@ generated = {
 }
 
 CONFIG["GENERATED"] = generated
+
+f = open('dens_func.dat', 'w')
+counter = 0
+suma = 0
+for elem in obs_function:
+    f.write("%f\t%f\n" % (obs_bin_bounds[counter], elem))
+    counter += 1
+    suma += elem
+print "SUM =", suma
 
 for val in "max_analysis_steps", "max_time", "max_real_time", "max_entities", "initial_entities":
     if isinstance(CONFIG["analysis"][val], str):
