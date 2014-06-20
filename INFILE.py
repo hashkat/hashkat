@@ -221,7 +221,7 @@ def compute_tweet_obs():
         bound += res
         bound = min(bound, tweet_obs_x_end)
         obs = tweet_observation_integral(prev_bound, bound)
-        obs /= full_int
+        #obs /= full_int
         rates.append(obs)
         spans.append(res)
         bounds.append(bound)
@@ -229,7 +229,7 @@ def compute_tweet_obs():
         prev_bound = bound # Set current bound to new previous
         res *= tweet_obs_resolution_growth_factor # Increase the resolution by the growth factor
 
-    #normalize_tweet_obs(rates, spans)
+    normalize_tweet_obs(rates, spans)
     return rates, bounds
 
 #################################################################
@@ -292,11 +292,17 @@ CONFIG["GENERATED"] = generated
 f = open('dens_func.dat', 'w')
 counter = 0
 suma = 0
+n_retweets = 0
 for elem in obs_function:
     f.write("%f\t%f\n" % (obs_bin_bounds[counter], elem))
+    if counter == 0:
+        n_retweets += obs_bin_bounds[counter] * elem
+    else:
+        n_retweets += (obs_bin_bounds[counter] - obs_bin_bounds[counter - 1]) * elem
     counter += 1
     suma += elem
-print "SUM =", suma
+#print "SUM =", suma
+print "N_RETWEETS =", n_retweets
 
 for val in "max_analysis_steps", "max_time", "max_real_time", "max_entities", "initial_entities":
     if isinstance(CONFIG["analysis"][val], str):
