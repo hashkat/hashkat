@@ -18,7 +18,7 @@
  *
  * Under this license, derivations of the #KAT Social Network Simulator typically must be provided in source
  * form. The #KAT Social Network Simulator and derivations thereof may be relicensed by decision of 
- * the original authors (Isaac Tamblyn, Kevin Ryczko & Adam Domurad), as well, in the case of a derivation,
+ * the original authors (Kevin Ryczko & Adam Domurad, Isaac Tamblyn), as well, in the case of a derivation,
  * subsequent authors. 
  */
 
