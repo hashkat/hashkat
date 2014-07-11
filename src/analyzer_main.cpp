@@ -621,7 +621,7 @@ struct Analyzer {
             << (double) network.n_entities << "\t"
             << (double) stats.global_stats.n_follows << "\t"
             << (double) stats.global_stats.n_tweets << "\t"
-            << (double) stats.global_stats.n_retweets << "(" << state.tweet_bank.n_active_tweets() << ")\t"
+            << (double) stats.global_stats.n_retweets << "(" << (double) state.tweet_bank.n_active_tweets() << ")\t"
             << (double) stats.global_stats.n_unfollows << "\t"
             << stats.event_rate << "\r";
             flush(stream);
