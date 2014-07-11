@@ -84,7 +84,7 @@ struct AnalyzerRates {
         }
 
         if (crossed_month && config.output_stdout_basic) {
-            cout << "\nNumber of Months = " << state.n_months() << "\n\n";
+            //cout << "\nNumber of Months = " << state.n_months() << "\n\n";
         }
     }
 

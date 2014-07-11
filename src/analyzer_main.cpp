@@ -211,7 +211,7 @@ struct Analyzer {
 
     void save_network_state(const char* fname) {
         lua_hook_save_network(state);
-        printf("SAVING NETWORK STATE TO %s\n", fname);
+        printf("\n\nSAVING NETWORK STATE TO %s\n", fname);
         DataWriter writer(state, fname);
         writer << config.entire_config_file;
         state.visit(writer);
@@ -220,6 +220,8 @@ struct Analyzer {
     // ROOT ANALYSIS ROUTINE
     /* Run the main analysis routine using this config. */
     void run_network_simulation() {
+		const char* HEADER = "Time\t\tUsers\t\tFollows\t\tTweets\t\tRetweets\tUnfollows\tR";
+        cout << HEADER << "\n\n";
         while (sim_time_check() && real_time_check()) {
             if (!interrupt_check()) {
                 interrupt_reset();
@@ -601,26 +603,34 @@ struct Analyzer {
         }
     }
 
-    void output_summary_stats(ostream& stream, double time_spent = /*Don't print*/-1) {
-        stream << fixed << setprecision(2)
-                << time << "\t\t"
-                << network.n_entities << "\t\t"
-                << stats.global_stats.n_follows << "\t\t"
-                << stats.global_stats.n_tweets << "\t\t"
-                << stats.global_stats.n_retweets << "(" << state.tweet_bank.n_active_tweets() << ")\t\t"
-                << stats.global_stats.n_unfollows << "\t\t"
-                << stats.event_rate << "\t\t";
-        if (time_spent != -1) {
-            stream << time_spent << "ms\t";
+    void output_summary_stats(ostream& stream, bool newline) {
+        if (newline) {
+            stream << fixed << setprecision(2)
+            //<< HEADER  
+            << time << "\t\t"
+            << network.n_entities << "\t\t"
+            << stats.global_stats.n_follows << "\t\t"
+            << stats.global_stats.n_tweets << "\t\t"
+            << stats.global_stats.n_retweets << "(" << state.tweet_bank.n_active_tweets() << ")\t\t"
+            << stats.global_stats.n_unfollows << "\t\t"
+            << stats.event_rate << "\n";
+            flush(stream);
+        } else {
+            stream << setprecision(2) << scientific
+            << time << "\t"
+            << (double) network.n_entities << "\t"
+            << (double) stats.global_stats.n_follows << "\t"
+            << (double) stats.global_stats.n_tweets << "\t"
+            << (double) stats.global_stats.n_retweets << "(" << state.tweet_bank.n_active_tweets() << ")\t"
+            << (double) stats.global_stats.n_unfollows << "\t"
+            << stats.event_rate << "\r";
+            flush(stream);
         }
-        stream << "\n";
     }
     void output_summary_stats() {
 
-		const char* HEADER = "\n#Time\t\tUsers\t\tFollows\t\tTweets\t\tRetweets\tUnfollows\tR\tReal Time Spent\n\n";
-        if (stats.n_outputs % (25 * STDOUT_OUTPUT_RATE) == 0) {
-        	cout << HEADER;
-        }
+		const char* HEADER = "\n#Time\t\tUsers\t\tFollows\t\tTweets\t\tRetweets\tUnfollows\tR\n\n";
+    
         if (stats.n_outputs % 500 == 0) {
             DATA_TIME << HEADER;
             following_data << "\n#Time\t";
@@ -658,11 +668,9 @@ struct Analyzer {
         tweet_data << "\n";
         retweet_data << "\n";
         add_data << "\n";
-        output_summary_stats(DATA_TIME);
+        output_summary_stats(DATA_TIME, true);
         if (stats.n_outputs % STDOUT_OUTPUT_RATE == 0) {
-            output_summary_stats(cout,
-                    stdout_milestone_timer.get_microseconds() / 1000.0);
-            stdout_milestone_timer.start(); // Restart the timer
+            output_summary_stats(cout, false);
         }
 
         stats.n_outputs++;
