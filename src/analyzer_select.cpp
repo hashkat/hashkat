@@ -81,6 +81,9 @@ struct AnalyzerSelect {
     int entity_selection(EntityType& et, vector<double>& rates, double& rand_num, double rate_sum) {
         if (stats.prob_add == 0) {
             // If add rate is 0, we do not need to consider the different months of user addition
+	    if (et.entity_list.empty()) {
+		return -1;
+            }
             int entity = rng.pick_random_uniform(et.entity_list);
             return CHECK(entity);
         } else {
