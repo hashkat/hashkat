@@ -226,13 +226,17 @@ struct RateTree {
         }
         /* Principal KMC method, choose with respect to bin rates. */
         ref_t random_weighted_bin(RateTree& tree, MTwist& rng) {
-            double num = rng.rand_real_not1() * rates.tuple_sum;
-            for (int i = 0; i < N_CHILDREN; i++) {
-                int c = children[i];
-                if (c != INVALID) {
-                    num -= tree.get(c).rates.tuple_sum;
-                    if (num <= ZEROTOL) {
-                        return i;
+            bool dummy = false;
+            while (!dummy) {
+                double num = rng.rand_real_not1() * rates.tuple_sum;
+                for (int i = 0; i < N_CHILDREN; i++) {
+                    int c = children[i];
+                    if (c != INVALID) {
+                        num -= tree.get(c).rates.tuple_sum;
+                        if (num <= ZEROTOL) {
+                            dummy = true;
+                            return i;
+                        }
                     }
                 }
             }
