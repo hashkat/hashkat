@@ -39,11 +39,11 @@
 
 analysis:
   initial_entities:
-    100000
+    100  # start out from something small, could be when only the developers were online.
   max_entities: 
-    100001     # 30 million max users
+    1000000     # 1 million max users
   max_time: 
-    11000 #large end time, just so the simulation continues
+    5256000  # 10 years
   max_analysis_steps: 
     unlimited
   max_real_time: 
@@ -61,9 +61,9 @@ analysis:
   use_random_time_increment: 
     true
   use_followback: 
-    false        # followback turned on, from literature it makes sense for a realistic system
+    true        # followback turned on, from literature it makes sense for a realistic system
   follow_model: # See notes above
-    entity
+    twitter
   # model weights ONLY necessary for follow method 'twitter'  
   # educated guesses for the follow models  
   model_weights: {random: 0.10, preferential: 0.15, entity: 0.50, preferential_entity: 0.20, hashtag: 0.05}
@@ -82,7 +82,7 @@ analysis:
 #################################################################
 
 rates:
-  add: {function: constant, value: 0}  # found from experiment
+  add: {function: constant, value: 123.7}  # found from experiment
 
 #################################################################
 # >> output:
@@ -107,7 +107,7 @@ output:
   summary_output_rate: 
     100
   visualize: 
-    true
+    false
   verbose: 
     true
   entity_stats: 
@@ -131,8 +131,8 @@ tweet_ranks:
 retweet_ranks:
   thresholds: {bin_spacing: linear, min: 10, max: 300, increment: 10}
 follow_ranks:
-  thresholds: {bin_spacing: linear, min: 0, max: 301, increment: 1}    # for preferential following
-  weights:    {bin_spacing: linear, min: 1, max: 300, increment: 1}
+  thresholds: {bin_spacing: linear, min: 0, max: 100000, increment: 1}    # for preferential following
+  weights:    {bin_spacing: linear, min: 1, max: 100001, increment: 1}
 
 #################################################################
 # >> tweet_observation: 
@@ -221,7 +221,7 @@ regions:
     preference_class_weights: {StandardPref: 100}
     entity_class_weights: {Standard: 100}
     ideology_weights: {Red: 100, Blue: 100, Green: 100, Orange: 100}
-    language_weights: {English: 100, French: 0, Spanish: 0, French+English: 0}
+    language_weights: {English: 60, French: 10, Spanish: 0, French+English: 30}
 
   - name: Quebec
     add_weight: 5
@@ -229,16 +229,16 @@ regions:
     #Inherited:
     preference_class_weights: {StandardPref: 100}
     entity_class_weights: {Standard: 100}
-    language_weights: {English: 50, French: 0, Spanish: 0, French+English: 0}
+    language_weights: {English: 10, French: 40, Spanish: 0, French+English: 50}
     ideology_weights: {Red: 100, Blue: 100, Green: 100, Orange: 100}
     
   - name: Mexico
-    add_weight: 0
+    add_weight: 5
 
     #Inherited:
     preference_class_weights: {StandardPref: 100}
     entity_class_weights: {Standard: 100}
-    language_weights: {English: 100, French: 0, Spanish: 0, French+English: 0}
+    language_weights: {English: 0, French: 0, Spanish: 100, French+English: 0}
     ideology_weights: {Red: 100, Blue: 100, Green: 100, Orange: 100}
 
 #################################################################
@@ -276,26 +276,26 @@ preference_classes:
   # preference class:
    tweet_transmission: 
       plain: # Also applies to musical tweets
-        Standard: 0.0
-        Celebrity: 0.0
-        else: 0.0
+        Standard: 0.001
+        Celebrity: 0.001
+        else: 0.001
       different_ideology:   # no retweeting for different ideologies
-        Standard: 0.0
-        Celebrity: 0.0
-        else: 0.0
+        Standard: 0.00
+        Celebrity: 0.00
+        else: 0.00
       same_ideology:
-        Standard: 0.0
-        Celebrity: 0.0
-        else: 0.0
+        Standard: 0.001
+        Celebrity: 0.001
+        else: 0.001
       humourous:
-        Standard: 0.0
-        Celebrity: 0.0
-        else: 0.0
+        Standard: 0.002
+        Celebrity: 0.002
+        else: 0.002
    # Probability that we will follow as a reaction.
    # Only applies to 2nd generation retweets, otherwise
    # the entity would already be a follower.
    follow_reaction_prob:
-      0.0
+      0.1
 
  - name: NoRetweetPref
    tweet_transmission: 
@@ -327,6 +327,7 @@ preference_classes:
 # The different types of entities in the network, and their 
 # associated rates.
 #################################################################
+
 entities:
   - name: Standard1
     weights:
@@ -346,9 +347,9 @@ entities:
       care_about_ideology: false # does the entiy care about which ideology the entity has?
     rates: 
         # Rate for follows from this entity:
-        follow: {function: constant, value: 0.01}
+        follow: {function: twitter_follow}
         # Rate for tweets from this entity:
-        tweet: {function: constant, value: 0.0}   #0.000256944444444 0.37 per day
+        tweet: {function: constant, value: 0.0002569}   #0.000256944444444 0.37 per day
   
   - name: Standard2
     weights:
@@ -368,9 +369,9 @@ entities:
       care_about_ideology: false # does the entiy care about which ideology the entity has?
     rates: 
         # Rate for follows from this entity:
-        follow: {function: constant, value: 0.01}
+        follow: {function: twitter_follow}
         # Rate for tweets from this entity:
-        tweet: {function: constant, value: 0.0}   #0.000625694444444 0.901 per day
+        tweet: {function: constant, value: 0.0006257}   #0.000625694444444 0.901 per day
   
   - name: Standard3
     weights:
@@ -390,9 +391,9 @@ entities:
       care_about_ideology: false # does the entiy care about which ideology the entity has?
     rates: 
         # Rate for follows from this entity:
-        follow: {function: constant, value: 0.01}
+        follow: {function: twitter_follow}
         # Rate for tweets from this entity:
-        tweet: {function: constant, value: 0.0}   #0.000888194444444 once per day
+        tweet: {function: constant, value: 0.0008882}   #0.000888194444444 once per day
         
   - name: Standard4
     weights:
@@ -412,9 +413,9 @@ entities:
       care_about_ideology: false # does the entiy care about which ideology the entity has?
     rates: 
         # Rate for follows from this entity:
-        follow: {function: constant, value: 0.01}
+        follow: {function: twitter_follow}
         # Rate for tweets from this entity:
-        tweet: {function: constant, value: 0.0}   #0.00138888888889 once per day
+        tweet: {function: constant, value: 0.001389}   #0.00138888888889 once per day
         
   - name: Standard5
     weights:
@@ -434,9 +435,9 @@ entities:
       care_about_ideology: false # does the entiy care about which ideology the entity has?
     rates: 
         # Rate for follows from this entity:
-        follow: {function: constant, value: 0.01}
+        follow: {function: twitter_follow}
         # Rate for tweets from this entity:
-        tweet: {function: constant, value: 0.0}   #0.00208611111111 once per day
+        tweet: {function: constant, value: 0.002086}   #0.00208611111111 once per day
 
   - name: Standard6
     weights:
@@ -456,9 +457,9 @@ entities:
       care_about_ideology: false # does the entiy care about which ideology the entity has?
     rates: 
         # Rate for follows from this entity:
-        follow: {function: constant, value: 0.01}
+        follow: {function: twitter_follow}
         # Rate for tweets from this entity:
-        tweet: {function: constant, value: 0.0}   #0.00347083333333 once per day
+        tweet: {function: constant, value: 0.003471}   #0.00347083333333 once per day
 
   - name: Celebrity1
     weights:
@@ -472,15 +473,15 @@ entities:
         musical: 1.0
         humourous: 1.0 # Can be considered the humourousness of the entity type
     # Probability that following this entity results in a follow-back
-    followback_probability: 44
+    followback_probability: 0
     hashtag_follow_options:
       care_about_region: true # does the entity care about where the entity they will follow is from?
       care_about_ideology: false # does the entiy care about which ideology the entity has?
     rates: 
         # Rate for follows from this entity:
-        follow: {function: constant, value: 0.01}
+        follow: {function: twitter_follow}
         # Rate for tweets from this entity:
-        tweet: {function: constant, value: 0.01}   #0.000256944444444 0.37 per day
+        tweet: {function: constant, value: 0.0002569}   #0.000256944444444 0.37 per day
   
   - name: Celebrity2
     weights:
@@ -494,15 +495,15 @@ entities:
         musical: 1.0
         humourous: 1.0 # Can be considered the humourousness of the entity type
     # Probability that following this entity results in a follow-back
-    followback_probability: 44
+    followback_probability: 0
     hashtag_follow_options:
       care_about_region: true # does the entity care about where the entity they will follow is from?
       care_about_ideology: false # does the entiy care about which ideology the entity has?
     rates: 
         # Rate for follows from this entity:
-        follow: {function: constant, value: 0.01}
+        follow: {function: twitter_follow}
         # Rate for tweets from this entity:
-        tweet: {function: constant, value: 0.0}   #0.000625694444444 0.901 per day
+        tweet: {function: constant, value: 0.0006257}   #0.000625694444444 0.901 per day
   
   - name: Celebrity3
     weights:
@@ -516,15 +517,15 @@ entities:
         musical: 1.0
         humourous: 1.0 # Can be considered the humourousness of the entity type
     # Probability that following this entity results in a follow-back
-    followback_probability: 44
+    followback_probability: 0
     hashtag_follow_options:
       care_about_region: true # does the entity care about where the entity they will follow is from?
       care_about_ideology: false # does the entiy care about which ideology the entity has?
     rates: 
         # Rate for follows from this entity:
-        follow: {function: constant, value: 0.01}
+        follow: {function: twitter_follow}
         # Rate for tweets from this entity:
-        tweet: {function: constant, value: 0.0}   #0.000888194444444 once per day
+        tweet: {function: constant, value: 0.0008882}   #0.000888194444444 once per day
         
   - name: Celebrity4
     weights:
@@ -538,15 +539,15 @@ entities:
         musical: 1.0
         humourous: 1.0 # Can be considered the humourousness of the entity type
     # Probability that following this entity results in a follow-back
-    followback_probability: 44
+    followback_probability: 0
     hashtag_follow_options:
       care_about_region: true # does the entity care about where the entity they will follow is from?
       care_about_ideology: false # does the entiy care about which ideology the entity has?
     rates: 
         # Rate for follows from this entity:
-        follow: {function: constant, value: 0.01}
+        follow: {function: twitter_follow}
         # Rate for tweets from this entity:
-        tweet: {function: constant, value: 0.0}   #0.00138888888889 once per day
+        tweet: {function: constant, value: 0.001389}   #0.00138888888889 once per day
         
   - name: Celebrity5
     weights:
@@ -560,15 +561,15 @@ entities:
         musical: 1.0
         humourous: 1.0 # Can be considered the humourousness of the entity type
     # Probability that following this entity results in a follow-back
-    followback_probability: 44
+    followback_probability: 0
     hashtag_follow_options:
       care_about_region: true # does the entity care about where the entity they will follow is from?
       care_about_ideology: false # does the entiy care about which ideology the entity has?
     rates: 
         # Rate for follows from this entity:
-        follow: {function: constant, value: 0.01}
+        follow: {function: twitter_follow}
         # Rate for tweets from this entity:
-        tweet: {function: constant, value: 0.0}   #0.00208611111111 once per day
+        tweet: {function: constant, value: 0.002086}   #0.00208611111111 once per day
 
   - name: Celebrity6
     weights:
@@ -582,15 +583,15 @@ entities:
         musical: 1.0
         humourous: 1.0 # Can be considered the humourousness of the entity type
     # Probability that following this entity results in a follow-back
-    followback_probability: 44
+    followback_probability: 0
     hashtag_follow_options:
       care_about_region: true # does the entity care about where the entity they will follow is from?
       care_about_ideology: false # does the entiy care about which ideology the entity has?
     rates: 
         # Rate for follows from this entity:
-        follow: {function: constant, value: 0.01}
+        follow: {function: twitter_follow}
         # Rate for tweets from this entity:
-        tweet: {function: constant, value: 0.0}   #0.00347083333333 once per day
+        tweet: {function: constant, value: 0.003471}   #0.00347083333333 once per day
 
   - name: Organization1
     weights:
@@ -604,15 +605,15 @@ entities:
         musical: 1.0
         humourous: 1.0 # Can be considered the humourousness of the entity type
     # Probability that following this entity results in a follow-back
-    followback_probability: 44
+    followback_probability: 0
     hashtag_follow_options:
       care_about_region: true # does the entity care about where the entity they will follow is from?
       care_about_ideology: false # does the entiy care about which ideology the entity has?
     rates: 
         # Rate for follows from this entity:
-        follow: {function: constant, value: 0.01}
+        follow: {function: twitter_follow}
         # Rate for tweets from this entity:
-        tweet: {function: constant, value: 0.0}   #0.000256944444444 0.37 per day
+        tweet: {function: constant, value: 0.0002569}   #0.000256944444444 0.37 per day
   
   - name: Organization2
     weights:
@@ -626,15 +627,15 @@ entities:
         musical: 1.0
         humourous: 1.0 # Can be considered the humourousness of the entity type
     # Probability that following this entity results in a follow-back
-    followback_probability: 44
+    followback_probability: 0
     hashtag_follow_options:
       care_about_region: true # does the entity care about where the entity they will follow is from?
       care_about_ideology: false # does the entiy care about which ideology the entity has?
     rates: 
         # Rate for follows from this entity:
-        follow: {function: constant, value: 0.01}
+        follow: {function: twitter_follow}
         # Rate for tweets from this entity:
-        tweet: {function: constant, value: 0.0}   #0.000625694444444 0.901 per day
+        tweet: {function: constant, value: 0.0006257}   #0.000625694444444 0.901 per day
   
   - name: Organization3
     weights:
@@ -648,15 +649,15 @@ entities:
         musical: 1.0
         humourous: 1.0 # Can be considered the humourousness of the entity type
     # Probability that following this entity results in a follow-back
-    followback_probability: 44
+    followback_probability: 0
     hashtag_follow_options:
       care_about_region: true # does the entity care about where the entity they will follow is from?
       care_about_ideology: false # does the entiy care about which ideology the entity has?
     rates: 
         # Rate for follows from this entity:
-        follow: {function: constant, value: 0.01}
+        follow: {function: twitter_follow}
         # Rate for tweets from this entity:
-        tweet: {function: constant, value: 0.0}   #0.000888194444444 once per day
+        tweet: {function: constant, value: 0.0008882}   #0.000888194444444 once per day
         
   - name: Organization4
     weights:
@@ -670,15 +671,15 @@ entities:
         musical: 1.0
         humourous: 1.0 # Can be considered the humourousness of the entity type
     # Probability that following this entity results in a follow-back
-    followback_probability: 44
+    followback_probability: 0
     hashtag_follow_options:
       care_about_region: true # does the entity care about where the entity they will follow is from?
       care_about_ideology: false # does the entiy care about which ideology the entity has?
     rates: 
         # Rate for follows from this entity:
-        follow: {function: constant, value: 0.01}
+        follow: {function: twitter_follow}
         # Rate for tweets from this entity:
-        tweet: {function: constant, value: 0.0}   #0.00138888888889 once per day
+        tweet: {function: constant, value: 0.001389}   #0.00138888888889 once per day
         
   - name: Organization5
     weights:
@@ -692,15 +693,15 @@ entities:
         musical: 1.0
         humourous: 1.0 # Can be considered the humourousness of the entity type
     # Probability that following this entity results in a follow-back
-    followback_probability: 44
+    followback_probability: 0
     hashtag_follow_options:
       care_about_region: true # does the entity care about where the entity they will follow is from?
       care_about_ideology: false # does the entiy care about which ideology the entity has?
     rates: 
         # Rate for follows from this entity:
-        follow: {function: constant, value: 0.01}
+        follow: {function: twitter_follow}
         # Rate for tweets from this entity:
-        tweet: {function: constant, value: 0.0}   #0.00208611111111 once per day
+        tweet: {function: constant, value: 0.002086}   #0.00208611111111 once per day
 
   - name: Organization6
     weights:
@@ -714,15 +715,15 @@ entities:
         musical: 1.0
         humourous: 1.0 # Can be considered the humourousness of the entity type
     # Probability that following this entity results in a follow-back
-    followback_probability: 44
+    followback_probability: 0
     hashtag_follow_options:
       care_about_region: true # does the entity care about where the entity they will follow is from?
       care_about_ideology: false # does the entiy care about which ideology the entity has?
     rates: 
         # Rate for follows from this entity:
-        follow: {function: constant, value: 0.01}
+        follow: {function: twitter_follow}
         # Rate for tweets from this entity:
-        tweet: {function: constant, value: 0.0}   #0.00347083333333 once per day
+        tweet: {function: constant, value: 0.003471}   #0.00347083333333 once per day
 
   - name: Bot1
     weights:
@@ -736,15 +737,15 @@ entities:
         musical: 1.0
         humourous: 1.0 # Can be considered the humourousness of the entity type
     # Probability that following this entity results in a follow-back
-    followback_probability: 44
+    followback_probability: 0
     hashtag_follow_options:
       care_about_region: true # does the entity care about where the entity they will follow is from?
       care_about_ideology: false # does the entiy care about which ideology the entity has?
     rates: 
         # Rate for follows from this entity:
-        follow: {function: constant, value: 0.01}
+        follow: {function: twitter_follow}
         # Rate for tweets from this entity:
-        tweet: {function: constant, value: 0.0}   #0.000256944444444 0.37 per day
+        tweet: {function: constant, value: 0.0002569}   #0.000256944444444 0.37 per day
   
   - name: Bot2
     weights:
@@ -758,15 +759,15 @@ entities:
         musical: 1.0
         humourous: 1.0 # Can be considered the humourousness of the entity type
     # Probability that following this entity results in a follow-back
-    followback_probability: 44
+    followback_probability: 0
     hashtag_follow_options:
       care_about_region: true # does the entity care about where the entity they will follow is from?
       care_about_ideology: false # does the entiy care about which ideology the entity has?
     rates: 
         # Rate for follows from this entity:
-        follow: {function: constant, value: 0.01}
+        follow: {function: twitter_follow}
         # Rate for tweets from this entity:
-        tweet: {function: constant, value: 0.0}   #0.000625694444444 0.901 per day
+        tweet: {function: constant, value: 0.0006257}   #0.000625694444444 0.901 per day
   
   - name: Bot3
     weights:
@@ -780,15 +781,15 @@ entities:
         musical: 1.0
         humourous: 1.0 # Can be considered the humourousness of the entity type
     # Probability that following this entity results in a follow-back
-    followback_probability: 44
+    followback_probability: 0
     hashtag_follow_options:
       care_about_region: true # does the entity care about where the entity they will follow is from?
       care_about_ideology: false # does the entiy care about which ideology the entity has?
     rates: 
         # Rate for follows from this entity:
-        follow: {function: constant, value: 0.01}
+        follow: {function: twitter_follow}
         # Rate for tweets from this entity:
-        tweet: {function: constant, value: 0.0}   #0.000888194444444 once per day
+        tweet: {function: constant, value: 0.0008882}   #0.000888194444444 once per day
         
   - name: Bot4
     weights:
@@ -802,15 +803,15 @@ entities:
         musical: 1.0
         humourous: 1.0 # Can be considered the humourousness of the entity type
     # Probability that following this entity results in a follow-back
-    followback_probability: 44
+    followback_probability: 0
     hashtag_follow_options:
       care_about_region: true # does the entity care about where the entity they will follow is from?
       care_about_ideology: false # does the entiy care about which ideology the entity has?
     rates: 
         # Rate for follows from this entity:
-        follow: {function: constant, value: 0.01}
+        follow: {function: twitter_follow}
         # Rate for tweets from this entity:
-        tweet: {function: constant, value: 0.0}   #0.00138888888889 once per day
+        tweet: {function: constant, value: 0.001389}   #0.00138888888889 once per day
         
   - name: Bot5
     weights: 
@@ -824,15 +825,15 @@ entities:
         musical: 1.0
         humourous: 1.0 # Can be considered the humourousness of the entity type
     # Probability that following this entity results in a follow-back
-    followback_probability: 44
+    followback_probability: 0
     hashtag_follow_options:
       care_about_region: true # does the entity care about where the entity they will follow is from?
       care_about_ideology: false # does the entiy care about which ideology the entity has?
     rates: 
         # Rate for follows from this entity:
-        follow: {function: constant, value: 0.01}
+        follow: {function: twitter_follow}
         # Rate for tweets from this entity:
-        tweet: {function: constant, value: 0.0}   #0.00208611111111 once per day
+        tweet: {function: constant, value: 0.002086}   #0.00208611111111 once per day
 
   - name: Bot6
     weights:
@@ -846,15 +847,12 @@ entities:
         musical: 1.0
         humourous: 1.0 # Can be considered the humourousness of the entity type
     # Probability that following this entity results in a follow-back
-    followback_probability: 44
+    followback_probability: 0
     hashtag_follow_options:
       care_about_region: true # does the entity care about where the entity they will follow is from?
       care_about_ideology: false # does the entiy care about which ideology the entity has?
     rates: 
         # Rate for follows from this entity:
-        follow: {function: constant, value: 0.01}
+        follow: {function: twitter_follow}
         # Rate for tweets from this entity:
-        tweet: {function: constant, value: 0.0}   #0.00347083333333 once per day
-        
-        
-
+        tweet: {function: constant, value: 0.003471}   #0.00347083333333 once per day

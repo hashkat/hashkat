@@ -357,7 +357,8 @@ static EntityTypeVector parse_entities_configuration(const Node& node) {
 		} else if (et.RF[0].function_type == "linear") {
 			parse(follow_rate, "slope", et.RF[0].slope);
 			parse(follow_rate, "y_intercept", et.RF[0].y_intercept);
-		} 
+		}
+		
 		
 		parse(tweet_rate, "function", et.RF[1].function_type);
 		if (et.RF[1].function_type == "constant") {
@@ -502,6 +503,14 @@ static void configure_entity_rates(ParsedConfig& config, EntityType& et, int eve
             } else {
                 et.RF[event].monthly_rates.push_back(0);
             }
+        }
+    } else if (et.RF[event].function_type == "twitter_follow") {
+        // initial spike for the first 2 months
+        et.RF[event].monthly_rates.push_back(0.0008298429200320164);
+        et.RF[event].monthly_rates.push_back(0.0008298429200320164);
+        for (int i = 3; i <= projected_months; i ++) {
+            // gradual rate after the 2 months
+            et.RF[event].monthly_rates.push_back(5.5360422914604546e-05);
         }
     }
 }
