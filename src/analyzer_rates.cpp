@@ -26,6 +26,7 @@
 #include <iomanip>
 
 #include "analyzer.h"
+#include "io.h"
 
 using namespace std;
 
@@ -84,6 +85,7 @@ struct AnalyzerRates {
         }
 
         if (crossed_month && config.output_stdout_basic) {
+            degree_distributions(network);
             //cout << "\nNumber of Months = " << state.n_months() << "\n\n";
         }
     }
