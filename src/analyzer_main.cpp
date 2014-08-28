@@ -162,13 +162,13 @@ struct Analyzer {
     /* Conceptually this is the true entry point to our program,
      * after the messy configuration and allocation is done.
      * Returns end-time. */
-    double main() {
+    double main(Timer& timer) {
         if (config.load_network_on_startup && file_exists(config.save_file)) {
             load_network_state(config.save_file.c_str());
         } else {
             lua_hook_new_network(state);
         }
-        run_network_simulation();
+        run_network_simulation(timer);
         if (config.retweet_viz) {
             find_most_popular_tweet();
         }
@@ -219,8 +219,8 @@ struct Analyzer {
 
     // ROOT ANALYSIS ROUTINE
     /* Run the main analysis routine using this config. */
-    void run_network_simulation() {
-		const char* HEADER = "Time\t\tUsers\t\tFollows\t\tTweets\t\tRetweets\tUnfollows\tR";
+    void run_network_simulation(Timer& timer) {
+		const char* HEADER = "Time\t\tUsers\t\tFollows\t\tTweets\t\tRetweets\t\tUnfollows\tR\t\tTime (s)";
         cout << HEADER << "\n\n";
         while (sim_time_check() && real_time_check()) {
             if (!interrupt_check()) {
@@ -235,7 +235,7 @@ struct Analyzer {
                     break;
                 }
             }
-        	if (!step_analysis()) {
+        	if (!step_analysis(timer)) {
         	    break;
         	}
         }
@@ -448,7 +448,7 @@ struct Analyzer {
 
     // Performs one step of the analysis routine.
     // Takes old time, returns new time
-    bool step_analysis() {
+    bool step_analysis(Timer& timer) {
         PERF_TIMER();
 
         lua_hook_step_analysis(state);
@@ -507,7 +507,7 @@ struct Analyzer {
             }
         }
 
-        step_time();
+        step_time(timer);
         stats.n_steps++;
         if (stats.n_steps >= config.max_analysis_steps) {
             return false;
@@ -519,7 +519,7 @@ struct Analyzer {
     }
 
     /* Step our KMC simulation proportionally to the global event rate. */
-    void step_time() {
+    void step_time(Timer& timer) {
         if (config.use_random_time_increment) {
             // increment by random time
             double increment = -log(rng.rand_real_not0()) / stats.event_rate;
@@ -529,7 +529,7 @@ struct Analyzer {
         }
 
         if (config.output_stdout_summary && (output_time_checker.has_past(time) || config.output_verbose)) {
-            output_summary_stats();
+            output_summary_stats(timer);
         } 
     }
 
@@ -603,9 +603,9 @@ struct Analyzer {
         }
     }
 
-    void output_summary_stats(ostream& stream, bool newline) {
+    void output_summary_stats(ostream& stream, bool newline, Timer& timer) {
         if (newline) {
-            stream << fixed << setprecision(2)
+            stream << scientific << setprecision(2)
             //<< HEADER  
             << time << "\t\t"
             << network.n_entities << "\t\t"
@@ -613,7 +613,8 @@ struct Analyzer {
             << stats.global_stats.n_tweets << "\t\t"
             << stats.global_stats.n_retweets << "(" << state.tweet_bank.n_active_tweets() << ")\t\t"
             << stats.global_stats.n_unfollows << "\t\t"
-            << stats.event_rate << "\n";
+            << stats.event_rate << "\t\t"
+            << timer.get_microseconds()*1e-6 << "\n";
             flush(stream);
         } else {
             stream << setprecision(2) << scientific
@@ -623,13 +624,14 @@ struct Analyzer {
             << (double) stats.global_stats.n_tweets << "\t"
             << (double) stats.global_stats.n_retweets << "(" << (double) state.tweet_bank.n_active_tweets() << ")\t"
             << (double) stats.global_stats.n_unfollows << "\t"
-            << stats.event_rate << "\r";
+            << stats.event_rate << "\t"
+            << timer.get_microseconds()*1e-6 << "\r";
             flush(stream);
         }
     }
-    void output_summary_stats() {
+    void output_summary_stats(Timer& timer) {
 
-		const char* HEADER = "\n#Time\t\tUsers\t\tFollows\t\tTweets\t\tRetweets\tUnfollows\tR\n\n";
+		const char* HEADER = "\n#Time\t\tUsers\t\tFollows\t\tTweets\t\tRetweets\tUnfollows\tR\ttime (seconds)\n\n";
     
         if (stats.n_outputs % STDOUT_OUTPUT_RATE == 0) {
             DATA_TIME << HEADER;
@@ -668,9 +670,9 @@ struct Analyzer {
         tweet_data << "\n";
         retweet_data << "\n";
         add_data << "\n";*/
-        output_summary_stats(DATA_TIME, true);
         if (stats.n_outputs % STDOUT_OUTPUT_RATE == 0) {
-            output_summary_stats(cout, false);
+            output_summary_stats(DATA_TIME, true, timer);
+            output_summary_stats(cout, false, timer);
         }
 
         stats.n_outputs++;
@@ -715,7 +717,7 @@ void analyzer_main(AnalysisState& state) {
     }
 
     // >> The main analysis function:
-    state.analyzer->main();
+    state.analyzer->main(timer);
 
     signal_handlers_uninstall(state);
     lua_hook_exit(state);
