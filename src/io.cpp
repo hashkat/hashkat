@@ -105,7 +105,7 @@ void output_network_statistics(AnalysisState& state) {
         cout << "Analysis complete!\n";
     }
     if (C.degree_distributions) {
-        degree_distributions(network);
+        degree_distributions(network, state);
     }
     if (C.retweet_viz) {
         visualize_most_popular_tweet(mpt, network);
@@ -267,7 +267,7 @@ void output_position(Network& network, int n_entities) {
  P_OUT = 1 in the INFILE. This function will generate an output file that
  can be plotted using gnuplot. */
 
-void degree_distributions(Network& network) {
+void degree_distributions(Network& network,AnalysisState& state) {
     int max_following = 0, max_followers = 0;
     for (int i = 0; i < network.n_entities; i ++) {
         if (network.n_followings(i) >= max_following) {
@@ -284,9 +284,12 @@ void degree_distributions(Network& network) {
 
     // open some files
     ofstream outdd, indd, cumuldd;
-    outdd.open("output/out-degree_distribution.dat");
-    indd.open("output/in-degree_distribution.dat");
-    cumuldd.open("output/cumulative_distribution.dat");
+    string out = "output/out-degree_distribution_month_" + to_string(state.n_months()) + ".dat";
+    string in = "output/in-degree_distribution_month_" + to_string(state.n_months()) + ".dat";
+    string cumul = "output/cumulative-degree_distribution_month_" + to_string(state.n_months()) + ".dat";
+    outdd.open(out.c_str());
+    indd.open(in.c_str());
+    cumuldd.open(cumul.c_str());
 
     outdd << "# This is the out-degree distribution. The data order is:\n# degree, normalized probability, log of degree, log of normalized probability\n\n";
     indd << "# This is the in-degree distribution. The data order is:\n# degree, normalized probability, log of degree, log of normalized probability\n\n";
