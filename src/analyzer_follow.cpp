@@ -156,6 +156,10 @@ struct AnalyzerFollow {
                CategoryEntityList& C = follow_ranks.categories[i];
                // pull a random entity from whatever bin we landed in and break so we do not continue this loop
                int entity_to_follow = C.entities[rng.rand_int(C.entities.size())];
+               Entity& try_entity = network[entity_to_follow];
+               if (try_entity.language != e.language) {
+                   return -1;
+               }
 
                RECORD_STAT(state, e.entity_type, n_preferential_follows);
                return entity_to_follow;
@@ -178,6 +182,10 @@ struct AnalyzerFollow {
                    // pull the entity from whatever bin we landed in and break so we dont continue this loop
                    int n = rng.rand_int(type.entity_list.size());
                    int entity_to_follow = type.entity_list[n];
+                   Entity& try_entity = network[entity_to_follow];
+                   if (try_entity.language != e.language) {
+                       return -1;
+                   }
                    RECORD_STAT(state, e.entity_type, n_entity_follows);
                    return entity_to_follow;
                }
@@ -220,6 +228,10 @@ struct AnalyzerFollow {
                }
            }
            if (entity_to_follow != -1){
+               Entity& try_entity = network[entity_to_follow];
+               if (try_entity.language != e.language) {
+                   return -1;
+               }
                RECORD_STAT(state, e.entity_type, n_pref_entity_follows);
                return entity_to_follow;
            }
@@ -229,14 +241,19 @@ struct AnalyzerFollow {
        return -1;
    }
    
-   int hashtag_follow_method(Entity& follower) {
+   int hashtag_follow_method(Entity& e) {
        PERF_TIMER();
-       bool region_choice = entity_types[follower.entity_type].care_about_region;
-       bool ideology_choice = entity_types[follower.entity_type].care_about_ideology;
-       int default_region = follower.region_bin;
-       int default_ideology = follower.ideology_bin;
-       RECORD_STAT(state, follower.entity_type, n_hashtag_follows);
-       return hashtags.select_entity(rng, region_choice, ideology_choice, default_region, default_ideology);
+       bool region_choice = entity_types[e.entity_type].care_about_region;
+       bool ideology_choice = entity_types[e.entity_type].care_about_ideology;
+       int default_region = e.region_bin;
+       int default_ideology = e.ideology_bin;
+       int entity_to_follow = hashtags.select_entity(rng, region_choice, ideology_choice, default_region, default_ideology);
+       Entity& try_entity = network[entity_to_follow];
+       if (try_entity.language != e.language) {
+           return -1;
+       }
+       RECORD_STAT(state, e.entity_type, n_hashtag_follows);
+       return entity_to_follow;
    }
    
    int twitter_follow_model(Entity& e) {

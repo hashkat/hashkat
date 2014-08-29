@@ -289,12 +289,12 @@ generated = {
 
 CONFIG["GENERATED"] = generated
 
-f = open('dens_func.dat', 'w')
+#f = open('dens_func.dat', 'w')
 counter = 0
 suma = 0
 n_retweets = 0
 for elem in obs_function:
-    f.write("%f\t%f\n" % (obs_bin_bounds[counter], elem))
+    #f.write("%f\t%f\n" % (obs_bin_bounds[counter], elem))
     if counter == 0:
         n_retweets += obs_bin_bounds[counter] * elem
     else:
@@ -302,7 +302,7 @@ for elem in obs_function:
     counter += 1
     suma += elem
 #print "SUM =", suma
-print "N_RETWEETS =", n_retweets
+#print "N_RETWEETS =", n_retweets
 
 for val in "max_analysis_steps", "max_time", "max_real_time", "max_entities", "initial_entities":
     if isinstance(CONFIG["analysis"][val], str):
