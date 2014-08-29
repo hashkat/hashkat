@@ -633,7 +633,7 @@ struct Analyzer {
 
 		const char* HEADER = "\n#Time\t\tUsers\t\tFollows\t\tTweets\t\tRetweets\tUnfollows\tR\ttime (seconds)\n\n";
     
-        if (stats.n_outputs % 50*STDOUT_OUTPUT_RATE == 0) {
+        if (stats.n_outputs % 50000*STDOUT_OUTPUT_RATE == 0) {
             DATA_TIME << HEADER;
             /*following_data << "\n#Time\t";
             followers_data << "\n#Time\t";
@@ -670,6 +670,7 @@ struct Analyzer {
         tweet_data << "\n";
         retweet_data << "\n";
         add_data << "\n";*/
+	
         if (stats.n_outputs % STDOUT_OUTPUT_RATE == 0) {
             output_summary_stats(DATA_TIME, true, timer);
             output_summary_stats(cout, false, timer);
