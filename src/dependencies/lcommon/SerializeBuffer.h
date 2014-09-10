@@ -66,7 +66,7 @@
 #   define le64toh(x) __bswap_64 (x)
 #endif
 #endif
-const int MAX_ALLOC_SIZE = 128 * 1024 * 1024; //128MB
+const int MAX_ALLOC_SIZE = 16 * 1024 * 1024 * 1024; //128MB
 const int MAX_BUFFER_SIZE = 128 * 1024; //128kb
 
 typedef void (*buffer_flushf)(void* context, const char* data, size_t size);
