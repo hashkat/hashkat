@@ -283,17 +283,20 @@ void degree_distributions(Network& network,AnalysisState& state) {
     // now that we have our boundaries lets plot our degree distributions
 
     // open some files
-    ofstream outdd, indd, cumuldd;
+    ofstream outdd, indd, cumuldd, scaled;
     string out = "output/out-degree_distribution_month_" + to_string(state.n_months()) + ".dat";
     string in = "output/in-degree_distribution_month_" + to_string(state.n_months()) + ".dat";
     string cumul = "output/cumulative-degree_distribution_month_" + to_string(state.n_months()) + ".dat";
+    string scale = "output/scaled-degree_distribution_month_" + to_string(state.n_months()) + ".dat";
     outdd.open(out.c_str());
     indd.open(in.c_str());
     cumuldd.open(cumul.c_str());
+    scaled.open(scale.c_str());
 
     outdd << "# This is the out-degree distribution. The data order is:\n# degree, normalized probability, log of degree, log of normalized probability\n\n";
     indd << "# This is the in-degree distribution. The data order is:\n# degree, normalized probability, log of degree, log of normalized probability\n\n";
     cumuldd << "# This is the cumulative degree distribution. The data order is:\n# degree, normalized probability, log of degree, log of normalized probability\n\n";
+    scaled << "# This is the scaled degree distribution. The data order is:\n# degree, normalized probability, log of degree, log of normalized probability\n\n";
 
     //declare and set arrays to 0
     vector<int> out_degree_distro (max_following);
@@ -314,7 +317,15 @@ void degree_distributions(Network& network,AnalysisState& state) {
         in_degree_distro[network.n_followers(i)] ++;
         cumulative_distro[network.n_followers(i) + network.n_followings(i)] ++;
     }
-
+    
+    double max = 0;
+    for (auto& count : cumulative_distro) {
+        if (count > max) {
+            max = count;
+        }
+    }
+    
+    
     // output the distributions
     for (int i = 0; i < max_following; i ++) {
         outdd << i << "\t" << out_degree_distro[i] / (double) network.n_entities << "\t" << log(i) << "\t" << log(out_degree_distro[i] / (double)network.n_entities) << "\n";
@@ -325,9 +336,14 @@ void degree_distributions(Network& network,AnalysisState& state) {
     for (int i = 0; i < max_degree; i ++) {
         cumuldd << i << "\t" << cumulative_distro[i] / (double) network.n_entities << "\t" << log(i) << "\t" << log(cumulative_distro[i] / (double)network.n_entities) << "\n";
     }
+    for (int i = 0; i < max_degree; i ++) {
+        cumuldd << i / (double) max_degree << "\t" << cumulative_distro[i] / (double) max << "\t" << log(i / (double) max_degree) << "\t" << log(cumulative_distro[i] / (double) max) << "\n";
+    }
+    
     outdd.close();
     indd.close();
     cumuldd.close();
+    scaled.close();
 }
 
 int factorial(int input_number) {
