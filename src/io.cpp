@@ -325,7 +325,7 @@ void degree_distributions(Network& network,AnalysisState& state) {
         }
     }
     
-    
+    sca
     // output the distributions
     for (int i = 0; i < max_following; i ++) {
         outdd << i << "\t" << out_degree_distro[i] / (double) network.n_entities << "\t" << log(i) << "\t" << log(out_degree_distro[i] / (double)network.n_entities) << "\n";
@@ -337,7 +337,7 @@ void degree_distributions(Network& network,AnalysisState& state) {
         cumuldd << i << "\t" << cumulative_distro[i] / (double) network.n_entities << "\t" << log(i) << "\t" << log(cumulative_distro[i] / (double)network.n_entities) << "\n";
     }
     for (int i = 0; i < max_degree; i ++) {
-        cumuldd << i / (double) max_degree << "\t" << cumulative_distro[i] / (double) max << "\t" << log(i / (double) max_degree) << "\t" << log(cumulative_distro[i] / (double) max) << "\n";
+        scaled << (double) i / (double) max_degree << "\t" << (double) cumulative_distro[i] / (double) max << "\t" << log( (double) i / (double) max_degree) << "\t" << log( (double) cumulative_distro[i] / (double) max) << "\n";
     }
     
     outdd.close();
