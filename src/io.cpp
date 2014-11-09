@@ -749,7 +749,7 @@ bool region_stats(Network& n, AnalysisState& state) {
 
 void fraction_of_connections_distro(Network& network, AnalysisState& state, NetworkStats& net_stats) {
     EntityStats& stats = net_stats.global_stats;
-    int bin_grid = 10000000; // fraction up to 0.00001
+    int bin_grid = 1000000; // fraction up to 0.00001
     int entity_counts[bin_grid];
     for (auto& bin : entity_counts) {
         bin = 0;
@@ -760,14 +760,14 @@ void fraction_of_connections_distro(Network& network, AnalysisState& state, Netw
     }
     for (int i = 0; i < network.n_entities; i ++) {
         // frac_connect_bin -> fcb
-        int fcb = network.n_followers(i) / total_follows * bin_grid;
+        int fcb = (double) network.n_followers(i) / (double) total_follows * (double) bin_grid;
         entity_counts[fcb] ++;
         
     } 
     ofstream output;
     output.open("output/connections_vs_nodes.dat");
     for (int i = 0; i < bin_grid; i ++) {
-        output << i / (double) bin_grid << "\t" << (double) entity_counts[i] / (double) network.n_entities << "\n";
+        output << i / (double) bin_grid << "\t" << (double) entity_counts[i] / (double) network.n_entities << "\t" << log(i / (double) bin_grid) << "\t" << log((double) entity_counts[i] / (double) network.n_entities) <<"\n";
     }
     output.close();  
 }
