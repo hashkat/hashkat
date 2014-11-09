@@ -750,8 +750,10 @@ bool region_stats(Network& n, AnalysisState& state) {
 void fraction_of_connections_distro(Network& network, AnalysisState& state, NetworkStats& net_stats) {
     EntityStats& stats = net_stats.global_stats;
     int bin_grid = 10000; // fraction up to 0.00001
-    int frac_connect_bin[bin_grid];
     int entity_counts[bin_grid];
+    for (auto& bin : entity_counts) {
+        bin = 0;
+    }
     int total_follows = stats.n_follows;
     if (!total_follows){
         return;
