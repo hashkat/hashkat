@@ -760,7 +760,7 @@ void fraction_of_connections_distro(Network& network, AnalysisState& state, Netw
         
     } 
     ofstream output;
-    output.open("connections_vs_nodes.dat");
+    output.open("output/connections_vs_nodes.dat");
     for (int i = 0; i < bin_grid; i ++) {
         output << i / (double) bin_grid << "\t" << entity_counts[i] / (double) network.n_entities << "\n";
     }

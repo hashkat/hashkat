@@ -66,7 +66,7 @@ analysis:
     twitter
   # model weights ONLY necessary for follow method 'twitter'  
   # educated guesses for the follow models  
-  model_weights: {random: 0.0, preferential: 0.0, entity: 0.0, preferential_entity: 0.20, hashtag: 0.0}
+  model_weights: {random: 0.0, preferential: 1.0, entity: 0.0, preferential_entity: 0.0, hashtag: 0.0}
   
   stage1_unfollow: 
     false
