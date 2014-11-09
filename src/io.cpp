@@ -749,7 +749,7 @@ bool region_stats(Network& n, AnalysisState& state) {
 
 void fraction_of_connections_distro(Network& network, AnalysisState& state, NetworkStats& net_stats) {
     EntityStats& stats = net_stats.global_stats;
-    int bin_grid = 10000; // fraction up to 0.00001
+    int bin_grid = 10000000; // fraction up to 0.00001
     int entity_counts[bin_grid];
     for (auto& bin : entity_counts) {
         bin = 0;
