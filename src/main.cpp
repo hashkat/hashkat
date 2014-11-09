@@ -114,5 +114,5 @@ int main(int argc, char** argv) {
     }
 
 	// Abnormal execution path
-	return 2;
+	return 0;
 }
