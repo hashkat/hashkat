@@ -47,5 +47,6 @@ void whos_following_who(EntityTypeVector& ets, Network& network);
 void visualize_most_popular_tweet(MostPopularTweet& mpt, Network& network);
 void network_statistics(Network& n, NetworkStats& stats, EntityTypeVector& etv);
 bool region_stats(Network& n, AnalysisState& state);
+void fraction_of_connections_distro(Network& n, AnalysisState& state, NetworkStats& net_stats);
 
 #endif

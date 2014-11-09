@@ -82,7 +82,7 @@ analysis:
 #################################################################
 
 rates:
-  add: {function: constant, value: 123.7}  # found from experiment
+  add: {function: constant, value: 0.001237}  # found from experiment
 
 #################################################################
 # >> output:

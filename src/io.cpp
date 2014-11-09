@@ -114,6 +114,8 @@ void output_network_statistics(AnalysisState& state) {
         network_statistics(network, stats, et_vec);
     }
     region_stats(network, state);
+    fraction_of_connections_distro(network, state, stats);
+    
 }
 
 static void output_stat_calc(const char* name, StatCalc& calc) {
@@ -743,5 +745,25 @@ bool region_stats(Network& n, AnalysisState& state) {
         }
     }
     return true;
+}
+
+void fraction_of_connections_distro(Network& network, AnalysisState& state, NetworkStats& net_stats) {
+    EntityStats& stats = net_stats.global_stats;
+    int bin_grid = 10000; // fraction up to 0.00001
+    int frac_connect_bin[bin_grid];
+    int entity_counts[bin_grid];
+    int total_follows = stats.n_follows;
+    for (int i = 0; i < network.n_entities; i ++) {
+        // frac_connect_bin -> fcb
+        int fcb = network.n_followers(i) / total_follows * bin_grid;
+        entity_counts[fcb] ++;
+        
+    } 
+    ofstream output;
+    output.open("connections_vs_nodes.dat");
+    for (int i = 0; i < bin_grid; i ++) {
+        output << i / (double) bin_grid << "\t" << entity_counts[i] / (double) network.n_entities << "\n";
+    }
+    output.close();  
 }
 
