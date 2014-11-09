@@ -105,7 +105,7 @@ void output_network_statistics(AnalysisState& state) {
         cout << "Analysis complete!\n";
     }
     if (C.degree_distributions) {
-        degree_distributions(network, state);
+        degree_distributions(network, state,stats);
     }
     if (C.retweet_viz) {
         visualize_most_popular_tweet(mpt, network);
@@ -269,7 +269,7 @@ void output_position(Network& network, int n_entities) {
  P_OUT = 1 in the INFILE. This function will generate an output file that
  can be plotted using gnuplot. */
 
-void degree_distributions(Network& network,AnalysisState& state) {
+void degree_distributions(Network& network,AnalysisState& state,NetworkStats& net_stats) {
     int max_following = 0, max_followers = 0;
     for (int i = 0; i < network.n_entities; i ++) {
         if (network.n_followings(i) >= max_following) {
@@ -342,6 +342,23 @@ void degree_distributions(Network& network,AnalysisState& state) {
         scaled << i / (double) max_degree << "\t" << cumulative_distro[i] / (double) max << "\t" << log(i / (double) max_degree) << "\t" << log(cumulative_distro[i] / (double) max) << "\n";
     }
     
+    EntityStats& stats = net_stats.global_stats;
+    int bin_grid = 10000; // fraction up to 0.00001
+    int frac_connect_bin[bin_grid];
+    int entity_counts[bin_grid];
+    int total_follows = stats.n_follows;
+    for (int i = 0; i < network.n_entities; i ++) {
+        // frac_connect_bin -> fcb
+        int fcb = network.n_followers(i) / total_follows * bin_grid;
+        entity_counts[fcb] ++;
+        
+    } 
+    ofstream output;
+    output.open("output/connections_vs_nodes.dat");
+    for (int i = 0; i < bin_grid; i ++) {
+        output << i / (double) bin_grid << "\t" << entity_counts[i] / (double) network.n_entities << "\n";
+    }
+    output.close();  
     outdd.close();
     indd.close();
     cumuldd.close();

@@ -85,7 +85,7 @@ struct AnalyzerRates {
         }
 
         if (crossed_month && config.output_stdout_basic) {
-            degree_distributions(network, state);
+            degree_distributions(network, state, stats);
             fraction_of_connections_distro(network, state, stats);
             
             //cout << "\nNumber of Months = " << state.n_months() << "\n\n";
