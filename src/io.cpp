@@ -264,6 +264,35 @@ void output_position(Network& network, int n_entities) {
     output.close();
 } 
 
+
+void model_match(Network& network, vector<int> & counts, int max_degree) {
+    int sum_k = 0;
+    for (int i = 0; i < network.n_entities; i ++) {
+       sum_k += network.n_followers(i);
+       sum_k += network.n_followings(i); 
+    }
+    double average_degree = (double) sum_k / (double) network.n_entities;
+    double sum_jN = 0;
+    for (int j = 0; j < counts.size(); j++) {
+        sum_jN += j*counts[j];
+    }
+    vector<double> q(max_degree - 1);
+    for(int i = 0; i < q.size(); i++) {
+        q[i] = (double) (i+1) * counts[i+1] / (double) sum_jN;
+    }
+    double H = 0;
+    for (auto& qval : q) {
+        if (qval) {
+            H += qval * log(qval);
+        }
+    }
+    H *= -1;
+    ofstream output;
+    output.open("output/model_match.dat");
+    output << "This file is generated to calculate parameters for a general P(k) distribution.\n\n";
+    output << "<k> = " << average_degree << "\n";
+    output << "H = " << H << "\n";
+}
 /* This is a function that gives you the probability of a entity following a
  a given number of people. If you want to use this function, simply put
  P_OUT = 1 in the INFILE. This function will generate an output file that
@@ -327,7 +356,7 @@ void degree_distributions(Network& network,AnalysisState& state) {
         }
     }
     
-    
+    model_match(network, cumulative_distro, max_degree);
     // output the distributions
     for (int i = 0; i < max_following; i ++) {
         outdd << i << "\t" << out_degree_distro[i] / (double) network.n_entities << "\t" << log(i) << "\t" << log(out_degree_distro[i] / (double)network.n_entities) << "\n";
@@ -771,4 +800,3 @@ void fraction_of_connections_distro(Network& network, AnalysisState& state, Netw
     }
     output.close();  
 }
-
