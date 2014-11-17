@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # Good practice -- exit completely on any bad exit code:
 set -e 
 
