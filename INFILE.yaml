@@ -58,6 +58,8 @@ analysis:
     false 
   barabasi_connections: # number of connections we want to make when use_barabasi == true
     100
+  barabasi_exponent:   # set the exponent for the preferential attachment model
+    1.0
   use_random_time_increment: 
     true
   use_followback: 
@@ -131,8 +133,8 @@ tweet_ranks:
 retweet_ranks:
   thresholds: {bin_spacing: linear, min: 10, max: 300, increment: 10}
 follow_ranks:
-  thresholds: {bin_spacing: linear, min: 0, max: 100000, increment: 1}    # for preferential following
-  weights:    {bin_spacing: linear, min: 1, max: 100001, increment: 1}
+  thresholds: {bin_spacing: linear, min: 0, max: 10000, increment: 1}    # for preferential following
+  weights:    {bin_spacing: linear, min: 1, max: 10001, increment: 1}
 
 #################################################################
 # >> tweet_observation: 

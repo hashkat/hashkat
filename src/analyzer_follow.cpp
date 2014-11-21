@@ -110,11 +110,13 @@ struct AnalyzerFollow {
        updating_follow_probabilities.resize(follow_probabilities.size());
        /* search through the probabilities for each threshold and find
           the right bin to land in */
+       
+       double a = config.barabasi_exponent;
        for (int i = 0; i < follow_probabilities.size(); i ++){
            // look at each category
            CategoryEntityList& C = follow_ranks.categories[i];
-           updating_follow_probabilities[i] = follow_probabilities[i]*C.entities.size();
-           sum_of_weights += C.entities.size()*follow_probabilities[i];
+           updating_follow_probabilities[i] = pow(follow_probabilities[i],a)*C.entities.size();
+           sum_of_weights += C.entities.size()*pow(follow_probabilities[i],a);
        }
        for (int i = 0; i < follow_probabilities.size(); i ++ ){
            updating_follow_probabilities[i] /= sum_of_weights;
@@ -141,11 +143,13 @@ struct AnalyzerFollow {
        double rand_num = rng.rand_real_not0();
        double prob_sum = 0;
        auto& updating_probs = updating_follow_probabilities;
+       double a = config.barabasi_exponent;
+       
        updating_probs.resize(follow_ranks.categories.size());
        for (int i = 0; i < follow_ranks.categories.size(); i ++) {
            CategoryEntityList& C = follow_ranks.categories[i];
-           updating_probs[i] = follow_ranks.categories[i].prob * C.entities.size();
-           prob_sum += follow_ranks.categories[i].prob * C.entities.size();
+           updating_probs[i] = pow(follow_ranks.categories[i].prob,a) * C.entities.size();
+           prob_sum += pow(follow_ranks.categories[i].prob,a) * C.entities.size();
        }
        for (auto& p : updating_probs) {
            p /= prob_sum;
