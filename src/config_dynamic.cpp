@@ -245,7 +245,7 @@ static CategoryGrouper parse_category_thresholds(const Node& node) {
     group.categories.push_back(CategoryEntityList(HUGE_VAL, 0));
     return group;
 }
-void parse_category_weights(const Node& node, CategoryGrouper& group) {
+void parse_category_weights(ParsedConfig& config, const Node& node, CategoryGrouper& group) {
     string bin_spacing;
     double min_binsize, max_binsize, increment;
     parse(node, "bin_spacing", bin_spacing);
@@ -257,7 +257,7 @@ void parse_category_weights(const Node& node, CategoryGrouper& group) {
     /* Initialize the thresholds and the weights */
     if (bin_spacing == "linear") {
         for (int i = min_binsize, j = 0; i < max_binsize ; i+= increment, j++) {
-            group.categories[j].prob = (double) i;
+            group.categories[j].prob = pow((double) i,config.barabasi_exponent);
             total_weight += i;
         }
         /* Normalize the weights into probabilities */
@@ -297,7 +297,7 @@ static void parse_category_configurations(ParsedConfig& config, const Node& node
         for (int i = 1; i < config.max_entities + 1; i ++) {
             CategoryEntityList cat(i-1, i);
             config.follow_ranks.categories.push_back(cat);
-            config.follow_probabilities.push_back(i);
+            config.follow_probabilities.push_back(pow(i,config.barabasi_exponent));
             for (int j = 0; j < config.entity_types.size(); j++ ) {
                 EntityType& type = config.entity_types[j];
                 type.follow_ranks.categories.push_back(cat);
@@ -305,10 +305,10 @@ static void parse_category_configurations(ParsedConfig& config, const Node& node
         }
     } else {   
         config.follow_ranks = parse_category_thresholds(node["follow_ranks"]["thresholds"]);                
-        parse_category_weights(node["follow_ranks"]["weights"], config.follow_ranks);
+        parse_category_weights(config, node["follow_ranks"]["weights"], config.follow_ranks);
         for (int i = 0; i < config.entity_types.size(); i ++) {
             config.entity_types[i].follow_ranks = parse_category_thresholds(node["follow_ranks"]["thresholds"]);                
-            parse_category_weights(node["follow_ranks"]["weights"], config.entity_types[i].follow_ranks);
+            parse_category_weights(config, node["follow_ranks"]["weights"], config.entity_types[i].follow_ranks);
         }
     }
     config.tweet_ranks = parse_category_thresholds(node["tweet_ranks"]["thresholds"]);
