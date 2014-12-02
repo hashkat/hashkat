@@ -352,7 +352,7 @@ struct AnalyzerFollow {
         // now the previous target will follow the previous actor back
         Entity& prev_actor = network[prev_actor_id];
         Entity& prev_target = network[prev_target_id];
-        if (handle_follow(prev_target_id, prev_actor_id) && (prev_target.follower_set.size()) > 25.0) {
+        if (handle_follow(prev_target_id, prev_actor_id)) {
             
             int et_id = network[prev_actor_id].entity_type;
             EntityType& et = entity_types[et_id];
