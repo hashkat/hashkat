@@ -721,6 +721,7 @@ void network_statistics(Network& n, NetworkStats& net_stats, EntityTypeVector& e
     output << "Preferential-entity: " << stats.n_pref_entity_follows << "\t(" << 100*stats.n_pref_entity_follows / total_follow_calls << "% of total follow attempts)\n";
     output << "Retweet: " << stats.n_retweet_follows << "\t(" << 100*stats.n_retweet_follows / total_follow_calls << "% of total follows attempts)\n";
     output << "Hashtag: " << stats.n_hashtag_follows << "\t(" << 100*stats.n_hashtag_follows / total_follow_calls << "% of total follows attempts)\n";
+    output << "Followbacks: " << stats.n_followback << "\t (" << 100*stats.n_followback / total_follow_calls << "% of total follow attempts)\n";
     for (auto& et : etv) {
         output << et.name << ": "
                 << et.stats.n_follows << "\t("
