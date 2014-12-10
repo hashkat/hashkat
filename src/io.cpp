@@ -711,7 +711,7 @@ void network_statistics(Network& n, NetworkStats& net_stats, EntityTypeVector& e
                 << et.stats.n_retweets
                 << "\t(" << et.stats.n_retweets / (double) stats.n_retweets << "% of total retweets)\n";
     }
-    double total_follow_calls = stats.n_random_follows + stats.n_preferential_follows + stats.n_entity_follows + stats.n_pref_entity_follows + stats.n_retweet_follows + stats.n_hashtag_follows;
+    double total_follow_calls = stats.n_random_follows + stats.n_preferential_follows + stats.n_entity_follows + stats.n_pref_entity_follows + stats.n_retweet_follows + stats.n_hashtag_follows + stats.n_followback;
     output << "\nFOLLOWS\n_______\n\n";
     output << "Total: " << stats.n_follows << "\n";
     output << "Total follow attempts: " << total_follow_calls << "\n";
