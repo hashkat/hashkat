@@ -713,7 +713,7 @@ void network_statistics(Network& n, NetworkStats& net_stats, EntityTypeVector& e
     }
     double total_follow_calls = stats.n_random_follows + stats.n_preferential_follows + stats.n_entity_follows + stats.n_pref_entity_follows + stats.n_retweet_follows + stats.n_hashtag_follows + stats.n_followback;
     output << "\nFOLLOWS\n_______\n\n";
-    output << "Total: " << stats.n_follows << "\n";
+    output << "Total follows: " << stats.n_follows << "\n";
     output << "Total follow attempts: " << total_follow_calls << "\n";
     output << "Random: " << stats.n_random_follows << "\t(" << 100*stats.n_random_follows / total_follow_calls << "% of total follow attempts)\n";
     output << "Preferential: " << stats.n_preferential_follows << "\t(" << 100*stats.n_preferential_follows / total_follow_calls << "% of total follow attempts)\n";

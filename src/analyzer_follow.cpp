@@ -331,6 +331,7 @@ struct AnalyzerFollow {
                 EntityType& et = entity_types[et_id];
                 
                 // TODO this followback process has to be another follow method that happens naturally at some other time, possibly another 'spike' in the rate
+                
                 if (config.use_followback && rng.random_chance(et.prob_followback)) {
                     analyzer_followback(state, id_follower, entity_to_follow);
                 }
@@ -361,6 +362,8 @@ struct AnalyzerFollow {
             RECORD_STAT(state, prev_target.entity_type, n_followback);
             return true;
         }
+        RECORD_STAT(state, prev_target.entity_type, n_follows);
+        RECORD_STAT(state, prev_actor.entity_type, n_followers);
         return false; // Completion failure: Can be ignored for followback, largely
     }
         
