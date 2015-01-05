@@ -115,7 +115,7 @@ public:
 		if (_buffer.size() - _read_position < n) {
 			fill();
 		}
-		LSERIALIZE_CHECK(_buffer.size() >= n + _read_position);
+		//LSERIALIZE_CHECK(_buffer.size() >= n + _read_position);
 		char* ref = &_buffer[_read_position];
 		_read_position += n;
 		return ref;
@@ -182,7 +182,7 @@ public:
 	void read(std::string& str) {
 		int size;
 		read(size);
-		LSERIALIZE_CHECK(size_t(size) < MAX_ALLOC_SIZE);
+		//LSERIALIZE_CHECK(size_t(size) < MAX_ALLOC_SIZE);
 		str.resize(size);
 		if (size > 0) {
 			read_raw(&str[0], size);
@@ -247,7 +247,7 @@ public:
 	void read_container(T& t) {
 		int size;
 		read(size);
-		LSERIALIZE_CHECK(size_t(size * sizeof(T)) < MAX_ALLOC_SIZE);
+		//LSERIALIZE_CHECK(size_t(size * sizeof(T)) < MAX_ALLOC_SIZE);
 		t.resize(size);
 		for (typename T::iterator it = t.begin(); it != t.end(); ++it) {
 			read(*it);
@@ -272,7 +272,7 @@ public:
 	void fill();
 	void move_read_position(int len) {
 		_read_position += len;
-		LSERIALIZE_CHECK(_read_position >= 0);
+		//LSERIALIZE_CHECK(_read_position >= 0);
 	}
 	bool empty() const {
 		return _buffer.empty();
