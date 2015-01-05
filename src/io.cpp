@@ -115,6 +115,7 @@ void output_network_statistics(AnalysisState& state) {
     }
     region_stats(network, state);
     fraction_of_connections_distro(network, state, stats);
+    dd_by_age(network, state, stats);
     
 }
 
@@ -800,4 +801,67 @@ void fraction_of_connections_distro(Network& network, AnalysisState& state, Netw
         output << i / (double) bin_grid << "\t" << (double) entity_counts[i] / (double) network.n_entities << "\t" << log(i / (double) bin_grid) << "\t" << log((double) entity_counts[i] / (double) network.n_entities) <<"\n";
     }
     output.close();  
+}
+
+struct Year {
+    vector<int> entity_ids;
+    vector<double> dd;
+    int count = 0;
+};
+
+typedef vector<Year> YearVector;
+
+void dd_by_age(Network& n, AnalysisState& as, NetworkStats& ns) {
+    
+    int year = 12 * 30 * 60 * 24;
+    const int length = as.time / year;
+    if (!length) {
+        return;
+    }
+    
+    YearVector years(length);
+    
+    int max_following = 0, max_followers = 0;
+    for (int i = 0; i < n.n_entities; i ++) {
+        
+        Entity& e = n[i];
+        int age = e.creation_time / year;
+        years[age].entity_ids.push_back(e.id);
+        
+        if (n.n_followings(i) >= max_following) {
+            max_following = n.n_followings(i) + 1;
+        }
+        if (n.n_followers(i) >= max_followers) {
+            max_followers = n.n_followers(i) + 1;
+        }
+    }
+
+    int max_degree = max_following + max_followers;
+    for (auto& year : years) {
+        year.dd.resize(max_degree);
+        for (int i = 0; i < year.dd.size(); i ++) {
+            year.dd[i] = 0;
+        }
+        
+    }
+    
+    for (auto& year : years) {
+        for (int i = 0; i < year.entity_ids.size(); i ++) {
+                year.dd[n.n_followers(i) + n.n_followings(i)] ++;
+                year.count ++;
+        }
+    }
+    ofstream output;
+    output.open("output/dd_by_year.dat");
+    
+    for (int i = 0; i < max_degree; i ++) {
+        output << i;
+        for (auto& year : years) {
+            output << "\t" << year.dd[i] / year.count;
+        }
+        output << "\n";
+    }
+    output.close();
+    
+    
 }
