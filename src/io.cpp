@@ -813,7 +813,7 @@ typedef vector<Year> YearVector;
 
 void dd_by_age(Network& n, AnalysisState& as, NetworkStats& ns) {
     
-    int year = 7 * 12 * 30 * 60 * 24;
+    int year =  12 * 30 * 60 * 24;
     const int length = as.time / year;
     if (!length) {
         return;
