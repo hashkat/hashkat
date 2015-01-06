@@ -857,7 +857,7 @@ void dd_by_age(Network& n, AnalysisState& as, NetworkStats& ns) {
     for (int i = 0; i < max_degree; i ++) {
         output << i << "\t" << log(i);
         for (auto& year : years) {
-            output << "\t" << year.dd[i] / year.count << "\t" << log(year.dd[i] / year.count);
+            output << "\t" << year.dd[i] / year.entity_ids.size() << "\t" << log(year.dd[i] / year.entity_ids.size());
         }
         output << "\n";
     }
