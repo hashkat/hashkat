@@ -853,7 +853,24 @@ void dd_by_age(Network& n, AnalysisState& as, NetworkStats& ns) {
     }
     ofstream output;
     output.open("output/dd_by_year.dat");
-    
+    double sum[max_degree];
+    for (auto& val : sum) {
+	val = 0;
+    } 
+	for (int i = 0; i < max_degree; i ++) {
+            for (auto& year : years) {
+             sum[i] +=  year.dd[i]; 
+        }
+    }
+
+	ofstream test;
+	test.open("dd_by_year_test.dat");
+int i = 0;
+for (auto& val : sum ) {
+	test << i << "\t" << log(i) << "\t" << val / n.n_entities << "\t" << log (val / n.n_entities) << "\n";
+	i ++;
+}	
+
     for (int i = 0; i < max_degree; i ++) {
         output << i << "\t" << log(i);
         for (auto& year : years) {

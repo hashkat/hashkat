@@ -507,11 +507,11 @@ static void configure_entity_rates(ParsedConfig& config, EntityType& et, int eve
         }
     } else if (et.RF[event].function_type == "twitter_follow") {
         // initial spike for the first 2 months
-        et.RF[event].monthly_rates.push_back(0.0008298429200320164);
-        et.RF[event].monthly_rates.push_back(0.0008298429200320164);
+        et.RF[event].monthly_rates.push_back(1.5*0.0008298429200320164);
+        et.RF[event].monthly_rates.push_back(1.5*0.0008298429200320164);
         for (int i = 3; i <= projected_months; i ++) {
             // gradual rate after the 2 months
-            et.RF[event].monthly_rates.push_back(5.5360422914604546e-05);
+            et.RF[event].monthly_rates.push_back(1.5*5.5360422914604546e-05);
         }
     }
 }
