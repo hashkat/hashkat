@@ -844,7 +844,6 @@ void dd_by_age(Network& n, AnalysisState& as, NetworkStats& ns) {
         }
         
     }
-    
     for (auto& year : years) {
         for (int i = 0; i < year.entity_ids.size(); i ++) {
                 year.dd[n.n_followers(i) + n.n_followings(i)] ++;
