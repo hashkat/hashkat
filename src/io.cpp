@@ -844,12 +844,16 @@ void dd_by_age(Network& n, AnalysisState& as, NetworkStats& ns) {
         }
         
     }
+
+    int n_entities_sum = 0;
     for (auto& year : years) {
+        n_entities_sum += year.entity_ids.size();
         for (int i = 0; i < year.entity_ids.size(); i ++) {
                 year.dd[n.n_followers(i) + n.n_followings(i)] ++;
                 year.count ++;
         }
     }
+    DEBUG_CHECK(n_entities_sum == n.n_entities, "Not the same");
     ofstream output;
     output.open("output/dd_by_year.dat");
     double sum[max_degree];
