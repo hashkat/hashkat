@@ -853,7 +853,7 @@ void dd_by_age(Network& n, AnalysisState& as, NetworkStats& ns) {
                 year.count ++;
         }
     }
-    DEBUG_CHECK(n_entities_sum == n.n_entities, "Not the same");
+    cout << "CHECK: " << n_entities_sum << "\t" << n.n_entities << "\n"; 
     ofstream output;
     output.open("output/dd_by_year.dat");
     double sum[max_degree];
