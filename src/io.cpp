@@ -844,35 +844,15 @@ void dd_by_age(Network& n, AnalysisState& as, NetworkStats& ns) {
         }
         
     }
-
-    int n_entities_sum = 0;
     for (auto& year : years) {
-        n_entities_sum += year.entity_ids.size();
         for (int i = 0; i < year.entity_ids.size(); i ++) {
-                year.dd[n.n_followers(i) + n.n_followings(i)] ++;
+                int id = year.entity_ids[i];
+                year.dd[n.n_followers(id) + n.n_followings(id)] ++;
                 year.count ++;
         }
     }
-    cout << "CHECK: " << n_entities_sum << "\t" << n.n_entities << "\n"; 
     ofstream output;
     output.open("output/dd_by_year.dat");
-    double sum[max_degree];
-    for (auto& val : sum) {
-	val = 0;
-    } 
-	for (int i = 0; i < max_degree; i ++) {
-            for (auto& year : years) {
-             sum[i] +=  year.dd[i]; 
-        }
-    }
-
-	ofstream test;
-	test.open("dd_by_year_test.dat");
-int i = 0;
-for (auto& val : sum ) {
-	test << i << "\t" << log(i) << "\t" << val / n.n_entities << "\t" << log (val / n.n_entities) << "\n";
-	i ++;
-}	
 
     for (int i = 0; i < max_degree; i ++) {
         output << i << "\t" << log(i);
