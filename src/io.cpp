@@ -844,12 +844,16 @@ void dd_by_age(Network& n, AnalysisState& as, NetworkStats& ns) {
         }
         
     }
+    cout << "ENTITY COUNTS CHECK:\n";
+    int count = 0;
     for (auto& year : years) {
         for (int i = 0; i < year.entity_ids.size(); i ++) {
+            cout << "YEAR: " << count << "\tCOUNT: " << year.entity_ids.size() << "\n";
                 int id = year.entity_ids[i];
                 year.dd[n.n_followers(id) + n.n_followings(id)] ++;
                 year.count ++;
         }
+        count ++;
     }
     ofstream output;
     output.open("output/dd_by_year.dat");
