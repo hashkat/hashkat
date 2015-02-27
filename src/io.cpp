@@ -846,11 +846,11 @@ void dd_by_age(Network& n, AnalysisState& as, NetworkStats& ns) {
         }
         
     }
-    cout << "ENTITY COUNTS CHECK:\n";
+    //cout << "ENTITY COUNTS CHECK:\n";
     int count = 0;
     for (auto& year : years) {
         for (int i = 0; i < year.entity_ids.size(); i ++) {
-            cout << "YEAR: " << count << "\tCOUNT: " << year.entity_ids.size() << "\n";
+            //cout << "YEAR: " << count << "\tCOUNT: " << year.entity_ids.size() << "\n";
                 int id = year.entity_ids[i];
                 year.dd[n.n_followers(id) + n.n_followings(id)] ++;
                 year.count ++;
@@ -900,10 +900,19 @@ void dd_by_entity(Network& n, AnalysisState& as, NetworkStats& ns) {
         output << "# Entity type: " << i << "  Size: " << entity_types[i].entity_ids.size() << "\n";
     }
     
+    for (auto& ent_type : entity_types) {
+        for (int j = 0; j < ent_types.entity_ids.size(); i ++) {
+            int id = ent_types.entity_ids[i];
+            ent_types.dd[n.n_followers(id) + n.n_followings(id)] ++;
+        }
+    }
     
-    
-    
-    
-    
+    for (int i = 0; i < max_degree; i ++) {
+        output << i << "\t" << log(i);
+        for (auto& ent_type : entity_types) {
+            output << "\t" << ent_type.dd[i] / n.n_entities << "\t" << log(ent_type.dd[i] / n.n_entities);
+        }
+        output << "\n";
+    }
     output.close();
 }
