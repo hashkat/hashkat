@@ -893,6 +893,13 @@ void dd_by_entity(Network& n, AnalysisState& as, NetworkStats& ns) {
         }
     }
     int max_degree = max_following + max_followers;
+    for (auto& ent_type : entity_types) {
+        ent_type.dd.resize(max_degree);
+        for (int i = 0; i < ent_type.dd.size(); i ++) {
+            ent_type.dd[i] = 0;
+        }
+        
+    }
     
     ofstream output;
     output.open("output/dd_by_entity_type.dat");
