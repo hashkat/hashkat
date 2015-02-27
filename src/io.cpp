@@ -883,7 +883,7 @@ void dd_by_entity(Network& n, AnalysisState& as, NetworkStats& ns) {
         
         Entity& e = n[i];
         int ent_type = e.entity_type;
-        entity_types[ent_types].entity_ids.push_back(e.id);
+        entity_types[ent_type].entity_ids.push_back(e.id);
         
         if (n.n_followings(i) >= max_following) {
             max_following = n.n_followings(i) + 1;
