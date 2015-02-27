@@ -901,7 +901,7 @@ void dd_by_entity(Network& n, AnalysisState& as, NetworkStats& ns) {
     }
     
     for (auto& ent_type : entity_types) {
-        for (int j = 0; j < ent_types.entity_ids.size(); i ++) {
+        for (int i = 0; i < ent_types.entity_ids.size(); i ++) {
             int id = ent_types.entity_ids[i];
             ent_types.dd[n.n_followers(id) + n.n_followings(id)] ++;
         }
