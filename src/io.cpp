@@ -907,14 +907,12 @@ void dd_by_entity(Network& n, AnalysisState& as, NetworkStats& ns) {
     for (int i = 0; i < entity_types.size(); i ++) {
         output << "# Entity type: " << i << "  Size: " << entity_types[i].entity_ids.size() << "\n";
     }
-    cout << "got here\n";
     for (auto& ent_type : entity_types) {
         for (int i = 0; i < ent_type.entity_ids.size(); i ++) {
             int id = ent_type.entity_ids[i];
             ent_type.dd[n.n_followers(id) + n.n_followings(id)] ++;
         }
     }
-    cout << "got here\n";
     for (int i = 0; i < max_degree; i ++) {
         output << i << "\t" << log(i);
         for (auto& ent_type : entity_types) {
@@ -922,6 +920,5 @@ void dd_by_entity(Network& n, AnalysisState& as, NetworkStats& ns) {
         }
         output << "\n";
     }
-    cout << "got here\n";
     output.close();
 }
