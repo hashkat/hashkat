@@ -892,6 +892,7 @@ void dd_by_entity(Network& n, AnalysisState& as, NetworkStats& ns) {
             max_followers = n.n_followers(i) + 1;
         }
     }
+    int max_degree = max_following + max_followers;
     
     ofstream output;
     output.open("output/dd_by_entity_type.dat");
