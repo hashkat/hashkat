@@ -116,6 +116,8 @@ void output_network_statistics(AnalysisState& state) {
     region_stats(network, state);
     fraction_of_connections_distro(network, state, stats);
     dd_by_age(network, state, stats);
+    dd_by_entity(network, state, stats);
+    
     
 }
 
@@ -868,4 +870,40 @@ void dd_by_age(Network& n, AnalysisState& as, NetworkStats& ns) {
     output.close();
     
     
+}
+
+
+void dd_by_entity(Network& n, AnalysisState& as, NetworkStats& ns) {
+    
+    int n_ent_types = as.entity_types.size();
+    vector<Year> entity_types(n_ent_types);
+    
+    int max_following = 0, max_followers = 0;
+    for (int i = 0; i < n.n_entities; i ++) {
+        
+        Entity& e = n[i];
+        int ent_type = e.entity_type;
+        entity_types[ent_types].entity_ids.push_back(e.id);
+        
+        if (n.n_followings(i) >= max_following) {
+            max_following = n.n_followings(i) + 1;
+        }
+        if (n.n_followers(i) >= max_followers) {
+            max_followers = n.n_followers(i) + 1;
+        }
+    }
+    
+    ofstream output;
+    output.open("output/dd_by_entity_type.dat");
+    
+    for (int i = 0; i < entity_types.size(); i ++) {
+        output << "# Entity type: " << i << "  Size: " << entity_types[i].entity_ids.size() << "\n";
+    }
+    
+    
+    
+    
+    
+    
+    output.close();
 }
