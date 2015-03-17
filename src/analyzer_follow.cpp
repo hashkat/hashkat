@@ -103,33 +103,29 @@ struct AnalyzerFollow {
    
    double preferential_weight() {
        double rand_num = rng.rand_real_not0();
-       // if we want to use a preferential follow method
-       int entity_to_follow = -1;
-       double sum_of_weights = 0;
-       updating_follow_probabilities.resize(follow_probabilities.size());
-       /* search through the probabilities for each threshold and find
-          the right bin to land in */
+       double prob_sum = 0;
+       auto& updating_probs = updating_follow_probabilities;
        
-       for (int i = 0; i < follow_probabilities.size(); i ++){
-           // look at each category
+       updating_probs.resize(follow_ranks.categories.size());
+       for (int i = 0; i < follow_ranks.categories.size(); i ++) {
            CategoryEntityList& C = follow_ranks.categories[i];
-           updating_follow_probabilities[i] = follow_probabilities[i]*C.entities.size();
-           sum_of_weights += C.entities.size()*follow_probabilities[i];
+           updating_probs[i] = follow_ranks.categories[i].prob * C.entities.size();
+           prob_sum += follow_ranks.categories[i].prob * C.entities.size();
        }
-       for (int i = 0; i < follow_probabilities.size(); i ++ ){
-           updating_follow_probabilities[i] /= sum_of_weights;
+       for (auto& p : updating_probs) {
+           p /= prob_sum;
        }
-       double return_val = 0;
-       for (int i = 0; i < updating_follow_probabilities.size(); i ++) {
-           if (rand_num <= updating_follow_probabilities[i]) {
-               // point to the category we landed in
-               return_val = updating_follow_probabilities[i];
+       int i = 0;
+       double val = 0;
+       for (auto& p : updating_probs) {
+           if (rand_num <= p) {
+               val = p;
                break;
            }
-           // part of the above search
-           rand_num -= updating_follow_probabilities[i];
+           rand_num -= p;
+           i++;
        }
-       return return_val;
+       return val;
    }
    
    int preferential_barabasi_follow_method() {
