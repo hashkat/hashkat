@@ -316,6 +316,9 @@ struct AnalyzerFollow {
         Entity& e = network[id_follower];
         int entity_to_follow = -1;
         double rand_num = rng.rand_real_not0();
+        if (network.n_followers(id_follower) > 60) {
+            return false;
+        }
         // if we want to do random follows
         if (config.follow_model == RANDOM_FOLLOW) {
             // find a random entity within [0:number of entities - 1]

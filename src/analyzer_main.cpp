@@ -396,7 +396,6 @@ struct Analyzer {
 		    // would necessarily be in the authors follower set already.
             double val = preferential_weight(state);
             if (rng.random_chance(val)) {
-                cout << "Success with val = " << val << "\n";
                 // Return success of follow:
                 RECORD_STAT(state, e_observer.entity_type, n_retweet_follows);
                 return analyzer_handle_follow(state, choice.id_observer, choice.id_author);
