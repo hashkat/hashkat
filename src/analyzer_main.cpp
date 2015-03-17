@@ -391,10 +391,12 @@ struct Analyzer {
 		PreferenceClass& obs_pref_class = config.pref_classes[e_observer.preference_class];
 
 		if (choice.generation > 0) {
-		    // Not first-generation tweet? Attempt folloAw.
+		    // Not first-generation tweet? Attempt follow.
 		    // Note this is not attempted for first-generation tweets because the observer
 		    // would necessarily be in the authors follower set already.
-            if (rng.random_chance(obs_pref_class.follow_reaction_prob)) {
+            double val = preferential_weight(state);
+            if (rng.random_chance(val)) {
+                cout << "Success with val = " << val << "\n";
                 // Return success of follow:
                 RECORD_STAT(state, e_observer.entity_type, n_retweet_follows);
                 return analyzer_handle_follow(state, choice.id_observer, choice.id_author);

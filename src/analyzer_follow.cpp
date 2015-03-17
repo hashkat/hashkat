@@ -100,6 +100,38 @@ struct AnalyzerFollow {
        RECORD_STAT(state, e.entity_type, n_random_follows);
        return rng.rand_int(n_entities);
    }
+   
+   double preferential_weight() {
+       double rand_num = rng.rand_real_not0();
+       // if we want to use a preferential follow method
+       int entity_to_follow = -1;
+       double sum_of_weights = 0;
+       updating_follow_probabilities.resize(follow_probabilities.size());
+       /* search through the probabilities for each threshold and find
+          the right bin to land in */
+       
+       for (int i = 0; i < follow_probabilities.size(); i ++){
+           // look at each category
+           CategoryEntityList& C = follow_ranks.categories[i];
+           updating_follow_probabilities[i] = follow_probabilities[i]*C.entities.size();
+           sum_of_weights += C.entities.size()*follow_probabilities[i];
+       }
+       for (int i = 0; i < follow_probabilities.size(); i ++ ){
+           updating_follow_probabilities[i] /= sum_of_weights;
+       }
+       double return_val = 0;
+       for (int i = 0; i < updating_follow_probabilities.size(); i ++) {
+           if (rand_num <= updating_follow_probabilities[i]) {
+               // point to the category we landed in
+               return_val = updating_follow_probabilities[i];
+               break;
+           }
+           // part of the above search
+           rand_num -= updating_follow_probabilities[i];
+       }
+       return return_val;
+   }
+   
    int preferential_barabasi_follow_method() {
        PERF_TIMER();
 
@@ -386,6 +418,11 @@ struct AnalyzerFollow {
 		return true;
 	}
 };
+
+double preferential_weight(AnalysisState& state) {
+    AnalyzerFollow analyzer(state);
+    return analyzer.preferential_weight();
+}
 
 bool analyzer_handle_follow(AnalysisState& state, int id_actor, int id_target) {
     PERF_TIMER();
