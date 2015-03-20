@@ -164,6 +164,48 @@ struct AnalyzerFollow {
        }
        return -1;
    }
+   int referral_follow_method(Entity& e,double time_of_follow) {
+       PERF_TIMER();
+
+       int referral_bin = (time_of_follow - e.creation_time ) / (double) APPROX_MONTH;
+       double follow_prob = config.referral_rate_function.monthly_rates[referral_bin];
+       if (!rng.random_chance(follow_prob)) {
+           return -1;
+       }
+       
+       double rand_num = rng.rand_real_not0();
+       double prob_sum = 0;
+       auto& updating_probs = updating_follow_probabilities;
+       
+       updating_probs.resize(follow_ranks.categories.size());
+       for (int i = 0; i < follow_ranks.categories.size(); i ++) {
+           CategoryEntityList& C = follow_ranks.categories[i];
+           updating_probs[i] = follow_ranks.categories[i].prob * C.entities.size();
+           prob_sum += follow_ranks.categories[i].prob * C.entities.size();
+       }
+       for (auto& p : updating_probs) {
+           p /= prob_sum;
+       }
+       int i = 0;
+       for (auto& p : updating_probs) {
+           if (rand_num <= p) {
+               CategoryEntityList& C = follow_ranks.categories[i];
+               // pull a random entity from whatever bin we landed in and break so we do not continue this loop
+               int entity_to_follow = C.entities[rng.rand_int(C.entities.size())];
+               Entity& try_entity = network[entity_to_follow];
+               if (try_entity.language != e.language) {
+                   return -1;
+               }
+
+               RECORD_STAT(state, e.entity_type, n_preferential_follows);
+               return entity_to_follow;
+           }
+           rand_num -= p;
+           i++;
+       }
+       return -1;
+   }
+   
    int preferential_follow_method(Entity& e) {
        PERF_TIMER();
 
@@ -286,7 +328,7 @@ struct AnalyzerFollow {
        return entity_to_follow;
    }
    
-   int twitter_follow_model(Entity& e) {
+   int twitter_follow_model(Entity& e, double time_of_follow) {
        PERF_TIMER();
        /* different follow models:
            0 - random follow
@@ -294,6 +336,7 @@ struct AnalyzerFollow {
            2 - entity type follow
            3 - preferential entity follow
            4 - hashtag follow
+           5 - referral follow
        */
        int follow_method = rng.kmc_select(&config.model_weights[0], N_FOLLOW_MODELS);
        if (follow_method == 0) {
@@ -305,8 +348,10 @@ struct AnalyzerFollow {
            return entity_follow_method(e);
        } else if (follow_method == 3) {
            return preferential_entity_follow_method(e);
-       } else {
+       } else if (follow_method == 4) {
            return hashtag_follow_method(e);
+       } else {
+           return referral_follow_method(e, time_of_follow);
        }
        return -1;
     }
@@ -316,9 +361,6 @@ struct AnalyzerFollow {
         Entity& e = network[id_follower];
         int entity_to_follow = -1;
         double rand_num = rng.rand_real_not0();
-        if (network.n_followers(id_follower) > 60) {
-            return false;
-        }
         // if we want to do random follows
         if (config.follow_model == RANDOM_FOLLOW) {
             // find a random entity within [0:number of entities - 1]
@@ -332,9 +374,11 @@ struct AnalyzerFollow {
         } else if (config.follow_model == PREFERENTIAL_ENTITY_FOLLOW) {
             entity_to_follow = preferential_entity_follow_method(e);
         } else if (config.follow_model == TWITTER_FOLLOW) {
-            entity_to_follow = twitter_follow_model(e);
+            entity_to_follow = twitter_follow_model(e, time_of_follow);
         } else if (config.follow_model == HASHTAG_FOLLOW) {
             entity_to_follow = hashtag_follow_method(e);
+        } else if (config.follow_model == REFERRAL_FOLLOW) {
+            entity_to_follow = referral_follow_method(e, time_of_follow);
         }
         // if the stage1_follow is set to true in the inputfile
         if (config.stage1_unfollow) {

@@ -146,8 +146,15 @@ struct Analyzer {
 		
         set_initial_entities();
         analyzer_rate_update(state);
+        init_referral_rate_function(config);
     }
-
+    void init_referral_rate_function(ParsedConfig& config) {
+        // for now, this function decreases over time by 1 / t
+        int projected_months = config.max_sim_time / APPROX_MONTH;
+        for (int i = 0; i <= projected_months; i ++) {
+            config.referral_rate_function.monthly_rates.push_back(1.0 / (double) (1+i));
+        }
+    }
     void set_initial_entities() {
         for (int i = 0; i < config.initial_entities; i++) {
              action_create_entity();
