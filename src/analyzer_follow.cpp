@@ -72,7 +72,7 @@ struct AnalyzerFollow {
        }
     }
     // Returns true if a follow is added that was not already added
-   bool handle_follow(int id_actor, int id_target) {
+   bool handle_follow(int id_actor, int id_target, int follow_method) {
        PERF_TIMER();
        Entity& A = network[id_actor];
        Entity& T = network[id_target];
@@ -80,6 +80,8 @@ struct AnalyzerFollow {
        // if the follow is possible
        if (was_added) {
            bool was_added = T.follower_set.add(network[id_actor]);
+           A.follower_methods.push_back(follow_method);
+           T.following_methods.push_back(follow_method);
            ASSERT(was_added, "Follow/follower-set asymmetry detected!");
            if (config.stage1_unfollow) {
                update_chatiness(A, id_target);
@@ -361,24 +363,33 @@ struct AnalyzerFollow {
         Entity& e = network[id_follower];
         int entity_to_follow = -1;
         double rand_num = rng.rand_real_not0();
+        int follow_method = -1;
         // if we want to do random follows
         if (config.follow_model == RANDOM_FOLLOW) {
             // find a random entity within [0:number of entities - 1]
             entity_to_follow = random_follow_method(e, network.n_entities);
+            follow_method = RANDOM_FOLLOW;
         } else if (config.follow_model == PREFERENTIAL_FOLLOW && config.use_barabasi) {
             entity_to_follow = preferential_barabasi_follow_method();
+            follow_method = PREFERENTIAL_FOLLOW;
         } else if(config.follow_model == PREFERENTIAL_FOLLOW && !config.use_barabasi) {
             entity_to_follow = preferential_follow_method(e);
+            follow_method = PREFERENTIAL_FOLLOW;
         } else if (config.follow_model == ENTITY_FOLLOW) {
             entity_to_follow = entity_follow_method(e);
+            follow_method = ENTITY_FOLLOW;
         } else if (config.follow_model == PREFERENTIAL_ENTITY_FOLLOW) {
             entity_to_follow = preferential_entity_follow_method(e);
+            follow_method = PREFERENTIAL_ENTITY_FOLLOW;
         } else if (config.follow_model == TWITTER_FOLLOW) {
             entity_to_follow = twitter_follow_model(e, time_of_follow);
+            follow_method = TWITTER_FOLLOW;
         } else if (config.follow_model == HASHTAG_FOLLOW) {
             entity_to_follow = hashtag_follow_method(e);
+            follow_method = HASHTAG_FOLLOW;
         } else if (config.follow_model == REFERRAL_FOLLOW) {
             entity_to_follow = referral_follow_method(e, time_of_follow);
+            follow_method = REFERRAL_FOLLOW;
         }
         // if the stage1_follow is set to true in the inputfile
         if (config.stage1_unfollow) {
@@ -399,7 +410,7 @@ struct AnalyzerFollow {
 
             perf_timer_begin("AnalyzerFollower.follow_entity(handle_follow)");
             // point to the entity who is being followed
-            if (handle_follow(id_follower, entity_to_follow)) {
+            if (handle_follow(id_follower, entity_to_follow, follow_method)) {
                 /* FEATURE: Follow-back based on target's prob_followback.
                  * Set in INFILE.yaml as followback_probability. */
                 int et_id = network[entity_to_follow].entity_type;
@@ -428,7 +439,7 @@ struct AnalyzerFollow {
         // now the previous target will follow the previous actor back
         Entity& prev_actor = network[prev_actor_id];
         Entity& prev_target = network[prev_target_id];
-        if (handle_follow(prev_target_id, prev_actor_id)) {
+        if (handle_follow(prev_target_id, prev_actor_id,-1)) {
             
             int et_id = network[prev_actor_id].entity_type;
             EntityType& et = entity_types[et_id];
@@ -467,10 +478,10 @@ double preferential_weight(AnalysisState& state) {
     return analyzer.preferential_weight();
 }
 
-bool analyzer_handle_follow(AnalysisState& state, int id_actor, int id_target) {
+bool analyzer_handle_follow(AnalysisState& state, int id_actor, int id_target, int follow_method) {
     PERF_TIMER();
     AnalyzerFollow analyzer(state);
-    return analyzer.handle_follow(id_actor, id_target);
+    return analyzer.handle_follow(id_actor, id_target, follow_method);
 }
 
 bool analyzer_follow_entity(AnalysisState& state, int entity, double time_of_follow) {

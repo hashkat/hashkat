@@ -75,6 +75,9 @@ struct Entity {
     // Store the two directions of the follow relationship
     FollowingSet following_set;
     FollowerSet follower_set;
+    // these store how someone followed you, or how you followed someone
+    std::vector<int> following_methods;
+    std::vector<int> follower_methods;
 
     PREREAD_WRITE(rw) {
         rw << id << entity_type << preference_class
