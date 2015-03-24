@@ -405,7 +405,7 @@ struct Analyzer {
             if (rng.random_chance(val)) {
                 // Return success of follow:
                 RECORD_STAT(state, e_observer.entity_type, n_retweet_follows);
-                return analyzer_handle_follow(state, choice.id_observer, choice.id_author, -2);
+                return analyzer_handle_follow(state, choice.id_observer, choice.id_author, N_FOLLOW_MODELS + 2);
             }
 		}
 

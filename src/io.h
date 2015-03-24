@@ -50,6 +50,6 @@ bool region_stats(Network& n, AnalysisState& state);
 void fraction_of_connections_distro(Network& network, AnalysisState& state, NetworkStats& net_stats);
 void dd_by_age(Network& n, AnalysisState& as, NetworkStats& ns);
 void dd_by_entity(Network& n, AnalysisState& as, NetworkStats& ns);
-
+void dd_by_follow_method(Network& n, AnalysisState& as, NetworkStats& ns);
 
 #endif

@@ -117,6 +117,7 @@ void output_network_statistics(AnalysisState& state) {
     fraction_of_connections_distro(network, state, stats);
     dd_by_age(network, state, stats);
     dd_by_entity(network, state, stats);
+    dd_by_follow_method(network, state, stats);
     
     
 }
@@ -922,3 +923,57 @@ void dd_by_entity(Network& n, AnalysisState& as, NetworkStats& ns) {
     }
     output.close();
 }
+
+void dd_by_follow_method(Network& n, AnalysisState& as, NetworkStats& ns) {
+    vector<Year> follow_models(N_FOLLOW_MODELS + 2); // + 2 for retweeting and followback
+    int max_following = 0, max_followers = 0;
+    for (int i = 0; i < n.n_entities; i ++) {
+        if (n.n_followings(i) >= max_following) {
+            max_following = n.n_followings(i) + 1;
+        }
+        if (n.n_followers(i) >= max_followers) {
+            max_followers = n.n_followers(i) + 1;
+        }
+    }
+    int max_degree = max_following + max_followers;
+    for (auto& follow_model : follow_models) {
+        follow_model.dd.resize(max_degree);
+        for (int i = 0; i < follow_model.dd.size(); i ++) {
+            follow_model.dd[i] = 0;
+        }
+    }
+    for (int i = 0; i < n.n_entities; i ++) {
+        for (int j = 0; j < N_FOLLOW_MODELS + 2; j ++) {
+            Entity& e = n[i];
+            int degree = e.following_method_counts[j] + e.follower_method_counts[j];
+            follow_models[j].dd[degree] ++; 
+        }
+    }
+    
+    ofstream output;
+    output.open("output/dd_by_follow_model.dat");
+    
+    for (int i = 0; i < max_degree; i ++) {
+        output << i << "\t" << log(i);
+        for (auto& ent_type : follow_models) {
+            output << "\t" << ent_type.dd[i] / n.n_entities << "\t" << log(ent_type.dd[i] / n.n_entities);
+        }
+        output << "\n";
+    }
+    
+    output.close();
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+

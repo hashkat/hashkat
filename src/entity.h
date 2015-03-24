@@ -76,8 +76,17 @@ struct Entity {
     FollowingSet following_set;
     FollowerSet follower_set;
     // these store how someone followed you, or how you followed someone
-    std::vector<int> following_methods;
-    std::vector<int> follower_methods;
+    std::vector<int> following_method_counts;
+    std::vector<int> follower_method_counts;
+
+    Entity() {
+        following_method_counts.resize(N_FOLLOW_MODELS + 2);
+        follower_method_counts.resize(N_FOLLOW_MODELS + 2);
+        for (int i = 0; i < N_FOLLOW_MODELS + 2; i ++) {
+            following_method_counts[i] = 0;
+            follower_method_counts[i] = 0;
+        }
+    }
 
     PREREAD_WRITE(rw) {
         rw << id << entity_type << preference_class

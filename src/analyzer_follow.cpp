@@ -80,8 +80,8 @@ struct AnalyzerFollow {
        // if the follow is possible
        if (was_added) {
            bool was_added = T.follower_set.add(network[id_actor]);
-           A.follower_methods.push_back(follow_method);
-           T.following_methods.push_back(follow_method);
+           A.follower_method_counts[follow_method] ++;
+           T.following_method_counts[follow_method] ++;
            ASSERT(was_added, "Follow/follower-set asymmetry detected!");
            if (config.stage1_unfollow) {
                update_chatiness(A, id_target);
@@ -439,7 +439,7 @@ struct AnalyzerFollow {
         // now the previous target will follow the previous actor back
         Entity& prev_actor = network[prev_actor_id];
         Entity& prev_target = network[prev_target_id];
-        if (handle_follow(prev_target_id, prev_actor_id,-1)) {
+        if (handle_follow(prev_target_id, prev_actor_id,N_FOLLOW_MODELS + 1)) {
             
             int et_id = network[prev_actor_id].entity_type;
             EntityType& et = entity_types[et_id];
