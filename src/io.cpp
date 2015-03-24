@@ -946,7 +946,6 @@ void dd_by_follow_method(Network& n, AnalysisState& as, NetworkStats& ns) {
         for (int j = 0; j < N_FOLLOW_MODELS + 2; j ++) {
             Entity& e = n[i];
             int degree = e.following_method_counts[j] + e.follower_method_counts[j];
-            cout << degree << "\n";
             follow_models[j].dd[degree] ++; 
         }
     }
