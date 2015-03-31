@@ -70,6 +70,8 @@ static FollowModel parse_follow_model(const Node& node) {
         return PREFERENTIAL_ENTITY_FOLLOW;
     } else if (follow_model == "hashtag") {
         return HASHTAG_FOLLOW;
+    } else if (follow_model == "referral") {
+        return REFERRAL_FOLLOW;
     } else if (follow_model == "twitter" ) {
         return TWITTER_FOLLOW;
     } else {
@@ -137,6 +139,7 @@ static vector<double> parse_follow_weights(const Node& node) {
     parse(node, "entity", weights[2]);
     parse(node, "preferential_entity", weights[3]);
     parse(node, "hashtag", weights[4]);
+    parse(node, "referral", weights[5]);
     double weight_sum = 0;
     for (auto& w : weights) {
         weight_sum += w;
@@ -524,6 +527,7 @@ static void configure_entity_rates(ParsedConfig& config, EntityType& et, int eve
     } 
 }
 
+
 static void configure_entity_rates(ParsedConfig& config) {
     for (int i = 0; i < config.entity_types.size(); i ++) {
         for (int j = 0; j < number_of_diff_events; j ++) {
@@ -548,7 +552,6 @@ ParsedConfig parse_yaml_configuration(const char* file_name) {
         /* Fill the various Add_Rates structures with the data necessary for each month */
         configure_add_rates(config);
         configure_entity_rates(config);
-
         check_configuration_integrity(config);
         return config;
     } catch (const exception& e) {

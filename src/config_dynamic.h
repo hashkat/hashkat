@@ -27,6 +27,7 @@
 
 #include <cmath>
 #include "network.h"
+#include "events.h"
 
 #include "FollowerSet.h"
 
@@ -36,6 +37,7 @@ enum FollowModel {
     ENTITY_FOLLOW,
     PREFERENTIAL_ENTITY_FOLLOW,
     HASHTAG_FOLLOW,
+    REFERRAL_FOLLOW,
     TWITTER_FOLLOW
 };
 
@@ -121,6 +123,7 @@ struct ParsedConfig {
     // Thresholds are filled, entity lists empty
     CategoryGrouper tweet_ranks, follow_ranks;
     CategoryGrouper retweet_ranks;
+    Rate_Function referral_rate_function;
 
     std::vector<double> follow_probabilities;
     Regions regions;

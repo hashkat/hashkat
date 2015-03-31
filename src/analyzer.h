@@ -263,7 +263,7 @@ int analyzer_select_entity(AnalysisState& state, SelectionType type);
 void analyzer_rate_update(AnalysisState& state);
 
 // Follow a specific user
-bool analyzer_handle_follow(AnalysisState& state, int id_actor, int id_target);
+bool analyzer_handle_follow(AnalysisState& state, int id_actor, int id_target, int follow_method);
 double preferential_weight(AnalysisState& state);
 
 bool analyzer_sim_time_check(AnalysisState& state);
