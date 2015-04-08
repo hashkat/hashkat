@@ -421,7 +421,7 @@ struct RateTree {
 
     void print() {
         get(0).print(*this, 0, 0);
-        printf("Leaf nodes = %d, total number of nodes = %d\n", size(), node_pool.size());
+        printf("Leaf nodes = %d, total number of nodes = %d\n", (int) size(), (int) node_pool.size());
     }
     size_t size() const {
         return n_elems;

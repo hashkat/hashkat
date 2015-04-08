@@ -134,10 +134,10 @@ void brief_entity_statistics(AnalysisState& state) {
        Entity& e = network[i];
        EntityType& et = state.entity_types[e.entity_type];
 
-       printf("------------------------------------------------------------------------\n", i);
+       printf("------------------------------------------------------------------------\n");
        printf("(Entity %d)\n", i);
        printf("(EntityType %s)\n", et.name.c_str());
-       printf("------------------------------------------------------------------------\n", i);
+       printf("------------------------------------------------------------------------\n");
        e.follower_set.print();
     }
 

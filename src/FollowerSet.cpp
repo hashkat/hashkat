@@ -215,7 +215,7 @@ static void print_layer(LeafLayer& layer, int depth) {
             for (int i = 0; i < depth; i++) {
                 printf("  ");
             }
-            printf("[%s] (N_elems %d)\n", repr.c_str(), sublayer.size());
+            printf("[%s] (N_elems %d)\n", repr.c_str(), (int) sublayer.size());
             for (int i = 0; i < depth + 1; i++) {
                 printf("  ");
             }
