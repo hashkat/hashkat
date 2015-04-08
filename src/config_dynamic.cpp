@@ -340,7 +340,7 @@ static EntityTypeVector parse_entities_configuration(const Node& node) {
     double add_total = 0, follow_total = 0;
     for (int i = 0; i < node.size(); i++) {
         EntityType et;
-        et.tweet_type_probs;
+        //et.tweet_type_probs;
         const Node& child = node[i];
         parse(child, "name", et.name);
         parse(child, "followback_probability", et.prob_followback);

@@ -158,7 +158,7 @@ struct TimePeriodChecker {
     }
 
     READ_WRITE(rw) {
-        rw << next_check_time, interval;
+        rw << next_check_time;//, interval;
     }
 private:
     double next_check_time, interval;

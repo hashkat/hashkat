@@ -654,7 +654,7 @@ union luai_Cast { double l_d; long l_l; };
 
 #else
 #define LUA_TMPNAMBUFSIZE	L_tmpnam
-#define lua_tmpnam(b,e)		{ e = (tmpnam(b) == NULL); }
+#define lua_tmpnam(b,e)		{ e = (mkstemp(b) == (int) NULL); }
 #endif
 
 #endif
