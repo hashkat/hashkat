@@ -52,7 +52,7 @@ aux_source_directory(
 
 # Add compilation target
 add_executable( 
-	socialsim
+	hashkat
 	${mersenne_simd_src} 
 	${networksim_src} 
 	${networksim_tests} 
@@ -61,7 +61,7 @@ add_executable(
 )
 
 target_link_libraries (
-	socialsim 
+	hashkat 
 	UnitTest++
 	yaml-cpp
         lualinenoise

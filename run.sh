@@ -92,7 +92,7 @@ Testing options:
 
 Misc options:
     Running ./scripts/colorify.sh will semantically colour the output of run.sh.
-    Running ./scripts/stop.sh will send a SIGUSR1 (user-defined signal) to the binary ‘socialsim’, in effect resulting in graceful termination of the program. This can never result in immediate termination.
+    Running ./scripts/stop.sh will send a SIGUSR1 (user-defined signal) to the binary ‘hashkat’, in effect resulting in graceful termination of the program. This can never result in immediate termination.
     --no-ctrlc, do not handle Ctrl+C (note, results in immediate termination with Ctrl+C)"
     exit
 fi
@@ -211,24 +211,24 @@ fi
 if handle_flag "--stacktrace" ; then
     gdb -silent -batch \
            -ex "run" \
-           -ex "bt" --args build/src/socialsim $args 2>&1
+           -ex "bt" --args build/src/hashkat $args 2>&1
 elif handle_flag "--gdb" || handle_flag "-g" ; then
     # Wrap the gdb around the program with -g:
     echo "Wrapping in GDB:" | colorify '1;35'
     gdb -silent  \
         -ex='set confirm off' \
-        -ex="handle 31 nostop noprint pass" -ex=r --args build/src/socialsim $args 
+        -ex="handle 31 nostop noprint pass" -ex=r --args build/src/hashkat $args 
 #        -ex="handle SIGINT nostop noprint pass" \
 elif handle_flag "--lldb" || handle_flag "-l" ; then
     # Wrap lldb around the program with -l:
     echo "Wrapping in LLDB:" | colorify '1;35'
-    lldb build/src/socialsim 
+    lldb build/src/hashkat 
 elif handle_flag "--oprofile" || handle_flag "--oprof" ; then
     # Requires installation of oprofile!
     # Profile the program (requires oprofile) with -p:
     echo "Profiling with oprofile:" | colorify '1;35'
-    operf build/src/socialsim $args
-    opreport --exclude-dependent --demangle=smart --symbols build/src/socialsim | less
+    operf build/src/hashkat $args
+    opreport --exclude-dependent --demangle=smart --symbols build/src/hashkat | less
 elif handle_flag "--valgrind" || handle_flag "--vprof"; then
     # Requires installation of valgrind and kCacheGrind!
     echo "Profiling with valgrind:" | colorify '1;35'
@@ -240,10 +240,10 @@ elif handle_flag "--valgrind" || handle_flag "--vprof"; then
 
     trap showOutput INT
 
-    valgrind --tool=callgrind build/src/socialsim $args
+    valgrind --tool=callgrind build/src/hashkat $args
 
     showOutput
 else
     # Normal execution
-    build/src/socialsim $args
+    build/src/hashkat $args
 fi

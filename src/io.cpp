@@ -29,7 +29,7 @@
 #include <iostream>
 #include <iomanip>
 #include <set>
-
+#include <cstdio>
 #include "dependencies/mtwist.h"
 #include "analyzer.h"
 #include "io.h"
@@ -45,7 +45,8 @@ using namespace std;
 // ROOT OUTPUT ROUTINE
 /* After 'analyze', print the results of the computations. */
 void output_network_statistics(AnalysisState& state) {
-    perf_print_results();
+    // uncomment to print performance statistics
+    //perf_print_results();
 
     Network& network = state.network;
     ParsedConfig& C = state.config;
@@ -54,7 +55,7 @@ void output_network_statistics(AnalysisState& state) {
     TweetBank& tb = state.tweet_bank;
     MostPopularTweet& mpt = state.most_pop_tweet;
 
-    brief_entity_statistics(state);
+    //brief_entity_statistics(state);
 
     // Print why program stopped
     if (C.output_stdout_basic) {
@@ -319,14 +320,21 @@ void degree_distributions(Network& network,AnalysisState& state) {
 
     // open some files
     ofstream outdd, indd, cumuldd, scaled;
-    string out = "output/out-degree_distribution_month_" + to_string(state.n_months()) + ".dat";
-    string in = "output/in-degree_distribution_month_" + to_string(state.n_months()) + ".dat";
-    string cumul = "output/cumulative-degree_distribution_month_" + to_string(state.n_months()) + ".dat";
-    string scale = "output/scaled-degree_distribution_month_" + to_string(state.n_months()) + ".dat";
-    outdd.open(out.c_str());
-    indd.open(in.c_str());
-    cumuldd.open(cumul.c_str());
-    scaled.open(scale.c_str());
+    char out[100], in[100], cumul[100], scale[100];
+    sprintf(out, "output/out-degree_distribution_month_%03d.dat", state.n_months());
+    sprintf(in, "output/in-degree_distribution_month_%03d.dat", state.n_months());
+    sprintf(cumul, "output/cumulative-degree_distribution_month_%03d.dat", state.n_months());
+    sprintf(scale, "output/scaled-degree_distribution_month_%03d.dat", state.n_months());
+    
+    string out_s = out;
+    string in_s = out;
+    string cumul_s = out;
+    string scale_s = out;
+
+    outdd.open(out_s.c_str());
+    indd.open(in_s.c_str());
+    cumuldd.open(cumul_s.c_str());
+    scaled.open(scale_s.c_str());
 
     outdd << "# This is the out-degree distribution. The data order is:\n# degree, normalized probability, log of degree, log of normalized probability\n\n";
     indd << "# This is the in-degree distribution. The data order is:\n# degree, normalized probability, log of degree, log of normalized probability\n\n";
