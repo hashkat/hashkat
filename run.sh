@@ -167,7 +167,7 @@ if ! handle_flag "-f" && ! handle_flag "--force" ; then
     cd build
     cmake .. | colorify '1;33'
     if handle_flag "--clean" ; then
-        gmake clean
+        make clean
     fi
     make -j$((cores+1))
     cd ..
