@@ -327,9 +327,9 @@ void degree_distributions(Network& network,AnalysisState& state) {
     sprintf(scale, "output/scaled-degree_distribution_month_%03d.dat", state.n_months());
     
     string out_s = out;
-    string in_s = out;
-    string cumul_s = out;
-    string scale_s = out;
+    string in_s = in;
+    string cumul_s = cumul;
+    string scale_s = scale;
 
     outdd.open(out_s.c_str());
     indd.open(in_s.c_str());
