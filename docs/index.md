@@ -1,6 +1,6 @@
 # Welcome to MkDocs
 
-Hello 1
+Hello 2
 
 For full documentation visit [mkdocs.org](http://mkdocs.org).
 
