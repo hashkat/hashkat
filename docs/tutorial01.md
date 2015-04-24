@@ -1,12 +1,10 @@
-# Welcome to MkDocs
-
-Hello 2
-
 [hashkat.org](http://hashkat.org)
 
-For full documentation visit [mkdocs.org](http://mkdocs.org).
+# Tutorial 1
 
-<iframe width="560" height="315" src="http://www.youtube.com/embed/9bZkp7q19f0?rel=0" frameborder="0" allowfullscreen></iframe>
+In this tutorial we will cover the basics of #k@. This tutorial should take approximately 90 minutes to complete
+
+<iframe width="420" height="315" src="https://www.youtube.com/embed/g2QeKQ9yXy0" frameborder="0" allowfullscreen></iframe>
 
 
 ## Commands
