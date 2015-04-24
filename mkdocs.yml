@@ -1,5 +1,5 @@
-site_name: hashkat.org
-site_url: http://hashkat.org
+site_name: docs.hashkat.org
+site_url: http://docs.hashkat.org
 pages:
  - [index.md, Home]
  - [tutorial.md, Tutorial]
