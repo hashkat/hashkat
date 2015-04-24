@@ -1,6 +1,6 @@
 # Welcome to MkDocs
 
-Hello 2
+Hello 
 
 [hashkat.org](http://hashkat.org)
 
