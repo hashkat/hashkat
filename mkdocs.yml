@@ -3,4 +3,5 @@ site_url: http://docs.hashkat.org
 pages:
  - [index.md, Home]
  - [tutorial01.md, Tutorial 1]
+ - [tutorial02.md, Tutorial 2]
  - [test.md, Test ]
