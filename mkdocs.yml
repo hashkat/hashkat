@@ -1,3 +1,5 @@
 site_name: hashkat.org
 site_url: http://hashkat.org
-
+pages:
+ - [index.md, Home]
+ - [tutorial.md, Tutorial]
