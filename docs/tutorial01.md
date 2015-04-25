@@ -1,6 +1,6 @@
 [hashkat.org](http://hashkat.org)
 
-# Introduction
+# Getting Started
 
 In this tutorial we will cover the basics of #k@. This tutorial should take approximately 90 minutes to complete
 
