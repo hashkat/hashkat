@@ -2,6 +2,12 @@ site_name: docs.hashkat.org
 site_url: http://docs.hashkat.org
 pages:
  - [index.md, Home]
+ - [about.md, About]
+ - [installation.md, Installation]
  - [tutorial01.md, Tutorial 1]
  - [tutorial02.md, Tutorial 2]
- - [test.md, Test ]
+ - [tutorial03.md, Tutorial 3]
+ - [tutorial04.md, Tutorial 4]
+ - [glossary.md, Glossary]
+ - [visualization.md, Visualization]
+ - [developers.md, Developers]
