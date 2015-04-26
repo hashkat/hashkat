@@ -2,7 +2,7 @@
 
 <span style="color:black; font-family:Georgia; font-size:3em;">Welcome to the official #k@ documentation</span>
 
-![hashkat logo](/img/logo.png "#k@")
+![hashkat logo](/img/Logo.png "#k@")
 
 [hashkat.org](http://hashkat.org)
 
