@@ -282,6 +282,7 @@ humour_bins: 2
 
 ##preference classes
 
+```python
 - name: StandardPref
 
   # Determines the probability that a tweet is reacted to by this
