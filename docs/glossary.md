@@ -192,3 +192,131 @@ these thresholds.
 
 ####weights
 **(type: n/a)** This follows the same procedure as thresholds. Instead of defining the thresholds for grouping entities, it defines the probability of selecting one of the groups of entities.
+
+####tweet_observation
+**(type: n/a)** This denotes the section of the input file that provides the decay function for the retweet rates. Experimentally, the retweet rate for a tweet decays over time by approximately 1/t where t is the time in minutes.
+
+####density_function
+**(type: n/a)** This density function is the function that describes how the retweet rates decay over time. Since the input file is intertwined with Python, you can actually declare mathematical functions with Python syntax as the density function.
+An example is ‘2.45 / (x)**1.1’. This function is integrated with scipy and each discrete element of this function is divided by the total integral to normalize the function. This ensures that it is truly a probability density function.
+The discrete elements of the function can be adjusted by the parameters mentioned below. The entities that have the chance to be retweeted are binned according to the values of the function, and as time progresses they switch bins to have smaller value.
+
+####x_start
+**(type: double)** This is the initial value of the density function. Make sure that the value of the density function evaluated at this starting value does not cause a discontinuity in the function.
+
+####x_end
+**(type: double)** This is the final value of the density function. Make sure that the value of the density function evaluated at this end value does not cause a discontinuity in the function.
+
+####initial_resolution
+**(type: double)** This is the initial value for determining where the integral of the density function is evaluated at. If the x start value is 5 and this parameter is set to 1, then the first integral will be from 5 to 6.
+
+####resolution_growth_factor
+**(type: double)** This value changes how the integrals are evaluated for the density function. Since the resolution of the function found experimentally needs to be more accurate initially then after some amount of time, we have
+introduced this parameter. For example if x start is 5, the initial resolution is 1, and this parameter is 1.5, then the integrals will be evaluated at [5, 6], [6, 8.5], [8.5, 13.5], etc.
+
+####time_span
+**(type: double)** This value determines when the density function will disappear allowing no more retweets or follow by retweets to occur. Since the function found experimentally approaches 0 quite slowly, it is convenient to define a time span for
+the function to improve efficiency of the retweet algorithm. Like the max time parameter you can use convenient strings like ‘minute’, ‘hour’, ‘day’, ‘month’, or ‘year’. You can also use Python syntax and multiply numbers to these strings.
+
+####ideologies
+**(type: n/a)** This section of the input file determines abstract characterizations of entities. The motivation behind it is political views on Twitter and how different or similar people based on political views would act on retweets or hashtags.
+Make sure that the number of ideologies declared here is the same as ‘N BIN IDEOLOGIES’ variable in the “config static.h” header file. Once you declare ideologies you can then set the weights for each ideology in the
+regions section of the input file. You can also set the weights of a certain entity type tweeting about their ideology in the entities section of the input file.
+
+####naming_ideologies
+**(type: string)** The names of your ideologies is completely up to you and the syntax for declaring ideologies is as such:
+
+ideologies:
+- name: Red
+- name: Blue
+
+You can see that I have set 2 ideologies, Red and Blue. The weights for each ideology must be set in the regions section of the input file.
+
+####regions
+**(type: n/a)** This section of the input file is for declaring different regions where the entities in the network are ‘from’. When an entity is created, where the entity is ‘from’ is
+selected randomly with weights that can be set. Here you can set the weights for many different parameters, all of which is explained below.
+
+####naming_regions
+**(type: string)** The name of your region can be anything that consists of a string. The name is a necessary part of the region so you will get a warning if it is not set.
+
+####region_add_weight
+**(type: double)** As mentioned above, when an entity is added into the network, we randomly generate where they are from. The weights set for each region declares the probability of an entity being from a specific region. The weights for
+all of the regions are summed and then divided by the sum to create a probability. The units for the weights of each region should be the same to normalize them correctly. The syntax for declaring the add weight is as such:
+
+regions:
+- name: Canada
+add weight: 5
+- name: USA
+add weight: 10
+
+From these weights, two thirds of the population will be from USA and one third from Canada.
+
+####preference_class_weights
+**(type: n/a)** After declaring preference classes which describe how retweets pass from entity to entity, you must set the weights for each preference class in the region section. For more information on preference classes, click here: preference classes.
+Let’s say you have defined preference classes ‘Pref1’ and ‘Pref2’. The correct syntax for setting the weighting of these preference classes is as follows:
+
+regions:
+- name: Canada
+add weight: 5
+preference class weights: {Pref1: 10, Pref2: 10}
+
+Here the weights for each preference classes are also summed and divided by the sum to generate a probability. These probabilities are used when an entity is created to determine which preference class they use.
+
+####ideology_weights
+**(type: n/a)** After declaring ideologies which define a characteristic for an entity, you must set the weights for each ideology in the region section. For more information on ideologies, click here: ideologies.
+Let’s say you have defined ideologies ‘Red’ and ‘Blue’. The correct syntax for setting the weighting of these ideologies is as follows:
+
+regions:
+- name: Canada
+add weight: 5
+ideology weights: {Red: 10, Blue: 10}
+
+Here the weights for each ideology are also summed and divided by the sum to generate a probability. These probabilities are used when an entity is created to determine which ideology they are.
+
+####language_weights
+**(type: n/a)** After declaring languages in ‘config static.h’ which defines the language for the entity, you must set the weights for each language in the region section. Let’s say you have defined languages ‘English’, ‘French’, and ‘English+French’.
+The correct syntax for setting the weighting of these languages is as follows:
+
+regions:
+- name: Canada
+add_weight: 5
+language_weights: {English: 10, French: 10, English+French: 10}
+
+Here the weights for each language are also summed and divided by the sum to generate a probability. These probabilities are used when an entity is created to determine which language they speak.
+
+####config_static
+**(type: n/a)** There are constant values that can be found in ‘config static.h’. Some of the static values can be changed in the input file for simplicity. An example of this is the humour bins described below.
+
+humour_bins
+**(type: int)** To determine how a retweet is passed based on humour, there are different values dedicated to each humour bin which describes how a tweet will be passed from entity to entity based on humour.
+The value for each bin is what ever value is set in the preference classes section for ‘humourous’ multiplied by the probability density function.
+
+####preference_classes
+**(type: n/a)** This section of the input file is for the declaration of preference classes which describe how tweets are passed in the system. Here you must set the tweet transmission for different scenarios based on different entity characteristics; all of which
+is explained below.
+
+####naming_preference_classes
+**(type: string)** You can name your preference classes however you want. The names of your preference classes are needed in the regions section of the input file to determine the weights for an entity having a certain preference class.
+An example is as follows:
+
+preference classes:
+- name: Pref1
+
+####tweet_transmission
+**(type: n/a)** Here you must set the transmission probabilities for different situations which can be found below. The transmission probabilities are then multiplied by the density function which has been found experimentally to decrease over time.
+
+####plain_tweets
+**(type: n/a)** In the entities section, there are different types of tweets that entities can tweet. One of the tweet types is ‘plain’ which is a generic tweet. When an entity tweets a plain tweet, the entities that follows the entity who tweeted may retweet
+the tweet depending on the tweet transmission value and density function. An example of the syntax for declaring a plain tweet preference class is:
+
+preference classes:
+- name: Pref1
+tweet transmission:
+plain:
+EntityType1: 0.1
+EntityType2: 0.1
+else: 0.1
+
+As you can see from above, the entity types declared in the entities section are used in the preference classes. If you also declared an entity type ‘EntityType3’ then that entity type would fall under the ‘else’ set above.
+You can see that the transmission probabilities for all of the entity types are the same.
+
