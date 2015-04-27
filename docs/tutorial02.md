@@ -1,4 +1,5 @@
 [hashkat.org](http://hashkat.org)
+
 <span style="color:black; font-family:Georgia; font-size:1.5em;">April 2015 - This site is currently under construction. Please return in the next few months for further updates. </span>
 
 # Input
@@ -75,21 +76,21 @@ though it should be noted that lua hooks will slow down the simulation immensely
     false
 ```
 
-Input *true* for a preferential model simulation, input *false* otherwise. Will be discussed in greater detail later.
+Input *true* into *use_barabsi* for a preferential model simulation, input *false* otherwise. Will be discussed in greater detail later.
 
 ```python
   use_random_time_increment:
     true
 ```
 
-Input *true* to have time increase by random values modelled by the KMC loop, or input *false* to have the simulation move by constant increments of time. CHoosing either option will not have a major impact on your results.
+Input *true* for *use_random_time_increment* to have time increase by random values modelled by the KMC loop, or input *false* to have the simulation move by constant increments of time. Choosing either option will not have a major impact on your results.
 
 ```python
   use_followback:
     true
 ```
 
-Inputting *true* will allow entities to follow other entities that follow them, while inputting *false* will prevent this from happening.
+Inputting *true* into *use_followback* will allow entities to follow other entities that follow them, while inputting *false* will prevent this from happening.
 
 ```python
   follow_model: # See notes above
@@ -103,14 +104,14 @@ The *follow_model* determines the manner in which entities choose who to follow.
   model_weights: {random: 0.20, preferential: 0.20, entity: 0.20, preferential_entity: 0.20, hashtag: 0.20}
 ```
 
-Only relevant when using the *twitter* follow model. Will be described later.
+*model_weights* are only relevant when using the *twitter* follow model. Will be elaborated on later.
 
 ```python
   stage1_unfollow:
     false
 ```
 
-Inputting *true* will enable the program to flag entities in which a twitter user is following that are tweeting much more than others. These flagged entities are at risk of being unfollowed by the entity following them later in the simulation.
+Inputting *true* into *stage1_unfollow*  will enable the program to flag entities in which a twitter user is following that are tweeting much more than others. These flagged entities are at risk of being unfollowed by the entity following them later in the simulation.
 
 ```python
   unfollow_tweet_rate:
@@ -128,7 +129,20 @@ The probability of a tweet containing a # from 0 to 1. As we can see in DEFAULT.
 
 ##rates
 
+```
+  rates:
+    add: {function: constant, value: 0.0}
+```
 
+The rate at which entities will be added into the network per minute throughout the course of the simulation. This function can either be a constant or linear add rate. For a constant add rate. the function must be identified as *constant* and the
+number of entities you wish to add per minute must inputted into *value*. This number must be greater or equal to zero. For a linear add rate, the add rate must be changed to:
+
+```
+rates:
+  add: {function: constant, y_intercept: 1.0, slope: 0.1}
+```
+
+where the y-intercept is the initial arbitrary value of entities added to the network and the slope, multipled by the number of simulated months that have elapsed within the simulation, is the value by which the y-intercept is increased by. 
 
 ##output
 
