@@ -129,7 +129,7 @@ The probability of a tweet containing a # from 0 to 1. As we can see in DEFAULT.
 
 ##rates
 
-```
+```python
   rates:
     add: {function: constant, value: 0.0}
 ```
@@ -137,7 +137,7 @@ The probability of a tweet containing a # from 0 to 1. As we can see in DEFAULT.
 The rate at which entities will be added into the network per minute throughout the course of the simulation. This function can either be a constant or linear add rate. For a constant add rate. the function must be identified as *constant* and the
 number of entities you wish to add per minute must inputted into *value*. This number must be greater or equal to zero. For a linear add rate, the add rate must be changed to:
 
-```
+```python
 rates:
   add: {function: constant, y_intercept: 1.0, slope: 0.1}
 ```
@@ -146,7 +146,39 @@ where the y-intercept is the initial arbitrary value of entities added to the ne
 
 ##output
 
+```python
+output:
+  save_network_on_timeout:
+    false
+  load_network_on_startup:
+    false
+  ignore_load_config_check: # Whether to allow loading configuration with mismatching configuration (generally OK)
+    false
+  save_file: # File to save to, and load from
+    network_state.sav
+  stdout_basic:
+    true
+  stdout_summary:
+    true
+  summary_output_rate:
+    1
+  visualize:
+    true
+  verbose:
+    true
+  entity_stats:
+    true
+  degree_distributions:
+    true
+  tweet_analysis:
+    true
+  retweet_visualization:
+    false
+  main_statistics:
+    true
+```
 
+This section of the program outlines what is present in the output directory once the simulation is concluded. It is recommended to leave these settings as they are.
 
 ##ranks
 
