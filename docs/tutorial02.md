@@ -8,7 +8,7 @@ In this tutorial we will cover the input through which a user can manipulate for
 
 The main file through which users will use for input is INFILE.yaml. A default version which users can use for reference is DEFAULT.yaml. We will go through each line of input in DEFAULT.yaml to ensure that the user knows all the options at their disposal.
 
-##analysis
+## analysis
 
 The first section of this program is titled analysis, and it outlines what is the general focus of this simulation. Let's go over what each variable means.
 
@@ -144,7 +144,7 @@ rates:
 
 where the y-intercept is the initial arbitrary value of entities added to the network and the slope, multipled by the number of simulated months that have elapsed within the simulation, is the value by which the y-intercept is increased by. 
 
-##output
+## output
 
 ```python
 output:
@@ -180,7 +180,7 @@ output:
 
 This section of the program outlines what is present in the output directory once the simulation is concluded. It is recommended to leave these settings as they are.
 
-##ranks
+## ranks
 
 ```python
 tweet_ranks:
@@ -204,7 +204,7 @@ follow_ranks:
 
 
 
-##tweet observations
+## tweet observations
 
 ```python
 density_function:
@@ -249,7 +249,7 @@ density_function:
 
 
 
-##ideologies
+## ideologies
 
 ```python
   - name: Red
@@ -258,7 +258,7 @@ density_function:
 
 
 
-##regions
+## regions
 
 ```python
 - name: Ontario
@@ -272,7 +272,7 @@ density_function:
 
 
 
-##config_static
+## config_static
 
 ```python
 humour_bins: 2
@@ -280,7 +280,7 @@ humour_bins: 2
 
 
 
-##preference classes
+## preference classes
 
 ```python
 - name: StandardPref
@@ -313,7 +313,7 @@ humour_bins: 2
 
 
 
-##entities
+## entities
 
 ```python
 - name: Standard
