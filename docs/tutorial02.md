@@ -4,18 +4,25 @@
 
 # Input
 
-In this tutorial we will cover the basics of #k@. This tutorial should take approximately 90 minutes to complete
+In this tutorial we will cover the input through which a user can manipulate for their own ends in #k@. This tutorial should take approximately 90 minutes to complete
+
+The main file through which users will use for input is INFILE.yaml. A default version which users can use for reference is DEFAULT.yaml. We will go through each line of input to ensure that the user knows all the options at their disposal.
 
 
 
-This is another line
-
-
+The entities present throughout this simulation correspond to Twitter users on the network.
+The “initial_entities” variable used in this analysis corresponds to the inaugural Twitter users at the start of this operation. A small value for this would be ideal, perhaps when it was just in use by the developers.
+The “max_entities” variable will of course correspond to the maximum number of Twitter users you would expect to have throughout the course of the simulation and for which to allocate. Once the number of entities within the network has grown to this magnitude, the addin$
+The “max_time” will be the maximum length of simulation time you would like this simulation to run for. The simulation will halt once this simulated time has elapsed, though it is important to note that interacting with the simulation will have no impact on the simulati$
+The “max_analysis_steps” !!!!
+The “max_real_time” corresponds to the maximum length of actual clock time you would like this simulation to run for. The simulation will end once this time has elapsed in real time, though it should be noted that, as opposed to the “max_time”, interacting with the simu$
+While the simulation is running, no input from the user is required. However, you do have the choice to implement interactive mode, which will allow user to !!!!!!
+Implementing the variable “enable_lua_hooks” will determine whether or not !!!!
+“lua_Script”!!!!!
 
 
 <iframe width="420" height="315" src="https://www.youtube.com/embed/g2QeKQ9yXy0" frameborder="0" allowfullscreen></iframe>
 
-hello
 ## Commands
 
 * `~[2] mkdocs new [dir-name]` - Create a new project.
