@@ -6,9 +6,90 @@
 
 In this tutorial we will cover the input through which a user can manipulate for their own ends in #k@. This tutorial should take approximately 90 minutes to complete
 
-The main file through which users will use for input is INFILE.yaml. A default version which users can use for reference is DEFAULT.yaml. We will go through each line of input to ensure that the user knows all the options at their disposal.
+The main file through which users will use for input is INFILE.yaml. A default version which users can use for reference is DEFAULT.yaml. We will go through each line of input in DEFAULT.yaml to ensure that the user knows all the options at their disposal.
 
+##analysis
 
+The first section of this program is titled analysis, and it outlines what is the general focus of this simulation.
+
+```python
+  initial_entities:
+    20
+```
+
+```python
+  max_entities:
+    100001
+```
+
+```python
+  max_time:
+    hour
+```
+
+```python
+  max_analysis_steps:
+    unlimited
+```
+
+```python
+  max_real_time:
+    hour
+```
+
+```python
+  enable_interactive_mode:
+    true
+```
+
+```python
+  enable_lua_hooks: # Defined in same file as interactive_mode. Can slow down simulation considerably.
+    false
+```
+
+```python
+  lua_script: # Defines behaviour of interactive mode & lua hooks
+    INTERACT.lua
+```
+
+```python
+  use_barabasi:
+    false
+```
+
+```python
+  use_random_time_increment:
+    true
+```
+
+```python
+  use_followback:
+    true
+```
+
+```python
+  follow_model: # See notes above
+    random
+```
+
+```python  
+  model_weights: {random: 0.20, preferential: 0.20, entity: 0.20, preferential_entity: 0.20, hashtag: 0.20}
+```
+
+```python
+  stage1_unfollow:
+    false
+```
+
+```python
+  unfollow_tweet_rate:
+    10
+```
+
+```python
+  use_hashtag_probability:
+    1
+```
 
 The entities present throughout this simulation correspond to Twitter users on the network.
 The “initial_entities” variable used in this analysis corresponds to the inaugural Twitter users at the start of this operation. A small value for this would be ideal, perhaps when it was just in use by the developers.
@@ -19,6 +100,41 @@ The “max_real_time” corresponds to the maximum length of actual clock time y
 While the simulation is running, no input from the user is required. However, you do have the choice to implement interactive mode, which will allow user to !!!!!!
 Implementing the variable “enable_lua_hooks” will determine whether or not !!!!
 “lua_Script”!!!!!
+
+##rates
+
+
+
+##output
+
+
+
+##ranks
+
+
+
+##tweet observations
+
+
+
+##ideologies
+
+
+
+##regions
+
+
+
+##config_static
+
+
+
+##preference classes
+
+
+
+##entities
+
 
 
 <iframe width="420" height="315" src="https://www.youtube.com/embed/g2QeKQ9yXy0" frameborder="0" allowfullscreen></iframe>
