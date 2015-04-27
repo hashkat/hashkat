@@ -1,5 +1,4 @@
 [hashkat.org](http://hashkat.org)
-
 <span style="color:black; font-family:Georgia; font-size:1.5em;">April 2015 - This site is currently under construction. Please return in the next few months for further updates. </span>
 
 # Input
@@ -11,16 +10,6 @@ The main file through which users will use for input is INFILE.yaml. A default v
 ##analysis
 
 The first section of this program is titled analysis, and it outlines what is the general focus of this simulation. Let's go over what each variable means.
-
-The entities present throughout this simulation correspond to Twitter users on the network.
-The “initial_entities” variable used in this analysis corresponds to the inaugural Twitter users at the start of this operation. A small value for this would be ideal, perhaps when it was just in use by the developers.
-The “max_entities” variable will of course correspond to the maximum number of Twitter users you would expect to have throughout the course of the simulation and for which to allocate. Once the number of entities within the network has grown to this magnitude, the addin$
-The “max_time” will be the maximum length of simulation time you would like this simulation to run for. The simulation will halt once this simulated time has elapsed, though it is important to note that interacting with the simulation will have no impact on the simulati$
-The “max_analysis_steps” !!!!
-The “max_real_time” corresponds to the maximum length of actual clock time you would like this simulation to run for. The simulation will end once this time has elapsed in real time, though it should be noted that, as opposed to the “max_time”, interacting with the simu$
-While the simulation is running, no input from the user is required. However, you do have the choice to implement interactive mode, which will allow user to !!!!!!
-Implementing the variable “enable_lua_hooks” will determine whether or not !!!!
-“lua_Script”!!!!!
 
 ```python
   initial_entities:
@@ -64,54 +53,78 @@ opposed to the simulated time, interacting with the simulation does affect the r
     true
 ```
 
+Inputting *true* into *enable_interactive_mode* allows the user to interact with the simulation while its running. Inputting *false* into this variable prevents this. We will discuss **Interactive Mode** in much further detail later.
+
 ```python
-  enable_lua_hooks: # Defined in same file as interactive_mode. Can slow down simulation considerably.
+  enable_lua_hooks:
     false
 ```
+
+Inputting *true* into *enable_lua_hooks* implements runtime Lua functions that can react to events such as a tweet, a retweet, a follow, etc, while inputting *false* does not. *enable_lua_hooks* is defined in the same file as interactive mode,
+though it should be noted that lua hooks will slow down the simulation immensely.
 
 ```python
   lua_script: # Defines behaviour of interactive mode & lua hooks
     INTERACT.lua
 ```
 
+*lua_script* contains the script in which all the functions able for use interactive mode can be found. It is highly recommended to keep this variable as INTERACT.lua.
+
 ```python
   use_barabasi:
     false
 ```
+
+Input *true* for a preferential model simulation, input *false* otherwise. Will be discussed in greater detail later.
 
 ```python
   use_random_time_increment:
     true
 ```
 
+Input *true* to have time increase by random values modelled by the KMC loop, or input *false* to have the simulation move by constant increments of time. CHoosing either option will not have a major impact on your results.
+
 ```python
   use_followback:
     true
 ```
+
+Inputting *true* will allow entities to follow other entities that follow them, while inputting *false* will prevent this from happening.
 
 ```python
   follow_model: # See notes above
     random
 ```
 
+The *follow_model* determines the manner in which entities choose who to follow. This will definitely definitely be confered in much greater detail later. The input options for follow_model are: *random*, *preferential*, *entity*,
+*preferential-entity*, *hashtag*, and *twitter*.
+
 ```python  
   model_weights: {random: 0.20, preferential: 0.20, entity: 0.20, preferential_entity: 0.20, hashtag: 0.20}
 ```
+
+Only relevant when using the *twitter* follow model. Will be described later.
 
 ```python
   stage1_unfollow:
     false
 ```
 
+Inputting *true* will enable the program to flag entities in which a twitter user is following that are tweeting much more than others. These flagged entities are at risk of being unfollowed by the entity following them later in the simulation.
+
 ```python
   unfollow_tweet_rate:
     10
 ```
 
+
+
 ```python
   use_hashtag_probability:
     1
 ```
+
+The probability of a tweet containing a # from 0 to 1. As we can see in DEFAULT.yaml, the probability of using a # is 1, so every tweet will contain a #.
 
 ##rates
 
