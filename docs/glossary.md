@@ -43,7 +43,7 @@ where u is a random number in the interval 0 < u ≤ 1, and R tot is the sum of 
 **(type: boolean)** If set to true, there may be a follow back prior to a follow. When an entity A follows entity B, if entity B’s followback probability (which can be found in the entities section of the input file) is non-zero,
 then entity B can follow entity A without moving forward in time. This is why it is called a ‘flawed followback’; in reality there would be some time prior to the initial follow where the followback would occur.
 
-####follow model
+####follow_model
 **(type: string)** Currently, there are 6 follow methods implemented in the software; ‘random’, ‘entity’, ‘preferential’, ‘preferential-entity’, ‘hashtag’, and ‘twitter’; to use a follow model simply do
 
 follow_model: random
@@ -83,6 +83,10 @@ If set to 0.5, then half of the tweets will have hashtags. If 1.0, then all of t
 
 ####rates
 **(type: n/a)** This parameter does not need to be changed nor removed. Used to point to the global add rate for the simulation. This defines the global rates part of the input file.
+
+####global_add_rate
+
+
 
 ####add
 **(type: n/a)** This parameter allows one to adjust the rate at which users are being added into the network. To have different numbers of entities, you can adjust the add weights in the entities section of the input file.
@@ -262,6 +266,10 @@ preference class weights: {Pref1: 10, Pref2: 10}
 
 Here the weights for each preference classes are also summed and divided by the sum to generate a probability. These probabilities are used when an entity is created to determine which preference class they use.
 
+####entity_class_weights
+
+
+
 ####ideology_weights
 **(type: n/a)** After declaring ideologies which define a characteristic for an entity, you must set the weights for each ideology in the region section. For more information on ideologies, click here: ideologies.
 Let’s say you have defined ideologies ‘Red’ and ‘Blue’. The correct syntax for setting the weighting of these ideologies is as follows:
@@ -287,7 +295,7 @@ Here the weights for each language are also summed and divided by the sum to gen
 ####config_static
 **(type: n/a)** There are constant values that can be found in ‘config static.h’. Some of the static values can be changed in the input file for simplicity. An example of this is the humour bins described below.
 
-humour_bins
+####humour_bins
 **(type: int)** To determine how a retweet is passed based on humour, there are different values dedicated to each humour bin which describes how a tweet will be passed from entity to entity based on humour.
 The value for each bin is what ever value is set in the preference classes section for ‘humourous’ multiplied by the probability density function.
 
@@ -320,3 +328,120 @@ else: 0.1
 As you can see from above, the entity types declared in the entities section are used in the preference classes. If you also declared an entity type ‘EntityType3’ then that entity type would fall under the ‘else’ set above.
 You can see that the transmission probabilities for all of the entity types are the same.
 
+####different_ideology
+**(type: n/a)** In the entities section, there are different types of tweets that entities can tweet. One of the tweet types is ‘ideological’ which is a tweet related to an entities ideology. When an entity tweets a ideological tweet, the entities that
+follows the entity who tweeted may retweet the tweet depending on the tweet transmission value and density function. An example of the syntax for declaring a ideological tweet preference class is:
+
+preference classes:
+- name: Pref1
+tweet transmission:
+different ideology:
+EntityType1: 0.1
+EntityType2: 0.1
+else: 0.1
+
+As you can see from above, the entity types declared in the entities section are used in the preference classes. If you also declared an entity type ‘EntityType3’ then that entity type would fall under the ‘else’ set above.
+You can see that the transmission probabilities for all of the entity types are the same.
+
+####same_ideology
+**(type: n/a)** In the entities section, there are different types of tweets that entities can tweet. One of the tweet types is ‘ideological’ which is a tweet related to an entities ideology. When an entity tweets a ideological tweet, the entities that follows the
+entity who tweeted may retweet the tweet depending on the tweet transmission value and density function. An example of the syntax for declaring a ideological tweet preference class is:
+
+preference classes:
+- name: Pref1
+tweet transmission:
+same ideology:
+EntityType1: 0.1
+EntityType2: 0.1
+else: 0.1
+
+As you can see from above, the entity types declared in the entities section are used in the preference classes. If you also declared an entity type ‘EntityType3’ then that entity type would fall under the ‘else’ set above.
+You can see that the transmission probabilities for all of the entity types are the same.
+
+####humourous_tweets
+**(type: n/a)** In the entities section, there are different types of tweets that entities can tweet. One of the tweet types is ‘humourous’ which can be thought of as how often they tweet humourous tweets. When an entity tweets a humourous tweet,
+the entities that follows the entity who tweeted may retweet the tweet depending on the tweet transmission value and density function. An example of the syntax for declaring a ideological tweet preference class is:
+
+preference classes:
+- name: Pref1
+tweet transmission:
+humourous:
+EntityType1: 0.1
+EntityType2: 0.1
+else: 0.1
+
+As you can see from above, the entity types declared in the entities section are used in the preference classes. If you also declared an entity type ‘EntityType3’ then that entity type would fall under the ‘else’ set above.
+You can see that the transmission probabilities for all of the entity types are the same.
+
+####follow_reaction_prob
+**(type: double)** If an entity is selected to act on a retweet and they are not following the original tweeter, then they can either retweet the retweet or follow the original tweeter. This probability set here (from 0 to 1) describes how often
+an entity would follow rather than retweeting the retweet. They need to be set for every preference class. An example is below:
+
+preference classes:
+- name: Pref1
+follow reaction prob: 0.5
+
+This probability set above would allow for half follows and half retweeted retweets.
+
+####entities
+**(type: n/a)** This variable should never be removed from the input file. This allows the code to read in all of the different entities declared. One can declare as many different
+entities as one wants, just be sure to properly declare all of the variables covered below.
+
+####name
+**(type: string)** The names of entities is preference; they can be anything one wants. The entities included in the software are Standard, Celebrity, Bot, and Organization.
+
+####weights
+**(type: n/a)** This variable allows the code to read in the add and follow variables for each entity. This should always be declared in the input file for every entity.
+
+####add
+**(type: double/float)** This variable declares the percentage of the certain entity type in the network. Before the simulation is done, a loop is placed over all the different entities declared, and the add variables are summed. The value of add
+declared in each entity type will then be divided by the add sum. For example if entity type A has an add value of 75, and entity type B has an add value of 25, then the network will consist of 75% of entity type A, and 25% of entity type B.
+
+####follow
+**(type: double/float)** This variable sets the weights for following each entity type. Like the add variable, these weights are summed, and then each follow variable is divided by the total. This variable is not used if the follow model is
+random or preferential, but is used for the other models. For example if entity type A has a follow variable of 85, and entity type B has a follow variable of 15, then
+entity type A will be followed 85% of the time, and entity type B will be followed 15% of the time.
+
+####tweet_type
+**(type: double)** When an entity tweets they can be different types of tweets they have. These tweet types are incorporated with the preference classes for retweeting.
+There are four different tweet types currently implemented and they are ‘ideological’, ‘plain’, ‘musical’, and ‘humourous’. The weights associated with each tweet type can also be set along with the tweet type. These weights can be different for each entity type and
+the weights are summed and each weight is divided by the sum to produce a probability for generating each tweet type. An example of how to set the tweet types is below:
+
+entities:
+- name: EntityType1
+weights:
+tweet type:
+ideological: 1.0
+plain: 1.0
+musical: 1.0
+humourous: 1.0
+
+From above you can see that all of the weights are the same and therefore there would be the same amount of each tweet type for EntityType1.
+
+####followback_probability
+**(type: double)** This determines the probability that the entity type will follow another entity back using the use flawed followback method.
+
+####hashtag_follow_options
+**(type: n/a)** When entities tweet in the network, they can also attach hashtags to their tweets. When they do attach hashtags, they are binned according to their ideology and region. If another entity searches for a hashtag based on
+their characteristics, they can follow entities with a specific ideology or location. They can either follow entities that have the same ideology and region as them or just ideology and different region. An example of these options is below:
+
+entities:
+- name: EntityType1
+hashtag follow options:
+care about region: true
+care about ideology: true
+
+From this example, the EntityType1 will only follow other entities that have the same ideology and region because they care about the region and ideology for the hashtag
+follow method. If both are set to false, then the EntityType1 will follow entities with any ideology from any location.
+
+####rates
+**(type: n/a)** Every entity must have rates set for tweeting and following. These rates will be updated after a month passes by in the simulation; as mentioned previously
+the number of months in the simulation are determined by a constant value defined for a month = 30 · 60 · 24.
+
+####follow
+**(type: n/a)** Like the function parameter to add entities into the network, the functions that can be set for the follow rate are ‘constant’ and ‘linear’. The
+usage for defining the follow rate is the exact same as the entity add rate. See link for further implementation details.
+
+####tweet
+**(type: n/a)** Again, like the function parameter to add entities into the network, the functions that can be set for the tweet rate are ‘constant’ and ‘linear’.
+The usage for defining the tweet rate is the exact same as the entity add rate. See link for further implementation details.
