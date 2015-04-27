@@ -118,7 +118,7 @@ unfollow_tweet_rate:
   10
 ```
 
-
+The *unfollow_tweet_rate* is an integer by which, if the number of tweets by an entity exceeds this value, will cause this entitity to randomly lose one of its followers.
 
 ```python
 use_hashtag_probability:
