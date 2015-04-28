@@ -290,6 +290,8 @@ humour_bins: 2
 
 ## preference classes
 
+<iframe width="560" height="315" src="https://www.youtube.com/embed/Sx0U1Fy5Bbo" frameborder="0" allowfullscreen></iframe>
+
 ```python
 - name: StandardPref
 
@@ -319,6 +321,8 @@ Under *tweet_transmissions* one can dictate the probabilities that each type of 
 The *follow_reaction_prob* relates to the probability that an entity will follow another user after seeing one of their tweets retweeted by an twitter user that that entity is following.   
 
 ## entities
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/w_BVsSwb7cw" frameborder="0" allowfullscreen></iframe>
 
 ```python
 - name: Standard
