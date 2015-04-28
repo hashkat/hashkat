@@ -65,7 +65,7 @@ Inputting *true* into *enable_lua_hooks* implements runtime Lua functions that c
 though it should be noted that lua hooks will slow down the simulation immensely.
 
 ```python
-lua_script: # Defines behaviour of interactive mode & lua hooks
+lua_script:
   INTERACT.lua
 ```
 
@@ -93,7 +93,7 @@ use_followback:
 Inputting *true* into *use_followback* will allow entities to follow other entities that follow them, while inputting *false* will prevent this from happening.
 
 ```python
-follow_model: # See notes above
+follow_model:
   random
 ```
 
@@ -152,9 +152,9 @@ output:
     false
   load_network_on_startup:
     false
-  ignore_load_config_check: # Whether to allow loading configuration with mismatching configuration (generally OK)
+  ignore_load_config_check:
     false
-  save_file: # File to save to, and load from
+  save_file:
     network_state.sav
   stdout_basic:
     true
@@ -289,10 +289,8 @@ humour_bins: 2
 ```python
 - name: StandardPref
 
-  # Determines the probability that a tweet is reacted to by this
-  # preference class:
    tweet_transmission:
-      plain: # Also applies to musical tweets
+      plain:
         Standard: 0
         Celebrity: 0
         else: 0
@@ -308,9 +306,6 @@ humour_bins: 2
         Standard: 0.0
         Celebrity: 0.0
         else: 0.0
-   # Probability that we will follow as a reaction.
-   # Only applies to 2nd generation retweets, otherwise
-   # the entity would already be a follower.
    follow_reaction_prob:
       0.5
 ```
@@ -324,24 +319,19 @@ The *follow_reaction_prob* relates to the probability that an entity will follow
 ```python
 - name: Standard
     weights:
-      # Weight with which this entity is created
       add: 80
-      # Weight with which this entity is followed in entity follow
       follow: 5
       tweet_type:
         ideological: 1.0
         plain: 1.0
         musical: 1.0
-        humourous: 1.0 # Can be considered the humourousness of the entity type
-    # Probability that following this entity results in a follow-back
+        humourous: 1.0
     followback_probability: 44
     hashtag_follow_options:
-      care_about_region: true # does the entity care about where the entity they will follow is from?
-      care_about_ideology: false # does the entiy care about which ideology the entity has?
+      care_about_region: true
+      care_about_ideology: false
     rates:
-        # Rate for follows from this entity:
         follow: {function: constant, value: 0.1}
-        # Rate for tweets from this entity:
         tweet: {function: constant, value: 0.01}
 ```
 
