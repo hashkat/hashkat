@@ -256,7 +256,8 @@ density_function:
   - name: Blue
 ```
 
-
+The *ideologies* are the arbitrary dogma that you would like entities of that ideology to have. They can be named whatever you would like, and can be as numerous as you would like as well, though their quantity must be equal or less than the number of
+N_BIN_IDEOLOGIES specified in config_static.h. 
 
 ## regions
 
@@ -314,7 +315,9 @@ humour_bins: 2
       0.5
 ```
 
-
+The *preference classes* are the traits of an entity that influence whether or not that entity will retweet the tweet of another user. The four possible types of tweets are plain tweets, music-related tweets, ideological tweets, and humourous tweets.
+Under *tweet_transmissions* one can dictate the probabilities that each type of entity will retweet a tweet, based on the content of that tweet, whether it be plain or musical, have a different ideology, have the same ideology, or be humourous.
+The *follow_reaction_prob* relates to the probability that an entity will follow another user after seeing one of their tweets retweeted by an twitter user that that entity is following.   
 
 ## entities
 
@@ -342,7 +345,10 @@ humour_bins: 2
         tweet: {function: constant, value: 0.01}
 ```
 
-
+In this section one can identify the types of entities with which to include in their simulation. Under weights we can see *add* which correlates to the probability that the type of entity will be the one added to the network,
+weighted againts the other types of entities. The value inputted into *follow* will be the probability, weighted against the other entity types, in which this entity is followed in the entity follow model by other entities.
+*tweet_type* summarizes the weighted probabilities that the content of an entity of this type's tweet will be ideological, plain, musical, or humourous. The *follow_back* probability is the probability that following an entity of this type
+will result in that entity following you back.!!!!!!!!!!  
 
 <iframe width="420" height="315" src="https://www.youtube.com/embed/g2QeKQ9yXy0" frameborder="0" allowfullscreen></iframe>
 
