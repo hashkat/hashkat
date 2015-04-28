@@ -131,6 +131,8 @@ The probability of a tweet containing a # from 0 to 1. As we can see in DEFAULT.
 
 ##rates
 
+<iframe width="560" height="315" src="https://www.youtube.com/embed/_NNOtwrPTg0" frameborder="0" allowfullscreen></iframe>
+
 ```python
 rates:
   add: {function: constant, value: 0.0}
@@ -141,7 +143,7 @@ number of entities you wish to add per minute must inputted into *value*. This n
 
 ```python
 rates:
-  add: {function: constant, y_intercept: 1.0, slope: 0.1}
+  add: {function: linear, y_intercept: 1.0, slope: 0.1}
 ```
 
 where the y-intercept is the initial arbitrary value of entities added to the network and the slope, multipled by the number of simulated months that have elapsed within the simulation, is the value by which the y-intercept is increased by. 
@@ -341,8 +343,6 @@ In this section one can identify the types of entities with which to include in 
 weighted againts the other types of entities. The value inputted into *follow* will be the probability, weighted against the other entity types, in which this entity is followed in the entity follow model by other entities.
 *tweet_type* summarizes the weighted probabilities that the content of an entity of this type's tweet will be ideological, plain, musical, or humourous. The *follow_back* probability is the probability that following an entity of this type
 will result in that entity following you back.!!!!!!!!!!  
-
-<iframe width="420" height="315" src="https://www.youtube.com/embed/g2QeKQ9yXy0" frameborder="0" allowfullscreen></iframe>
 
 ## Commands
 
