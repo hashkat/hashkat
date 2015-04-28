@@ -270,7 +270,10 @@ density_function:
     language_weights: {English: 50, French: 25, French+English: 25}
 ```
 
-
+This sections outlines the regions in which you would like your entities to be located. You can have as many as you want, though it is important to remember that the number of remember that the number of regions must be equal or less than the value of 
+N_BIN_REGIONS in config_static.h. *add_weight* corresponds to the probability that the entity added to the network is from that region, and is weighted with respect to those of the other inputted regions. The *entity_class_weights* corresponds to !!!!!!!!!!!!
+The *ideology_weights* are the possible ideologies that an entity from that region can have, and are weighted with respect to one another. Similar to the *ideology_weights*, the *language_weights* are the possible languages that an entity from that region can speak,
+and are also weighted with respect to each other.
 
 ## config_static
 
