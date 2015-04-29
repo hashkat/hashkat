@@ -4,10 +4,11 @@
 
 # Getting Started
 
-## What is Twitter?
-
-## What is the Barabasi-Albert Model?
+## What is Social Network?
 
 ## What is the Kinetic Monte Carlo (KMC) Method?
 
+##Running a Simple Network
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/-NQmVRzHX44" frameborder="0" allowfullscreen></iframe>
 
