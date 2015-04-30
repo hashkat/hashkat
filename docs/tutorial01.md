@@ -53,7 +53,21 @@ it is only necessary to know that we have a constant number of entities
 or users in this network, 10,000, and that the simulation will run for 10,000
 simulated minutes and a maximum of 1 minute real time.
 
-To run this simulation, . You can press 'ctrl-c' at any time to stop the
+To run this simulation, you must first enter the .bashrc file. This can be
+done by typing in the command `nano ~/.bashrc`. Once inside this file,
+assuming you have hashkat at the top of your home directory, you must type in:
+
+export HASHKAT=~/hashkat
+
+export PATH=$PATH:$HASHKAT/build/src
+
+export PATH=$PATH:$HASHKAT
+
+Exit this file, and then type in the command - `source ~/.bashrc`. You can now
+run hashkat in any directory, as long as it as 'INFILE.yaml' within in it.
+Whenever, you'd like to run the simulation, simply type in the command - 
+`hashkat_pre.py`, and then type in the command `hashkat`. 
+You can press 'ctrl-c' at any time to stop the
 simulation and save your data. Running the simulation again will result in
 it continuing from the point where it halted.
 
