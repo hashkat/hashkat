@@ -1,3 +1,10 @@
+### To build #k@
+
+./run.sh -O --build
+
+This will build #k@ and optimized version of #k@ (if you omit the -O, it will generate a debug version of the code)
+
+
 To install kOSN, you will need to have the following:
 
 - cmake (probably available through your friendly neighbourhood package manager)
