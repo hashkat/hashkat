@@ -53,6 +53,10 @@ it is only necessary to know that we have a constant number of entities
 or users in this network, 10,000, and that the simulation will run for 10,000
 simulated minutes and a maximum of 1 minute real time.
 
+To run this simulation, . You can press 'ctrl-c' at any time to stop the
+simulation and save your data. Running the simulation again will result in
+it continuing from the point where it halted.
+
 When running this program, you will see something similar to this
 outputted to the screen:
 
@@ -61,10 +65,38 @@ Time | Users | Follows | Tweets | Retweets | Unfollows | R | Time (s)
 9.04e+03 | 1.00e+04 | 9.00e+04 | 0.00e+00 | 0.00e+00(0.00e+00) | 0.00e+00 | 1.00e+01 | 4.86e-01
 
 This gives a list of data at a particular point in your simulation.
-**Time** corresponds to simulation time, **Users** corresponds to the number
+**Time** corresponds to simulation timein minutes, **Users** corresponds to the number
 of users or entities in the network at the point in the simulation, 
 **Follows** show the number of follows that have occurred, **Tweets** displays
 the number of tweets that have been made, **Retweets** shows the number of
 retweets, **Unfollows** displays the number of unfollows, **R** is the
 cumulative rate function, and **Time (s)**which is the length of real time
 that this part of the simulation has occurred.
+
+So as we can see from the above example, at a simulated time of 9,040 minutes,
+there were 10,000 users in the network, 90,000 follows, 0 tweets, 0
+retweets, and 0 unfollows had occurred, the cumulative rate function was 10,
+and the real time that had elapsed was 0.486 seconds.
+
+Once the simulation has concluded, the amount of time that the total analysis
+took will be displayed on the screen in milliseconds, just below a chart
+similar to this:
+
+| | 0 | 1 | 2
+--- | --- | --- | ---
+**0** | 5.01e+01% | 4.99e+01% | 0.00e+00%
+**1** | 4.99e+01% | 5.01e+01% | 0.00e+00% 
+**2** | nan% | nan% | nan% 
+
+Though this will be elaborated on in greater detail later on, what this
+entails is the connections between regions. In the first row, we have the
+different regions, regions 0, region 1, and region 2. In the second row,
+we have the percentage of follows by users in region 0 that follow users in
+other regions. As we can see from the above example, 50.1% of the follows
+by users in region 0 follow users from region 0, 49.9% of those follows
+follow users in region 1, and 0.00% of those follows follow users in region 2.
+Similar conclusions can be made for the following rows. *nan* stands for not
+a number. Since users from region 2 were not added into the simulation, there
+is not a number for the percentage of their follows that follow users from
+other regions, and 0.00% of the follows from any region are following them. 
+
