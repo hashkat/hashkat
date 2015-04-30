@@ -195,10 +195,6 @@ struct AnalyzerFollow {
                // pull a random entity from whatever bin we landed in and break so we do not continue this loop
                int entity_to_follow = C.entities[rng.rand_int(C.entities.size())];
                Entity& try_entity = network[entity_to_follow];
-               if (try_entity.language != e.language) {
-                   return -1;
-               }
-
                RECORD_STAT(state, e.entity_type, n_preferential_follows);
                return entity_to_follow;
            }
@@ -406,7 +402,7 @@ struct AnalyzerFollow {
         }
 
         // check and make sure we are not following ourself, or we are following entity -1
-        if (LIKELY(id_follower != entity_to_follow && entity_to_follow != -1)) {
+        if (LIKELY(id_follower != entity_to_follow && entity_to_follow != -1) && (e.language == network[entity_to_follow].language)) {
 
             perf_timer_begin("AnalyzerFollower.follow_entity(handle_follow)");
             // point to the entity who is being followed
