@@ -32,7 +32,7 @@ and time will move forward by:
 
 &Delta;t = ln(1/x) / **R**
 
-All of the rate functions will then be realibrated to their new values and
+All of the rate functions will then be recalibrated to their new values and
 this cycle will repeat until either the maximum simulation time or real time
 has been reached.
 
@@ -100,3 +100,12 @@ a number. Since users from region 2 were not added into the simulation, there
 is not a number for the percentage of their follows that follow users from
 other regions, and 0.00% of the follows from any region are following them. 
 
+Looking into the hashkat directory, you will see a 'DATA_vs_TIME' file, which
+contains the number of follows, tweets, the cumulative function, etc for
+various simulation times as discussed above. You will also see a
+'network_state.sav' file which is where your simulation data will be saved to.
+There is also the 'output' directory, which contains all the data you've
+accummulated through simulation necessary for analysis. We shall discuss
+these files below.
+
+##Output of a Simple Network
