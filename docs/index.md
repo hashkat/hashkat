@@ -8,5 +8,5 @@
 
 [hashkat.org](http://hashkat.org)
 
-For full documentation visit [mkdocs.org](http://mkdocs.org).
+
 
