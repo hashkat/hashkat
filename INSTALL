@@ -4,6 +4,20 @@
 
 This will build #k@ and optimized version of #k@ (if you omit the -O, it will generate a debug version of the code)
 
+You will need to set the following environment variable
+
+export HASHKAT=/path/to/hashkat
+
+for example
+
+export HASHKAT=~/git/hashkat
+
+(not there is no trailing /)
+
+you should also add the following directories to your PATH
+
+export PATH=$PATH:$HASHKAT/build/src
+export PATH=$PATH:$HASHKAT
 
 To install kOSN, you will need to have the following:
 

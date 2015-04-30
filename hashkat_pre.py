@@ -30,6 +30,7 @@ unlimited = 2L**53
 
 import yaml
 import sys
+import os 
 
 from pprint import pprint
 from math import *
@@ -42,7 +43,8 @@ def get_var_arg(test, default_val):
     return default_val
 
 INPUT_FILE_NAME = get_var_arg("--input", "INFILE.yaml")
-DEFAULT_FILE_NAME = "DEFAULT.yaml"
+
+DEFAULT_FILE_NAME = os.environ['HASHKAT'] + "/DEFAULT.yaml"
 
 print("hashkat_pre.py -- Loading defaults from " + DEFAULT_FILE_NAME)
 print("hashkat_pre.py -- Generating rates for " + INPUT_FILE_NAME)
