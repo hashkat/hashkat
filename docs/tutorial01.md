@@ -12,7 +12,16 @@ through implementation of the Kinetic Monte Carlo Method.
 
 ## What is the Kinetic Monte Carlo (KMC) Method?
 
+The Kinetic Monte Carlo (KMC) Method carries out a simulation where the rate
+of which time is increased by is influenced by the cummulative rate function
+of the rates within the system.
 
+For the #k@ project, we have **R**, which is our cummulative rate function,
+which is the sum of the user add rate, tweet rate, follow rate, retweet rate.  
+At a simulated time of 0, a random number is generated. Depending on this
+number's value, it will either cause a user to be added into the network,
+a random user to tweet, a random user to follow another random user, or a
+random user to retweet a tweet from another user.
 
 ##Running a Simple Network
 
@@ -44,6 +53,5 @@ of users or entities in the network at the point in the simulation,
 **Follows** show the number of follows that have occurred, **Tweets** displays
 the number of tweets that have been made, **Retweets** shows the number of
 retweets, **Unfollows** displays the number of unfollows, **R** is the
-cumulative rate function, which is the sum of all the rates, the add rate,
-tweet rate, follow rate, and retweet rate, in the system, and **Time (s)**
-which is the length of real time that this part of the simulation has occurred.
+cumulative rate function, and **Time (s)**which is the length of real time
+that this part of the simulation has occurred.
