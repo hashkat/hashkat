@@ -461,10 +461,6 @@ static void check_integrity(const char* desc, const char* var, int limit, int va
 }
 // Does the configuration violate compile-time bounds?
 static void check_configuration_integrity(ParsedConfig& config) {
-    *((int*) (&N_BIN_PREFERENCE_CLASS)) = config.pref_classes.size();
-    *((int*)(&N_BIN_ENTITY_TYPES)) = config.entity_types.size();
-    *((int*)(&N_BIN_REGIONS)) = config.regions.regions.size();
-    *((int*)(&N_BIN_IDEOLOGIES)) = config.ideologies.size();
     // These will always be true
     check_integrity("Number of preference classes",
             "N_BIN_PREFERENCE_CLASS", N_BIN_PREFERENCE_CLASS, config.pref_classes.size());
