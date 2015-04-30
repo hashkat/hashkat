@@ -44,6 +44,7 @@ def get_var_arg(test, default_val):
 
 INPUT_FILE_NAME = get_var_arg("--input", "INFILE.yaml")
 
+# this environment variable needs to be set by the user ahead of time
 DEFAULT_FILE_NAME = os.environ['HASHKAT'] + "/DEFAULT.yaml"
 
 print("hashkat_pre.py -- Loading defaults from " + DEFAULT_FILE_NAME)
@@ -311,5 +312,8 @@ for val in "max_analysis_steps", "max_time", "max_real_time", "max_entities", "i
         CONFIG["analysis"][val] = eval(CONFIG["analysis"][val])
 
 yaml.dump(CONFIG, open(INPUT_FILE_NAME + "-generated", "w"))
+
+os.mkdir('output')
+
 
 print("hashkat_pre.py -- Done generating rates")
