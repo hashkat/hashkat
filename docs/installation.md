@@ -31,7 +31,7 @@ sudo pip install networkx
 
 Here outlines the following steps to install #k@ on Linux:
 
-1. Download the latest build of #k# at [hashkat.org](http://hashkat.org)
+1. Download the latest build of #k@ at [hashkat.org](http://hashkat.org)
 2. Enter a terminal and go into your downloads directory by typing in the following command and pressing 'Enter' - `cd Downloads`
 3. To see the list of files in your Downloads directory, type into the command line - `ls`
 4. Amongst your various other downloads you should se the following - 'hashKAT.2015.03.25.tar.gz`
@@ -39,3 +39,15 @@ Here outlines the following steps to install #k@ on Linux:
 6. Once this is completed, look into the list of files in this directory and you will see amngst them - `hashKAT`
 7. Go into this directory by typing in the command - `cd hashKAT`
 8. Once in this directory, you can see the list of all the files and directories that compose the #k@ project.
+9. To run the simulation, type in the command - `./run.sh`.
+10. The simulation may not run due to the lack of several necessary packages.
+These packages can be installed into your computer inthe following manner:
+
+    * cmake - `sudo apt-get install cmake`
+    * python - `sudo apt-get install python`
+    * yaml - `pip install pyyaml`
+    * scipy - `pip install scipy`
+    * numpy - `pip install numpy`
+
+11. It is also recommended to download and install gpehi from their website
+to use for visualization of collected data - [gephi.github.io](http://gephi.github.io/)
