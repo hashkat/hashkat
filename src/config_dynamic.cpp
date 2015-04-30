@@ -70,8 +70,8 @@ static FollowModel parse_follow_model(const Node& node) {
         return PREFERENTIAL_ENTITY_FOLLOW;
     } else if (follow_model == "hashtag") {
         return HASHTAG_FOLLOW;
-    } else if (follow_model == "referral") {
-        return REFERRAL_FOLLOW;
+    } else if (follow_model == "suggest") {
+        return SUGGEST_FOLLOW;
     } else if (follow_model == "twitter" ) {
         return TWITTER_FOLLOW;
     } else {
@@ -139,7 +139,7 @@ static vector<double> parse_follow_weights(const Node& node) {
     parse(node, "entity", weights[2]);
     parse(node, "preferential_entity", weights[3]);
     parse(node, "hashtag", weights[4]);
-    parse(node, "referral", weights[5]);
+    parse(node, "suggest", weights[5]);
     double weight_sum = 0;
     for (auto& w : weights) {
         weight_sum += w;
@@ -461,6 +461,11 @@ static void check_integrity(const char* desc, const char* var, int limit, int va
 }
 // Does the configuration violate compile-time bounds?
 static void check_configuration_integrity(ParsedConfig& config) {
+    *((int*) (&N_BIN_PREFERENCE_CLASS)) = config.pref_classes.size();
+    *((int*)(&N_BIN_ENTITY_TYPES)) = config.entity_types.size();
+    *((int*)(&N_BIN_REGIONS)) = config.regions.regions.size();
+    *((int*)(&N_BIN_IDEOLOGIES)) = config.ideologies.size();
+    // These will always be true
     check_integrity("Number of preference classes",
             "N_BIN_PREFERENCE_CLASS", N_BIN_PREFERENCE_CLASS, config.pref_classes.size());
     check_integrity("Number of entity types",

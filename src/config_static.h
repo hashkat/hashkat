@@ -91,12 +91,13 @@ const int STDOUT_OUTPUT_RATE = 10000; // Once per X file outputs
  */
 
 const int N_BIN_HUMOUR = 2; // Should be exactly as in INFILE.yaml!
-
-// NOTE WELL: The below limits should be respected by your INFILE.yaml!!
-const int N_BIN_PREFERENCE_CLASS = 2;
-const int N_BIN_ENTITY_TYPES = 50;
-const int N_BIN_REGIONS = 3;
-const int N_BIN_IDEOLOGIES = 4;
-
 const int N_FOLLOW_MODELS = 6;
+
+// NOTE: these are being reset in the config_dynamic with pointers
+const int N_BIN_PREFERENCE_CLASS = 1;
+const int N_BIN_ENTITY_TYPES = 1;
+const int N_BIN_REGIONS = 1;
+const int N_BIN_IDEOLOGIES = 1;
+
+
 #endif

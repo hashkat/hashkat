@@ -166,7 +166,7 @@ struct AnalyzerFollow {
        }
        return -1;
    }
-   int referral_follow_method(Entity& e,double time_of_follow) {
+   int suggest_follow_method(Entity& e,double time_of_follow) {
        PERF_TIMER();
 
        int referral_bin = (time_of_follow - e.creation_time ) / (double) APPROX_MONTH;
@@ -353,7 +353,7 @@ struct AnalyzerFollow {
        } else if (follow_method == 4) {
            return hashtag_follow_method(e);
        } else {
-           return referral_follow_method(e, time_of_follow);
+           return suggest_follow_method(e, time_of_follow);
        }
        return -1;
     }
@@ -387,9 +387,9 @@ struct AnalyzerFollow {
         } else if (config.follow_model == HASHTAG_FOLLOW) {
             entity_to_follow = hashtag_follow_method(e);
             follow_method = HASHTAG_FOLLOW;
-        } else if (config.follow_model == REFERRAL_FOLLOW) {
-            entity_to_follow = referral_follow_method(e, time_of_follow);
-            follow_method = REFERRAL_FOLLOW;
+        } else if (config.follow_model == SUGGEST_FOLLOW) {
+            entity_to_follow = suggest_follow_method(e, time_of_follow);
+            follow_method = SUGGEST_FOLLOW;
         }
         // if the stage1_follow is set to true in the inputfile
         if (config.stage1_unfollow) {
