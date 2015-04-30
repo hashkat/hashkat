@@ -1,6 +1,6 @@
 [hashkat.org](http://hashkat.org)
 
-<span style="color:black; font-family:Georgia; font-size:1.5em;">April 2015 - This site is currently under construction. Please return in the next few months for further updates. </span>
+<span style="color:black; font-family:Georgia; font-size:1.5em;">April 2015 - This site is currently under construction. Please return regularly over the course of the summer for further updates. </span>
 
 The #k@ project is compatible with both Mac (OS X) and Linux. To run this project on either operating system, you will need the following:
 
