@@ -44,8 +44,8 @@ def get_var_arg(test, default_val):
 INPUT_FILE_NAME = get_var_arg("--input", "INFILE.yaml")
 DEFAULT_FILE_NAME = "DEFAULT.yaml"
 
-print("INFILE.py -- Loading defaults from " + DEFAULT_FILE_NAME)
-print("INFILE.py -- Generating rates for " + INPUT_FILE_NAME)
+print("hashkat_pre.py -- Loading defaults from " + DEFAULT_FILE_NAME)
+print("hashkat_pre.py -- Generating rates for " + INPUT_FILE_NAME)
 
 #################################################################
 # Load the relevant pieces of the config.
@@ -310,4 +310,4 @@ for val in "max_analysis_steps", "max_time", "max_real_time", "max_entities", "i
 
 yaml.dump(CONFIG, open(INPUT_FILE_NAME + "-generated", "w"))
 
-print("INFILE.py -- Done generating rates")
+print("hashkat_pre.py -- Done generating rates")
