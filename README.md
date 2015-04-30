@@ -16,3 +16,6 @@ This is open-source software for generating kinetic complex networks. The events
         |    DOCUMENTATION.                           |
          ---------------------------------------------
 
+
+[![Documentation Status](https://readthedocs.org/projects/hashkat/badge/?version=latest)](https://readthedocs.org/projects/hashkat/?badge=latest)
+
