@@ -313,7 +313,10 @@ for val in "max_analysis_steps", "max_time", "max_real_time", "max_entities", "i
 
 yaml.dump(CONFIG, open(INPUT_FILE_NAME + "-generated", "w"))
 
-os.mkdir('output')
-
+try:
+    os.mkdir('output')
+    print("hashkat_pre.py -- Created an output directory")
+except OSError:
+    print "hashkat_pre.py -- An output directory already exists, leaving it intact"
 
 print("hashkat_pre.py -- Done generating rates")
