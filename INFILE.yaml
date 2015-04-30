@@ -223,7 +223,7 @@ regions:
     preference_class_weights: {StandardPref: 100}
     entity_class_weights: {Standard: 100}
     ideology_weights: {Red: 100, Blue: 100, Green: 100, Orange: 100}
-    language_weights: {English: 60, French: 10, Spanish: 0, French+English: 30}
+    language_weights: {English: 60, French: 0, Spanish: 0, French+English: 0}
 
   - name: Quebec
     add_weight: 5
@@ -231,7 +231,7 @@ regions:
     #Inherited:
     preference_class_weights: {StandardPref: 100}
     entity_class_weights: {Standard: 100}
-    language_weights: {English: 10, French: 40, Spanish: 0, French+English: 50}
+    language_weights: {English: 0, French: 40, Spanish: 0, French+English: 0}
     ideology_weights: {Red: 100, Blue: 100, Green: 100, Orange: 100}
     
   - name: Mexico

@@ -39,9 +39,9 @@
 
 analysis:
   initial_entities:
-    10000  # start out from something small, could be when only the developers were online.
+    10  # start out from something small, could be when only the developers were online.
   max_entities: 
-    10000     # 1 million max users
+    100000     # 1 million max users
   max_time: 
     100000
   max_analysis_steps: 
@@ -55,9 +55,9 @@ analysis:
   lua_script: # Defines behaviour of interactive mode & lua hooks
     INTERACT.lua
   use_barabasi: 
-    false 
+    true 
   barabasi_connections: # number of connections we want to make when use_barabasi == true
-    100
+    1
   barabasi_exponent:
     1
   use_random_time_increment: 
@@ -65,7 +65,7 @@ analysis:
   use_followback: 
     false        # followback turned on, from literature it makes sense for a realistic system
   follow_model: # See notes above
-    random
+    preferential
   # model weights ONLY necessary for follow method 'twitter'  
   # educated guesses for the follow models  
   model_weights: {random: 0.0, preferential: 1.0, entity: 0.0, preferential_entity: 0.0, hashtag: 0.0, suggest: 0.0}
@@ -84,7 +84,7 @@ analysis:
 #################################################################
 
 rates:
-  add: {function: constant, value: 0.0}  # found from experiment
+  add: {function: constant, value: 1.0}  # found from experiment
 
 #################################################################
 # >> output:
@@ -133,8 +133,8 @@ tweet_ranks:
 retweet_ranks:
   thresholds: {bin_spacing: linear, min: 10, max: 300, increment: 10}
 follow_ranks:
-  thresholds: {bin_spacing: linear, min: 0, max: 540000, increment: 1}    # for preferential following
-  weights:    {bin_spacing: linear, min: 1, max: 540001, increment: 1}
+  thresholds: {bin_spacing: linear, min: 0, max: 10000, increment: 1}    # for preferential following
+  weights:    {bin_spacing: linear, min: 1, max: 10001, increment: 1}
 
 #################################################################
 # >> tweet_observation: 
@@ -349,6 +349,6 @@ entities:
       care_about_ideology: false # does the entiy care about which ideology the entity has?
     rates: 
         # Rate for follows from this entity:
-        follow: {function: constant, value: 0.001}
+        follow: {function: constant, value: 0.0}
         # Rate for tweets from this entity:
         tweet: {function: constant, value: 0.0}   #0.000256944444444 0.37 per day

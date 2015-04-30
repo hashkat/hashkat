@@ -3,21 +3,26 @@
 # >> analysis:
 #
 # Attributes for controlling the duration and type of analysis.
-#
+#  initial_entities:
+#    The initial entity amount to create.
 #  max_entities: 
 #    The maximum amount of entities for which to allocate. Once the network
 #    has grown to this amount, the entity add rate will artifically drop to 0.
-#    AD: TEMPORARY NOTE Simulation no longer halts at 'max_entities'.
 #  max_time:
 #    The maximum simulation-time for the simulation. Once it has elapsed, the simulation halts.
 #    Interacting with the simulation does not alter the simulation-time.
+#    In seconds.
 #  max_real_time:
 #    The maximum real-time for the simulation. Once it has elapsed, the simulation halts.
 #    Note that interacting with the simulation DOES detract from this time.
-#  initial_entities:
-#    The initial entity amount to create.
+#    In seconds.
 #  enable_interactive_mode:
 #    Whether interactive mode should be triggered by Ctrl+C or ./scripts/stop.sh (triggers SIGUSR1).
+#  enable_lua_hooks:
+#    Whether to use runtime Lua functions that can react to events. **Slow!**
+#    Hooks are availble for running on every tweet, retweet, follow, etc.
+#  lua_script:
+#    Script to use to define the behaviour of interactive mode as well as lua hooks.
 #  use_barabasi: 
 #    If true, the global follow rate is ignored. Follow thresholds not needed.
 #  use_random_time_increment: 
@@ -34,32 +39,43 @@
 
 analysis:
   initial_entities:
-    20
+    10  # start out from something small, could be when only the developers were online.
   max_entities: 
-    100001
+    10000     # 1 million max users
   max_time: 
-    hour
+    100000
+  max_analysis_steps: 
+    unlimited
   max_real_time: 
-    hour
+    240*hour*5        # 10 days         
   enable_interactive_mode:
-    true
+    false
+  enable_lua_hooks: # Defined in same file as interactive_mode. Can slow down simulation considerably.
+    false
+  lua_script: # Defines behaviour of interactive mode & lua hooks
+    INTERACT.lua
   use_barabasi: 
     false 
+  barabasi_connections: # number of connections we want to make when use_barabasi == true
+    100
+  barabasi_exponent:
+    1
   use_random_time_increment: 
     true
   use_followback: 
-    false
+    false        # followback turned on, from literature it makes sense for a realistic system
   follow_model: # See notes above
     hashtag
-  # model weights ONLY necessary for follow method 'twitter'    
-  model_weights: {random: 0.20, preferential: 0.20, entity: 0.20, preferential_entity: 0.20, hashtag: 0.20}
+  # model weights ONLY necessary for follow method 'twitter'  
+  # educated guesses for the follow models  
+  model_weights: {random: 0.0, preferential: 1.0, entity: 0.0, preferential_entity: 0.0, hashtag: 0.0, suggest: 0.0}
   
   stage1_unfollow: 
     false
   unfollow_tweet_rate: 
-    10
+    100
   use_hashtag_probability:
-    1
+    0.5    # 50 % chance of using a hashtag
 
 #################################################################
 # >> rates:
@@ -68,7 +84,7 @@ analysis:
 #################################################################
 
 rates:
-  add: {function: constant, value: 123.7}
+  add: {function: constant, value: 1.0} 
 
 #################################################################
 # >> output:
@@ -79,27 +95,29 @@ rates:
 
 output:
   save_network_on_timeout: 
-    false
+    true
   load_network_on_startup:
-    false
-  ignore_load_config_check: # Whether to abort loading configuration because of (strictly) mismatching configuration
-    false
+    true
+  ignore_load_config_check: # Whether to allow loading configuration with mismatching configuration (generally OK)    
+    true
   save_file: # File to save to, and load from
     network_state.sav
   stdout_basic: 
     true
   stdout_summary: 
     true
+  summary_output_rate: 
+    10000
   visualize: 
-    true
+    false
   verbose: 
     true
   entity_stats: 
-    true
+    false
   degree_distributions: 
-    true
+    true            # set this to true, will print after simulation has finished
   tweet_analysis: 
-    true
+    false
   retweet_visualization:
     false
   main_statistics:
@@ -115,8 +133,8 @@ tweet_ranks:
 retweet_ranks:
   thresholds: {bin_spacing: linear, min: 10, max: 300, increment: 10}
 follow_ranks:
-  thresholds: {bin_spacing: linear, min: 0, max: 5000001, increment: 1}
-  weights:    {bin_spacing: linear, min: 1, max: 5000000, increment: 1}
+  thresholds: {bin_spacing: linear, min: 0, max: 540000, increment: 1}    # for preferential following
+  weights:    {bin_spacing: linear, min: 1, max: 540001, increment: 1}
 
 #################################################################
 # >> tweet_observation: 
@@ -161,19 +179,22 @@ tweet_observation: # 'Omega'
        1.0
    resolution_growth_factor: 
        1.05
+       # this is now obsolete, the x_start and x_ends are in minutes
    time_span: 
-       hour
+       8*hour
 
 #################################################################
 # >> ideologies: 
 # Abstract categorizations of similar beliefs.
-# The amount of ideologies MUST match N_IDEOLOGIES in 
+# The amount of ideologies MUST match N_BIN_IDEOLOGIES in 
 # config_static.h!
 #################################################################
 
 ideologies:
   - name: Red
   - name: Blue
+  - name: Green
+  - name: Orange
 
 #################################################################
 # >> regions: 
@@ -197,12 +218,12 @@ ideologies:
 
 regions:
   - name: Ontario
-    add_weight: 1
+    add_weight: 5
 
     preference_class_weights: {StandardPref: 100}
     entity_class_weights: {Standard: 100}
-    ideology_weights: {Red: 100, Blue: 100}
-    language_weights: {English: 50, French: 25, French+English: 25}
+    ideology_weights: {Red: 100, Blue: 100, Green: 100, Orange: 100}
+    language_weights: {English: 60, French: 0, Spanish: 0, French+English: 0}
 
   - name: Quebec
     add_weight: 5
@@ -210,8 +231,17 @@ regions:
     #Inherited:
     preference_class_weights: {StandardPref: 100}
     entity_class_weights: {Standard: 100}
-    language_weights: {English: 80, French: 10, French+English: 10}
-    ideology_weights: {Red: 100, Blue: 100}
+    language_weights: {English: 0, French: 40, Spanish: 0, French+English: 0}
+    ideology_weights: {Red: 100, Blue: 100, Green: 100, Orange: 100}
+    
+  - name: Mexico
+    add_weight: 0
+
+    #Inherited:
+    preference_class_weights: {StandardPref: 100}
+    entity_class_weights: {Standard: 100}
+    language_weights: {English: 0, French: 0, Spanish: 100, French+English: 0}
+    ideology_weights: {Red: 100, Blue: 100, Green: 100, Orange: 100}
 
 #################################################################
 # >> config_static: 
@@ -219,9 +249,9 @@ regions:
 # These values MUST match config_static.h!
 #################################################################
 
-config_static:
+#config_static:
     # These values should match your C++ config_static.h limits!!
-    humour_bins: 2 # Amount of discrete bins for humour
+#    humour_bins: 2 # Amount of discrete bins for humour
 
 #################################################################
 # >> preference_classes: 
@@ -248,29 +278,31 @@ preference_classes:
   # preference class:
    tweet_transmission: 
       plain: # Also applies to musical tweets
-        Standard: 0.01
-        Celebrity: 0.1
-        else: 0
-      different_ideology:
         Standard: 0.001
-        Celebrity: 0.01
-        else: 0
+        Celebrity: 0.001
+        else: 0.001
+      different_ideology:   # no retweeting for different ideologies
+        Standard: 0.00
+        Celebrity: 0.00
+        else: 0.00
       same_ideology:
-        Standard: 0.2
-        Celebrity: 0.4
-        else: 0
+        Standard: 0.001
+        Celebrity: 0.001
+        else: 0.001
       humourous:
-        Standard: 0.01 
-        Celebrity: 0.1
-        else: 0
-   # Probability that we will follow as a reaction:
+        Standard: 0.001
+        Celebrity: 0.001
+        else: 0.001
+   # Probability that we will follow as a reaction.
+   # Only applies to 2nd generation retweets, otherwise
+   # the entity would already be a follower.
    follow_reaction_prob:
-      0.5
+      0.1
 
  - name: NoRetweetPref
    tweet_transmission: 
       plain: # Also applies to musical tweets
-        Standard: 1.0
+        Standard: 0.0
         Celebrity: 0
         else: 0
       different_ideology:
@@ -285,9 +317,11 @@ preference_classes:
         Standard: 0
         Celebrity: 0
         else: 0
-  # Probability that we will follow as a reaction:
+   # Probability that we will follow as a reaction.
+   # Only applies to 2nd generation retweets, otherwise
+   # the entity would already be a follower.
    follow_reaction_prob:
-      0.5
+      0.0
 
 #################################################################
 # >> entities: 
@@ -300,7 +334,7 @@ entities:
   - name: Standard
     weights:
       # Weight with which this entity is created
-      add: 80 
+      add: 100.0
       # Weight with which this entity is followed in entity follow
       follow: 5
       tweet_type:
@@ -309,63 +343,12 @@ entities:
         musical: 1.0
         humourous: 1.0 # Can be considered the humourousness of the entity type
     # Probability that following this entity results in a follow-back
-    followback_probability: 0.44
+    followback_probability: .44
     hashtag_follow_options:
       care_about_region: true # does the entity care about where the entity they will follow is from?
       care_about_ideology: false # does the entiy care about which ideology the entity has?
     rates: 
         # Rate for follows from this entity:
-        follow: {function: constant, value: 0.00052}
+        follow: {function: constant, value: 0.001}
         # Rate for tweets from this entity:
-        tweet: {function: constant, value: 0.00138}
-
-  - name: Celebrity
-    weights: 
-        add: 5 
-        follow: 80
-        tweet_type:
-          ideological: 1.0
-          plain: 1.0
-          musical: 1.0
-          humourous: 1.0 # Can be considered the humourousness of the entity type
-    followback_probability: 0
-    hashtag_follow_options:
-      care_about_region: true # does the entity care about where the entity they will follow is from?
-      care_about_ideology: false # does the entiy care about which ideology the entity has?
-    rates:
-        follow: {function: constant, value: 0.00052}
-        tweet: {function: constant, value: 0.00138}
-        
-  - name: Bot
-    weights: 
-        add: 5
-        follow: 0
-        tweet_type:
-          ideological: 1.0
-          plain: 1.0
-          musical: 1.0
-          humourous: 1.0 # Can be considered the humourousness of the entity type
-    followback_probability: 0
-    hashtag_follow_options:
-      care_about_region: true # does the entity care about where the entity they will follow is from?
-      care_about_ideology: false # does the entiy care about which ideology the entity has?
-    rates:
-        follow: {function: constant, value: 0.00052}
-        tweet: {function: constant, value: 0.00138}
-
-  - name: Organization
-    weights:
-        add: 10
-        follow: 15
-        tweet_type:
-          ideological: 1.0
-          plain: 1.0
-          musical: 1.0
-          humourous: 1.0 # Can be considered the humourousness of the entity type
-    followback_probability: 0
-    hashtag_follow_options:
-      care_about_region: true # does the entity care about where the entity they will follow is from?
-      care_about_ideology: false # does the entiy care about which ideology the entity has?
-    rates:
-        follow: {function: constant, value: 0.00052}
-        tweet: {function: constant, value: 0.00138}
+        tweet: {function: constant, value: 0.001}   #0.000256944444444 0.37 per day
