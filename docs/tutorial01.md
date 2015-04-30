@@ -30,3 +30,20 @@ of these configurations can be found on the 'Input' page. For this tutorial,
 it is only necessary to know that we have a constant number of entities 
 or users in this network, 10,000, and that the simulation will run for 10,000
 simulated minutes and a maximum of 1 minute real time.
+
+When running this program, you will see something similar to this
+outputted to the screen:
+
+Time | Users | Follows | Tweets | Retweets | Unfollows | R | Time (s)
+--- | --- | --- | --- | --- | --- | --- | ---
+9.04e+03 | 1.00e+04 | 9.00e+04 | 0.00e+00 | 0.00e+00(0.00e+00) | 0.00e+00 | 1.00e+01 | 4.86e-01
+
+This gives a list of data at a particular point in your simulation.
+**Time** corresponds to simulation time, **Users** corresponds to the number
+of users or entities in the network at the point in the simulation, 
+**Follows** show the number of follows that have occurred, **Tweets** displays
+the number of tweets that have been made, **Retweets** shows the number of
+retweets, **Unfollows** displays the number of unfollows, **R** is the
+cumulative rate function, which is the sum of all the rates, the add rate,
+tweet rate, follow rate, and retweet rate, in the system, and **Time (s)**
+which is the length of real time that this part of the simulation has occurred.
