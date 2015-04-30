@@ -30,6 +30,7 @@ unlimited = 2L**53
 
 import yaml
 import sys
+import os 
 
 from pprint import pprint
 from math import *
@@ -42,7 +43,9 @@ def get_var_arg(test, default_val):
     return default_val
 
 INPUT_FILE_NAME = get_var_arg("--input", "INFILE.yaml")
-DEFAULT_FILE_NAME = "DEFAULT.yaml"
+
+# this environment variable needs to be set by the user ahead of time
+DEFAULT_FILE_NAME = os.environ['HASHKAT'] + "/DEFAULT.yaml"
 
 print("hashkat_pre.py -- Loading defaults from " + DEFAULT_FILE_NAME)
 print("hashkat_pre.py -- Generating rates for " + INPUT_FILE_NAME)
@@ -309,5 +312,11 @@ for val in "max_analysis_steps", "max_time", "max_real_time", "max_entities", "i
         CONFIG["analysis"][val] = eval(CONFIG["analysis"][val])
 
 yaml.dump(CONFIG, open(INPUT_FILE_NAME + "-generated", "w"))
+
+try:
+    os.mkdir('output')
+    print("hashkat_pre.py -- Created an output directory")
+except OSError:
+    print "hashkat_pre.py -- An output directory already exists, leaving it intact"
 
 print("hashkat_pre.py -- Done generating rates")
