@@ -2,26 +2,11 @@
 
 <span style="color:black; font-family:Georgia; font-size:1.5em;">May 2015 - This site is currently under construction. Please return regularly over the course of the summer for further updates. </span>
 
-The #k@ project is compatible with both Mac (OS X) and Linux. To run this project on either operating system, you will need the following:
-
-* cmake (probably available through your friendly neighbourhood package manager)
-* python
-* yaml (try 'pip install pyyaml')
-* scipy
-* numpy
-* networkx (for analysis)
-* matplotlib (for analysis)
-
-sudo port install cmake
-sudo brew install cmake
-sudo pip install pyyaml
-sudo pip install networkx
+The #k@ project is compatible with both Mac (OS X) and Linux.
 
 We will go over the steps to install these programs for each particular operating system below.
 
-# Source Based
-
-## Mac (OS X)
+# Mac (OS X)
 
 Here outlines the following steps on how to install #k@ on Mac (OS X):
 
@@ -111,7 +96,7 @@ To install homebrew to your computer, simply type in the command:
 19. It is also recommended to download and install [Gephi](http://gephi.github.io/) from their website
 to use for visualization of collected data.
 
-## Linux
+# Linux
 
 1. Download the latest build of #k@ at [hashkat.org](http://hashkat.org).
 2. Enter a terminal and go into your downloads directory by typing in the following command and pressing **Enter**:
