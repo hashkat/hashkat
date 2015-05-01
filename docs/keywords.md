@@ -51,7 +51,7 @@ follow_model: random
 The ‘random’ follow method causes entities to follow other entities randomly; if the number of entities is set to constant and this method is on, you will achieve an Erd ̈ os-R ́enyi degree distribution (Poisson distribution).
 The ‘entity’ follow method causes entities to follow other entities based on title alone; the titles are set in the entities section of the input file. The probabilities to to follow each entity can also be set in the weights portion of the entities section.
 The probabilities are normalized, so the probabilities should be set with respect to one another.
-The ‘twitter_preferential’ follow method follows the preferential attachment model outlined by Barabasi and Albert. The basics behind the method is that the degree of the entity determines the probability of following the entity;
+The ‘twitter-preferential’ follow method follows the preferential attachment model outlined by Barabasi and Albert. The basics behind the method is that the degree of the entity determines the probability of following the entity;
 the greater the degree the greater the probability of the entity being followed. The thresholds and weights variables outlined in the follow ranks section determines how the degree of the entities are binned and the corresponding weights for each bin.
 If you want to achieve the preferential attachment method similar to the use barabasi method you can set the thresholds to increment by 1,
 with linear spacing from 0 to the max number of entities and set the weights to increment by 1 with linear spacing from 1 to the max number of entities.

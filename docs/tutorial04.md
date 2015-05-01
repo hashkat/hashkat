@@ -11,7 +11,7 @@ This tutorial should take approximately 90 minutes to complete
 As the name implies, a random follow model is one in which the entities in which a twitter user follows is totally arbitrary.
 Let's work through two simulations of a random follow model, one with no retweets, and the other allowing retweets.
 
-First, with no retweets.
+#### No Retweets
 
 The link for this example is shown below.
 
@@ -20,13 +20,14 @@ simulation. It is important to note that the maximum simulation time of this
 example is 1000 simulated minutes and that the entity follow rate is 0.01.
 Therefore, we can expect most entities to have an in-degree and out-degree
 distribution of 10 and a cummulative degree distribution of 20. Running this
-simulation, we have produced the following data:
+simulation, we have produced the following data for the second month of
+simulation time:
 
  
 
-## twitter_preferential
+## twitter-preferential
 
-Based on Albert-Laszlo Barabasi's research, a preferential follow model is one in which entities tend to follow users with the highest degree, aka highest number of followers. 
+Based on Albert-Laszlo Barabasi's research, a twitter-preferential follow model is one in which entities tend to follow users with the highest degree, aka highest number of followers. 
 
 ## entity
 
