@@ -25,142 +25,173 @@ We will go over the steps to install these programs for each particular operatin
 
 Here outlines the following steps on how to install #k@ on Mac (OS X):
 
-1. Download the latest build of #k@ at [hashkat.org](http://hashkat.org)
-2. Enter a terminal and go into your downloads directory by typing in the following command and pressing **Enter**
+1. Download the latest build of #k@ at [hashkat.org](http://hashkat.org).
+2. Enter a terminal and go into your downloads directory by typing in the following command and pressing **Enter**:
 
     `cd Downloads`
 
-3. To see the list of files in your Downloads directory, type into the command line
+3. To see the list of files in your Downloads directory, type into the command line:
 
     `ls`
 
-4. Amongst your various other downloads you should see the following
+4. Amongst your various other downloads you should see the following:
 
-    `hashKAT.2015.03.25.tar.gz`
+    `hashkat.2015.05.01.tar.gz`
 
-5. To unpack this tar file, type in the command
+    Please note that the date in the file you downloaded may be different from the one above. That's totally fine,
+it just means that you've downloaded a newer version of #k@.
 
-    `tar xzvf`
+5. To unpack this tar file, type in the command:
 
-6. Once this is completed, look into the list of files in this directory and you will see amongst them
+    `tar xzvf hashkat.2015.05.01.tar.gz`
 
-    `hashKAT`
+6. Once this is completed, look into the list of files in this directory and you will see amongst them:
 
-7. Go into this directory by typing in the command
+    `hashkat`
 
-    `cd hashKAT`
+7. For ease of access, move this directory into your home directory by typing in the command:
 
-8. Once in this directory, you can see the list of all the files and directories that compose the #k@ project.
-9. To run the simulation, you must do the following:
+    `mv ~/Downloads/hashkat/ ~/`	
 
-    * First enter the .bashrc file. This can be done by typing in the command
+8. Now return to you home directory by typing in the command:
 
-        `nano ~/.bashrc`
+    `cd`
 
-    * Once inside this file, assuming you have hashkat at the top of your home directory, you must type in:
+9. Let's now go into the hashkat directory by typing in the command:
 
-        `export HASHKAT=~/hashkat`
+    `cd hashkat`
 
-        `export PATH=$PATH:$HASHKAT/build/src`
+10. Once in this directory, you can see the list of all the files and directories that compose the #k@ project.
+11. In order to run simulations on hashkat, you must first edit the .bashrc file. You can enter this file
+by typing in the command:
 
-        `export PATH=$PATH:$HASHKAT`
+    `nano ~/.bashrc`
 
-    * Exit this file, and then type in the command
+12. Once inside this file, assuming you have hashkat at the top of your home directory, you must type in:
+
+    `export HASHKAT=~/hashkat`
+
+    `export PATH=$PATH:$HASHKAT/build/src`
+
+    `export PATH=$PATH:$HASHKAT`
+
+13. Exit this file by pressing **ctrl-x**. If you are asked whether or not changes should be saved, type in **y** to say 'yes'.
+
+14. Once you have exited .bashrc, reload this file by typing in the command:
     
-        `source ~/.bashrc`
+    `source ~/.bashrc`
 
-    * You can now run hashkat in any directory, as long as it has **INFILE.yaml** within in it
-    * Whenever you'd like to run the simulation, you must first prepare it by typing in the command
+15. You can now run hashkat in this hashkat directory, as well as any other directory as long as it has **INFILE.yaml**
+within in it.
 
-        `hashkat_pre.py`
+16. You can test the build by typing in the command:
 
-    * Then to run it type in the command
+    `hashkat_pre.py`
 
-        `hashkat`
+    And then typing in the following command to run the simulation:
 
-    * You can press **ctrl-c** at any time to stop the simulation and save your data. Running the simulation again will result in it continuing from the point where it halted.
+    `hashkat`
 
-10. The simulation may not run due to the lack of several necessary packages. You can install packages to your computer using homebrew.
-Simply go to [Homebrew](http://brew.sh/)'s website, copy the command you see on the home page, and run it on your computer.
-11. With Homebrew, you can install these packages into your computer in the following manner:
+    The program should run without errors, however, if it does not it is most likely just due to the lack of several packages
+on your computer. Steps 17 and 18 outline how to install these packages.
 
-    * cmake - `brew install cmake`
-    * python - `brew install python`
-    * yaml - `pip install pyyaml`
-    * scipy - `pip install scipy`
-    * numpy - `pip install numpy`
+17. The simulation may not run due to the lack of several necessary packages. You can install packages to your computer using homebrew.
+To install homebrew to your computer, simply type in the command:
 
-12. It is also recommended to download and install [Gephi](http://gephi.github.io/) from their website
+    `ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"`
+
+18. With Homebrew, you can install these packages into your computer in the following manner:
+
+    * **cmake** - `brew install cmake`
+    * **python** - `brew install python`
+    * **yaml** - `pip install pyyaml`
+    * **scipy** - `pip install scipy`
+    * **numpy** - `pip install numpy`
+
+19. It is also recommended to download and install [Gephi](http://gephi.github.io/) from their website
 to use for visualization of collected data.
 
 ## Linux
 
-Here outlines the following steps to install #k@ on Linux:
-
-1. Download the latest build of #k@ at [hashkat.org](http://hashkat.org)
-2. Enter a terminal and go into your downloads directory by typing in the following command and pressing **Enter**
+1. Download the latest build of #k@ at [hashkat.org](http://hashkat.org).
+2. Enter a terminal and go into your downloads directory by typing in the following command and pressing **Enter**:
 
     `cd Downloads`
 
-3. To see the list of files in your Downloads directory, type into the command line
+3. To see the list of files in your Downloads directory, type into the command line:
 
     `ls`
 
-4. Amongst your various other downloads you should se the following
+4. Amongst your various other downloads you should see the following:
 
-    `hashKAT.2015.03.25.tar.gz`
+    `hashkat.2015.05.01.tar.gz`
 
-5. To unpack this tar file, type in the command
+    Please note that the date in the file you downloaded may be different from the one above. That's totally fine,
+it just means that you've downloaded a newer version of #k@.
 
-    `tar xzvf`
+5. To unpack this tar file, type in the command:
 
-6. Once this is completed, look into the list of files in this directory and you will see amngst them
+    `tar xzvf hashkat.2015.05.01.tar.gz`
 
-    `hashKAT`
+6. Once this is completed, look into the list of files in this directory and you will see amongst them:
 
-7. Go into this directory by typing in the command
+    `hashkat`
 
-    `cd hashKAT`
+7. For ease of access, move this directory into your home directory by typing in the command:
 
-8. Once in this directory, you can see the list of all the files and directories that compose the #k@ project.
-9. To run the simulation, you must do the following:       
+    `mv ~/Downloads/hashkat/ ~/`
 
-    * First enter the .bashrc file. This can be done by typing in the command 
+8. Now return to you home directory by typing in the command:
 
-        `nano ~/.bashrc`
+    `cd`
 
-    * Once inside this file, assuming you have hashkat at the top of your home directory, you must type in:
+9. Let's now go into the hashkat directory by typing in the command:
 
-        `export HASHKAT=~/hashkat`
+    `cd hashkat`
 
-        `export PATH=$PATH:$HASHKAT/build/src`
+10. Once in this directory, you can see the list of all the files and directories that compose the #k@ project.
+11. In order to run simulations on hashkat, you must first edit the .bashrc file. You can enter this file
+by typing in the command:
 
-        `export PATH=$PATH:$HASHKAT`
+    `nano ~/.bashrc`
 
-    * Exit this file, and then type in the command
+12. Once inside this file, assuming you have hashkat at the top of your home directory, you must type in:
 
-        `source ~/.bashrc`
+    `export HASHKAT=~/hashkat`
 
-    * You can now run hashkat in any directory, as long as it as **INFILE.yaml** within in it
-    * Whenever you'd like to run the simulation, you must first prepare it by typing in the command
+    `export PATH=$PATH:$HASHKAT/build/src`
 
-        `hashkat_pre.py`
+    `export PATH=$PATH:$HASHKAT`
 
-    * Then to run it type in the command
+13. Exit this file by pressing **ctrl-x**. If you are asked whether or not changes should be saved, type in **y** to say 'yes'.
 
-        `hashkat`
+14. Once you have exited .bashrc, reload this file by typing in the command:
 
+    `source ~/.bashrc`
 
-    * You can press **ctrl-c** at any time to stop the simulation and save your data. Running the simulation again will result in it continuing from the point where it halted.
+15. You can now run hashkat in this hashkat directory, as well as any other directory as long as it has **INFILE.yaml**
+within in it.
 
-10. The simulation may not run due to the lack of several necessary packages.
-These packages can be installed into your computer in the following manner:
+16. You can test the build by typing in the command:
 
-    * cmake - `sudo apt-get install cmake`
-    * python - `sudo apt-get install python`
-    * yaml - `pip install pyyaml`
-    * scipy - `pip install scipy`
-    * numpy - `pip install numpy`
+    `hashkat_pre.py`
 
-11. It is also recommended to download and install [Gephi](http://gephi.github.io/) from their website
+    And then typing in the following command to run the simulation:
+
+    `hashkat`
+
+    The program should run without errors, however, if it does not it is most likely just due to the lack of several packages
+on your computer. Step 17 outlines how to install these packages.
+
+17. The simulation may not run due to the lack of several necessary packages. You can install these packages into your computer in the following manner:
+
+    * **cmake** - `sudo apt-get install cmake`
+    * **python** - `sudo apt-get install python`
+    * **yaml** - `pip install pyyaml`
+    * **scipy** - `pip install scipy`
+    * **numpy** - `pip install numpy`
+
+18. It is also recommended to download and install [Gephi](http://gephi.github.io/) from their website
 to use for visualization of collected data.
+
+
