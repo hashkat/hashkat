@@ -96,7 +96,7 @@ const int N_FOLLOW_MODELS = 5;
 const int N_BIN_PREFERENCE_CLASS = 2;
 const int N_BIN_ENTITY_TYPES = 200;
 const int N_BIN_REGIONS = 3;
-const int N_BIN_IDEOLOGIES = 40;
+const int N_BIN_IDEOLOGIES = 4;
 
 
 #endif
