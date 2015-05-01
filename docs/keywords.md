@@ -60,6 +60,7 @@ an entity will be selected to follow.
 The ‘hashtag’ follow method is a mechanism introduced to follow other entities based on hashtags. If the use hashtag probability parameter is non-zero, then entities will attach hashtags to their tweets.
 Depending on the ideology and location of the entity, they are then placed into a dynamic array. If another user wants to follow via hashtag, they look to these dynamic arrays to find a specific entity that relates to
 their hashtag preferences. These preferences can be set in the hashtag follow options section.
+The 'suggest' follow model !!!!!!!!!!!!!!!!!
 The ‘twitter’ follow model is a model that incorporates all of the above follow mechanisms. The weights for each mechanism can be set for each follow method. See model weights for more information.
 
 ####model_weights
