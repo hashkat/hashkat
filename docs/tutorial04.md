@@ -15,7 +15,7 @@ First, with no retweets.
 
 
 
-## preferential
+## twitter_preferential
 
 Based on Albert-Laszlo Barabasi's research, a preferential follow model is one in which entities tend to follow users with the highest degree, aka highest number of followers. 
 
@@ -31,10 +31,6 @@ entities tend to follow twitter users within that entity class with the highest 
 ## hashtag
 
 A hashtag follow method is one in which a twitter user follows another entity through a hashtag that matches their hatchtag preferences. In order for this follow method to be possible, *use_hashtag_probabilty* must be greater than zero.
-
-## suggest
-
-
 
 ## twitter
 
