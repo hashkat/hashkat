@@ -11,19 +11,29 @@ This tutorial should take approximately 90 minutes to complete
 As the name implies, a random follow model is one in which the entities in which a twitter user follows is totally arbitrary.
 Let's work through two simulations of a random follow model, one with no retweets, and the other allowing retweets.
 
-#### No Retweets
+### No Retweets
 
 The link for this example is shown below.
 
 For simplicity both tweeting an retweeting have been neglected in this
 simulation. It is important to note that the maximum simulation time of this
-example is 1000 simulated minutes and that the entity follow rate is 0.01.
+example is 100,000 simulated minutes and that the entity follow rate is 0.001.
 Therefore, we can expect most entities to have an in-degree and out-degree
-distribution of 10 and a cummulative degree distribution of 20. Running this
+distribution of 100 and a cumulative degree distribution of 200. Running this
 simulation, we have produced the following data for the second month of
-simulation time:
+simulation time using gnuplot:
 
- 
+#### In Degree Distribution
+
+![In Degree Distribution](/img/random_example/no_retweet_in.svg =1x  "In Degree Distribution")
+
+#### Out Degree Distribution
+
+![Out Degree Distribution](/img/random_example/no_retweet_out.svg =1x  "Out Degree Distribution")
+
+#### Cumulative Degree Distribution 
+
+![Cumulative Degree Distribution](/img/random_example/no_retweet_cumulative.svg =1x  "Cumulative Degree Distribution")
 
 ## twitter-preferential
 
