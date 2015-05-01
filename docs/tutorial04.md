@@ -17,9 +17,9 @@ The link for this example is shown below.
 
 For simplicity both tweeting an retweeting have been neglected in this
 simulation. It is important to note that the maximum simulation time of this
-example is 100,000 simulated minutes and that the entity follow rate is 0.001.
+example is 100,000 simulated minutes and that the entity follow rate is 0.0001.
 Therefore, we can expect most entities to have an in-degree and out-degree
-distribution of 100 and a cumulative degree distribution of 200. Running this
+distribution of 10 and a cumulative degree distribution of 20. Running this
 simulation, we have produced the following data for the second month of
 simulation time using gnuplot:
 
@@ -34,6 +34,10 @@ simulation time using gnuplot:
 #### Cumulative Degree Distribution 
 
 ![Cumulative Degree Distribution](/img/random_example/no_retweet_cumulative.svg =1x  "Cumulative Degree Distribution")
+
+#### Visualization
+
+![Visualization](/img/random_example/no_retweet_visualization.svg =1x  "Visulaization")
 
 ## twitter-preferential
 
