@@ -30,7 +30,7 @@
 #  use_flawed_followback: 
 #    Whether to follow-back by a fixed 40%.
 #  follow_model: 
-#    Accepted models: 'random', 'preferential', 'entity', 'preferential-entity', 'hashtag' 'twitter'
+#    Accepted models: 'random', 'twitter-preferential', 'entity', 'preferential-entity', 'hashtag' 'twitter'
 #  stage1_unfollow: 
 #    Whether to have an unfollow model assuming constant 'chattiness', compares the chatiness of an entity wrt to the following set.
 #  unfollow_tweet_rate: 
@@ -68,7 +68,7 @@ analysis:
     random
   # model weights ONLY necessary for follow method 'twitter'  
   # educated guesses for the follow models  
-  model_weights: {random: 0.0, preferential: 1.0, entity: 0.0, preferential_entity: 0.0, hashtag: 0.0, suggest: 0.0}
+  model_weights: {random: 0.0, twitter_preferential: 1.0, entity: 0.0, preferential_entity: 0.0, hashtag: 0.0}
   
   stage1_unfollow: 
     false
