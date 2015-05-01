@@ -13,7 +13,16 @@ Let's work through two simulations of a random follow model, one with no retweet
 
 First, with no retweets.
 
+The link for this example is shown below.
 
+For simplicity both tweeting an retweeting have been neglected in this
+simulation. It is important to note that the maximum simulation time of this
+example is 1000 simulated minutes and that the entity follow rate is 0.01.
+Therefore, we can expect most entities to have an in-degree and out-degree
+distribution of 10 and a cummulative degree distribution of 20. Running this
+simulation, we have produced the following data:
+
+ 
 
 ## twitter_preferential
 
