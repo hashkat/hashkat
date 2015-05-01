@@ -62,16 +62,14 @@ static FollowModel parse_follow_model(const Node& node) {
     parse(node, "follow_model", follow_model);
     if (follow_model == "random") {
         return RANDOM_FOLLOW;
-    } else if (follow_model == "preferential") {
-        return PREFERENTIAL_FOLLOW;
+    } else if (follow_model == "twitter_preferential") {
+        return TWITTER_PREFERENTIAL_FOLLOW;
     } else if (follow_model == "entity") {
         return ENTITY_FOLLOW;
     } else if (follow_model == "preferential-entity") {
         return PREFERENTIAL_ENTITY_FOLLOW;
     } else if (follow_model == "hashtag") {
         return HASHTAG_FOLLOW;
-    } else if (follow_model == "suggest") {
-        return SUGGEST_FOLLOW;
     } else if (follow_model == "twitter" ) {
         return TWITTER_FOLLOW;
     } else {
@@ -135,11 +133,10 @@ static TweetObservationPDF parse_tweet_obs_pdf(const Node& node) {
 static vector<double> parse_follow_weights(const Node& node) {
     vector<double> weights(N_FOLLOW_MODELS);
     parse(node, "random", weights[0]);
-    parse(node, "preferential", weights[1]);
+    parse(node, "twitter_preferential", weights[1]);
     parse(node, "entity", weights[2]);
     parse(node, "preferential_entity", weights[3]);
     parse(node, "hashtag", weights[4]);
-    parse(node, "suggest", weights[5]);
     double weight_sum = 0;
     for (auto& w : weights) {
         weight_sum += w;
