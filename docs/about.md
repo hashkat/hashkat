@@ -13,12 +13,12 @@ which implements the Kinetic Monte Carlo Method and all the functionalities of T
 
 #**Developers**
 
-[Kevin Ryczko](https://github.com/kryczko)
+[K. Ryczko](https://github.com/kryczko)
 
-[Adam Domurad](https://github.com/ludamad)
+[A. Domurad](https://github.com/ludamad)
 
-[Isaac Tamblyn](https://github.com/itamblyn) - [Info](http://faculty.uoit.ca/itamblyn/)
+[I. Tamblyn](https://github.com/itamblyn) - [Info](http://faculty.uoit.ca/itamblyn/)
 
 ##**Documentation & Tutorials**
 
-[Nicholas Buhagiar](https://github.com/nbuhagiar)
+[N. Buhagiar](https://github.com/nbuhagiar)

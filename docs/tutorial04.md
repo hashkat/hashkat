@@ -13,9 +13,18 @@ Let's work through two simulations of a random follow model, one with no retweet
 
 First, with no retweets.
 
+The link for this example is shown below.
 
+For simplicity both tweeting an retweeting have been neglected in this
+simulation. It is important to note that the maximum simulation time of this
+example is 1000 simulated minutes and that the entity follow rate is 0.01.
+Therefore, we can expect most entities to have an in-degree and out-degree
+distribution of 10 and a cummulative degree distribution of 20. Running this
+simulation, we have produced the following data:
 
-## preferential
+ 
+
+## twitter_preferential
 
 Based on Albert-Laszlo Barabasi's research, a preferential follow model is one in which entities tend to follow users with the highest degree, aka highest number of followers. 
 
@@ -31,10 +40,6 @@ entities tend to follow twitter users within that entity class with the highest 
 ## hashtag
 
 A hashtag follow method is one in which a twitter user follows another entity through a hashtag that matches their hatchtag preferences. In order for this follow method to be possible, *use_hashtag_probabilty* must be greater than zero.
-
-## suggest
-
-
 
 ## twitter
 
