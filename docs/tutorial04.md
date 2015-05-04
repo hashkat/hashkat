@@ -11,9 +11,9 @@ Let's work through two simulations of a random follow model, one with no retweet
 
 ## Example - No Retweets
 
-The link for this example is shown below.
+You can view the input file for this example [here](https://github.com/hashkat/hashkat/blob/master/examples/Random_Graph/INFILE.yaml).
 
-For simplicity both tweeting an retweeting have been neglected in this
+For simplicity both tweeting and retweeting have been neglected in this
 simulation. It is important to note that the maximum simulation time of this
 example is 100,000 simulated minutes and that the entity follow rate is 0.0001.
 Therefore, we can expect most entities to have an in-degree and out-degree

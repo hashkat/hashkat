@@ -39,9 +39,9 @@
 
 analysis:
   initial_entities:
-    10000  # start out from something small, could be when only the developers were online.
+    1000  # start out from something small, could be when only the developers were online.
   max_entities: 
-    10000     # 1 million max users
+    1000     # 1 million max users
   max_time: 
     100000
   max_analysis_steps: 
@@ -109,17 +109,17 @@ output:
   summary_output_rate: 
     10000
   visualize: 
-    false
+    true
   verbose: 
     true
   entity_stats: 
-    false
+    true
   degree_distributions: 
     true            # set this to true, will print after simulation has finished
   tweet_analysis: 
-    false
+    true
   retweet_visualization:
-    false
+    true
   main_statistics:
     true
 
@@ -223,7 +223,7 @@ regions:
     preference_class_weights: {StandardPref: 100}
     entity_class_weights: {Standard: 100}
     ideology_weights: {Red: 100, Blue: 100, Green: 100, Orange: 100}
-    language_weights: {English: 60, French: 0, Spanish: 0, French+English: 0}
+    language_weights: {English: 100, French: 0, Spanish: 0, French+English: 0}
 
   - name: Quebec
     add_weight: 5
@@ -231,7 +231,7 @@ regions:
     #Inherited:
     preference_class_weights: {StandardPref: 100}
     entity_class_weights: {Standard: 100}
-    language_weights: {English: 0, French: 40, Spanish: 0, French+English: 0}
+    language_weights: {English: 0, French: 100, Spanish: 0, French+English: 0}
     ideology_weights: {Red: 100, Blue: 100, Green: 100, Orange: 100}
     
   - name: Mexico
