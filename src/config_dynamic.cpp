@@ -66,7 +66,7 @@ static FollowModel parse_follow_model(const Node& node) {
         return TWITTER_PREFERENTIAL_FOLLOW;
     } else if (follow_model == "entity") {
         return ENTITY_FOLLOW;
-    } else if (follow_model == "preferential-entity") {
+    } else if (follow_model == "preferential_entity") {
         return PREFERENTIAL_ENTITY_FOLLOW;
     } else if (follow_model == "hashtag") {
         return HASHTAG_FOLLOW;
