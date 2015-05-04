@@ -2,16 +2,14 @@
 
 <span style="color:black; font-family:Georgia; font-size:1.5em;">May 2015 - This site is currently under construction. Please return regularly over the course of the summer for further updates. </span>
 
-# Different Follow Models
+# The Random Follow Model
 
 This tutorial should take approximately 90 minutes to complete
-
-## random
 
 As the name implies, a random follow model is one in which the entities in which a twitter user follows is totally arbitrary.
 Let's work through two simulations of a random follow model, one with no retweets, and the other allowing retweets.
 
-### No Retweets
+## Example - No Retweets
 
 The link for this example is shown below.
 
@@ -39,26 +37,25 @@ simulation time using gnuplot:
 
 ![Visualization](/img/random_example/no_retweet_visualization.svg =1x  "Visulaization")
 
-## twitter-preferential
+## Example - Retweets
 
-Based on Albert-Laszlo Barabasi's research, a twitter-preferential follow model is one in which entities tend to follow users with the highest degree, aka highest number of followers. 
 
-## entity
 
-An entity-based follow method is one in which entities follow a twitter user based on their entity class, though who they follow within that entity class is totally random.
+#### In Degree Distribution
 
-## preferential-entity
 
-A preferential-entity follow method is exactly like the entity-based follow method, except that instead of following a random twitter user within that entity class,
-entities tend to follow twitter users within that entity class with the highest number of followers (degrees).
 
-## hashtag
+#### Out Degree Distribution
 
-A hashtag follow method is one in which a twitter user follows another entity through a hashtag that matches their hatchtag preferences. In order for this follow method to be possible, *use_hashtag_probabilty* must be greater than zero.
 
-## twitter
 
-The twitter follow model is a combination of all the above models, with each model respectively weighted.
+#### Cumulative Degree Distribution
+
+
+
+#### Visualization
+
+
 
 <iframe width="420" height="315" src="https://www.youtube.com/embed/g2QeKQ9yXy0" frameborder="0" allowfullscreen></iframe>
 
