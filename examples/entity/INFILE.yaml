@@ -107,7 +107,7 @@ output:
   stdout_summary: 
     true
   summary_output_rate: 
-    10000
+    100
   visualize: 
     true
   entity_stats: 
