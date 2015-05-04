@@ -8,7 +8,27 @@ This tutorial should take approximately 90 minutes to complete
 
 Based on Albert-Laszlo Barabasi's research, a twitter-preferential follow model is one in which entities tend to follow users with the highest degree, aka highest number of followers.
 
-## Example - No Retweets
+## Example - Classic Barabasi
+
+
+
+#### In Degree Distribution
+
+
+
+#### Out Degree Distribution
+
+
+
+#### Cumulative Degree Distribution
+
+
+
+#### Visualization
+
+
+
+## Example - Non-Classic Barabasi with No Retweets
 
 
 
@@ -28,7 +48,7 @@ Based on Albert-Laszlo Barabasi's research, a twitter-preferential follow model 
 
 
 
-## Example - Retweets
+## Example - Non-Classic Barabasi with Retweets
 
 
 
