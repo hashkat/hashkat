@@ -30,7 +30,7 @@
 #  use_flawed_followback: 
 #    Whether to follow-back by a fixed 40%.
 #  follow_model: 
-#    Accepted models: 'random', 'twitter-preferential', 'entity', 'preferential-entity', 'hashtag' 'twitter'
+#    Accepted models: 'random', 'twitter_preferential', 'entity', 'preferential_entity', 'hashtag', 'twitter'
 #  stage1_unfollow: 
 #    Whether to have an unfollow model assuming constant 'chattiness', compares the chatiness of an entity wrt to the following set.
 #  unfollow_tweet_rate: 
@@ -43,7 +43,7 @@ analysis:
   max_entities: 
     10000     # 1 million max users
   max_time: 
-    100000
+    10000
   max_analysis_steps: 
     unlimited
   max_real_time: 
@@ -55,9 +55,9 @@ analysis:
   lua_script: # Defines behaviour of interactive mode & lua hooks
     INTERACT.lua
   use_barabasi: 
-    false 
+    true 
   barabasi_connections: # number of connections we want to make when use_barabasi == true
-    100
+    1
   barabasi_exponent:
     1
   use_random_time_increment: 
@@ -109,15 +109,15 @@ output:
   summary_output_rate: 
     10000
   visualize: 
-    false
+    true
   entity_stats: 
-    false
+    true
   degree_distributions: 
     true            # set this to true, will print after simulation has finished
   tweet_analysis: 
-    false
+    true
   retweet_visualization:
-    false
+    true
   main_statistics:
     true
 
@@ -221,7 +221,7 @@ regions:
     preference_class_weights: {StandardPref: 100}
     entity_class_weights: {Standard: 100}
     ideology_weights: {Red: 100, Blue: 100, Green: 100, Orange: 100}
-    language_weights: {English: 60, French: 0, Spanish: 0, French+English: 0}
+    language_weights: {English: 100, French: 0, Spanish: 0, French+English: 0}
 
   - name: Quebec
     add_weight: 5
@@ -229,7 +229,7 @@ regions:
     #Inherited:
     preference_class_weights: {StandardPref: 100}
     entity_class_weights: {Standard: 100}
-    language_weights: {English: 0, French: 40, Spanish: 0, French+English: 0}
+    language_weights: {English: 0, French: 100, Spanish: 0, French+English: 0}
     ideology_weights: {Red: 100, Blue: 100, Green: 100, Orange: 100}
     
   - name: Mexico
@@ -347,6 +347,6 @@ entities:
       care_about_ideology: false # does the entiy care about which ideology the entity has?
     rates: 
         # Rate for follows from this entity:
-        follow: {function: constant, value: 0.001}
+        follow: {function: constant, value: 0.1}
         # Rate for tweets from this entity:
         tweet: {function: constant, value: 0.001}   #0.000256944444444 0.37 per day

@@ -30,7 +30,7 @@
 #  use_flawed_followback: 
 #    Whether to follow-back by a fixed 40%.
 #  follow_model: 
-#    Accepted models: 'random', 'twitter-preferential', 'entity', 'preferential-entity', 'hashtag' 'twitter'
+#    Accepted models: 'random', 'twitter_preferential', 'entity', 'preferential_entity', 'hashtag', 'twitter'
 #  stage1_unfollow: 
 #    Whether to have an unfollow model assuming constant 'chattiness', compares the chatiness of an entity wrt to the following set.
 #  unfollow_tweet_rate: 
@@ -43,7 +43,7 @@ analysis:
   max_entities: 
     1000     # 1 million max users
   max_time: 
-    100000
+    5000
   max_analysis_steps: 
     unlimited
   max_real_time: 
@@ -109,8 +109,6 @@ output:
   summary_output_rate: 
     10000
   visualize: 
-    true
-  verbose: 
     true
   entity_stats: 
     true
@@ -278,7 +276,7 @@ preference_classes:
   # preference class:
    tweet_transmission: 
       plain: # Also applies to musical tweets
-        Standard: 0.001
+        Standard: 0.1
         Celebrity: 0.001
         else: 0.001
       different_ideology:   # no retweeting for different ideologies
@@ -286,11 +284,11 @@ preference_classes:
         Celebrity: 0.00
         else: 0.00
       same_ideology:
-        Standard: 0.001
+        Standard: 0.1
         Celebrity: 0.001
         else: 0.001
       humourous:
-        Standard: 0.002
+        Standard: 0.2
         Celebrity: 0.002
         else: 0.002
    # Probability that we will follow as a reaction.
@@ -351,4 +349,4 @@ entities:
         # Rate for follows from this entity:
         follow: {function: constant, value: 0.001}
         # Rate for tweets from this entity:
-        tweet: {function: constant, value: 0.0}   #0.000256944444444 0.37 per day
+        tweet: {function: constant, value: 0.01}   #0.000256944444444 0.37 per day

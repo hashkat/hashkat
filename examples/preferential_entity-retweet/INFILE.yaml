@@ -30,7 +30,7 @@
 #  use_flawed_followback: 
 #    Whether to follow-back by a fixed 40%.
 #  follow_model: 
-#    Accepted models: 'random', 'twitter-preferential', 'entity', 'preferential-entity', 'hashtag' 'twitter'
+#    Accepted models: 'random', 'twitter_preferential', 'entity', 'preferential_entity', 'hashtag', 'twitter'
 #  stage1_unfollow: 
 #    Whether to have an unfollow model assuming constant 'chattiness', compares the chatiness of an entity wrt to the following set.
 #  unfollow_tweet_rate: 
@@ -65,7 +65,7 @@ analysis:
   use_followback: 
     false        # followback turned on, from literature it makes sense for a realistic system
   follow_model: # See notes above
-    preferential-entity
+    preferential_entity
   # model weights ONLY necessary for follow method 'twitter'  
   # educated guesses for the follow models  
   model_weights: {random: 0.0, twitter_preferential: 1.0, entity: 0.0, preferential_entity: 0.0, hashtag: 0.0}
@@ -84,7 +84,7 @@ analysis:
 #################################################################
 
 rates:
-  add: {function: constant, value: 1.0}  # found from experiment
+  add: {function: constant, value: 1.0}
 
 #################################################################
 # >> output:
@@ -276,21 +276,21 @@ preference_classes:
   # preference class:
    tweet_transmission: 
       plain: # Also applies to musical tweets
-        Standard: 0.00
-        Celebrity: 0.00
-        else: 0.00
+        Standard: 0.001
+        Celebrity: 0.001
+        else: 0.001
       different_ideology:   # no retweeting for different ideologies
         Standard: 0.00
         Celebrity: 0.00
         else: 0.00
       same_ideology:
-        Standard: 0.00
-        Celebrity: 0.00
-        else: 0.00
+        Standard: 0.001
+        Celebrity: 0.001
+        else: 0.001
       humourous:
-        Standard: 0.00
-        Celebrity: 0.00
-        else: 0.00
+        Standard: 0.002
+        Celebrity: 0.002
+        else: 0.002
    # Probability that we will follow as a reaction.
    # Only applies to 2nd generation retweets, otherwise
    # the entity would already be a follower.
@@ -349,8 +349,8 @@ entities:
         # Rate for follows from this entity:
         follow: {function: constant, value: 0.001}
         # Rate for tweets from this entity:
-        tweet: {function: constant, value: 0.0}   #0.000256944444444 0.37 per day
-
+        tweet: {function: constant, value: 0.001}   #0.000256944444444 0.37 per day
+        
   - name: Celebrity
     weights:
       # Weight with which this entity is created
@@ -371,4 +371,5 @@ entities:
         # Rate for follows from this entity:
         follow: {function: constant, value: 0.001}
         # Rate for tweets from this entity:
-        tweet: {function: constant, value: 0.0}   #0.000256944444444 0.37 per day
+        tweet: {function: constant, value: 0.001}   #0.000256944444444 0.37 per day
+
