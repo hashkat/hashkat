@@ -228,7 +228,8 @@ struct Analyzer {
     /* Run the main analysis routine using this config. */
     void run_network_simulation(Timer& timer) {
 		const char* HEADER = "Time\t\tUsers\t\tFollows\t\tTweets\t\tRetweets\t\tUnfollows\tR\t\tTime (s)";
-        cout << HEADER << "\n\n";
+        if (config.output_stdout_summary)
+            cout << HEADER << "\n\n";
         while (sim_time_check() && real_time_check()) {
             if (!interrupt_check()) {
                 interrupt_reset();
