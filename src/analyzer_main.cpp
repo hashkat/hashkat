@@ -536,7 +536,7 @@ struct Analyzer {
             time += 1.0 / stats.event_rate;
         }
 
-        if (config.output_stdout_summary && (output_time_checker.has_past(time) || config.output_verbose)) {
+        if (config.output_stdout_summary && output_time_checker.has_past(time)) {
             output_summary_stats(timer);
         } 
     }
