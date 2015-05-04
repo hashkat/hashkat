@@ -30,7 +30,7 @@
 #  use_flawed_followback: 
 #    Whether to follow-back by a fixed 40%.
 #  follow_model: 
-#    Accepted models: 'random', 'twitter-preferential', 'entity', 'preferential-entity', 'hashtag' 'twitter'
+#    Accepted models: 'random', 'twitter_preferential', 'entity', 'preferential_entity', 'hashtag' 'twitter'
 #  stage1_unfollow: 
 #    Whether to have an unfollow model assuming constant 'chattiness', compares the chatiness of an entity wrt to the following set.
 #  unfollow_tweet_rate: 
@@ -43,7 +43,7 @@ analysis:
   max_entities: 
     10000     # 1 million max users
   max_time: 
-    100000
+    10000
   max_analysis_steps: 
     unlimited
   max_real_time: 
@@ -65,7 +65,7 @@ analysis:
   use_followback: 
     false        # followback turned on, from literature it makes sense for a realistic system
   follow_model: # See notes above
-    preferential-entity
+    preferential_entity
   # model weights ONLY necessary for follow method 'twitter'  
   # educated guesses for the follow models  
   model_weights: {random: 0.0, twitter_preferential: 1.0, entity: 0.0, preferential_entity: 0.0, hashtag: 0.0}
@@ -109,15 +109,15 @@ output:
   summary_output_rate: 
     10000
   visualize: 
-    false
+    true
   entity_stats: 
-    false
+    true
   degree_distributions: 
     true            # set this to true, will print after simulation has finished
   tweet_analysis: 
-    false
+    true
   retweet_visualization:
-    false
+    true
   main_statistics:
     true
 

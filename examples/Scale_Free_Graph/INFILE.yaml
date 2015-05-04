@@ -109,15 +109,15 @@ output:
   summary_output_rate: 
     10000
   visualize: 
-    false
+    true
   entity_stats: 
-    false
+    true
   degree_distributions: 
     true            # set this to true, will print after simulation has finished
   tweet_analysis: 
-    false
+    true
   retweet_visualization:
-    false
+    true
   main_statistics:
     true
 
@@ -131,8 +131,8 @@ tweet_ranks:
 retweet_ranks:
   thresholds: {bin_spacing: linear, min: 10, max: 300, increment: 10}
 follow_ranks:
-  thresholds: {bin_spacing: linear, min: 0, max: 10000, increment: 1}    # for preferential following
-  weights:    {bin_spacing: linear, min: 1, max: 10001, increment: 1}
+  thresholds: {bin_spacing: linear, min: 0, max: 100000, increment: 1}    # for preferential following
+  weights:    {bin_spacing: linear, min: 1, max: 100001, increment: 1}
 
 #################################################################
 # >> tweet_observation: 
@@ -221,7 +221,7 @@ regions:
     preference_class_weights: {StandardPref: 100}
     entity_class_weights: {Standard: 100}
     ideology_weights: {Red: 100, Blue: 100, Green: 100, Orange: 100}
-    language_weights: {English: 60, French: 0, Spanish: 0, French+English: 0}
+    language_weights: {English: 100, French: 0, Spanish: 0, French+English: 0}
 
   - name: Quebec
     add_weight: 5
@@ -229,7 +229,7 @@ regions:
     #Inherited:
     preference_class_weights: {StandardPref: 100}
     entity_class_weights: {Standard: 100}
-    language_weights: {English: 0, French: 40, Spanish: 0, French+English: 0}
+    language_weights: {English: 0, French: 100, Spanish: 0, French+English: 0}
     ideology_weights: {Red: 100, Blue: 100, Green: 100, Orange: 100}
     
   - name: Mexico

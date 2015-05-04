@@ -30,7 +30,7 @@
 #  use_flawed_followback: 
 #    Whether to follow-back by a fixed 40%.
 #  follow_model: 
-#    Accepted models: 'random', 'twitter-preferential', 'entity', 'preferential-entity', 'hashtag' 'twitter'
+#    Accepted models: 'random', 'twitter_preferential', 'entity', 'preferential_entity', 'hashtag' 'twitter'
 #  stage1_unfollow: 
 #    Whether to have an unfollow model assuming constant 'chattiness', compares the chatiness of an entity wrt to the following set.
 #  unfollow_tweet_rate: 
@@ -109,15 +109,15 @@ output:
   summary_output_rate: 
     10000
   visualize: 
-    false
+    true
   entity_stats: 
-    false
+    true
   degree_distributions: 
     true            # set this to true, will print after simulation has finished
   tweet_analysis: 
-    false
+    true
   retweet_visualization:
-    false
+    true
   main_statistics:
     true
 
@@ -221,7 +221,7 @@ regions:
     preference_class_weights: {StandardPref: 100}
     entity_class_weights: {Standard: 100}
     ideology_weights: {Red: 100, Blue: 100, Green: 100, Orange: 100}
-    language_weights: {English: 60, French: 0, Spanish: 0, French+English: 0}
+    language_weights: {English: 100, French: 0, Spanish: 0, French+English: 0}
 
   - name: Quebec
     add_weight: 5
@@ -229,7 +229,7 @@ regions:
     #Inherited:
     preference_class_weights: {StandardPref: 100}
     entity_class_weights: {Standard: 100}
-    language_weights: {English: 0, French: 40, Spanish: 0, French+English: 0}
+    language_weights: {English: 0, French: 100, Spanish: 0, French+English: 0}
     ideology_weights: {Red: 100, Blue: 100, Green: 100, Orange: 100}
     
   - name: Mexico
@@ -334,7 +334,7 @@ entities:
       # Weight with which this entity is created
       add: 90.0
       # Weight with which this entity is followed in entity follow
-      follow: 5
+      follow: 50
       tweet_type:
         ideological: 1.0
         plain: 1.0
@@ -356,7 +356,7 @@ entities:
       # Weight with which this entity is created
       add: 10.0
       # Weight with which this entity is followed in entity follow
-      follow: 5
+      follow: 50
       tweet_type:
         ideological: 1.0
         plain: 1.0

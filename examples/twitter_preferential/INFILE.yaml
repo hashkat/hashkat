@@ -55,9 +55,9 @@ analysis:
   lua_script: # Defines behaviour of interactive mode & lua hooks
     INTERACT.lua
   use_barabasi: 
-    false 
+    true 
   barabasi_connections: # number of connections we want to make when use_barabasi == true
-    100
+    1
   barabasi_exponent:
     1
   use_random_time_increment: 
@@ -109,15 +109,15 @@ output:
   summary_output_rate: 
     10000
   visualize: 
-    false
+    true
   entity_stats: 
-    false
+    true
   degree_distributions: 
     true            # set this to true, will print after simulation has finished
   tweet_analysis: 
-    false
+    true
   retweet_visualization:
-    false
+    true
   main_statistics:
     true
 
@@ -347,6 +347,6 @@ entities:
       care_about_ideology: false # does the entiy care about which ideology the entity has?
     rates: 
         # Rate for follows from this entity:
-        follow: {function: constant, value: 0.001}
+        follow: {function: constant, value: 0.0}
         # Rate for tweets from this entity:
         tweet: {function: constant, value: 0.0}   #0.000256944444444 0.37 per day
