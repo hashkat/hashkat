@@ -81,6 +81,20 @@ use_barabasi:
 Input *true* into *use_barabsi* for a preferential model simulation, input *false* otherwise. Will be discussed in greater detail later.
 
 ```python
+barabasi_connections: # number of connections we want to make when use_barabassi == true
+  100
+```
+
+
+
+```python
+barabasi_exponent:
+  1
+```
+
+
+
+```python
 use_random_time_increment:
   true
 ```
@@ -167,8 +181,6 @@ output:
   summary_output_rate:
     1
   visualize:
-    true
-  verbose:
     true
   entity_stats:
     true
