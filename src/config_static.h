@@ -81,7 +81,7 @@ const int APPROX_MONTH = 30 * 24 * 60;
 const int TIME_CAT_FREQ = 30 * 24 * 60;
 
 // Output frequency:
-const int STDOUT_OUTPUT_RATE = 10000; // Once per X file outputs
+const int STDOUT_OUTPUT_RATE = 100; // Once per X file outputs
 
 // Uncomment this to run (somewhat) expensive but informative checks:
 #define SLOW_DEBUG_CHECKS
