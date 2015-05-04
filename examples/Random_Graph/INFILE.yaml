@@ -110,8 +110,6 @@ output:
     10000
   visualize: 
     true
-  verbose: 
-    true
   entity_stats: 
     true
   degree_distributions: 
