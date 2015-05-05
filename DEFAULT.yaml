@@ -107,17 +107,17 @@ output:
   stdout_summary: 
     true
   summary_output_rate: 
-    10
+    100
   visualize: 
-    false
+    true
   entity_stats: 
-    false
+    true
   degree_distributions: 
     true            # set this to true, will print after simulation has finished
   tweet_analysis: 
-    false
+    true
   retweet_visualization:
-    false
+    true
   main_statistics:
     true
 

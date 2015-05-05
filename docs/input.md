@@ -222,21 +222,24 @@ visualize:
   true
 ```
 
-If *true* a simulation will produce two additional files in the output directory, *network.dat* and *network.gexf*.
+If *true* a simulation will produce two additional files in the output directory, *network.dat* and *network.gexf*. *network.dat* contains two columns, where the entities in the first column are following the entities in the second column. *network.gexf*
+is a file which can be used to visualize smulated networks on programs like [Gephi](http://gephi.github.io/).
 
 ```python
 entity_stats:
   true
 ```
 
-
+If *true*, a simulation will produce additional files in the output directory named after the particular entity types within the simulation as *entitytype_info.dat* (e.g. the presence of a Standard entity type will produce a file labelled *Standard_info.dat*).
+Within this file can be found !!!!!!!!!!!!!!!
 
 ```python
 degree_distributions:
   true
 ```
 
-
+If *true*, the in, out, and cumulative degree distributions will be produced in the output directory for each simulated month, as, in the case of the zeroth month, in-degree_distribution_month_000.dat, out-degree_distribution_month_000.dat, and
+cumulative-degree_distribution_month_000.dat respectively.
 
 ```python
 tweet_analysis:
@@ -250,7 +253,7 @@ retweet_visualization:
   true
 ```
 
-
+If *true*, a simulation will produce an additional file titled *retweet_viz.gexf*, which can be used to visualize the most retweeted tweets on programs such as [Gephi](http://gephi.github.io/).
 
 ```python
 main_statistics:
