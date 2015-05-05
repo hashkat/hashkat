@@ -269,14 +269,16 @@ tweet_ranks:
   thresholds: {bin_spacing: linear, min: 10, max: 300, increment: 10}
 ```
 
-
+Serves as a way to organize and categorize tweets in bins. The *bin_spacing* can be linear, quadratic, or cubic, and the can have an arbitrary minimum, maximum, and increment value. In the above case, entities with 10 or less tweets will be stored on a list in the
+intitial bin. If some of these entities continue to tweet, and end up having a total number of tweets greater than 10 but less than 20, they will move to the next bin. If their total number of tweets increases to a value greater than 20 but less than 30, they will
+then move on to the next bin, and so on, until they have reached a value of 300 tweets, where they shall remain.
 
 ```python
 retweet_ranks:
   thresholds: {bin_spacing: linear, min: 10, max: 300, increment: 10}
 ```
 
-
+Serves the exact same purpose as *tweet_ranks*, but for retweets.
 
 ```python
 follow_ranks:
@@ -284,7 +286,7 @@ follow_ranks:
   weights:    {bin_spacing: linear, min: 1, max: 100000, increment: 1}
 ```
 
-
+Similar to *tweet_ranks* and *retweet_ranks*, *follow_ranks* serves to categorize and organize based on follows. However, an additional factor is taken into consideration, the bin weights.!!!!!!!!!!!!!!
 
 ## tweet observations
 
@@ -353,7 +355,7 @@ N_BIN_IDEOLOGIES specified in config_static.h.
 ```
 
 This sections outlines the regions in which you would like your entities to be located. You can have as many as you want, though it is important to remember that the number of remember that the number of regions must be equal or less than the value of 
-N_BIN_REGIONS in config_static.h. *add_weight* corresponds to the probability that the entity added to the network is from that region, and is weighted with respect to those of the other inputted regions. The *entity_class_weights* corresponds to !!!!!!!!!!!!
+N_BIN_REGIONS in config_static.h. *add_weight* corresponds to the probability that the entity added to the network is from that region, and is weighted with respect to those of the other inputted regions.
 The *ideology_weights* are the possible ideologies that an entity from that region can have, and are weighted with respect to one another. Similar to the *ideology_weights*, the *language_weights* are the possible languages that an entity from that region can speak,
 and are also weighted with respect to each other.
 
@@ -421,9 +423,12 @@ The *follow_reaction_prob* relates to the probability that an entity will follow
 ```
 
 In this section one can identify the types of entities with which to include in their simulation. Under weights we can see *add* which correlates to the probability that the type of entity will be the one added to the network,
-weighted againts the other types of entities. The value inputted into *follow* will be the probability, weighted against the other entity types, in which this entity is followed in the entity follow model by other entities.
+weighted against the other types of entities. The value inputted into *follow* will be the probability, weighted against the other entity types, in which this entity is followed in the entity follow model by other entities.
 *tweet_type* summarizes the weighted probabilities that the content of an entity of this type's tweet will be ideological, plain, musical, or humourous. The *follow_back* probability is the probability that following an entity of this type
-will result in that entity following you back.!!!!!!!!!!  
+will result in that entity following you back. The *hashtag_follow_options* are useful for a hashtag follow model, where entities follow other entities based on the hashtags associated with their tweets. In this follow model, if *care_about_region* is set to *true*, 
+then entities will only follow other entities that live in the same region as them, while this won't matter to them if set to *false*. If *care_about_ideology* is set to *true*, then entities will only follow other entities that share the same ideology as them,
+while this won't matter to them if set to false. It is important to note that *use_hashtag_probability* in the **analysis** section must be set to a value greater than zero for this to work, or else no one will be implementing hastags into their tweets.
+The *follow* and *tweet* rates are the rates in which entities of this particular type will follow and tweet with respect to simulated minues respectively. It works in the exact same manner as the add rate outlined in the **rates** section.
 
 ## Commands
 
