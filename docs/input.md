@@ -17,7 +17,7 @@ initial_entities:
   20
 ```
 
-Entities correspond to Twitter users on the network. The *initial_entities* are therefore the initial Twitter users you will have at the start of the simulation. As we can see, in DEFAULT.yaml, this value is 20.
+Entities correspond to Twitter users on the network. The *initial_entities* are therefore the initial Twitter users you will have at the start of the simulation. As we can see, in the above case, this value is 20.
 
 ```python
 max_entities:
@@ -31,7 +31,7 @@ max_time:
   hour
 ```
 
-The *max_time* variable coincides with the maximum simulation time in which you want the simulation to run. Once this simulated time has been reached, the simulation ends. This time is in minutes, and as we can see for DEFAULT.yaml, has a value of 1 hour or 60 minutes.
+The *max_time* variable coincides with the maximum simulation time in which you want the simulation to run. Once this simulated time has been reached, the simulation ends. This time is in minutes, and as we can see for this case, has a value of 1 hour or 60 minutes.
 Note that interacting with the simulation has no impact on the simulation time.
 
 ```python
@@ -46,7 +46,7 @@ max_real_time:
   hour
 ```
 
-*max_real_time* is the maximumreal itme in which you want the smulaiton to run. Once this actual time has elapsed, the simulation ends. This time is also in minutes, and in the DEFAULT.yaml file has a value of 1 hour or 60 minutes. It is important to note that as
+*max_real_time* is the maximumreal itme in which you want the smulaiton to run. Once this actual time has elapsed, the simulation ends. This time is also in minutes, and in the above example has a value of 1 hour or 60 minutes. It is important to note that as
 opposed to the simulated time, interacting with the simulation does affect the real time. 
 
 ```python
@@ -76,14 +76,16 @@ use_barabasi:
   false
 ```
 
-Input *true* into *use_barabsi* for a preferential model simulation, input *false* otherwise. Will be discussed in greater detail later.
+Input *true* into *use_barabasi* for a simulation of the [Barabasi-Albert model](http://en.wikipedia.org/wiki/Barab%C3%A1si%E2%80%93Albert_model) when using a twitter-preferential, preferential-entity, or twitter (that implements either of the two previous) follow
+models. Input *false* to prevent this.
 
 ```python
 barabasi_connections: # number of connections we want to make when use_barabassi == true
   100
 ```
 
-
+*barabasi_connections* outline the number of follows an entity will make when added to the network when *use_barabassi == true*. For a classic Barabasi-Albert model, set this value equal to 1. For a non-classic Barabasi-Albert model, set this value another value
+greater than 1.
 
 ```python
 barabasi_exponent:
@@ -139,7 +141,7 @@ use_hashtag_probability:
   1
 ```
 
-The probability of a tweet containing a # from 0 to 1. As we can see in DEFAULT.yaml, the probability of using a # is 1, so every tweet will contain a #.
+The probability of a tweet containing a # from 0 to 1. As we can see in this example, the probability of using a # is 1, so every tweet will contain a #.
 
 ##rates
 
