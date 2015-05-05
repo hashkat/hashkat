@@ -430,18 +430,3 @@ then entities will only follow other entities that live in the same region as th
 while this won't matter to them if set to false. It is important to note that *use_hashtag_probability* in the **analysis** section must be set to a value greater than zero for this to work, or else no one will be implementing hastags into their tweets.
 The *follow* and *tweet* rates are the rates in which entities of this particular type will follow and tweet with respect to simulated minues respectively. It works in the exact same manner as the add rate outlined in the **rates** section.
 
-## Commands
-
-* `~[2] mkdocs new [dir-name]` - Create a new project.
-* `mkdocs serve` - Start the live-reloading docs server.
-* `mkdocs build` - Build the documentation site.
-* `mkdocs help` - Print this help message.
-
-To launch #k@, we use the run command
-
-`./run.sh`
-
-The run command can take several command line arguements 
-
-`./run.sh --build`
-
