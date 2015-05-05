@@ -6,7 +6,7 @@
 
 A brief explanation on how to restart a network, this tutorial should take approximately 10 minutes to complete.
 
-## Running a new simulation
+## Running a New Simulation
 
 At the end of Tutorial 1, we had run a simple network simulation and studied its output. You now have the knowledge to run your own simple networks and analysis of those networks.
 However, you will find that after modifying INFILE.yaml to your own specifications, and typing the commands to run the simulation:
