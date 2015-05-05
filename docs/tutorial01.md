@@ -26,11 +26,11 @@ all multiplied by the number of user in the network.
 At a simulated time of 0, a random number is generated. Depending on this
 number's value, it will either cause a user to be added into the network,
 a random user to tweet, a random user to follow another random user, or a
-random user to retweet a tweet from another user.**R** will then change
-accordingly.  Another random number *x* will then be generated,
+random user to retweet a tweet from another user. **R** will then change
+accordingly.  Another random number *u* will then be generated,
 and time will move forward by:
 
-&Delta;t = ln(1/x) / **R**
+&Delta;t = -ln(u) / **R**
 
 All of the rate functions will then be recalibrated to their new values and
 this cycle will repeat until either the maximum simulation time or real time
