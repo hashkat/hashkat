@@ -4,11 +4,9 @@
 
 # Input
 
-In this tutorial we will cover the input through which a user can manipulate for their own ends in #k@. This tutorial should take approximately 90 minutes to complete
+This page serves as a reference for users working with the input file INFILE.yaml. This page goes through every aspect of the file in which users can manipulate.
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/4X063IPFzM4" frameborder="0" allowfullscreen></iframe>
-
-The main file through which users will use for input is INFILE.yaml. A default version which users can use for reference is DEFAULT.yaml. We will go through each line of input in DEFAULT.yaml to ensure that the user knows all the options at their disposal.
 
 ## analysis
 
@@ -282,7 +280,6 @@ N_BIN_IDEOLOGIES specified in config_static.h.
     add_weight: 1
 
     preference_class_weights: {StandardPref: 100}
-    entity_class_weights: {Standard: 100}
     ideology_weights: {Red: 100, Blue: 100}
     language_weights: {English: 50, French: 25, French+English: 25}
 ```
