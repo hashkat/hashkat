@@ -36,7 +36,9 @@ All of the rate functions will then be recalibrated to their new values and
 this cycle will repeat until either the maximum simulation time or real time
 has been reached.
 
-##Running a Simple Network
+## The *hashkat* Directory
+
+## Running a Simple Network
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/-NQmVRzHX44" frameborder="0" allowfullscreen></iframe>
 
@@ -108,4 +110,4 @@ There is also the 'output' directory, which contains all the data you've
 accummulated through simulation necessary for analysis. We shall discuss
 these files below.
 
-##Output of a Simple Network
+## Output of a Simple Network
