@@ -92,7 +92,7 @@ barabasi_exponent:
   1
 ```
 
-
+The order of the degrees within the network, the *barabasi_exponent* is normally kept to 1 for the most realistic simulated network.
 
 ```python
 use_random_time_increment:
@@ -113,14 +113,14 @@ follow_model:
   random
 ```
 
-The *follow_model* determines the manner in which entities choose who to follow. This will definitely definitely be confered in much greater detail later. The input options for follow_model are: *random*, *preferential*, *entity*,
+The *follow_model* determines the manner in which entities choose who to follow. This will definitely definitely be confered in much greater detail later. The input options for follow_model are: *random*, *twitter_preferential*, *entity*,
 *preferential-entity*, *hashtag*, and *twitter*.
 
 ```python  
-model_weights: {random: 0.20, preferential: 0.20, entity: 0.20, preferential_entity: 0.20, hashtag: 0.20}
+model_weights: {random: 0.20, twitter_preferential: 0.20, entity: 0.20, preferential_entity: 0.20, hashtag: 0.20}
 ```
 
-*model_weights* are only relevant when using the *twitter* follow model. Will be elaborated on later.
+*model_weights* are only relevant when using the *twitter* follow model. The *twitter* model is a combination of all the other follow models, so weigh each follow model to your choice proportion to produce a very complex system.
 
 ```python
 stage1_unfollow:
@@ -164,37 +164,100 @@ where the y-intercept is the initial arbitrary value of entities added to the ne
 
 ## output
 
+This section of the program outlines what is present in the output directory once the simulation is concluded. To acquire as much data as possible, it is recommended to initally set all these to *true*, and to input *false* to whatever you don't need after more 
+experience running simulations.
+
 ```python
-output:
-  save_network_on_timeout:
-    false
-  load_network_on_startup:
-    false
-  ignore_load_config_check:
-    false
-  save_file:
-    network_state.sav
-  stdout_basic:
-    true
-  stdout_summary:
-    true
-  summary_output_rate:
-    1
-  visualize:
-    true
-  entity_stats:
-    true
-  degree_distributions:
-    true
-  tweet_analysis:
-    true
-  retweet_visualization:
-    false
-  main_statistics:
-    true
+save_network_on_timeout:
+  true
 ```
 
-This section of the program outlines what is present in the output directory once the simulation is concluded. It is recommended to leave these settings as they are.
+If *true* all of the simulated network data will be stored in the *save_file* outlined below.
+
+```python
+load_network_on_startup:
+  true
+```
+
+If *true* all of the simulated network data within the save file will be loaded from when the simulated commenced
+
+```python
+ignore_load_config_check:
+  true
+```
+
+If *true*, allows you to load a network from the save file and continue the simulation using an input file with differing parameters. Setting this to *false* will prevent you from doing this.
+
+```python
+save_file:
+  network_state.sav
+```
+
+Determines the file where all the simulated data is saved to.
+
+```python
+stdout_basic:
+  true
+```
+
+If *true* the number of simulated months through a simulation will be displayed on the screen and a message will be printed to the screen once the simulation has finished.
+
+```python
+stdout_summary:
+  true
+```
+
+If *true*, the length of simulated time (in minutes), the number of entities, follows, tweets, retweets, cummulative rate function **R**, and the real time that has elapsed will be displayed on the screen throughout the simulation's run. The intervals at which
+this information is changed and displayed is determined by the *summary_output_rate* discussed below.
+
+```python
+summary_output_rate:
+  100
+```
+
+This value corresponds to the number of step intervals in the KMC loop where *stdout_summary* information is updated and displayed on the screen.
+
+```python
+visualize:
+  true
+```
+
+If *true* a simulation will produce two additional files in the output directory, *network.dat* and *network.gexf*.
+
+```python
+entity_stats:
+  true
+```
+
+
+
+```python
+degree_distributions:
+  true
+```
+
+
+
+```python
+tweet_analysis:
+  true
+```
+
+
+
+```python
+retweet_visualization:
+  true
+```
+
+
+
+```python
+main_statistics:
+  true
+```
+
+
 
 ## ranks
 
