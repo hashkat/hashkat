@@ -81,7 +81,9 @@ by an ID number).
 
 `network.gexf`
 
-
+*network.gexf* is a file that can be used to vizualize the connections
+between users on your network using visualization software such as
+[Gephi](http://gephi.github.io/).
 
 `out-degree_distribution_month_000.dat`
 
@@ -97,9 +99,12 @@ normalized probability logarithm in columns in that order.
 
 
 
-`Standard_info.dat`
+`entitytype_info.dat`
 
-
+Present and named for every single entity type in the network (e.g. 'Standard'
+entity type would have a file named *Standard_info.dat*). Outlines the
+possible total number of degrees for entites of this type, as well as each
+degrees' respective !!!!!!!!!!! 
 
 `tweets_distro.dat`
 
