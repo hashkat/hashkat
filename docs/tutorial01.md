@@ -127,7 +127,32 @@ Going into the output directory and viewing its contents by inputting the comman
 
 one can see all the information collected from this simple network simulation. Let's
 look at some of this data.
-Information on each one of these output files can be found in much greater detail
-on the 'Output' page
+Going into our *main_stats.dat* file by typing in the command
+
+`nano main_stats.dat`
+
+we can the see the primary data compiled from our simulation. We can also use gnuplot to
+plot the in-degree, out-degree, and cumulative-degree distributions for each simulated months
+for all the entities. An entity's in-degree is the number of entities following them, while its
+out-degree is the number of entities its following, and the cumulative-degree is the sum of these
+two values. Let's plot!
+
+To access gnuplot, type in the command:
+
+`gnuplot`
+
+To plot the in-degree distributions for *month001*, with appropriate axis labels and a title, type in
+the following:
+
+`set title 'Month 001 - In-Degree Distribution'`
+
+`set xlabel 'k'`
+
+`set ylabel 'P(k)'`
+
+`plot 'in-degree_distribution_month_001.dat' title ''`
+
+
+
 
 
