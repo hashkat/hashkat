@@ -51,7 +51,7 @@ implement into your network. A detailed description of every single one
 of these configurations can be found on the 'Input' page. For this tutorial,
 it is only necessary to know that we have a constant number of entities 
 or users in this network, 1000, and that the simulation will run for 100,000
-simulated units of time  and a maximum of 1 minute real time.
+simulated minutes and a maximum of 1 minute real time.
 
 Run the simulation. If you experience any issues running the simulation,
 you can reference the installation page for details on running a simulation
@@ -133,7 +133,11 @@ we can the see the primary data compiled from our simulation. We can also use gn
 plot the in-degree, out-degree, and cumulative-degree distributions for each simulated months
 for all the entities. An entity's in-degree is the number of entities following them, while its
 out-degree is the number of entities its following, and the cumulative-degree is the sum of these
-two values. Let's plot!
+two values. The entities in this simulation were configured to  have a follow rate of 0.0001,
+which basically means that in a simulation 100,000 simulated minutes long, each entity will follow
+around 10 users, and be followed by about 10 users. So we can therefore expect most entities to
+have an in-degree magnitude of 10, an out-degree magnitude of 10, and a cumlative-degree
+magnitude of 20. Let's plot and see!
 
 To access gnuplot, type in the command:
 
@@ -163,13 +167,16 @@ Repeating these steps in a similar fashion for the ou-degree an d cumulative-deg
 
 ![Cumulative Degree Distribution](/img/tutorial01/cumulative-degree_distribution_month_002.svg =1x  "Cumulative Degree Distribution")
 
+As expected, most entities have an in-degree of 10, an out-degree of 10, and a cumulative degree of
+20.
+
 Note that you can save your plots as .svg files by typing in the commands
 
 `set term svg`
 
 `set output 'filename.svg'`
 
-when you first start up gnuplot and prior to actually plot the data.
+when you first start up gnuplot and prior to actually plotting the data.
 
 ## Visualization
 
