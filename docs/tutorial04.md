@@ -4,22 +4,18 @@
 
 # The Random Follow Model
 
-This tutorial should take approximately 90 minutes to complete
-
 As the name implies, a random follow model is one in which the entities in which a twitter user follows is totally arbitrary.
-Let's work through two simulations of a random follow model, one with no retweets, and the other allowing retweets.
+You've already had some experience working with the random follow model, the simple network we created in Tutorial 1 implemented it,
+but in this tutorial we are going to go into this model in much more detail. This tutorial should take approximately 30 minutes to complete.
 
-## Example - No Retweets
+All the files that we use in this simulation can be found in the examples directory in hashkat, under the title *tutorial04*.
+You can also view the input file we will be using for this example [here](https://github.com/hashkat/hashkat/blob/master/examples/Random_Graph/INFILE.yaml).
 
-You can view the input file for this example [here](https://github.com/hashkat/hashkat/blob/master/examples/Random_Graph/INFILE.yaml).
-
-For simplicity both tweeting and retweeting have been neglected in this
-simulation. It is important to note that the maximum simulation time of this
-example is 100,000 simulated minutes and that the entity follow rate is 0.0001.
-Therefore, we can expect most entities to have an in-degree and out-degree
-distribution of 10 and a cumulative degree distribution of 20. Running this
-simulation, we have produced the following data for the second month of
-simulation time using gnuplot:
+Though the simple network we created in Tutorial 1 served as a quick and easy way to introduce one to #k@, the network we created from this
+simulation was nowhere near to realistic. *Followback*, the ability for an entity to follow an entity who followed them, was turned off,
+entities were prevented from unfollowing anyone, all the entites in Ontario spoke only English, while all the entities in Quebec spoke only
+French, the entities were all the same type, and most importantly, none of the entities were able to tweet or retweet. For this lesson,
+that is all going to change.
 
 #### In Degree Distribution
 
