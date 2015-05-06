@@ -167,4 +167,27 @@ Note that you can save your plots as .svg files by typing in the commands
 
 `set term svg`
 
+`set output 'filename.svg'`
+
 when you first start up gnuplot and prior to actually plot the data.
+
+## Visualization
+
+You can also use this data you collected to visualize your simulated network. Using [Gephi](http://gephi.github.io/), open the graph
+file *network.gexf* found in the output directory of your simulation. Press 'OK' for the 'Import report' window that pops up,
+and you will now see a rough outline of your network. Under the 'Partition' subheading on the left side of the page,
+press the refresh symbol, and choose the partition parameter 'Label' and click 'Apply'. You are now free to choose a layout
+for this network directly below the 'Apply' button you just pushed, and can run it for a few seconds. The following visualization
+was made using the 'Fruchterman Reingold' layout:
+
+## Next Steps
+
+You have now completed your first tutorial using #k@, where you ran a simple network simulation, studied its output, and visualized it. 
+Feel free to move on to the next tutorial, where we will discuss restarting a network. The input file used for this tutorial can be
+found in the examples directory under tutorial01, so don't worry about changing the INFILE.yaml file in the hashkat directory, this is
+encouraged! It is important to note that to get more refined graphs for your in-degree, out-degree, and cumulative-degree
+distributions, you must have more entities present during your simulation. However, doing so will make it more difficult for
+[Gephi](http://gephi.github.io/) to visualize your network, so take that into consideration when configuring your network
+input file. 
+
+Feel free to move on to the next tutorial, where we will discuss restarting a network.
