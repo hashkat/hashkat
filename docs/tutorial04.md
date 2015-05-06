@@ -19,11 +19,11 @@ You can also view the input file we will be using for this example [here](https:
 
 As you can see in this input file, we have
 
-![In Degree Distribution](/img/random_example/no_retweet_in.svg =1x  "In Degree Distribution")
+![In Degree Distribution](/img/tutorial04/in-degree_distribution_month_000.svg =1x  "In Degree Distribution")
 
-![Out Degree Distribution](/img/random_example/no_retweet_out.svg =1x  "Out Degree Distribution")
+![Out Degree Distribution](/img/tutorial04/out-degree_distribution_month_000.svg =1x  "Out Degree Distribution")
 
-![Cumulative Degree Distribution](/img/random_example/no_retweet_cumulative.svg =1x  "Cumulative Degree Distribution")
+![Cumulative Degree Distribution](/img/tutorial04/cumulative-degree_distribution_month_000.svg =1x  "Cumulative Degree Distribution")
 
-![Visualization](/img/random_example/no_retweet_visualization.svg =1x  "Visulaization")
+![Visualization](/img/tutorial04/visualization.png =1x  "Visualization")
 
