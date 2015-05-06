@@ -187,8 +187,8 @@ struct Analyzer {
     }
 
     bool real_time_check() {
-        const int SECOND_TO_MICROSECOND = 1000000LL;
-        return (max_sim_timer.get_microseconds() < (config.max_real_time * SECOND_TO_MICROSECOND));
+        const int MINUTE_TO_MICROSECOND = 60*1000000LL;
+        return (max_sim_timer.get_microseconds() < (config.max_real_time * MINUTE_TO_MICROSECOND));
     }
     void interrupt_reset() {
         SIGNAL_ATTEMPTS = 0;
