@@ -36,8 +36,6 @@ All of the rate functions will then be recalibrated to their new values and
 this cycle will repeat until either the maximum simulation time or real time
 has been reached.
 
-## The *hashkat* Directory
-
 ## Running a Simple Network
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/-NQmVRzHX44" frameborder="0" allowfullscreen></iframe>
@@ -52,8 +50,8 @@ In this file, you will see all the different configurations which you can
 implement into your network. A detailed description of every single one
 of these configurations can be found on the 'Input' page. For this tutorial,
 it is only necessary to know that we have a constant number of entities 
-or users in this network, 10,000, and that the simulation will run for 100,000
-simulated minutes and a maximum of 1 minute real time.
+or users in this network, 1000, and that the simulation will run for 100,000
+simulated seconds and a maximum of 1 minute real time.
 
 Run the simulation. If you experience any issues running the simulation,
 you can reference the installation page for details on running a simulation
@@ -64,22 +62,22 @@ outputted to the screen:
 
 Time | Users | Follows | Tweets | Retweets | Unfollows | R | Time (s)
 --- | --- | --- | --- | --- | --- | --- | ---
-4.01e+04 | 1.00e+04 | 4.02e+05 | 0.00e+00 | 0.00e+00(0.00e+00) | 0.00e+00 | 1.00e+01 | 6.14e-01
+9.93e+04 | 1.00e+03 | 1.00e+04 | 0.00e+00 | 0.00e+00(0.00e+00) | 0.00e+00 | 1.00e+01 | 2.23e+00
 
 This gives a list of data at a particular point in your simulation.
-**Time** corresponds to simulation time in minutes, **Users** corresponds to the number
+**Time** corresponds to simulation time in seconds, **Users** corresponds to the number
 of users or entities in the network at the point in the simulation, 
 **Follows** show the number of follows that have occurred, **Tweets** displays
 the number of tweets that have been made, **Retweets** shows the number of
 retweets and in brackets beside it the number of active tweets (tweets that can be retweeted),
  **Unfollows** displays the number of unfollows, **R** is the
 cumulative rate function, and **Time (s)**which is the length of real time
-that this part of the simulation has occurred.
+that this part of the simulation has occurred in seconds.
 
-So as we can see from the above example, at a simulated time of 40,100 minutes,
-there were 10,000 users in the network, 402,000 follows, 0 tweets, 0
+So as we can see from the above example, at a simulated time of 99,300 seconds,
+there were 1,000 users in the network, 10,000 follows, 0 tweets, 0
 retweets, and 0 unfollows had occurred, the cumulative rate function was 10,
-and the real time that had elapsed was 0.614 seconds.
+and the real time that had elapsed was 2.23 seconds.
 
 Once the simulation has concluded, the amount of time that the total analysis
 took will be displayed on the screen in milliseconds, just below a chart
@@ -141,18 +139,32 @@ To access gnuplot, type in the command:
 
 `gnuplot`
 
-To plot the in-degree distributions for *month001*, with appropriate axis labels and a title, type in
-the following:
+To plot the in-degree distributions for *month002*, which contains the most up to date data, with appropriate axis labels and a title,
+type in the following:
 
-`set title 'Month 001 - In-Degree Distribution'`
+`set title 'In-Degree Distribution'`
 
 `set xlabel 'k'`
 
 `set ylabel 'P(k)'`
 
-`plot 'in-degree_distribution_month_001.dat' title ''`
+`plot 'in-degree_distribution_month_002.dat' title ''`
 
+Giving us:
 
+![In Degree Distribution](/img/tutorial01/in-degree_distribution_month_002.svg =1x  "In Degree Distribution")
 
+where *k* is the number of degrees or followers an entity has, and *P(k)* is the probability that an entity would have that many
+degrees/followers.
 
+Repeating these steps in a similar fashion for the ou-degree an d cumulative-degree distributions gives us:
 
+![Out Degree Distribution](/img/tutorial01/out-degree_distribution_month_002.svg =1x  "Out Degree Distribution")
+
+![Cumulative Degree Distribution](/img/tutorial01/cumulative-degree_distribution_month_002.svg =1x  "Cumulative Degree Distribution")
+
+Note that you can save your plots as .svg files by typing in the commands
+
+`set term svg`
+
+when you first start up gnuplot and prior to actually plot the data.
