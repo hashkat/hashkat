@@ -43,7 +43,7 @@ analysis:
   max_entities: 
     10000     # 1 million max users
   max_time: 
-    50000
+    50
   max_analysis_steps: 
     unlimited
   max_real_time: 
