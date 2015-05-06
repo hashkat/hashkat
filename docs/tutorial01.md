@@ -51,7 +51,7 @@ implement into your network. A detailed description of every single one
 of these configurations can be found on the 'Input' page. For this tutorial,
 it is only necessary to know that we have a constant number of entities 
 or users in this network, 1000, and that the simulation will run for 100,000
-simulated seconds and a maximum of 1 minute real time.
+simulated units of time  and a maximum of 1 minute real time.
 
 Run the simulation. If you experience any issues running the simulation,
 you can reference the installation page for details on running a simulation
@@ -62,7 +62,7 @@ outputted to the screen:
 
 Time | Users | Follows | Tweets | Retweets | Unfollows | R | Time (s)
 --- | --- | --- | --- | --- | --- | --- | ---
-9.93e+04 | 1.00e+03 | 1.00e+04 | 0.00e+00 | 0.00e+00(0.00e+00) | 0.00e+00 | 1.00e+01 | 2.23e+00
+9.93e+04 | 1.00e+03 | 1.00e+04 | 0.00e+00 | 0.00e+00(0.00e+00) | 0.00e+00 | 1.00e-01 | 2.25e+00
 
 This gives a list of data at a particular point in your simulation.
 **Time** corresponds to simulation time in seconds, **Users** corresponds to the number
@@ -76,8 +76,8 @@ that this part of the simulation has occurred in seconds.
 
 So as we can see from the above example, at a simulated time of 99,300 seconds,
 there were 1,000 users in the network, 10,000 follows, 0 tweets, 0
-retweets, and 0 unfollows had occurred, the cumulative rate function was 10,
-and the real time that had elapsed was 2.23 seconds.
+retweets, and 0 unfollows had occurred, the cumulative rate function was 0.1,
+and the real time that had elapsed was 2.25 seconds.
 
 Once the simulation has concluded, the amount of time that the total analysis
 took will be displayed on the screen in milliseconds, just below a chart
@@ -178,7 +178,9 @@ file *network.gexf* found in the output directory of your simulation. Press 'OK'
 and you will now see a rough outline of your network. Under the 'Partition' subheading on the left side of the page,
 press the refresh symbol, and choose the partition parameter 'Label' and click 'Apply'. You are now free to choose a layout
 for this network directly below the 'Apply' button you just pushed, and can run it for a few seconds. The following visualization
-was made using the 'Fruchterman Reingold' layout:
+was made using the 'Fruchterman Reingold' and 'Clockwise Rotate' layout:
+
+![Visualization](/img/tutorial01/visualization.png =1x  "Visualization")
 
 ## Next Steps
 
