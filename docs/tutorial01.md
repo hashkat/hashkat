@@ -5,7 +5,7 @@
 # Getting Started
 
 An introduction to the #k@ project, this tutorial will take approximately
-30 minutes to complete.
+40 minutes to complete.
 
 ## What is a Social Network?
 

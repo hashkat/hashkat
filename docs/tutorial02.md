@@ -42,3 +42,9 @@ to continue this simulation from where you left off, simply type in:
 `hashkat`
 
 again and the simulation will recommence running.
+
+## Next Steps
+
+With the completion of this second tutorial using #k@, you are now familiar with restarting the
+basic networks you learned how to create in Tutorial 1. Proceed to the next tutorial for a lesson
+on dealing with error messages.
