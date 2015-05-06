@@ -43,11 +43,11 @@ analysis:
   max_entities: 
     1000     # 1 million max users
   max_time: 
-    100000
+    10000
   max_analysis_steps: 
     unlimited
   max_real_time: 
-    240*hour*5        # 10 days         
+    1                 
   enable_interactive_mode:
     false
   enable_lua_hooks: # Defined in same file as interactive_mode. Can slow down simulation considerably.
@@ -73,7 +73,7 @@ analysis:
   stage1_unfollow: 
     false
   unfollow_tweet_rate: 
-    100
+    10000
   use_hashtag_probability:
     0.5    # 50 % chance of using a hashtag
 
@@ -170,7 +170,7 @@ tweet_observation: # 'Omega'
    density_function: 
        2.45 / (x)**1.1 
    x_start: 
-       5
+       1
    x_end: 
        600
    initial_resolution: 

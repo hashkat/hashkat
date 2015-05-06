@@ -28,26 +28,6 @@ The twitter follow model is a combination of all the above models, with each mod
 
 
 
-## Example - Retweets
-
-
-
-#### In Degree Distribution
-
-
-
-#### Out Degree Distribution
-
-
-
-#### Cumulative Degree Distribution
-
-
-
-#### Visualization
-
-
-
 <iframe width="420" height="315" src="https://www.youtube.com/embed/g2QeKQ9yXy0" frameborder="0" allowfullscreen></iframe>
 
 ## Commands
