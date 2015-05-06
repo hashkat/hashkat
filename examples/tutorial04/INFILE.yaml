@@ -43,11 +43,11 @@ analysis:
   max_entities: 
     1000     # 1 million max users
   max_time: 
-    5000
+    1000
   max_analysis_steps: 
     unlimited
   max_real_time: 
-    240*hour*5        # 10 days         
+    5                 
   enable_interactive_mode:
     false
   enable_lua_hooks: # Defined in same file as interactive_mode. Can slow down simulation considerably.
@@ -63,7 +63,7 @@ analysis:
   use_random_time_increment: 
     true
   use_followback: 
-    false        # followback turned on, from literature it makes sense for a realistic system
+    true        # followback turned on, from literature it makes sense for a realistic system
   follow_model: # See notes above
     random
   # model weights ONLY necessary for follow method 'twitter'  
@@ -73,7 +73,7 @@ analysis:
   stage1_unfollow: 
     false
   unfollow_tweet_rate: 
-    100
+    10000
   use_hashtag_probability:
     0.5    # 50 % chance of using a hashtag
 
@@ -84,7 +84,7 @@ analysis:
 #################################################################
 
 rates:
-  add: {function: constant, value: 0.0}  # found from experiment
+  add: {function: constant, value: 0.0}
 
 #################################################################
 # >> output:
@@ -107,7 +107,7 @@ output:
   stdout_summary: 
     true
   summary_output_rate: 
-    100
+    1
   visualize: 
     true
   entity_stats: 
@@ -127,12 +127,12 @@ output:
 #################################################################
 
 tweet_ranks: 
-  thresholds: {bin_spacing: linear, min: 10, max: 300, increment: 10}
+  thresholds: {bin_spacing: linear, min: 10, max: 500, increment: 10}
 retweet_ranks:
-  thresholds: {bin_spacing: linear, min: 10, max: 300, increment: 10}
+  thresholds: {bin_spacing: linear, min: 10, max: 500, increment: 10}
 follow_ranks:
-  thresholds: {bin_spacing: linear, min: 0, max: 540000, increment: 1}    # for preferential following
-  weights:    {bin_spacing: linear, min: 1, max: 540001, increment: 1}
+  thresholds: {bin_spacing: linear, min: 0, max: 1000, increment: 1}    # for preferential following
+  weights:    {bin_spacing: linear, min: 1, max: 1001, increment: 1}
 
 #################################################################
 # >> tweet_observation: 
@@ -220,14 +220,14 @@ regions:
 
     preference_class_weights: {StandardPref: 100}
     ideology_weights: {Red: 100, Blue: 100, Green: 100, Orange: 100}
-    language_weights: {English: 100, French: 0, Spanish: 0, French+English: 0}
+    language_weights: {English: 80, French: 20, Spanish: 0, French+English: 0}
 
   - name: Quebec
     add_weight: 5
 
     preference_class_weights: {StandardPref: 100}
     ideology_weights: {Red: 100, Blue: 100, Green: 100, Orange: 100}
-    language_weights: {English: 0, French: 100, Spanish: 0, French+English: 0}
+    language_weights: {English: 40, French: 60, Spanish: 0, French+English: 0}
 
   - name: Mexico
     add_weight: 0
@@ -272,20 +272,20 @@ preference_classes:
    tweet_transmission: 
       plain: # Also applies to musical tweets
         Standard: 0.1
-        Celebrity: 0.001
-        else: 0.001
+        Celebrity: 0.1
+        else: 0.1
       different_ideology:   # no retweeting for different ideologies
-        Standard: 0.00
-        Celebrity: 0.00
-        else: 0.00
+        Standard: 0.1
+        Celebrity: 0.1
+        else: 0.1
       same_ideology:
         Standard: 0.1
-        Celebrity: 0.001
-        else: 0.001
+        Celebrity: 0.1
+        else: 0.1
       humourous:
         Standard: 0.2
-        Celebrity: 0.002
-        else: 0.002
+        Celebrity: 0.2
+        else: 0.2
    # Probability that we will follow as a reaction.
    # Only applies to 2nd generation retweets, otherwise
    # the entity would already be a follower.
@@ -295,7 +295,7 @@ preference_classes:
  - name: NoRetweetPref
    tweet_transmission: 
       plain: # Also applies to musical tweets
-        Standard: 0.0
+        Standard: 0
         Celebrity: 0
         else: 0
       different_ideology:
@@ -327,7 +327,7 @@ entities:
   - name: Standard
     weights:
       # Weight with which this entity is created
-      add: 100.0
+      add: 70
       # Weight with which this entity is followed in entity follow
       follow: 5
       tweet_type:
@@ -338,10 +338,76 @@ entities:
     # Probability that following this entity results in a follow-back
     followback_probability: .44
     hashtag_follow_options:
-      care_about_region: true # does the entity care about where the entity they will follow is from?
+      care_about_region: false # does the entity care about where the entity they will follow is from?
       care_about_ideology: false # does the entiy care about which ideology the entity has?
     rates: 
         # Rate for follows from this entity:
-        follow: {function: constant, value: 0.001}
+        follow: {function: constant, value: 0.01}
         # Rate for tweets from this entity:
         tweet: {function: constant, value: 0.01}   #0.000256944444444 0.37 per day
+
+  - name: Celebrity
+    weights:
+      # Weight with which this entity is created
+      add: 10
+      # Weight with which this entity is followed in entity follow
+      follow: 5
+      tweet_type:
+        ideological: 1.0
+        plain: 1.0
+        musical: 1.0
+        humourous: 1.0 # Can be considered the humourousness of the entity type
+    # Probability that following this entity results in a follow-back
+    followback_probability: .44
+    hashtag_follow_options:
+      care_about_region: false # does the entity care about where the entity they will follow is from?
+      care_about_ideology: false # does the entiy care about which ideology the entity has?
+    rates:
+        # Rate for follows from this entity:
+        follow: {function: constant, value: 0.01}
+        # Rate for tweets from this entity:
+        tweet: {function: constant, value: 0.01}   #0.000256944444444 0.37 per day
+
+  - name: Bot
+    weights:
+      # Weight with which this entity is created
+      add: 10
+      # Weight with which this entity is followed in entity follow
+      follow: 5
+      tweet_type:
+        ideological: 0.0
+        plain: 1.0
+        musical: 0.0
+        humourous: 0.0 # Can be considered the humourousness of the entity type
+    # Probability that following this entity results in a follow-back
+    followback_probability: .44
+    hashtag_follow_options:
+      care_about_region: false # does the entity care about where the entity they will follow is from?
+      care_about_ideology: false # does the entiy care about which ideology the entity has?
+    rates:
+        # Rate for follows from this entity:
+        follow: {function: constant, value: 0.01}
+        # Rate for tweets from this entity:
+        tweet: {function: constant, value: 0.01}   #0.000256944444444 0.37 per day
+
+  - name: Organization
+    weights:
+      # Weight with which this entity is created
+      add: 10
+      # Weight with which this entity is followed in entity follow
+      follow: 5
+      tweet_type:
+        ideological: 0.0
+        plain: 1.0
+        musical: 0.0
+        humourous: 1.0 # Can be considered the humourousness of the entity type
+    # Probability that following this entity results in a follow-back
+    followback_probability: .44
+    hashtag_follow_options:
+      care_about_region: false # does the entity care about where the entity they will follow is from?
+      care_about_ideology: false # does the entiy care about which ideology the entity has?
+    rates:
+        # Rate for follows from this entity:
+        follow: {function: constant, value: 0.01}
+        # Rate for tweets from this entity:
+        tweet: {function: constant, value: 0.01}  
