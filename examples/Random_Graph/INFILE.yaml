@@ -43,11 +43,11 @@ analysis:
   max_entities: 
     10000     # 1 million max users
   max_time: 
-    100000
+    100*minute
   max_analysis_steps: 
     unlimited
   max_real_time: 
-    1                 
+    10000000                 
   enable_interactive_mode:
     false
   enable_lua_hooks: # Defined in same file as interactive_mode. Can slow down simulation considerably.
@@ -107,7 +107,7 @@ output:
   stdout_summary: 
     true
   summary_output_rate: 
-    100
+    1
   visualize: 
     true
   entity_stats: 
@@ -342,6 +342,6 @@ entities:
       care_about_ideology: false # does the entiy care about which ideology the entity has?
     rates: 
         # Rate for follows from this entity:
-        follow: {function: constant, value: 0.001}
+        follow: {function: constant, value: 0.0001}
         # Rate for tweets from this entity:
         tweet: {function: constant, value: 0.0}   #0.000256944444444 0.37 per day
