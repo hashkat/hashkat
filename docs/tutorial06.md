@@ -8,23 +8,7 @@ This tutorial should take approximately 90 minutes to complete
 
 An entity-based follow method is one in which entities follow a twitter user based on their entity class, though who they follow within that entity class is totally random.
 
-## Example - Retweets
 
-
-
-#### In Degree Distribution
-
-
-
-#### Out Degree Distribution
-
-
-
-#### Cumulative Degree Distribution
-
-
-
-#### Visualization
 
 
 

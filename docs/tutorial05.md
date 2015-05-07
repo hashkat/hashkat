@@ -12,58 +12,11 @@ Based on Albert-Laszlo Barabasi's research, a twitter preferential follow model 
 
 
 
-#### In Degree Distribution
-
-
-
-#### Out Degree Distribution
-
-
-
-#### Cumulative Degree Distribution
-
-
-
-#### Visualization
-
-
-
 ## Example - Non-Classic Barabasi
-
-
-
-#### In Degree Distribution
-
-
-
-#### Out Degree Distribution
-
-
-
-#### Cumulative Degree Distribution 
-
-
-
-#### Visualization
 
 
 
 ## Example - Other Twitter Preferential Models
 
-
-
-#### In Degree Distribution
-
-
-
-#### Out Degree Distribution
-
-
-
-#### Cumulative Degree Distribution
-
-
-
-#### Visualization
 
 
