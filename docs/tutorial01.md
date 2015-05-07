@@ -189,6 +189,9 @@ was made using the 'Fruchterman Reingold' and 'Clockwise Rotate' layout:
 
 ![Visualization](/img/tutorial01/visualization.png =1x  "Visualization")
 
+These two separate networks of entities generated from our simulation correspond to our English-speaking and French-speaking entities, who are
+unable to communicate with one another.
+
 ## Next Steps
 
 You have now completed your first tutorial using #k@, where you ran a simple network simulation, studied its output, and visualized it. 
