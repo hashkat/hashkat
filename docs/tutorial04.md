@@ -68,9 +68,8 @@ but they all have the same *followback_probability* of 0.44. The *hashtag_follow
 have been set to *false* for all the entity types, though this will have no impact on the simulation, only affecting those of which
 apply the hashtag follow model. The entity types all have a constant follow rate and tweet rate of 0.01 per simulated minute.
 
-![In Degree Distribution](/img/tutorial04/in-degree_distribution_month_000.svg =1x  "In Degree Distribution")
-
-![Out Degree Distribution](/img/tutorial04/out-degree_distribution_month_000.svg =1x  "Out Degree Distribution")
+Running this simulation, we have amassed similar plots and network
+simulations to those found in Tutorial 1
 
 ![Cumulative Degree Distribution](/img/tutorial04/cumulative-degree_distribution_month_000.svg =1x  "Cumulative Degree Distribution")
 
