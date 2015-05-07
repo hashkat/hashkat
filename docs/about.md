@@ -2,7 +2,7 @@
 
 <span style="color:black; font-family:Georgia; font-size:1.5em;">May 2015 - This site is currently under construction. Please return regularly over the course of the summer for further updates. </span>
 
-![hashkat logo](/img/Logo.png "#k@")
+![hashkat logo](/img/new_logo.svg "#k@")
 
 At first glance, Twitter can be viewed as nothing more than an outlet for people to connect with others and speak their mind in 140 characters or less. However, when looking closer, one can find that Twitter truly is an abundant source of information.
 Through the trending topics people are discussing, and their views on those trends, one can determine which political candidate will win the next election, the potential box office success of a new movie, company sales, etc.

@@ -1,5 +1,3 @@
-![hashkat logo](/img/Logo.png "#k@")
-
 ![hashkat logo](/img/new_logo.svg "#k@")
 
 <span style="color:black; font-family:Georgia; font-size:2em;">Welcome to the official #k@ documentation</span>
