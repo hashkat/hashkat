@@ -4,6 +4,18 @@
 
 # The Random Follow Model
 
+There are six different follow models that have been implemented into #k@, to allow greater flexibility and control in the networks the project simulates.
+The six follow models are:
+
+* Random
+* Twitter Preferential
+* Entity
+* Preferential Entity
+* Hashtag
+* Twitter
+
+Each of these follow models will be discussed and analyzed in each of their own tutorial, starting with this one, where we study the random follow model.
+
 As the name implies, a random follow model is one in which the entities in which a twitter user follows is totally arbitrary.
 You've already had some experience working with the random follow model, the simple network we created in Tutorial 1 implemented it,
 but in this tutorial we are going to go into this model in much more detail. This tutorial should take approximately 30 minutes to complete.
