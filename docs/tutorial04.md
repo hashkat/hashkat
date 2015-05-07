@@ -68,10 +68,22 @@ but they all have the same *followback_probability* of 0.44. The *hashtag_follow
 have been set to *false* for all the entity types, though this will have no impact on the simulation, only affecting those of which
 apply the hashtag follow model. The entity types all have a constant follow rate and tweet rate of 0.01 per simulated minute.
 
-Running this simulation, we have amassed similar plots and network
-simulations to those found in Tutorial 1
+Running this simulation, and analyzing our output, we can see that most
+entities have a cumulative-degree distribution of 20, as expected, and we
+can see that we have a much more complicated network of entities, with the purple nodes corresponding to the abundant Standard users, and
+the different coloured nodes corresponding to the Celebrity, Bot, and Organization type entities, which are all roughly the same quantity.
+These two separate networks of entities generated from our simulation again correspond to our English-speaking and French-speaking entities,
+with the much more denser network representing the greater number and association of English-speaking entities.
 
 ![Cumulative Degree Distribution](/img/tutorial04/cumulative-degree_distribution_month_000.svg =1x  "Cumulative Degree Distribution")
 
 ![Visualization](/img/tutorial04/visualization.png =1x  "Visualization")
 
+## Next Steps
+
+With the completion of this tutorial, we have worked with the simplest of the six types of follow models.
+Though we went through it in great detail, this example was just the tip of the iceberg of all the random follow model simulations you can
+create. Try running your own random follow model simulation different from the one outlined above, and see what you can create.
+
+When ready, move on to the next tutorial, where things get a lot more interesting and a little more complicated with the
+preferential follow model.
