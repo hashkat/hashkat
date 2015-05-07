@@ -1,9 +1,3 @@
-<div style="text-align:center" markdown="1">
-
-![hashkat logo](/img/Logo.png "#k@")
-
-</div>
-
 ![hashkat logo](/img/Logo.png "#k@")
 
 <span style="color:black; font-family:Georgia; font-size:2em;">Welcome to the official #k@ documentation</span>
