@@ -25,11 +25,33 @@ we are going to have the number of entiteies within the simulation increase over
 run for a little longer by setting  the *max_time* to 10,000. Most importantly, we're going to set *use_barabasi* to *true* causing the simulation to implement the
 Barabasi configuration. *barabasi_connections* specifies the number of connections an entity makes when entering the simulation, so for this Classic Barabasi example, we're going to set this value to 1.
 Since we are running a twitter preferential follow model, we are going to set the *follow_model* as such. In the *rates* section of the input file, we are now adding entities to the network throughout the simulation,
-so we will change the add rate value to 1.0, so that one entity will be added to the network per simulated minute. To better demonstrate the results of a twitter preferential follow model, we are only going to use
+so we will change the add rate value to 1.0, so that one entity will be added to the network per simulated minute.
+
+As mentioned in the previous tutorial, the follow ranks are essential to the twitter preferential follow model. Entities are placed into bins based on their degree or the number of followers they have.
+All the entities in the bin with threshold 0 have 0 followers, while all the entities in bin 200 have 200 followers.The weight of each bin threshold determines the probability that an entity from this bin
+will be randomly chosen to be followed in comparison to entities in other bins. The bin thresholds are linearly spacecd in increments of 1 and have a minimum value of 0 and a maximum value equal to the maximum
+number of entities within the simulation. The weights of these bins are also linearly spaced in increments of 1, and the minimum bin threshold has a weight of 1 and the maximum bin threshold has a weight
+equal to the max number of entities plus one. So the weighted probability that an entity with 10 followers will be chosen in comparison with an entity with 100 followers is 11 to 101 respectively. Therefore,
+entities with a greater number of followers have a better chance of being followed by other entities. It is very important that the max follow rank threshold be equal to or greater than the number of max entities
+within the simulation. If this number is less than that, your network simulation may give inaccurate results and the total number of followers the most popular entity has may be impossible to determine. Since the
+minimum threshold follow rank has a weight of 1, the maximum threshold follow rank musht have a weight equal to its value increased by one. 
+
+To better demonstrate the results of a twitter preferential follow model, we are only going to use
 one entity type for the simulation. Setting the add weights of the *Celebrity*, *Bot*, and *Organization* entity types will remove their presence from the network. Though it doesn't really matter, we have also
 changed the *Standard* entity type's add weight to 100, to show that 100% of the entity will be of that type, though as long as this value is greater than zero it is inconsequential since all the other
 entity types have an add weight of 0. We have also set the *Standard* entity type's follow rate to 0.0, so that the only manner in which entities are connecting with each other is through the *barabasi_connections*
 they are assigned to make and any follow backs or following through retweets that occur.
+
+Let's now run this simulation. You can plot the log-log graph of the *cumulative-degree_distribution_month_000.dat* in gnuplot, by following the same plotting steps outlined in Tutorial 1 but when plotting tying in
+the command:
+
+`plot 'cumulative-degree_distribution_month_000.dat' u 3:4 title ''`
+
+This gave us the following graph:
+
+![Cumulative Degree Distribution](/img/tutorial05_classic_barabasi/cumulative-degree_distribution_month_000.svg =1x  "Cumulative Degree Distribution")
+
+This 
 
 ![Visualization](/img/tutorial05_classic_barabasi/visualization.png =1x  "Visualization")
 
