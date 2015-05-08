@@ -51,9 +51,17 @@ This gave us the following graph:
 
 ![Cumulative Degree Distribution](/img/tutorial05_classic_barabasi/cumulative-degree_distribution_month_000.svg =1x  "Cumulative Degree Distribution")
 
-This 
+We can see that this produces a linear plot with a negative slope, which makes sense since we would expect entities with a small degree to be great number, while entities with a very large degree to
+be very small in number.
+
+A visualization of this network is shown below:
 
 ![Visualization](/img/tutorial05_classic_barabasi/visualization.png =1x  "Visualization")
+
+As we can see, we have the much more highly connected entities at the centre of the visualization, and the entities lower in degree on the sides. Looking closely in the visualization, we can see that some entities
+are not connected to anyone. How could this be? Every entity was supposed to make at least one connection in the simulation through implementation of the Clasic Barabasi configuration. The reason for this was that
+though every entity definitely attempted to make at least one connection, the entity they may have chosen to follow may have happened to speak a different language than them, resulting in them being unable to connect.
+Though easy to forget, factors such as this are integral to the shape of your network simulation, and must always be considered.
 
 ## Example - Non-Classic Barabasi
 
