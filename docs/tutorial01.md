@@ -60,9 +60,9 @@ for the first time.
 When running this program, you will see something similar to this
 outputted to the screen:
 
-Time | Users | Follows | Tweets | Retweets | Unfollows | R | Time (s)
---- | --- | --- | --- | --- | --- | --- | ---
-9.93e+04 | 1.00e+03 | 1.00e+04 | 0.00e+00 | 0.00e+00(0.00e+00) | 0.00e+00 | 1.00e-01 | 2.25e+00
+| Time | Users | Follows | Tweets | Retweets | Unfollows | R | Time (s) |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| 9.93e+04 | 1.00e+03 | 1.00e+04 | 0.00e+00 | 0.00e+00(0.00e+00) | 0.00e+00 | 1.00e-01 | 2.25e+00 |
 
 This gives a list of data at a particular point in your simulation.
 **Time** corresponds to simulation time in seconds, **Users** corresponds to the number
@@ -83,11 +83,11 @@ Once the simulation has concluded, the amount of time that the total analysis
 took will be displayed on the screen in milliseconds, just below a chart
 similar to this:
 
-| | 0 | 1 | 2
---- | --- | --- | ---
-**0** | 1.00e+02% | 0.00e+00% | 0.00e+00%
-**1** | 0.00e+00% | 1.00e+02% | 0.00e+00% 
-**2** | nan% | nan% | nan% 
+| | 0 | 1 | 2 |
+| --- | --- | --- | --- |
+| **0** | 1.00e+02% | 0.00e+00% | 0.00e+00% |
+| **1** | 0.00e+00% | 1.00e+02% | 0.00e+00% |
+| **2** | nan% | nan% | nan% |
 
 Though this will be elaborated on in greater detail later on, what this
 entails is the connections between regions. In the first row, we have the
