@@ -327,9 +327,9 @@ entities:
   - name: Standard
     weights:
       # Weight with which this entity is created
-      add: 90.0
+      add: 50
       # Weight with which this entity is followed in entity follow
-      follow: 50
+      follow: 10
       tweet_type:
         ideological: 1.0
         plain: 1.0
@@ -349,9 +349,9 @@ entities:
   - name: Celebrity
     weights:
       # Weight with which this entity is created
-      add: 10.0
+      add: 50
       # Weight with which this entity is followed in entity follow
-      follow: 50
+      follow: 90
       tweet_type:
         ideological: 1.0
         plain: 1.0
