@@ -8,23 +8,6 @@ This tutorial should take approximately 90 minutes to complete
 
 The twitter follow model is a combination of all the above models, with each model respectively weighted.
 
-## Example - No Retweets
-
-
-
-#### In Degree Distribution
-
-
-
-#### Out Degree Distribution
-
-
-
-#### Cumulative Degree Distribution 
-
-
-
-#### Visualization
 
 
 

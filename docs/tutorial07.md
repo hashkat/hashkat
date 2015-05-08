@@ -9,43 +9,6 @@ This tutorial should take approximately 90 minutes to complete
 A preferential entity follow method is exactly like the entity-based follow method, except that instead of following a random twitter user within that entity class,
 entities tend to follow twitter users within that entity class with the highest number of followers (degrees).
 
-## Example - No Retweets
-
-
-
-#### In Degree Distribution
-
-
-
-#### Out Degree Distribution
-
-
-
-#### Cumulative Degree Distribution 
-
-
-
-#### Visualization
-
-
-
-## Example - Classic Barabasi
-
-
-
-#### In Degree Distribution
-
-
-
-#### Out Degree Distribution
-
-
-
-#### Cumulative Degree Distribution
-
-
-
-##### Visualization
 
 
 
