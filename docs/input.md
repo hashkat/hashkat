@@ -12,6 +12,8 @@ This page serves as a reference for users working with the input file INFILE.yam
 
 The first section of this program is titled analysis, and it outlines what is the general focus of this simulation. Let's go over what each variable means.
 
+#### Initial Entities
+
 ```python
 initial_entities:
   20
@@ -19,12 +21,16 @@ initial_entities:
 
 Entities correspond to Twitter users on the network. The *initial_entities* are therefore the initial Twitter users you will have at the start of the simulation. As we can see, in the above case, this value is 20.
 
+#### Max Entities
+
 ```python
 max_entities:
   100001
 ```
 
 The *max_entities* are the maximum number of Twitter users that will be in the same simulation. Once this number of entities is reached, its magnitude will not increase. In this case we can see its number is 100001.
+
+#### Max Time
 
 ```python
 max_time:
@@ -34,12 +40,16 @@ max_time:
 The *max_time* variable coincides with the maximum simulation time in which you want the simulation to run. Once this simulated time has been reached, the simulation ends. This time is in minutes, and as we can see for this case, has a value of 1 hour or 60 minutes.
 Note that interacting with the simulation has no impact on the simulation time.
 
+#### Max Analysis Steps
+
 ```python
 max_analysis_steps:
   unlimited
 ```
 
 The *max_analysis_steps* are the maximum  number of steps undertaken in the KMC loop throughout the simulation. To achieve the most accurate results possible, it is recommended to keep this value at unlimited.
+
+#### Max Real Time
 
 ```python
 max_real_time:
@@ -49,12 +59,16 @@ max_real_time:
 *max_real_time* is the maximumreal itme in which you want the smulaiton to run. Once this actual time has elapsed, the simulation ends. This time is also in minutes, and in the above example has a value of 1 hour or 60 minutes. It is important to note that as
 opposed to the simulated time, interacting with the simulation does affect the real time. 
 
+#### Enable Interactive Mode
+
 ```python
 enable_interactive_mode:
   true
 ```
 
 Inputting *true* into *enable_interactive_mode* allows the user to interact with the simulation while its running. Inputting *false* into this variable prevents this. We will discuss **Interactive Mode** in much further detail later.
+
+#### Enable Lua Hooks
 
 ```python
 enable_lua_hooks:
@@ -64,12 +78,16 @@ enable_lua_hooks:
 Inputting *true* into *enable_lua_hooks* implements runtime Lua functions that can react to events such as a tweet, a retweet, a follow, etc, while inputting *false* does not. *enable_lua_hooks* is defined in the same file as interactive mode,
 though it should be noted that lua hooks will slow down the simulation immensely.
 
+#### Lua Script
+
 ```python
 lua_script:
   INTERACT.lua
 ```
 
 *lua_script* contains the script in which all the functions able for use interactive mode can be found. It is highly recommended to keep this variable as INTERACT.lua.
+
+#### Use Barabasi
 
 ```python
 use_barabasi:
@@ -79,13 +97,17 @@ use_barabasi:
 Input *true* into *use_barabasi* for a simulation of the [Barabasi-Albert model](http://en.wikipedia.org/wiki/Barab%C3%A1si%E2%80%93Albert_model) when using a twitter-preferential, preferential-entity, or twitter (that implements either of the two previous) follow
 models. Input *false* to prevent this.
 
+#### Barabasi Connections
+
 ```python
 barabasi_connections: # number of connections we want to make when use_barabassi == true
   100
 ```
 
-*barabasi_connections* outline the number of follows an entity will make when added to the network when *use_barabassi == true*. For a classic Barabasi-Albert model, set this value equal to 1. For a non-classic Barabasi-Albert model, set this value another value
+*barabasi_connections* outline the number of follows an entity will make when added to the network when *use_barabassi == true*. For a classic Barabasi-Albert model, set this value equal to 1. For a non-classic Barabasi-Albert model, set this value to another value
 greater than 1.
+
+#### Barabasi Exponent
 
 ```python
 barabasi_exponent:
@@ -94,6 +116,8 @@ barabasi_exponent:
 
 The order of the degrees within the network, the *barabasi_exponent* is normally kept to 1 for the most realistic simulated network.
 
+#### Use Random Time Increment
+
 ```python
 use_random_time_increment:
   true
@@ -101,12 +125,16 @@ use_random_time_increment:
 
 Input *true* for *use_random_time_increment* to have time increase by random values modelled by the KMC loop, or input *false* to have the simulation move by constant increments of time. Choosing either option will not have a major impact on your results.
 
+#### Use Followback
+
 ```python
 use_followback:
   true
 ```
 
 Inputting *true* into *use_followback* will allow entities to follow other entities that follow them, while inputting *false* will prevent this from happening.
+
+#### Follow Model
 
 ```python
 follow_model:
@@ -116,11 +144,15 @@ follow_model:
 The *follow_model* determines the manner in which entities choose who to follow. This will definitely definitely be confered in much greater detail later. The input options for follow_model are: *random*, *twitter_preferential*, *entity*,
 *preferential-entity*, *hashtag*, and *twitter*.
 
+#### Model Weights
+
 ```python  
 model_weights: {random: 0.20, twitter_preferential: 0.20, entity: 0.20, preferential_entity: 0.20, hashtag: 0.20}
 ```
 
 *model_weights* are only relevant when using the *twitter* follow model. The *twitter* model is a combination of all the other follow models, so weigh each follow model to your choice proportion to produce a very complex system.
+
+#### Stage1 Unfollow
 
 ```python
 stage1_unfollow:
@@ -129,12 +161,16 @@ stage1_unfollow:
 
 Inputting *true* into *stage1_unfollow*  will enable the program to flag entities in which a twitter user is following that are tweeting much more than others. These flagged entities are at risk of being unfollowed by the entity following them later in the simulation.
 
+#### Unfollow Tweet Rate
+
 ```python
 unfollow_tweet_rate:
   10
 ```
 
 The *unfollow_tweet_rate* is an integer by which, if the number of tweets by an entity exceeds this value, will cause this entitity to randomly lose one of its followers.
+
+#### Use Hashtag Probability
 
 ```python
 use_hashtag_probability:
@@ -167,12 +203,16 @@ where the y-intercept is the initial arbitrary value of entities added to the ne
 This section of the program outlines what is present in the output directory once the simulation is concluded. To acquire as much data as possible, it is recommended to initally set all these to *true*, and to input *false* to whatever you don't need after more 
 experience running simulations.
 
+#### Save Network on Timeout
+
 ```python
 save_network_on_timeout:
   true
 ```
 
 If *true* all of the simulated network data will be stored in the *save_file* outlined below.
+
+#### Load Network on Startup
 
 ```python
 load_network_on_startup:
@@ -181,12 +221,16 @@ load_network_on_startup:
 
 If *true* all of the simulated network data within the save file will be loaded from when the simulated commenced
 
+#### Ignore Load Config Check
+
 ```python
 ignore_load_config_check:
   true
 ```
 
 If *true*, allows you to load a network from the save file and continue the simulation using an input file with differing parameters. Setting this to *false* will prevent you from doing this.
+
+#### Save File
 
 ```python
 save_file:
@@ -195,12 +239,16 @@ save_file:
 
 Determines the file where all the simulated data is saved to.
 
+#### Stdout Basic
+
 ```python
 stdout_basic:
   true
 ```
 
 If *true* the number of simulated months through a simulation will be displayed on the screen and a message will be printed to the screen once the simulation has finished.
+
+#### Stdout Summary
 
 ```python
 stdout_summary:
@@ -210,12 +258,16 @@ stdout_summary:
 If *true*, the length of simulated time (in minutes), the number of entities, follows, tweets, retweets, cummulative rate function **R**, and the real time that has elapsed will be displayed on the screen throughout the simulation's run. The intervals at which
 this information is changed and displayed is determined by the *summary_output_rate* discussed below.
 
+#### Summary Output Rate
+
 ```python
 summary_output_rate:
   100
 ```
 
 This value corresponds to the number of step intervals in the KMC loop where *stdout_summary* information is updated and displayed on the screen.
+
+#### Visualize
 
 ```python
 visualize:
@@ -225,6 +277,8 @@ visualize:
 If *true* a simulation will produce two additional files in the output directory, *network.dat* and *network.gexf*. *network.dat* contains two columns, where the entities in the first column are following the entities in the second column. *network.gexf*
 is a file which can be used to visualize smulated networks on programs like [Gephi](http://gephi.github.io/).
 
+#### Entity Stats
+
 ```python
 entity_stats:
   true
@@ -232,6 +286,8 @@ entity_stats:
 
 If *true*, a simulation will produce additional files in the output directory named after the particular entity types within the simulation as *entitytype_info.dat* (e.g. the presence of a Standard entity type will produce a file labelled *Standard_info.dat*).
 Within this file can be found !!!!!!!!!!!!!!!
+
+#### Degree Distributions
 
 ```python
 degree_distributions:
@@ -241,6 +297,8 @@ degree_distributions:
 If *true*, the in, out, and cumulative degree distributions will be produced in the output directory for each simulated month, as, in the case of the zeroth month, in-degree_distribution_month_000.dat, out-degree_distribution_month_000.dat, and
 cumulative-degree_distribution_month_000.dat respectively.
 
+#### Tweet Analysis
+
 ```python
 tweet_analysis:
   true
@@ -248,12 +306,16 @@ tweet_analysis:
 
 
 
+#### Retweet Visualization
+
 ```python
 retweet_visualization:
   true
 ```
 
 If *true*, a simulation will produce an additional file titled *retweet_viz.gexf*, which can be used to visualize the most retweeted tweets on programs such as [Gephi](http://gephi.github.io/).
+
+#### Main Statistics
 
 ```python
 main_statistics:
@@ -264,6 +326,8 @@ main_statistics:
 
 ## ranks
 
+#### Tweet Ranks
+
 ```python
 tweet_ranks:
   thresholds: {bin_spacing: linear, min: 10, max: 300, increment: 10}
@@ -273,12 +337,16 @@ Serves as a way to organize and categorize tweets in bins. The *bin_spacing* can
 intitial bin. If some of these entities continue to tweet, and end up having a total number of tweets greater than 10 but less than 20, they will move to the next bin. If their total number of tweets increases to a value greater than 20 but less than 30, they will
 then move on to the next bin, and so on, until they have reached a value of 300 tweets, where they shall remain.
 
+#### Retweet Ranks
+
 ```python
 retweet_ranks:
   thresholds: {bin_spacing: linear, min: 10, max: 300, increment: 10}
 ```
 
 Serves the exact same purpose as *tweet_ranks*, but for retweets.
+
+#### Follow Ranks
 
 ```python
 follow_ranks:
@@ -290,12 +358,16 @@ Similar to *tweet_ranks* and *retweet_ranks*, *follow_ranks* serves to categoriz
 
 ## tweet observations
 
+#### Density Function
+
 ```python
 density_function:
        2.45 / (x)**1.1
 ```
 
 
+
+#### x_start
 
 ```python
    x_start:
@@ -304,12 +376,16 @@ density_function:
 
 
 
+#### x_end
+
 ```python
    x_end:
        600
 ```
 
 
+
+#### Initial Resolution
 
 ```python
    initial_resolution:
@@ -318,6 +394,8 @@ density_function:
 
 
 
+#### Resolution Growth Factor
+
 ```python
    resolution_growth_factor:
        1.05
@@ -325,6 +403,7 @@ density_function:
 
 
 
+#### Time Span
 
 ```python
    time_span:
@@ -360,6 +439,8 @@ The *ideology_weights* are the possible ideologies that an entity from that regi
 and are also weighted with respect to each other.
 
 ## config_static
+
+#### Humour Bins
 
 ```python
 humour_bins: 2
@@ -402,6 +483,8 @@ The *follow_reaction_prob* relates to the probability that an entity will follow
 ## entities
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/w_BVsSwb7cw" frameborder="0" allowfullscreen></iframe>
+
+#### Entity Type
 
 ```python
 - name: Standard
