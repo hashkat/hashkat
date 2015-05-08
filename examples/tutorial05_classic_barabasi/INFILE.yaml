@@ -41,7 +41,7 @@ analysis:
   initial_entities:
     10  # start out from something small, could be when only the developers were online.
   max_entities: 
-    10000     # 1 million max users
+    6000     # 1 million max users
   max_time: 
     10000
   max_analysis_steps: 
