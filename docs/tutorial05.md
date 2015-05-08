@@ -13,14 +13,25 @@ This particular follow model can be implemented using three different types of c
 
 ## Example - Classic Barabasi
 
-The Classic Barabasi configuration is one in which entities that are added to the network make one conection with another entity and no other, unless manipulated to do so by allowing followback or
+The Classic Barabasi configuration is one in which entities that are added to the network make one conection with another entity and no other, unless manipulated to do so by allowing follow back or
 following through retweets within your simulation.
 
 Let's try running a Classic Barabasi twitter preferential follow model simulation, with our starting point being the INFILE.yaml we used in the previous tutorial.
 As always, all the files that we will use in this simulation can be found for reference in the examples directory in hashkat, with this one under the title *tutorial05_classic_barabasi*.
 You can also view the input file we will be creating for this example [here](https://github.com/hashkat/hashkat/blob/master/examples/tutorial05_classic_barabasi/INFILE.yaml).
 
-So let's make some modifications to our input file. As opposed to the random follow model simulations, where the number of entities within the network remained constant throughout
+So let's make some modifications to our input file. As opposed to the random follow model simulations, where the number of entities within the network remained constant throughout the simulation,
+we are going to have the number of entiteies within the simulation increase over time, by setting our *initial_entities* to 10, and our *max_entities* to 3000. We're also going to have the simulation
+run for a little longer by setting  the *max_time* to 10,000. Most importantly, we're going to set *use_barabasi* to *true* causing the simulation to implement the
+Barabasi configuration. *barabasi_connections* specifies the number of connections an entity makes when entering the simulation, so for this Classic Barabasi example, we're going to set this value to 1.
+Since we are running a twitter preferential follow model, we are going to set the *follow_model* as such. In the *rates* section of the input file, we are now adding entities to the network throughout the simulation,
+so we will change the add rate value to 1.0, so that one entity will be added to the network per simulated minute. To better demonstrate the results of a twitter preferential follow model, we are only going to use
+one entity type for the simulation. Setting the add weights of the *Celebrity*, *Bot*, and *Organization* entity types will remove their presence from the network. Though it doesn't really matter, we have also
+changed the *Standard* entity type's add weight to 100, to show that 100% of the entity will be of that type, though as long as this value is greater than zero it is inconsequential since all the other
+entity types have an add weight of 0. We have also set the *Standard* entity type's follow rate to 0.0, so that the only manner in which entities are connecting with each other is through the *barabasi_connections*
+they are assigned to make and any follow backs or following through retweets that occur.
+
+![Visualization](/img/tutorial05_classic_barabasi/visualization.png =1x  "Visualization")
 
 ## Example - Non-Classic Barabasi
 

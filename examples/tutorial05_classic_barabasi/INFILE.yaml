@@ -41,7 +41,7 @@ analysis:
   initial_entities:
     10  # start out from something small, could be when only the developers were online.
   max_entities: 
-    6000     # 1 million max users
+    3000     # 1 million max users
   max_time: 
     10000
   max_analysis_steps: 
@@ -131,8 +131,8 @@ tweet_ranks:
 retweet_ranks:
   thresholds: {bin_spacing: linear, min: 10, max: 500, increment: 10}
 follow_ranks:
-  thresholds: {bin_spacing: linear, min: 0, max: 1000, increment: 1}    # for preferential following
-  weights:    {bin_spacing: linear, min: 1, max: 1001, increment: 1}
+  thresholds: {bin_spacing: linear, min: 0, max: 3000, increment: 1}    # for preferential following
+  weights:    {bin_spacing: linear, min: 1, max: 3001, increment: 1}
 
 #################################################################
 # >> tweet_observation: 

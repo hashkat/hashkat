@@ -49,7 +49,8 @@ will also be left as is, to produce as many data files for analysis as possible.
 though to be honest their purpose is just to organize them and has no real impact on the simulation. The follow ranks max threshold
 and weight have been changed to the max number of entities and the max number of entities increased by 1 respectively. This as well as
 no real impact on this simulation, but this is very important for twitter-preferential simulations, so we just chose to change them now
-to their respective values so that all of these follow model tutorials have relatively the same INFILE.yaml. The *tweet_observations*
+to their respective values to get you in the habit of changing the follow rank max threshold and weight to the max number of entities
+and the max number of entities increased by one respectively. The *tweet_observations*
 section of this program will be kept as is for all of these tutorials, though you are encouraged to change it and experiment with it
 when running your own simulations. More information on this can be found on the Input page.
 
