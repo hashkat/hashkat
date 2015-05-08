@@ -4,6 +4,8 @@
 
 # The Random Follow Model
 
+A discussion on follow models and an exercise using the random follow model, this tutorial should take approximately 30 minutes to complete.
+
 There are six different follow models that have been implemented into #k@, to allow greater flexibility and control in the networks the project simulates.
 The six follow models are:
 
@@ -18,7 +20,7 @@ Each of these follow models will be discussed and analyzed in each of their own 
 
 As the name implies, a random follow model is one in which the entities in which a twitter user follows is totally arbitrary.
 You've already had some experience working with the random follow model, the simple network we created in Tutorial 1 implemented it,
-but in this tutorial we are going to go into this model in much more detail. This tutorial should take approximately 30 minutes to complete.
+but in this tutorial we are going to go into this model in much more detail.
 
 Though the simple network we created in Tutorial 1 served as a quick and easy way to introduce one to #k@, the network we created from this
 simulation was nowhere near realistic. Among other things, *Followback*, the ability for an entity to follow an entity who followed them,

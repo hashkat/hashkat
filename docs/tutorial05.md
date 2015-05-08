@@ -4,7 +4,7 @@
 
 # The Twitter Preferential Follow Model
 
-This tutorial should take approximately 90 minutes to complete
+Going through several exercises on the different configurations of the twitter preferential follow model, this tutorial should take approximately 1 hour to complete
 
 Based on Albert-Laszlo Barabasi's research, a twitter preferential follow model is one in which entities tend to follow users with the highest degree, aka highest number of followers.
 The twitter preferential method is influenced heavily by the [Barabasi-Albert Model](http://en.wikipedia.org/wiki/Barab%C3%A1si%E2%80%93Albert_model), generating networks
@@ -65,10 +65,31 @@ Though easy to forget, factors such as this are integral to the shape of your ne
 
 ## Example - Non-Classic Barabasi
 
+The Non-Classic Barabasi configuration is exactly the same as the classic configuration except that the number of connections entities make when entering the simulation is a number greater than 1.
+
+For this example, we will use the exact same INFILE.yaml as used above, but our *barabasi_connections* will have a value of 2 instead of 1. This simulation will also take longer to complete than the previous case,
+so we shall set our *max_real_time* to a day to ensure that our simulation runs for the full length of simulated time. Though the simulation will take nowhere close to this long, it is good practice to
+have your *max_real_time* always set to a high number, assuming that you have access to the computer running this simulation for that full length of time of course, to prevent your simulations from ever
+cutting short of their allotted simulation run time. The network simulations that will be run in these tutorials will have a *max_real_time* of one day from now on. 
+The files used in this simulation can be found for reference in the examples directory in hashkat under the title *tutorial05_nonclassic_barabasi*.
+You can also view the input file used for this example [here](https://github.com/hashkat/hashkat/blob/master/examples/tutorial05_nonclassic_barabasi/INFILE.yaml).
+
+Running this network simulation, we produced the visualization shown below:
+
 
 
 ## Example - Other Twitter Preferential Models
 
-
+We shall now run a twitter preferential follow model network simulation with out implementing the Barabasi configuration. The INFILE.yaml file that we will use in this simulation will be the
+exact same as the one used in the Classic Barabasi example, except that *use_barabasi* will be turned off of course, and the *Standard* entity types will now have a follow rate of 0.001. As explained above,
+the max_real time for this simulation will also be one day.
+The files that were used in this example can be found for reference in the examples directory in hashkat under the title *tutorial05_other*.
+You can also view the input file used for this example [here](https://github.com/hashkat/hashkat/blob/master/examples/tutorial05_other/INFILE.yaml).
 
 ## Next Steps
+
+We have now worked with a few configurations of the twitter preferential follow method. Though we did not implement entity types with a follow rate when runing Barabasi configurations,
+you are encouraged to try doing so, as well running simulations with more entity types, more entities, less regions, etc. The more practice you get using #k@, the better skilled you will be at
+producing your ideal network simulations.
+
+Proceed to the next tutorial, where we try using the entity follow model.
