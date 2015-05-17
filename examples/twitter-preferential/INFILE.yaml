@@ -39,7 +39,7 @@
 
 analysis:
   initial_entities:
-    10000  # start out from something small, could be when only the developers were online.
+    10  # start out from something small, could be when only the developers were online.
   max_entities: 
     10000     # 1 million max users
   max_time: 
@@ -65,7 +65,7 @@ analysis:
   use_followback: 
     false        # followback turned on, from literature it makes sense for a realistic system
   follow_model: # See notes above
-    random
+    preferential
   # model weights ONLY necessary for follow method 'twitter'  
   # educated guesses for the follow models  
   model_weights: {random: 0.0, preferential: 1.0, entity: 0.0, preferential_entity: 0.0, hashtag: 0.0, suggest: 0.0}
@@ -84,7 +84,7 @@ analysis:
 #################################################################
 
 rates:
-  add: {function: constant, value: 0.0}  # found from experiment
+  add: {function: constant, value: 1.0}  
 
 #################################################################
 # >> output:
@@ -133,8 +133,8 @@ tweet_ranks:
 retweet_ranks:
   thresholds: {bin_spacing: linear, min: 10, max: 300, increment: 10}
 follow_ranks:
-  thresholds: {bin_spacing: linear, min: 0, max: 540000, increment: 1}    # for preferential following
-  weights:    {bin_spacing: linear, min: 1, max: 540001, increment: 1}
+  thresholds: {bin_spacing: linear, min: 0, max: 10000, increment: 1}    # for preferential following
+  weights:    {bin_spacing: linear, min: 1, max: 10001, increment: 1}
 
 #################################################################
 # >> tweet_observation: 
@@ -278,7 +278,7 @@ preference_classes:
   # preference class:
    tweet_transmission: 
       plain: # Also applies to musical tweets
-        Standard: 0.0
+        Standard: 0.00
         Celebrity: 0.00
         else: 0.00
       different_ideology:   # no retweeting for different ideologies
