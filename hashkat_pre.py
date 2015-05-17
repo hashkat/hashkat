@@ -5,14 +5,10 @@
 # By creating value tables with a Python script, we are able to
 # simplify the logic in the C++, not worrying about the various
 # functions a user might want to supply.
-#
-# Dependencies:
-#   PyYAML
-#   SciPY
 #################################################################
 
 #################################################################
-# PLACE CONVENIENCE FUNTIONS FOR INFILE.yaml HERE
+# PLACE CONVENIENCE CONSTANTS FOR INFILE.yaml HERE
 #################################################################
 
 # Convenience rates, in minutes
@@ -25,7 +21,7 @@ year = 365 * day
 unlimited = 2L**53 
 
 #################################################################
-# CEASE PLACING CONVENIENCE FUNCTIONS.
+# CEASE PLACING CONVENIENCE CONSTANTS.
 #################################################################
 
 import yaml
@@ -34,7 +30,6 @@ import os
 
 from pprint import pprint
 from math import *
-from scipy.integrate import quad # For observation PDF integration
 
 def get_var_arg(test, default_val):
     for i in range(len(sys.argv) - 1): 
@@ -188,8 +183,24 @@ def preprocess_regions():
 # Note, however, that due to the random-select nature of KMC this cannot be guaranteed.
 #################################################################
 
+def compute_simpson(f, a, b):
+    """Approximates the definite integral of f from a to b by the
+    composite Simpson's rule, using n subintervals (with n even)"""
+ 
+    n = 1000 # This won't run much, just overkill it
+ 
+    h = (b - a) / float(n)
+    s = f(a) + f(b)
+ 
+    for i in range(1, n, 2):
+        s += 4 * f(a + i * h)
+    for i in range(2, n-1, 2):
+        s += 2 * f(a + i * h)
+ 
+    return s * h / 3
+
 def tweet_observation_integral(x1, x2):
-    val,err = quad(tweet_obs_density_function, x1, x2)
+    val = compute_simpson(tweet_obs_density_function, x1, x2)
     return val
 
 # Since we bin logarithmatically, we must do a weighted normalization considering
