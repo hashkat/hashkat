@@ -30,7 +30,7 @@
 #  use_flawed_followback: 
 #    Whether to follow-back by a fixed 40%.
 #  follow_model: 
-#    Accepted models: 'random', 'preferential', 'entity', 'preferential-entity', 'hashtag' 'twitter'
+#    Accepted models: 'random', 'twitter_preferential', 'entity', 'preferential_entity', 'hashtag', 'twitter'
 #  stage1_unfollow: 
 #    Whether to have an unfollow model assuming constant 'chattiness', compares the chatiness of an entity wrt to the following set.
 #  unfollow_tweet_rate: 
@@ -65,10 +65,10 @@ analysis:
   use_followback: 
     false        # followback turned on, from literature it makes sense for a realistic system
   follow_model: # See notes above
-    preferential
+    twitter_preferential
   # model weights ONLY necessary for follow method 'twitter'  
   # educated guesses for the follow models  
-  model_weights: {random: 0.0, preferential: 1.0, entity: 0.0, preferential_entity: 0.0, hashtag: 0.0, suggest: 0.0}
+  model_weights: {random: 0.0, twitter_preferential: 1.0, entity: 0.0, preferential_entity: 0.0, hashtag: 0.0}
   
   stage1_unfollow: 
     false
@@ -107,19 +107,17 @@ output:
   stdout_summary: 
     true
   summary_output_rate: 
-    10000
+    100
   visualize: 
-    false
-  verbose: 
     true
   entity_stats: 
-    false
+    true
   degree_distributions: 
     true            # set this to true, will print after simulation has finished
   tweet_analysis: 
-    false
+    true
   retweet_visualization:
-    false
+    true
   main_statistics:
     true
 
@@ -133,8 +131,8 @@ tweet_ranks:
 retweet_ranks:
   thresholds: {bin_spacing: linear, min: 10, max: 300, increment: 10}
 follow_ranks:
-  thresholds: {bin_spacing: linear, min: 0, max: 10000, increment: 1}    # for preferential following
-  weights:    {bin_spacing: linear, min: 1, max: 10001, increment: 1}
+  thresholds: {bin_spacing: linear, min: 0, max: 100000, increment: 1}    # for preferential following
+  weights:    {bin_spacing: linear, min: 1, max: 100001, increment: 1}
 
 #################################################################
 # >> tweet_observation: 
@@ -172,7 +170,7 @@ tweet_observation: # 'Omega'
    density_function: 
        2.45 / (x)**1.1 
    x_start: 
-       5
+       1
    x_end: 
        600
    initial_resolution: 
@@ -221,27 +219,22 @@ regions:
     add_weight: 5
 
     preference_class_weights: {StandardPref: 100}
-    entity_class_weights: {Standard: 100}
     ideology_weights: {Red: 100, Blue: 100, Green: 100, Orange: 100}
-    language_weights: {English: 60, French: 0, Spanish: 0, French+English: 0}
+    language_weights: {English: 100, French: 0, Spanish: 0, French+English: 0}
 
   - name: Quebec
     add_weight: 5
 
-    #Inherited:
     preference_class_weights: {StandardPref: 100}
-    entity_class_weights: {Standard: 100}
-    language_weights: {English: 0, French: 40, Spanish: 0, French+English: 0}
     ideology_weights: {Red: 100, Blue: 100, Green: 100, Orange: 100}
-    
+    language_weights: {English: 0, French: 100, Spanish: 0, French+English: 0}
+
   - name: Mexico
     add_weight: 0
 
-    #Inherited:
     preference_class_weights: {StandardPref: 100}
-    entity_class_weights: {Standard: 100}
-    language_weights: {English: 0, French: 0, Spanish: 100, French+English: 0}
     ideology_weights: {Red: 100, Blue: 100, Green: 100, Orange: 100}
+    language_weights: {English: 0, French: 0, Spanish: 100, French+English: 0}
 
 #################################################################
 # >> config_static: 

@@ -66,7 +66,7 @@ static FollowModel parse_follow_model(const Node& node) {
         return TWITTER_PREFERENTIAL_FOLLOW;
     } else if (follow_model == "entity") {
         return ENTITY_FOLLOW;
-    } else if (follow_model == "preferential-entity") {
+    } else if (follow_model == "preferential_entity") {
         return PREFERENTIAL_ENTITY_FOLLOW;
     } else if (follow_model == "hashtag") {
         return HASHTAG_FOLLOW;
@@ -204,7 +204,6 @@ static void parse_output_configuration(ParsedConfig& config, const Node& node) {
     parse(node, "summary_output_rate", config.summary_output_rate);
 
     parse(node, "visualize", config.output_visualize);
-    parse(node, "verbose", config.output_verbose);
     parse(node, "entity_stats", config.entity_stats);
 
     parse(node, "save_network_on_timeout", config.save_network_on_timeout);

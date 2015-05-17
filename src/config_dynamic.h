@@ -112,7 +112,6 @@ struct ParsedConfig {
     bool output_visualize = false;
     bool degree_distributions = false;
     bool output_tweet_analysis = false;
-    bool output_verbose = false;
     bool retweet_viz = false;
     bool main_stats = false;
     double summary_output_rate = 1;

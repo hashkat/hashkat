@@ -30,7 +30,7 @@
 #  use_flawed_followback: 
 #    Whether to follow-back by a fixed 40%.
 #  follow_model: 
-#    Accepted models: 'random', 'preferential', 'entity', 'preferential-entity', 'hashtag' 'twitter'
+#    Accepted models: 'random', 'twitter_preferential', 'entity', 'preferential_entity', 'hashtag', 'twitter'
 #  stage1_unfollow: 
 #    Whether to have an unfollow model assuming constant 'chattiness', compares the chatiness of an entity wrt to the following set.
 #  unfollow_tweet_rate: 
@@ -39,11 +39,11 @@
 
 analysis:
   initial_entities:
-    10000  # start out from something small, could be when only the developers were online.
+    100  # start out from something small, could be when only the developers were online.
   max_entities: 
-    10000     # 1 million max users
+    100     # 1 million max users
   max_time: 
-    100000
+    1000
   max_analysis_steps: 
     unlimited
   max_real_time: 
@@ -107,19 +107,17 @@ output:
   stdout_summary: 
     true
   summary_output_rate: 
-    10000
+    100
   visualize: 
-    false
-  verbose: 
     true
   entity_stats: 
-    false
+    true
   degree_distributions: 
     true            # set this to true, will print after simulation has finished
   tweet_analysis: 
-    false
+    true
   retweet_visualization:
-    false
+    true
   main_statistics:
     true
 
@@ -221,27 +219,22 @@ regions:
     add_weight: 5
 
     preference_class_weights: {StandardPref: 100}
-    entity_class_weights: {Standard: 100}
     ideology_weights: {Red: 100, Blue: 100, Green: 100, Orange: 100}
-    language_weights: {English: 60, French: 0, Spanish: 0, French+English: 0}
+    language_weights: {English: 90, French: 10, Spanish: 0, French+English: 0}
 
   - name: Quebec
     add_weight: 5
 
-    #Inherited:
     preference_class_weights: {StandardPref: 100}
-    entity_class_weights: {Standard: 100}
-    language_weights: {English: 0, French: 40, Spanish: 0, French+English: 0}
     ideology_weights: {Red: 100, Blue: 100, Green: 100, Orange: 100}
+    language_weights: {English: 90, French: 10, Spanish: 0, French+English: 0}
     
   - name: Mexico
     add_weight: 0
 
-    #Inherited:
     preference_class_weights: {StandardPref: 100}
-    entity_class_weights: {Standard: 100}
-    language_weights: {English: 0, French: 0, Spanish: 100, French+English: 0}
     ideology_weights: {Red: 100, Blue: 100, Green: 100, Orange: 100}
+    language_weights: {English: 0, French: 0, Spanish: 100, French+English: 0}
 
 #################################################################
 # >> config_static: 
@@ -249,9 +242,9 @@ regions:
 # These values MUST match config_static.h!
 #################################################################
 
-#config_static:
+config_static:
     # These values should match your C++ config_static.h limits!!
-#    humour_bins: 2 # Amount of discrete bins for humour
+    humour_bins: 2 # Amount of discrete bins for humour
 
 #################################################################
 # >> preference_classes: 
@@ -349,6 +342,6 @@ entities:
       care_about_ideology: false # does the entiy care about which ideology the entity has?
     rates: 
         # Rate for follows from this entity:
-        follow: {function: constant, value: 0.001}
+        follow: {function: constant, value: 0.01}
         # Rate for tweets from this entity:
         tweet: {function: constant, value: 0.0}   #0.000256944444444 0.37 per day

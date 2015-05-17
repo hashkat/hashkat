@@ -282,11 +282,8 @@ struct AnalyzerFollow {
        int default_region = e.region_bin;
        int default_ideology = e.ideology_bin;
        int entity_to_follow = hashtags.select_entity(rng, region_choice, ideology_choice, default_region, default_ideology);
-       Entity& try_entity = network[entity_to_follow];
-       if (try_entity.language != e.language) {
-           return -1;
-       }
-       RECORD_STAT(state, e.entity_type, n_hashtag_follows);
+       if (entity_to_follow != -1)
+           RECORD_STAT(state, e.entity_type, n_hashtag_follows);
        return entity_to_follow;
    }
    

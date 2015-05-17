@@ -4,66 +4,107 @@
 
 # Output
 
-This tutorial should take approximately 90 minutes to complete
+This page serves as a reference for users who have run a simulation, and wish to analyze the data this run has outputted. This page goes over every aspect of the files found in the output directory.
+
+`Categories_Distro.dat`
+
+Outlines the number of tweets, follows, and retweets in their respective bin
+thresholds. Appears in twitter-preferential modelled simulations.
+
+`connections_vs_nodes.dat`
 
 
 
-<iframe width="420" height="315" src="https://www.youtube.com/embed/g2QeKQ9yXy0" frameborder="0" allowfullscreen></iframe>
+`cumulative-degree_distribution_month_000.dat`
 
-## Commands
+Outlines all the possible total degrees an entity can have in that particular
+month in the simulation, as well as its normalized probability, logarithm, and
+normalized probability logarithm in columns in that order.
 
-* `~[2] mkdocs new [dir-name]` - Create a new project.
-* `mkdocs serve` - Start the live-reloading docs server.
-* `mkdocs build` - Build the documentation site.
-* `mkdocs help` - Print this help message.
+`dd_by_entity_type.dat`
 
-To launch #k@, we use the run command
 
-`./run.sh`
 
-The run command can take several command line arguements 
+`dd_by_follow_model.dat`
 
-`./run.sh --build`
 
-## INFILE.yaml
-```lang-none
-analysis:
-  initial_entities:
-    10000  # start out from something small, could be when only the developers were online.
-  max_entities: 
-    10000     # 1 million max users
-  max_time: 
-    100000
-  max_analysis_steps: 
-    unlimited
-  max_real_time: 
-    240*hour*5        # 10 days         
-  enable_interactive_mode:
-    false
-  enable_lua_hooks: # Defined in same file as interactive_mode. Can slow down simulation considerably.
-    false
-  lua_script: # Defines behaviour of interactive mode & lua hooks
-    INTERACT.lua
-  use_barabasi: 
-    false 
-  barabasi_connections: # number of connections we want to make when use_barabasi == true
-    100
-  barabasi_exponent:
-    1
-  use_random_time_increment: 
-    true
-  use_followback: 
-    false        # followback turned on, from literature it makes sense for a realistic system
-  follow_model: # See notes above
-    random
-  # model weights ONLY necessary for follow method 'twitter'  
-  # educated guesses for the follow models  
-  model_weights: {random: 0.0, preferential: 1.0, entity: 0.0, preferential_entity: 0.0, hashtag: 0.0, referral: 0.0}
-  
-  stage1_unfollow: 
-    false
-  unfollow_tweet_rate: 
-    100
-  use_hashtag_probability:
-    0.5    # 50 % chance of using a hashtag
-```
+
+`entity_followers.dat`
+
+
+
+`entity_following.dat`
+
+
+
+`entity_populations.dat`
+
+
+
+`entity_retweets.dat`
+
+
+
+`entity_tweets.dat`
+
+
+
+`in-degree_distribution_month_000.dat`
+
+Outlines all the possible in degrees an entity can have in that particular
+month in the simulation, as well as its normalized probability, logarithm, and
+normalized probability logarithm in columns in that order.
+
+`main_stats.dat`
+
+Outlines the most important network statistics for this simulation.
+Under **USERS** we have the total number of entities by the simulation's end,
+and the number and percentage of those entities are of each particular entity
+type. Under **TWEETS** we have the total number of tweets made
+during the simulation, as well as the number and percentage of those that
+have a hashtag and the number and percentage of those that were tweeted by
+entities of each type. Under **RETWEETS** we have the total number of
+retweets that occurred throughout the course of the simulation, and how
+many of those were done by entities of each type.
+Under **FOLLOWS** we have !!!!!!!!!!!!
+
+`model_match.dat`
+
+
+
+`network.dat`
+
+Outlines which entities are following who. In this file there are two columns,
+with the entities in the first column (classified by an ID number)
+following the entities in the listed in the second column (also classified
+by an ID number).
+
+`network.gexf`
+
+*network.gexf* is a file that can be used to vizualize the connections
+between users on your network using visualization software such as
+[Gephi](http://gephi.github.io/).
+
+`out-degree_distribution_month_000.dat`
+
+Outlines all the possible out degrees an entity can have in that particular
+month in the simulation, as well as its normalized probability, logarithm, and
+normalized probability logarithm in columns in that order.
+
+`retweets_distro.dat`
+
+
+
+`retweet_viz.gexf`
+
+
+
+`entitytype_info.dat`
+
+Present and named for every single entity type in the network (e.g. 'Standard'
+entity type would have a file named *Standard_info.dat*). Outlines the
+possible total number of degrees for entites of this type, as well as each
+degrees' respective !!!!!!!!!!! 
+
+`tweets_distro.dat`
+

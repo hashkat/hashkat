@@ -2,7 +2,7 @@
 
 <span style="color:black; font-family:Georgia; font-size:1.5em;">May 2015 - This site is currently under construction. Please return regularly over the course of the summer for further updates. </span>
 
-#Glossary
+# Key Words
 
 Upon cloning the repository, you will notice there are files called “INFILE.yaml” and “DEFAULT.yaml”; these files allow one to adjust certain parameters to obtain desired results from the simulation, and all of the different parameters is described below.
 
@@ -37,7 +37,9 @@ If set to false, the simulation will run normally.
 ####use_random_time_increment
 **(type: boolean)** If true, the time in the simulation will be incremented at a non-constant rate; the increment of time is determined by
 
-where u is a random number in the interval 0 < u ≤ 1, and R tot is the sum of the rates for the simulation. On average, the value of − ln(u) is unity, and therefore you can increment time by 1/R tot ; this is how time is incremented if set to false.
+&Delta;t = -ln(u) / **R**
+
+where *u* is a random number in the interval 0 < *u* ≤ 1, and **R** is the sum of the rates for the simulation. On average, the value of −ln(*u*) is unity, and therefore you can increment time by 1/**R** ; this is how time is incremented if set to false.
 
 ####use_followback
 **(type: boolean)** If set to true, there may be a follow back prior to a follow. When an entity A follows entity B, if entity B’s followback probability (which can be found in the entities section of the input file) is non-zero,
@@ -48,20 +50,24 @@ then entity B can follow entity A without moving forward in time. This is why it
 
 follow_model: random
 
-The ‘random’ follow method causes entities to follow other entities randomly; if the number of entities is set to constant and this method is on, you will achieve an Erd ̈ os-R ́enyi degree distribution (Poisson distribution).
-The ‘entity’ follow method causes entities to follow other entities based on title alone; the titles are set in the entities section of the input file. The probabilities to to follow each entity can also be set in the weights portion of the entities section.
+* The ‘random’ follow method causes entities to follow other entities randomly; if the number of entities is set to constant and this method is on, you will achieve an Erdos-Renyi degree distribution (Poisson distribution).
+
+* The ‘entity’ follow method causes entities to follow other entities based on title alone; the titles are set in the entities section of the input file. The probabilities to to follow each entity can also be set in the weights portion of the entities section.
 The probabilities are normalized, so the probabilities should be set with respect to one another.
-The ‘preferential’ follow method follows the preferential attachment model outlined by Barabasi and Albert. The basics behind the method is that the degree of the entity determines the probability of following the entity;
+
+* The ‘twitter-preferential’ follow method follows the preferential attachment model outlined by Barabasi and Albert. The basics behind the method is that the degree of the entity determines the probability of following the entity;
 the greater the degree the greater the probability of the entity being followed. The thresholds and weights variables outlined in the follow ranks section determines how the degree of the entities are binned and the corresponding weights for each bin.
 If you want to achieve the preferential attachment method similar to the use barabasi method you can set the thresholds to increment by 1,
 with linear spacing from 0 to the max number of entities and set the weights to increment by 1 with linear spacing from 1 to the max number of entities.
-The ‘preferential-entity’ follow method is just the ‘preferential’ follow method nested in the ‘entity’ follow method. Firstly, a certain entity type will be selected, then based on the degrees of the entities within the certain entity type,
+
+* The ‘preferential-entity’ follow method is just the ‘preferential’ follow method nested in the ‘entity’ follow method. Firstly, a certain entity type will be selected, then based on the degrees of the entities within the certain entity type,
 an entity will be selected to follow.
-The ‘hashtag’ follow method is a mechanism introduced to follow other entities based on hashtags. If the use hashtag probability parameter is non-zero, then entities will attach hashtags to their tweets.
+
+* The ‘hashtag’ follow method is a mechanism introduced to follow other entities based on hashtags. If the use hashtag probability parameter is non-zero, then entities will attach hashtags to their tweets.
 Depending on the ideology and location of the entity, they are then placed into a dynamic array. If another user wants to follow via hashtag, they look to these dynamic arrays to find a specific entity that relates to
 their hashtag preferences. These preferences can be set in the hashtag follow options section.
-The 'suggest' follow model !!!!!!!!!!!!!!!!!
-The ‘twitter’ follow model is a model that incorporates all of the above follow mechanisms. The weights for each mechanism can be set for each follow method. See model weights for more information.
+
+* The ‘twitter’ follow model is a model that incorporates all of the above follow mechanisms. The weights for each mechanism can be set for each follow method. See model weights for more information.
 
 ####model_weights
 **(type: n/a)** In the model weights, you can set the probability of calling each follow method. You can use arbitrary units to set the weighting for each follow method because the weights are summed and then normalized to find the probability
@@ -94,17 +100,17 @@ If set to 0.5, then half of the tweets will have hashtags. If 1.0, then all of t
 
 ####function
 **(type: string)** The function for the add rate can either be constant or linear; other options can be coded into the software if necessary. If function is set to ‘constant’, then you must also declare the constant value by setting the ‘value’
-parameter to a real constant > 0. An example of of constant add rate is as follows;
+parameter to a real constant > 0. An example of of constant add rate is as follows:
 
 add: {function: constant, value: 1.0}
 
-This will set the add rate to 1 entity per minute. If function is set to ‘linear’, then you must set 2 other variables, the ‘y intercept’ and ‘slope’ variables. An example of a linearly increasing add rate is as follows;
+This will set the add rate to 1 entity per minute. If function is set to ‘linear’, then you must set 2 other variables, the ‘y intercept’ and ‘slope’ variables. An example of a linearly increasing add rate is as follows:
 
-add: {function: linear, y intercept: 1.0, slope: 0.1}
+add: {function: linear, y_intercept: 1.0, slope: 0.1}
 
-This will create an add user rate of the form
+This will create an add user rate of the form:
 
-R add = 1.0 + n months · 0.1
+R_add = 1.0 + n_months · 0.1
 
 where n months is the number of months that have passed in the simulation. The number of months is determined by a constant approximate month of 30 · 60 · 24 minutes. This constant value can be changed in the software to achieve desired result.
 
@@ -135,6 +141,12 @@ Also if load network on startup is set to true, the simulation will look for thi
 ####visualize
 **(type: boolean)** If set to true, the information from the network is outputted to 2 files, “network.dat” and “network.gexf”. The “network.dat” file consists of two columns; the first column is a list the entity ID’s in order, and the second column is the
 entity ID’s for who the first column is following. For example if entity ID 1 is following entity ID 13, 14, and 19, then it would be outputted like:
+
+  1 | 13 
+
+  1 | 14 
+
+  1 | 19 
 
 The structure of this file can be referred to as an edge list. This file can easily be read into Python or R to perform any further analysis. The “network.gexf” file is an xml file that can be used to visualize the network in a program called Gephi.
 
@@ -188,7 +200,7 @@ on the increment cubed.
 **(type: integer)** This variable sets the separation between adjacent thresholds for grouping users. If bin spacing is linear, then the separation between bins is the increment, if quadratic, the separation between bins is the increment
 squared, if cubic, the separation between bins is the increment cubed.
 
-An example of linear thresholds is
+An example of linear thresholds is:
 
 thresholds: {bin spacing: linear, min: 10, max: 100, increment: 10}
 
@@ -232,8 +244,10 @@ regions section of the input file. You can also set the weights of a certain ent
 **(type: string)** The names of your ideologies is completely up to you and the syntax for declaring ideologies is as such:
 
 ideologies:
-- name: Red
-- name: Blue
+
+-name: Red
+
+-name: Blue
 
 You can see that I have set 2 ideologies, Red and Blue. The weights for each ideology must be set in the regions section of the input file.
 
@@ -249,9 +263,13 @@ selected randomly with weights that can be set. Here you can set the weights for
 all of the regions are summed and then divided by the sum to create a probability. The units for the weights of each region should be the same to normalize them correctly. The syntax for declaring the add weight is as such:
 
 regions:
-- name: Canada
+
+-name: Canada
+
 add weight: 5
-- name: USA
+
+-name: USA
+
 add weight: 10
 
 From these weights, two thirds of the population will be from USA and one third from Canada.
@@ -261,23 +279,25 @@ From these weights, two thirds of the population will be from USA and one third 
 Let’s say you have defined preference classes ‘Pref1’ and ‘Pref2’. The correct syntax for setting the weighting of these preference classes is as follows:
 
 regions:
-- name: Canada
+
+-name: Canada
+
 add weight: 5
+
 preference class weights: {Pref1: 10, Pref2: 10}
 
 Here the weights for each preference classes are also summed and divided by the sum to generate a probability. These probabilities are used when an entity is created to determine which preference class they use.
-
-####entity_class_weights
-
-
 
 ####ideology_weights
 **(type: n/a)** After declaring ideologies which define a characteristic for an entity, you must set the weights for each ideology in the region section. For more information on ideologies, click here: ideologies.
 Let’s say you have defined ideologies ‘Red’ and ‘Blue’. The correct syntax for setting the weighting of these ideologies is as follows:
 
 regions:
-- name: Canada
+
+-name: Canada
+
 add weight: 5
+
 ideology weights: {Red: 10, Blue: 10}
 
 Here the weights for each ideology are also summed and divided by the sum to generate a probability. These probabilities are used when an entity is created to determine which ideology they are.
@@ -287,8 +307,11 @@ Here the weights for each ideology are also summed and divided by the sum to gen
 The correct syntax for setting the weighting of these languages is as follows:
 
 regions:
-- name: Canada
+
+-name: Canada
+
 add_weight: 5
+
 language_weights: {English: 10, French: 10, English+French: 10}
 
 Here the weights for each language are also summed and divided by the sum to generate a probability. These probabilities are used when an entity is created to determine which language they speak.
@@ -309,7 +332,8 @@ is explained below.
 An example is as follows:
 
 preference classes:
-- name: Pref1
+
+-name: Pref1
 
 ####tweet_transmission
 **(type: n/a)** Here you must set the transmission probabilities for different situations which can be found below. The transmission probabilities are then multiplied by the density function which has been found experimentally to decrease over time.
@@ -319,11 +343,17 @@ preference classes:
 the tweet depending on the tweet transmission value and density function. An example of the syntax for declaring a plain tweet preference class is:
 
 preference classes:
-- name: Pref1
+
+-name: Pref1
+
 tweet transmission:
+
 plain:
+
 EntityType1: 0.1
+
 EntityType2: 0.1
+
 else: 0.1
 
 As you can see from above, the entity types declared in the entities section are used in the preference classes. If you also declared an entity type ‘EntityType3’ then that entity type would fall under the ‘else’ set above.
@@ -334,11 +364,17 @@ You can see that the transmission probabilities for all of the entity types are 
 follows the entity who tweeted may retweet the tweet depending on the tweet transmission value and density function. An example of the syntax for declaring a ideological tweet preference class is:
 
 preference classes:
-- name: Pref1
+
+-name: Pref1
+
 tweet transmission:
+
 different ideology:
+
 EntityType1: 0.1
+
 EntityType2: 0.1
+
 else: 0.1
 
 As you can see from above, the entity types declared in the entities section are used in the preference classes. If you also declared an entity type ‘EntityType3’ then that entity type would fall under the ‘else’ set above.
@@ -349,11 +385,17 @@ You can see that the transmission probabilities for all of the entity types are 
 entity who tweeted may retweet the tweet depending on the tweet transmission value and density function. An example of the syntax for declaring a ideological tweet preference class is:
 
 preference classes:
-- name: Pref1
+
+-name: Pref1
+
 tweet transmission:
+
 same ideology:
+
 EntityType1: 0.1
+
 EntityType2: 0.1
+
 else: 0.1
 
 As you can see from above, the entity types declared in the entities section are used in the preference classes. If you also declared an entity type ‘EntityType3’ then that entity type would fall under the ‘else’ set above.
@@ -364,11 +406,17 @@ You can see that the transmission probabilities for all of the entity types are 
 the entities that follows the entity who tweeted may retweet the tweet depending on the tweet transmission value and density function. An example of the syntax for declaring a ideological tweet preference class is:
 
 preference classes:
-- name: Pref1
+
+-name: Pref1
+
 tweet transmission:
+
 humourous:
+
 EntityType1: 0.1
+
 EntityType2: 0.1
+
 else: 0.1
 
 As you can see from above, the entity types declared in the entities section are used in the preference classes. If you also declared an entity type ‘EntityType3’ then that entity type would fall under the ‘else’ set above.
@@ -379,7 +427,9 @@ You can see that the transmission probabilities for all of the entity types are 
 an entity would follow rather than retweeting the retweet. They need to be set for every preference class. An example is below:
 
 preference classes:
-- name: Pref1
+
+-name: Pref1
+
 follow reaction prob: 0.5
 
 This probability set above would allow for half follows and half retweeted retweets.
@@ -409,12 +459,19 @@ There are four different tweet types currently implemented and they are ‘ideol
 the weights are summed and each weight is divided by the sum to produce a probability for generating each tweet type. An example of how to set the tweet types is below:
 
 entities:
-- name: EntityType1
+
+-name: EntityType1
+
 weights:
+
 tweet type:
+
 ideological: 1.0
+
 plain: 1.0
+
 musical: 1.0
+
 humourous: 1.0
 
 From above you can see that all of the weights are the same and therefore there would be the same amount of each tweet type for EntityType1.
@@ -427,9 +484,13 @@ From above you can see that all of the weights are the same and therefore there 
 their characteristics, they can follow entities with a specific ideology or location. They can either follow entities that have the same ideology and region as them or just ideology and different region. An example of these options is below:
 
 entities:
-- name: EntityType1
+
+-name: EntityType1
+
 hashtag follow options:
+
 care about region: true
+
 care about ideology: true
 
 From this example, the EntityType1 will only follow other entities that have the same ideology and region because they care about the region and ideology for the hashtag

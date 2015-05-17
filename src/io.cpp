@@ -319,27 +319,27 @@ void degree_distributions(Network& network,AnalysisState& state) {
     // now that we have our boundaries lets plot our degree distributions
 
     // open some files
-    ofstream outdd, indd, cumuldd, scaled;
+    ofstream outdd, indd, cumuldd;//, scaled;
     char out[100], in[100], cumul[100], scale[100];
     sprintf(out, "output/out-degree_distribution_month_%03d.dat", state.n_months());
     sprintf(in, "output/in-degree_distribution_month_%03d.dat", state.n_months());
     sprintf(cumul, "output/cumulative-degree_distribution_month_%03d.dat", state.n_months());
-    sprintf(scale, "output/scaled-degree_distribution_month_%03d.dat", state.n_months());
+    //sprintf(scale, "output/scaled-degree_distribution_month_%03d.dat", state.n_months());
     
     string out_s = out;
     string in_s = in;
     string cumul_s = cumul;
-    string scale_s = scale;
+    //string scale_s = scale;
 
     outdd.open(out_s.c_str());
     indd.open(in_s.c_str());
     cumuldd.open(cumul_s.c_str());
-    scaled.open(scale_s.c_str());
+    //scaled.open(scale_s.c_str());
 
     outdd << "# This is the out-degree distribution. The data order is:\n# degree, normalized probability, log of degree, log of normalized probability\n\n";
     indd << "# This is the in-degree distribution. The data order is:\n# degree, normalized probability, log of degree, log of normalized probability\n\n";
     cumuldd << "# This is the cumulative degree distribution. The data order is:\n# degree, normalized probability, log of degree, log of normalized probability\n\n";
-    scaled << "# This is the scaled degree distribution. The data order is:\n# degree, normalized probability, log of degree, log of normalized probability\n\n";
+    //scaled << "# This is the scaled degree distribution. The data order is:\n# degree, normalized probability, log of degree, log of normalized probability\n\n";
 
     //declare and set arrays to 0
     vector<int> out_degree_distro (max_following);
@@ -379,14 +379,14 @@ void degree_distributions(Network& network,AnalysisState& state) {
     for (int i = 0; i < max_degree; i ++) {
         cumuldd << i << "\t" << cumulative_distro[i] / (double) network.n_entities << "\t" << log(i) << "\t" << log(cumulative_distro[i] / (double)network.n_entities) << "\n";
     }
-    for (int i = 0; i < max_degree; i ++) {
-        scaled << i / (double) max_degree << "\t" << cumulative_distro[i] / (double) max << "\t" << log(i / (double) max_degree) << "\t" << log(cumulative_distro[i] / (double) max) << "\n";
-    }
+    //for (int i = 0; i < max_degree; i ++) {
+     //   scaled << i / (double) max_degree << "\t" << cumulative_distro[i] / (double) max << "\t" << log(i / (double) max_degree) << "\t" << log(cumulative_distro[i] / (double) max) << "\n";
+    //}
     
     outdd.close();
     indd.close();
     cumuldd.close();
-    scaled.close();
+    //scaled.close();
 }
 
 int factorial(int input_number) {

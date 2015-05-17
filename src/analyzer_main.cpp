@@ -187,8 +187,8 @@ struct Analyzer {
     }
 
     bool real_time_check() {
-        const int SECOND_TO_MICROSECOND = 1000000LL;
-        return (max_sim_timer.get_microseconds() < (config.max_real_time * SECOND_TO_MICROSECOND));
+        const int MINUTE_TO_MICROSECOND = 60*1000000LL;
+        return (max_sim_timer.get_microseconds() < (config.max_real_time * MINUTE_TO_MICROSECOND));
     }
     void interrupt_reset() {
         SIGNAL_ATTEMPTS = 0;
@@ -228,7 +228,8 @@ struct Analyzer {
     /* Run the main analysis routine using this config. */
     void run_network_simulation(Timer& timer) {
 		const char* HEADER = "Time\t\tUsers\t\tFollows\t\tTweets\t\tRetweets\t\tUnfollows\tR\t\tTime (s)";
-        cout << HEADER << "\n\n";
+        if (config.output_stdout_summary)
+            cout << HEADER << "\n\n";
         while (sim_time_check() && real_time_check()) {
             if (!interrupt_check()) {
                 interrupt_reset();
@@ -536,7 +537,7 @@ struct Analyzer {
             time += 1.0 / stats.event_rate;
         }
 
-        if (config.output_stdout_summary && (output_time_checker.has_past(time) || config.output_verbose)) {
+        if (config.output_stdout_summary && output_time_checker.has_past(time)) {
             output_summary_stats(timer);
         } 
     }
@@ -641,7 +642,7 @@ struct Analyzer {
 
 		const char* HEADER = "\n#Time\t\tUsers\t\tFollows\t\tTweets\t\tRetweets\tUnfollows\tR\ttime (seconds)\n\n";
     
-        if (stats.n_outputs % 50000*STDOUT_OUTPUT_RATE == 0) {
+        if (stats.n_outputs % 10000*STDOUT_OUTPUT_RATE == 0) {
             DATA_TIME << HEADER;
             /*following_data << "\n#Time\t";
             followers_data << "\n#Time\t";
