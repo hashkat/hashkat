@@ -1,4 +1,4 @@
-### To build #k@
+### To build #k@ on your machine
 
 ./run.sh -O --build
 
