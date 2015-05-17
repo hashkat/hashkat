@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# Default HASHKAT to '.', check if unset (using a BASHism):
+if [ x"$HASHKAT" = x ] ; then
+    export HASHKAT='.'
+fi
+
 # Good practice -- exit completely on any bad exit code:
 set -e 
 
