@@ -30,6 +30,7 @@ output/*
 *.gexf
 *.yaml-generated
 *.csv
+*.pyc
 yaml-cpp.pc
 tests/pass_logs
 tests/fail_logs
