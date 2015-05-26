@@ -402,7 +402,7 @@ struct AnalyzerFollow {
         }
         RECORD_STAT(state, prev_target.entity_type, n_follows);
         RECORD_STAT(state, prev_actor.entity_type, n_followers);
-        return false; // Completion failure: Can be ignored for followback, largely
+        return false; // Completion failure, return false (return value currently unused)
     }
         
 	bool action_unfollow(int id_unfollowed, int id_unfollower) {

@@ -460,67 +460,68 @@ struct Analyzer {
     bool step_analysis(Timer& timer) {
         PERF_TIMER();
 
-        lua_hook_step_analysis(state);
+        // Exit case 1:
+        // We opt to inform the user of a stagnant network rather than trying continuously:
+        if (stats.event_rate == 0) {
+            cout << "ANAMOLY: Stagnant network! Nothing to do. Exiting." << endl;
+            return false;
+        }
+
+        // Exit case 2:
+        // Check if we have reached desired analysis steps:
+        if (stats.n_steps >= config.max_analysis_steps) {
+            return false;
+        }
+
         /*
-         * Our step is wrapped in a loop to enabling restarting of events.
-         * Often, there will be no way to resolve an event failure at the moment it occurs.
-         * For example, when we land on a follow selection, and only have follows that we already have made.
-         * At this point, the only logical course is to retry the whole KMC event.
+         * Fix for Github issue #3:
          *
-         * Luckily, this should be (relatively) rare.
+         * Our step used to be wrapped in a loop to enabling restarting of events. This was incorrect.
+         * Often, there will be no way to resolve an event failure at the moment it occurs.
+         *
+         * The comment use to incorrectly state "At this point, the only logical course is to retry the whole KMC event."
+         *
+         * Only, this isn't the case. The correct thing to do is to continue, because KMC is tolerant to 
+         * arbitrarily large 'do-nothing' rate blocks. 
+         *
+         * Retrying as we did before (ie, not moving time forward) caused some underestimation in the time of events.
          */
-        bool complete = false;
-        const int MAX_TRIES = 100000;
-        int tries = 0;
-        while (!complete) {
-            tries++;
 
-            // Bail conditions. We opt to inform the user of a stagnant network
-            // rather than trying continuously.
-            if (stats.event_rate == 0) {
-                cout << "ANAMOLY: Stagnant network! Nothing to do. Exiting." << endl;
-                return false;
-            }
-            if (tries > MAX_TRIES) {
-                cout << "ANAMOLY: Stagnant network! Restarted event " << tries << " times. Exiting." << endl;
-                return false;
-            }
+        bool network_has_changed = false;
 
-            double r = rng.rand_real_not0(); // get the first number with-in [0,1).
-            /*if (!retweet_checks() && stats.n_retweets != 0) {
-                cout << "\n------Error in retweets-------\n";
-            } */
-            
-            // DECIDE WHAT TO DO:
-            if (subtract_var(r, stats.prob_add) <= ZEROTOL) {
-                // If we find ourselves in the add entity chuck of our cumulative function:
-                complete = action_create_entity();
-            } else if (subtract_var(r, stats.prob_follow) <= ZEROTOL) {
-                int entity = analyzer_select_entity(state, FOLLOW_SELECT);
-                if (entity != -1) {
-                    complete = analyzer_follow_entity(state, entity, time);
-                }
-            } else if (subtract_var(r, stats.prob_tweet) <= ZEROTOL) {
-                // The tweet event
-                int entity = analyzer_select_entity(state, TWEET_SELECT);
-                if (entity != -1) {
-                    complete = action_tweet(entity);
-                }
-            } else if (subtract_var(r, stats.prob_retweet) <= ZEROTOL ) {
-                RetweetChoice choice = analyzer_select_tweet_to_retweet(state, RETWEET_SELECT);
-                if (choice.id_author != -1) {
-                    complete = action_retweet(choice, time);
-                }
-            } else {
-                error_exit("step_analysis: event out of bounds");
+        lua_hook_step_analysis(state);
+
+        // Get a random number within [0,1).
+        double r = rng.rand_real_not0(); // 
+        // Decide what action corresponds to our random number.
+        if (subtract_var(r, stats.prob_add) <= ZEROTOL) {
+            // The entity creation event
+            network_has_changed = action_create_entity();
+        } else if (subtract_var(r, stats.prob_follow) <= ZEROTOL) {
+            // The follow event
+            int entity = analyzer_select_entity(state, FOLLOW_SELECT);
+            if (entity != -1) {
+                network_has_changed = analyzer_follow_entity(state, entity, time);
             }
+        } else if (subtract_var(r, stats.prob_tweet) <= ZEROTOL) {
+            // The tweet event
+            int entity = analyzer_select_entity(state, TWEET_SELECT);
+            if (entity != -1) {
+                network_has_changed = action_tweet(entity);
+            }
+        } else if (subtract_var(r, stats.prob_retweet) <= ZEROTOL ) {
+            // The retweet event
+            RetweetChoice choice = analyzer_select_tweet_to_retweet(state, RETWEET_SELECT);
+            if (choice.id_author != -1) {
+                network_has_changed = action_retweet(choice, time);
+            }
+        } else {
+            error_exit("step_analysis: event out of bounds");
         }
 
         step_time(timer);
         stats.n_steps++;
-        if (stats.n_steps >= config.max_analysis_steps) {
-            return false;
-        }
+
         //update the rates if n_entities has changed
         analyzer_rate_update(state);
 
