@@ -1,3 +1,11 @@
+##
+
+notes from a fresh install of linux mint (should be the same for debian or ubuntu)
+
+sudo apt-get install g++
+sudo apt-get install cmake
+
+
 ### To build #k@ on your machine
 
 ./run.sh -O --build
