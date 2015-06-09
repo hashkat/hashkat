@@ -10,7 +10,7 @@ There are six different follow models that have been implemented into #k@, to al
 The six follow models are:
 
 * Random
-* Twitter Preferential
+* Twitter Suggest
 * Entity
 * Preferential Entity
 * Hashtag
@@ -78,9 +78,9 @@ the different coloured nodes corresponding to the Celebrity, Bot, and Organizati
 These two separate networks of entities generated from our simulation again correspond to our English-speaking and French-speaking entities,
 with the much more denser network representing the greater number and association of English-speaking entities.
 
-![Cumulative Degree Distribution](/img/tutorial04/cumulative-degree_distribution_month_000.svg =1x  "Cumulative Degree Distribution")
+![Cumulative Degree Distribution](/img/tutorial09/cumulative-degree_distribution_month_000.svg =1x  "Cumulative Degree Distribution")
 
-![Visualization](/img/tutorial04/visualization.png =1x  "Visualization")
+![Visualization](/img/tutorial09/visualization.png =1x  "Visualization")
 
 ## Next Steps
 
