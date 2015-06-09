@@ -92,12 +92,17 @@
 		<text>k</text>
 	</g>
 	<g transform="translate(327.6,31.6)" style="stroke:none; fill:black; font-family:Arial; font-size:12.00pt; text-anchor:middle">
-		<text>Cumulative-Degree Distribution</text>
+		<text>Cumulative Degree Distribution</text>
 	</g>
 </g>
 	<g id="gnuplot_plot_1" ><title>gnuplot_plot_1</title>
 <g style="fill:none; color:red; stroke:currentColor; stroke-width:1.00; stroke-linecap:butt; stroke-linejoin:miter">
-	<use xlink:href='#gpPt0' transform='translate(80.2,422.4) scale(4.50)' color='red'/>
+	<path stroke='red'  d='M80.2,422.4 L91.2,422.4 L102.2,422.4 L113.2,422.4 L124.2,422.4 L135.2,422.4 L146.2,422.4 L157.2,419.3 
+		L168.2,422.4 L179.2,419.3 L190.2,407.1 L201.2,407.1 L212.1,382.5 L223.1,351.8 L234.1,287.4 L245.1,262.8 
+		L256.1,235.2 L267.1,210.6 L278.1,192.2 L289.1,103.2 L300.1,152.3 L311.1,140.0 L322.1,210.6 L333.1,207.6 
+		L344.1,281.2 L355.1,238.3 L366.1,296.6 L377.1,345.7 L388.1,361.0 L399.1,382.5 L410.1,394.8 L421.1,407.1 
+		L432.1,413.2 L443.1,413.2 L454.0,416.3 L465.0,422.4 L476.0,422.4 L487.0,419.3 L498.0,422.4 L509.0,422.4 
+		L520.0,422.4 L531.0,422.4 L542.0,422.4 L553.0,422.4  h0.01'/>	<use xlink:href='#gpPt0' transform='translate(80.2,422.4) scale(4.50)' color='red'/>
 	<use xlink:href='#gpPt0' transform='translate(91.2,422.4) scale(4.50)' color='red'/>
 	<use xlink:href='#gpPt0' transform='translate(102.2,422.4) scale(4.50)' color='red'/>
 	<use xlink:href='#gpPt0' transform='translate(113.2,422.4) scale(4.50)' color='red'/>
