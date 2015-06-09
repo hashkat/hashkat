@@ -55,7 +55,7 @@ A visualization of this network is shown below:
 
 ![Visualization](/img/tutorial04_classic_barabasi/visualization.png =1x  "Visualization")
 
-As we can see, we have the much more highly connected entities at the centre of the visualization, and the entities lower in degree on the sides. As expected, by implemented the Classic Barabsi configuration,
+As we can see, we have the much more highly connected entities at the centre of the visualization, and the entities lower in degree on the sides. As expected, by implementing the Classic Barabsi configuration,
 every entity, by following one other user, has at least one connection.
 
 ## Example - Non-Classic Barabasi
