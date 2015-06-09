@@ -39,15 +39,15 @@
 
 analysis:
   initial_entities:
-    100  # start out from something small, could be when only the developers were online.
+    1000  # start out from something small, could be when only the developers were online.
   max_entities: 
-    100     # 1 million max users
+    500000     # 1 million max users
   max_time: 
-    1000
+    10000
   max_analysis_steps: 
     unlimited
   max_real_time: 
-    240*hour*5        # 10 days         
+    hour                
   enable_interactive_mode:
     false
   enable_lua_hooks: # Defined in same file as interactive_mode. Can slow down simulation considerably.
@@ -65,7 +65,7 @@ analysis:
   use_followback: 
     false        # followback turned on, from literature it makes sense for a realistic system
   follow_model: # See notes above
-    random
+    twitter_preferential
   # model weights ONLY necessary for follow method 'twitter'  
   # educated guesses for the follow models  
   model_weights: {random: 0.0, twitter_preferential: 1.0, entity: 0.0, preferential_entity: 0.0, hashtag: 0.0}
@@ -73,7 +73,7 @@ analysis:
   stage1_unfollow: 
     false
   unfollow_tweet_rate: 
-    100
+    110
   use_hashtag_probability:
     0.5    # 50 % chance of using a hashtag
 
@@ -84,7 +84,7 @@ analysis:
 #################################################################
 
 rates:
-  add: {function: constant, value: 0.0}  # found from experiment
+  add: {function: constant, value: 1.0}  # found from experiment
 
 #################################################################
 # >> output:
@@ -227,7 +227,7 @@ regions:
 
     preference_class_weights: {StandardPref: 100}
     ideology_weights: {Red: 100, Blue: 100, Green: 100, Orange: 100}
-    language_weights: {English: 90, French: 10, Spanish: 0, French+English: 0}
+    language_weights: {English: 30, French: 70, Spanish: 0, French+English: 0}
     
   - name: Mexico
     add_weight: 0
@@ -344,4 +344,4 @@ entities:
         # Rate for follows from this entity:
         follow: {function: constant, value: 0.01}
         # Rate for tweets from this entity:
-        tweet: {function: constant, value: 0.0}   #0.000256944444444 0.37 per day
+        tweet: {function: constant, value: 0.01}   #0.000256944444444 0.37 per day
