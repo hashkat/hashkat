@@ -1,6 +1,7 @@
 site_name: docs.hashkat.org
 site_url: http://docs.hashkat.org
 pages:
+ - [tableofcontents.md, TABLE OF CONTENTS]
  - [index.md, Home]
  - [about.md, About]
  - [installation.md, Installation]
