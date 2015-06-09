@@ -65,7 +65,7 @@ analysis:
   use_followback: 
     false        # followback turned on, from literature it makes sense for a realistic system
   follow_model: # See notes above
-    hashtag
+    preferential_entity
   # model weights ONLY necessary for follow method 'twitter'  
   # educated guesses for the follow models  
   model_weights: {random: 0.0, twitter_preferential: 0.0, entity: 0.0, preferential_entity: 0.0, hashtag: 0.0}
@@ -339,7 +339,7 @@ entities:
     followback_probability: 0
     hashtag_follow_options:
       care_about_region: false # does the entity care about where the entity they will follow is from?
-      care_about_ideology: true # does the entity care about which ideology the entity has?
+      care_about_ideology: false # does the entiy care about which ideology the entity has?
     rates: 
         # Rate for follows from this entity:
         follow: {function: constant, value: 0.01}
@@ -349,7 +349,7 @@ entities:
   - name: Celebrity
     weights:
       # Weight with which this entity is created
-      add: 0.0
+      add: 100.0
       # Weight with which this entity is followed in entity follow
       follow: 90.0
       tweet_type:
@@ -361,7 +361,7 @@ entities:
     followback_probability: 0
     hashtag_follow_options:
       care_about_region: false # does the entity care about where the entity they will follow is from?
-      care_about_ideology: false # does the entity care about which ideology the entity has?
+      care_about_ideology: false # does the entiy care about which ideology the entity has?
     rates:
         # Rate for follows from this entity:
         follow: {function: constant, value: 0.01}
