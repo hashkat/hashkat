@@ -46,5 +46,6 @@ again and the simulation will recommence running.
 ## Next Steps
 
 With the completion of this second tutorial using #k@, you are now familiar with restarting the
-basic networks you learned how to create in Tutorial 1. Proceed to the next tutorial for a lesson
-on dealing with error messages.
+basic networks you learned how to create in Tutorial 1. Proceed to the next tutorial for an introduction
+with using the various different follow models offered by #k@, starting with a lesson on the 
+Random Follow Model.
