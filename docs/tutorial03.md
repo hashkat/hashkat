@@ -65,16 +65,11 @@ and a constant follow rate of 0.01 instead of 0.0001, to allow for more followin
 *Standard* user, except that its add weight will be zero. Though we have included them in the input file, the *Celebrity* users will not be used until a later
 tutorial, where entities will follow other entities based on their entity type.  
 
-Running this simulation, and analyzing our output, we can see that most
-entities have a cumulative-degree distribution of 20, as expected, and we
-can see that we have a much more complicated network of entities, with the purple nodes corresponding to the abundant Standard users, and
-the different coloured nodes corresponding to the Celebrity, Bot, and Organization type entities, which are all roughly the same quantity.
-These two separate networks of entities generated from our simulation again correspond to our English-speaking and French-speaking entities,
-with the much more denser network representing the greater number and association of English-speaking entities.
+Running this simulation, and visualizing it, we produce a network similar to the one shown below: 
 
-![Cumulative Degree Distribution](/img/tutorial04/cumulative-degree_distribution_month_000.svg =1x  "Cumulative Degree Distribution")
+![Visualization](/img/tutorial03/visualization.png =1x  "Visualization")
 
-![Visualization](/img/tutorial04/visualization.png =1x  "Visualization")
+As we can quite clearly see this a truly random network, we no clear entity or group of entities being the most popular.
 
 ## Next Steps
 
