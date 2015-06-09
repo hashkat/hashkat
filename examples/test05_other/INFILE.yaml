@@ -65,7 +65,7 @@ analysis:
   use_followback: 
     false        # followback turned on, from literature it makes sense for a realistic system
   follow_model: # See notes above
-    entity
+    twitter_preferential
   # model weights ONLY necessary for follow method 'twitter'  
   # educated guesses for the follow models  
   model_weights: {random: 0.0, twitter_preferential: 0.0, entity: 0.0, preferential_entity: 0.0, hashtag: 0.0}
@@ -329,7 +329,7 @@ entities:
       # Weight with which this entity is created
       add: 100.0
       # Weight with which this entity is followed in entity follow
-      follow: 10.0
+      follow: 5
       tweet_type:
         ideological: 1.0
         plain: 1.0
@@ -349,9 +349,9 @@ entities:
   - name: Celebrity
     weights:
       # Weight with which this entity is created
-      add: 100.0
+      add: 0
       # Weight with which this entity is followed in entity follow
-      follow: 90.0
+      follow: 5
       tweet_type:
         ideological: 1.0
         plain: 1.0
