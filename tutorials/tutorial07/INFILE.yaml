@@ -41,13 +41,13 @@ analysis:
   initial_entities:
     10  # start out from something small, could be when only the developers were online.
   max_entities: 
-    100     # 1 million max users
+    1000     # 1 million max users
   max_time: 
     1000
   max_analysis_steps: 
     unlimited
   max_real_time: 
-    5                 
+    1                 
   enable_interactive_mode:
     false
   enable_lua_hooks: # Defined in same file as interactive_mode. Can slow down simulation considerably.

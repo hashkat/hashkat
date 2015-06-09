@@ -39,15 +39,15 @@
 
 analysis:
   initial_entities:
-    100  # start out from something small, could be when only the developers were online.
+    1000  # start out from something small, could be when only the developers were online.
   max_entities: 
-    100     # 1 million max users
+    1000     # 1 million max users
   max_time: 
     1000
   max_analysis_steps: 
     unlimited
   max_real_time: 
-    5                 
+    1                 
   enable_interactive_mode:
     false
   enable_lua_hooks: # Defined in same file as interactive_mode. Can slow down simulation considerably.
@@ -339,7 +339,7 @@ entities:
     followback_probability: 0
     hashtag_follow_options:
       care_about_region: false # does the entity care about where the entity they will follow is from?
-      care_about_ideology: false # does the entiy care about which ideology the entity has?
+      care_about_ideology: false # does the entity care about which ideology the entity has?
     rates: 
         # Rate for follows from this entity:
         follow: {function: constant, value: 0.01}
@@ -361,7 +361,7 @@ entities:
     followback_probability: 0
     hashtag_follow_options:
       care_about_region: false # does the entity care about where the entity they will follow is from?
-      care_about_ideology: false # does the entiy care about which ideology the entity has?
+      care_about_ideology: false # does the entity care about which ideology the entity has?
     rates:
         # Rate for follows from this entity:
         follow: {function: constant, value: 0.01}
