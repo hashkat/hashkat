@@ -39,11 +39,11 @@
 
 analysis:
   initial_entities:
-    1000  # start out from something small, could be when only the developers were online.
+    10  # start out from something small, could be when only the developers were online.
   max_entities: 
-    500000     # 1 million max users
+    1000     # 1 million max users
   max_time: 
-    10000
+    1000
   max_analysis_steps: 
     unlimited
   max_real_time: 
@@ -65,7 +65,7 @@ analysis:
   use_followback: 
     false        # followback turned on, from literature it makes sense for a realistic system
   follow_model: # See notes above
-    twitter_preferential
+    random
   # model weights ONLY necessary for follow method 'twitter'  
   # educated guesses for the follow models  
   model_weights: {random: 0.0, twitter_preferential: 1.0, entity: 0.0, preferential_entity: 0.0, hashtag: 0.0}
@@ -73,7 +73,7 @@ analysis:
   stage1_unfollow: 
     false
   unfollow_tweet_rate: 
-    110
+    1000
   use_hashtag_probability:
     0.5    # 50 % chance of using a hashtag
 
@@ -271,21 +271,21 @@ preference_classes:
   # preference class:
    tweet_transmission: 
       plain: # Also applies to musical tweets
-        Standard: 0.001
-        Celebrity: 0.001
-        else: 0.001
+        Standard: 0.1
+        Celebrity: 0.1
+        else: 0.1
       different_ideology:   # no retweeting for different ideologies
         Standard: 0.00
         Celebrity: 0.00
         else: 0.00
       same_ideology:
-        Standard: 0.001
-        Celebrity: 0.001
-        else: 0.001
+        Standard: 0.1
+        Celebrity: 0.1
+        else: 0.1
       humourous:
-        Standard: 0.002
-        Celebrity: 0.002
-        else: 0.002
+        Standard: 0.2
+        Celebrity: 0.2
+        else: 0.2
    # Probability that we will follow as a reaction.
    # Only applies to 2nd generation retweets, otherwise
    # the entity would already be a follower.
@@ -345,3 +345,26 @@ entities:
         follow: {function: constant, value: 0.01}
         # Rate for tweets from this entity:
         tweet: {function: constant, value: 0.01}   #0.000256944444444 0.37 per day
+
+  - name: Celebrity
+    weights:
+      # Weight with which this entity is created
+      add: 100.0
+      # Weight with which this entity is followed in entity follow
+      follow: 5
+      tweet_type:
+        ideological: 1.0
+        plain: 1.0
+        musical: 1.0
+        humourous: 1.0 # Can be considered the humourousness of the entity type
+    # Probability that following this entity results in a follow-back
+    followback_probability: .44
+    hashtag_follow_options:
+      care_about_region: true # does the entity care about where the entity they will follow is from?
+      care_about_ideology: false # does the entiy care about which ideology the entity has?
+    rates:
+        # Rate for follows from this entity:
+        follow: {function: constant, value: 0.01}
+        # Rate for tweets from this entity:
+        tweet: {function: constant, value: 0.01}   #0.000256944444444 0.37 per day
+
