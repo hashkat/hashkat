@@ -115,7 +115,7 @@ void output_network_statistics(AnalysisState& state) {
         network_statistics(network, stats, et_vec);
     }
     //region_stats(network, state);
-    fraction_of_connections_distro(network, state, stats);
+    //fraction_of_connections_distro(network, state, stats);
     //if (C.dd_by_age) {
     //    dd_by_age(network, state, stats);
     //}
