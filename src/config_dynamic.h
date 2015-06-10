@@ -114,6 +114,7 @@ struct ParsedConfig {
     bool output_tweet_analysis = false;
     bool retweet_viz = false;
     bool main_stats = false;
+    bool dd_by_follow_model = false;
     double summary_output_rate = 1;
 
     // 'X_category' config options

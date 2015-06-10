@@ -120,6 +120,8 @@ output:
     true
   main_statistics:
     true
+  degree_distribution_by_follow_model:
+    true
 
 #################################################################
 # >> *_ranks:

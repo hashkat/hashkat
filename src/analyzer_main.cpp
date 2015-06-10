@@ -108,11 +108,7 @@ struct Analyzer {
     TimePeriodChecker output_time_checker;
 
     ofstream DATA_TIME; // Output file to plot data
-    ofstream add_data;
-    ofstream following_data;
-    ofstream followers_data;
-    ofstream tweet_data;
-    ofstream retweet_data;
+
     double& time;
 
     Timer max_sim_timer;
@@ -137,13 +133,7 @@ struct Analyzer {
         network.allocate(config.max_entities);
 
         DATA_TIME.open("DATA_vs_TIME");
-
-        add_data.open("output/entity_populations.dat");
-        following_data.open("output/entity_following.dat");
-        followers_data.open("output/entity_followers.dat");
-        tweet_data.open("output/entity_tweets.dat");
-        retweet_data.open("output/entity_retweets.dat");
-		
+        
         set_initial_entities();
         analyzer_rate_update(state);
         init_referral_rate_function(config);
@@ -645,45 +635,11 @@ struct Analyzer {
     
         if (stats.n_outputs % 10000*STDOUT_OUTPUT_RATE == 0) {
             DATA_TIME << HEADER;
-            /*following_data << "\n#Time\t";
-            followers_data << "\n#Time\t";
-            tweet_data << "\n#Time\t";
-            retweet_data << "\n#Time\t";
-            add_data << "\n#Time\t";
-            for (auto& type : entity_types) {
-                following_data << type.name << "\t";
-                followers_data << type.name << "\t";
-                tweet_data << type.name << "\t";
-                retweet_data << type.name << "\t";
-                add_data << type.name << "\t";
+
+            if (stats.n_outputs % STDOUT_OUTPUT_RATE == 0) {
+                output_summary_stats(DATA_TIME, true, timer);
+                output_summary_stats(cout, false, timer);
             }
-            following_data << "\n\n";
-            followers_data << "\n\n";
-            tweet_data << "\n\n";
-            retweet_data << "\n\n";
-            add_data << "\n\n";*/
-        }
-        /*following_data << time << "\t";
-        followers_data << time << "\t";
-        tweet_data << time << "\t";
-        retweet_data << time << "\t";
-        add_data << time << "\t";
-        for (auto& type : entity_types) {
-            following_data << type.stats.n_follows << "\t";
-            followers_data << type.stats.n_followers << "\t";
-            tweet_data << type.stats.n_tweets << "\t";
-            retweet_data << type.stats.n_retweets << "\t";
-            add_data << type.entity_list.size() << "\t";
-        }
-        following_data << "\n";
-        followers_data << "\n";
-        tweet_data << "\n";
-        retweet_data << "\n";
-        add_data << "\n";*/
-	
-        if (stats.n_outputs % STDOUT_OUTPUT_RATE == 0) {
-            output_summary_stats(DATA_TIME, true, timer);
-            output_summary_stats(cout, false, timer);
         }
 
         stats.n_outputs++;

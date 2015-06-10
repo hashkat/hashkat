@@ -114,13 +114,19 @@ void output_network_statistics(AnalysisState& state) {
     if (C.main_stats) {
         network_statistics(network, stats, et_vec);
     }
-    region_stats(network, state);
+    //region_stats(network, state);
     fraction_of_connections_distro(network, state, stats);
-    dd_by_age(network, state, stats);
-    dd_by_entity(network, state, stats);
-    dd_by_follow_method(network, state, stats);
-    
-    
+    //if (C.dd_by_age) {
+    //    dd_by_age(network, state, stats);
+    //}
+
+    //#### This function has already been implemented, it is in entity stats
+    //if (C.dd_by_entity) {
+    //   dd_by_entity(network, state, stats);
+    //}
+    if (C.dd_by_follow_model) {
+        dd_by_follow_method(network, state, stats);
+    }   
 }
 
 static void output_stat_calc(const char* name, StatCalc& calc) {
