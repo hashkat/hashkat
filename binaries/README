@@ -2,5 +2,5 @@ This directory contains pre-build binaries for various operating systems
 
 hashkat.OS = Mac OS X Yosemite (10.10.3)
            = (pull date) 30 April 2015
-hashkat.x64-linux = Linux 3.13.0-48-generic #80-Ubuntu SMP Thu Mar 12 11:16:15 UTC 2015 x86_64 x86_64 x86_64 GNU/Linux          
-           = (pull date) 30 April 2015
+hashkat.x64-linux = Linux xubuntu 3.19.0-15-generic #15-Ubuntu SMP Thu Apr 16 23:32:37 UTC 2015 x86_64 x86_64 x86_64 GNU/Linux
+           = (pull date) 9 June 2015
