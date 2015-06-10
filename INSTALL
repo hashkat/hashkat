@@ -3,7 +3,16 @@
 notes from a fresh install of linux mint (should be the same for debian or ubuntu)
 
 sudo apt-get install g++
+OR
+sudo apt-get install clang
 sudo apt-get install cmake
+
+if you build with clang, do the following
+
+clang seems to have better c++11 support on some distributions, so if you have issues with g++ give clang a try
+
+export CC=clang
+export CXX=clang++
 
 
 ### To build #k@ on your machine
@@ -12,9 +21,7 @@ sudo apt-get install cmake
 
 This will build #k@ and optimized version of #k@ (if you omit the -O, it will generate a debug version of the code)
 
-
 ### To install and run
-
 
 You will need to set the following environment variable
 
