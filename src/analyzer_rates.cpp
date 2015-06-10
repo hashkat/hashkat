@@ -84,7 +84,7 @@ struct AnalyzerRates {
             crossed_month |= create_new_month_if_needed(et);
         }
 
-        if (crossed_month && config.output_stdout_basic) {
+        if (crossed_month && config.degree_distributions) {
             degree_distributions(network, state);
             fraction_of_connections_distro(network, state, stats);
             
