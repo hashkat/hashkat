@@ -62,16 +62,17 @@ every entity, by following one other user, has at least one connection.
 
 The Non-Classic Barabasi configuration is exactly the same as the classic configuration except that the number of connections entities make when entering the simulation is a number greater than 1.
 
-For this example, we will use the exact same INFILE.yaml as used above, but our *barabasi_connections* will have a value of 2 instead of 1. This simulation will also take longer to complete than the previous case,
-so we shall set our *max_real_time* to a day to ensure that our simulation runs for the full length of simulated time. Though the simulation will take nowhere close to this long, it is good practice to
-have your *max_real_time* always set to a high number, assuming that you have access to the computer running this simulation for that full length of time of course, to prevent your simulations from ever
-cutting short of their allotted simulation run time. The network simulations that will be run in these tutorials will have a *max_real_time* of one day from now on. 
-The files used in this simulation can be found for reference in the examples directory in hashkat under the title *tutorial05_nonclassic_barabasi*.
-You can also view the input file used for this example [here](https://github.com/hashkat/hashkat/blob/master/examples/tutorial05_nonclassic_barabasi/INFILE.yaml).
+For this example, we will use the exact same INFILE.yaml as used above, but our *barabasi_connections* will have a value of 2 instead of 1. 
+The files used in this simulation can be found for reference in the tutorials directory in hashkat under the title *tutorial04_nonclassic_barabasi*.
+You can also view the input file used for this example [here](https://github.com/hashkat/hashkat/blob/master/tutorials/tutorial04_nonclassic_barabasi/INFILE.yaml).
 
 Running this network simulation, we produced the visualization shown below:
 
+![Visualization](/img/tutorial04_nonclassic_barabasi/visualization.png =1x "Visualization")
 
+As expected, this network is quite similar to the one we produced using the Classic Barabasi configuration, with the more highly connected entities at
+the centre of the visualization and those less connected on the sides. This is, however, a much more highly connected network, since every
+entity has at least two connections.
 
 ## Example - Other Twitter Suggest Models
 
