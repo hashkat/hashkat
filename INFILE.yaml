@@ -113,7 +113,7 @@ output:
   entity_stats: 
     true
   degree_distributions: 
-    true            # set this to true, will print after simulation has finished
+    false            # set this to true, will print after simulation has finished
   tweet_analysis: 
     true
   retweet_visualization:
