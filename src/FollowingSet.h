@@ -29,13 +29,13 @@
 #include "events.h"
 #include "config_static.h"
 
-#include "util/FlexibleSet.h"
+#include "util/HashedEdgeSet.h"
 
 // Forward declare, to prevent circular header inclusion:
 struct AnalysisState;
 
 struct FollowingSet {
-    typedef FlexibleSet<int> Followings;
+    typedef HashedEdgeSet<int> Followings;
 
     void print(AnalysisState& S);
 

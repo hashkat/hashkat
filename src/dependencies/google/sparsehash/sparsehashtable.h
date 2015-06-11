@@ -1097,19 +1097,19 @@ class sparse_hashtable {
   // write a hasher or key_equal, you have to make sure everything
   // but the table is the same.  We compact before writing.
   //
-  // The OUTPUT type needs to support a Write() operation. File and
+  // The OUTPUT* type needs to support a Write() operation. File and
   // OutputBuffer are appropriate types to pass in.
   //
-  // The INPUT type needs to support a Read() operation. File and
+  // The INPUT* type needs to support a Read() operation. File and
   // InputBuffer are appropriate types to pass in.
   template <typename OUTPUT>
-  bool write_metadata(OUTPUT *fp) {
+  bool write_metadata(OUTPUT* fp) {
     squash_deleted();           // so we don't have to worry about delkey
     return table.write_metadata(fp);
   }
 
   template <typename INPUT>
-  bool read_metadata(INPUT *fp) {
+  bool read_metadata(INPUT* fp) {
     num_deleted = 0;            // since we got rid before writing
     bool result = table.read_metadata(fp);
     settings.reset_thresholds(bucket_count());
@@ -1118,13 +1118,13 @@ class sparse_hashtable {
 
   // Only meaningful if value_type is a POD.
   template <typename OUTPUT>
-  bool write_nopointer_data(OUTPUT *fp) {
+  bool write_nopointer_data(OUTPUT* fp) {
     return table.write_nopointer_data(fp);
   }
 
   // Only meaningful if value_type is a POD.
   template <typename INPUT>
-  bool read_nopointer_data(INPUT *fp) {
+  bool read_nopointer_data(INPUT* fp) {
     return table.read_nopointer_data(fp);
   }
 

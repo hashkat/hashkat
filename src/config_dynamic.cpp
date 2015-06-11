@@ -131,7 +131,7 @@ static TweetObservationPDF parse_tweet_obs_pdf(const Node& node) {
 }
 
 static vector<double> parse_follow_weights(const Node& node) {
-    vector<double> weights(N_FOLLOW_MODELS);
+    vector<double> weights(N_FOLLOW_MODELS, 0);
     parse(node, "random", weights[0]);
     parse(node, "twitter_suggest", weights[1]);
     parse(node, "entity", weights[2]);

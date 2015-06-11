@@ -186,14 +186,14 @@
 //            iterator end)                   start and end
 // void clear()                sparsetable    Erases all elements in the table
 //
-// I/O versions exist for both FILE* and for File* (Google2-style files):
-// bool write_metadata(FILE *fp) sparsetable  Writes a sparsetable to the
+// I/O versions exist for both OUTPUT* and for File* (Google2-style files):
+// bool write_metadata(OUTPUT* fp) sparsetable  Writes a sparsetable to the
 // bool write_metadata(File *fp)              given file.  true if write
 //                                            completes successfully
-// bool read_metadata(FILE *fp) sparsetable   Replaces sparsetable with
+// bool read_metadata(OUTPUT* fp) sparsetable   Replaces sparsetable with
 // bool read_metadata(File *fp)               version read from fp.  true
 //                                            if read completes sucessfully
-// bool write_nopointer_data(FILE *fp)        Read/write the data stored in
+// bool write_nopointer_data(OUTPUT* fp)        Read/write the data stored in
 // bool read_nopointer_data(FILE*fp)          the table, if it's simple
 //
 // bool operator==(            forward        Tests two tables for equality.
@@ -1229,7 +1229,9 @@ class sparsegroup {
   // just the bitmap and size.  Meant to be used with table I/O.
 
   // Returns true if all was ok.
-  bool write_metadata(FILE *fp) const {
+ 
+  template <typename OUTPUT> 
+  bool write_metadata(OUTPUT* fp) const {
     // we explicitly set to u_int16_t
     assert(sizeof(settings.num_buckets) == 2);
     PUT_(settings.num_buckets, 8);
@@ -1240,7 +1242,9 @@ class sparsegroup {
   }
 
   // Reading destroys the old group contents!  Returns true if all was ok.
-  bool read_metadata(FILE *fp) {
+  
+  template <typename INPUT> 
+  bool read_metadata(INPUT* fp) {
     clear();
 
     int x;          // the GET_ macro requires an 'int x' to be defined
@@ -1258,7 +1262,8 @@ class sparsegroup {
   // If your keys and values are simple enough, we can write them
   // to disk for you.  "simple enough" means POD and no pointers.
   // However, we don't try to normalize endianness.
-  bool write_nopointer_data(FILE *fp) const {
+  template <typename OUTPUT> 
+  bool write_nopointer_data(OUTPUT* fp) const {
     for ( const_nonempty_iterator it = nonempty_begin();
           it != nonempty_end(); ++it ) {
       if ( !fwrite(&*it, sizeof(*it), 1, fp) )  return false;
@@ -1268,7 +1273,8 @@ class sparsegroup {
 
   // When reading, we have to override the potential const-ness of *it.
   // Again, only meaningful if value_type is a POD.
-  bool read_nopointer_data(FILE *fp) {
+  template <typename INPUT> 
+  bool read_nopointer_data(INPUT* fp) {
     for ( nonempty_iterator it = nonempty_begin();
           it != nonempty_end(); ++it ) {
       if ( !fread(reinterpret_cast<void*>(&(*it)), sizeof(*it), 1, fp) )
@@ -1665,8 +1671,8 @@ class sparsetable {
   // causes us to mis-read old-version code that stores exactly
   // 0xFFFFFFF, but I don't think that is likely to have happened for
   // these particular values.
-  template <typename IntType>
-  static bool write_32_or_64(FILE* fp, IntType value) {
+  template <typename IntType, typename OUTPUT>
+  static bool write_32_or_64(OUTPUT* fp, IntType value) {
     if ( value < 0xFFFFFFFFULL ) {        // fits in 4 bytes
       PUT_(value, 24);
       PUT_(value, 16);
@@ -1690,8 +1696,8 @@ class sparsetable {
     return true;
   }
 
-  template <typename IntType>
-  static bool read_32_or_64(FILE* fp, IntType *value) {  // reads into value
+  template <typename IntType, typename INPUT>
+  static bool read_32_or_64(INPUT* fp, IntType *value) {  // reads into value
     size_type first4 = 0;
     int x;
     GET_(first4, 24);
@@ -1714,7 +1720,8 @@ class sparsetable {
   }
 
  public:
-  bool write_metadata(FILE *fp) const {
+  template <typename OUTPUT>
+  bool write_metadata(OUTPUT* fp) const {
     if ( !write_32_or_64(fp, MAGIC_NUMBER) )  return false;
     if ( !write_32_or_64(fp, settings.table_size) )  return false;
     if ( !write_32_or_64(fp, settings.num_buckets) )  return false;
@@ -1726,7 +1733,8 @@ class sparsetable {
   }
 
   // Reading destroys the old table contents!  Returns true if read ok.
-  bool read_metadata(FILE *fp) {
+  template <typename OUTPUT>
+  bool read_metadata(OUTPUT* fp) {
     size_type magic_read = 0;
     if ( !read_32_or_64(fp, &magic_read) )  return false;
     if ( magic_read != MAGIC_NUMBER ) {
@@ -1748,7 +1756,8 @@ class sparsetable {
   // If your keys and values are simple enough, we can write them
   // to disk for you.  "simple enough" means no pointers.
   // However, we don't try to normalize endianness
-  bool write_nopointer_data(FILE *fp) const {
+  template <typename OUTPUT>
+  bool write_nopointer_data(OUTPUT* fp) const {
     for ( const_nonempty_iterator it = nonempty_begin();
           it != nonempty_end(); ++it ) {
       if ( !fwrite(&*it, sizeof(*it), 1, fp) )  return false;
@@ -1757,7 +1766,8 @@ class sparsetable {
   }
 
   // When reading, we have to override the potential const-ness of *it
-  bool read_nopointer_data(FILE *fp) {
+  template <typename OUTPUT>
+  bool read_nopointer_data(OUTPUT* fp) {
     for ( nonempty_iterator it = nonempty_begin();
           it != nonempty_end(); ++it ) {
       if ( !fread(reinterpret_cast<void*>(&(*it)), sizeof(*it), 1, fp) )

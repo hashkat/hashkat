@@ -38,7 +38,7 @@
 
 #include "FollowerSet.h"
 
-typedef FlexibleSet<int> UsedEntities;
+typedef HashedEdgeSet<int> UsedEntities;
 
 // information for when a user tweets
 struct TweetContent {

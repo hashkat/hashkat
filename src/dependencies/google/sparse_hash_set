@@ -273,16 +273,16 @@ class sparse_hash_set {
   // file type (though it will probably be a FILE *).  We just pass
   // the fp through to rep.
   template <typename OUTPUT>
-  bool write_metadata(OUTPUT *fp)       { return rep.write_metadata(fp); }
+  bool write_metadata(OUTPUT* fp)       { return rep.write_metadata(fp); }
 
   template <typename INPUT>
-  bool read_metadata(INPUT *fp)         { return rep.read_metadata(fp); }
+  bool read_metadata(INPUT* fp)         { return rep.read_metadata(fp); }
 
   template <typename OUTPUT>
-  bool write_nopointer_data(OUTPUT *fp) { return rep.write_nopointer_data(fp); }
+  bool write_nopointer_data(OUTPUT* fp) { return rep.write_nopointer_data(fp); }
 
   template <typename INPUT>
-  bool read_nopointer_data(INPUT *fp)   { return rep.read_nopointer_data(fp); }
+  bool read_nopointer_data(INPUT* fp)   { return rep.read_nopointer_data(fp); }
 };
 
 template <class Val, class HashFcn, class EqualKey, class Alloc>

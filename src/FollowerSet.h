@@ -29,7 +29,7 @@
 #include <cmath>
 #include "util.h"
 
-#include "util/FlexibleSet.h"
+#include "util/HashedEdgeSet.h"
 
 // For bin limits:
 #include "config_static.h"
@@ -63,7 +63,7 @@ struct IdeologyLayer {
     static int classify(Entity& entity);
 
     int n_elems = 0; // Total
-    FlexibleSet<int> sublayers[N_SUBLAYERS];
+    HashedEdgeSet<int> sublayers[N_SUBLAYERS];
 };
 
 struct RegionLayer {
@@ -163,7 +163,7 @@ struct FollowerSet {
         for (auto& b : a.sublayers) {
             for (auto& c : b.sublayers) {
                 for (auto& d : c.sublayers) {
-                    for (FlexibleSet<int>& set : d.sublayers) {
+                    for (HashedEdgeSet<int>& set : d.sublayers) {
                         set.visit(rw);
                     }
                     rw << d.n_elems;

@@ -67,7 +67,7 @@ class Configuration:
             self.initial_entities, MAX_ENTITIES
         )
 
-FOLLOW_MODELS = ['barabasi', 'random', 'preferential', 'entity', 'preferential-entity', 'hashtag', 'twitter', 'none']
+FOLLOW_MODELS = ['random', 'barabasi', 'preferential', 'entity', 'preferential-entity', 'hashtag', 'twitter', 'none']
 
 configurations = []
 
@@ -137,6 +137,7 @@ def config_to_yaml(C):
           "preferential": 0.2,
           "entity": 0.2,
           "preferential_entity": 0.2,
+          "twitter_suggest": 0.2,
           "hashtag": 0.2 if C.use_hashtags else 0
         },
         "stage1_unfollow": C.use_unfollow,
