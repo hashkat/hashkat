@@ -9,11 +9,11 @@ Upon cloning the repository, you will notice there are files called “INFILE.ya
 ####analysis
 **(type: n/a)** This parameter should never be adjusted, when the software looks for the parameters listed under the analysis heading, it first looks to this variable. This defines to so called analysis section of the input file.
 
-####initial_entities
-**(type: integer)** This parameter is the number of initial entities in the simulation. The entity type and characterizations are determined before any time will pass in the simulation.
+####initial_agents
+**(type: integer)** This parameter is the number of initial agents in the simulation. The agent type and characterizations are determined before any time will pass in the simulation.
 
-####max_entities
-**(type: integer)** This parameter is the maximum number of entities (users) that will be allowed in the simulation. Once the maximum number of users has been reached in the simulation, the program will no longer add users but will not terminate.
+####max_agents
+**(type: integer)** This parameter is the maximum number of agents that will be allowed in the simulation. Once the maximum number of agents has been reached in the simulation, the program will no longer add agents but will not terminate.
 
 ####max_time
 **(type: integer)** This parameter is the maximum time allowed in the simulation. The units of time in the simulation is minutes. The simulation will terminate once the maximum amount of time has been reached. 
@@ -30,8 +30,8 @@ If you type ‘exit()’ while in the interpreter the simulation will terminate.
 
 ####use_barabasi
 **(type: boolean)** If true, a certain simulation method will be implemented that results in a network that models a scale-free network with a scale-free exponent of 3.
-This method is very similar to the ‘barabasi.game’ in the igraph package found in R or Python. The follow model (follow model) in the simulation should be set to ‘preferential’ to achieve desired result.
-The simulation method is as follows; an entity is added into the network, and then follows another entity based on the degree of the entities in the current network. A higher degree results in a higher probability of being followed.
+This method is very similar to the ‘barabasi.game’ in the igraph package found in R or Python. The follow model (follow model) in the simulation should be set to ‘twitter_suggest’ to achieve the desired result.
+The simulation method is as follows; an agent is added into the network, and then follows another agent based on the degree of the agents in the current network. A higher degree results in a higher probability of being followed.
 If set to false, the simulation will run normally.
 
 ####use_random_time_increment
@@ -42,29 +42,29 @@ If set to false, the simulation will run normally.
 where *u* is a random number in the interval 0 < *u* ≤ 1, and **R** is the sum of the rates for the simulation. On average, the value of −ln(*u*) is unity, and therefore you can increment time by 1/**R** ; this is how time is incremented if set to false.
 
 ####use_followback
-**(type: boolean)** If set to true, there may be a follow back prior to a follow. When an entity A follows entity B, if entity B’s followback probability (which can be found in the entities section of the input file) is non-zero,
-then entity B can follow entity A without moving forward in time. This is why it is called a ‘flawed followback’; in reality there would be some time prior to the initial follow where the followback would occur.
+**(type: boolean)** If set to true, there may be a follow back prior to a follow. When an agent A follows agent B, if agent B’s followback probability (which can be found in the agents section of the input file) is non-zero,
+then agent B can follow agent A without moving forward in time. This is why it is called a ‘flawed followback’; in reality there would be some time prior to the initial follow where the followback would occur.
 
 ####follow_model
-**(type: string)** Currently, there are 6 follow methods implemented in the software; ‘random’, ‘entity’, ‘preferential’, ‘preferential-entity’, ‘hashtag’, and ‘twitter’; to use a follow model simply do
+**(type: string)** Currently, there are 6 follow methods implemented in the software; ‘random’, ‘agent’, ‘twitter_suggest’, ‘preferential_agent’, ‘hashtag’, and ‘twitter’; to use a follow model simply do
 
 follow_model: random
 
-* The ‘random’ follow method causes entities to follow other entities randomly; if the number of entities is set to constant and this method is on, you will achieve an Erdos-Renyi degree distribution (Poisson distribution).
+* The ‘random’ follow method causes agents to follow other agents randomly; if the number of agents is set to constant and this method is on, you will achieve an Erdos-Renyi degree distribution (Poisson distribution).
 
-* The ‘entity’ follow method causes entities to follow other entities based on title alone; the titles are set in the entities section of the input file. The probabilities to to follow each entity can also be set in the weights portion of the entities section.
+* The ‘agent’ follow method causes agents to follow other agents based on title alone; the titles are set in the agents section of the input file. The probabilities to follow each agent can also be set in the weights portion of the agents section.
 The probabilities are normalized, so the probabilities should be set with respect to one another.
 
-* The ‘twitter-preferential’ follow method follows the preferential attachment model outlined by Barabasi and Albert. The basics behind the method is that the degree of the entity determines the probability of following the entity;
-the greater the degree the greater the probability of the entity being followed. The thresholds and weights variables outlined in the follow ranks section determines how the degree of the entities are binned and the corresponding weights for each bin.
+* The ‘twitter_suggest’ follow method follows the preferential attachment model outlined by Barabasi and Albert. The basics behind the method is that the degree of the agent determines the probability of following the agent;
+the greater the degree the greater the probability of the agent being followed. The thresholds and weights variables outlined in the follow ranks section determines how the degree of the agents are binned and the corresponding weights for each bin.
 If you want to achieve the preferential attachment method similar to the use barabasi method you can set the thresholds to increment by 1,
-with linear spacing from 0 to the max number of entities and set the weights to increment by 1 with linear spacing from 1 to the max number of entities.
+with linear spacing from 0 to the max number of agents and set the weights to increment by 1 with linear spacing from 1 to the max number of agents.
 
-* The ‘preferential-entity’ follow method is just the ‘preferential’ follow method nested in the ‘entity’ follow method. Firstly, a certain entity type will be selected, then based on the degrees of the entities within the certain entity type,
-an entity will be selected to follow.
+* The ‘preferential_agent’ follow method is just the ‘twitter_suggest’ follow method nested in the ‘agent’ follow method. Firstly, a certain agent type will be selected, then based on the degrees of the agents within the certain agent type,
+an agent will be selected to follow.
 
-* The ‘hashtag’ follow method is a mechanism introduced to follow other entities based on hashtags. If the use hashtag probability parameter is non-zero, then entities will attach hashtags to their tweets.
-Depending on the ideology and location of the entity, they are then placed into a dynamic array. If another user wants to follow via hashtag, they look to these dynamic arrays to find a specific entity that relates to
+* The ‘hashtag’ follow method is a mechanism introduced to follow other agents based on hashtags. If the use hashtag probability parameter is non-zero, then agents will attach hashtags to their tweets.
+Depending on the ideology and location of the agent, they are then placed into a dynamic array. If another user wants to follow via hashtag, they look to these dynamic arrays to find a specific agent that relates to
 their hashtag preferences. These preferences can be set in the hashtag follow options section.
 
 * The ‘twitter’ follow model is a model that incorporates all of the above follow mechanisms. The weights for each mechanism can be set for each follow method. See model weights for more information.
@@ -76,16 +76,16 @@ of calling each method. As an example, if you would like to call the follow meth
 model_weights{random: 0.20, preferential: 0.20, entity: 0.20, preferential entity: 0.20, hashtag: 0.20}
 
 ####stage1_unfollow
-**(type: boolean)** If set to true, entities can be flagged when followed based on their tweet rates. If the tweet rate of the newly followed entity is greater than twice the average tweet rate of the pre-existent entities you follow,
-than the entity is placed into an array. This array is looked to when the unfollow function is called. This algorithm is supposed to encapsulate an unfollow method on Twitter.
+**(type: boolean)** If set to true, agents can be flagged when followed based on their tweet rates. If the tweet rate of the newly followed agent is greater than twice the average tweet rate of the pre-existent agents you follow,
+than the agent is placed into an array. This array is looked to when the unfollow function is called. This algorithm is supposed to encapsulate an unfollow method on Twitter.
 In Twitter if your feed is being dominated by a user you may become annoyed and want to unfollow that user. This is the process that occurs in this unfollow method.
 
 ####unfollow_tweet_rate
 **(type: double)** This tweet rate is not associated with the stage1 unfollow method described above. This is a more simplified unfollow algorithm and can be considered the stage 0 unfollow method.
-When an entity tweets, we look to see how many tweets they have put out since the entity was created. If the tweet rate of the entity exceeds the value set here, then the entity will be randomly unfollowed by one of its followers.
+When an agent tweets, we look to see how many tweets they have put out since the agent was created. If the tweet rate of the agent exceeds the value set here, then the agent will be randomly unfollowed by one of its followers.
 
 ####use_hashtag_probability
-**(type: double)** This is a probability (0.0-1.0) that determines how often entities attach hashtags into their tweets. If set to 0.0, then none of the tweets will have hashtags.
+**(type: double)** This is a probability (0.0-1.0) that determines how often agents attach hashtags into their tweets. If set to 0.0, then none of the tweets will have hashtags.
 If set to 0.5, then half of the tweets will have hashtags. If 1.0, then all of the tweets will have hashtags.
 
 ####rates
@@ -96,7 +96,7 @@ If set to 0.5, then half of the tweets will have hashtags. If 1.0, then all of t
 
 
 ####add
-**(type: n/a)** This parameter allows one to adjust the rate at which users are being added into the network. To have different numbers of entities, you can adjust the add weights in the entities section of the input file.
+**(type: n/a)** This parameter allows one to adjust the rate at which users are being added into the network. To have different numbers of agents, you can adjust the add weights in the agents section of the input file.
 
 ####function
 **(type: string)** The function for the add rate can either be constant or linear; other options can be coded into the software if necessary. If function is set to ‘constant’, then you must also declare the constant value by setting the ‘value’
@@ -104,7 +104,7 @@ parameter to a real constant > 0. An example of of constant add rate is as follo
 
 add: {function: constant, value: 1.0}
 
-This will set the add rate to 1 entity per minute. If function is set to ‘linear’, then you must set 2 other variables, the ‘y intercept’ and ‘slope’ variables. An example of a linearly increasing add rate is as follows:
+This will set the add rate to 1 agent per minute. If function is set to ‘linear’, then you must set 2 other variables, the ‘y intercept’ and ‘slope’ variables. An example of a linearly increasing add rate is as follows:
 
 add: {function: linear, y_intercept: 1.0, slope: 0.1}
 
@@ -139,8 +139,8 @@ Also if load network on startup is set to true, the simulation will look for thi
 **(type: boolean)** If set to true, the amount of time, number of entities, number of follows, number of tweets, number of retweets, total rate, and real time spent between each successive output is outputted to the screen.
 
 ####visualize
-**(type: boolean)** If set to true, the information from the network is outputted to 2 files, “network.dat” and “network.gexf”. The “network.dat” file consists of two columns; the first column is a list the entity ID’s in order, and the second column is the
-entity ID’s for who the first column is following. For example if entity ID 1 is following entity ID 13, 14, and 19, then it would be outputted like:
+**(type: boolean)** If set to true, the information from the network is outputted to 2 files, “network.dat” and “network.gexf”. The “network.dat” file consists of two columns; the first column is a list of the agent IDs in order, and the second column is the
+agent ID’s for who the first column is following. For example if agent ID 1 is following agent ID 13, 14, and 19, then it would be outputted like:
 
   1 | 13 
 
@@ -150,9 +150,9 @@ entity ID’s for who the first column is following. For example if entity ID 1 
 
 The structure of this file can be referred to as an edge list. This file can easily be read into Python or R to perform any further analysis. The “network.gexf” file is an xml file that can be used to visualize the network in a program called Gephi.
 
-####entity_stats
-**(type: boolean)** If set to true, additional calculations will be done to find the relationships between different entity groups and degree distributions for each entity.
-For every entity set in the entities section of the input file, there will be a file created with the information mentioned previously. The output files created will take the form “name info.dat” where the name is the name created for the entity.
+####agent_stats
+**(type: boolean)** If set to true, additional calculations will be done to find the relationships between different agent groups and degree distributions for each agent.
+For every agent set in the agents section of the input file, there will be a file created with the information mentioned previously. The output files created will take the form “name info.dat” where the name is the name created for the agent.
 
 ####degree_distributions
 **(type: boolean)** If set to true, the cumulative, in-degree, and out-degree distributions will be outputted to “cumulative distribution.dat”, “in-degree distribution.dat”, and “out-degree distribution.dat”.
@@ -160,7 +160,7 @@ The data in the files can be easily plotted with Gnuplot.
 
 ####tweet analysis
 **(type: boolean)** If set to true, further analysis will be done to create a distribution similar to a degree distribution.
-The tweet and retweet distributions come from how often the entities tweet in the network; they tell you the probability that a given entity would have tweeted or retweeted n times, and n is first column in the data files produced.
+The tweet and retweet distributions come from how often the agents tweet in the network; they tell you the probability that a given agent would have tweeted or retweeted n times, and n is first column in the data files produced.
 The files created are titled “tweet distro.dat” and “retweets distro.dat.”
 
 ####retweet_visualization
@@ -171,14 +171,14 @@ tweet in the network.
 **(type: boolean)** If set to true, there will be a text file entitled “main_stats.dat” that is generated after the simulation has finished. This file can be found in the ‘output’ directory. It provides some general statistics for the simulation performed.
 
 ####tweet_ranks
-**(type: n/a)** This variable must stay in the input file, it allows the code to determine the thresholds for the tweets in the simulation. The entities in the simulation will be categorized in the thresholds provided.
-For example if a threshold is 10, then the entities with 10 or less tweets will be stored an a list. Once a entity in this list tweets more than 10 times, the entity will be moved into a bin with a higher threshold.
+**(type: n/a)** This variable must stay in the input file, it allows the code to determine the thresholds for the tweets in the simulation. The agents in the simulation will be categorized in the thresholds provided.
+For example if a threshold is 10, then the agents with 10 or less tweets will be stored an a list. Once an agent in this list tweets more than 10 times, the agent will be moved into a bin with a higher threshold.
 
 ####retweet ranks
 **(type: n/a)** This has the same functionality as the tweet ranks, except it is for retweets. See above description about tweet ranks for more information.
 
 ####follow_ranks
-**(type: n/a)** This has the same functionality as the tweet and retweet ranks, except it is for the number of followers an entity has. The major difference between the follow
+**(type: n/a)** This has the same functionality as the tweet and retweet ranks, except it is for the number of followers an agent has. The major difference between the follow
 ranks and the tweet/retweet ranks is that the thresholds have weights associated with them for follow ranks. If you adjust these weights correctly, you can achieve the preferential attachment model.
 The descriptions for how you can set your thresholds for tweets, retweets, and follows, as well as how to set the weights for follows is below.
 
@@ -187,28 +187,28 @@ The descriptions for how you can set your thresholds for tweets, retweets, and f
 
 ####bin_spacing
 **(type: string)** The strings that can be used for the bin spacing variable are linear, quadratic, and cubic; other bin spaces can be implemented if necessary.
-If linear, the bins for grouping entities will be spaced based on the increment, if quadratic, the bins for grouping entities will be spaced based on the increment squared, and if cubic, the bins for grouping entities will be spaced based
+If linear, the bins for grouping agents will be spaced based on the increment, if quadratic, the bins for grouping agents will be spaced based on the increment squared, and if cubic, the bins for grouping agents will be spaced based
 on the increment cubed.
 
 ####min
-**(type: integer)** This variable sets the minimum threshold for grouping entities. If the entities have a value less than the minimum threshold, then no binning will occur.
+**(type: integer)** This variable sets the minimum threshold for grouping agents. If the agents have a value less than the minimum threshold, then no binning will occur.
 
 ####max
-**(type: integer)** This variable sets the maximum threshold for grouping entities. If the entities exceed the maximum value, they will be grouped in a bin where the threshold can not be exceeded.
+**(type: integer)** This variable sets the maximum threshold for grouping agents. If the agents exceed the maximum value, they will be grouped in a bin where the threshold can not be exceeded.
 
 ####increment
-**(type: integer)** This variable sets the separation between adjacent thresholds for grouping users. If bin spacing is linear, then the separation between bins is the increment, if quadratic, the separation between bins is the increment
+**(type: integer)** This variable sets the separation between adjacent thresholds for grouping agents. If bin spacing is linear, then the separation between bins is the increment, if quadratic, the separation between bins is the increment
 squared, if cubic, the separation between bins is the increment cubed.
 
 An example of linear thresholds is:
 
 thresholds: {bin spacing: linear, min: 10, max: 100, increment: 10}
 
-This will create thresholds 10, 20, 30,..., 100; the entities will be grouped according to
+This will create thresholds 10, 20, 30,..., 100; the agents will be grouped according to
 these thresholds.
 
 ####weights
-**(type: n/a)** This follows the same procedure as thresholds. Instead of defining the thresholds for grouping entities, it defines the probability of selecting one of the groups of entities.
+**(type: n/a)** This follows the same procedure as thresholds. Instead of defining the thresholds for grouping agents, it defines the probability of selecting one of the groups of agents.
 
 ####tweet_observation
 **(type: n/a)** This denotes the section of the input file that provides the decay function for the retweet rates. Experimentally, the retweet rate for a tweet decays over time by approximately 1/t where t is the time in minutes.
@@ -216,7 +216,7 @@ these thresholds.
 ####density_function
 **(type: n/a)** This density function is the function that describes how the retweet rates decay over time. Since the input file is intertwined with Python, you can actually declare mathematical functions with Python syntax as the density function.
 An example is ‘2.45 / (x)**1.1’. This function is integrated with scipy and each discrete element of this function is divided by the total integral to normalize the function. This ensures that it is truly a probability density function.
-The discrete elements of the function can be adjusted by the parameters mentioned below. The entities that have the chance to be retweeted are binned according to the values of the function, and as time progresses they switch bins to have smaller value.
+The discrete elements of the function can be adjusted by the parameters mentioned below. The agents that have the chance to be retweeted are binned according to the values of the function, and as time progresses they switch bins to have smaller value.
 
 ####x_start
 **(type: double)** This is the initial value of the density function. Make sure that the value of the density function evaluated at this starting value does not cause a discontinuity in the function.
@@ -236,9 +236,9 @@ introduced this parameter. For example if x start is 5, the initial resolution i
 the function to improve efficiency of the retweet algorithm. Like the max time parameter you can use convenient strings like ‘minute’, ‘hour’, ‘day’, ‘month’, or ‘year’. You can also use Python syntax and multiply numbers to these strings.
 
 ####ideologies
-**(type: n/a)** This section of the input file determines abstract characterizations of entities. The motivation behind it is political views on Twitter and how different or similar people based on political views would act on retweets or hashtags.
+**(type: n/a)** This section of the input file determines abstract characterizations of agents. The motivation behind it is political views on Twitter and how different or similar people based on political views would act on retweets or hashtags.
 Make sure that the number of ideologies declared here is the same as ‘N BIN IDEOLOGIES’ variable in the “config static.h” header file. Once you declare ideologies you can then set the weights for each ideology in the
-regions section of the input file. You can also set the weights of a certain entity type tweeting about their ideology in the entities section of the input file.
+regions section of the input file. You can also set the weights of a certain agent type tweeting about their ideology in the agents section of the input file.
 
 ####naming_ideologies
 **(type: string)** The names of your ideologies is completely up to you and the syntax for declaring ideologies is as such:
