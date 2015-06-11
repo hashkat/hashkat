@@ -234,7 +234,7 @@ If *true*, allows you to load a network from the save file and continue the simu
 
 ```python
 save_file:
-  network_state.sav
+  network_state.dat
 ```
 
 Determines the file where all the simulated data is saved to.

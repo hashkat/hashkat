@@ -110,7 +110,7 @@ understand each other.
 Looking into the hashkat directory, you will see a 'DATA_vs_TIME' file, which
 contains the number of follows, tweets, the cumulative function, etc for
 various simulation times as discussed above. You will also see a
-'network_state.sav' file which is where your simulation data will be saved to.
+'network_state.dat' file which is where your simulation data will be saved to.
 There is also the 'output' directory, which contains all the data you've
 accummulated through simulation necessary for analysis. We shall discuss
 these files below.

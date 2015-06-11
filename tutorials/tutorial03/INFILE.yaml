@@ -101,7 +101,7 @@ output:
   ignore_load_config_check: # Whether to allow loading configuration with mismatching configuration (generally OK)    
     true
   save_file: # File to save to, and load from
-    network_state.sav
+    network_state.dat
   stdout_basic: 
     true
   stdout_summary: 

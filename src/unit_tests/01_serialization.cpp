@@ -17,7 +17,7 @@ SUITE(serialization) {
         ParsedConfig config = parse_yaml_configuration("INFILE.yaml-generated");
         AnalysisState state(config, /*seed*/ 1);
         int test_num = 12321, read_val = -1;
-        const char* file_name = "output/test_serialize_basics.sav";
+        const char* file_name = "output/test_serialize_basics.dat";
         {
             DataWriter writer(state, file_name);
             writer << test_num;
@@ -69,7 +69,7 @@ SUITE(serialization) {
 
         Entity read;
 
-        const char* file_name = "output/test_serialize_entity.sav";
+        const char* file_name = "output/test_serialize_entity.dat";
         {
             DataWriter writer(state, file_name);
             test.previsit(writer);

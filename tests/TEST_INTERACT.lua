@@ -33,7 +33,7 @@ analysis_step_save_point = tonumber(os.getenv "HASHKAT_ANALYSIS_STEP_SAVE_POINT"
 
 function on_new_network() 
     if load_network then
-        load_network_state "tests/TEST.sav"
+        load_network_state "tests/TEST.dat"
     end
 end
 
@@ -45,7 +45,7 @@ end
 
 function on_step_analysis() 
     if save_network and (analysis_step > analysis_step_save_point) then
-        save_network_state "tests/TEST.sav"
+        save_network_state "tests/TEST.dat"
         os.exit()
     end
 end

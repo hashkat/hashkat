@@ -21,7 +21,7 @@ directory you will find that nothing has changed from your previous simulation.
 Have no fear! This is simply because you have not removed the data you collected from the previous simulation from #k@. The manner in which to do this is simple, though be warned,
 once removing this data you will lose it forever. Remove the save file that your previous simulaiton information was saved to by typing in the command:
 
-`rm network_state.sav`
+`rm network_state.dat`
 
 and remove the old contents of your output directory with the command:
 
@@ -36,7 +36,7 @@ You can now run your new simulation by typing in the commands:
 ## Stopping and Continuing a Simulation
 
 If for whatever reason you would like to stop a simulation midway through running, without losing any of your data, simply press **ctrl-c**. The simulation will automatically
-save the information it's collected to the *network_state.sav* file, and you can analyze the data you have so far in the *DATA_vs_TIME* file and *output* directory. If you would like
+save the information it's collected to the *network_state.dat* file, and you can analyze the data you have so far in the *DATA_vs_TIME* file and *output* directory. If you would like
 to continue this simulation from where you left off, simply type in:
 
 `hashkat`
