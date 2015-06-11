@@ -121,6 +121,10 @@ struct DataWriter {
         return true;
     }
 
+    SerializeBuffer& get_buffer() {
+		return *buffer;
+	}
+
     AnalysisState& state;
 private:
     std::map<void*, smartptr<void*>> ptr_map;
@@ -222,6 +226,10 @@ struct DataReader {
     }
 
     AnalysisState& state;
+
+    SerializeBuffer& get_buffer() {
+    	return *buffer;
+    }
 private:
     std::map<void*, smartptr<void*>> ptr_map;
     smartptr<SerializeBuffer> buffer;

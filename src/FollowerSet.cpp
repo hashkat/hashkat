@@ -64,8 +64,8 @@ vector<int> FollowerSet::as_vector() {
     for (auto& b : a.sublayers) {
         for (auto& c : b.sublayers) {
             for (auto& d : c.sublayers) {
-                for (FlexibleSet<int>& set : d.sublayers) {
-                    FlexibleSet<int>::iterator iter;
+                for (HashedEdgeSet<int>& set : d.sublayers) {
+                    HashedEdgeSet<int>::iterator iter;
                     while (set.iterate(iter)) {
                         ret.push_back(iter.get());
                     }
@@ -79,7 +79,7 @@ vector<int> FollowerSet::as_vector() {
 
 /*****************************************************************************
  * add implementation:
- * The leaf layer inserts to a FlexibleSet, while the parent layers
+ * The leaf layer inserts to a HashedEdgeSet, while the parent layers
  * delegate insertion to child layers.
  *
  *****************************************************************************/
@@ -119,7 +119,7 @@ bool FollowerSet::add(Entity& entity) {
 
 /*****************************************************************************
  * remove implementation:
- * The leaf layer removes from a FlexibleSet, while the parent layers
+ * The leaf layer removes from a HashedEdgeSet, while the parent layers
  * delegate removal to child layers.
  *****************************************************************************/
 

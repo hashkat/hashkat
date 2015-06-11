@@ -20,17 +20,6 @@ if ($ENV{BUILD_FLAGS})
     add_definitions ($ENV{BUILD_FLAGS})
 endif()
 
-if ($ENV{BUILD_FOLLOW_SET_AS_VECTOR})
-    # Can read this as 'infinite'. Will always be a vector. Only really
-    # useful to rule out Google's sparse-hash as a source of bugs.
-    add_definitions(-DVECTOR_FOLLOW_SET_THRESHOLD=2147483647)
-else()
-    # From the statistic '95% of users have <100 followers'
-    # Also, a decent (small) threshold for linear access.
-    # After this threshold, Google's sparse-hash is used.
-    add_definitions(-DVECTOR_FOLLOW_SET_THRESHOLD=100)
-endif()
-
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
     if(APPLE) 
     elseif ($ENV{BUILD_SANITIZE})

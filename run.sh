@@ -197,7 +197,6 @@ if ! handle_flag "--no-generate" ; then
     rm -f *yaml-generated
 
     # We must generate X-generated.yaml from X.yaml (defaults
-    # NOTE: Requires Python as well as the pyyaml & scipy packages
 
     python hashkat_pre.py "$@"
 fi
