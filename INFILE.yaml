@@ -105,15 +105,15 @@ output:
   stdout_basic: 
     true
   stdout_summary: 
-    false
+    true
   summary_output_rate: 
-    100
+    1
   visualize: 
     true
   entity_stats: 
     true
   degree_distributions: 
-    false            # set this to true, will print after simulation has finished
+    true            # set this to true, will print after simulation has finished
   tweet_analysis: 
     true
   retweet_visualization:
