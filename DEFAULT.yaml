@@ -68,8 +68,8 @@ analysis:
     random
   # model weights ONLY necessary for follow method 'twitter'  
   # educated guesses for the follow models  
-  model_weights: {random: 0.0, twitter_preferential: 1.0, entity: 0.0, preferential_entity: 0.0, hashtag: 0.0}
-  
+  model_weights: {random: 0.0, twitter_suggest: 0.0, entity: 0.0, preferential_entity: 0.0, hashtag: 0.0}
+
   stage1_unfollow: 
     false
   unfollow_tweet_rate: 
@@ -95,31 +95,33 @@ rates:
 
 output:
   save_network_on_timeout: 
-    true
+    false
   load_network_on_startup:
-    true
+    false
   ignore_load_config_check: # Whether to allow loading configuration with mismatching configuration (generally OK)    
     true
   save_file: # File to save to, and load from
     network_state.sav
   stdout_basic: 
-    true
+    false
   stdout_summary: 
-    true
+    false
   summary_output_rate: 
     100
   visualize: 
-    true
+    false
   entity_stats: 
-    true
+    false
   degree_distributions: 
-    true            # set this to true, will print after simulation has finished
+    false
   tweet_analysis: 
-    true
+    false
   retweet_visualization:
-    true
+    false
   main_statistics:
-    true
+    false
+  degree_distribution_by_follow_model:
+    false
 
 #################################################################
 # >> *_ranks:
