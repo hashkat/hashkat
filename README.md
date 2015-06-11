@@ -1,7 +1,7 @@
 --- #KAT ---   Kinetic Analysis of Twitter
 ===
 
-This is open-source software for generating kinetic complex networks. The events that occur in the simulations are designed to mimic the events that occur in Twitter. These events include following, tweeting, retweeting, unfollowing, and agent creation. An agent in our similations represent users in the online social network of Twitter. 
+This is open-source software for generating kinetic complex networks. The events that occur in the simulations are designed to mimic the events that occur in Twitter. These events include following, tweeting, retweeting, unfollowing, and agent creation. An agent in our simulations represent users in online social networks such as Twitter. 
 
          -------------------------------------------------------
         |  NOTE: you must have cmake, Python, and a C++ compiler |
