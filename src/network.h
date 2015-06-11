@@ -37,50 +37,50 @@
 
 #include "CategoryGrouper.h"
 
-#include "entity.h"
+#include "agent.h"
 #include "events.h"
 #include "tweets.h"
 
 struct Network {
-    Entity* entities; //** This is a pointer - used to create a dynamic array
-    int n_entities, max_entities;
+    Agent* agents; //** This is a pointer - used to create a dynamic array
+    int n_agents, max_agents;
     Network() {
-        entities = NULL;
-        n_entities = 0;
-        max_entities = 0;
+        agents = NULL;
+        n_agents = 0;
+        max_agents = 0;
     }
     ~Network() { //** This defines how to clean-up our Network object; we free the dynamic array
-        delete[] entities;
+        delete[] agents;
     }
-    Entity& operator[](int index) { //** This allows us to index our Network struct as if it were an array.
-        DEBUG_CHECK(index >= 0 && index < n_entities, "Network out-of-bounds entity access");
-        return entities[index];
+    Agent& operator[](int index) { //** This allows us to index our Network struct as if it were an array.
+        DEBUG_CHECK(index >= 0 && index < n_agents, "Network out-of-bounds agent access");
+        return agents[index];
     }
 
     void allocate(int n) {
-        if (entities) {
-            delete[] entities;
+        if (agents) {
+            delete[] agents;
         }
-        max_entities = n;
-        entities = new Entity[max_entities];
+        max_agents = n;
+        agents = new Agent[max_agents];
     }
 
     // Convenient network queries:
     FollowingSet& following_set(int id) {
-        return entities[id].following_set;
+        return agents[id].following_set;
     }
 
     bool is_valid_id(int id) {
-        return (id >= 0 && id < n_entities);
+        return (id >= 0 && id < n_agents);
     }
 
     FollowerSet& follower_set(int id) {
-        return entities[id].follower_set;
+        return agents[id].follower_set;
     }
 
-    // Return last entity:
-    Entity& back() {
-        return (*this)[n_entities - 1];
+    // Return last agent:
+    Agent& back() {
+        return (*this)[n_agents - 1];
     }
 
     size_t n_followings(int id) {
@@ -91,24 +91,24 @@ struct Network {
     }
 
     // To allow for-each style loops:
-    Entity* begin() {
-        return entities;
+    Agent* begin() {
+        return agents;
     }
-    Entity* end() {
-        return entities + n_entities;
+    Agent* end() {
+        return agents + n_agents;
     }
     // 'Visits' every node, eg for serialization or testing
     READ_WRITE(rw) {
-        rw << n_entities << max_entities;
+        rw << n_agents << max_agents;
         if (rw.is_reading()) {
-            allocate(max_entities);
+            allocate(max_agents);
         }
-        /* First, 'previsit' every entity so that we can init their basic data, needed by their visit() method afterwards. */
-        for (int i = 0; i < n_entities; i++) {
-            entities[i].previsit(rw);
+        /* First, 'previsit' every agent so that we can init their basic data, needed by their visit() method afterwards. */
+        for (int i = 0; i < n_agents; i++) {
+            agents[i].previsit(rw);
         }
-        for (int i = 0; i < n_entities; i++) {
-            entities[i].visit(rw);
+        for (int i = 0; i < n_agents; i++) {
+            agents[i].visit(rw);
         }
     }
 };

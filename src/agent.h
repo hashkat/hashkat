@@ -22,8 +22,8 @@
  * subsequent authors. 
  */
 
-#ifndef ENTITY_H_
-#define ENTITY_H_
+#ifndef AGENT_H_
+#define AGENT_H_
 
 #include <string>
 #include <vector>
@@ -45,14 +45,14 @@
 // Forward declare, to prevent circular header inclusion:
 struct AnalysisState;
 
-struct Entity {
+struct Agent {
     // Storing the id is redundant (since it can be inferred), but provides convenient handling
     int id = -1;
 
     //** AD: The ability to put initializers right in the class
     //** is new in C++11
 
-    int entity_type = -1;
+    int agent_type = -1;
     int preference_class = -1;
     int n_tweets = 0, n_retweets = 0;
 
@@ -62,7 +62,7 @@ struct Entity {
     double ideology_tweet_percent = 0;
     double creation_time = 0;
 
-    // this is the average chatiness of the entities following list
+    // this is the average chatiness of the agents following list
     double avg_chatiness = 0.0;
     Language language = (Language)-1;
 
@@ -70,7 +70,7 @@ struct Entity {
     int ideology_bin = -1;
     
     // list of flagged chatty people
-    std::vector<int> chatty_entities;
+    std::vector<int> chatty_agents;
 
     // Store the two directions of the follow relationship
     FollowingSet following_set;
@@ -79,7 +79,7 @@ struct Entity {
     std::vector<int> following_method_counts;
     std::vector<int> follower_method_counts;
 
-    Entity() {
+    Agent() {
         following_method_counts.resize(N_FOLLOW_MODELS + 2);
         follower_method_counts.resize(N_FOLLOW_MODELS + 2);
         for (int i = 0; i < N_FOLLOW_MODELS + 2; i ++) {
@@ -89,14 +89,14 @@ struct Entity {
     }
 
     PREREAD_WRITE(rw) {
-        rw << id << entity_type << preference_class
+        rw << id << agent_type << preference_class
            << n_tweets << n_retweets 
            << region_bin
            << ideology_tweet_percent << creation_time
            << avg_chatiness
            << language
            << ideology_bin
-           << chatty_entities;
+           << chatty_agents;
         rw.checkMagic(0x4444);
         // following_set and follower_set are specially handled below
     }
@@ -109,47 +109,47 @@ struct Entity {
 
 };
 
-struct EntityStats {
+struct AgentStats {
     int64 n_follows = 0, n_followers = 0, n_tweets = 0, n_retweets = 0, n_unfollows = 0;
     int64 n_followback = 0;
     int64 n_random_follows = 0, n_preferential_follows = 0;
-    int64 n_entity_follows = 0, n_pref_entity_follows = 0;
+    int64 n_agent_follows = 0, n_pref_agent_follows = 0;
     int64 n_retweet_follows = 0, n_hashtag_follows = 0;
     int64 n_hashtags = 0;
 };
 
 /*
- * An entity type is a static class of entity, determined at creation.
- * Entity types are intended to represent different kinds of network participants,
+ * An agent type is a static class of agent, determined at creation.
+ * Agent types are intended to represent different kinds of network participants,
  *
- * For a network like Twitter, example entity types include 'Standard User', 'Celebrity', etc.
+ * For a network like Twitter, example agent types include 'Standard User', 'Celebrity', etc.
  */
 
-struct EntityType {
+struct AgentType {
     std::string name;
-    double prob_add = 0; // When a entity is added, how likely is it that it is this entity type ?
-    double prob_follow = 0; // When a entity is followed, how likely is it that it is this entity type ?
+    double prob_add = 0; // When a agent is added, how likely is it that it is this agent type ?
+    double prob_follow = 0; // When a agent is followed, how likely is it that it is this agent type ?
     double prob_followback = 0;
-    int new_entities = 0; // the number of new users in this entity type
+    int new_agents = 0; // the number of new users in this agent type
     Rate_Function RF[number_of_diff_events];
     bool care_about_region = false, care_about_ideology = false;
-    // number of entities for each discrete value of the rate(time)
-    std::vector<int> entity_cap;
-    // list of entity ID's
-    std::vector<int> entity_list;
-    // categorize the entities by age
+    // number of agents for each discrete value of the rate(time)
+    std::vector<int> agent_cap;
+    // list of agent ID's
+    std::vector<int> agent_list;
+    // categorize the agents by age
     CategoryGrouper age_ranks;
     CategoryGrouper follow_ranks;
     std::vector<double> updating_probs;
     double tweet_type_probs[N_TWEET_TYPES];
 
-    EntityStats stats;
+    AgentStats stats;
 
     /* Synchronize rates and preferences from a loaded configuration.
      * This is done because, although we can load a new configuration,
      * some rates remain duplicated in our state object. */
-    void sync_configuration(EntityType& E) {
-        ASSERT(name == E.name, "Attempting sync_configuration on different entity types! The number and relative orderings of entity types must remain constant.");
+    void sync_configuration(AgentType& E) {
+        ASSERT(name == E.name, "Attempting sync_configuration on different agent types! The number and relative orderings of agent types must remain constant.");
         prob_add = E.prob_add;
         prob_follow = E.prob_follow;
         prob_followback = E.prob_followback;
@@ -168,12 +168,12 @@ struct EntityType {
 
     READ_WRITE(rw) {
         rw << name << prob_add << prob_follow << prob_followback;
-        rw << new_entities;
+        rw << new_agents;
         for (auto& rf : RF) {
             rf.visit(rw);
         }
         rw << care_about_region << care_about_ideology;
-        rw << entity_cap << entity_list;
+        rw << agent_cap << agent_list;
         age_ranks.visit(rw);
         follow_ranks.visit(rw);
         rw << updating_probs << stats;
@@ -184,8 +184,8 @@ struct EntityType {
     }
 };
 
-// 'EntityTypeVector' acts exactly as a 'vector'
-typedef std::vector<EntityType> EntityTypeVector;
+// 'AgentTypeVector' acts exactly as a 'vector'
+typedef std::vector<AgentType> AgentTypeVector;
 
 
 #endif

@@ -35,7 +35,7 @@
 #include "config_static.h"
 
 // Forward declarations to prevent circular imports:
-struct Entity;
+struct Agent;
 struct Tweet;
 struct TweetContent;
 
@@ -47,9 +47,9 @@ struct TweetContent;
  *   X Ideology
  *
  * The weight determiner layers are:
- *   Entity preference class
+ *   Agent preference class
  *   X Tweet type (for ideological tweets, whether ideologies match)
- *   X Original tweeter entity type
+ *   X Original tweeter agent type
  *****************************************************************************/
 
 // Leaf layer
@@ -60,7 +60,7 @@ struct IdeologyLayer {
         double weights[N_SUBLAYERS] = {0};
     };
 
-    static int classify(Entity& entity);
+    static int classify(Agent& agent);
 
     int n_elems = 0; // Total
     HashedEdgeSet<int> sublayers[N_SUBLAYERS];
@@ -75,7 +75,7 @@ struct RegionLayer {
         double weights[N_SUBLAYERS] = {0};
     };
 
-    static int classify(Entity& entity);
+    static int classify(Agent& agent);
 
     int n_elems = 0; // Total
     ChildLayer sublayers[N_SUBLAYERS];
@@ -90,7 +90,7 @@ struct PreferenceClassLayer {
         double weights[N_SUBLAYERS] = {0};
     };
 
-    static int classify(Entity& entity);
+    static int classify(Agent& agent);
 
     int n_elems = 0; // Total
     ChildLayer sublayers[N_SUBLAYERS];
@@ -106,7 +106,7 @@ struct LanguageLayer {
         double weights[N_SUBLAYERS] = {0};
     };
 
-    static int classify(Entity& entity);
+    static int classify(Agent& agent);
 
     int n_elems = 0; // Total
     ChildLayer sublayers[N_SUBLAYERS];
@@ -122,26 +122,26 @@ struct FollowerSet {
 
     // Weights for determining whether a tweet has a reaction (follow/retweet).
     // Note that this is primarily decided by a tweet type, observer preference class,
-    // and author's entity type. Note that for TWEET_IDEOLOGICAL, we resolve first whether it should be
+    // and author's agent type. Note that for TWEET_IDEOLOGICAL, we resolve first whether it should be
     // TWEET_IDEOLOGICAL_DIFFERENT, otherwise tweet ideology is matching.
     // Language layer does not need its own weight determiner layer,
     // it is a hard all-or-nothing cutoff for tweet reaction.
     struct WeightDeterminer {
-        double weights[N_BIN_PREFERENCE_CLASS][N_TWEET_TYPES][N_BIN_ENTITY_TYPES];
+        double weights[N_BIN_PREFERENCE_CLASS][N_TWEET_TYPES][N_BIN_AGENT_TYPES];
         WeightDeterminer() {
-            memset(weights, 0, sizeof(double) * N_BIN_PREFERENCE_CLASS * N_TWEET_TYPES * N_BIN_ENTITY_TYPES);
+            memset(weights, 0, sizeof(double) * N_BIN_PREFERENCE_CLASS * N_TWEET_TYPES * N_BIN_AGENT_TYPES);
         }
 
-        double get_weight(Entity& author, TweetContent& content);
+        double get_weight(Agent& author, TweetContent& content);
     };
 
     std::vector<int> as_vector();
 
     /* Returns false if the element already existed */
-    bool add(Entity& entity);
+    bool add(Agent& agent);
 
     /* Returns true if the element already existed */
-    bool remove(Entity& entity);
+    bool remove(Agent& agent);
 
     /* Returns an element, provided the given weights */
     bool pick_random_weighted(MTwist rng, Weights& weights, int& id);
@@ -155,7 +155,7 @@ struct FollowerSet {
         return followers.n_elems;
     }
 
-    double determine_tweet_weights(Entity& author, TweetContent& content, WeightDeterminer& determiner, /*Weights placed here: */ Weights& output);
+    double determine_tweet_weights(Agent& author, TweetContent& content, WeightDeterminer& determiner, /*Weights placed here: */ Weights& output);
 
     READ_WRITE(rw) {
         // Reach into all the layers:

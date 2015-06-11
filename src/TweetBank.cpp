@@ -27,7 +27,7 @@
 #include <iostream>
 #include "analyzer.h"
 #include "tweets.h"
-#include "entity.h"
+#include "agent.h"
 
 using namespace std;
 
@@ -46,9 +46,9 @@ double TweetRateDeterminer::get_cat_threshold(int bin) {
 }
 
 TweetReactRateVec TweetRateDeterminer::get_rate(const Tweet& tweet, int bin) {
-    Entity& entity = state.network[tweet.id_tweeter];
-    Language lang = entity.language;
-    FollowerSet& followers = entity.follower_set;
+    Agent& agent = state.network[tweet.id_tweeter];
+    Language lang = agent.language;
+    FollowerSet& followers = agent.follower_set;
 
     /********************************************************************
      * Determine the 'Omega' observation PDF.

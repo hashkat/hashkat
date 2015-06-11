@@ -9,7 +9,7 @@ should be the exact same as the data files placed
 in this directory.
 
 You'll notice that the rate of following is 0.001 
-for all of the defined entities. The maximum time
+for all of the defined agents. The maximum time
 indicated at the top of the input file is 100000. 
 Therefore we should expect that the degree 
 distributions will have a maximum at 100 (or 200 for

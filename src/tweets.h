@@ -38,7 +38,7 @@
 
 #include "FollowerSet.h"
 
-typedef HashedEdgeSet<int> UsedEntities;
+typedef HashedEdgeSet<int> UsedAgents;
 
 // information for when a user tweets
 struct TweetContent {
@@ -47,27 +47,27 @@ struct TweetContent {
     Language language = N_LANGS; // Set to invalid
     int ideology_bin = -1; // 0 == no ideology
     int hashtag_bin = -1;
-    int id_original_author = -1; // The entity that created the original content
-    UsedEntities used_entities;
+    int id_original_author = -1; // The agent that created the original content
+    UsedAgents used_agents;
 
     READ_WRITE(rw) {
         // Save/load scalars:
         rw << type;
         rw << time_of_tweet << language << ideology_bin << hashtag_bin << id_original_author;
 
-        // Save/load used_entities:
-        used_entities.visit(rw);
+        // Save/load used_agents:
+        used_agents.visit(rw);
 //        if (rw.is_writing()) {
-//            for (int id : used_entities) {
+//            for (int id : used_agents) {
 //                ids.push_back(id);
 //            }
 //        }
 //        rw << ids;
 //        if (rw.is_reading()){
 //            for (int id : ids) {
-//                size_t prev_size = used_entities.size();
-//                used_entities.insert(id);
-//                ASSERT(used_entities.size() > prev_size, "'id' should be unique!");
+//                size_t prev_size = used_agents.size();
+//                used_agents.insert(id);
+//                ASSERT(used_agents.size() > prev_size, "'id' should be unique!");
 //            }
 //        }
     }
@@ -76,11 +76,11 @@ struct TweetContent {
 // Represents a tweet, either original, or a rebroadcast.
 struct Tweet {
     int id_tweet = -1; // The tweet number
-    // The entity broadcasting the tweet
+    // The agent broadcasting the tweet
     // A tweet is an orignal tweet if tweeter_id == content.author_id
     int id_tweeter = -1;
 
-    // The 'linking' entity the tweet was retweeted from (a following of id_tweeter)
+    // The 'linking' agent the tweet was retweeted from (a following of id_tweeter)
     // Equal to id_tweeter if the tweet was original content.
     int id_link = -1;
     // The generation of the tweet, 0 if the tweet was original content
@@ -153,12 +153,12 @@ struct HashTags {
         return default_bin;
     }
 
-    int select_entity(MTwist& rng, bool region_choice, bool ideology_choice, int default_region, int default_ideology) {
+    int select_agent(MTwist& rng, bool region_choice, bool ideology_choice, int default_region, int default_ideology) {
         int region_bin = choose_bin(rng, region_choice, default_region, N_BIN_REGIONS);
         int ideology_bin = choose_bin(rng, ideology_choice, default_ideology, N_BIN_IDEOLOGIES);
         if (!hashtag_groups[ideology_bin][region_bin].circ_buffer.empty()) {
-            int entity_to_follow = hashtag_groups[ideology_bin][region_bin].circ_buffer.pick_random_uniform(rng);
-            return entity_to_follow;
+            int agent_to_follow = hashtag_groups[ideology_bin][region_bin].circ_buffer.pick_random_uniform(rng);
+            return agent_to_follow;
         }
         return -1;
     }

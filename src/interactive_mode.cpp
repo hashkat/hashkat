@@ -87,8 +87,8 @@ struct InteractiveModeBindings {
         using namespace luawrap;
 
         LuaValue G = globals(L);
-        G["n_entities"] = state->network.n_entities;
-        G["max_entities"] = state->network.max_entities;
+        G["n_agents"] = state->network.n_agents;
+        G["max_agents"] = state->network.max_agents;
         G["analysis_time"] = state->time;
         G["analysis_step"] = state->stats.n_steps;
 
@@ -103,7 +103,7 @@ struct InteractiveModeBindings {
         G["total_followings"] = S.global_stats.n_follows;
         G["total_followers"] = S.global_stats.n_followers;
         G["total_hashtags"] = S.global_stats.n_hashtags;
-        G["total_pref_entity_follows"] = S.global_stats.n_pref_entity_follows;
+        G["total_pref_agent_follows"] = S.global_stats.n_pref_agent_follows;
         G["total_preferential_follows"] = S.global_stats.n_preferential_follows;
         G["total_random_follows"] = S.global_stats.n_random_follows;
         G["total_tweets"] = S.global_stats.n_tweets;
@@ -122,9 +122,9 @@ struct InteractiveModeBindings {
         G["followers_print"].bind_function(followers_print);
         G["tweets"].bind_function(tweets);
 
-        G["entity"].bind_function(entity);
-        G["create_entity"].bind_function(create_entity);
-        G["entities"].bind_function(entities);
+        G["agent"].bind_function(agent);
+        G["create_agent"].bind_function(create_agent);
+        G["agents"].bind_function(agents);
 
         G["save_network_state"].bind_function(save_network_state);
         G["load_network_state"].bind_function(load_network_state);
@@ -143,26 +143,26 @@ struct InteractiveModeBindings {
         analyzer_load_network_state(*state, fname);
     }
 
-    static LuaValue entity(int id) {
-        return entity_to_table(state->network[id]);
+    static LuaValue agent(int id) {
+        return agent_to_table(state->network[id]);
     }
 
-    static LuaValue create_entity(int id) {
-        if (analyzer_create_entity(*state)) {
-            return entity_to_table(state->network.back());
+    static LuaValue create_agent(int id) {
+        if (analyzer_create_agent(*state)) {
+            return agent_to_table(state->network.back());
         }
         return LuaValue::nil(state.L);
     }
 
-    static int n_followings(int entity) {
-        return state->network.n_followings(entity);
+    static int n_followings(int agent) {
+        return state->network.n_followings(agent);
     }
 
-    static std::vector<int> followers(int entity) {
-        return state->network.follower_set(entity).as_vector();
+    static std::vector<int> followers(int agent) {
+        return state->network.follower_set(agent).as_vector();
     }
-    static std::vector<int> followings(int entity) {
-        return state->network.following_set(entity).as_vector();
+    static std::vector<int> followings(int agent) {
+        return state->network.following_set(agent).as_vector();
     }
 
     // Can be used if simply dumping a direct member by name,
@@ -170,9 +170,9 @@ struct InteractiveModeBindings {
 #define DUMP(obj, member) \
     value[#member] = obj. member
 
-    static LuaValue entity_to_table(Entity& e) {
+    static LuaValue agent_to_table(Agent& e) {
         auto value = LuaValue::newtable(state.L);
-        value["entity_type"] = state.state->entity_types[e.entity_type].name;
+        value["agent_type"] = state.state->agent_types[e.agent_type].name;
         DUMP(e, preference_class);
         DUMP(e, region_bin);
         DUMP(e, ideology_tweet_percent);
@@ -181,7 +181,7 @@ struct InteractiveModeBindings {
         DUMP(e, n_retweets);
         DUMP(e, creation_time);
         DUMP(e, avg_chatiness);
-        DUMP(e, chatty_entities);
+        DUMP(e, chatty_agents);
 
         auto table = LuaValue::newtable(state.L);
         value["location"] = table;
@@ -208,11 +208,11 @@ struct InteractiveModeBindings {
         return value;
     }
 
-    static LuaValue entities() {
+    static LuaValue agents() {
         auto value = LuaValue::newtable(state.L);
 
-        for (auto& entity : state->network) {
-            value[value.objlen() + 1] = entity_to_table(entity);
+        for (auto& agent : state->network) {
+            value[value.objlen() + 1] = agent_to_table(agent);
         }
 
         return value;
@@ -230,8 +230,8 @@ struct InteractiveModeBindings {
         return value;
     }
 
-    static void followers_print(int entity) {
-        state->network.follower_set(entity).print();
+    static void followers_print(int agent) {
+        state->network.follower_set(agent).print();
     }
 };
 

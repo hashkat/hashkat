@@ -16,7 +16,7 @@ trap "" INT
     | colout 'Rate \d+\.\d+' white bold \
     | colout '\[leaf\]' yellow normal \
     | colout '\[Root\]' yellow normal \
-    | colout '\(Entity.*\)' red normal \
+    | colout '\(Agent.*\)' red normal \
     | colout 'dist:.*' red normal \
     | colout 'Parent Node.*' blue normal \
     | colout 'Tweeter = \d+' white bold \

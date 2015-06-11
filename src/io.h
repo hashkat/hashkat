@@ -32,24 +32,24 @@
 
 
 void output_position(Network& network, int end_time);
-void brief_entity_statistics(AnalysisState& state);
+void brief_agent_statistics(AnalysisState& state);
 void output_network_statistics(AnalysisState& state);
 
 int factorial(int input_number);
 void Categories_Check(CategoryGrouper& tweeting, CategoryGrouper& following, CategoryGrouper& retweeting);
-void entity_statistics(Network& network,int n_follows, int n_entities, int max_entities, EntityType* entitytype);
+void agent_statistics(Network& network,int n_follows, int n_agents, int max_agents, AgentType* agenttype);
 void tweets_distribution(Network& network, int n_users);
 int rand_int(int max);
 void degree_distributions(Network& network, AnalysisState& state);
-bool quick_rate_check(EntityTypeVector& ets, double& correct_val, int& i, int& j);
-bool entity_checks(EntityTypeVector& ets, Network& network, AnalysisState& state, Add_Rates& add_rates, int& initial_entities);
-void whos_following_who(EntityTypeVector& ets, Network& network);
+bool quick_rate_check(AgentTypeVector& ets, double& correct_val, int& i, int& j);
+bool agent_checks(AgentTypeVector& ets, Network& network, AnalysisState& state, Add_Rates& add_rates, int& initial_agents);
+void whos_following_who(AgentTypeVector& ets, Network& network);
 void visualize_most_popular_tweet(MostPopularTweet& mpt, Network& network);
-void network_statistics(Network& n, NetworkStats& stats, EntityTypeVector& etv);
+void network_statistics(Network& n, NetworkStats& stats, AgentTypeVector& etv);
 bool region_stats(Network& n, AnalysisState& state);
 void fraction_of_connections_distro(Network& network, AnalysisState& state, NetworkStats& net_stats);
 void dd_by_age(Network& n, AnalysisState& as, NetworkStats& ns);
-void dd_by_entity(Network& n, AnalysisState& as, NetworkStats& ns);
+void dd_by_agent(Network& n, AnalysisState& as, NetworkStats& ns);
 void dd_by_follow_method(Network& n, AnalysisState& as, NetworkStats& ns);
 
 #endif

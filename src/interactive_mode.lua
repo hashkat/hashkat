@@ -134,11 +134,11 @@ end
 
 -- Startup commands:
 
-local builtin_entities = entities
+local builtin_agents = agents
 
 -- Allows for live function addition/change:
 function reload_functions()
-    entities = builtin_entities
+    agents = builtin_agents
 end
 
 append = table.insert -- Less verbose
@@ -173,30 +173,30 @@ function tweets_of_gen(gen)
 end
 
 function tweet_author(t)
-    return entity(t.id_original_author)
+    return agent(t.id_original_author)
 end
 
 function tweet_tweeter(t)
-    return entity(t.id_tweeter)
+    return agent(t.id_tweeter)
 end
 
--- Resolve entity id's and return actual entity objects
-function entities(t)
+-- Resolve agent id's and return actual agent objects
+function agents(t)
     if t == nil then
-        return builtin_entities()
+        return builtin_agents()
     else
         local tab = {}
         for _,id in ipairs(t) do
-            append(tab, entity(id))
+            append(tab, agent(id))
         end
         return tab
     end
 end
 
 function followings_e(id)
-    return entities(followings(id))
+    return agents(followings(id))
 end
 
 function followers_e(id)
-    return entities(followers(id))
+    return agents(followers(id))
 end

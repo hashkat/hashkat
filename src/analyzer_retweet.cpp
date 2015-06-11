@@ -36,12 +36,12 @@ struct AnalyzerRetweet {
     ParsedConfig& config;
     AnalysisState& state;
     NetworkStats& stats;
-    EntityTypeVector& entity_types;
+    AgentTypeVector& agent_types;
     MTwist& rng;
     // There are multiple 'Analyzer's, they each operate on parts of AnalysisState.
     AnalyzerRetweet(AnalysisState& state) :
             network(state.network), state(state), stats(state.stats),
-            config(state.config), entity_types(state.entity_types), rng(state.rng) {
+            config(state.config), agent_types(state.agent_types), rng(state.rng) {
     }
     void update_all_retweets() {
         PERF_TIMER();
@@ -62,22 +62,22 @@ struct AnalyzerRetweet {
         double rate_total = total_retweet_rate();
 
         Tweet& tweet = tweet_bank.pick_random_weighted(rng);
-        UsedEntities& used = tweet.content->used_entities;
+        UsedAgents& used = tweet.content->used_agents;
 
-        Entity& e = network[tweet.id_tweeter];
-        int entity_retweeting = -1;
+        Agent& e = network[tweet.id_tweeter];
+        int agent_retweeting = -1;
 
-        if (!e.follower_set.pick_random_weighted(rng, tweet.react_weights, entity_retweeting)) {
+        if (!e.follower_set.pick_random_weighted(rng, tweet.react_weights, agent_retweeting)) {
             return RetweetChoice();
         }
 
-        if (!used.contains(entity_retweeting)) {
-            // Entity has NOT already retweeted this tweet
-            used.insert(entity_retweeting);
-            Entity& e = network[entity_retweeting];
+        if (!used.contains(agent_retweeting)) {
+            // Agent has NOT already retweeted this tweet
+            used.insert(agent_retweeting);
+            Agent& e = network[agent_retweeting];
             return RetweetChoice(
                 tweet.content->id_original_author,
-                entity_retweeting,
+                agent_retweeting,
                 tweet.id_tweeter,
                 tweet.generation + 1,
                 &tweet.content // Returning pointer is small optimization

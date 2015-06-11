@@ -6,7 +6,7 @@
 
 #include "config_dynamic.h"
 #include "DataReadWrite.h"
-#include "entity.h"
+#include "agent.h"
 #include "analyzer.h"
 
 using namespace std;
@@ -29,9 +29,9 @@ SUITE(serialization) {
         CHECK(test_num == read_val);
     }
 
-    void check_eq(Entity& test, Entity& read) {
+    void check_eq(Agent& test, Agent& read) {
         CHECK(test.creation_time == read.creation_time);
-        CHECK(test.entity_type == read.entity_type);
+        CHECK(test.agent_type == read.agent_type);
         CHECK(test.ideology_bin == read.ideology_bin);
         CHECK(test.region_bin == read.region_bin);
         CHECK(test.language == read.language);
@@ -48,13 +48,13 @@ SUITE(serialization) {
         AnalysisState state(config, /*seed*/ 1);
         int N_GENERATED = 3;
         state.network.allocate(N_GENERATED);
-        state.network.n_entities = N_GENERATED;
+        state.network.n_agents = N_GENERATED;
 
         for (int i = 0; i < N_GENERATED; i++) {
-            Entity& e = state.network[i];
+            Agent& e = state.network[i];
             e.id = i;
             e.creation_time = 1;
-            e.entity_type = 0;
+            e.agent_type = 0;
             e.language = LANG_FRENCH;
             e.region_bin = 0;
             e.ideology_bin = 0;
@@ -63,13 +63,13 @@ SUITE(serialization) {
             e.n_retweets = 4;
         }
 
-        Entity& test = state.network[0];
+        Agent& test = state.network[0];
         test.follower_set.add(state.network[1]);
         test.following_set.add(state, 2);
 
-        Entity read;
+        Agent read;
 
-        const char* file_name = "output/test_serialize_entity.dat";
+        const char* file_name = "output/test_serialize_agent.dat";
         {
             DataWriter writer(state, file_name);
             test.previsit(writer);
@@ -98,9 +98,9 @@ SUITE(serialization) {
             DataReader reader(state, file_name);
             Network network;
             network.visit(reader);
-            CHECK(network.n_entities == state.network.n_entities);
-            CHECK(network.max_entities == state.network.max_entities);
-            for (int i = 0; i < network.n_entities; i++) {
+            CHECK(network.n_agents == state.network.n_agents);
+            CHECK(network.max_agents == state.network.max_agents);
+            for (int i = 0; i < network.n_agents; i++) {
                 check_eq(network[i], state.network[i]);
             }
         }

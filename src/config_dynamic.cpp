@@ -35,7 +35,7 @@
 
 #include "CategoryGrouper.h"
 #include "config_dynamic.h"
-#include "entity.h"
+#include "agent.h"
 
 using namespace std;
 using namespace YAML;
@@ -64,10 +64,10 @@ static FollowModel parse_follow_model(const Node& node) {
         return RANDOM_FOLLOW;
     } else if (follow_model == "twitter_suggest") {
         return TWITTER_PREFERENTIAL_FOLLOW;
-    } else if (follow_model == "entity") {
-        return ENTITY_FOLLOW;
-    } else if (follow_model == "preferential_entity") {
-        return PREFERENTIAL_ENTITY_FOLLOW;
+    } else if (follow_model == "agent") {
+        return AGENT_FOLLOW;
+    } else if (follow_model == "preferential_agent") {
+        return PREFERENTIAL_AGENT_FOLLOW;
     } else if (follow_model == "hashtag") {
         return HASHTAG_FOLLOW;
     } else if (follow_model == "twitter" ) {
@@ -134,8 +134,8 @@ static vector<double> parse_follow_weights(const Node& node) {
     vector<double> weights(N_FOLLOW_MODELS, 0);
     parse(node, "random", weights[0]);
     parse(node, "twitter_suggest", weights[1]);
-    parse(node, "entity", weights[2]);
-    parse(node, "preferential_entity", weights[3]);
+    parse(node, "agent", weights[2]);
+    parse(node, "preferential_agent", weights[3]);
     parse(node, "hashtag", weights[4]);
     double weight_sum = 0;
     for (auto& w : weights) {
@@ -157,8 +157,8 @@ static void truncate_max_sim_time(double& max_sim_time) {
 }
 
 static void parse_analysis_configuration(ParsedConfig& config, const Node& node) {
-    parse(node, "max_entities", config.max_entities);
-    parse(node, "initial_entities", config.initial_entities);
+    parse(node, "max_agents", config.max_agents);
+    parse(node, "initial_agents", config.initial_agents);
     parse(node, "max_time", config.max_sim_time);
     truncate_max_sim_time(config.max_sim_time);
 
@@ -204,7 +204,7 @@ static void parse_output_configuration(ParsedConfig& config, const Node& node) {
     parse(node, "summary_output_rate", config.summary_output_rate);
 
     parse(node, "visualize", config.output_visualize);
-    parse(node, "entity_stats", config.entity_stats);
+    parse(node, "agent_stats", config.agent_stats);
 
     parse(node, "save_network_on_timeout", config.save_network_on_timeout);
     parse(node, "load_network_on_startup", config.load_network_on_startup);
@@ -231,18 +231,18 @@ static CategoryGrouper parse_category_thresholds(const Node& node) {
     /* Initialize the thresholds and the weights */
     if (bin_spacing == "linear") {
         for (int i = min_binsize; i < max_binsize; i+= increment) {
-            group.categories.push_back(CategoryEntityList(i, 0));
+            group.categories.push_back(CategoryAgentList(i, 0));
         }
     } else if (bin_spacing == "quadratic") {
         for (int i = min_binsize; i < max_binsize; i+= increment*increment) {
-            group.categories.push_back(CategoryEntityList(i, 0));
+            group.categories.push_back(CategoryAgentList(i, 0));
         }
     } else if (bin_spacing == "cubic") {
         for (int i = min_binsize; i < max_binsize; i+= increment*increment*increment) {
-            group.categories.push_back(CategoryEntityList(i, 0));
+            group.categories.push_back(CategoryAgentList(i, 0));
         }
     }
-    group.categories.push_back(CategoryEntityList(HUGE_VAL, 0));
+    group.categories.push_back(CategoryAgentList(HUGE_VAL, 0));
     return group;
 }
 void parse_category_weights(ParsedConfig& config, const Node& node, CategoryGrouper& group) {
@@ -291,31 +291,31 @@ void parse_category_weights(ParsedConfig& config, const Node& node, CategoryGrou
     }
 }
 static void parse_category_configurations(ParsedConfig& config, const Node& node) {
-    ASSERT(!config.entity_types.empty(), "Must have entity types!");
+    ASSERT(!config.agent_types.empty(), "Must have agent types!");
     if (config.use_barabasi) {
-        // One category per potential entity:
-        for (int i = 1; i < config.max_entities + 1; i ++) {
-            CategoryEntityList cat(i-1, i);
+        // One category per potential agent:
+        for (int i = 1; i < config.max_agents + 1; i ++) {
+            CategoryAgentList cat(i-1, i);
             config.follow_ranks.categories.push_back(cat);
             config.follow_probabilities.push_back(pow(i,config.barabasi_exponent));
-            for (int j = 0; j < config.entity_types.size(); j++ ) {
-                EntityType& type = config.entity_types[j];
+            for (int j = 0; j < config.agent_types.size(); j++ ) {
+                AgentType& type = config.agent_types[j];
                 type.follow_ranks.categories.push_back(cat);
             }
         }
     } else {   
         config.follow_ranks = parse_category_thresholds(node["follow_ranks"]["thresholds"]);                
         parse_category_weights(config, node["follow_ranks"]["weights"], config.follow_ranks);
-        for (int i = 0; i < config.entity_types.size(); i ++) {
-            config.entity_types[i].follow_ranks = parse_category_thresholds(node["follow_ranks"]["thresholds"]);                
-            parse_category_weights(config, node["follow_ranks"]["weights"], config.entity_types[i].follow_ranks);
+        for (int i = 0; i < config.agent_types.size(); i ++) {
+            config.agent_types[i].follow_ranks = parse_category_thresholds(node["follow_ranks"]["thresholds"]);                
+            parse_category_weights(config, node["follow_ranks"]["weights"], config.agent_types[i].follow_ranks);
         }
     }
     config.tweet_ranks = parse_category_thresholds(node["tweet_ranks"]["thresholds"]);
     config.retweet_ranks = parse_category_thresholds(node["retweet_ranks"]["thresholds"]);
 }
 
-static void parse_entity_tweet_type_probabilities(EntityType& et, const Node& node) {
+static void parse_agent_tweet_type_probabilities(AgentType& et, const Node& node) {
     double plain = 0, ideological = 0, musical = 0, humourous = 0;
 
     parse(node, "ideological", ideological, /*Optional:*/ true);
@@ -332,11 +332,11 @@ static void parse_entity_tweet_type_probabilities(EntityType& et, const Node& no
     }
 }
 
-static EntityTypeVector parse_entities_configuration(const Node& node) {
-    EntityTypeVector vec;
+static AgentTypeVector parse_agents_configuration(const Node& node) {
+    AgentTypeVector vec;
     double add_total = 0, follow_total = 0;
     for (int i = 0; i < node.size(); i++) {
-        EntityType et;
+        AgentType et;
         //et.tweet_type_probs;
         const Node& child = node[i];
         parse(child, "name", et.name);
@@ -350,7 +350,7 @@ static EntityTypeVector parse_entities_configuration(const Node& node) {
 		const Node& follow_rate = child["rates"]["follow"];
 		const Node& tweet_rate = child["rates"]["tweet"];
 
-		parse_entity_tweet_type_probabilities(et, weights["tweet_type"]);
+		parse_agent_tweet_type_probabilities(et, weights["tweet_type"]);
 		
 		parse(follow_rate, "function", et.RF[0].function_type);
 		if (et.RF[0].function_type == "constant") {
@@ -372,7 +372,7 @@ static EntityTypeVector parse_entities_configuration(const Node& node) {
         add_total += et.prob_add, follow_total += et.prob_follow;
         vec.push_back(et);
     }
-    // Normalize the entity weights into probabilities
+    // Normalize the agent weights into probabilities
     for (int i = 0; i < node.size(); i++) {
         vec[i].prob_add /= add_total;
         vec[i].prob_follow /= follow_total;
@@ -414,7 +414,7 @@ static FollowerSet::WeightDeterminer parse_tweet_react_rates(const Node& n_root)
         for (int i = 0; i < N_TWEET_TYPES; i++) {
             auto& n_etypes = n_prefs[i];
             auto& w_etypes = w_prefs[i];
-            // Entity type bins:
+            // Agent type bins:
             for (int i = 0; i < n_etypes.size(); i++) {
                 n_etypes[i] >> w_etypes[i];
             }
@@ -434,7 +434,7 @@ static void parse_all_configuration(ParsedConfig& config, const Node& node) {
     config.regions = parse_regions(node["GENERATED"]["regions"]);
     config.add_rates = parse_rates_configuration(config, node["rates"]["add"]);
     parse_output_configuration(config, node["output"]);
-    config.entity_types = parse_entities_configuration(node["entities"]);
+    config.agent_types = parse_agents_configuration(node["agents"]);
     parse_category_configurations(config, node);
 }
 
@@ -461,8 +461,8 @@ static void check_configuration_integrity(ParsedConfig& config) {
     // These will always be true
     check_integrity("Number of preference classes",
             "N_BIN_PREFERENCE_CLASS", N_BIN_PREFERENCE_CLASS, config.pref_classes.size());
-    check_integrity("Number of entity types",
-                "N_BIN_ENTITY_TYPES", N_BIN_ENTITY_TYPES, config.entity_types.size());
+    check_integrity("Number of agent types",
+                "N_BIN_AGENT_TYPES", N_BIN_AGENT_TYPES, config.agent_types.size());
     check_integrity("Number of regions",
                     "N_BIN_REGIONS", N_BIN_REGIONS, config.regions.regions.size());
     check_integrity("Number of ideologies",
@@ -487,12 +487,12 @@ static void configure_add_rates(ParsedConfig& config) {
     }
 }
 
-static void configure_entity_rates(ParsedConfig& config, EntityType& et, int event) {
+static void configure_agent_rates(ParsedConfig& config, AgentType& et, int event) {
     int projected_months = config.max_sim_time / APPROX_MONTH;
     if (et.RF[event].function_type == "not specified" && event == 0) {
-        error_exit("FATAL: Follow rate function for entity \""+ et.name + "\" was not specified.");
+        error_exit("FATAL: Follow rate function for agent \""+ et.name + "\" was not specified.");
     } else if (et.RF[event].function_type == "not specified" && event == 1) {
-        error_exit("FATAL: Follow rate function for entity \""+ et.name + "\" was not specified.");
+        error_exit("FATAL: Follow rate function for agent \""+ et.name + "\" was not specified.");
     } else if (et.RF[event].function_type == "constant") {
         ASSERT(et.RF[event].const_val >= 0, "Check your rates, one of them is < 0");
         for (int i = 0; i <= projected_months; i ++) {
@@ -526,10 +526,10 @@ static void configure_entity_rates(ParsedConfig& config, EntityType& et, int eve
 }
 
 
-static void configure_entity_rates(ParsedConfig& config) {
-    for (int i = 0; i < config.entity_types.size(); i ++) {
+static void configure_agent_rates(ParsedConfig& config) {
+    for (int i = 0; i < config.agent_types.size(); i ++) {
         for (int j = 0; j < number_of_diff_events; j ++) {
-            configure_entity_rates(config, config.entity_types[i], j);
+            configure_agent_rates(config, config.agent_types[i], j);
         }
     }
 }
@@ -549,7 +549,7 @@ ParsedConfig parse_yaml_configuration(const char* file_name) {
 
         /* Fill the various Add_Rates structures with the data necessary for each month */
         configure_add_rates(config);
-        configure_entity_rates(config);
+        configure_agent_rates(config);
         check_configuration_integrity(config);
         return config;
     } catch (const exception& e) {

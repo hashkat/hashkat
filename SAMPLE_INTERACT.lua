@@ -37,14 +37,14 @@ end
 
 local graph = gexf.new("pregraph.json")
 function on_add(id) 
-    local e = entity(id)
+    local e = agent(id)
     local size,weight = 1,1
-    if e.entity_type == "Celebrity" then 
+    if e.agent_type == "Celebrity" then 
         size,weight = 100,100
     end
     graph.add_node {
         name = tostring(id),
-        label = e.entity_type,
+        label = e.agent_type,
         size = size, weight = weight,
         t = time
     }

@@ -85,11 +85,11 @@ def merge_config(src, dst):
     merge_part(src, dst, "config_static")
 
     default_check(src, dst, "preference_classes")
-    default_check(src, dst, "entities")
+    default_check(src, dst, "agents")
     
 merge_config(DEFAULT_CONFIG, CONFIG)
 
-entities = CONFIG["entities"]
+agents = CONFIG["agents"]
 
 #################################################################
 # Both functions are computed from a lookup table generated below.
@@ -249,9 +249,9 @@ def compute_tweet_obs():
 #################################################################
 # Relevance lookup table generation
 # Factors:
-#   Entity preference class
+#   Agent preference class
 #   X Tweet type (for ideological tweets, whether ideologies match)
-#   X Original tweeter entity type
+#   X Original tweeter agent type
 #################################################################
 
 def load_relevance_function(content):
@@ -269,9 +269,9 @@ def load_relevance_weights():
             weight_set = []
             #print(tweet_type, "=>", weight_set)
             retweet_rel = pref["tweet_transmission"][tweet_type]
-            # Load all the functions based on the different entity types
+            # Load all the functions based on the different agent types
             # Defaults to the 'else' node.
-            for e in entities:
+            for e in agents:
                 name = e["name"]
                 if name in retweet_rel:
                     func_str = retweet_rel[name]
@@ -318,7 +318,7 @@ for elem in obs_function:
 #print "SUM =", suma
 #print "N_RETWEETS =", n_retweets
 
-for val in "max_analysis_steps", "max_time", "max_real_time", "max_entities", "initial_entities":
+for val in "max_analysis_steps", "max_time", "max_real_time", "max_agents", "initial_agents":
     if isinstance(CONFIG["analysis"][val], str):
         CONFIG["analysis"][val] = eval(CONFIG["analysis"][val])
 

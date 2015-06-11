@@ -42,7 +42,7 @@
  * From the retweet, we can reason about:
  *  - distance, humour
  * Each tweeter's follower list has homogenous (ie, same):
- *  - entity type (of tweeter)
+ *  - agent type (of tweeter)
  * */
 const double RETWEET_REBIN_TIME_INTERVAL = 1.0;
 

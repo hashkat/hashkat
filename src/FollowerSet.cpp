@@ -27,7 +27,7 @@
 #include "lcommon/typename.h"
 #include "lcommon/perf_timer.h"
 
-#include "entity.h"
+#include "agent.h"
 
 using namespace std;
 
@@ -36,20 +36,20 @@ using namespace std;
  *****************************************************************************/
 
 typedef IdeologyLayer LeafLayer;
-int IdeologyLayer::classify(Entity& entity) {
-    return entity.ideology_bin;
+int IdeologyLayer::classify(Agent& agent) {
+    return agent.ideology_bin;
 }
 
-int PreferenceClassLayer::classify(Entity& entity) {
-    return entity.preference_class;
+int PreferenceClassLayer::classify(Agent& agent) {
+    return agent.preference_class;
 }
 
-int RegionLayer::classify(Entity& entity) {
-    return entity.region_bin;
+int RegionLayer::classify(Agent& agent) {
+    return agent.region_bin;
 }
 
-int LanguageLayer::classify(Entity& entity) {
-    return entity.language;
+int LanguageLayer::classify(Agent& agent) {
+    return agent.language;
 }
 
 /*****************************************************************************
@@ -86,16 +86,16 @@ vector<int> FollowerSet::as_vector() {
 
 // Provides additional debug checking:
 template <typename Layer>
-static int classify(Layer& layer, Entity& entity) {
-    int bin = layer.classify(entity);
+static int classify(Layer& layer, Agent& agent) {
+    int bin = layer.classify(agent);
     DEBUG_CHECK(bin >= 0 && bin < Layer::N_SUBLAYERS, "Logic error!");
     return bin;
 }
 
 // Leaf layer specialization
-static bool add_follower(LeafLayer& layer, Entity& entity) {
-    auto& sub = layer.sublayers[classify(layer, entity)];
-    if (sub.insert(entity.id)) {
+static bool add_follower(LeafLayer& layer, Agent& agent) {
+    auto& sub = layer.sublayers[classify(layer, agent)];
+    if (sub.insert(agent.id)) {
         layer.n_elems++;
         return true;
     }
@@ -104,17 +104,17 @@ static bool add_follower(LeafLayer& layer, Entity& entity) {
 
 // Parent layers template
 template <typename Layer>
-static bool add_follower(Layer& layer, Entity& entity) {
-    auto& sub = layer.sublayers[classify(layer, entity)];
-     if (add_follower(sub, entity)) {
+static bool add_follower(Layer& layer, Agent& agent) {
+    auto& sub = layer.sublayers[classify(layer, agent)];
+     if (add_follower(sub, agent)) {
          layer.n_elems++;
          return true;
      }
      return false;
 }
 
-bool FollowerSet::add(Entity& entity) {
-    return add_follower(followers, entity);
+bool FollowerSet::add(Agent& agent) {
+    return add_follower(followers, agent);
 }
 
 /*****************************************************************************
@@ -124,9 +124,9 @@ bool FollowerSet::add(Entity& entity) {
  *****************************************************************************/
 
 // Leaf layer specialization
-static bool remove_follower(LeafLayer& layer, Entity& entity) {
-    auto& sub = layer.sublayers[layer.classify(entity)];
-    if (sub.erase(entity.id)) {
+static bool remove_follower(LeafLayer& layer, Agent& agent) {
+    auto& sub = layer.sublayers[layer.classify(agent)];
+    if (sub.erase(agent.id)) {
         layer.n_elems--;
         return true;
     }
@@ -135,17 +135,17 @@ static bool remove_follower(LeafLayer& layer, Entity& entity) {
 
 // Parent layers template
 template <typename Layer>
-static bool remove_follower(Layer& layer, Entity& entity) {
-    auto& sub = layer.sublayers[layer.classify(entity)];
-    if (remove_follower(sub, entity)) {
+static bool remove_follower(Layer& layer, Agent& agent) {
+    auto& sub = layer.sublayers[layer.classify(agent)];
+    if (remove_follower(sub, agent)) {
         layer.n_elems--;
         return true;
     }
     return false;
 }
 
-bool FollowerSet::remove(Entity& entity) {
-    return remove_follower(followers, entity);
+bool FollowerSet::remove(Agent& agent) {
+    return remove_follower(followers, agent);
 }
 
 /*****************************************************************************
@@ -244,7 +244,7 @@ void FollowerSet::print() {
     print_layer(followers, 0);
 }
 
-double FollowerSet::determine_tweet_weights(Entity& author, TweetContent& content, WeightDeterminer& d_root, /*Weights placed here:*/ Weights& w_root) {
+double FollowerSet::determine_tweet_weights(Agent& author, TweetContent& content, WeightDeterminer& d_root, /*Weights placed here:*/ Weights& w_root) {
     PERF_TIMER();
     // Weights are assumed to start 0-initialized.
 
@@ -278,7 +278,7 @@ double FollowerSet::determine_tweet_weights(Entity& author, TweetContent& conten
                     if (type == TWEET_IDEOLOGICAL && i_ideo == content.ideology_bin) {
                         type = TWEET_IDEOLOGICAL_DIFFERENT;
                     }
-                    double weight = d_root.weights[i_pref][type][author.entity_type];
+                    double weight = d_root.weights[i_pref][type][author.agent_type];
 
                     double incr3 = weight * f_leaf.size();
                     w_leaf.weights[i_ideo] += incr3;

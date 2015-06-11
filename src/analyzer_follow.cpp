@@ -41,7 +41,7 @@ struct AnalyzerFollow {
     CategoryGrouper& follow_ranks;
     vector<double>& follow_probabilities, updating_follow_probabilities;
 
-    EntityTypeVector& entity_types;
+    AgentTypeVector& agent_types;
     MTwist& rng;
     HashTags& hashtags;
     // There are multiple 'Analyzer's, they each operate on parts of AnalysisState.
@@ -50,23 +50,23 @@ struct AnalyzerFollow {
             config(state.config), follow_ranks(state.follow_ranks),
             follow_probabilities(state.config.follow_probabilities),
             updating_follow_probabilities(state.updating_follow_probabilities),
-            entity_types(state.entity_types), rng(state.rng), hashtags(state.hashtags) {
+            agent_types(state.agent_types), rng(state.rng), hashtags(state.hashtags) {
     }
 
    /***************************************************************************
-    * Entity mutation routines
+    * Agent mutation routines
     ***************************************************************************/
  
-    void flag_chatty_entity(Entity& actor, int id_target) {
-        actor.chatty_entities.push_back(id_target);
+    void flag_chatty_agent(Agent& actor, int id_target) {
+        actor.chatty_agents.push_back(id_target);
     }
     
-    void update_chatiness(Entity& actor, int id_target) {
-       double targets_chatiness = entity_types[network[id_target].entity_type].RF[1].const_val;
+    void update_chatiness(Agent& actor, int id_target) {
+       double targets_chatiness = agent_types[network[id_target].agent_type].RF[1].const_val;
        // arbitrary factor greater than the average chatiness
        actor.avg_chatiness = (actor.avg_chatiness*(actor.following_set.size() - 1) + targets_chatiness) / (double) actor.following_set.size();       
        if (actor.avg_chatiness*2 < targets_chatiness && actor.following_set.size() != 0) {
-           flag_chatty_entity(actor, id_target);
+           flag_chatty_agent(actor, id_target);
            // reset the average chattiness
            actor.avg_chatiness = (actor.avg_chatiness*(actor.following_set.size() - 1) + targets_chatiness) / (double) actor.following_set.size();
        }
@@ -74,8 +74,8 @@ struct AnalyzerFollow {
     // Returns true if a follow is added that was not already added
    bool handle_follow(int id_actor, int id_target, int follow_method) {
        PERF_TIMER();
-       Entity& A = network[id_actor];
-       Entity& T = network[id_target];
+       Agent& A = network[id_actor];
+       Agent& T = network[id_target];
        bool was_added = A.following_set.add(state, id_target);
        // if the follow is possible
        if (was_added) {
@@ -87,20 +87,20 @@ struct AnalyzerFollow {
                update_chatiness(A, id_target);
            }
            lua_hook_follow(state, id_actor, id_target);
-           RECORD_STAT(state, A.entity_type, n_follows);
-           RECORD_STAT(state, T.entity_type, n_followers);
+           RECORD_STAT(state, A.agent_type, n_follows);
+           RECORD_STAT(state, T.agent_type, n_followers);
            return true;
        }
        return false;
    }
 
    /***************************************************************************
-    * Entity observation routines
+    * Agent observation routines
     ***************************************************************************/
     
-   int random_follow_method(Entity& e, int n_entities) {
-       RECORD_STAT(state, e.entity_type, n_random_follows);
-       return rng.rand_int(n_entities);
+   int random_follow_method(Agent& e, int n_agents) {
+       RECORD_STAT(state, e.agent_type, n_random_follows);
+       return rng.rand_int(n_agents);
    }
    
    double preferential_weight() {
@@ -110,9 +110,9 @@ struct AnalyzerFollow {
        
        updating_probs.resize(follow_ranks.categories.size());
        for (int i = 0; i < follow_ranks.categories.size(); i ++) {
-           CategoryEntityList& C = follow_ranks.categories[i];
-           updating_probs[i] = follow_ranks.categories[i].prob * C.entities.size();
-           prob_sum += follow_ranks.categories[i].prob * C.entities.size();
+           CategoryAgentList& C = follow_ranks.categories[i];
+           updating_probs[i] = follow_ranks.categories[i].prob * C.agents.size();
+           prob_sum += follow_ranks.categories[i].prob * C.agents.size();
        }
        for (auto& p : updating_probs) {
            p /= prob_sum;
@@ -135,7 +135,7 @@ struct AnalyzerFollow {
 
        double rand_num = rng.rand_real_not0();
        // if we want to use a preferential follow method
-       int entity_to_follow = -1;
+       int agent_to_follow = -1;
        double sum_of_weights = 0;
        updating_follow_probabilities.resize(follow_probabilities.size());
        /* search through the probabilities for each threshold and find
@@ -143,9 +143,9 @@ struct AnalyzerFollow {
        
        for (int i = 0; i < follow_probabilities.size(); i ++){
            // look at each category
-           CategoryEntityList& C = follow_ranks.categories[i];
-           updating_follow_probabilities[i] = follow_probabilities[i]*C.entities.size();
-           sum_of_weights += C.entities.size()*follow_probabilities[i];
+           CategoryAgentList& C = follow_ranks.categories[i];
+           updating_follow_probabilities[i] = follow_probabilities[i]*C.agents.size();
+           sum_of_weights += C.agents.size()*follow_probabilities[i];
        }
        for (int i = 0; i < follow_probabilities.size(); i ++ ){
            updating_follow_probabilities[i] /= sum_of_weights;
@@ -153,12 +153,12 @@ struct AnalyzerFollow {
        for (int i = 0; i < updating_follow_probabilities.size(); i ++) {
            if (rand_num <= updating_follow_probabilities[i]) {
                // point to the category we landed in
-               CategoryEntityList& C = follow_ranks.categories[i];
-               // make sure we're not pulling a entity from an empty list
-               if (C.entities.size() != 0) {
-                   // pull a random entity from whatever bin we landed in and break so we do not continue this loop
-                   entity_to_follow = C.entities[rng.rand_int(C.entities.size())];
-                   return entity_to_follow;
+               CategoryAgentList& C = follow_ranks.categories[i];
+               // make sure we're not pulling a agent from an empty list
+               if (C.agents.size() != 0) {
+                   // pull a random agent from whatever bin we landed in and break so we do not continue this loop
+                   agent_to_follow = C.agents[rng.rand_int(C.agents.size())];
+                   return agent_to_follow;
                }
            }
            // part of the above search
@@ -166,7 +166,7 @@ struct AnalyzerFollow {
        }
        return -1;
    }
-   int twitter_preferential_follow_method(Entity& e,double time_of_follow) {
+   int twitter_preferential_follow_method(Agent& e,double time_of_follow) {
        PERF_TIMER();
        int referral_bin = (time_of_follow - e.creation_time ) / (double) APPROX_MONTH;
        double follow_prob = config.referral_rate_function.monthly_rates[referral_bin];
@@ -180,9 +180,9 @@ struct AnalyzerFollow {
        
        updating_probs.resize(follow_ranks.categories.size());
        for (int i = 0; i < follow_ranks.categories.size(); i ++) {
-           CategoryEntityList& C = follow_ranks.categories[i];
-           updating_probs[i] = follow_ranks.categories[i].prob * C.entities.size();
-           prob_sum += follow_ranks.categories[i].prob * C.entities.size();
+           CategoryAgentList& C = follow_ranks.categories[i];
+           updating_probs[i] = follow_ranks.categories[i].prob * C.agents.size();
+           prob_sum += follow_ranks.categories[i].prob * C.agents.size();
        }
        for (auto& p : updating_probs) {
            p /= prob_sum;
@@ -190,12 +190,12 @@ struct AnalyzerFollow {
        int i = 0;
        for (auto& p : updating_probs) {
            if (rand_num <= p) {
-               CategoryEntityList& C = follow_ranks.categories[i];
-               // pull a random entity from whatever bin we landed in and break so we do not continue this loop
-               int entity_to_follow = C.entities[rng.rand_int(C.entities.size())];
-               Entity& try_entity = network[entity_to_follow];
-               RECORD_STAT(state, e.entity_type, n_preferential_follows);
-               return entity_to_follow;
+               CategoryAgentList& C = follow_ranks.categories[i];
+               // pull a random agent from whatever bin we landed in and break so we do not continue this loop
+               int agent_to_follow = C.agents[rng.rand_int(C.agents.size())];
+               Agent& try_agent = network[agent_to_follow];
+               RECORD_STAT(state, e.agent_type, n_preferential_follows);
+               return agent_to_follow;
            }
            rand_num -= p;
            i++;
@@ -203,25 +203,25 @@ struct AnalyzerFollow {
        return -1;
    }
    
-   int entity_follow_method(Entity& e) {
+   int agent_follow_method(Agent& e) {
        PERF_TIMER();
 
-       // if we want to follow by entity class
-       /* search through the probabilities for each entity and find the right bin to land in */
+       // if we want to follow by agent class
+       /* search through the probabilities for each agent and find the right bin to land in */
        double rand_num = rng.rand_real_not0();
-       for (auto& type : entity_types) {
+       for (auto& type : agent_types) {
            if (rand_num <= type.prob_follow) {
                // make sure we're not pulling from an empty list
-               if (type.entity_list.size() != 0) {
-                   // pull the entity from whatever bin we landed in and break so we dont continue this loop
-                   int n = rng.rand_int(type.entity_list.size());
-                   int entity_to_follow = type.entity_list[n];
-                   Entity& try_entity = network[entity_to_follow];
-                   if (try_entity.language != e.language) {
+               if (type.agent_list.size() != 0) {
+                   // pull the agent from whatever bin we landed in and break so we dont continue this loop
+                   int n = rng.rand_int(type.agent_list.size());
+                   int agent_to_follow = type.agent_list[n];
+                   Agent& try_agent = network[agent_to_follow];
+                   if (try_agent.language != e.language) {
                        return -1;
                    }
-                   RECORD_STAT(state, e.entity_type, n_entity_follows);
-                   return entity_to_follow;
+                   RECORD_STAT(state, e.agent_type, n_agent_follows);
+                   return agent_to_follow;
                }
            }
            // part of the above search
@@ -229,84 +229,84 @@ struct AnalyzerFollow {
        }
        return -1;
    }
-   int preferential_entity_follow_method(Entity& e) {
+   int preferential_agent_follow_method(Agent& e) {
        PERF_TIMER();
 
-       int entity_to_follow = -1;
+       int agent_to_follow = -1;
        double rand_num = rng.rand_real_not0();
-       for (int i = 0; i < entity_types.size(); i++) {
-           if (rand_num <= entity_types[i].prob_follow) {
+       for (int i = 0; i < agent_types.size(); i++) {
+           if (rand_num <= agent_types[i].prob_follow) {
 
                double another_rand_num = rng.rand_real_not0();
                // make sure we're not pulling from an empty list
-               EntityType& et = entity_types[i];
+               AgentType& et = agent_types[i];
                vector<double>& up = et.updating_probs;
                up.resize(et.follow_ranks.categories.size());
                double prob_sum = 0;
                for (int j = 0; j < et.follow_ranks.categories.size(); j ++) {
-                   CategoryEntityList& C = et.follow_ranks.categories[j];
-                   up[j] = et.follow_ranks.categories[j].prob * C.entities.size();
-                   prob_sum += et.follow_ranks.categories[j].prob * C.entities.size();
+                   CategoryAgentList& C = et.follow_ranks.categories[j];
+                   up[j] = et.follow_ranks.categories[j].prob * C.agents.size();
+                   prob_sum += et.follow_ranks.categories[j].prob * C.agents.size();
                }
                for (int j = 0; j < up.size(); j ++) {                        
                    up[j] /= prob_sum;
                }
                for (int j = 0; j < up.size(); j ++) {
                    if (another_rand_num <= up[j]) {
-                       CategoryEntityList& C = et.follow_ranks.categories[j];
-                       // pull a random entity from whatever bin we landed in and break so we do not continue this loop                            
-                       entity_to_follow = C.entities[rng.rand_int(C.entities.size())];
+                       CategoryAgentList& C = et.follow_ranks.categories[j];
+                       // pull a random agent from whatever bin we landed in and break so we do not continue this loop                            
+                       agent_to_follow = C.agents[rng.rand_int(C.agents.size())];
                        break;
                    }
                    another_rand_num -= up[j];
                }
            }
-           if (entity_to_follow != -1){
-               Entity& try_entity = network[entity_to_follow];
-               if (try_entity.language != e.language) {
+           if (agent_to_follow != -1){
+               Agent& try_agent = network[agent_to_follow];
+               if (try_agent.language != e.language) {
                    return -1;
                }
-               RECORD_STAT(state, e.entity_type, n_pref_entity_follows);
-               return entity_to_follow;
+               RECORD_STAT(state, e.agent_type, n_pref_agent_follows);
+               return agent_to_follow;
            }
            // part of the above search
-           rand_num -= entity_types[i].prob_follow;
+           rand_num -= agent_types[i].prob_follow;
        }
        return -1;
    }
    
-   int hashtag_follow_method(Entity& e) {
+   int hashtag_follow_method(Agent& e) {
        PERF_TIMER();
-       bool region_choice = entity_types[e.entity_type].care_about_region;
-       bool ideology_choice = entity_types[e.entity_type].care_about_ideology;
+       bool region_choice = agent_types[e.agent_type].care_about_region;
+       bool ideology_choice = agent_types[e.agent_type].care_about_ideology;
        int default_region = e.region_bin;
        int default_ideology = e.ideology_bin;
-       int entity_to_follow = hashtags.select_entity(rng, region_choice, ideology_choice, default_region, default_ideology);
-       if (entity_to_follow != -1)
-           RECORD_STAT(state, e.entity_type, n_hashtag_follows);
-       return entity_to_follow;
+       int agent_to_follow = hashtags.select_agent(rng, region_choice, ideology_choice, default_region, default_ideology);
+       if (agent_to_follow != -1)
+           RECORD_STAT(state, e.agent_type, n_hashtag_follows);
+       return agent_to_follow;
    }
    
-   int twitter_follow_model(Entity& e, double time_of_follow) {
+   int twitter_follow_model(Agent& e, double time_of_follow) {
        PERF_TIMER();
        /* different follow models:
            0 - random follow
            1 - preferential follow
-           2 - entity type follow
-           3 - preferential entity follow
+           2 - agent type follow
+           3 - preferential agent follow
            4 - hashtag follow
            5 - referral follow
        */
        int follow_method = rng.kmc_select(&config.model_weights[0], N_FOLLOW_MODELS);
        if (follow_method == 0) {
            // Random follow method:
-           return random_follow_method(e, network.n_entities);
+           return random_follow_method(e, network.n_agents);
        } else if (follow_method == 1) {
            return twitter_preferential_follow_method(e, time_of_follow);
        } else if (follow_method == 2) {
-           return entity_follow_method(e);
+           return agent_follow_method(e);
        } else if (follow_method == 3) {
-           return preferential_entity_follow_method(e);
+           return preferential_agent_follow_method(e);
        } else {
            return hashtag_follow_method(e);
        } 
@@ -314,78 +314,78 @@ struct AnalyzerFollow {
     }
     
    // Returns false to signify that nothing occurred.
-    bool follow_entity(int id_follower, double time_of_follow) {
-        Entity& e = network[id_follower];
-        int entity_to_follow = -1;
+    bool follow_agent(int id_follower, double time_of_follow) {
+        Agent& e = network[id_follower];
+        int agent_to_follow = -1;
         double rand_num = rng.rand_real_not0();
 
         /* Dispatch to the appropriate follower logic: */
         const int follow_model = config.follow_model;
         if (follow_model == RANDOM_FOLLOW) {
-            // find a random entity within [0:number of entities - 1]
-            entity_to_follow = random_follow_method(e, network.n_entities);
+            // find a random agent within [0:number of agents - 1]
+            agent_to_follow = random_follow_method(e, network.n_agents);
         } else if (follow_model == TWITTER_PREFERENTIAL_FOLLOW && config.use_barabasi) {
-            entity_to_follow = preferential_barabasi_follow_method();
+            agent_to_follow = preferential_barabasi_follow_method();
         } else if(follow_model == TWITTER_PREFERENTIAL_FOLLOW && !config.use_barabasi) {
-            entity_to_follow = twitter_preferential_follow_method(e, time_of_follow);
-        } else if (follow_model == ENTITY_FOLLOW) {
-            entity_to_follow = entity_follow_method(e);
-        } else if (follow_model == PREFERENTIAL_ENTITY_FOLLOW) {
-            entity_to_follow = preferential_entity_follow_method(e);
+            agent_to_follow = twitter_preferential_follow_method(e, time_of_follow);
+        } else if (follow_model == AGENT_FOLLOW) {
+            agent_to_follow = agent_follow_method(e);
+        } else if (follow_model == PREFERENTIAL_AGENT_FOLLOW) {
+            agent_to_follow = preferential_agent_follow_method(e);
         } else if (follow_model == TWITTER_FOLLOW) {
-            entity_to_follow = twitter_follow_model(e, time_of_follow);
+            agent_to_follow = twitter_follow_model(e, time_of_follow);
         } else if (follow_model == HASHTAG_FOLLOW) {
-            entity_to_follow = hashtag_follow_method(e);
+            agent_to_follow = hashtag_follow_method(e);
         } else {
         	ASSERT(false, "Unknown follow model!");
         }
 
         // if the stage1_follow is set to true in the inputfile
         if (config.stage1_unfollow) {
-            vector<int>& chatties = e.chatty_entities;
+            vector<int>& chatties = e.chatty_agents;
             if (chatties.size() > 0) {
                 int index = rng.rand_int(chatties.size());
-                int entity_unfollowed = chatties[index];
-                if (action_unfollow(entity_unfollowed, id_follower)) {
+                int agent_unfollowed = chatties[index];
+                if (action_unfollow(agent_unfollowed, id_follower)) {
                     chatties.erase(chatties.begin() + index);
                 } else {
-                    DEBUG_CHECK(action_unfollow(entity_unfollowed, id_follower), "Error in stage1_unfollow method.");
+                    DEBUG_CHECK(action_unfollow(agent_unfollowed, id_follower), "Error in stage1_unfollow method.");
                 }
             }
         }
 
-        // Return 'false' if we were unable to find an entity to follow:
-        if (UNLIKELY(entity_to_follow == -1)) {
+        // Return 'false' if we were unable to find an agent to follow:
+        if (UNLIKELY(agent_to_follow == -1)) {
         	return false;
         }
 
-        bool same_entity = (id_follower == entity_to_follow);
-        bool same_language = (e.language == network[entity_to_follow].language);
-        // check and make sure we are not following ourself, or we are following entity -1
-        if (LIKELY(!same_entity && !same_language)) {
-            perf_timer_begin("AnalyzerFollower.follow_entity(handle_follow)");
-            // point to the entity who is being followed
-            if (handle_follow(id_follower, entity_to_follow, follow_model)) {
+        bool same_agent = (id_follower == agent_to_follow);
+        bool same_language = (e.language == network[agent_to_follow].language);
+        // check and make sure we are not following ourself, or we are following agent -1
+        if (LIKELY(!same_agent && !same_language)) {
+            perf_timer_begin("AnalyzerFollower.follow_agent(handle_follow)");
+            // point to the agent who is being followed
+            if (handle_follow(id_follower, agent_to_follow, follow_model)) {
                 /* FEATURE: Follow-back based on target's prob_followback.
                  * Set in INFILE.yaml as followback_probability. */
-                int et_id = network[entity_to_follow].entity_type;
-                EntityType& et = entity_types[et_id];
+                int et_id = network[agent_to_follow].agent_type;
+                AgentType& et = agent_types[et_id];
                 
                 // TODO this followback process has to be another follow method that happens naturally at some other time, possibly another 'spike' in the rate
                 // TODO AD -- I think we can just queue an event, at some time frame in the future, and activate it
                 // when KMC crosses that time.
                 if (config.use_followback && rng.random_chance(et.prob_followback)) {
-                    analyzer_followback(state, id_follower, entity_to_follow);
+                    analyzer_followback(state, id_follower, agent_to_follow);
                 }
-                // based on the number of followers the followed-entity has, check to make sure we're still categorized properly
-                Entity& target = network[entity_to_follow];
+                // based on the number of followers the followed-agent has, check to make sure we're still categorized properly
+                Agent& target = network[agent_to_follow];
                 // We were able to add the follow:
-                et.follow_ranks.categorize(entity_to_follow, target.follower_set.size());
-                follow_ranks.categorize(entity_to_follow, target.follower_set.size());
+                et.follow_ranks.categorize(agent_to_follow, target.follower_set.size());
+                follow_ranks.categorize(agent_to_follow, target.follower_set.size());
 
                 return true;
             }
-            perf_timer_end("AnalyzerFollower.follow_entity(handle_follow)");
+            perf_timer_end("AnalyzerFollower.follow_agent(handle_follow)");
         }
 
         return false; // Return 'false' to signify that nothing happened.
@@ -393,19 +393,19 @@ struct AnalyzerFollow {
 
     bool followback(int prev_actor_id, int prev_target_id) {
         // now the previous target will follow the previous actor back
-        Entity& prev_actor = network[prev_actor_id];
-        Entity& prev_target = network[prev_target_id];
+        Agent& prev_actor = network[prev_actor_id];
+        Agent& prev_target = network[prev_target_id];
         if (handle_follow(prev_target_id, prev_actor_id,N_FOLLOW_MODELS + 1)) {
             
-            int et_id = network[prev_actor_id].entity_type;
-            EntityType& et = entity_types[et_id];
+            int et_id = network[prev_actor_id].agent_type;
+            AgentType& et = agent_types[et_id];
             et.follow_ranks.categorize(prev_actor_id, prev_actor.follower_set.size());
             follow_ranks.categorize(prev_actor_id, prev_actor.follower_set.size());
-            RECORD_STAT(state, prev_target.entity_type, n_followback);
+            RECORD_STAT(state, prev_target.agent_type, n_followback);
             return true;
         }
-        RECORD_STAT(state, prev_target.entity_type, n_follows);
-        RECORD_STAT(state, prev_actor.entity_type, n_followers);
+        RECORD_STAT(state, prev_target.agent_type, n_follows);
+        RECORD_STAT(state, prev_actor.agent_type, n_followers);
         return false; // Return false to signify the network was not mutated.
     }
         
@@ -421,10 +421,10 @@ struct AnalyzerFollow {
 		DEBUG_CHECK(had_follower, "unfollow: Did not exist in follower list");
 
         // Remove our unfollowed person from our target's followers:
-		Entity& e_lost_follower = network[id_unfollower];
+		Agent& e_lost_follower = network[id_unfollower];
 		bool had_follow = e_lost_follower.following_set.remove(state, id_unfollowed);
 		DEBUG_CHECK(had_follow, "unfollow: Did not exist in follow list");
-		RECORD_STAT(state, e_lost_follower.entity_type, n_unfollows);
+		RECORD_STAT(state, e_lost_follower.agent_type, n_unfollows);
 		return true;
 	}
 };
@@ -440,10 +440,10 @@ bool analyzer_handle_follow(AnalysisState& state, int id_actor, int id_target, i
     return analyzer.handle_follow(id_actor, id_target, follow_method);
 }
 
-bool analyzer_follow_entity(AnalysisState& state, int entity, double time_of_follow) {
+bool analyzer_follow_agent(AnalysisState& state, int agent, double time_of_follow) {
     PERF_TIMER();
     AnalyzerFollow analyzer(state);
-    return analyzer.follow_entity(entity, time_of_follow);
+    return analyzer.follow_agent(agent, time_of_follow);
 }
 
 bool analyzer_followback(AnalysisState& state, int follower, int followed) {

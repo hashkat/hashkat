@@ -4,15 +4,15 @@ The input file ("INFILE.yaml") placed in this
 directory is designed to create a Barabasi-Albert
 scale free network with a scaling exponent of 3.
 The scaling exponent will not be 3 if the number
-of entities in the network is small. Like the 
+of agents in the network is small. Like the 
 random graph model, tweeting and retweeting are
 turned off for performance.
 
 The first method uses the variable 'use_barabasi'
 in the input file. That is 'use_barabasi = true'.
-For this method whenever a new entity is added into
-the network, they immediately follow another entity
-based the degree of the existing entities. For further
+For this method whenever a new agent is added into
+the network, they immediately follow another agent
+based the degree of the existing agents. For further
 information check the documentation regarding follow_method
 entitled 'preferential_follow'. The rates
 for following should be set to zero, to eliminate any

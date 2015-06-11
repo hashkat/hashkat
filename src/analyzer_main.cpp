@@ -35,7 +35,7 @@
 #include "analyzer.h"
 #include "util.h"
 #include "network.h"
-#include "entity.h"
+#include "agent.h"
 #include "io.h"
 #include "tweets.h"
 
@@ -85,8 +85,8 @@ struct Analyzer {
     ParsedConfig& config;
     NetworkStats& stats;
     
-    // struct for the entity classes, see network.h for specifications
-    EntityTypeVector& entity_types;
+    // struct for the agent classes, see network.h for specifications
+    AgentTypeVector& agent_types;
 
     // The network state
     Network& network;
@@ -124,17 +124,17 @@ struct Analyzer {
         //** The only way to initialize references is through this construct -- called an 'initializer list'.
         //** This ensures that updates are witnessed in the caller's AnalysisState object.
             state(state), stats(state.stats), config(state.config),
-            entity_types(state.entity_types), network(state.network),
+            agent_types(state.agent_types), network(state.network),
             tweet_ranks(state.tweet_ranks), follow_ranks(state.follow_ranks), retweet_ranks(state.retweet_ranks),
             rng(state.rng), time(state.time), add_rates(state.config.add_rates), tweet_bank(state.tweet_bank),
             most_pop_tweet(state.most_pop_tweet), hashtags(state.hashtags), output_time_checker(state.config.summary_output_rate) {
 
-        // The following allocates a memory chunk proportional to max_entities:
-        network.allocate(config.max_entities);
+        // The following allocates a memory chunk proportional to max_agents:
+        network.allocate(config.max_agents);
 
         DATA_TIME.open("DATA_vs_TIME");
         
-        set_initial_entities();
+        set_initial_agents();
         analyzer_rate_update(state);
         init_referral_rate_function(config);
     }
@@ -145,9 +145,9 @@ struct Analyzer {
             config.referral_rate_function.monthly_rates.push_back(1.0 / (double) (1+i));
         }
     }
-    void set_initial_entities() {
-        for (int i = 0; i < config.initial_entities; i++) {
-             action_create_entity();
+    void set_initial_agents() {
+        for (int i = 0; i < config.initial_agents; i++) {
+             action_create_agent();
         }
     }
 
@@ -242,20 +242,20 @@ struct Analyzer {
         }
     }
 
-    /* Create a new entity at the next index. */
-    bool action_create_entity() {
+    /* Create a new agent at the next index. */
+    bool action_create_agent() {
         PERF_TIMER();
 
-        if (network.n_entities == network.max_entities) {
+        if (network.n_agents == network.max_agents) {
             // Make sure we do not try to add!
             return false;
         }
 
-        int id = network.n_entities;
-        network.n_entities++;
+        int id = network.n_agents;
+        network.n_agents++;
 
         double creation_time = time;
-        Entity& e = network[id];
+        Agent& e = network[id];
 
         e.id = id;
 
@@ -274,16 +274,16 @@ struct Analyzer {
         e.preference_class = rng.kmc_select(region.preference_class_probs);
 
         double rand_num = rng.rand_real_not0();
-        for (int et = 0; et < entity_types.size(); et++) {
-            EntityType& type = entity_types[et];
+        for (int et = 0; et < agent_types.size(); et++) {
+            AgentType& type = agent_types[et];
             if (rand_num <= type.prob_add) {
-                e.entity_type = et;
-                type.entity_list.push_back(id);
+                e.agent_type = et;
+                type.agent_list.push_back(id);
                 follow_ranks.categorize(id, e.follower_set.size());
                 type.follow_ranks.categorize(id, e.follower_set.size());
                 break;
             }
-            rand_num -= entity_types[et].prob_add;
+            rand_num -= agent_types[et].prob_add;
         }
 
         lua_hook_add(state, id);
@@ -291,23 +291,23 @@ struct Analyzer {
         if (config.use_barabasi){
             // follow so many times depending on setting
             for (int i = 0; i < config.barabasi_connections; i ++) {
-                analyzer_follow_entity(state, id, creation_time);
+                analyzer_follow_agent(state, id, creation_time);
             }
         }
         return true;
     }
 
     smartptr<TweetContent> generate_tweet_content(int id_original_author) {
-        Entity& e_original_author = network[id_original_author];
-        int entity = e_original_author.entity_type;
-        EntityType& entity_type = entity_types[entity];
+        Agent& e_original_author = network[id_original_author];
+        int agent = e_original_author.agent_type;
+        AgentType& agent_type = agent_types[agent];
 
         smartptr<TweetContent> ti(new TweetContent);
         ti->id_original_author = id_original_author;
         ti->time_of_tweet = time;
-//        ti->type = entity_type;
+//        ti->type = agent_type;
         ti->ideology_bin = e_original_author.ideology_bin;
-        ti->type = (TweetType)rng.kmc_select(entity_type.tweet_type_probs, N_TWEET_TYPES);
+        ti->type = (TweetType)rng.kmc_select(agent_type.tweet_type_probs, N_TWEET_TYPES);
         // TODO: Pick
         Language lang = e_original_author.language;
 
@@ -325,8 +325,8 @@ struct Analyzer {
 
     Tweet generate_tweet(int id_tweeter, int id_link, int generation, const smartptr<TweetContent>& content) {
         PERF_TIMER();
-        Entity& e_tweeter = network[id_tweeter];
-        Entity& e_author = network[content->id_original_author];
+        Agent& e_tweeter = network[id_tweeter];
+        Agent& e_author = network[content->id_original_author];
 
         Tweet tweet;
         tweet.id_tweet = stats.global_stats.n_tweets;
@@ -335,10 +335,10 @@ struct Analyzer {
         tweet.id_tweeter = id_tweeter;
         tweet.id_link = id_link;
         tweet.generation = generation;
-        // if this is a hashtag and not a retweet, we have to add the entity id into 
+        // if this is a hashtag and not a retweet, we have to add the agent id into 
         // the circular buffer. 
         if (include_hashtag() && generation == 0) {
-            RECORD_STAT(state, e_tweeter.entity_type, n_hashtags);
+            RECORD_STAT(state, e_tweeter.agent_type, n_hashtags);
             tweet.hashtag = true;
             hashtags.hashtag_groups[e_author.ideology_bin][e_author.region_bin].circ_buffer.add(e_author.id);
         }
@@ -362,19 +362,19 @@ struct Analyzer {
 	bool action_tweet(int id_tweeter) {
 	    PERF_TIMER();
 
-            // This is the entity tweeting
-                    Entity& e = network[id_tweeter];
+            // This is the agent tweeting
+                    Agent& e = network[id_tweeter];
             tweet_ranks.categorize(id_tweeter, e.n_tweets);
             e.n_tweets++;
             generate_tweet(id_tweeter, id_tweeter, 0, generate_tweet_content(id_tweeter));
             lua_hook_tweet(state, id_tweeter, e.n_tweets);
             // Generate the tweet content:
-            // increase the number of tweets the entity had by one
+            // increase the number of tweets the agent had by one
             if (e.n_tweets / (time - e.creation_time) >= config.unfollow_tweet_rate) {
                 action_unfollow(id_tweeter);
             }
 
-            RECORD_STAT(state, e.entity_type, n_tweets);
+            RECORD_STAT(state, e.agent_type, n_tweets);
 
             return true; // Always succeeds
 	}
@@ -383,8 +383,8 @@ struct Analyzer {
 	// depending on probability encoded in PreferenceClass, if not first-generation tweet.
 	bool action_retweet(RetweetChoice choice, double time_of_retweet) {
 	    PERF_TIMER();
-		Entity& e_observer = network[choice.id_observer];
-		Entity& e_author = network[choice.id_author];
+		Agent& e_observer = network[choice.id_observer];
+		Agent& e_author = network[choice.id_author];
 
 		PreferenceClass& obs_pref_class = config.pref_classes[e_observer.preference_class];
 
@@ -395,14 +395,14 @@ struct Analyzer {
             double val = preferential_weight(state);
             if (rng.random_chance(val)) {
                 // Return success of follow:
-                RECORD_STAT(state, e_observer.entity_type, n_retweet_follows);
+                RECORD_STAT(state, e_observer.agent_type, n_retweet_follows);
                 return analyzer_handle_follow(state, choice.id_observer, choice.id_author, N_FOLLOW_MODELS + 2);
             }
 		}
 
 		generate_tweet(choice.id_observer, choice.id_link, choice.generation, *choice.content);
 
-        RECORD_STAT(state, e_observer.entity_type, n_retweets);
+        RECORD_STAT(state, e_observer.agent_type, n_retweets);
         e_observer.n_retweets ++;
 
         return true;
@@ -415,7 +415,7 @@ struct Analyzer {
 
 		FollowerSet& candidate_followers = network.follower_set(id_unfollowed);
 
-		int id_lost_follower = -1; // The entity to unfollow us
+		int id_lost_follower = -1; // The agent to unfollow us
 		if (!candidate_followers.pick_random_uniform(rng, id_lost_follower)) {
 		    perf_timer_end("action_unfollow");
 		    return false; // Empty
@@ -428,12 +428,12 @@ struct Analyzer {
 		DEBUG_CHECK(had_follower, "unfollow: Did not exist in follower list");
 
         // Remove our unfollowed person from our target's followers:
-		Entity& e_lost_follower = network[id_lost_follower];
+		Agent& e_lost_follower = network[id_lost_follower];
 		bool had_follow = e_lost_follower.following_set.remove(state, id_unfollowed);
 		DEBUG_CHECK(had_follow, "unfollow: Did not exist in follow list");
 
 		lua_hook_unfollow(state, id_lost_follower, id_unfollowed);
-		RECORD_STAT(state, e_lost_follower.entity_type, n_unfollows);
+		RECORD_STAT(state, e_lost_follower.agent_type, n_unfollows);
 
 		return true;
 	}
@@ -485,19 +485,19 @@ struct Analyzer {
         double r = rng.rand_real_not0(); // 
         // Decide what action corresponds to our random number.
         if (subtract_var(r, stats.prob_add) <= ZEROTOL) {
-            // The entity creation event
-            network_has_changed = action_create_entity();
+            // The agent creation event
+            network_has_changed = action_create_agent();
         } else if (subtract_var(r, stats.prob_follow) <= ZEROTOL) {
             // The follow event
-            int entity = analyzer_select_entity(state, FOLLOW_SELECT);
-            if (entity != -1) {
-                network_has_changed = analyzer_follow_entity(state, entity, time);
+            int agent = analyzer_select_agent(state, FOLLOW_SELECT);
+            if (agent != -1) {
+                network_has_changed = analyzer_follow_agent(state, agent, time);
             }
         } else if (subtract_var(r, stats.prob_tweet) <= ZEROTOL) {
             // The tweet event
-            int entity = analyzer_select_entity(state, TWEET_SELECT);
-            if (entity != -1) {
-                network_has_changed = action_tweet(entity);
+            int agent = analyzer_select_agent(state, TWEET_SELECT);
+            if (agent != -1) {
+                network_has_changed = action_tweet(agent);
             }
         } else if (subtract_var(r, stats.prob_retweet) <= ZEROTOL ) {
             // The retweet event
@@ -512,7 +512,7 @@ struct Analyzer {
         step_time(timer);
         stats.n_steps++;
 
-        //update the rates if n_entities has changed
+        //update the rates if n_agents has changed
         analyzer_rate_update(state);
 
         return true;
@@ -580,7 +580,7 @@ struct Analyzer {
         Tweet local_tweet;
         vector<Tweet> active_tweet_list = tweet_bank.as_vector();
         for (auto& tweet : active_tweet_list) {
-            UsedEntities& ue = tweet.content->used_entities;
+            UsedAgents& ue = tweet.content->used_agents;
             if (ue.size() > local_max) {
                 if (tweet.creation_time == tweet.content->time_of_tweet)
                 local_max = ue.size();
@@ -608,7 +608,7 @@ struct Analyzer {
             stream << scientific << setprecision(2)
             //<< HEADER  
             << time << "\t\t"
-            << network.n_entities << "\t\t"
+            << network.n_agents << "\t\t"
             << stats.global_stats.n_follows << "\t\t"
             << stats.global_stats.n_tweets << "\t\t"
             << stats.global_stats.n_retweets << "(" << state.tweet_bank.n_active_tweets() << ")\t\t"
@@ -619,7 +619,7 @@ struct Analyzer {
         } else {
             stream << setprecision(2) << scientific
             << time << "\t"
-            << (double) network.n_entities << "\t"
+            << (double) network.n_agents << "\t"
             << (double) stats.global_stats.n_follows << "\t"
             << (double) stats.global_stats.n_tweets << "\t"
             << (double) stats.global_stats.n_retweets << "(" << (double) state.tweet_bank.n_active_tweets() << ")\t"
@@ -646,9 +646,9 @@ struct Analyzer {
     }
 };
 
-bool analyzer_create_entity(AnalysisState& state) {
+bool analyzer_create_agent(AnalysisState& state) {
     ASSERT(!state.analyzer.empty(), "Analysis is not active!");
-    return state.analyzer->action_create_entity();
+    return state.analyzer->action_create_agent();
 }
 
 bool analyzer_sim_time_check(AnalysisState& state) {

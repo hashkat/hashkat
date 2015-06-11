@@ -64,8 +64,8 @@ end
 
 function on_exit() 
     local obj = {
-        n_entities = n_entities,
-        max_entities = max_entities,
+        n_agents = n_agents,
+        max_agents = max_agents,
         rate_total = rate_total,
         rate_add = rate_add,
         rate_follow = rate_follow,
@@ -76,7 +76,7 @@ function on_exit()
         total_followings = total_followings,
         total_followers = total_followers,
         total_hashtags = total_hashtags,
-        total_pref_entity_follows = total_pref_entity_follows,
+        total_pref_agent_follows = total_pref_agent_follows,
         total_preferential_follows = total_preferential_follows,
         total_random_follows = total_random_follows,
         total_tweets = total_tweets,
@@ -98,8 +98,8 @@ function on_exit()
         pretty("Normal run observations:", loaded)
         pretty("Run with loading interruption observations:", current)
 
-        assert(loaded.n_entities == current.n_entities, "n_entities mismatch!")
-        assert(loaded.max_entities == current.max_entities, "max_entities mismatch!")
+        assert(loaded.n_agents == current.n_agents, "n_agents mismatch!")
+        assert(loaded.max_agents == current.max_agents, "max_agents mismatch!")
         assert(loaded.rate_total == current.rate_total, "rate_total mismatch!")
         assert(loaded.rate_add == current.rate_add, "rate_add mismatch!")
         assert(loaded.rate_follow == current.rate_follow, "rate_follow mismatch!")
@@ -110,7 +110,7 @@ function on_exit()
         assert(loaded.total_followings == current.total_followings, "total_followings mismatch!")
         assert(loaded.total_followers == current.total_followers, "total_followers mismatch!")
         assert(loaded.total_hashtags == current.total_hashtags, "total_hashtags mismatch!")
-        assert(loaded.total_pref_entity_follows == current.total_pref_entity_follows, "total_pref_entity_follows mismatch!")
+        assert(loaded.total_pref_agent_follows == current.total_pref_agent_follows, "total_pref_agent_follows mismatch!")
         assert(loaded.total_preferential_follows == current.total_preferential_follows, "total_preferential_follows mismatch!")
         assert(loaded.total_random_follows == current.total_random_follows, "total_random_follows mismatch!")
         assert(loaded.total_tweets == current.total_tweets, "total_tweets mismatch!")

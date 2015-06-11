@@ -34,8 +34,8 @@
 enum FollowModel {
     RANDOM_FOLLOW,
     TWITTER_PREFERENTIAL_FOLLOW,
-    ENTITY_FOLLOW,
-    PREFERENTIAL_ENTITY_FOLLOW,
+    AGENT_FOLLOW,
+    PREFERENTIAL_AGENT_FOLLOW,
     HASHTAG_FOLLOW,
     TWITTER_FOLLOW
 };
@@ -80,7 +80,7 @@ struct ParsedConfig {
     std::string entire_config_file;
 
     // 'analysis' config options
-    int initial_entities = 0, max_entities = 1;
+    int initial_agents = 0, max_agents = 1;
     double max_sim_time = INFINITY;
     double max_real_time = INFINITY;
     long long max_analysis_steps = (1LL << 53); // 2**53; impossibly large number.
@@ -92,7 +92,7 @@ struct ParsedConfig {
     int barabasi_connections = 1;
     double barabasi_exponent = 1;
     
-    bool entity_stats = false;
+    bool agent_stats = false;
     bool stage1_unfollow = false;
     double hashtag_prob = 0;
     FollowModel follow_model = RANDOM_FOLLOW;
@@ -119,16 +119,16 @@ struct ParsedConfig {
 
     // 'X_category' config options
 
-    // Thresholds are filled, entity lists empty
+    // Thresholds are filled, agent lists empty
     CategoryGrouper tweet_ranks, follow_ranks;
     CategoryGrouper retweet_ranks;
     Rate_Function referral_rate_function;
 
     std::vector<double> follow_probabilities;
     Regions regions;
-    // 'entities' config options
-    // Note: Weights are filled, entity lists empty
-    EntityTypeVector entity_types;
+    // 'agents' config options
+    // Note: Weights are filled, agent lists empty
+    AgentTypeVector agent_types;
     Add_Rates add_rates;
 
     std::vector<PreferenceClass> pref_classes;
@@ -146,12 +146,12 @@ struct ParsedConfig {
     //  An 'ideal observer' is one which always sees a tweet, eventually.'
     //  The observation PDF is used for both retweeting and follow-from-tweet.
     //  We combine this with a relevance factor, r, where 0 <= r <= 1.0, we in turn
-    //  determines the probability that a given entity will act on a given tweet, with enough time.
+    //  determines the probability that a given agent will act on a given tweet, with enough time.
     TweetObservationPDF tweet_obs;
 
     // tweet_react_rates:
     //  The rates with which a tweet is reacted to, accounting for both
-    //  characteristics of the tweeter, and the entity.
+    //  characteristics of the tweeter, and the agent.
     FollowerSet::WeightDeterminer tweet_react_rates;
 };
 

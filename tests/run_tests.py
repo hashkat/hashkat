@@ -15,7 +15,7 @@ from subprocess import call
 # 'Constants' shared by all test runs
 #################################################################
 
-MAX_ENTITIES = 10000
+MAX_AGENTS = 10000
 MAX_ANALYSIS_STEPS = 10000# Increase for longer test simulation duration
 ANALYSIS_STEP_SAVE_POINT = MAX_ANALYSIS_STEPS * 3/4 # For saving tests, when should we save to disk?
 MAX_REAL_TIME = "hour" # Increase for longer test time allowance
@@ -51,7 +51,7 @@ class Configuration:
             self.use_followback = use_followback
             self.use_hashtags = use_hashtags
             self.use_add_rate = use_add_rate
-            self.initial_entities = MAX_ENTITIES if not use_add_rate else 0
+            self.initial_agents = MAX_AGENTS if not use_add_rate else 0
 
     def description(self):
         tweet = "+Tweets: on" if self.use_tweeting else "-Tweets: OFF"
@@ -64,10 +64,10 @@ class Configuration:
         return "[Follow-model=%s, %s %s %s %s, Initial=%d, Max=%d]" % (
             self.follow_model, 
             tweet, retweet, followback, add_rate,
-            self.initial_entities, MAX_ENTITIES
+            self.initial_agents, MAX_AGENTS
         )
 
-FOLLOW_MODELS = ['barabasi', 'random', 'preferential', 'entity', 'preferential-entity', 'hashtag', 'twitter', 'none']
+FOLLOW_MODELS = ['barabasi', 'random', 'preferential', 'agent', 'preferential-agent', 'hashtag', 'twitter', 'none']
 
 configurations = []
 
@@ -118,8 +118,8 @@ def config_to_yaml(C):
 
     return {
       "analysis": {
-        "initial_entities": C.initial_entities,
-        "max_entities": MAX_ENTITIES,
+        "initial_agents": C.initial_agents,
+        "max_agents": MAX_AGENTS,
         "max_time": "unlimited",
         "max_real_time": MAX_REAL_TIME,
         "max_analysis_steps": MAX_ANALYSIS_STEPS,
@@ -135,8 +135,8 @@ def config_to_yaml(C):
         "model_weights": {
           "random": 0.2,
           "preferential": 0.2,
-          "entity": 0.2,
-          "preferential_entity": 0.2,
+          "agent": 0.2,
+          "preferential_agent": 0.2,
           "twitter_suggest": 0.2,
           "hashtag": 0.2 if C.use_hashtags else 0
         },
@@ -178,7 +178,7 @@ def config_to_yaml(C):
           "follow_reaction_prob": tweet_follow_probability 
         },
        ],
-       "entities": [
+       "agents": [
         {
           "name": "Standard",
           "weights": {

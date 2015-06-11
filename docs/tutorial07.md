@@ -6,7 +6,7 @@
 
 This tutorial should take approximately 90 minutes to complete
 
-A hashtag follow method is one in which a twitter user follows another entity through a hashtag that matches their hatchtag preferences. In order for this follow method to be possible, *use_hashtag_probabilty* must be greater than zero.
+A hashtag follow method is one in which a twitter user follows another agent through a hashtag that matches their hatchtag preferences. In order for this follow method to be possible, *use_hashtag_probabilty* must be greater than zero.
 
 
 

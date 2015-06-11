@@ -11,29 +11,29 @@ The six follow models are:
 
 * Random
 * Twitter Suggest
-* Entity
-* Preferential Entity
+* Agent
+* Preferential Agent
 * Hashtag
 * Twitter
 
 Each of these follow models will be discussed and analyzed in each of their own tutorial, starting with this one, where we study the random follow model.
 
-As the name implies, a random follow model is one in which the entities in which a twitter user follows is totally arbitrary.
+As the name implies, a random follow model is one in which the agents in which a twitter user follows is totally arbitrary.
 You've already had some experience working with the random follow model, the simple network we created in Tutorial 1 implemented it,
 but in this tutorial we are going to go into this model in much more detail.
 
 Though the simple network we created in Tutorial 1 served as a quick and easy way to introduce one to #k@, the network we created from this
-simulation was nowhere near realistic. Among other things, *Followback*, the ability for an entity to follow an entity who followed them,
-was turned off, all the entites in Ontario spoke only English, while all the entities in Quebec spoke only
-French, the entities were all the same type, and most importantly, none of the entities were able to tweet or retweet. For this lesson,
+simulation was nowhere near realistic. Among other things, *Followback*, the ability for an agent to follow an agent who followed them,
+was turned off, all the agents in Ontario spoke only English, while all the agents in Quebec spoke only
+French, the agents were all the same type, and most importantly, none of the agents were able to tweet or retweet. For this lesson,
 that is all going to change.
 
 For reference, all the files that we will use in this simulation can be found in the examples directory in hashkat, under the title *tutorial04*.
 You can also view the input file we will be creating for this example [here](https://github.com/hashkat/hashkat/blob/master/examples/tutorial04/INFILE.yaml).
 
 Let's go into the INFILE.yaml file in the hashkat directory and make some changes. Using the INFILE.yaml used in Tutorial 1 as a starting point,
-we'll keep the number of entities within the
-simulation constant by having 1000 initial and maximum entities. This network we will be creating will be a lot more intricate,
+we'll keep the number of agents within the
+simulation constant by having 1000 initial and maximum agents. This network we will be creating will be a lot more intricate,
 and therefore take up a lot of computuational time. For quickness, we'll lower the maximum simulated time to 1000 simulated minutes.
 We'll keep the maximum analysis steps to be unlimited for the most refined simulation, and increase the max real time to 5 minutes
 to give the simulation more time to run its course. Interactive mode shall remain off, so both *enable_interactive_mode* and
@@ -46,37 +46,37 @@ but you are encouraged to experiment with it when creating your own network simu
 and the unfollow tweet rate to an exceptionally high number for this simulation like 10,000 tweets.
 We have also kept the probability of hashtag presence in tweets to be 50%.
 
-Since the number of entities within this simulation will remain constant, add rate will therefore be 0. The output section of INFILE.yaml
+Since the number of agents within this simulation will remain constant, add rate will therefore be 0. The output section of INFILE.yaml
 will also be left as is, to produce as many data files for analysis as possible. The tweet and retweets ranks have remained the same,
 though to be honest their purpose is just to organize them and has no real impact on the simulation. The follow ranks max threshold
-and weight have been changed to the max number of entities and the max number of entities increased by 1 respectively. This as well as
+and weight have been changed to the max number of agents and the max number of agents increased by 1 respectively. This as well as
 no real impact on this simulation, but this is very important for twitter-preferential simulations, so we just chose to change them now
-to their respective values to get you in the habit of changing the follow rank max threshold and weight to the max number of entities
-and the max number of entities increased by one respectively. The *tweet_observations*
+to their respective values to get you in the habit of changing the follow rank max threshold and weight to the max number of agents
+and the max number of agents increased by one respectively. The *tweet_observations*
 section of this program will be kept as is for all of these tutorials, though you are encouraged to change it and experiment with it
 when running your own simulations. More information on this can be found on the Input page.
 
 The ideologies have remained the same, but the *regions* sections has changed slightly. Instead of having one region only speaking
-English and one region only speaking French, we have the weights of English to French speaking entities in Ontario to be 80 to 20,
+English and one region only speaking French, we have the weights of English to French speaking agents in Ontario to be 80 to 20,
 and in Quebec to be 40 to 60. The Mexico region will not be included in any of these tutorials for simplicity. It is also important to
 note that instead of all the regions using the *NoRetweet* preference class, they are all using the *Standard* preference class, with
-its tweet transmission for all types of tweets and entities being multiplied by 10 to allow a greater number of retweets.
+its tweet transmission for all types of tweets and agents being multiplied by 10 to allow a greater number of retweets.
 The *follow_reaction_prob* has remained at 1.
 
-We have also have 4 entity types as opposed to just 1 for this simulation. They are named *Standard*, *Celebrity*, *Bot*,
-and *Organization*, with the weighted probablities of an entity belonging to each type being 70 for *Standard* and 10 for each of
-*Celebrity*, *Bot*, and *Organization*. The follow weight is 5 for all of these entity types, but this has no impact on this simulation,
-only affecting those of which use the entity follow model. Each entity type has differing weights on the type of tweets they create,
+We have also have 4 agent types as opposed to just 1 for this simulation. They are named *Standard*, *Celebrity*, *Bot*,
+and *Organization*, with the weighted probablities of an agent belonging to each type being 70 for *Standard* and 10 for each of
+*Celebrity*, *Bot*, and *Organization*. The follow weight is 5 for all of these agent types, but this has no impact on this simulation,
+only affecting those of which use the agent follow model. Each agent type has differing weights on the type of tweets they create,
 but they all have the same *followback_probability* of 0.44. The *hashtag_follow_options*, *care_about_region* and *care_about_ideology*,
-have been set to *false* for all the entity types, though this will have no impact on the simulation, only affecting those of which
-apply the hashtag follow model. The entity types all have a constant follow rate and tweet rate of 0.01 per simulated minute.
+have been set to *false* for all the agent types, though this will have no impact on the simulation, only affecting those of which
+apply the hashtag follow model. The agent types all have a constant follow rate and tweet rate of 0.01 per simulated minute.
 
 Running this simulation, and analyzing our output, we can see that most
-entities have a cumulative-degree distribution of 20, as expected, and we
-can see that we have a much more complicated network of entities, with the purple nodes corresponding to the abundant Standard users, and
-the different coloured nodes corresponding to the Celebrity, Bot, and Organization type entities, which are all roughly the same quantity.
-These two separate networks of entities generated from our simulation again correspond to our English-speaking and French-speaking entities,
-with the much more denser network representing the greater number and association of English-speaking entities.
+agents have a cumulative-degree distribution of 20, as expected, and we
+can see that we have a much more complicated network of agents, with the purple nodes corresponding to the abundant Standard users, and
+the different coloured nodes corresponding to the Celebrity, Bot, and Organization type agents, which are all roughly the same quantity.
+These two separate networks of agents generated from our simulation again correspond to our English-speaking and French-speaking agents,
+with the much more denser network representing the greater number and association of English-speaking agents.
 
 ![Cumulative Degree Distribution](/img/tutorial09/cumulative-degree_distribution_month_000.svg =1x  "Cumulative Degree Distribution")
 

@@ -53,26 +53,26 @@ struct AnalyzerRates {
     //** Mind the StatE/StatS difference. They are entirely different structs.
     AnalysisState& state;
     NetworkStats& stats;
-    EntityTypeVector& entity_types;
+    AgentTypeVector& agent_types;
     Add_Rates& add_rates;
     // There are multiple 'Analyzer's, they each operate on parts of AnalysisState.
     AnalyzerRates(AnalysisState& state) :
             network(state.network), state(state), stats(state.stats),
-            config(state.config), entity_types(state.entity_types), add_rates(state.config.add_rates) {
+            config(state.config), agent_types(state.agent_types), add_rates(state.config.add_rates) {
     }
 	
-    bool create_new_month_if_needed(EntityType& et) {
+    bool create_new_month_if_needed(AgentType& et) {
         int n_months = state.n_months();
 
-        if (n_months == et.entity_cap.size() || state.time == 0) {
-            // set the thresholds for each entitytype -- they are the same for every entity
+        if (n_months == et.agent_cap.size() || state.time == 0) {
+            // set the thresholds for each agenttype -- they are the same for every agent
             et.age_ranks.categories.push_back(state.time);
-            // for every entitytype, go through every entity that is of that entitytype and categorize them based on their creation time
-            for (int i = 0; i < et.entity_list.size(); i++) {
-                Entity& e = network[et.entity_list[i]];
-                et.age_ranks.categorize(et.entity_list[i], e.creation_time);
+            // for every agenttype, go through every agent that is of that agenttype and categorize them based on their creation time
+            for (int i = 0; i < et.agent_list.size(); i++) {
+                Agent& e = network[et.agent_list[i]];
+                et.age_ranks.categorize(et.agent_list[i], e.creation_time);
             }
-            et.entity_cap.push_back(et.entity_list.size());
+            et.agent_cap.push_back(et.agent_list.size());
             return true;
         }
         return false;
@@ -80,7 +80,7 @@ struct AnalyzerRates {
 
     void create_new_months_if_needed() {
         bool crossed_month = false;
-        for (auto& et : entity_types) {
+        for (auto& et : agent_types) {
             crossed_month |= create_new_month_if_needed(et);
         }
 
@@ -92,23 +92,23 @@ struct AnalyzerRates {
         }
     }
 
-    void update_rate(EntityType& et, vector<double>& vec, double& rate) {
+    void update_rate(AgentType& et, vector<double>& vec, double& rate) {
         int n_months = state.n_months();
         // Iterate two vectors in opposite directions
-        rate += et.new_entities * vec[0];
+        rate += et.new_agents * vec[0];
         for (int i = 1, e_i = n_months; i <= n_months; i++, e_i--) {
-            rate += vec[i] * (et.entity_cap[e_i] - et.entity_cap[e_i - 1]);
+            rate += vec[i] * (et.agent_cap[e_i] - et.agent_cap[e_i - 1]);
         }
     }
 
     // after every iteration, make sure the rates are updated accordingly
-    Rates set_rates(EntityType& et) {
+    Rates set_rates(AgentType& et) {
         double overall_follow_rate = 0, overall_tweet_rate = 0,
                 overall_retweet_rate = 0;
-        et.new_entities = et.entity_list.size() - et.entity_cap.back();
+        et.new_agents = et.agent_list.size() - et.agent_cap.back();
         if (config.rate_add == 0) {
-            overall_follow_rate += et.entity_list.size() * et.RF[0].monthly_rates[state.n_months()];
-            overall_tweet_rate += et.entity_list.size() * et.RF[1].monthly_rates[state.n_months()];
+            overall_follow_rate += et.agent_list.size() * et.RF[0].monthly_rates[state.n_months()];
+            overall_tweet_rate += et.agent_list.size() * et.RF[1].monthly_rates[state.n_months()];
         } else {
             update_rate(et, et.RF[0].monthly_rates, overall_follow_rate);
             update_rate(et, et.RF[1].monthly_rates, overall_tweet_rate);
@@ -120,7 +120,7 @@ struct AnalyzerRates {
         create_new_months_if_needed();
         
         Rates global(0, 0);
-        for (auto& et : entity_types) {
+        for (auto& et : agent_types) {
             set_rates (et);
             Rates rates = set_rates(et);
             global.add(rates); // Sum the rates

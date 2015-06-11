@@ -17,11 +17,11 @@ thresholds. Appears in twitter-preferential modelled simulations.
 
 `cumulative-degree_distribution_month_000.dat`
 
-Outlines all the possible total degrees an entity can have in that particular
+Outlines all the possible total degrees an agent can have in that particular
 month in the simulation, as well as its normalized probability, logarithm, and
 normalized probability logarithm in columns in that order.
 
-`dd_by_entity_type.dat`
+`dd_by_agent_type.dat`
 
 
 
@@ -29,43 +29,43 @@ normalized probability logarithm in columns in that order.
 
 
 
-`entity_followers.dat`
+`agent_followers.dat`
 
 
 
-`entity_following.dat`
+`agent_following.dat`
 
 
 
-`entity_populations.dat`
+`agent_populations.dat`
 
 
 
-`entity_retweets.dat`
+`agent_retweets.dat`
 
 
 
-`entity_tweets.dat`
+`agent_tweets.dat`
 
 
 
 `in-degree_distribution_month_000.dat`
 
-Outlines all the possible in degrees an entity can have in that particular
+Outlines all the possible in degrees an agent can have in that particular
 month in the simulation, as well as its normalized probability, logarithm, and
 normalized probability logarithm in columns in that order.
 
 `main_stats.dat`
 
 Outlines the most important network statistics for this simulation.
-Under **USERS** we have the total number of entities by the simulation's end,
-and the number and percentage of those entities are of each particular entity
+Under **USERS** we have the total number of agents by the simulation's end,
+and the number and percentage of those agents are of each particular agent
 type. Under **TWEETS** we have the total number of tweets made
 during the simulation, as well as the number and percentage of those that
 have a hashtag and the number and percentage of those that were tweeted by
-entities of each type. Under **RETWEETS** we have the total number of
+agents of each type. Under **RETWEETS** we have the total number of
 retweets that occurred throughout the course of the simulation, and how
-many of those were done by entities of each type.
+many of those were done by agents of each type.
 Under **FOLLOWS** we have !!!!!!!!!!!!
 
 `model_match.dat`
@@ -74,9 +74,9 @@ Under **FOLLOWS** we have !!!!!!!!!!!!
 
 `network.dat`
 
-Outlines which entities are following who. In this file there are two columns,
-with the entities in the first column (classified by an ID number)
-following the entities in the listed in the second column (also classified
+Outlines which agents are following who. In this file there are two columns,
+with the agents in the first column (classified by an ID number)
+following the agents in the listed in the second column (also classified
 by an ID number).
 
 `network.gexf`
@@ -87,7 +87,7 @@ between users on your network using visualization software such as
 
 `out-degree_distribution_month_000.dat`
 
-Outlines all the possible out degrees an entity can have in that particular
+Outlines all the possible out degrees an agent can have in that particular
 month in the simulation, as well as its normalized probability, logarithm, and
 normalized probability logarithm in columns in that order.
 
@@ -99,10 +99,10 @@ normalized probability logarithm in columns in that order.
 
 
 
-`entitytype_info.dat`
+`agenttype_info.dat`
 
-Present and named for every single entity type in the network (e.g. 'Standard'
-entity type would have a file named *Standard_info.dat*). Outlines the
+Present and named for every single agent type in the network (e.g. 'Standard'
+agent type would have a file named *Standard_info.dat*). Outlines the
 possible total number of degrees for entites of this type, as well as each
 degrees' respective !!!!!!!!!!! 
 

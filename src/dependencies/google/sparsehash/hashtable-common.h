@@ -41,11 +41,11 @@
 //
 // It does some munging of the hash value in cases where we think
 // (fear) the original hash function might not be very good.  In
-// particular, the default hash of pointers is the identity hash,
+// particular, the default hash of pointers is the idagent hash,
 // so probably all the low bits are 0.  We identify when we think
 // we're hashing a pointer, and chop off the low bits.  Note this
 // isn't perfect: even when the key is a pointer, we can't tell
-// for sure that the hash is the identity hash.  If it's not, this
+// for sure that the hash is the idagent hash.  If it's not, this
 // is needless work (and possibly, though not likely, harmful).
 
 template<typename Key, typename HashFunc,

@@ -47,43 +47,43 @@ struct Cat {
     }
 };
 
-struct CategoryEntityList {
+struct CategoryAgentList {
 	// Upper bound that fits into this category
 	double threshold, /*Optional*/ prob;
-	std::vector<int> entities;
-	CategoryEntityList(double t = 0, double p = 0) {
+	std::vector<int> agents;
+	CategoryAgentList(double t = 0, double p = 0) {
 		threshold = t, prob = p;
 	}
 	size_t size() const {
-	    return entities.size();
+	    return agents.size();
 	}
 	int operator[](size_t idx) const {
-	    return entities[idx];
+	    return agents[idx];
 	}
 
 	READ_WRITE(rw) {
-	    rw << threshold << prob << entities;
+	    rw << threshold << prob << agents;
 	}
 };
 
 struct CategoryGrouper {
 	std::vector<Cat> categorizations;
-	std::vector<CategoryEntityList> categories;
+	std::vector<CategoryAgentList> categories;
 
 	// Incrementally update a categorization
-	void categorize(int entity, double parameter) {
-		if (categorizations.size() <= entity) {
-			// Make sure 'entity' is a valid index
-			categorizations.resize(entity + 1);
+	void categorize(int agent, double parameter) {
+		if (categorizations.size() <= agent) {
+			// Make sure 'agent' is a valid index
+			categorizations.resize(agent + 1);
 		}
-		Cat& c = categorizations.at(entity);
+		Cat& c = categorizations.at(agent);
 		for (int i = 0; i < categories.size(); i++) {
-			CategoryEntityList& C = categories[i];
+			CategoryAgentList& C = categories[i];
 			if (parameter <= C.threshold) {
 				if (i != c.category) {
 					// We have to move ourselves into the new list
 					remove(c);
-					c = add(entity, i);
+					c = add(agent, i);
 				}
 				return; // Categorized, done.
 			}
@@ -91,16 +91,16 @@ struct CategoryGrouper {
 		DEBUG_CHECK(false, "Logic error");
 	}
 
-	/* Remove a categorized entity. */
+	/* Remove a categorized agent. */
 	void remove(Cat& c) {
 		if (c.category != -1) {
-			CategoryEntityList& C = categories.at(c.category);
-			DEBUG_CHECK(within_range(c.index, 0, (int)C.entities.size()), "Logic error");
+			CategoryAgentList& C = categories.at(c.category);
+			DEBUG_CHECK(within_range(c.index, 0, (int)C.agents.size()), "Logic error");
 			// Move the element at the top to our index:
-			Cat& c_top = categorizations[C.entities.back()];
+			Cat& c_top = categorizations[C.agents.back()];
 			c_top.index = c.index;
-			C.entities[c.index] = C.entities.back();
-			C.entities.pop_back();
+			C.agents[c.index] = C.agents.back();
+			C.agents.pop_back();
 			// Reset:
 			c = Cat();
 		}
@@ -116,10 +116,10 @@ struct CategoryGrouper {
         }
 	}
 
-	Cat add(int entity, int new_cat) {
-		CategoryEntityList& C = categories.at(new_cat);
-		C.entities.push_back(entity);
-		return Cat(new_cat, C.entities.size() - 1);
+	Cat add(int agent, int new_cat) {
+		CategoryAgentList& C = categories.at(new_cat);
+		C.agents.push_back(agent);
+		return Cat(new_cat, C.agents.size() - 1);
 	}
 
 	READ_WRITE(rw) {

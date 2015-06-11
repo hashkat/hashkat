@@ -49,7 +49,7 @@ configure our simulated network.
 In this file, you will see all the different configurations which you can
 implement into your network. A detailed description of every single one
 of these configurations can be found on the 'Input' page. For this tutorial,
-it is only necessary to know that we have a constant number of entities 
+it is only necessary to know that we have a constant number of agents 
 or users in this network, 1000, and that the simulation will run for 100,000
 simulated minutes and a maximum of 1 minute real time.
 
@@ -66,7 +66,7 @@ outputted to the screen:
 
 This gives a list of data at a particular point in your simulation.
 **Time** corresponds to simulation time in seconds, **Users** corresponds to the number
-of users or entities in the network at the point in the simulation, 
+of users or agents in the network at the point in the simulation, 
 **Follows** show the number of follows that have occurred, **Tweets** displays
 the number of tweets that have been made, **Retweets** shows the number of
 retweets and in brackets beside it the number of active tweets (tweets that can be retweeted),
@@ -100,11 +100,11 @@ Similar conclusions can be made for the following rows. *nan* stands for not
 a number. Since users from region 2 were not added into the simulation, there
 is not a number for the percentage of their follows that follow users from
 other regions, and 0.00% of the follows from any region are following them. 
-The reasoning for why entities only follow other entities from their own region
+The reasoning for why agents only follow other agents from their own region
 can be found in INFILE.yaml. In the regions section of the file, you can see all the
 the possible regions in this network. Since we have set users from region 0, Ontario,
 to only speak English, and users from region 1, Quebec, to only speak Frence, it makes
-sense that entitis from different regions won't connect with one another since they can't
+sense that agents from different regions won't connect with one another since they can't
 understand each other. 
 
 Looking into the hashkat directory, you will see a 'DATA_vs_TIME' file, which
@@ -131,11 +131,11 @@ Going into our *main_stats.dat* file by typing in the command
 
 we can the see the primary data compiled from our simulation. We can also use gnuplot to
 plot the in-degree, out-degree, and cumulative-degree distributions for each simulated months
-for all the entities. An entity's in-degree is the number of entities following them, while its
-out-degree is the number of entities its following, and the cumulative-degree is the sum of these
-two values. The entities in this simulation were configured to  have a follow rate of 0.0001,
-which basically means that in a simulation 100,000 simulated minutes long, each entity will follow
-around 10 users, and be followed by about 10 users. So we can therefore expect most entities to
+for all the agents. An agent's in-degree is the number of agents following them, while its
+out-degree is the number of agents its following, and the cumulative-degree is the sum of these
+two values. The agents in this simulation were configured to  have a follow rate of 0.0001,
+which basically means that in a simulation 100,000 simulated minutes long, each agent will follow
+around 10 users, and be followed by about 10 users. So we can therefore expect most agents to
 have an in-degree magnitude of 10, an out-degree magnitude of 10, and a cumlative-degree
 magnitude of 20. Let's plot and see!
 
@@ -158,7 +158,7 @@ Giving us:
 
 ![In Degree Distribution](/img/tutorial01/in-degree_distribution_month_002.svg =1x  "In Degree Distribution")
 
-where *k* is the number of degrees or followers an entity has, and *P(k)* is the probability that an entity would have that many
+where *k* is the number of degrees or followers an agent has, and *P(k)* is the probability that an agent would have that many
 degrees/followers.
 
 Repeating these steps in a similar fashion for the ou-degree an d cumulative-degree distributions gives us:
@@ -167,7 +167,7 @@ Repeating these steps in a similar fashion for the ou-degree an d cumulative-deg
 
 ![Cumulative Degree Distribution](/img/tutorial01/cumulative-degree_distribution_month_002.svg =1x  "Cumulative Degree Distribution")
 
-As expected, most entities have an in-degree of 10, an out-degree of 10, and a cumulative degree of
+As expected, most agents have an in-degree of 10, an out-degree of 10, and a cumulative degree of
 20.
 
 Note that you can save your plots as .svg files by typing in the commands
@@ -189,7 +189,7 @@ was made using the 'Fruchterman Reingold' and 'Clockwise Rotate' layout:
 
 ![Visualization](/img/tutorial01/visualization.png =1x  "Visualization")
 
-These two separate networks of entities generated from our simulation correspond to our English-speaking and French-speaking entities, who are
+These two separate networks of agents generated from our simulation correspond to our English-speaking and French-speaking agents, who are
 unable to communicate with one another.
 
 ## Next Steps
@@ -198,7 +198,7 @@ You have now completed your first tutorial using #k@, where you ran a simple net
 Feel free to move on to the next tutorial, where we will discuss restarting a network. The input file used for this tutorial can be
 found in the examples directory under tutorial01, so don't worry about changing the INFILE.yaml file in the hashkat directory, this is
 encouraged! It is important to note that to get more refined graphs for your in-degree, out-degree, and cumulative-degree
-distributions, you must have more entities present during your simulation. However, doing so will make it more difficult for
+distributions, you must have more agents present during your simulation. However, doing so will make it more difficult for
 [Gephi](http://gephi.github.io/) to visualize your network, so take that into consideration when configuring your network
 input file. 
 

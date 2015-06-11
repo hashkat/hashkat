@@ -94,7 +94,7 @@ const int N_BIN_HUMOUR = 2; // Should be exactly as in INFILE.yaml!
 const int N_FOLLOW_MODELS = 5;
 
 const int N_BIN_PREFERENCE_CLASS = 2;
-const int N_BIN_ENTITY_TYPES = 200;
+const int N_BIN_AGENT_TYPES = 200;
 const int N_BIN_REGIONS = 3;
 const int N_BIN_IDEOLOGIES = 4;
 

@@ -36,7 +36,7 @@
 
 #include "config_dynamic.h"
 #include "network.h"
-#include "entity.h"
+#include "agent.h"
 
 #include "DataReadWrite.h"
 #include "TweetBank.h"
@@ -55,7 +55,7 @@ struct NetworkStats {
     int n_steps = 0, n_outputs = 0;
     bool user_did_exit = false;
 
-    EntityStats global_stats;
+    AgentStats global_stats;
 
     READ_WRITE(rw) {
         rw << prob_add << prob_follow << prob_retweet << prob_tweet;
@@ -66,9 +66,9 @@ struct NetworkStats {
     }
 };
 
-// Records in the EntityStats member found both in the entity type struct and global struct:
-#define RECORD_STAT(state, entity_type, stat) \
-    state.entity_types[entity_type].stats. stat ++; \
+// Records in the AgentStats member found both in the agent type struct and global struct:
+#define RECORD_STAT(state, agent_type, stat) \
+    state.agent_types[agent_type].stats. stat ++; \
     state.stats.global_stats. stat ++;
 
 struct Analyzer;
@@ -114,11 +114,11 @@ struct AnalysisState {
     CategoryGrouper retweet_ranks;
     CategoryGrouper age_ranks;
 
-    // Our distinct entity classes.
-    // Entity probabilities are derived from config,
+    // Our distinct agent classes.
+    // Agent probabilities are derived from config,
     // while the list of users within is derived from
-    EntityTypeVector entity_types;
-    std::vector<int> entity_cap;
+    AgentTypeVector agent_types;
+    std::vector<int> agent_cap;
 
     // Add any values that must be extracted from 'analyze' here.
     int n_follows;
@@ -127,9 +127,9 @@ struct AnalysisState {
     /* tweet_bank: The central tweeting data-structure.
    
      Holds all the incoming 'tweets', abstract packages of information that are 
-     propagated through an entity'network by entity connections. 
+     propagated through an agent'network by agent connections. 
      
-     Those subscribing to (following) another entity are elligible for tweet 
+     Those subscribing to (following) another agent are elligible for tweet 
      reaction upon observing their 'feed'
     
      and organizes them into a tree-structure.
@@ -151,7 +151,7 @@ struct AnalysisState {
      in the social network. This can result in information passing across the 
      entire network. 
      
-     A small window of 'tweets' are kept for each topic, and every entity has
+     A small window of 'tweets' are kept for each topic, and every agent has
      a chance of propagating a given tweet in their own immediate network. */
 
     HashTags hashtags;
@@ -177,15 +177,15 @@ struct AnalysisState {
         tweet_ranks = config.tweet_ranks;
         follow_ranks = config.follow_ranks;
         retweet_ranks = config.retweet_ranks;
-        entity_types = config.entity_types;
+        agent_types = config.agent_types;
 
         rng.init_genrand(seed);
         time = 0.0;
         // Let analyze.cpp handle any additional initialization logic from here.
     }
 
-    EntityType& entity_type(int entity_id) {
-        return entity_types[network[entity_id].entity_type];
+    AgentType& agent_type(int agent_id) {
+        return agent_types[network[agent_id].agent_type];
     }
 
     int n_months() {
@@ -201,8 +201,8 @@ struct AnalysisState {
         tweet_ranks.sync_rates(config.tweet_ranks);
         follow_ranks.sync_rates(config.follow_ranks);
         retweet_ranks.sync_rates(config.retweet_ranks);
-        for (int i = 0; i < entity_types.size(); i++) {
-            entity_types[i].sync_configuration(config.entity_types[i]);
+        for (int i = 0; i < agent_types.size(); i++) {
+            agent_types[i].sync_configuration(config.agent_types[i]);
         }
     }
 
@@ -213,7 +213,7 @@ struct AnalysisState {
         rw << time;
         rw << updating_follow_probabilities;
 
-        rw << entity_cap;
+        rw << agent_cap;
         rw << n_follows << end_time;
 
         rng.visit(rw);
@@ -224,7 +224,7 @@ struct AnalysisState {
         tweet_bank.visit(rw);
         stats.visit(rw);
         hashtags.visit(rw);
-        rw.visit_objs(entity_types);
+        rw.visit_objs(agent_types);
     }
 };
 
@@ -257,9 +257,9 @@ struct RetweetChoice {
 
 /** Function prototypes **/
 
-// 'analyzer_select_entity' and 'analyzer_set_rates' implement time-dependent rates
+// 'analyzer_select_agent' and 'analyzer_set_rates' implement time-dependent rates
 // Select based on any SelectionType
-int analyzer_select_entity(AnalysisState& state, SelectionType type);
+int analyzer_select_agent(AnalysisState& state, SelectionType type);
 void analyzer_rate_update(AnalysisState& state);
 
 // Follow a specific user
@@ -270,7 +270,7 @@ bool analyzer_sim_time_check(AnalysisState& state);
 bool analyzer_real_time_check(AnalysisState& state);
 void analyzer_save_network_state(AnalysisState& state, const char* fname);
 void analyzer_load_network_state(AnalysisState& state, const char* fname);
-bool analyzer_follow_entity(AnalysisState& state, int entity, double time_of_follow);
+bool analyzer_follow_agent(AnalysisState& state, int agent, double time_of_follow);
 
 // Implements a follow-back
 bool analyzer_followback(AnalysisState& state, int follower, int followed);
@@ -281,11 +281,11 @@ void analyzer_main(AnalysisState& state);
 // this returns the total retweet rate
 double analyzer_total_retweet_rate(AnalysisState& state);
 
-// this is for the retweet entity selection
+// this is for the retweet agent selection
 RetweetChoice analyzer_select_tweet_to_retweet(AnalysisState& state, SelectionType type);
 
-// Create an entity
-bool analyzer_create_entity(AnalysisState& state);
+// Create an agent
+bool analyzer_create_agent(AnalysisState& state);
 
 void update_retweets(AnalysisState& state);
 

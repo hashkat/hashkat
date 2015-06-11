@@ -442,7 +442,7 @@ N_BIN_IDEOLOGIES specified in config_static.h.
 
 This sections outlines the regions in which you would like your agents to be located. You can have as many as you want, though it is important to remember that the number of regions must be equal or less than the value of 
 N_BIN_REGIONS in config_static.h. *add_weight* corresponds to the probability that the agent added to the network is from that region, and is weighted with respect to those of the other inputted regions.
-The *ideology_weights* are the possible ideologies that an entity from that region can have, and are weighted with respect to one another. Similar to the *ideology_weights*, the *language_weights* are the possible languages that an agent from that region can speak,
+The *ideology_weights* are the possible ideologies that an agent from that region can have, and are weighted with respect to one another. Similar to the *ideology_weights*, the *language_weights* are the possible languages that an agent from that region can speak,
 and are also weighted with respect to each other.
 
 ## config_static
@@ -487,7 +487,7 @@ The *preference classes* are the traits of an agent that influence whether or no
 Under *tweet_transmissions* one can dictate the probabilities that each type of agent will retweet a tweet, based on the content of that tweet, whether it be plain or musical, have a different ideology, have the same ideology, or be humourous.
 The *follow_reaction_prob* relates to the probability that an agent will follow another agent after seeing one of their tweets retweeted by a twitter user that that agent is following.   
 
-## entities
+## agents
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/w_BVsSwb7cw" frameborder="0" allowfullscreen></iframe>
 
