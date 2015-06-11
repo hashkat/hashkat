@@ -7,10 +7,9 @@
 // the FILE* interface, and sort-of meet a middle ground.
 // It's not the best, but it's not clear how else to do this without getting too messy.
 
-
-inline int putc(int chr, SerializeBuffer* buffer) {
+inline int fputc(int chr, SerializeBuffer* buffer) {
 	buffer->write_byte(chr);
-	return 0;
+	return chr;
 }
 inline int getc(SerializeBuffer* buffer) {
 	return buffer->read_byte();

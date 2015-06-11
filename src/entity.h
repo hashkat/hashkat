@@ -97,6 +97,7 @@ struct Entity {
            << language
            << ideology_bin
            << chatty_entities;
+        rw.checkMagic(0x4444);
         // following_set and follower_set are specially handled below
     }
 
@@ -179,6 +180,7 @@ struct EntityType {
         for (auto& ttp : tweet_type_probs) {
             rw << ttp;
         }
+    	rw.checkMagic(0x5555);
     }
 };
 

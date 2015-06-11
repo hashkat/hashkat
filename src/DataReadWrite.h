@@ -125,6 +125,9 @@ struct DataWriter {
 		return *buffer;
 	}
 
+    void checkMagic(int num) {
+    	buffer->write_int(num);
+    }
     AnalysisState& state;
 private:
     std::map<void*, smartptr<void*>> ptr_map;
@@ -223,6 +226,10 @@ struct DataReader {
 
     bool is_writing() {
         return false;
+    }
+
+    void checkMagic(int num) {
+    	ASSERT(buffer->read_int() == num, "Serialization magic check failed!");
     }
 
     AnalysisState& state;

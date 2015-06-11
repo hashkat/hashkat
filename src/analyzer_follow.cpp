@@ -313,36 +313,33 @@ struct AnalyzerFollow {
        return -1;
     }
     
-   // Returns false to signify that we must retry the KMC event
+   // Returns false to signify that nothing occurred.
     bool follow_entity(int id_follower, double time_of_follow) {
         Entity& e = network[id_follower];
         int entity_to_follow = -1;
         double rand_num = rng.rand_real_not0();
-        int follow_method = -1;
-        // if we want to do random follows
-        if (config.follow_model == RANDOM_FOLLOW) {
+
+        /* Dispatch to the appropriate follower logic: */
+        const int follow_model = config.follow_model;
+        if (follow_model == RANDOM_FOLLOW) {
             // find a random entity within [0:number of entities - 1]
             entity_to_follow = random_follow_method(e, network.n_entities);
-            follow_method = RANDOM_FOLLOW;
-        } else if (config.follow_model == TWITTER_PREFERENTIAL_FOLLOW && config.use_barabasi) {
+        } else if (follow_model == TWITTER_PREFERENTIAL_FOLLOW && config.use_barabasi) {
             entity_to_follow = preferential_barabasi_follow_method();
-            follow_method = TWITTER_PREFERENTIAL_FOLLOW;
-        } else if(config.follow_model == TWITTER_PREFERENTIAL_FOLLOW && !config.use_barabasi) {
+        } else if(follow_model == TWITTER_PREFERENTIAL_FOLLOW && !config.use_barabasi) {
             entity_to_follow = twitter_preferential_follow_method(e, time_of_follow);
-            follow_method = TWITTER_PREFERENTIAL_FOLLOW;
-        } else if (config.follow_model == ENTITY_FOLLOW) {
+        } else if (follow_model == ENTITY_FOLLOW) {
             entity_to_follow = entity_follow_method(e);
-            follow_method = ENTITY_FOLLOW;
-        } else if (config.follow_model == PREFERENTIAL_ENTITY_FOLLOW) {
+        } else if (follow_model == PREFERENTIAL_ENTITY_FOLLOW) {
             entity_to_follow = preferential_entity_follow_method(e);
-            follow_method = PREFERENTIAL_ENTITY_FOLLOW;
-        } else if (config.follow_model == TWITTER_FOLLOW) {
+        } else if (follow_model == TWITTER_FOLLOW) {
             entity_to_follow = twitter_follow_model(e, time_of_follow);
-            follow_method = TWITTER_FOLLOW;
-        } else if (config.follow_model == HASHTAG_FOLLOW) {
+        } else if (follow_model == HASHTAG_FOLLOW) {
             entity_to_follow = hashtag_follow_method(e);
-            follow_method = HASHTAG_FOLLOW;
-        } 
+        } else {
+        	ASSERT(false, "Unknown follow model!");
+        }
+
         // if the stage1_follow is set to true in the inputfile
         if (config.stage1_unfollow) {
             vector<int>& chatties = e.chatty_entities;
@@ -357,19 +354,26 @@ struct AnalyzerFollow {
             }
         }
 
-        // check and make sure we are not following ourself, or we are following entity -1
-        if (LIKELY(id_follower != entity_to_follow && entity_to_follow != -1) && (e.language == network[entity_to_follow].language)) {
+        // Return 'false' if we were unable to find an entity to follow:
+        if (UNLIKELY(entity_to_follow == -1)) {
+        	return false;
+        }
 
+        bool same_entity = (id_follower == entity_to_follow);
+        bool same_language = (e.language == network[entity_to_follow].language);
+        // check and make sure we are not following ourself, or we are following entity -1
+        if (LIKELY(!same_entity && !same_language)) {
             perf_timer_begin("AnalyzerFollower.follow_entity(handle_follow)");
             // point to the entity who is being followed
-            if (handle_follow(id_follower, entity_to_follow, follow_method)) {
+            if (handle_follow(id_follower, entity_to_follow, follow_model)) {
                 /* FEATURE: Follow-back based on target's prob_followback.
                  * Set in INFILE.yaml as followback_probability. */
                 int et_id = network[entity_to_follow].entity_type;
                 EntityType& et = entity_types[et_id];
                 
                 // TODO this followback process has to be another follow method that happens naturally at some other time, possibly another 'spike' in the rate
-                
+                // TODO AD -- I think we can just queue an event, at some time frame in the future, and activate it
+                // when KMC crosses that time.
                 if (config.use_followback && rng.random_chance(et.prob_followback)) {
                     analyzer_followback(state, id_follower, entity_to_follow);
                 }
@@ -384,7 +388,7 @@ struct AnalyzerFollow {
             perf_timer_end("AnalyzerFollower.follow_entity(handle_follow)");
         }
 
-        return false; // Completion failure: Restart the event
+        return false; // Return 'false' to signify that nothing happened.
     }
 
     bool followback(int prev_actor_id, int prev_target_id) {
@@ -402,7 +406,7 @@ struct AnalyzerFollow {
         }
         RECORD_STAT(state, prev_target.entity_type, n_follows);
         RECORD_STAT(state, prev_actor.entity_type, n_followers);
-        return false; // Completion failure, return false (return value currently unused)
+        return false; // Return false to signify the network was not mutated.
     }
         
 	bool action_unfollow(int id_unfollowed, int id_unfollower) {

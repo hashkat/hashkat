@@ -118,27 +118,20 @@ struct HashedEdgeSet {
     }
     void clear() {
         hash_impl = HashSet();
-    }
-
-    template <typename Writer>
-    void handle_write(Writer& rw) {
-		hash_impl.write_metadata(&rw.get_buffer());
-		hash_impl.write_nopointer_data(&rw.get_buffer());
-    }
-
-    template <typename Reader>
-    void handle_read(Reader& rw) {
-		clear();
-		hash_impl.read_metadata(&rw.get_buffer());
-		hash_impl.read_nopointer_data(&rw.get_buffer());
+        hash_impl.set_deleted_key((T) -1);
     }
 
     READ_WRITE(rw) {
+        rw.checkMagic(0x5a56);
         if (rw.is_reading()) {
-            handle_read(rw);
+			clear();
+			hash_impl.read_metadata(&rw.get_buffer());
+			hash_impl.read_nopointer_data(&rw.get_buffer());
         } else if (rw.is_writing()) {
-            handle_write(rw);
+			hash_impl.write_metadata(&rw.get_buffer());
+			hash_impl.write_nopointer_data(&rw.get_buffer());
         }
+        rw.checkMagic(0x5a54);
     }
 
     std::vector<T> as_vector() {

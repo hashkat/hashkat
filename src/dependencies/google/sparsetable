@@ -801,7 +801,7 @@ class destructive_two_d_iterator {
 // The weird mod in the offset is entirely to quiet compiler warnings
 // as is the cast to int after doing the "x mod 256"
 #define PUT_(take_from, offset)  do {                                          \
-  if (putc(static_cast<int>(((take_from) >> ((offset) % (sizeof(take_from)*8)))\
+  if (fputc(static_cast<int>(((take_from) >> ((offset) % (sizeof(take_from)*8)))\
                              % 256), fp)                                       \
       == EOF)                                                                  \
     return false;                                                              \
@@ -1673,49 +1673,13 @@ class sparsetable {
   // these particular values.
   template <typename IntType, typename OUTPUT>
   static bool write_32_or_64(OUTPUT* fp, IntType value) {
-    if ( value < 0xFFFFFFFFULL ) {        // fits in 4 bytes
-      PUT_(value, 24);
-      PUT_(value, 16);
-      PUT_(value, 8);
-      PUT_(value, 0);
-    } else if ( value == 0xFFFFFFFFUL ) {   // special case in 32bit systems
-      PUT_(0xFF, 0); PUT_(0xFF, 0); PUT_(0xFF, 0); PUT_(0xFF, 0);  // marker
-      PUT_(0, 0); PUT_(0, 0); PUT_(0, 0); PUT_(0, 0);
-      PUT_(0xFF, 0); PUT_(0xFF, 0); PUT_(0xFF, 0); PUT_(0xFF, 0);
-    } else {
-      PUT_(0xFF, 0); PUT_(0xFF, 0); PUT_(0xFF, 0); PUT_(0xFF, 0);  // marker
-      PUT_(value, 56);
-      PUT_(value, 48);
-      PUT_(value, 40);
-      PUT_(value, 32);
-      PUT_(value, 24);
-      PUT_(value, 16);
-      PUT_(value, 8);
-      PUT_(value, 0);
-    }
+    fp->write(value);
     return true;
   }
 
   template <typename IntType, typename INPUT>
   static bool read_32_or_64(INPUT* fp, IntType *value) {  // reads into value
-    size_type first4 = 0;
-    int x;
-    GET_(first4, 24);
-    GET_(first4, 16);
-    GET_(first4, 8);
-    GET_(first4, 0);
-    if ( first4 < 0xFFFFFFFFULL ) {
-      *value = first4;
-    } else {
-      GET_(*value, 56);
-      GET_(*value, 48);
-      GET_(*value, 40);
-      GET_(*value, 32);
-      GET_(*value, 24);
-      GET_(*value, 16);
-      GET_(*value, 8);
-      GET_(*value, 0);
-    }
+    fp->read(*value);
     return true;
   }
 
@@ -1737,10 +1701,10 @@ class sparsetable {
   bool read_metadata(OUTPUT* fp) {
     size_type magic_read = 0;
     if ( !read_32_or_64(fp, &magic_read) )  return false;
-    if ( magic_read != MAGIC_NUMBER ) {
-      clear();                        // just to be consistent
-      return false;
-    }
+      if ( magic_read != MAGIC_NUMBER ) {
+        clear();                        // just to be consistent
+        return false;
+      }
 
     if ( !read_32_or_64(fp, &settings.table_size) )  return false;
     if ( !read_32_or_64(fp, &settings.num_buckets) )  return false;
