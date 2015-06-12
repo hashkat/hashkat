@@ -43,7 +43,7 @@ analysis:
   max_agents: 
     1000     # 1 million max users
   max_time: 
-    10000
+    1000
   max_analysis_steps: 
     unlimited
   max_real_time: 
