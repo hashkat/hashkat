@@ -4,7 +4,7 @@
 
 # The Twitter Suggest Follow Model
 
-Going through several exercises on the different configurations of the twitter suggest follow model, this tutorial should take approximately 1 hour to complete
+Going through several exercises on the different configurations of the twitter suggest follow model, this tutorial should take approximately 50 minutes to complete
 
 Based on Albert-Laszlo Barabasi's research, a twitter suggest follow model is one in which agents tend to follow users with the highest degree, aka the highest number of followers.
 The twitter suggest method is influenced heavily by the [Barabasi-Albert Model](http://en.wikipedia.org/wiki/Barab%C3%A1si%E2%80%93Albert_model), generating networks
@@ -76,11 +76,11 @@ agent has at least two connections.
 
 ## Example - Other Twitter Suggest Models
 
-We shall now run a twitter suggest follow model network simulation with out implementing the Barabasi configuration. The INFILE.yaml file that we will use in this simulation will be the
-exact same as the one used in the Classic Barabasi example, except that *use_barabasi* will be turned off of course, and the *Standard* agent types will now have a follow rate of 0.001. As explained above,
-the max_real time for this simulation will also be one day.
-The files that were used in this example can be found for reference in the examples directory in hashkat under the title *tutorial05_other*.
-You can also view the input file used for this example [here](https://github.com/hashkat/hashkat/blob/master/examples/tutorial05_other/INFILE.yaml).
+We shall now run a twitter suggest follow model network simulation with out implementing the Barabasi configuration. This can be done by simply going into our INFILE.yaml file and inputting 'false' for  *use_barabasi*, and giving the *Standard* agent types a follow rate, which will be 0.01 again for this tutorial.
+The files that were used in this example can be found for reference in the tutorials directory in hashkat under the title *tutorial04_other*.
+You can also view the input file used for this example [here](https://github.com/hashkat/hashkat/blob/master/tutorials/tutorial04_other/INFILE.yaml).
+
+A visualization of this simulation is shown below:
 
 ## Next Steps
 
