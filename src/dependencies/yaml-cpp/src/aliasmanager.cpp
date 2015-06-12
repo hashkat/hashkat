@@ -11,13 +11,13 @@ namespace YAML
 
 	void AliasManager::RegisterReference(const Node& node)
 	{
-		m_anchorByIdagent.insert(std::make_pair(&node, _CreateNewAnchor()));
+		m_anchorByIdentity.insert(std::make_pair(&node, _CreateNewAnchor()));
 	}
 
 	anchor_t AliasManager::LookupAnchor(const Node& node) const
 	{
-		AnchorByIdagent::const_iterator it = m_anchorByIdagent.find(&node);
-		if(it == m_anchorByIdagent.end())
+		AnchorByIdentity::const_iterator it = m_anchorByIdentity.find(&node);
+		if(it == m_anchorByIdentity.end())
 			return 0;
 		return it->second;
 	}

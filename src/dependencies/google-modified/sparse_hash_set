@@ -104,8 +104,8 @@ template <class Value,
           class Alloc = libc_allocator_with_realloc<Value> >
 class sparse_hash_set {
  public:
-  // Apparently idagent is not stl-standard, so we define our own
-  struct Idagent {
+  // Apparently identity is not stl-standard, so we define our own
+  struct Identity {
     typedef const Value& result_type;
     const Value& operator()(const Value& v) const { return v; }
   };
@@ -115,7 +115,7 @@ class sparse_hash_set {
     }
   };
 
-  typedef sparse_hashtable<Value, Value, HashFcn, Idagent, SetKey,
+  typedef sparse_hashtable<Value, Value, HashFcn, Identity, SetKey,
                            EqualKey, Alloc> ht;
   ht rep;
 
@@ -160,7 +160,7 @@ class sparse_hash_set {
                            const hasher& hf = hasher(),
                            const key_equal& eql = key_equal(),
                            const allocator_type& alloc = allocator_type())
-      : rep(expected_max_items_in_table, hf, eql, Idagent(), SetKey(), alloc) {
+      : rep(expected_max_items_in_table, hf, eql, Identity(), SetKey(), alloc) {
   }
 
   template <class InputIterator>
@@ -169,7 +169,7 @@ class sparse_hash_set {
                   const hasher& hf = hasher(),
                   const key_equal& eql = key_equal(),
                   const allocator_type& alloc = allocator_type())
-      : rep(expected_max_items_in_table, hf, eql, Idagent(), SetKey(), alloc) {
+      : rep(expected_max_items_in_table, hf, eql, Identity(), SetKey(), alloc) {
     rep.insert(f, l);
   }
   // We use the default copy constructor

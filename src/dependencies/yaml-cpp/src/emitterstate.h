@@ -205,7 +205,7 @@ namespace YAML
 				break;
 			case GLOBAL:
 				fmt.set(value);
-				m_globalModifiedSettings.push(fmt.set(value));  // this pushes an idagent set, so when we restore,
+				m_globalModifiedSettings.push(fmt.set(value));  // this pushes an identity set, so when we restore,
 				                                                // it restores to the value here, and not the previous one
 				break;
 			default:

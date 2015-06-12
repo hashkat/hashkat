@@ -24,8 +24,8 @@ namespace YAML
 		anchor_t _CreateNewAnchor();
 		
 	private:
-		typedef std::map<const Node*, anchor_t> AnchorByIdagent;
-		AnchorByIdagent m_anchorByIdagent;
+		typedef std::map<const Node*, anchor_t> AnchorByIdentity;
+		AnchorByIdentity m_anchorByIdentity;
 		
 		anchor_t m_curAnchor;
 	};

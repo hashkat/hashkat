@@ -6,11 +6,11 @@
 #include <luawrap/functions.h>
 
 template<typename T>
-static T idagent1(T a) {
+static T identity1(T a) {
 	return a;
 }
 template<typename T>
-static T idagent2(const T& a) {
+static T identity2(const T& a) {
 	return a;
 }
 
@@ -35,14 +35,14 @@ static void test_num_func(T func, V num) {
 	TEST(func##temparg) { test_num_func(func<temparg>, (temparg)n); }
 
 SUITE (luawrap_func_tests) {
-	TEMPLATE_TEST(idagent1, int, 2);
+	TEMPLATE_TEST(identity1, int, 2);
 
-	//If idagent2 works once, it should work the other times
-	TEMPLATE_TEST(idagent2, int, 2);
+	//If identity2 works once, it should work the other times
+	TEMPLATE_TEST(identity2, int, 2);
 
-	TEMPLATE_TEST(idagent1, char, 255);
-	TEMPLATE_TEST(idagent1, short, 3);
-	TEMPLATE_TEST(idagent1, long, 4);
-	TEMPLATE_TEST(idagent1, float, 1.1);
-	TEMPLATE_TEST(idagent1, double, 1.1);
+	TEMPLATE_TEST(identity1, char, 255);
+	TEMPLATE_TEST(identity1, short, 3);
+	TEMPLATE_TEST(identity1, long, 4);
+	TEMPLATE_TEST(identity1, float, 1.1);
+	TEMPLATE_TEST(identity1, double, 1.1);
 }
