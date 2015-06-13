@@ -39,11 +39,11 @@
 
 analysis:
   initial_agents:
-    10  # start out from something small, could be when only the developers were online.
+    100  # start out from something small, could be when only the developers were online.
   max_agents: 
-    1000     # 1 million max users
+    100000     # 1 million max users
   max_time: 
-    1000
+    1000000
   max_analysis_steps: 
     unlimited
   max_real_time: 
@@ -55,7 +55,7 @@ analysis:
   lua_script: # Defines behaviour of interactive mode & lua hooks
     INTERACT.lua
   use_barabasi: 
-    true 
+    false 
   barabasi_connections: # number of connections we want to make when use_barabasi == true
     1
   barabasi_exponent:
@@ -63,15 +63,15 @@ analysis:
   use_random_time_increment: 
     true
   use_followback: 
-    false        # followback turned on, from literature it makes sense for a realistic system
+    true        # followback turned on, from literature it makes sense for a realistic system
   follow_model: # See notes above
-    twitter_suggest
+    random
   # model weights ONLY necessary for follow method 'twitter'  
   # educated guesses for the follow models  
   model_weights: {random: 0.0, twitter_suggest: 1.0, agent: 0.0, preferential_agent: 0.0, hashtag: 0.0}
   
   stage1_unfollow: 
-    false
+    true
   unfollow_tweet_rate: 
     1000
   use_hashtag_probability:
@@ -84,7 +84,7 @@ analysis:
 #################################################################
 
 rates:
-  add: {function: constant, value: 1.0}  # found from experiment
+  add: {function: linear, y_intercept: 100.0, slope: 0.1}  # found from experiment
 
 #################################################################
 # >> output:
@@ -220,23 +220,23 @@ regions:
   - name: Ontario
     add_weight: 5
 
-    preference_class_weights: {StandardPref: 100}
+    preference_class_weights: {StandardPref: 100, NoRetweetPref: 100}
     ideology_weights: {Red: 100, Blue: 100, Green: 100, Orange: 100}
-    language_weights: {English: 100, French: 0, Spanish: 0, French+English: 0}
+    language_weights: {English: 90, French: 10, Spanish: 0, French+English: 0}
 
   - name: Quebec
-    add_weight: 0
+    add_weight: 5
 
     preference_class_weights: {StandardPref: 100}
     ideology_weights: {Red: 100, Blue: 100, Green: 100, Orange: 100}
     language_weights: {English: 30, French: 70, Spanish: 0, French+English: 0}
     
   - name: Mexico
-    add_weight: 0
+    add_weight: 5
 
     preference_class_weights: {StandardPref: 100}
     ideology_weights: {Red: 100, Blue: 100, Green: 100, Orange: 100}
-    language_weights: {English: 0, French: 0, Spanish: 100, French+English: 0}
+    language_weights: {English: 20, French: 0, Spanish: 80, French+English: 0}
 
 #################################################################
 # >> config_static: 
@@ -331,7 +331,7 @@ agents:
       # Weight with which this agent is created
       add: 100.0
       # Weight with which this agent is followed in agent follow
-      follow: 5
+      follow: 15
       tweet_type:
         ideological: 1.0
         plain: 1.0
@@ -344,11 +344,33 @@ agents:
       care_about_ideology: false # does the entiy care about which ideology the agent has?
     rates: 
         # Rate for follows from this agent:
-        follow: {function: constant, value: 0.0}
+        follow: {function: constant, value: 0.001}
         # Rate for tweets from this agent:
-        tweet: {function: constant, value: 0.01}   #0.000256944444444 0.37 per day
+        tweet: {function: constant, value: 0.001}   #0.000256944444444 0.37 per day
 
   - name: Celebrity
+    weights:
+      # Weight with which this agent is created
+      add: 100.0
+      # Weight with which this agent is followed in agent follow
+      follow: 60
+      tweet_type:
+        ideological: 1.0
+        plain: 1.0
+        musical: 1.0
+        humourous: 1.0 # Can be considered the humourousness of the agent type
+    # Probability that following this agent results in a follow-back
+    followback_probability: .44
+    hashtag_follow_options:
+      care_about_region: true # does the agent care about where the agent they will follow is from?
+      care_about_ideology: false # does the entiy care about which ideology the agent has?
+    rates:
+        # Rate for follows from this agent:
+        follow: {function: constant, value: 0.00001}
+        # Rate for tweets from this agent:
+        tweet: {function: constant, value: 0.001}   #0.000256944444444 0.37 per day
+
+  - name: Bot
     weights:
       # Weight with which this agent is created
       add: 100.0
@@ -366,7 +388,29 @@ agents:
       care_about_ideology: false # does the entiy care about which ideology the agent has?
     rates:
         # Rate for follows from this agent:
-        follow: {function: constant, value: 0.0}
+        follow: {function: constant, value: 0.001}
         # Rate for tweets from this agent:
-        tweet: {function: constant, value: 0.01}   #0.000256944444444 0.37 per day
+        tweet: {function: constant, value: 0.00001}   #0.000256944444444 0.37 per day
+
+  - name: Organization
+    weights:
+      # Weight with which this agent is created
+      add: 100.0
+      # Weight with which this agent is followed in agent follow
+      follow: 20
+      tweet_type:
+        ideological: 1.0
+        plain: 1.0
+        musical: 1.0
+        humourous: 1.0 # Can be considered the humourousness of the agent type
+    # Probability that following this agent results in a follow-back
+    followback_probability: .44
+    hashtag_follow_options:
+      care_about_region: true # does the agent care about where the agent they will follow is from?
+      care_about_ideology: false # does the entiy care about which ideology the agent has?
+    rates:
+        # Rate for follows from this agent:
+        follow: {function: constant, value: 0.001}
+        # Rate for tweets from this agent:
+        tweet: {function: constant, value: 0.0001}   #0.000256944444444 0.37 per day
 
