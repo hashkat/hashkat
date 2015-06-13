@@ -55,9 +55,9 @@ analysis:
   lua_script: # Defines behaviour of interactive mode & lua hooks
     INTERACT.lua
   use_barabasi: 
-    false 
+    true 
   barabasi_connections: # number of connections we want to make when use_barabasi == true
-    100
+    1
   barabasi_exponent:
     1
   use_random_time_increment: 
@@ -222,10 +222,10 @@ regions:
 
     preference_class_weights: {StandardPref: 100}
     ideology_weights: {Red: 100, Blue: 100, Green: 100, Orange: 100}
-    language_weights: {English: 90, French: 10, Spanish: 0, French+English: 0}
+    language_weights: {English: 100, French: 0, Spanish: 0, French+English: 0}
 
   - name: Quebec
-    add_weight: 5
+    add_weight: 0
 
     preference_class_weights: {StandardPref: 100}
     ideology_weights: {Red: 100, Blue: 100, Green: 100, Orange: 100}
@@ -344,7 +344,7 @@ agents:
       care_about_ideology: false # does the entiy care about which ideology the agent has?
     rates: 
         # Rate for follows from this agent:
-        follow: {function: constant, value: 0.01}
+        follow: {function: constant, value: 0.0}
         # Rate for tweets from this agent:
         tweet: {function: constant, value: 0.01}   #0.000256944444444 0.37 per day
 
@@ -366,7 +366,7 @@ agents:
       care_about_ideology: false # does the entiy care about which ideology the agent has?
     rates:
         # Rate for follows from this agent:
-        follow: {function: constant, value: 0.01}
+        follow: {function: constant, value: 0.0}
         # Rate for tweets from this agent:
         tweet: {function: constant, value: 0.01}   #0.000256944444444 0.37 per day
 
