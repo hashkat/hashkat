@@ -82,6 +82,11 @@ You can also view the input file used for this example [here](https://github.com
 
 A visualization of this simulation is shown below:
 
+![Visualization](/img/tutorial04_other/visualization.png =1x "Visualization")
+
+As we can see, we again have some very highly connected agents in the centre of the visualization and unconnected agents on the sides. However, as opposed to twitter suggest follow model simulations that implement the Barabasi configuration, there are no set number
+of connections that every agent has, which explains the presence of agents with 0 connections.
+
 ## Next Steps
 
 We have now worked with a few configurations of the twitter suggest follow method. Though we did not implement agent types with a follow rate when runing Barabasi configurations,
