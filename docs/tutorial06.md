@@ -14,7 +14,7 @@ Running this simulation, we produce the following visualization:
 
 ![Visualization](/img/tutorial06/visualization.png =1x  "Visualization")
 
-As you can see, not only do the *Celebrity* agents generally have much more connections than the *Standard* agents, but through the twitter suggest follow model, there are particular agents within each agent type that have much more connections than other agents of the same type.
+As you can see, not only do the *Celebrity* agents (red dots) generally have much more connections than the *Standard* agents (blue dots), but through the twitter suggest follow model, there are particular agents within each agent type that have much more connections than other agents of the same type.
 
 ## Next Steps
 
