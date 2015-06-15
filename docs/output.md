@@ -29,26 +29,6 @@ normalized probability logarithm in columns in that order.
 
 
 
-`agent_followers.dat`
-
-
-
-`agent_following.dat`
-
-
-
-`agent_populations.dat`
-
-
-
-`agent_retweets.dat`
-
-
-
-`agent_tweets.dat`
-
-
-
 `in-degree_distribution_month_000.dat`
 
 Outlines all the possible in degrees an agent can have in that particular
