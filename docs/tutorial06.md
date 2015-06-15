@@ -8,9 +8,11 @@ This tutorial should take approximately 10 minutes to complete
 
 The preferential agent follow model is exactly like the agent follow model, except that instead of following a random agent within a particular agent class, agents tend to follow other agents within that agent class with the highest number of followers (degrees). Let's try running a preferential agent follow model simualtion, using the input file from *Tutorial 5* as a starting point. The files that we will use in this simulation can be found for reference in the tutorials directory in hashkat, with this one under the title *tutorial06*. You can also view the input file we will be creating for this example [here](https://github.com/hashkat/hashkat/blob/master/tutorials/tutorial06/INFILE.yaml).
 
-Since we've already modified our input file for an agent follow model in the previous tutorial, all we have to do is change the follow model in the INFILE.yaml to *preferential_agent*, and #k@ will do the rest. Running this simulation, we produce the following visualization:
+Since we've already modified our input file for an agent follow model in the previous tutorial, all we have to do is change the follow model in the INFILE.yaml to *preferential_agent*, and #k@ will do the rest.
 
+Running this simulation, we produce the following visualization:
 
+![Visualization](/img/tutorial06/visualization.png =1x  "Visualization")
 
 As you can see, not only do the *Celebrity* agents generally have much more connections than the *Standard* agents, but through the twitter suggest follow model, there are particular agents within each agent type that have much more connections than other agents of the same type.
 
