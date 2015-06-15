@@ -20,6 +20,8 @@ Each of these follow models will be discussed and analyzed in each of their own 
 The input data used to create the networks will be relatively the same for each follow model tutorial, so that the results from running each different follow model
 can be easily compared and constrasted.
 
+<iframe width="420" height="315" src="https://www.youtube.com/embed/rlwPn1jR3OM" frameborder="0" allowfullscreen></iframe>
+
 As the name implies, a random follow model is one in which the agents in which a twitter user follows is totally arbitrary.
 You've already had some experience working with the random follow model, the simple network we created in Tutorial 1 implemented it,
 but in this tutorial we are going to go into this model in much more detail. We are going to actually go through the input file and make some changes
