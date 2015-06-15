@@ -71,7 +71,7 @@ Running this simulation, and visualizing it, we produce a network similar to the
 
 ![Visualization](/img/tutorial03/visualization.png =1x  "Visualization")
 
-As we can quite clearly see this a truly random network, we no clear agent or group of agents being the most popular.
+As we can quite clearly see this a truly random network, with no clear agent or group of agents being the most popular.
 
 ## Next Steps
 
