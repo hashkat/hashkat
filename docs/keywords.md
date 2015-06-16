@@ -9,30 +9,34 @@ Upon cloning the repository, you will notice there are files called “INFILE.ya
 ####analysis
 **(type: n/a)** This parameter should never be adjusted, when the software looks for the parameters listed under the analysis heading, it first looks to this variable. This defines to so called analysis section of the input file.
 
+####enable_interactive_mode
+**(type: boolean)** While the simulation is running, you can press ‘ctrl-c’. If this variable is set to true, an interpreter will be activated and you can call functions in the interpreter.
+If you press the ‘tab’ key, you can go through the built in functions. The interpreter was designed to allow one to manipulate the network. If you are in the interpreter, you can press ‘ctrl-c’ and the simulation will resume.
+If you type ‘exit()’ while in the interpreter the simulation will terminate.
+
 ####initial_agents
 **(type: integer)** This parameter is the number of initial agents in the simulation. The agent type and characterizations are determined before any time will pass in the simulation.
 
 ####max_agents
 **(type: integer)** This parameter is the maximum number of agents that will be allowed in the simulation. Once the maximum number of agents has been reached in the simulation, the program will no longer add agents but will not terminate.
 
-####max_time
-**(type: integer)** This parameter is the maximum time allowed in the simulation. The units of time in the simulation is minutes. The simulation will terminate once the maximum amount of time has been reached. 
-Conveniently, you can put ‘minute’, ‘hour’, ‘day’, or ‘year’, and the simulation will know the value in minutes.
-
 ####max_real_time
 **(type: integer)** This parameter is the maximum time allowed in real life. Similarly to the max time parameter, the simulation will terminate once the maximum amount of time has been reached.
 Also, you can put ‘minute’, ‘hour’, ‘day’, or ‘year’, and the simulation will know the value in minutes.
 
-####enable_interactive_mode
-**(type: boolean)** While the simulation is running, you can press ‘ctrl-c’. If this variable is set to true, an interpreter will be activated and you can call functions in the interpreter.
-If you press the ‘tab’ key, you can go through the built in functions. The interpreter was designed to allow one to manipulate the network. If you are in the interpreter, you can press ‘ctrl-c’ and the simulation will resume.
-If you type ‘exit()’ while in the interpreter the simulation will terminate.
+####max_time
+**(type: integer)** This parameter is the maximum time allowed in the simulation. The units of time in the simulation is minutes. The simulation will terminate once the maximum amount of time has been reached. 
+Conveniently, you can put ‘minute’, ‘hour’, ‘day’, or ‘year’, and the simulation will know the value in minutes.
 
 ####use_barabasi
 **(type: boolean)** If true, a certain simulation method will be implemented that results in a network that models a scale-free network with a scale-free exponent of 3.
 This method is very similar to the ‘barabasi.game’ in the igraph package found in R or Python. The follow model (follow model) in the simulation should be set to ‘twitter_suggest’ to achieve the desired result.
 The simulation method is as follows; an agent is added into the network, and then follows another agent based on the degree of the agents in the current network. A higher degree results in a higher probability of being followed.
 If set to false, the simulation will run normally.
+
+####use_followback
+**(type: boolean)** If set to true, there may be a follow back prior to a follow. When an agent A follows agent B, if agent B’s followback probability (which can be found in the agents section of the input file) is non-zero,
+then agent B can follow agent A without moving forward in time. This is why it is called a ‘flawed followback’; in reality there would be some time prior to the initial follow where the followback would occur.
 
 ####use_random_time_increment
 **(type: boolean)** If true, the time in the simulation will be incremented at a non-constant rate; the increment of time is determined by
@@ -41,33 +45,32 @@ If set to false, the simulation will run normally.
 
 where *u* is a random number in the interval 0 < *u* ≤ 1, and **R** is the sum of the rates for the simulation. On average, the value of −ln(*u*) is unity, and therefore you can increment time by 1/**R** ; this is how time is incremented if set to false.
 
-####use_followback
-**(type: boolean)** If set to true, there may be a follow back prior to a follow. When an agent A follows agent B, if agent B’s followback probability (which can be found in the agents section of the input file) is non-zero,
-then agent B can follow agent A without moving forward in time. This is why it is called a ‘flawed followback’; in reality there would be some time prior to the initial follow where the followback would occur.
 
 ####follow_model
 **(type: string)** Currently, there are 6 follow methods implemented in the software; ‘random’, ‘agent’, ‘twitter_suggest’, ‘preferential_agent’, ‘hashtag’, and ‘twitter’; to use a follow model simply do
 
 follow_model: random
 
-* The ‘random’ follow method causes agents to follow other agents randomly; if the number of agents is set to constant and this method is on, you will achieve an Erdos-Renyi degree distribution (Poisson distribution).
+####'random' follow model
+Causes agents to follow other agents randomly; if the number of agents is set to constant and this method is on, you will achieve an Erdos-Renyi degree distribution (Poisson distribution).
 
-* The ‘agent’ follow method causes agents to follow other agents based on title alone; the titles are set in the agents section of the input file. The probabilities to follow each agent can also be set in the weights portion of the agents section.
-The probabilities are normalized, so the probabilities should be set with respect to one another.
+####‘agent’ follow model
+Causes agents to follow other agents based on title alone; the titles are set in the agents section of the input file. The probabilities to follow each agent can also be set in the weights portion of the agents section. The probabilities are normalized, so the probabilities should be set with respect to one another.
 
-* The ‘twitter_suggest’ follow method follows the preferential attachment model outlined by Barabasi and Albert. The basics behind the method is that the degree of the agent determines the probability of following the agent;
+####‘twitter_suggest’ follow model
+Follows the preferential attachment model outlined by Barabasi and Albert. The basics behind the method is that the degree of the agent determines the probability of following the agent;
 the greater the degree the greater the probability of the agent being followed. The thresholds and weights variables outlined in the follow ranks section determines how the degree of the agents are binned and the corresponding weights for each bin.
 If you want to achieve the preferential attachment method similar to the use barabasi method you can set the thresholds to increment by 1,
 with linear spacing from 0 to the max number of agents and set the weights to increment by 1 with linear spacing from 1 to the max number of agents.
 
-* The ‘preferential_agent’ follow method is just the ‘twitter_suggest’ follow method nested in the ‘agent’ follow method. Firstly, a certain agent type will be selected, then based on the degrees of the agents within the certain agent type,
+The ‘preferential_agent’ follow method is just the ‘twitter_suggest’ follow method nested in the ‘agent’ follow method. Firstly, a certain agent type will be selected, then based on the degrees of the agents within the certain agent type,
 an agent will be selected to follow.
 
-* The ‘hashtag’ follow method is a mechanism introduced to follow other agents based on hashtags. If the use hashtag probability parameter is non-zero, then agents will attach hashtags to their tweets.
+The ‘hashtag’ follow method is a mechanism introduced to follow other agents based on hashtags. If the use hashtag probability parameter is non-zero, then agents will attach hashtags to their tweets.
 Depending on the ideology and location of the agent, they are then placed into a dynamic array. If another user wants to follow via hashtag, they look to these dynamic arrays to find a specific agent that relates to
 their hashtag preferences. These preferences can be set in the hashtag follow options section.
 
-* The ‘twitter’ follow model is a model that incorporates all of the above follow mechanisms. The weights for each mechanism can be set for each follow method. See model weights for more information.
+The ‘twitter’ follow model is a model that incorporates all of the above follow mechanisms. The weights for each mechanism can be set for each follow method. See model weights for more information.
 
 ####model_weights
 **(type: n/a)** In the model weights, you can set the probability of calling each follow method. You can use arbitrary units to set the weighting for each follow method because the weights are summed and then normalized to find the probability
