@@ -20,10 +20,6 @@ Each of these follow models will be discussed and analyzed in each of their own 
 The input data used to create the networks will be relatively the same for each follow model tutorial, so that the results from running each different follow model
 can be easily compared and constrasted.
 
-## Constructing Our Network
-
-<iframe width="420" height="315" src="https://www.youtube.com/embed/rlwPn1jR3OM" frameborder="0" allowfullscreen></iframe>
-
 As the name implies, a random follow model is one in which the agents in which a twitter user follows is totally arbitrary.
 You've already had some experience working with the random follow model, the simple network we created in Tutorial 1 implemented it,
 but in this tutorial we are going to go into this model in much more detail. We are going to actually go through the input file and make some changes
@@ -33,6 +29,8 @@ For reference, all the files that we will use in this simulation can be found in
 You can also view the input file we will be creating for this example [here](https://github.com/hashkat/hashkat/blob/master/tutorials/tutorial03/INFILE.yaml).
 For more information on what goes into the input file, and what sort of information you can output from your simulation, check out the **Input** and
 **Output** page respectively.
+
+## Constructing Our Network
 
 Let's go into the INFILE.yaml file in the hashkat directory and make some changes. Using the INFILE.yaml used in Tutorial 1 as a starting point,
 we'll keep the number of agents within the
@@ -70,6 +68,8 @@ simulation will have a *followback_probability* of 0, so that agents will only f
 and a constant follow rate of 0.01 instead of 0.0001, to allow for more following to occur. The *Celebrity* user will have all of the same input values as the
 *Standard* user, except that its add weight will be zero. Though we have included them in the input file, the *Celebrity* users will not be used until a later
 tutorial, where agents will follow other agents based on their agent type.  
+
+<iframe width="420" height="315" src="https://www.youtube.com/embed/rlwPn1jR3OM" frameborder="0" allowfullscreen></iframe>
 
 ## Running & Visualizing Our Network
 
