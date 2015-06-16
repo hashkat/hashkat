@@ -20,6 +20,8 @@ Running this simulation we produced the following network:
 
 As expected, the *Celebrity* agents (red dots) tend to have much more followers than the *Standard* agents (blue dots).
 
+<iframe width="420" height="315" src="https://www.youtube.com/embed/-bYzbWOc8yc" frameborder="0" allowfullscreen></iframe>
+
 ## Next Steps
 
 Continue experimenting with the agent follow model. Adding more agent types into your simulation, such as bots and organizations, and manipulating all of their add weights, follow weights, follow rates, etc., can lead to some truly complex and interesting networks. When you are comfortable using the agent follow model, proceed to the next tutorial, where we actually combine the twitter suggest follow model and agent follow model to create the preferential agent follow model.
