@@ -20,6 +20,8 @@ Each of these follow models will be discussed and analyzed in each of their own 
 The input data used to create the networks will be relatively the same for each follow model tutorial, so that the results from running each different follow model
 can be easily compared and constrasted.
 
+## Constructing Our Network
+
 <iframe width="420" height="315" src="https://www.youtube.com/embed/rlwPn1jR3OM" frameborder="0" allowfullscreen></iframe>
 
 As the name implies, a random follow model is one in which the agents in which a twitter user follows is totally arbitrary.
@@ -68,6 +70,8 @@ simulation will have a *followback_probability* of 0, so that agents will only f
 and a constant follow rate of 0.01 instead of 0.0001, to allow for more following to occur. The *Celebrity* user will have all of the same input values as the
 *Standard* user, except that its add weight will be zero. Though we have included them in the input file, the *Celebrity* users will not be used until a later
 tutorial, where agents will follow other agents based on their agent type.  
+
+## Running & Visualizing Our Network
 
 Running this simulation, and visualizing it, we produce a network similar to the one shown below: 
 
