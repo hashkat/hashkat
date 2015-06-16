@@ -79,6 +79,8 @@ Running this simulation, and visualizing it, we produce a network similar to the
 
 As we can quite clearly see this a truly random network, with no clear agent or group of agents being the most popular.
 
+<iframe width="560" height="315" src="https://www.youtube.com/embed/6-GtOReq6Cg" frameborder="0" allowfullscreen></iframe>
+
 ## Next Steps
 
 With the completion of this tutorial, we have worked with the simplest of the six types of follow models.
