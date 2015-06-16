@@ -69,7 +69,7 @@ and a constant follow rate of 0.01 instead of 0.0001, to allow for more followin
 *Standard* user, except that its add weight will be zero. Though we have included them in the input file, the *Celebrity* users will not be used until a later
 tutorial, where agents will follow other agents based on their agent type.  
 
-<iframe width="420" height="315" src="https://www.youtube.com/embed/rlwPn1jR3OM" frameborder="0" allowfullscreen></iframe>
+<iframe width="420" height="315" src="https://www.youtube.com/embed/k6s25BWN4d8" frameborder="0" allowfullscreen></iframe>
 
 ## Running & Visualizing Our Network
 
