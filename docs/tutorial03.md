@@ -30,7 +30,7 @@ You can also view the input file we will be creating for this example [here](htt
 For more information on what goes into the input file, and what sort of information you can output from your simulation, check out the **Input** and
 **Output** page respectively.
 
-## Constructing Our Network
+## Constructing The Network
 
 Let's go into the INFILE.yaml file in the hashkat directory and make some changes. Using the INFILE.yaml used in Tutorial 1 as a starting point,
 we'll keep the number of agents within the
@@ -71,7 +71,7 @@ tutorial, where agents will follow other agents based on their agent type.
 
 <iframe width="420" height="315" src="https://www.youtube.com/embed/k6s25BWN4d8" frameborder="0" allowfullscreen></iframe>
 
-## Running & Visualizing Our Network
+## Running and Visualizing The Network
 
 Running this simulation, and visualizing it, we produce a network similar to the one shown below: 
 

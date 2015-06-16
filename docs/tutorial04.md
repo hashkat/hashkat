@@ -20,7 +20,7 @@ Let's try running a Classic Barabasi twitter suggest follow model simulation, wi
 As always, all the files that we will use in this simulation can be found for reference in the tutorials directory in hashkat, with this one under the title *tutorial04_classic_barabasi*.
 You can also view the input file we will be creating for this example [here](https://github.com/hashkat/hashkat/blob/master/tutorials/tutorial04_classic_barabasi/INFILE.yaml).
 
-### Constructing Our Network
+### Constructing The Network
 
 So let's make some modifications to our input file. As opposed to the random follow model simulations, where the number of agents within the network remained constant throughout the simulation,
 we are going to have the number of agents within the simulation increase over time, by setting our *initial_agents* to 10, and our *max_agents* to 1000.
@@ -41,7 +41,7 @@ minimum threshold follow rank has a weight of 1, the maximum threshold follow ra
 To better demonstrate the results of a twitter preferential follow model, we are again only going to use *Standard* users in this simulation. It is imperative that we have also set the *Standard* agent type's follow rate to 0.0,
 so that the only manner in which agents are connecting with each other is through the *barabasi_connections* they are assigned to make.
 
-### Running & Visualizing Our Network
+### Running and Visualizing The Network
 
 Let's now run this simulation. You can plot the log-log graph of the *cumulative-degree_distribution_month_000.dat* in gnuplot, by following the same plotting steps outlined in Tutorial 1 but when plotting typing in
 the command:
@@ -69,11 +69,11 @@ The Non-Classic Barabasi configuration is exactly the same as the classic config
 The files used in this simulation can be found for reference in the tutorials directory in hashkat under the title *tutorial04_nonclassic_barabasi*.
 You can also view the input file used for this example [here](https://github.com/hashkat/hashkat/blob/master/tutorials/tutorial04_nonclassic_barabasi/INFILE.yaml).
 
-### Constructing Our Network
+### Constructing The Network
 
 For this example, we will use the exact same INFILE.yaml as used above, but our *barabasi_connections* will have a value of 2 instead of 1.
 
-### Running & Visualizing Our Network
+### Running and Visualizing The Network
 
 Running this network simulation, we produced the visualization shown below:
 
@@ -89,11 +89,11 @@ We shall now run a twitter suggest follow model network simulation without imple
 The files that were used in this example can be found for reference in the tutorials directory in hashkat under the title *tutorial04_other*.
 You can also view the input file used for this example [here](https://github.com/hashkat/hashkat/blob/master/tutorials/tutorial04_other/INFILE.yaml).
 
-### Constructing Our Network
+### Constructing The Network
 
 Designing a twitter suggest follow model network simulation without implementing the Barabasi configuration can be done by simply going into our INFILE.yaml file and inputting 'false' for  *use_barabasi*, and giving the *Standard* agent types a follow rate, which will be 0.01 again for this tutorial.
 
-### Running & Visualizing Our Network
+### Running and Visualizing The Network
 
 Running hashkat, we produced the following visualization of this simulation:
 

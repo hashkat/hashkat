@@ -6,11 +6,11 @@
 
 The twitter follow model is a combination of all of the other follow models, with each model respectively weighted. This potentially results in a network where some follows are random, some are based on which agent has the highest number of followers, some are based on what the agents's agent type is, some are based on the number of followers an agent of a particular agent type has, and some are based on the hashtags present in tweets. Undeniably the most complex of all the follow models, we will create a twitter follow model network simulation based on what we've learned in the previous tutorials. The files that we will use in this simulation can be found for reference in the tutorials directory in hashkat, with this one being under the title *tutorial08*. You can also view the input file we will be creating for this example [here](https://github.com/hashkat/hashkat/blob/master/tutorials/tutorial08/INFILE.yaml). This tutorial should take approximately 15 minutes to complete.
 
-## Constructing Our Network
+## Constructing The Network
 
 Using the INFILE.yaml file used in the previous tutorial as a starting point, we shall change the follow model to *twitter* for this simulation. Since the *twitter* follow model incorporates all the other follow models, we will have to fill out the model weights to control the proportion of each follow model that is present in the simulation relative to the others. We would like to have all the follow models weighted equally for this simulation. Therefore, every follow model will have a weight of 1.0 to accomplish this. Any value you use for the model weights is fine since they will all be normalized, but it is important that all the values are the same value to ensure that they are weighted equally. We would like to have *Celebrity* agents return to our simulation to make use of the agent and preferential agent follow models, so will change their add weight back to 100.0, to ensure that they are added into the network at an equal weight as the *Standard* agents.
 
-## Running & Visualizing Our Network
+## Running and Visualizing The Network
 
 Running this simulation, we produced the following visualization:
 
@@ -20,5 +20,5 @@ As we can see, this combination of all the follow models produces a very interes
 
 ## Next Steps
 
-Wit hthe completion of this tutorial, you have now familiarized yourslef with all of the follow models offered by #k@. You now have the fundamental knowledge necessary to create a variety of different network simulations using this program. Move onwards to the following tutorials, where we shall move on from the basics, and proceed to some of the more advanced aspects of #k@ which are necessary to be implemented into your network simulations to produce the more realistic data possible. 
+With the completion of this tutorial, you have now familiarized yourslef with all of the follow models offered by #k@. You now have the fundamental knowledge necessary to create a variety of different network simulations using this program. Move onwards to the following tutorials, where we shall move on from the basics, and proceed to some of the more advanced aspects of #k@ which are necessary to be implemented into your network simulations to produce the more realistic data possible. 
 

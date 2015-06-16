@@ -19,6 +19,6 @@ which implements the Kinetic Monte Carlo Method and all the functionalities of T
 
 [I. Tamblyn](https://github.com/itamblyn) - [Info](http://faculty.uoit.ca/itamblyn/)
 
-##**Documentation & Tutorials**
+##**Documentation and Tutorials**
 
 [N. Buhagiar](https://github.com/nbuhagiar)
