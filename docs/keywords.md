@@ -655,7 +655,7 @@ with linear spacing from 0 to the max number of agents and set the weights to in
 
 ####unfollow
 
-
+When an agent 
 
 ####unfollow_tweet_rate
 **(type: double)** This tweet rate is not associated with the stage1 unfollow method described above. This is a more simplified unfollow algorithm and can be considered the stage 0 unfollow method.
@@ -683,10 +683,6 @@ If set to 0.5, then half of the tweets will have hashtags. If 1.0, then all of t
 where *u* is a random number in the interval 0 < *u* ≤ 1, and **R** is the sum of the rates for the simulation. On average, the value of −ln(*u*) is unity, and therefore you can increment time by 1/**R** ; this is how time is incremented if set to false.
 
 ##V
-
-####visualization
-
-
 
 ####visualize
 **(type: boolean)** If set to true, the information from the network is outputted to 2 files, “network.dat” and “network.gexf”. The “network.dat” file consists of two columns; the first column is a list of the agent IDs in order, and the second column is the
