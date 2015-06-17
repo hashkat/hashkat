@@ -12,6 +12,10 @@ Upon cloning the repository, you will notice there are files called “INFILE.ya
 **(type: double/float)** This variable declares the percentage of the certain agent type in the network. Before the simulation is done, a loop is placed over all the different agents declared, and the add variables are summed. The value of add
 declared in each agent type will then be divided by the add sum. For example if agent type A has an add value of 75, and agent type B has an add value of 25, then the network will consist of 75% of agent type A, and 25% of agent type B.
 
+####agent
+
+
+
 ####'agents' section
 **(type: n/a)** This variable should never be removed from the input file. This allows the code to read in all of the different agents declared. One can declare as many different
 agents as one wants, just be sure to properly declare all of the variables covered below.
@@ -31,6 +35,10 @@ For every agent set in the agents section of the input file, there will be a fil
 
 ##B
 
+####Barabasi-Albert Model
+
+
+
 ####bin_spacing
 **(type: string)** The strings that can be used for the bin spacing variable are linear, quadratic, and cubic; other bin spaces can be implemented if necessary.
 If linear, the bins for grouping agents will be spaced based on the increment, if quadratic, the bins for grouping agents will be spaced based on the increment squared, and if cubic, the bins for grouping agents will be spaced based
@@ -38,10 +46,42 @@ on the increment cubed.
 
 ##C
 
+####'cd'
+
+
+
+####command
+list of useful commands include : nano, touch, cd, rm, rm -r, mv, cp, cp -r, ls, more
+
+
+####command line
+
+
+
 ####'config_static' section
 **(type: n/a)** There are constant values that can be found in ‘config static.h’. Some of the static values can be changed in the input file for simplicity. An example of this is the humour bins described below.
 
+####'cp'
+include cp -r
+
+
+####cummulative rate function
+aka **R**
+
+
 ##D
+
+####DATA_vs_TIME
+
+
+
+####degree
+
+
+
+####degree distribution
+
+
 
 ####degree_distribution_by_follow_model
 **(type: boolean)** If set to true, the degree distribution by follow model will be outputted to “dd by follow model.dat".
@@ -76,7 +116,15 @@ else: 0.1
 As you can see from above, the agent types declared in the agents section are used in the preference classes. If you also declared an agent type ‘AgentType3’ then that agent type would fall under the ‘else’ set above.
 You can see that the transmission probabilities for all of the agent types are the same.
 
+####directory
+
+
+
 ##E
+
+####edge
+
+
 
 ####enable_interactive_mode
 **(type: boolean)** While the simulation is running, you can press ‘ctrl-c’. If this variable is set to true, an interpreter will be activated and you can call functions in the interpreter.
@@ -84,6 +132,10 @@ If you press the ‘tab’ key, you can go through the built in functions. The i
 If you type ‘exit()’ while in the interpreter the simulation will terminate.
 
 ##F
+
+####follow
+
+
 
 ####follow weight
 **(type: double/float)** This variable sets the weights for following each agent type. Like the add variable, these weights are summed, and then each follow variable is divided by the total. This variable is not used if the follow model is
@@ -93,6 +145,10 @@ agent type A will be followed 85% of the time, and agent type B will be followed
 ####follow rate
 **(type: n/a)** Like the function parameter to add agents into the network, the functions that can be set for the follow rate are ‘constant’ and ‘linear’. The
 usage for defining the follow rate is the exact same as the agent add rate. See link for further implementation details.
+
+####follow model
+
+
 
 ####follow_model
 **(type: string)** Currently, there are 6 follow methods implemented in the software; ‘random’, ‘agent’, ‘twitter_suggest’, ‘preferential_agent’, ‘hashtag’, and ‘twitter’; to use a follow model simply type in
@@ -137,10 +193,28 @@ where n months is the number of months that have passed in the simulation. The n
 
 ##G
 
+####Gephi
+
+
+
 ####global_add_rate
 **(type: n/a)** This parameter allows one to adjust the rate at which users are being added into the network. To have different numbers of agents, you can adjust the add weights in the agents section of the input file. Also known as *add_rate*
 
+####gnuplot
+
+
+
 ##H
+
+####hashkat
+directory and command
+
+
+####hashkat_pre.py
+
+####hashtag
+
+
 
 ####‘hashtag’ follow model
 A mechanism introduced to follow other agents based on hashtags. If the use hashtag probability parameter is non-zero, then agents will attach hashtags to their tweets.
@@ -226,6 +300,14 @@ thresholds: {bin spacing: linear, min: 10, max: 100, increment: 10}
 This will create thresholds 10, 20, 30,..., 100; the agents will be grouped according to
 these thresholds.
 
+####INFILE.yaml
+
+
+
+####INFILE.yaml-generated
+
+
+
 ####initial_agents
 **(type: integer)** This parameter is the number of initial agents in the simulation. The agent type and characterizations are determined before any time will pass in the simulation.
 
@@ -233,9 +315,21 @@ these thresholds.
 **(type: double)** This is the initial value for determining where the integral of the density function is evaluated at. If the x start value is 5 and this parameter is set to 1, then the first integral will be from 5 to 6.
 
 
+####interactive mode
+
+
+
 ##J
 
 ##K
+
+####Kinetic Analysis of Twitter (#k@)
+
+
+
+####Kinetic Monte Carlo Method
+
+
 
 ##L
 
@@ -255,6 +349,10 @@ Here the weights for each language are also summed and divided by the sum to gen
 
 ####load_network_on_startup
 **(type: boolean)** If set to true, all of the information of the network that was sent into the file declared for the save file will be loaded from when the simulation begins.
+
+####'ls'
+
+
 
 ##M
 
@@ -284,6 +382,14 @@ of calling each method. As an example, if you would like to call the follow meth
 
 model_weights{random: 0.20, preferential: 0.20, agent: 0.20, preferential agent: 0.20, hashtag: 0.20}
 
+####'more'
+
+
+
+####'mv'
+
+
+
 ##N
 
 ####name
@@ -311,7 +417,26 @@ preference classes:
 ####naming_regions
 **(type: string)** The name of your region can be anything that consists of a string. The name is a necessary part of the region so you will get a warning if it is not set.
 
+####*nan*
+
+
+
+####'nano'
+
+
+
+####network_state.dat
+
+
+
+####node
+
+
+
 ##O
+
+####output
+directory
 
 ####'output' section
 **(type: n/a)** This parameter should not be removed, when the simulation has completed, functions that do further analysis on the network can be controlled here, a few built in functions are shown below. This defines the output portion of the input file.
@@ -367,6 +492,10 @@ Here the weights for each preference classes are also summed and divided by the 
 
 ##R
 
+####**R**
+aka cummulative rate function
+
+
 ####'random' follow model
 Causes agents to follow other agents randomly; if the number of agents is set to constant and this method is on, you will achieve an Erdos-Renyi degree distribution (Poisson distribution).
 
@@ -407,12 +536,20 @@ selected randomly with weights that can be set. Here you can set the weights for
 **(type: double)** This value changes how the integrals are evaluated for the density function. Since the resolution of the function found experimentally needs to be more accurate initially then after some amount of time, we have
 introduced this parameter. For example if x start is 5, the initial resolution is 1, and this parameter is 1.5, then the integrals will be evaluated at [5, 6], [6, 8.5], [8.5, 13.5], etc.
 
+####retweet
+
+
+
 ####retweet ranks
 **(type: n/a)** This has the same functionality as the tweet ranks, except it is for retweets. See above description about tweet ranks for more information.
 
 ####retweet_visualization
 **(type: boolean)** If set to true, there will be a Gephi file called “retweet_viz.gexf” that is produced after the simulation terminates. This file can be found in the ‘output’ directory. The graph produced is a visualization of the most retweeted
 tweet in the network.
+
+####'rm'
+include rm-r
+
 
 ##S
 
@@ -444,6 +581,14 @@ Also if load network on startup is set to true, the simulation will look for thi
 ####save_network_on_timeout
 **(type: boolean)** If set to true, all of the information of the network is sent into the file declared for the save file when the simulation is terminated.
 
+####simulation
+
+
+
+####social network
+
+
+
 ####stage1_unfollow
 **(type: boolean)** If set to true, agents can be flagged when followed based on their tweet rates. If the tweet rate of the newly followed agent is greater than twice the average tweet rate of the pre-existent agents you follow,
 than the agent is placed into an array. This array is looked to when the unfollow function is called. This algorithm is supposed to encapsulate an unfollow method on Twitter.
@@ -457,6 +602,10 @@ In Twitter if your feed is being dominated by a user you may become annoyed and 
 
 ##T
 
+####terminal
+
+
+
 ####thresholds
 **(type: n/a)** The thresholds parameter always take 4 variables; bin spacing, min, max, and increment.
 
@@ -464,7 +613,15 @@ In Twitter if your feed is being dominated by a user you may become annoyed and 
 **(type: double)** This value determines when the density function will disappear allowing no more retweets or follow by retweets to occur. Since the function found experimentally approaches 0 quite slowly, it is convenient to define a time span for
 the function to improve efficiency of the retweet algorithm. Like the max time parameter you can use convenient strings like ‘minute’, ‘hour’, ‘day’, ‘month’, or ‘year’. You can also use Python syntax and multiply numbers to these strings.
 
+####'touch'
+
+
+
 ####tweet
+
+
+
+####'tweet' rate
 **(type: n/a)** Again, like the function parameter to add agents into the network, the functions that can be set for the tweet rate are ‘constant’ and ‘linear’.
 The usage for defining the tweet rate is the exact same as the agent add rate. See link for further implementation details.
 
@@ -506,6 +663,10 @@ humourous: 1.0
 
 From above you can see that all of the weights are the same and therefore there would be the same amount of each tweet type for AgentType1.
 
+####Twitter
+
+
+
 ####‘twitter’ follow model
 A model that incorporates all of the above follow mechanisms. The weights for each mechanism can be set for each follow method. See model weights for more information.
 
@@ -516,6 +677,10 @@ If you want to achieve the preferential attachment method similar to the use bar
 with linear spacing from 0 to the max number of agents and set the weights to increment by 1 with linear spacing from 1 to the max number of agents.
 
 ##U
+
+####unfollow
+
+
 
 ####unfollow_tweet_rate
 **(type: double)** This tweet rate is not associated with the stage1 unfollow method described above. This is a more simplified unfollow algorithm and can be considered the stage 0 unfollow method.
@@ -543,6 +708,10 @@ If set to 0.5, then half of the tweets will have hashtags. If 1.0, then all of t
 where *u* is a random number in the interval 0 < *u* ≤ 1, and **R** is the sum of the rates for the simulation. On average, the value of −ln(*u*) is unity, and therefore you can increment time by 1/**R** ; this is how time is incremented if set to false.
 
 ##V
+
+####visualization
+
+
 
 ####visualize
 **(type: boolean)** If set to true, the information from the network is outputted to 2 files, “network.dat” and “network.gexf”. The “network.dat” file consists of two columns; the first column is a list of the agent IDs in order, and the second column is the
