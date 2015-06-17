@@ -8,11 +8,11 @@ Upon cloning the repository, you will notice there are files called “INFILE.ya
 
 ##A
 
-####add
+####add weight
 **(type: double/float)** This variable declares the percentage of the certain agent type in the network. Before the simulation is done, a loop is placed over all the different agents declared, and the add variables are summed. The value of add
 declared in each agent type will then be divided by the add sum. For example if agent type A has an add value of 75, and agent type B has an add value of 25, then the network will consist of 75% of agent type A, and 25% of agent type B.
 
-####agents
+####'agents' section
 **(type: n/a)** This variable should never be removed from the input file. This allows the code to read in all of the different agents declared. One can declare as many different
 agents as one wants, just be sure to properly declare all of the variables covered below.
 
@@ -26,7 +26,7 @@ Causes agents to follow other agents based on title alone; the titles are set in
 **(type: boolean)** If set to true, additional calculations will be done to find the relationships between different agent groups and degree distributions for each agent.
 For every agent set in the agents section of the input file, there will be a file created with the information mentioned previously. The output files created will take the form “name info.dat” where the name is the name created for the agent.
 
-####analysis
+####'analysis' section
 **(type: n/a)** This parameter should never be adjusted, when the software looks for the parameters listed under the analysis heading, it first looks to this variable. This defines to so called analysis section of the input file.
 
 ##B
@@ -38,14 +38,13 @@ on the increment cubed.
 
 ##C
 
-####config_static
+####'config_static' section
 **(type: n/a)** There are constant values that can be found in ‘config static.h’. Some of the static values can be changed in the input file for simplicity. An example of this is the humour bins described below.
 
 ##D
 
 ####degree_distribution_by_follow_model
-
-
+**(type: boolean)** If set to true, the degree distribution by follow model will be outputted to “dd by follow model.dat".
 
 ####degree_distributions
 **(type: boolean)** If set to true, the cumulative, in-degree, and out-degree distributions will be outputted to “cumulative distribution.dat”, “in-degree distribution.dat”, and “out-degree distribution.dat”.
@@ -56,7 +55,7 @@ The data in the files can be easily plotted with Gnuplot.
 An example is ‘2.45 / (x)**1.1’. This function is integrated with scipy and each discrete element of this function is divided by the total integral to normalize the function. This ensures that it is truly a probability density function.
 The discrete elements of the function can be adjusted by the parameters mentioned below. The agents that have the chance to be retweeted are binned according to the values of the function, and as time progresses they switch bins to have smaller value.
 
-####different_ideology
+####'different_ideology' tweets
 **(type: n/a)** In the agents section, there are different types of tweets that agents can tweet. One of the tweet types is ‘ideological’ which is a tweet related to an agents ideology. When an agent tweets a ideological tweet, the agents that
 follows the agent who tweeted may retweet the tweet depending on the tweet transmission value and density function. An example of the syntax for declaring a ideological tweet preference class is:
 
@@ -86,12 +85,12 @@ If you type ‘exit()’ while in the interpreter the simulation will terminate.
 
 ##F
 
-####follow
+####follow weight
 **(type: double/float)** This variable sets the weights for following each agent type. Like the add variable, these weights are summed, and then each follow variable is divided by the total. This variable is not used if the follow model is
 random or preferential, but is used for the other models. For example if agent type A has a follow variable of 85, and agent type B has a follow variable of 15, then
 agent type A will be followed 85% of the time, and agent type B will be followed 15% of the time.
 
-####follow
+####follow rate
 **(type: n/a)** Like the function parameter to add agents into the network, the functions that can be set for the follow rate are ‘constant’ and ‘linear’. The
 usage for defining the follow rate is the exact same as the agent add rate. See link for further implementation details.
 
@@ -169,7 +168,7 @@ follow method. If both are set to false, then the AgentType1 will follow agents 
 **(type: int)** To determine how a retweet is passed based on humour, there are different values dedicated to each humour bin which describes how a tweet will be passed from agent to agent based on humour.
 The value for each bin is what ever value is set in the preference classes section for ‘humourous’ multiplied by the probability density function.
 
-####humourous_tweets
+####'humourous' tweets
 **(type: n/a)** In the agents section, there are different types of tweets that agents can tweet. One of the tweet types is ‘humourous’ which can be thought of as how often they tweet humourous tweets. When an agent tweets a humourous tweet,
 the agents that follows the agent who tweeted may retweet the tweet depending on the tweet transmission value and density function. An example of the syntax for declaring a ideological tweet preference class is:
 
@@ -197,7 +196,7 @@ You can see that the transmission probabilities for all of the agent types are t
 This message will tell you that you must set this parameter to true. Once you do this you can load the saved network and continue simulating that network with different parameters. An example is to generate a random graph and save it.
 Then you can load this network with different parameters generating a different network.
 
-####ideology
+####'ideology' section
 **(type: n/a)** This section of the input file determines abstract characterizations of agents. The motivation behind it is political views on Twitter and how different or similar people based on political views would act on retweets or hashtags.
 Make sure that the number of ideologies declared here is the same as ‘N BIN IDEOLOGIES’ variable in the “config static.h” header file. Once you declare ideologies you can then set the weights for each ideology in the
 regions section of the input file. You can also set the weights of a certain agent type tweeting about their ideology in the agents section of the input file.
@@ -314,12 +313,12 @@ preference classes:
 
 ##O
 
-####output
+####'output' section
 **(type: n/a)** This parameter should not be removed, when the simulation has completed, functions that do further analysis on the network can be controlled here, a few built in functions are shown below. This defines the output portion of the input file.
 
 ##P
 
-####plain_tweets
+####'plain' tweets
 **(type: n/a)** In the agents section, there are different types of tweets that agents can tweet. One of the tweet types is ‘plain’ which is a generic tweet. When an agent tweets a plain tweet, the agents that follows the agent who tweeted may retweet
 the tweet depending on the tweet transmission value and density function. An example of the syntax for declaring a plain tweet preference class is:
 
@@ -344,9 +343,8 @@ You can see that the transmission probabilities for all of the agent types are t
 Is just the ‘twitter_suggest’ follow method nested in the ‘agent’ follow method. Firstly, a certain agent type will be selected, then based on the degrees of the agents within the certain agent type,
 an agent will be selected to follow.
 
-####preference_class
-**(type: n/a)** This section of the input file is for the declaration of preference classes which describe how tweets are passed in the system. Here you must set the tweet transmission for different scenarios based on different agent characteristics; all of which
-is explained below.
+####preference class
+**(type: n/a)** details how tweets are retweeted by other agents in the system
 
 ####preference_class_weights
 **(type: n/a)** After declaring preference classes which describe how retweets pass from agent to agent, you must set the weights for each preference class in the region section. For more information on preference classes, click here: preference classes.
@@ -362,6 +360,9 @@ preference class weights: {Pref1: 10, Pref2: 10}
 
 Here the weights for each preference classes are also summed and divided by the sum to generate a probability. These probabilities are used when an agent is created to determine which preference class they use.
 
+####'preference_classes' section
+**(type: n/a)** This section of the input file is for the declaration of preference classes which describe how tweets are passed in the system. Here you must set the tweet transmission for different scenarios based on different agent characteristics
+
 ##Q
 
 ##R
@@ -369,16 +370,18 @@ Here the weights for each preference classes are also summed and divided by the 
 ####'random' follow model
 Causes agents to follow other agents randomly; if the number of agents is set to constant and this method is on, you will achieve an Erdos-Renyi degree distribution (Poisson distribution).
 
-####rates
-**(type: n/a)** This parameter does not need to be changed nor removed. Used to point to the global add rate for the simulation. This defines the global rates part of the input file.
+####'ranks' section
+**(type: n/a)** The section of the input file where the agent tweet, retweet, and follow ranks are defined and modified.
 
 ####rates
 **(type: n/a)** Every agent must have rates set for tweeting and following. These rates will be updated after a month passes by in the simulation; as mentioned previously
 the number of months in the simulation are determined by a constant value defined for a month = 30 · 60 · 24.
 
+####'rates' section
+**(type: n/a)** This parameter does not need to be changed nor removed. Used to point to the global add rate for the simulation. This defines the global rates part of the input file.
+
 ####region
-**(type: n/a)** This section of the input file is for declaring different regions where the agents in the network are ‘from’. When an agent is created, where the agent is ‘from’ is
-selected randomly with weights that can be set. Here you can set the weights for many different parameters, all of which is explained below.
+**(type: n/a)** The geographical location of an agent, which is randomly selected with weights that can be set in a network ismulation.
 
 ####region_add_weight
 **(type: double)** As mentioned above, when an agent is added into the network, we randomly generate where they are from. The weights set for each region declares the probability of an agent being from a specific region. The weights for
@@ -396,6 +399,10 @@ add weight: 10
 
 From these weights, two thirds of the population will be from USA and one third from Canada.
 
+####'regions' section
+**(type: n/a)** This section of the input file is for declaring different regions where the agents in the network are ‘from’. When an agent is created, where the agent is ‘from’ is
+selected randomly with weights that can be set. Here you can set the weights for many different parameters, all of which is explained below.
+
 ####resolution_growth_factor
 **(type: double)** This value changes how the integrals are evaluated for the density function. Since the resolution of the function found experimentally needs to be more accurate initially then after some amount of time, we have
 introduced this parameter. For example if x start is 5, the initial resolution is 1, and this parameter is 1.5, then the integrals will be evaluated at [5, 6], [6, 8.5], [8.5, 13.5], etc.
@@ -409,7 +416,7 @@ tweet in the network.
 
 ##S
 
-####same_ideology
+####'same_ideology' tweets
 **(type: n/a)** In the agents section, there are different types of tweets that agents can tweet. One of the tweet types is ‘ideological’ which is a tweet related to an agents ideology. When an agent tweets a ideological tweet, the agents that follows the
 agent who tweeted may retweet the tweet depending on the tweet transmission value and density function. An example of the syntax for declaring a ideological tweet preference class is:
 
@@ -466,7 +473,7 @@ The usage for defining the tweet rate is the exact same as the agent add rate. S
 The tweet and retweet distributions come from how often the agents tweet in the network; they tell you the probability that a given agent would have tweeted or retweeted n times, and n is first column in the data files produced.
 The files created are titled “tweet distro.dat” and “retweets distro.dat.”
 
-####tweet_observation
+####'tweet_observation' section
 **(type: n/a)** This denotes the section of the input file that provides the decay function for the retweet rates. Experimentally, the retweet rate for a tweet decays over time by approximately 1/t where t is the time in minutes.
 
 ####tweet_ranks
@@ -552,10 +559,7 @@ The structure of this file can be referred to as an edge list. This file can eas
 ##W
 
 ####weights
-**(type: n/a)** This follows the same procedure as thresholds. Instead of defining the thresholds for grouping agents, it defines the probability of selecting one of the groups of agents.
-
-####weights
-**(type: n/a)** This variable allows the code to read in the add and follow variables for each agent. This should always be declared in the input file for every agent.
+**(type: n/a)** In the *ranks* section, this follows the same procedure as thresholds, but instead of defining the thresholds for grouping agents, it defines the probability of selecting one of the groups of agents. In the *agents* sections, this variable allows the code to read in the add and follow variables for each agent, and should always be declared in the input file for every agent.
 
 ##X
 
