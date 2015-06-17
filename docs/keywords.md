@@ -59,21 +59,18 @@ Where you type in the commands you issue on the terminal.
 The command to copy and paste a file to a different location on your computer through the terminal. You must include where the file is located and where you would like it scopy to be placed in the command. An example of copying a file would be `cp ~/hashkat/randomfile ~/hashkat/tutorials/`. This command would result in the randomfile being copied and pasted into the 'tutorials' directory from its parent directory 'hashkat'. Typing in `cp -r` is used instead of `cp` for copying and pasting directories.
 
 ####cummulative rate function (**R**)
-
-
+The sum of the agent add rate, tweet rate, follow rate, and retweet rate.
 
 ##D
 
 ####DATA_vs_TIME
-
-
+A file that contains the length of simulated time (in simulated minutes), the number of agents, follows, tweets, retweets, and unfollows, the cumulative rate function, and the length of real time (in seconds) that has occurred in the system at various points in the simulation. 
 
 ####degree
 The number of connections an agent has. An agent with a degree of 300 is connected to 300 other agents.
 
 ####degree distribution
-
-
+The arrangement of the number of connections that every agent has within the simulation.
 
 ####degree_distribution_by_follow_model
 **(type: boolean)** If set to true, the degree distribution by follow model will be outputted to “dd by follow model.dat".
@@ -124,8 +121,7 @@ If you type ‘exit()’ while in the interpreter the simulation will terminate.
 ##F
 
 ####follow
-
-
+The act of an agent connecting with another agent.
 
 ####follow weight
 **(type: double/float)** This variable sets the weights for following each agent type. Like the add variable, these weights are summed, and then each follow variable is divided by the total. This variable is not used if the follow model is
@@ -137,11 +133,10 @@ agent type A will be followed 85% of the time, and agent type B will be followed
 usage for defining the follow rate is the exact same as the agent add rate. See link for further implementation details.
 
 ####follow model
-
-
+A framework inputted into the simulation that dictates how agents generally connect with one another. There are currently 6 follow models within #k@: random, twiter suggest, agent, preferential agent, hashtag, and twitter.
 
 ####follow_model
-**(type: string)** Currently, there are 6 follow methods implemented in the software; ‘random’, ‘agent’, ‘twitter_suggest’, ‘preferential_agent’, ‘hashtag’, and ‘twitter’; to use a follow model simply type in
+**(type: string)** The variable which determines what follow model the simulation will be running.To use a follow model simply type in
 
 follow_model: random
 
@@ -474,8 +469,7 @@ Here the weights for each preference classes are also summed and divided by the 
 ##R
 
 ####**R** (cumulative rate funtion)
-aka cummulative rate function
-
+The sum of the agent add rate, tweet rate, follow rate, and retweet rate.
 
 ####'random' follow model
 Causes agents to follow other agents randomly; if the number of agents is set to constant and this method is on, you will achieve an Erdos-Renyi degree distribution (Poisson distribution).
@@ -514,8 +508,7 @@ From these weights, two thirds of the population will be from USA and one third 
 selected randomly with weights that can be set. Here you can set the weights for many different parameters, all of which is explained below.
 
 ####retweet
-
-
+A retweet is the rebroadcasting of tweet by an agent who did not actually create the tweet.
 
 ####retweet ranks
 **(type: n/a)** This has the same functionality as the tweet ranks, except it is for retweets. See above description about tweet ranks for more information.
@@ -558,12 +551,10 @@ Also if load network on startup is set to true, the simulation will look for thi
 **(type: boolean)** If set to true, all of the information of the network is sent into the file declared for the save file when the simulation is terminated.
 
 ####simulation
-
-
+A simulation is an enactment of something that is anticipated or is being tested. In #k@, we create simulations of social networks.
 
 ####social network
-
-
+An association of agents connecting with one another within a certain framework for the means of interacting with one another.
 
 ####stage1_unfollow
 **(type: boolean)** If set to true, agents can be flagged when followed based on their tweet rates. If the tweet rate of the newly followed agent is greater than twice the average tweet rate of the pre-existent agents you follow,
@@ -579,8 +570,7 @@ In Twitter if your feed is being dominated by a user you may become annoyed and 
 ##T
 
 ####terminal
-
-
+A computer terminal is a device on a computer that allows a user to enter data into, and display data out of, it.
 
 ####thresholds
 **(type: n/a)** The thresholds parameter always take 4 variables; bin spacing, min, max, and increment.
@@ -593,8 +583,7 @@ the function to improve efficiency of the retweet algorithm. Like the max time p
 Command to create a file in the terminal. Typing the command `touch <newfile>` will create the file called 'newfile'.
 
 ####tweet
-
-
+A tweet is a message, consisting of 140 characters or less, that a Twitter user creates on Twitter.
 
 ####'tweet' rate
 **(type: n/a)** Again, like the function parameter to add agents into the network, the functions that can be set for the tweet rate are ‘constant’ and ‘linear’.
@@ -639,8 +628,7 @@ humourous: 1.0
 From above you can see that all of the weights are the same and therefore there would be the same amount of each tweet type for AgentType1.
 
 ####Twitter
-
-
+Twitter is a social network where users can connect with each other by following one another and release messages called tweets. These tweets can contain a hashtag that associate that tweet with a particular topic. These tweets can be rebroadcasted by other agents retweeting them, so that their respective followers can see the message. Through the implementation of retweeting and hashtagging, a simple message has the opportunity to be read by millions of people, and users can connect with each other like never before.
 
 ####‘twitter’ follow model
 A model that incorporates all of the above follow mechanisms. The weights for each mechanism can be set for each follow method. See model weights for more information.
@@ -654,8 +642,7 @@ with linear spacing from 0 to the max number of agents and set the weights to in
 ##U
 
 ####unfollow
-
-When an agent 
+An unfollow is when an agent stops following another agent.
 
 ####unfollow_tweet_rate
 **(type: double)** This tweet rate is not associated with the stage1 unfollow method described above. This is a more simplified unfollow algorithm and can be considered the stage 0 unfollow method.
