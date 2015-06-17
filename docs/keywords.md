@@ -185,22 +185,18 @@ A visualization tool used heavily in this documentation. You can find more infor
 **(type: n/a)** This parameter allows one to adjust the rate at which users are being added into the network. To have different numbers of agents, you can adjust the add weights in the agents section of the input file. Also known as *add_rate*
 
 ####gnuplot
-
-
+A command-line driven utility for graphing used in several tutorials for the plotting of data. More information on gnuplot can be found [here](http://gnuplot.sourceforge.net/).
 
 ##H
 
 ####hashkat
-directory and command
-
+The 'hashkat' directory contains all the filess and directories necessary to run #k@. The 'hashkat' command runs the simulation.
 
 ####hashkat_pre.py
-
-
+Command that prepares the desired configuration for network simulation prior to running #k@ using the implementations inputted into 'INFILE.yaml'.
 
 ####hashtag
-
-
+Used in tweets, and marked by the # symbol, to classify messages by keyword or topic.
 
 ####‘hashtag’ follow model
 A mechanism introduced to follow other agents based on hashtags. If the use hashtag probability parameter is non-zero, then agents will attach hashtags to their tweets.
@@ -287,12 +283,10 @@ This will create thresholds 10, 20, 30,..., 100; the agents will be grouped acco
 these thresholds.
 
 ####INFILE.yaml
-
-
+The input file which users can modify to design the network simulation of their liking.
 
 ####INFILE.yaml-generated
-
-
+Generated when typing in the command `hashkat_pre.py` and used to run the network simulation.
 
 ####initial_agents
 **(type: integer)** This parameter is the number of initial agents in the simulation. The agent type and characterizations are determined before any time will pass in the simulation.
@@ -300,22 +294,22 @@ these thresholds.
 ####initial_resolution
 **(type: double)** This is the initial value for determining where the integral of the density function is evaluated at. If the x start value is 5 and this parameter is set to 1, then the first integral will be from 5 to 6.
 
-
 ####interactive mode
-
-
+A feature of #k@ that allows users to pause the simulation midway through and modify the network by adding an agent, causing one agent to follow another agent, etc.
 
 ##J
 
 ##K
 
 ####Kinetic Analysis of Twitter (#k@)
-
-
+The #k@ program is designed to allow users to create and interact with the most realistic social network simulation possible.
 
 ####Kinetic Monte Carlo Method
+An algorithm designed to carry out a simulation where the rate of which time is increased by is influenced by the cummulative rate function of the rates within the system through the formula:
 
+&Delta;t = -ln(u) / **R**
 
+where &Delta;t is the change in time, *u* is a generated random number, and **R** is the cumulative rate function.
 
 ##L
 
