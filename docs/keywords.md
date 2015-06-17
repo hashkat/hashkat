@@ -47,7 +47,7 @@ on the increment cubed.
 Command to change directories in the terminal. Entering `cd <directoryname>` will change into the named directory. Entering `cd ..` will have you change into the parent directory, which is the directory from which the directory you are currently in, is in. Just entering the command `cd` into the terminal will have you change into the home directory.
 
 ####command
-What you type into the terminal to prompt the computer to do. Several fundamental commands include : `ls`, `touch`, `mkdir`, `cd`, `rm`, `rm -r`, `mv`, `cp`, `cp -r`, `more`, and `nano`.
+What you type into the terminal to prompt the computer to do. Several fundamental commands include : `ls`, `touch`, `mkdir`, `cd`, `rm`, `rm -r`, `mv`, `cp`, `cp -r`, and `nano`.
 
 ####command line
 Where you type in the commands you issue on the terminal.
@@ -342,8 +342,7 @@ Here the weights for each language are also summed and divided by the sum to gen
 **(type: boolean)** If set to true, all of the information of the network that was sent into the file declared for the save file will be loaded from when the simulation begins.
 
 ####'ls'
-
-
+Command to list all the contents of a directory. Typing in the command `ls` will print to the screen all the files and directories within the directory that you are currently in. Typing in the command `ls randomdirectory` displays all the files and directories within the directory `randomdirectory`. 
 
 ##M
 
@@ -376,13 +375,8 @@ of calling each method. As an example, if you would like to call the follow meth
 
 model_weights{random: 0.20, preferential: 0.20, agent: 0.20, preferential agent: 0.20, hashtag: 0.20}
 
-####'more'
-
-
-
 ####'mv'
-
-
+Command to move a file from one location to another using the terminal. This command can also be used to rename a file. Typing in the command `mv ~/hashkat/randomfile ~/hashkat/tutorials/` will move the file 'randomfile' from the 'hashkat' directory to its subdirectory 'tutorials'. Typing in the command `mv ~/hashkat/randomfile ~/hashkat/newrandomfile` will change the name of the file 'randomfile' to 'newrandomfile'.
 
 ##N
 
@@ -412,25 +406,18 @@ preference classes:
 **(type: string)** The name of your region can be anything that consists of a string. The name is a necessary part of the region so you will get a warning if it is not set.
 
 ####*nan*
-
-
+An acronym for 'not a number'. Appears in the display when running a simulation in the connections between regions chart when there are no agents present in a region, and therefore cannot be connected to agents in any region.
 
 ####'nano'
-
-
-
-####network_state.dat
-
-
+A very basic text editor. Typing in the command `nano randomfile` will allow you to edit 'randomfile' using the text editor 'nano'. There are numerous text editors available for use, but 'nano' is the one we will be using for this documentation.
 
 ####node
-
-
+Corresponds to agents in visualizations.
 
 ##O
 
 ####output
-directory
+Directory which contains all the analysis files created from running a network simulation. The files which are created and appear in the 'output' directory can be modified in 'INFILE.yaml'.
 
 ####'output' section
 **(type: n/a)** This parameter should not be removed, when the simulation has completed, functions that do further analysis on the network can be controlled here, a few built in functions are shown below. This defines the output portion of the input file.
@@ -486,7 +473,7 @@ Here the weights for each preference classes are also summed and divided by the 
 
 ##R
 
-####**R**
+####**R** (cumulative rate funtion)
 aka cummulative rate function
 
 
@@ -538,8 +525,7 @@ selected randomly with weights that can be set. Here you can set the weights for
 tweet in the network.
 
 ####'rm'
-include rm-r
-
+The command to remove a file through the terminal. Typing in the command `rm randomfile`, will remove the file named 'randomfile'. The command `rm -r` is used instead of `cp` for copying and pasting directories.
 
 ##S
 
