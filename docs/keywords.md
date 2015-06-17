@@ -4,8 +4,7 @@
 
 # Key Words
 
-Upon cloning the repository, you will notice there are files called “INFILE.yaml” and “DEFAULT.yaml”; these files allow one to adjust certain parameters to obtain desired results from the simulation, and all of the different parameters is described below.
-
+A brief description and explanation for all of the terminology used in this documentation and in hashkat.
 ##A
 
 ####add weight
