@@ -84,7 +84,7 @@ analysis:
 #################################################################
 
 rates:
-  add: {function: linear, y intercept: 100.0, slope: 0.1}  # found from experiment
+  add: {function: linear, y_intercept: 100.0, slope: 0.1}  # found from experiment
 
 #################################################################
 # >> output:
@@ -344,9 +344,9 @@ agents:
       care_about_ideology: true # does the entiy care about which ideology the agent has?
     rates: 
         # Rate for follows from this agent:
-        follow: {function: linear, y intercept: 0.001, slope: 0.1}
+        follow: {function: linear, y_intercept: 0.001, slope: 0.1}
         # Rate for tweets from this agent:
-        tweet: {function: linear, y intercept: 0.001, slope: 0.1}   #0.000256944444444 0.37 per day
+        tweet: {function: linear, y_intercept: 0.001, slope: 0.1}   #0.000256944444444 0.37 per day
 
   - name: Celebrity
     weights:
@@ -366,9 +366,9 @@ agents:
       care_about_ideology: true # does the entiy care about which ideology the agent has?
     rates:
         # Rate for follows from this agent:
-        follow: {function: linear, y intercept: 0.00001, slope: 0.1}
+        follow: {function: linear, y_intercept: 0.00001, slope: 0.1}
         # Rate for tweets from this agent:
-        tweet: {function: linear, y intercept: 0.001, slope: 0.1}   #0.000256944444444 0.37 per day
+        tweet: {function: linear, y_intercept: 0.001, slope: 0.1}   #0.000256944444444 0.37 per day
 
   - name: Bot
     weights:
@@ -388,9 +388,9 @@ agents:
       care_about_ideology: false # does the entiy care about which ideology the agent has?
     rates:
         # Rate for follows from this agent:
-        follow: {function: linear, y intercept: 0.001, slope: 0.1}
+        follow: {function: linear, y_intercept: 0.001, slope: 0.1}
         # Rate for tweets from this agent:
-        tweet: {function: linear, y intercept: 0.00001, slope: 0.1}   #0.000256944444444 0.37 per day
+        tweet: {function: linear, y_intercept: 0.00001, slope: 0.1}   #0.000256944444444 0.37 per day
 
   - name: Organization
     weights:
@@ -410,7 +410,7 @@ agents:
       care_about_ideology: false # does the entiy care about which ideology the agent has?
     rates:
         # Rate for follows from this agent:
-        follow: {function: linear, y intercept: 0.001, slope: 0.1}
+        follow: {function: linear, y_intercept: 0.001, slope: 0.1}
         # Rate for tweets from this agent:
-        tweet: {function: linear, y intercept: 0.0001, slope: 0.1}   #0.000256944444444 0.37 per day
+        tweet: {function: linear, y_intercept: 0.0001, slope: 0.1}   #0.000256944444444 0.37 per day
 

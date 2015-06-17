@@ -12,7 +12,7 @@ A brief description and explanation for all of the terminology used in this docu
 declared in each agent type will then be divided by the add sum. For example if agent type A has an add value of 75, and agent type B has an add value of 25, then the network will consist of 75% of agent type A, and 25% of agent type B.
 
 ####agent
-
+Correspond to 
 
 
 ####'agents' section
@@ -530,10 +530,6 @@ From these weights, two thirds of the population will be from USA and one third 
 ####'regions' section
 **(type: n/a)** This section of the input file is for declaring different regions where the agents in the network are ‘from’. When an agent is created, where the agent is ‘from’ is
 selected randomly with weights that can be set. Here you can set the weights for many different parameters, all of which is explained below.
-
-####resolution_growth_factor
-**(type: double)** This value changes how the integrals are evaluated for the density function. Since the resolution of the function found experimentally needs to be more accurate initially then after some amount of time, we have
-introduced this parameter. For example if x start is 5, the initial resolution is 1, and this parameter is 1.5, then the integrals will be evaluated at [5, 6], [6, 8.5], [8.5, 13.5], etc.
 
 ####retweet
 
