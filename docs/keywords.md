@@ -12,8 +12,7 @@ A brief description and explanation for all of the terminology used in this docu
 declared in each agent type will then be divided by the add sum. For example if agent type A has an add value of 75, and agent type B has an add value of 25, then the network will consist of 75% of agent type A, and 25% of agent type B.
 
 ####agent
-Correspond to 
-
+Corresponds to a member of a social network
 
 ####'agents' section
 **(type: n/a)** This variable should never be removed from the input file. This allows the code to read in all of the different agents declared. One can declare as many different
@@ -35,8 +34,7 @@ For every agent set in the agents section of the input file, there will be a fil
 ##B
 
 ####Barabasi-Albert Model
-
-
+An algorith created by Albert-Laszlo Barabasi and Reka Albert to generate networks where agents with the greater number of followers have a higher probability of being followed. More information on this can be found [here](http://en.wikipedia.org/wiki/Barab%C3%A1si%E2%80%93Albert_model).
 
 ####bin_spacing
 **(type: string)** The strings that can be used for the bin spacing variable are linear, quadratic, and cubic; other bin spaces can be implemented if necessary.
@@ -46,26 +44,22 @@ on the increment cubed.
 ##C
 
 ####'cd'
-
-
+Command to change directories in the terminal. Entering `cd <directoryname>` will change into the named directory. Entering `cd ..` will have you change into the parent directory, which is the directory from which the directory you are currently in, is in. Just entering the command `cd` into the terminal will have you change into the home directory.
 
 ####command
-list of useful commands include : nano, touch, cd, rm, rm -r, mv, cp, cp -r, ls, more
-
+What you type into the terminal to prompt the computer to do. Several fundamental commands include : `ls`, `touch`, `mkdir`, `cd`, `rm`, `rm -r`, `mv`, `cp`, `cp -r`, `more`, and `nano`.
 
 ####command line
-
-
+Where you type in the commands you issue on the terminal.
 
 ####'config_static' section
 **(type: n/a)** There are constant values that can be found in ‘config static.h’. Some of the static values can be changed in the input file for simplicity. An example of this is the humour bins described below.
 
 ####'cp'
-include cp -r
+The command to copy and paste a file to a different location on your computer through the terminal. You must include where the file is located and where you would like it scopy to be placed in the command. An example of copying a file would be `cp ~/hashkat/randomfile ~/hashkat/tutorials/`. This command would result in the randomfile being copied and pasted into the 'tutorials' directory from its parent directory 'hashkat'. Typing in `cp -r` is used instead of `cp` for copying and pasting directories.
 
+####cummulative rate function (**R**)
 
-####cummulative rate function
-aka **R**
 
 
 ##D
@@ -75,8 +69,7 @@ aka **R**
 
 
 ####degree
-
-
+The number of connections an agent has. An agent with a degree of 300 is connected to 300 other agents.
 
 ####degree distribution
 
@@ -116,14 +109,12 @@ As you can see from above, the agent types declared in the agents section are us
 You can see that the transmission probabilities for all of the agent types are the same.
 
 ####directory
-
-
+Another name for 'folders', where files are stored.
 
 ##E
 
 ####edge
-
-
+Corresponds to a connection between agents in visualizations.
 
 ####enable_interactive_mode
 **(type: boolean)** While the simulation is running, you can press ‘ctrl-c’. If this variable is set to true, an interpreter will be activated and you can call functions in the interpreter.
@@ -193,8 +184,7 @@ where n months is the number of months that have passed in the simulation. The n
 ##G
 
 ####Gephi
-
-
+A visualization tool used heavily in this documentation. You can find more information on and download Gephi [here](http://gephi.github.io/).
 
 ####global_add_rate
 **(type: n/a)** This parameter allows one to adjust the rate at which users are being added into the network. To have different numbers of agents, you can adjust the add weights in the agents section of the input file. Also known as *add_rate*
@@ -210,6 +200,8 @@ directory and command
 
 
 ####hashkat_pre.py
+
+
 
 ####hashtag
 
@@ -371,6 +363,9 @@ Also, you can put ‘minute’, ‘hour’, ‘day’, or ‘year’, and the si
 ####max_time
 **(type: integer)** This parameter is the maximum time allowed in the simulation. The units of time in the simulation is minutes. The simulation will terminate once the maximum amount of time has been reached. 
 Conveniently, you can put ‘minute’, ‘hour’, ‘day’, or ‘year’, and the simulation will know the value in minutes.
+
+####mkdir
+Command to create a directory in the terminal. Typing the command `mkdir <newdirectory>` will create the directory called 'newdirectory'.
 
 ####min
 **(type: integer)** This variable sets the minimum threshold for grouping agents. If the agents have a value less than the minimum threshold, then no binning will occur.
@@ -609,8 +604,7 @@ In Twitter if your feed is being dominated by a user you may become annoyed and 
 the function to improve efficiency of the retweet algorithm. Like the max time parameter you can use convenient strings like ‘minute’, ‘hour’, ‘day’, ‘month’, or ‘year’. You can also use Python syntax and multiply numbers to these strings.
 
 ####'touch'
-
-
+Command to create a file in the terminal. Typing the command `touch <newfile>` will create the file called 'newfile'.
 
 ####tweet
 
