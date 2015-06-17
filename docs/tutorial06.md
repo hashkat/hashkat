@@ -20,6 +20,8 @@ Running this simulation, we produce the following visualization:
 
 As you can see, not only do the *Celebrity* agents (red dots) generally have much more connections than the *Standard* agents (blue dots), but through the twitter suggest follow model, there are particular agents within each agent type that have much more connections than other agents of the same type.
 
+<iframe width="420" height="315" src="https://www.youtube.com/embed/hYDfrBMERho" frameborder="0" allowfullscreen></iframe>
+
 ## Next Steps
 
 You have now completed the preferential agent follow model. Similar to the agent follow model, you are encouraged to continue experimenting with this follow model by adding more agent types into your simulation, such as bots and organizations, and manipulating all of their add weights, follow weights, follow rates, etc., to create some compelling networks. You can alse implement *use_barabasi* into your simulation with an arbitrary amont of *barabasi_connections* to see what differences this causes in your network. When you are ready to move on, proceed to the next tutorial, where we deal with the penultimate follow model, the hashtag follow model.
