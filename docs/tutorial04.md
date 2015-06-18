@@ -64,6 +64,8 @@ A visualization of this network is shown below:
 As we can see, we have the much more highly connected agents at the centre of the visualization, and the agents lower in degree on the sides. As expected, by implementing the Classic Barabsi configuration,
 every agent, by following one other user, has at least one connection.
 
+<iframe width="420" height="315" src="https://www.youtube.com/embed/VDL76lvsa0E" frameborder="0" allowfullscreen></iframe>
+
 ## Example - Non-Classic Barabasi
 
 The Non-Classic Barabasi configuration is exactly the same as the classic configuration except that the number of connections agents make when entering the simulation is a number greater than 1.
