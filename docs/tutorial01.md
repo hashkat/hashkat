@@ -146,6 +146,8 @@ To access gnuplot, type in the command:
 To plot the in-degree distributions for *month002*, which contains the most up to date data, with appropriate axis labels and a title,
 type in the following:
 
+`set style data linespoints`
+
 `set title 'In-Degree Distribution'`
 
 `set xlabel 'k'`
