@@ -87,6 +87,8 @@ As expected, this network is quite similar to the one we produced using the Clas
 the centre of the visualization and those less connected on the sides. This is, however, a much more highly connected network, since every
 agent has at least two connections.
 
+<iframe width="420" height="315" src="https://www.youtube.com/embed/dFcaSDv--PI" frameborder="0" allowfullscreen></iframe>
+
 ## Example - Other Twitter Suggest Models
 
 We shall now run a twitter suggest follow model network simulation without implementing the Barabasi configuration.
