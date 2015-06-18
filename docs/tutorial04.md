@@ -41,6 +41,8 @@ minimum threshold follow rank has a weight of 1, the maximum threshold follow ra
 To better demonstrate the results of a twitter preferential follow model, we are again only going to use *Standard* users in this simulation. It is imperative that we have also set the *Standard* agent type's follow rate to 0.0,
 so that the only manner in which agents are connecting with each other is through the *barabasi_connections* they are assigned to make.
 
+<iframe width="420" height="315" src="https://www.youtube.com/embed/bHvmbQA2fEk" frameborder="0" allowfullscreen></iframe>
+
 ### Running and Visualizing The Network
 
 Let's now run this simulation. You can plot the log-log graph of the *cumulative-degree_distribution_month_000.dat* in gnuplot, by following the same plotting steps outlined in Tutorial 1 but when plotting typing in
