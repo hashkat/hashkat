@@ -47,10 +47,10 @@ it just means that you've downloaded a newer version of #k@.
     `cd hashkat`
 
 10. Once in this directory, you can see the list of all the files and directories that compose the #k@ project.
-11. In order to run simulations on hashkat, you must first edit the .bashrc file. You can enter this file
+11. In order to run simulations on hashkat, you must first edit the .profile file. You can enter this file
 by typing in the command:
 
-    `nano ~/.bashrc`
+    `nano ~/.profile`
 
 12. Once inside this file, assuming you have hashkat at the top of your home directory, you must type in:
 
@@ -62,9 +62,9 @@ by typing in the command:
 
 13. Exit this file by pressing **ctrl-x**. If you are asked whether or not changes should be saved, type in **y** to say 'yes'.
 
-14. Once you have exited .bashrc, reload this file by typing in the command:
+14. Once you have exited .profile, reload this file by typing in the command:
     
-    `source ~/.bashrc`
+    `source ~/.profile`
 
 15. You can now run hashkat in this hashkat directory, as well as any other directory as long as it has **INFILE.yaml**
 within in it.
