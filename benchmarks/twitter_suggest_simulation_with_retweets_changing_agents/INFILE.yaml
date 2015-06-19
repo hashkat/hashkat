@@ -122,6 +122,8 @@ output:
     true
   degree_distribution_by_follow_model:
     true
+  region_connection_matrix:
+    true
 
 #################################################################
 # >> *_ranks:
