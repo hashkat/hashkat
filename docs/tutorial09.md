@@ -26,7 +26,7 @@ We shall now create a network simulation that does not use these follow methods.
 
 ## Constructing a Network With These Other Follow Methods
 
-
+We shall now implement the other follow methods into a network simulation. Using the INFILE.yaml we just created as a starting point, we will change the *follow_reaction_prob* back to 0.1 to enable following via retweets, and have *use_followback* switched to *true* and the *Standard* agent type *followback_probability* to 0.44, to permit followback to occur in the network simulation at a rate that matches what was found through experiment. With these follow methods now permitted to occur, we shall run and visualize this network simulation and see what we find.
 
 ## Running and Visualizing This Network With These Other Follow Methods
 
