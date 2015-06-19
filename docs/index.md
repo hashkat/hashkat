@@ -4,6 +4,7 @@
 
 <span style="color:black; font-family:Georgia; font-size:1.5em;">June 2015 - This site is currently under construction. Please return regularly over the course of the summer for further updates. </span>
 
+![#k@ Visualization](/img/front_page.png "#k@ Visualization")
+
 [hashkat.org](http://hashkat.org)
 
-![#k@ Visualization](/img/front_page.png "#k@ Visualization")
