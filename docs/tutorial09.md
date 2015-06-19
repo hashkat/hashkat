@@ -18,5 +18,5 @@ All the files that will be used in this simulation can be found for reference in
 
 ## Next Steps
 
-
+With the completion of this tutorial, you are now familiar with all of the possible manners in which agents can connect with one another in #k@. We've also enabled retweeting for the first time in this tutorial. Proceed to the next tutorial where we use these retweets that we are now accustomed to to discover the most popular tweet in a given network simulation.
 
