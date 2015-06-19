@@ -88,6 +88,7 @@ struct ParsedConfig {
     bool use_preferential_follow = false;
     bool use_followback = false;
     bool use_barabasi = false;
+    bool region_connection_matrix = false;
     
     int barabasi_connections = 1;
     double barabasi_exponent = 1;

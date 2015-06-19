@@ -194,7 +194,7 @@ struct Analyzer {
         reader << previous_config_file;
         if (!config.ignore_load_config_check && previous_config_file != config.entire_config_file) {
             error_exit("Error, config file does not exactly match the one being loaded from!\n"
-                    "If you do not care, please set output.ignore_load_config_check to true.\nExitting...");
+                    "If you do not care, please set output.ignore_load_config_check to true.\nExiting...");
         }
         state.visit(reader);
 

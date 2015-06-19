@@ -94,11 +94,12 @@ void output_network_statistics(AnalysisState& state) {
     if (C.output_tweet_analysis) {
         tweets_distribution(network, N_AGENTS);
     }
-    if (agent_checks(et_vec, network, state, state.config.add_rates, initial_agents)) {
+    // Better to manually check distributions, for low network sizes this will most likely throw an error
+    /*if (agent_checks(et_vec, network, state, state.config.add_rates, initial_agents)) {
         //cout << "Number of events are valid.\n";
     } else {
         cout << "Numbers are events are not valid, adjust the tolerance or check for errors.\n";
-    }
+    }*/
     if (C.agent_stats) {
         whos_following_who(et_vec, network);
     }
@@ -114,7 +115,9 @@ void output_network_statistics(AnalysisState& state) {
     if (C.main_stats) {
         network_statistics(network, stats, et_vec);
     }
-    //region_stats(network, state);
+    if (C.region_connection_matrix) {
+        region_stats(network, state);
+    }
     //fraction_of_connections_distro(network, state, stats);
     //if (C.dd_by_age) {
     //    dd_by_age(network, state, stats);
@@ -755,7 +758,8 @@ struct holder {
 bool region_stats(Network& n, AnalysisState& state) {
     holder region_self[N_BIN_REGIONS];
     int connections[N_BIN_REGIONS][N_BIN_REGIONS] = {};
-    
+    ofstream output;
+    output.open("output/region_connection_matrix.dat");
     for (int i = 0; i < n.n_agents; i ++) {
         Agent& e = n[i];
         int reg = e.region_bin;
@@ -775,19 +779,19 @@ bool region_stats(Network& n, AnalysisState& state) {
         }
         follow_counts[i] = count;
     }
-    cout << "Connections:\n";
+    output << "Connections:\n";
     for (int i = 0; i < N_BIN_REGIONS; i ++) {
-        cout << "\t" << i;
+        output << "\t" << i;
     }
-    cout << "\n";
+    output << "\n";
     for (int i = 0; i < N_BIN_REGIONS; i ++) {
         for (int j = 0; j < N_BIN_REGIONS; j ++) {
             if (j == 0) {
-                cout << "\n" << i;
+                output << "\n" << i;
             }
-            cout << "\t" << 100.0 * connections[i][j] / follow_counts[i] << "\%";
+            output << "\t" << 100.0 * connections[i][j] / follow_counts[i] << "\%";
             if (j+1 == N_BIN_REGIONS) {
-                cout << "\n";
+                output << "\n";
             }
             
         }
