@@ -6,3 +6,4 @@
 
 [hashkat.org](http://hashkat.org)
 
+![#k@ Visualization](/img/front_page.png "#k@ Visualization")
