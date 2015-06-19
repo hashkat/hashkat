@@ -10,7 +10,7 @@ All the files that will be used in this simulation can be found for reference in
 
 ## Followback
 
-
+'Followback' is when an agent follows another agent who followed them. Obviously, this implementation makes for a more realistic system, since most of the connections on social networks are between friends and family, and it would make sense that they would follow each other on Twitter. It has been found through experiment that when a Twitter user is followed by another user, there is a 44% chance that they will follow that other user back.
 
 ## Follow Through Retweets
 
