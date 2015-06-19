@@ -332,6 +332,14 @@ degree_distribution_by_follow_model:
 
 
 
+#### Region Connection Matrix
+```python
+region_connection_matrix:
+  true
+```
+
+
+
 ## ranks
 
 #### Tweet Ranks

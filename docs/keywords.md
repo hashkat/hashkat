@@ -497,6 +497,9 @@ add weight: 10
 
 From these weights, two thirds of the population will be from USA and one third from Canada.
 
+####region_connection_matrix
+Displays the percentage of connections agents of each region have with other regions out of their respective total number of connections
+
 ####'regions' section
 **(type: n/a)** This section of the input file is for declaring different regions where the agents in the network are ‘from’. When an agent is created, where the agent is ‘from’ is
 selected randomly with weights that can be set. Here you can set the weights for many different parameters, all of which is explained below.

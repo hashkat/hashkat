@@ -71,6 +71,10 @@ Outlines all the possible out degrees an agent can have in that particular
 month in the simulation, as well as its normalized probability, logarithm, and
 normalized probability logarithm in columns in that order.
 
+`region_connection_matrix.dat`
+
+Displays the connections between the agents in regions
+
 `retweets_distro.dat`
 
 
