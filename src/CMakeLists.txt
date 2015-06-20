@@ -69,3 +69,7 @@ target_link_libraries (
         luawrap
         ${UV_LIBS}
 )
+
+# installing through cmake . && make && sudo make install
+#install (TARGETS hashkat DESTINATION bin)
+#execute_process(COMMAND cp hashkat_pre.py /usr/local/bin)
