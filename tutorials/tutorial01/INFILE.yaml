@@ -227,7 +227,7 @@ regions:
     language_weights: {English: 100, French: 0, Spanish: 0, French+English: 0}
 
   - name: Quebec
-    add_weight: 5
+    add_weight: 0
 
     preference_class_weights: {NoRetweetPref: 100}
     ideology_weights: {Red: 100, Blue: 100, Green: 100, Orange: 100}
@@ -348,4 +348,4 @@ agents:
         # Rate for follows from this agent:
         follow: {function: constant, value: 0.0001}
         # Rate for tweets from this agent:
-        tweet: {function: constant, value: 0.0}
+        tweet: {function: constant, value: 0.001}

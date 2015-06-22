@@ -38,8 +38,6 @@ has been reached.
 
 ## Running a Simple Network
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/-NQmVRzHX44" frameborder="0" allowfullscreen></iframe>
-
 For this first tutorial, we're going to run a simple network using #k@.
 If you look into the #k@ directory / folder, you will find several 
 different files and directories. For now we are just going to look at
@@ -65,7 +63,7 @@ outputted to the screen:
 | 9.93e+04 | 1.00e+03 | 1.00e+04 | 0.00e+00 | 0.00e+00(0.00e+00) | 0.00e+00 | 1.00e-01 | 2.25e+00 |
 
 This gives a list of data at a particular point in your simulation.
-**Time** corresponds to simulation time in seconds, **Users** corresponds to the number
+**Time** corresponds to simulation time in minutes, **Users** corresponds to the number
 of users or agents in the network at the point in the simulation, 
 **Follows** show the number of follows that have occurred, **Tweets** displays
 the number of tweets that have been made, **Retweets** shows the number of
@@ -74,7 +72,7 @@ retweets and in brackets beside it the number of active tweets (tweets that can 
 cumulative rate function, and **Time (s)**which is the length of real time
 that this part of the simulation has occurred in seconds.
 
-So as we can see from the above example, at a simulated time of 99,300 seconds,
+So as we can see from the above example, at a simulated time of 99,300 minutes,
 there were 1,000 users in the network, 10,000 follows, 0 tweets, 0
 retweets, and 0 unfollows had occurred, the cumulative rate function was 0.1,
 and the real time that had elapsed was 2.25 seconds.
@@ -88,6 +86,8 @@ various simulation times as discussed above. You will also see a
 There is also the 'output' directory, which contains all the data you've
 accummulated through simulation necessary for analysis. We shall discuss
 these files below.
+
+<iframe width="420" height="315" src="https://www.youtube.com/embed/i921pJBAPmM" frameborder="0" allowfullscreen></iframe>
 
 ## Output of a Simple Network
 
@@ -154,6 +154,8 @@ Note that you can save your plots as .svg files by typing in the commands
 
 when you first start up gnuplot and prior to actually plotting the data.
 
+<iframe width="420" height="315" src="https://www.youtube.com/embed/cGzzACPLu8c" frameborder="0" allowfullscreen></iframe>
+
 ## Visualization
 
 You can also use this data you collected to visualize your simulated network. Using [Gephi](http://gephi.github.io/), open the graph
@@ -167,6 +169,8 @@ was made using the 'Fruchterman Reingold' and 'Clockwise Rotate' layout:
 
 These two separate networks of agents generated from our simulation correspond to our English-speaking and French-speaking agents, who are
 unable to communicate with one another.
+
+<iframe width="420" height="315" src="https://www.youtube.com/embed/k4ULWpnRq8s" frameborder="0" allowfullscreen></iframe>
 
 ## Next Steps
 
