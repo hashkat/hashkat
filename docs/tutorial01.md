@@ -80,33 +80,7 @@ retweets, and 0 unfollows had occurred, the cumulative rate function was 0.1,
 and the real time that had elapsed was 2.25 seconds.
 
 Once the simulation has concluded, the amount of time that the total analysis
-took will be displayed on the screen in milliseconds, just below a chart
-similar to this:
-
-| | 0 | 1 | 2 |
-| --- | --- | --- | --- |
-| **0** | 1.00e+02% | 0.00e+00% | 0.00e+00% |
-| **1** | 0.00e+00% | 1.00e+02% | 0.00e+00% |
-| **2** | nan% | nan% | nan% |
-
-Though this will be elaborated on in greater detail later on, what this
-entails is the connections between regions. In the first row, we have the
-different regions, regions 0, region 1, and region 2. In the second row,
-we have the percentage of follows by users in region 0 that follow users in
-other regions. As we can see from the above example, 100% of the follows
-by users in region 0 follow users from region 0, 0% of those follows
-follow users in region 1, and 0% of those follows follow users in region 2.
-Similar conclusions can be made for the following rows. *nan* stands for not
-a number. Since users from region 2 were not added into the simulation, there
-is not a number for the percentage of their follows that follow users from
-other regions, and 0.00% of the follows from any region are following them. 
-The reasoning for why agents only follow other agents from their own region
-can be found in INFILE.yaml. In the regions section of the file, you can see all the
-the possible regions in this network. Since we have set users from region 0, Ontario,
-to only speak English, and users from region 1, Quebec, to only speak Frence, it makes
-sense that agents from different regions won't connect with one another since they can't
-understand each other. 
-
+took will be displayed on the screen in milliseconds. 
 Looking into the hashkat directory, you will see a 'DATA_vs_TIME' file, which
 contains the number of follows, tweets, the cumulative function, etc for
 various simulation times as discussed above. You will also see a
