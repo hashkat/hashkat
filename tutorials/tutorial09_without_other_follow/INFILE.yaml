@@ -275,19 +275,19 @@ preference_classes:
   # preference class:
    tweet_transmission: 
       plain: # Also applies to musical tweets
-        Standard: 0.01
+        Standard: 0.1
         Celebrity: 0.01
         else: 0.01
       different_ideology:   # no retweeting for different ideologies
-        Standard: 0.01
-        Celebrity: 0.01
-        else: 0.01
+        Standard: 0.00
+        Celebrity: 0.00
+        else: 0.00
       same_ideology:
-        Standard: 0.01
+        Standard: 0.1
         Celebrity: 0.01
         else: 0.01
       humourous:
-        Standard: 0.02
+        Standard: 0.2
         Celebrity: 0.02
         else: 0.02
    # Probability that we will follow as a reaction.

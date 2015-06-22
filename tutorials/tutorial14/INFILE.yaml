@@ -279,9 +279,9 @@ preference_classes:
         Celebrity: 0.1
         else: 0.1
       different_ideology:   # no retweeting for different ideologies
-        Standard: 0.1
-        Celebrity: 0.1
-        else: 0.1
+        Standard: 0.00
+        Celebrity: 0.00
+        else: 0.00
       same_ideology:
         Standard: 0.1
         Celebrity: 0.1
