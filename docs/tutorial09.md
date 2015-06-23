@@ -14,11 +14,11 @@ All the files that will be used in this simulation can be found for reference in
 
 ## Follow Through Retweets
 
-
+Following via retweets is a follow method in which an agent sees a tweet that was retweeted by one of the agents they're following, and, liking the content of the tweet, decides to follow the original tweeter. The likelihood of this occurring is dependent on the value of the *follow_reaction_prob* variable in the *preference_classes* section of the input file, where it can be a value anywhere from 
 
 ## Constructing a Network Without These Other Follow Methods
 
-We shall now create a network simulation that does not use these follow methods. We have created plenty of these already in the previous tutorials, so we will use the INFILE.yaml we used in **Tutorial 4** for the Classic Barabasi Configuration as a starting point. The input file we created for this can be found [here](https://github.com/hashkat/hashkat/blob/master/tutorials/tutorial04_classic_barabasi/INFILE.yaml). Some slight changes will be made to this input file. The Ontario region preference class will be changed to the *StandardPref* to enable retweeting in the simulation, with the *StandardPref* preference class being changed as well. The tweet transmission gor Standard agents will be changed to 0.1 for *plain* and *same_ideology* tweets and 0.2 for *humourous* tweets, while the *follow_reaction_prob* within the Standard preference class will be reduced to 0.0 to prevent following via retweets to occur. With all these changes in order, we can now run and visualize this network simulation.
+We shall now create a network simulation that does not use these follow methods. We have created plenty of these already in the previous tutorials, so we will use the INFILE.yaml we used in **Tutorial 4** for the Classic Barabasi Configuration as a starting point. The input file we created for this can be found [here](https://github.com/hashkat/hashkat/blob/master/tutorials/tutorial04_classic_barabasi/INFILE.yaml). Some slight changes will be made to this input file. The Ontario region preference class will be changed to the *StandardPref* to enable retweeting in the simulation, with the *StandardPref* preference class being changed as well. The tweet transmission for Standard agents will be changed to 0.1 for *plain* and *same_ideology* tweets and 0.2 for *humourous* tweets, while the *follow_reaction_prob* within the Standard preference class will be reduced to 0.0 to prevent following via retweets to occur. With all these changes in order, we can now run and visualize this network simulation.
 
 ## Running and Visualizing This Network Lacking These Other Follow Methods
 
