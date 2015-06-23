@@ -88,16 +88,14 @@ within in it.
     The program should run without errors, however, if it does not it is most likely just due to the lack of several packages
 on your computer. Steps 17 and 18 outline how to install these packages.
 
-19. The simulation may not run due to the lack of several necessary packages. You can install packages to your computer using homebrew.
+19. The simulation may not run due to the lack of the 'CMake' package. You can install this package to your computer using homebrew.
 To install homebrew to your computer, simply type in the command:
 
     `ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"`
 
-20. With Homebrew, you can install these packages into your computer in the following manner:
+20. With Homebrew, you can install 'CMake' into your computer in the following manner:
 
-    * **cmake** - `brew install cmake`
-    * **python** - `brew install python`
-    * **numpy** - `pip install numpy`
+    * **CMake** - `brew install cmake`
 
 21. It is also recommended to download and install [Gephi](http://gephi.github.io/) from their website
 to use for visualization of collected data.
@@ -182,11 +180,9 @@ within in it.
     The program should run without errors, however, if it does not it is most likely just due to the lack of several packages
 on your computer. Step 17 outlines how to install these packages.
 
-19. The simulation may not run due to the lack of several necessary packages. You can install these packages into your computer in the following manner:
+19. The simulation may not run due to the lack of the 'CMake' package. You can install it into your computer in the following manner:
 
-    * **cmake** - `sudo apt-get install cmake`
-    * **python** - `sudo apt-get install python`
-    * **numpy** - `pip install numpy`
+    * **CMake** - `sudo apt-get install cmake`
 
 20. It is also recommended to download and install [Gephi](http://gephi.github.io/) from their website
 to use for visualization of collected data.
