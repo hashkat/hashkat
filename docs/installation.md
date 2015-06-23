@@ -97,8 +97,6 @@ To install homebrew to your computer, simply type in the command:
 
     * **cmake** - `brew install cmake`
     * **python** - `brew install python`
-    * **yaml** - `pip install pyyaml`
-    * **scipy** - `pip install scipy`
     * **numpy** - `pip install numpy`
 
 21. It is also recommended to download and install [Gephi](http://gephi.github.io/) from their website
@@ -188,11 +186,7 @@ on your computer. Step 17 outlines how to install these packages.
 
     * **cmake** - `sudo apt-get install cmake`
     * **python** - `sudo apt-get install python`
-    * **yaml** - `pip install pyyaml`
-    * **scipy** - `pip install scipy`
     * **numpy** - `pip install numpy`
 
 20. It is also recommended to download and install [Gephi](http://gephi.github.io/) from their website
 to use for visualization of collected data.
-
-
