@@ -4,7 +4,7 @@
 
 # Unfollowing
 
-
+Unfollowing is the act in which an agent stops following another agent due to a variety of reasons. In this tutorial, we are going to discuss the different methods in which unfollowing can be implemented into your network simulation.
 
 ## Unfollowing Due to Chattiness
 
