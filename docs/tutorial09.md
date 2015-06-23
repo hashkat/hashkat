@@ -14,7 +14,7 @@ All the files that will be used in this simulation can be found for reference in
 
 ## Follow Through Retweets
 
-Following via retweets is a follow method in which an agent sees a tweet that was retweeted by one of the agents they're following, and, liking the content of the tweet, decides to follow the original tweeter. The likelihood of this occurring is dependent on the value of the *follow_reaction_prob* variable in the *preference_classes* section of the input file, where it can be a value anywhere from 
+Following via retweets is a follow method in which an agent sees a tweet that was retweeted by one of the agents they're following, and, liking the content of the tweet, decides to follow the original tweeter. The likelihood of this occurring is dependent on the value of the *follow_reaction_prob* variable in the *preference_classes* section of the input file. The *follow_reaction_prob* variable determines the probability that an agent, if they are selected to act on a retweet, will follow the tweeter of the original tweet as opposed to just retweeting the retweet. For example, if this value was set 0.8, everytime an agent was selected to act on a retweet, there would be an 80% chance that they would follow the original tweeter, and a 20% chance that they would just retweet the retweet.
 
 ## Constructing a Network Without These Other Follow Methods
 
@@ -26,8 +26,6 @@ Running this network simulation and visualizing it, we produced the following:
 
 ![Visualization](/img/tutorial09_without_other_follow/visualization.png =1x  "Visualization")
 
-
-
 ## Constructing a Network With These Other Follow Methods
 
 We shall now implement the other follow methods into a network simulation. Using the INFILE.yaml we just created as a starting point, we will change the *follow_reaction_prob* back to 0.2 to enable following via retweets, and have *use_followback* switched to *true* and the *Standard* agent type *followback_probability* to 0.44, to permit followback to occur in the network simulation at a rate that matches what was found through experiment. With these follow methods now permitted to occur, we shall run and visualize this network simulation and see what we find.
@@ -38,13 +36,11 @@ Running this network simulation we produced the following visualization:
 
 ![Visualization](/img/tutorial09_with_other_follow/visualization.png =1x  "Visualization")
 
-
-
 ## Compare and Contrast
 
-
+Looking at these two visualizations, we can draw several conclusions. We can see from the visualization of the network without the other follow methods that the network looks almost exactly the same as the one created in **Tutorial 4** for the Classic Barabasi configuration. This makes sense since the only major change made to the network was the implementation of retweets, which wouldn't affect how agents connect with one another in this simulation since following via retweets was disabled. The visualization for the network with the other follow methods, however, showed a must more deeply connected network. With agents free to not only just make that one *Barabasi connnection*, but other connections through followback and following via retweets as well, agents were able to make much more connections with one another, allowing for the creation of a much more realistic network.
 
 ## Next Steps
 
-With the completion of this tutorial, you are now familiar with all of the possible manners in which agents can connect with one another in #k@. We've also enabled retweeting for the first time in this tutorial. Proceed to the next tutorial where we use these retweets that we are now accustomed to to discover the most popular tweet in a given network simulation.
+With the completion of this tutorial, you are now familiar with all of the possible manners in which agents can connect with one another in #k@. The followback and following via retweets method of following discussed in this tutorial are essential applications of hashkat, and their presence in network simulations are necessary for them to be authentic. We've enabled retweeting for the first time in this tutorial. Proceed to the next tutorial where we use these retweets that we are now accustomed to to discover the most popular tweet in a given network simulation.
 
