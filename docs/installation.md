@@ -47,10 +47,10 @@ it just means that you've downloaded a newer version of #k@.
     `cd hashkat`
 
 10. Once in this directory, you can see the list of all the files and directories that compose the #k@ project.
-11. In order to run simulations on hashkat, you must first edit the .profile file. You can enter this file
+11. In order to run simulations on hashkat, you must first edit the .bashrc file. You can enter this file
 by typing in the command:
 
-    `nano ~/.profile`
+    `nano ~/.bashrc`
 
 12. Once inside this file, assuming you have hashkat at the top of your home directory, you must type in:
 
@@ -62,14 +62,22 @@ by typing in the command:
 
 13. Exit this file by pressing **ctrl-x**. If you are asked whether or not changes should be saved, type in **y** to say 'yes'.
 
-14. Once you have exited .profile, reload this file by typing in the command:
+14. You must then enter the .profile file by typing in the command:
+
+    `nano ~/.profile`
+
+15. In this file, type in:
+
+    `source ~/.bashrc`
+
+16. Once you have exited this file, reload the .bashrc and .profile files by typing in the commands:
     
     `source ~/.profile`
 
-15. You can now run hashkat in this hashkat directory, as well as any other directory as long as it has **INFILE.yaml**
+17. You can now run hashkat in this hashkat directory, as well as any other directory as long as it has **INFILE.yaml**
 within in it.
 
-16. You can test the build by typing in the command:
+18. You can test the build by typing in the command:
 
     `hashkat_pre.py`
 
@@ -80,12 +88,12 @@ within in it.
     The program should run without errors, however, if it does not it is most likely just due to the lack of several packages
 on your computer. Steps 17 and 18 outline how to install these packages.
 
-17. The simulation may not run due to the lack of several necessary packages. You can install packages to your computer using homebrew.
+19. The simulation may not run due to the lack of several necessary packages. You can install packages to your computer using homebrew.
 To install homebrew to your computer, simply type in the command:
 
     `ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"`
 
-18. With Homebrew, you can install these packages into your computer in the following manner:
+20. With Homebrew, you can install these packages into your computer in the following manner:
 
     * **cmake** - `brew install cmake`
     * **python** - `brew install python`
@@ -93,7 +101,7 @@ To install homebrew to your computer, simply type in the command:
     * **scipy** - `pip install scipy`
     * **numpy** - `pip install numpy`
 
-19. It is also recommended to download and install [Gephi](http://gephi.github.io/) from their website
+21. It is also recommended to download and install [Gephi](http://gephi.github.io/) from their website
 to use for visualization of collected data.
 
 # Linux
@@ -150,14 +158,22 @@ by typing in the command:
 
 13. Exit this file by pressing **ctrl-x**. If you are asked whether or not changes should be saved, type in **y** to say 'yes'.
 
-14. Once you have exited .bashrc, reload this file by typing in the command:
+14. You must then enter the .profile file by typing in the command:
+
+    `nano ~/.profile`
+
+15. In this file, type in:
 
     `source ~/.bashrc`
 
-15. You can now run hashkat in this hashkat directory, as well as any other directory as long as it has **INFILE.yaml**
+16. Once you have exited this file, reload the .bashrc and .profile files by typing in the commands:
+
+    `source ~/.profile`
+
+17. You can now run hashkat in this hashkat directory, as well as any other directory as long as it has **INFILE.yaml**
 within in it.
 
-16. You can test the build by typing in the command:
+18. You can test the build by typing in the command:
 
     `hashkat_pre.py`
 
@@ -168,7 +184,7 @@ within in it.
     The program should run without errors, however, if it does not it is most likely just due to the lack of several packages
 on your computer. Step 17 outlines how to install these packages.
 
-17. The simulation may not run due to the lack of several necessary packages. You can install these packages into your computer in the following manner:
+19. The simulation may not run due to the lack of several necessary packages. You can install these packages into your computer in the following manner:
 
     * **cmake** - `sudo apt-get install cmake`
     * **python** - `sudo apt-get install python`
@@ -176,7 +192,7 @@ on your computer. Step 17 outlines how to install these packages.
     * **scipy** - `pip install scipy`
     * **numpy** - `pip install numpy`
 
-18. It is also recommended to download and install [Gephi](http://gephi.github.io/) from their website
+20. It is also recommended to download and install [Gephi](http://gephi.github.io/) from their website
 to use for visualization of collected data.
 
 
