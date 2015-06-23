@@ -20,6 +20,8 @@ if ($ENV{BUILD_FLAGS})
     add_definitions ($ENV{BUILD_FLAGS})
 endif()
 
+add_definitions ("-DHASHKAT_VERSION=\"$ENV{HASHKAT_VERSION}\"")
+
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
     if(APPLE) 
     elseif ($ENV{BUILD_SANITIZE})

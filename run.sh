@@ -146,6 +146,8 @@ if handle_flag "--debug-std" ; then
     export BUILD_FLAGS="$BUILD_FLAGS -D_GLIBCXX_DEBUG"
 fi
 
+# Configure version string
+export HASHKAT_VERSION="`git describe`.b`git rev-list HEAD --count`"
 
 # Configure amount of cores used
 if [[ -e /proc/cpuinfo ]] ; then
@@ -168,6 +170,7 @@ mkdir -p output/
 
 #   --force/-f: Do not build (use last successful compiled binary)
 if ! handle_flag "-f" && ! handle_flag "--force" ; then
+    echo "Compiling hashkat version $HASHKAT_VERSION"
     mkdir -p build
     cd build
     cmake .. | colorify '1;33'

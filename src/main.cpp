@@ -84,7 +84,7 @@ int main(int argc, char** argv) {
 		// running tests:
 		return test_main(argc, argv);
 	} else {
-	    printf("Network simulation started.\n");
+	    printf("Starting #k@ network simulator (version %s)\n", HASHKAT_VERSION);
 	    // NOTE: We rely on INFILE.py to create a -generated version of our input file!
 	    std::string INFILE = get_var_arg(argc, argv, "--input", "INFILE.yaml");
         INFILE += "-generated";
