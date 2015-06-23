@@ -57,16 +57,11 @@ elaborated on in the next tutorial. The *tweet_observations*
 section of this program will be kept as is for all of these tutorials, though you are encouraged to change it and experiment with it
 when running your own simulations. More information on this can be found on the Input page.
 
-The ideologies have remained the same, but the *regions* sections has changed slightly. Instead of having two regions, with each region speaking
-a different language, we have removed Quebec from this simulation by reducing its *add_weight* to zero. For simplicity, we're going to focus
-on just one region speaking only one language for these follow model tutorials. We will also continue to use the *NoRetweet* preference class,
-again, to to keep these simulaitons as straightforward as possible.
-
-We have also add another agent type to our input file. This *Celebrity* agent type is of course intended to mimic a Celebrity user, while a
-*Standard* user is used to portray a typical agent on a social network. In contrast to the *Standard* users from **Tutorial 1**, the *Standard* agents in this
-simulation will have a *followback_probability* of 0, so that agents will only follow other agents through the follow model,
-and a constant follow rate of 0.01 instead of 0.0001, to allow for more following to occur. The *Celebrity* user will have all of the same input values as the
-*Standard* user, except that its add weight will be zero. Though we have included them in the input file, the *Celebrity* users will not be used until a later
+The *ideologies* and *regions* sections have remained the same, but we have added another agent type to our input file. This *Celebrity* agent type is of course intended to mimic a Celebrity user, while a
+*Standard* agent is used to portray a typical agent on a social network. In contrast to the *Standard* agents from **Tutorial 1**, the *Standard* agents in this
+simulation will have a *followback_probability* of 0, just to illustrate that they will only follow other agents through the follow model, though we did already have *use_followback* set to false,
+and a constant follow rate and tweet rate of 0.01. The *Celebrity* agent type will have all of the same input values as the
+*Standard* agent type, except that its add weight will be zero. Though we have included them in the input file, the *Celebrity* agents will not be used until a later
 tutorial, where agents will follow other agents based on their agent type.  
 
 <iframe width="420" height="315" src="https://www.youtube.com/embed/k6s25BWN4d8" frameborder="0" allowfullscreen></iframe>

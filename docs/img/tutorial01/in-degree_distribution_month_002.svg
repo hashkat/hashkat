@@ -83,35 +83,39 @@
 		<text>k</text>
 	</g>
 	<g transform="translate(327.6,31.6)" style="stroke:none; fill:black; font-family:Arial; font-size:12.00pt; text-anchor:middle">
-		<text>In Degree Distribution</text>
+		<text>In-Degree Distribution</text>
 	</g>
 </g>
 	<g id="gnuplot_plot_1" ><title>gnuplot_plot_1</title>
 <g style="fill:none; color:red; stroke:currentColor; stroke-width:1.00; stroke-linecap:butt; stroke-linejoin:miter">
-	<path stroke='red'  d='M80.2,422.4 L100.0,422.4 L119.8,414.5 L139.6,414.5 L159.4,393.5 L179.2,340.8 L199.0,272.4 L218.7,172.5 
-		L238.5,69.9 L258.3,104.1 L278.1,88.3 L297.9,133.0 L317.7,167.2 L337.5,240.9 L357.3,283.0 L377.1,351.4 
-		L396.9,364.5 L416.7,367.2 L436.5,404.0 L456.2,398.7 L476.0,417.1 L495.8,419.8  h0.01'/>	<use xlink:href='#gpPt0' transform='translate(80.2,422.4) scale(4.50)' color='red'/>
+	<path stroke='red'  d='M80.2,422.4 L100.0,422.4 L119.8,417.1 L139.6,393.5 L159.4,377.7 L179.2,359.3 L199.0,259.3 L218.7,164.6 
+		L238.5,83.0 L258.3,83.0 L278.1,119.9 L297.9,106.7 L317.7,159.3 L337.5,230.4 L357.3,333.0 L377.1,333.0 
+		L396.9,364.5 L416.7,380.3 L436.5,396.1 L456.2,419.8 L476.0,417.1 L495.8,422.4 L515.6,422.4 L535.4,422.4 
+		L555.2,419.8  h0.01'/>	<use xlink:href='#gpPt0' transform='translate(80.2,422.4) scale(4.50)' color='red'/>
 	<use xlink:href='#gpPt0' transform='translate(100.0,422.4) scale(4.50)' color='red'/>
-	<use xlink:href='#gpPt0' transform='translate(119.8,414.5) scale(4.50)' color='red'/>
-	<use xlink:href='#gpPt0' transform='translate(139.6,414.5) scale(4.50)' color='red'/>
-	<use xlink:href='#gpPt0' transform='translate(159.4,393.5) scale(4.50)' color='red'/>
-	<use xlink:href='#gpPt0' transform='translate(179.2,340.8) scale(4.50)' color='red'/>
-	<use xlink:href='#gpPt0' transform='translate(199.0,272.4) scale(4.50)' color='red'/>
-	<use xlink:href='#gpPt0' transform='translate(218.7,172.5) scale(4.50)' color='red'/>
-	<use xlink:href='#gpPt0' transform='translate(238.5,69.9) scale(4.50)' color='red'/>
-	<use xlink:href='#gpPt0' transform='translate(258.3,104.1) scale(4.50)' color='red'/>
-	<use xlink:href='#gpPt0' transform='translate(278.1,88.3) scale(4.50)' color='red'/>
-	<use xlink:href='#gpPt0' transform='translate(297.9,133.0) scale(4.50)' color='red'/>
-	<use xlink:href='#gpPt0' transform='translate(317.7,167.2) scale(4.50)' color='red'/>
-	<use xlink:href='#gpPt0' transform='translate(337.5,240.9) scale(4.50)' color='red'/>
-	<use xlink:href='#gpPt0' transform='translate(357.3,283.0) scale(4.50)' color='red'/>
-	<use xlink:href='#gpPt0' transform='translate(377.1,351.4) scale(4.50)' color='red'/>
+	<use xlink:href='#gpPt0' transform='translate(119.8,417.1) scale(4.50)' color='red'/>
+	<use xlink:href='#gpPt0' transform='translate(139.6,393.5) scale(4.50)' color='red'/>
+	<use xlink:href='#gpPt0' transform='translate(159.4,377.7) scale(4.50)' color='red'/>
+	<use xlink:href='#gpPt0' transform='translate(179.2,359.3) scale(4.50)' color='red'/>
+	<use xlink:href='#gpPt0' transform='translate(199.0,259.3) scale(4.50)' color='red'/>
+	<use xlink:href='#gpPt0' transform='translate(218.7,164.6) scale(4.50)' color='red'/>
+	<use xlink:href='#gpPt0' transform='translate(238.5,83.0) scale(4.50)' color='red'/>
+	<use xlink:href='#gpPt0' transform='translate(258.3,83.0) scale(4.50)' color='red'/>
+	<use xlink:href='#gpPt0' transform='translate(278.1,119.9) scale(4.50)' color='red'/>
+	<use xlink:href='#gpPt0' transform='translate(297.9,106.7) scale(4.50)' color='red'/>
+	<use xlink:href='#gpPt0' transform='translate(317.7,159.3) scale(4.50)' color='red'/>
+	<use xlink:href='#gpPt0' transform='translate(337.5,230.4) scale(4.50)' color='red'/>
+	<use xlink:href='#gpPt0' transform='translate(357.3,333.0) scale(4.50)' color='red'/>
+	<use xlink:href='#gpPt0' transform='translate(377.1,333.0) scale(4.50)' color='red'/>
 	<use xlink:href='#gpPt0' transform='translate(396.9,364.5) scale(4.50)' color='red'/>
-	<use xlink:href='#gpPt0' transform='translate(416.7,367.2) scale(4.50)' color='red'/>
-	<use xlink:href='#gpPt0' transform='translate(436.5,404.0) scale(4.50)' color='red'/>
-	<use xlink:href='#gpPt0' transform='translate(456.2,398.7) scale(4.50)' color='red'/>
+	<use xlink:href='#gpPt0' transform='translate(416.7,380.3) scale(4.50)' color='red'/>
+	<use xlink:href='#gpPt0' transform='translate(436.5,396.1) scale(4.50)' color='red'/>
+	<use xlink:href='#gpPt0' transform='translate(456.2,419.8) scale(4.50)' color='red'/>
 	<use xlink:href='#gpPt0' transform='translate(476.0,417.1) scale(4.50)' color='red'/>
-	<use xlink:href='#gpPt0' transform='translate(495.8,419.8) scale(4.50)' color='red'/>
+	<use xlink:href='#gpPt0' transform='translate(495.8,422.4) scale(4.50)' color='red'/>
+	<use xlink:href='#gpPt0' transform='translate(515.6,422.4) scale(4.50)' color='red'/>
+	<use xlink:href='#gpPt0' transform='translate(535.4,422.4) scale(4.50)' color='red'/>
+	<use xlink:href='#gpPt0' transform='translate(555.2,419.8) scale(4.50)' color='red'/>
 </g>
 	</g>
 <g style="fill:none; color:black; stroke:currentColor; stroke-width:1.00; stroke-linecap:butt; stroke-linejoin:miter">

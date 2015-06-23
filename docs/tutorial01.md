@@ -64,7 +64,7 @@ outputted to the screen:
 
 This gives a list of data at a particular point in your simulation.
 **Time** corresponds to simulation time in minutes, **Users** corresponds to the number
-of users or agents in the network at the point in the simulation, 
+of agents in the network at the point in the simulation, 
 **Follows** show the number of follows that have occurred, **Tweets** displays
 the number of tweets that have been made, **Retweets** shows the number of
 retweets and in brackets beside it the number of active tweets (tweets that can be retweeted),
@@ -73,7 +73,7 @@ cumulative rate function, and **Time (s)**which is the length of real time
 that this part of the simulation has occurred in seconds.
 
 So as we can see from the above example, at a simulated time of 99,300 minutes,
-there were 1,000 users in the network, 10,000 follows, 0 tweets, 0
+there were 1,000 agents in the network, 10,000 follows, 0 tweets, 0
 retweets, and 0 unfollows had occurred, the cumulative rate function was 0.1,
 and the real time that had elapsed was 2.25 seconds.
 
@@ -167,8 +167,8 @@ was made using the 'Fruchterman Reingold' and 'Clockwise Rotate' layout:
 
 ![Visualization](/img/tutorial01/visualization.png =1x  "Visualization")
 
-These two separate networks of agents generated from our simulation correspond to our English-speaking and French-speaking agents, who are
-unable to communicate with one another.
+We can see that these agents are randomly connected within this network simulation we created, with the highly connected agents at the centre
+of the visualization and the agents with less connections on the sides.
 
 <iframe width="420" height="315" src="https://www.youtube.com/embed/k4ULWpnRq8s" frameborder="0" allowfullscreen></iframe>
 
