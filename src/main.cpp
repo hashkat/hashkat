@@ -85,6 +85,7 @@ int main(int argc, char** argv) {
 		return test_main(argc, argv);
 	} else {
 	    printf("Network simulation started.\n");
+            printf("Running version 1.00.\n");
 	    // NOTE: We rely on INFILE.py to create a -generated version of our input file!
 	    std::string INFILE = get_var_arg(argc, argv, "--input", "INFILE.yaml");
         INFILE += "-generated";
