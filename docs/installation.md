@@ -21,14 +21,14 @@ Here outlines the following steps on how to install #k@ on Mac (OS X):
 
 4. Amongst your various other downloads you should see the following:
 
-    `hashkat.2015.05.01.tar.gz`
+    `hashkat.2015.05.01.tar`
 
     Please note that the date in the file you downloaded may be different from the one above. That's totally fine,
 it just means that you've downloaded a newer version of #k@.
 
 5. To unpack this tar file, type in the command:
 
-    `tar xzvf hashkat.2015.05.01.tar.gz`
+    `tar xf hashkat.2015.05.01.tar`
 
 6. Once this is completed, look into the list of files in this directory and you will see amongst them:
 
