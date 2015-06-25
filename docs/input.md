@@ -274,8 +274,7 @@ visualize:
   true
 ```
 
-If *true* a simulation will produce two additional files in the output directory, *network.dat* and *network.gexf*. *network.dat* contains two columns, where the agents in the first column are following the agents in the second column. *network.gexf*
-is a file which can be used to visualize smulated networks on programs like [Gephi](http://gephi.github.io/).
+If *true* a simulation will produce two additional files in the output directory, *network.dat* and *network.gexf*. *network.dat* contains two columns, where the agents in the first column are following the agents in the second column. *network.gexf* is a file which can be used to visualize smulated networks on programs like [Gephi](http://gephi.github.io/).
 
 #### Agent Stats
 
@@ -284,8 +283,7 @@ agent_stats:
   true
 ```
 
-If *true*, a simulation will produce additional files in the output directory named after the particular agent types within the simulation as *agenttype_info.dat* (e.g. the presence of a Standard agent type will produce a file labelled *Standard_info.dat*).
-Within this file can be found !!!!!!!!!!!!!!!
+If *true*, a simulation will produce additional files in the output directory named after the particular agent types within the simulation as *agenttype_info.dat* (e.g. the presence of a Standard agent type will produce a file labelled *Standard_info.dat*). Within this file can be found the percentage out of the total number of agents that follow this agent type, the percentage of the proportion of agent types that this agent type follows with respect to each other, and the number of possible degrees of agent for this agent type and their weighted in-degree, out-degree, cumulative-degree, and the logs of each. 
 
 #### Degree Distributions
 
@@ -294,8 +292,7 @@ degree_distributions:
   true
 ```
 
-If *true*, the in, out, and cumulative degree distributions will be produced in the output directory for each simulated month, as, in the case of the zeroth month, in-degree_distribution_month_000.dat, out-degree_distribution_month_000.dat, and
-cumulative-degree_distribution_month_000.dat respectively.
+If *true*, the in, out, and cumulative degree distributions will be produced in the output directory for each simulated month, as, in the case of the zeroth month, *in-degree_distribution_month_000.dat*, *out-degree_distribution_month_000.dat*, and *cumulative-degree_distribution_month_000.dat* respectively.
 
 #### Tweet Analysis
 
@@ -304,7 +301,7 @@ tweet_analysis:
   true
 ```
 
-
+Setting to *true* creates the *tweets_distro.dat* and *retweets_distro.dat* output files, which contain the relative distributions for every possible number of tweets and retweets respectively that an agent can make in a given simulation.
 
 #### Retweet Visualization
 
@@ -322,7 +319,7 @@ main_statistics:
   true
 ```
 
-
+Setting to *true* creates the *main_stats.dat* file, which contains all principal information from a given network simulation, such as: the total number of agents in the network, and the number and percentage of those of each agent type; tht total number of tweets in the simulation, the number and percentage of those that contain hashtags, and the number and percentage of those made by each agent type; the total number of retweets, and the number and percentage of those committed by each agent type; the total number of follows and follow attempts, the number and percentage of follow attempts attributed to each type of follow method, and the number and percentage of follows made by each agent type.
 
 #### Degree Distribution by Follow Model
 ```python
@@ -330,7 +327,7 @@ degree_distribution_by_follow_model:
   true
 ```
 
-
+If set to true, creates the *dd_by_follow_model.dat* output file, which contains !!!!!!!!!!!!!!!!
 
 #### Region Connection Matrix
 ```python
@@ -338,7 +335,7 @@ region_connection_matrix:
   true
 ```
 
-
+If set to true, creates the 'region_connection_matrix.dat' file, which displays a chart showing the connections made in regions.
 
 ## ranks
 
@@ -349,7 +346,7 @@ tweet_ranks:
   thresholds: {bin_spacing: linear, min: 10, max: 300, increment: 10}
 ```
 
-Serves as a way to organize and categorize tweets in bins. The *bin_spacing* can be linear, quadratic, or cubic, and the can have an arbitrary minimum, maximum, and increment value. In the above case, agents with 10 or less tweets will be stored on a list in the
+Serves as a way to organize and categorize agents by the number of tweets they make in bins. The *bin_spacing* can be linear, quadratic, or cubic, and the can have an arbitrary minimum, maximum, and increment value. In the above case, agents with 10 or less tweets will be stored on a list in the
 intitial bin. If some of these agents continue to tweet, and end up having a total number of tweets greater than 10 but less than 20, they will move to the next bin. If their total number of tweets increases to a value greater than 20 but less than 30, they will
 then move on to the next bin, and so on, until they have reached a value of 300 tweets, where they shall remain.
 
