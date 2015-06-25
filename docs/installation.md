@@ -59,9 +59,9 @@ To install homebrew to your computer, simply type in the command:
 
     `ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"`
 
-13. With Homebrew, you can install 'CMake' into your computer in the following manner:
+13. With Homebrew, you can install 'CMake' into your computer by using the command:
 
-    * **CMake** - `brew install cmake`
+    `brew install cmake`
 
     With this installed, you should be able to build #k@ in the manner outlined in step 11.
 
@@ -155,9 +155,11 @@ it just means that you've downloaded a newer version of #k@.
 
     You may need to install the 'CMake' package to your computer to build #k@. If so, step 12 outlines how to install this package.
 
-12. The simulation may not run due to the lack of the 'CMake' package. You can install it into your computer in the following manner:
+12. The simulation may not run due to the lack of the 'CMake' package and the appropriate build tools. You can install these into your computer by typing in the commands:
 
-    * **CMake** - `sudo apt-get install cmake`
+    `sudo apt-get install cmake`
+
+    `sudo apt-get install build-essential -y` 
 
     With this installed, you should be able to build #k@ in the manner outlined in step 11.
 
