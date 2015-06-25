@@ -4,7 +4,7 @@
 
 # Input
 
-This page serves as a reference for users working with the input file INFILE.yaml. This page goes through every aspect of sthe file in which users can manipulate.
+This page serves as a reference for users working with the input file INFILE.yaml. This page goes through every aspect of the file in which users can manipulate.
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/4X063IPFzM4" frameborder="0" allowfullscreen></iframe>
 
