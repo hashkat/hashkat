@@ -28,7 +28,7 @@ it just means that you've downloaded a newer version of #k@.
 
 5. To unpack this tar file, type in the command:
 
-    `tar xf hashkat.2015.05.01.tar`
+    `tar -xf hashkat.2015.05.01.tar`
 
 6. Once this is completed, look into the list of files in this directory and you will see amongst them:
 
@@ -47,12 +47,17 @@ it just means that you've downloaded a newer version of #k@.
     `cd hashkat`
 
 10. Once in this directory, you can see the list of all the files and directories that compose the #k@ project.
-11. In order to run simulations on hashkat, you must first edit the .bashrc file. You can enter this file
+
+11. You must do a build of hashkat on your computer by typing in the command:
+
+    `./run.sh -O --build`
+
+12. In order to run simulations on hashkat, you must first edit the .bashrc file. You can enter this file
 by typing in the command:
 
     `nano ~/.bashrc`
 
-12. Once inside this file, assuming you have hashkat at the top of your home directory, you must type in:
+13. Once inside this file, assuming you have hashkat at the top of your home directory, you must type in:
 
     `export HASHKAT=~/hashkat`
 
@@ -60,24 +65,24 @@ by typing in the command:
 
     `export PATH=$PATH:$HASHKAT`
 
-13. Exit this file by pressing **ctrl-x**. If you are asked whether or not changes should be saved, type in **y** to say 'yes'.
+14. Exit this file by pressing **ctrl-x**. If you are asked whether or not changes should be saved, type in **y** to say 'yes'.
 
-14. You must then enter the .profile file by typing in the command:
+15. You must then enter the .profile file by typing in the command:
 
     `nano ~/.profile`
 
-15. In this file, type in:
+16. In this file, type in:
 
     `source ~/.bashrc`
 
-16. Once you have exited this file, reload the .bashrc and .profile files by typing in the commands:
+17. Once you have exited this file, reload the .bashrc and .profile files by typing in the commands:
     
     `source ~/.profile`
 
-17. You can now run hashkat in this hashkat directory, as well as any other directory as long as it has **INFILE.yaml**
+18. You can now run hashkat in this hashkat directory, as well as any other directory as long as it has **INFILE.yaml**
 within in it.
 
-18. You can test the build by typing in the command:
+19. You can test the build by typing in the command:
 
     `hashkat_pre.py`
 
@@ -86,18 +91,18 @@ within in it.
     `hashkat`
 
     The program should run without errors, however, if it does not it is most likely just due to the lack of several packages
-on your computer. Steps 17 and 18 outline how to install these packages.
+on your computer. Steps 20 and 21 outline how to install these packages.
 
-19. The simulation may not run due to the lack of the 'CMake' package. You can install this package to your computer using homebrew.
+20. The simulation may not run due to the lack of the 'CMake' package. You can install this package to your computer using homebrew.
 To install homebrew to your computer, simply type in the command:
 
     `ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"`
 
-20. With Homebrew, you can install 'CMake' into your computer in the following manner:
+21. With Homebrew, you can install 'CMake' into your computer in the following manner:
 
     * **CMake** - `brew install cmake`
 
-21. It is also recommended to download and install [Gephi](http://gephi.github.io/) from their website
+22. It is also recommended to download and install [Gephi](http://gephi.github.io/) from their website
 to use for visualization of collected data.
 
 # Linux
