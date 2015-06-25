@@ -44,15 +44,15 @@ Defined in the *agents* section of **INFILE.yaml**, an agent's *followback_proba
 
 ## Agent - Hashtag Follow Options
 
-
+Defined in the *agents* section of **INFILE.yaml**,
 
 ## Agent - Follow Rate
 
-
+Defined in the *agents* section of **INFILE.yaml**, an agent's follow rate dictates the amount of follows an agent of that particular agent type does per simulated minute. The function of this rate can be either constant or linear. For a constant follow rate, the function must be set to *constant* and it must have a value of 0 or greater assigned to it. For a linear follow rate, the function must be set to *linear* and there must be a *y_intercept* and *slope* instead of a value*.
 
 ## Agent - Tweet Rate
 
-
+Defined in the *agents* section of **INFILE.yaml**, an agent's tweet rate dictates the amount of tweets an agent makes of the particular agent type per ismulated minute. The function of this rate can be either constant or linear. For a constant tweet rate, the function must be set to *constant* and it must have a value of 0 or greater assigned to it. For a linear tweet rate, the function must be set to *linear* and there must be a *y_intercept* and *slope* instead of a value*.
 
 ## Next Steps
 
