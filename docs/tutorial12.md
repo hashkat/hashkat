@@ -8,23 +8,23 @@ As you have clearly noticed working through these tutorials, #k@ offers the oppo
 
 ## Ideology
 
-As previously discussed, an agent's idelogy is the particular dogma that they follow. Ideologies can be added, removed, or renamed in the *ideologies* section of **INFILE.yaml**. The proportion of agents that have each particular ideology in a certain region can be modified in the *ideology_weights* of a particular region in the *regions* section of the input file. Agents can also follow other agents based on ideology in the hashtag follow model, where setting the hashtag follow option *care_about_idelogy* in the agent type section to true results in agents only following other agents that share the same ideology as them. It is important to note  
+As previously discussed, an agent's idelogy is the particular dogma that they follow. Ideologies can be added, removed, or renamed in the *ideologies* section of **INFILE.yaml**. The proportion of agents that have each particular ideology in a certain region can be modified in the *ideology_weights* of a particular region in the *regions* section of the input file. Agents can also follow other agents based on ideology in the hashtag follow model, where setting the hashtag follow option *care_about_idelogy* in the agent type section to true results in agents only following other agents that share the same ideology as them. 
 
 ## Language
 
-
+As you would expect, an agent's language is the particular language that they speak. The language of an agent is determined in the *regions* section of **INFILE.yaml** under *language_weights*, where they can be added, removed, or renamed, as well as the proportion of a particular language that agents in that region speak can be weighted against other languages in that region. Agents will never be able to connect with other agents that speak a different language from them, since they are unable to understand one another.
 
 ## Region
 
-
+'Region' outlines the particular geographical area that an agent lives in. *regions* can be named, added, or removed in the *regions* section of **INFILE.yaml**. They're *add_weight* determines the proportion of agents in a network simulation being from that region as opposed to others. They're *preference_class_weights*, *ideology_weights*, and *language_weights*, also weighs the proportion of agents that will have a particular preference class, ideology, or language respectively in the network as opposed to others within the region. 
 
 ## Tweet Transmission
 
-
+An agent's tweet transmission is the probability that an agent will retweet a tweet of a particular type. This is defined in the *preference_classes* section of **INFILE.yaml**, and is therefore weighted in the *preference_class_weights* factor of a region in the *regions* section. The probability that an agent will retweet a tweet of the possible tweet types (plain/musical, different ideology, same ideology, humourous) is determined by its agent type. 
 
 ## Follow Reaction Probability
 
-
+An agent's *follow_reaction_probability
 
 ## Add Weight
 
@@ -55,7 +55,5 @@ As previously discussed, an agent's idelogy is the particular dogma that they fo
 
 
 ## Next Steps
-
-
 
  
