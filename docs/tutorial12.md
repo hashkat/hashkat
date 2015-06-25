@@ -24,7 +24,7 @@ An agent's tweet transmission is the probability that an agent will retweet a tw
 
 ## Preference Class - Follow Reaction Probability
 
-An agent's *follow_reaction_probability
+An agent's *follow_reaction_probability* is the probability that an agent, after seeing a tweet be retweeted by someone they follow, will follow the speaker of the original tweet as opposed to just retweeting the tweet.
 
 ## Agent - Add Weight
 
@@ -44,16 +44,16 @@ Defined in the *agents* section of **INFILE.yaml**, an agent's *followback_proba
 
 ## Agent - Hashtag Follow Options
 
-Defined in the *agents* section of **INFILE.yaml**,
+Defined in the *agents* section of **INFILE.yaml**, the *hashtag_follow_options* determine who agents follow in the *hashtag* follow model. Whether they follow an another agent only if they share the same region and/or ideology as them is based on whether or not you put *true* for the *care_about_region* and/or *care_about_ideology* variable respectively.
 
 ## Agent - Follow Rate
 
-Defined in the *agents* section of **INFILE.yaml**, an agent's follow rate dictates the amount of follows an agent of that particular agent type does per simulated minute. The function of this rate can be either constant or linear. For a constant follow rate, the function must be set to *constant* and it must have a value of 0 or greater assigned to it. For a linear follow rate, the function must be set to *linear* and there must be a *y_intercept* and *slope* instead of a value*.
+Defined in the *agents* section of **INFILE.yaml**, an agent's follow rate dictates the amount of follows an agent of that particular agent type does per simulated minute. The function of this rate can be either constant or linear. For a constant follow rate, the function must be set to *constant* and it must have a value of 0 or greater assigned to it. For a linear follow rate, the function must be set to *linear* and there must be a *y_intercept* and *slope* instead of a *value*.
 
 ## Agent - Tweet Rate
 
-Defined in the *agents* section of **INFILE.yaml**, an agent's tweet rate dictates the amount of tweets an agent makes of the particular agent type per ismulated minute. The function of this rate can be either constant or linear. For a constant tweet rate, the function must be set to *constant* and it must have a value of 0 or greater assigned to it. For a linear tweet rate, the function must be set to *linear* and there must be a *y_intercept* and *slope* instead of a value*.
+Defined in the *agents* section of **INFILE.yaml**, an agent's tweet rate dictates the amount of tweets an agent makes of the particular agent type per ismulated minute. The function of this rate can be either constant or linear. For a constant tweet rate, the function must be set to *constant* and it must have a value of 0 or greater assigned to it. For a linear tweet rate, the function must be set to *linear* and there must be a *y_intercept* and *slope* instead of a *value*.
 
 ## Next Steps
 
- 
+ With the completion of this tutorial, you have knowledge and experience with every different configuration you can implement into #k@. From here, we will move on to a discussion on interactive mode in #k@.
