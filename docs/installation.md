@@ -109,6 +109,8 @@ within in it.
 
 # Linux
 
+Here outlines the following steps on how to install #k@ on Linux:
+
 1. Download the latest build of #k@ at [hashkat.org](http://hashkat.org).
 2. Enter a terminal and go into your downloads directory by typing in the following command and pressing **Enter**:
 
