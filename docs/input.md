@@ -367,7 +367,7 @@ follow_ranks:
   weights:    {bin_spacing: linear, min: 1, max: 100000, increment: 1}
 ```
 
-Similar to *tweet_ranks* and *retweet_ranks*, *follow_ranks* serves to categorize and organize based on follows. However, an additional factor is taken into consideration, the bin weights.!!!!!!!!!!!!!!
+Similar to *tweet_ranks* and *retweet_ranks*, *follow_ranks* serves to categorize and organize agents based on the number of followers that they have. However, an additional factor is taken into consideration, the bin weights. The bin weights gives each bin threshold a weight equal to its value increased by one. These weights are essential in the twitter suggest and preferential agent follow models, because they are what cause agents with a higher degree to have a greater probability of being followed by other agents since they will be placed in bins that are more heavily weighted than those of agents with fewer followers.
 
 ## tweet observations
 
@@ -491,7 +491,7 @@ humour_bins: 2
 
 The *preference classes* are the traits of an agent that influence whether or not that agent will retweet the tweet of another user. The four possible types of tweets are plain tweets, music-related tweets, ideological tweets, and humourous tweets.
 Under *tweet_transmissions* one can dictate the probabilities that each type of agent will retweet a tweet, based on the content of that tweet, whether it be plain or musical, have a different ideology, have the same ideology, or be humourous.
-The *follow_reaction_prob* relates to the probability that an agent will follow another agent after seeing one of their tweets retweeted by a twitter user that that agent is following.   
+The *follow_reaction_prob* relates to the probability that an agent will follow an agent based on seeing a tweet by them being retweeted by another agent that that agent is following as opposed to just retweeting that retweet. With the *follow_reaction_prob* set to 0.5 in the above example, there is a 50% chance that an agent will retweet a retweet and a 50% chance that they will follow the speaker of the original tweet.   
 
 ## agents
 
