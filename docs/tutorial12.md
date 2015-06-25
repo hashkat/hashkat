@@ -18,39 +18,39 @@ As you would expect, an agent's language is the particular language that they sp
 
 'Region' outlines the particular geographical area that an agent lives in. *regions* can be named, added, or removed in the *regions* section of **INFILE.yaml**. They're *add_weight* determines the proportion of agents in a network simulation being from that region as opposed to others. They're *preference_class_weights*, *ideology_weights*, and *language_weights*, also weighs the proportion of agents that will have a particular preference class, ideology, or language respectively in the network as opposed to others within the region. 
 
-## Tweet Transmission
+## Preference Class - Tweet Transmission
 
 An agent's tweet transmission is the probability that an agent will retweet a tweet of a particular type. This is defined in the *preference_classes* section of **INFILE.yaml**, and is therefore weighted in the *preference_class_weights* factor of a region in the *regions* section. The probability that an agent will retweet a tweet of the possible tweet types (plain/musical, different ideology, same ideology, humourous) is determined by its agent type. 
 
-## Follow Reaction Probability
+## Preference Class - Follow Reaction Probability
 
 An agent's *follow_reaction_probability
 
-## Add Weight
+## Agent - Add Weight
+
+An agent's add weight is the proportion in which agents of a particular agent type are added into the network in comparison to those of other types.
+
+## Agent - Follow Weight
+
+An agent's follow weight is the proportion in which agents of a particular agent type are followed with respect to those of other agent types in the *agent* or *preferential_agent* follow models.
+
+## Agent - Tweet Type
 
 
 
-## Follow Weight
+## Agent - Followback Probability
 
 
 
-## Tweet Type
+## Agent - Hashtag Follow Options
 
 
 
-## Followback Probability
+## Agent - Follow Rate
 
 
 
-## Hashtag Follow Options
-
-
-
-## Follow Rate
-
-
-
-## Tweet Rate
+## Agent - Tweet Rate
 
 
 
