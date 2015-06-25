@@ -28,19 +28,19 @@ An agent's *follow_reaction_probability
 
 ## Agent - Add Weight
 
-An agent's add weight is the proportion in which agents of a particular agent type are added into the network in comparison to those of other types.
+Defined in the *agents* section of **INFILE.yaml**, an agent's add weight is the proportion in which agents of a particular agent type are added into the network in comparison to those of other types.
 
 ## Agent - Follow Weight
 
-An agent's follow weight is the proportion in which agents of a particular agent type are followed with respect to those of other agent types in the *agent* or *preferential_agent* follow models.
+Defined in the *agents* section of **INFILE.yaml**, an agent's follow weight is the proportion in which agents of a particular agent type are followed with respect to those of other agent types in the *agent* or *preferential_agent* follow models.
 
 ## Agent - Tweet Type
 
-
+Defined in the *agents* section of **INFILE.yaml**, *tweet_type* outlines the weight in which agents of a particular agent type make tweets categorized into *ideological*, *plain*, *musical*, or *humourous* based on their content. 
 
 ## Agent - Followback Probability
 
-
+Defined in the *agents* section of **INFILE.yaml**, an agent's *followback_probability* is the probability in which agents of a particular agent type follow other agents that have followed them. This value has been found to be about 44% or 0.44 in experiment. In order for *followback_probability* to be enabled, *use_followback* must be set to *true* in the *section* of **INFILE.yaml**.
 
 ## Agent - Hashtag Follow Options
 
