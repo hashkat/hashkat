@@ -78,9 +78,9 @@ the different coloured nodes corresponding to the Celebrity, Bot, and Organizati
 These two separate networks of agents generated from our simulation again correspond to our English-speaking and French-speaking agents,
 with the much more denser network representing the greater number and association of English-speaking agents.
 
-![Cumulative Degree Distribution](/img/tutorial14/cumulative-degree_distribution_month_000.svg =1x  "Cumulative Degree Distribution")
+![Cumulative Degree Distribution](/img/tutorial14/cumulative-degree_distribution_month_000.svg "Cumulative Degree Distribution")
 
-![Visualization](/img/tutorial14/visualization.png =1x  "Visualization")
+![Visualization](/img/tutorial14/visualization.png "Visualization")
 
 ## Next Steps
 

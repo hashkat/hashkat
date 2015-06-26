@@ -6,6 +6,6 @@
 
 The code map below gives a brief summary of how the #k@ program runs.
 
-![Code Map](/img/code_map.jpg =1x "Code Map")
+![Code Map](/img/code_map.jpg "Code Map")
 
 For the latest build of #k@, see the github repository at [github.com/hashkat/hashkat](https://github.com/hashkat/hashkat)

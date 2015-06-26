@@ -14,7 +14,7 @@ Using the INFILE.yaml we used from **Tutorial 6**, as a starting point, we will 
 
 Creating a network with this configuration, we produced the following visualization:
 
-![Visualization](/img/tutorial07/visualization.png =1x  "Visualization")
+![Visualization](/img/tutorial07/visualization.png "Visualization")
 
 As you can see from this visualization, agents are separated into 4 main groups, with several other agents having no connections, being unable to follow or be followed by another agent in time. These 4 groups correspond to the 4 different ideologies we have in our network, named *Red*, *Blue*, *Green*, and *Orange*. It is important to note that the colours of agents in the visualization do not correspond to ideolgy colours, but are arbitrarily given to differentiate enities of different types (e.g. *Standard* agents, *Celebrity* agents, etc.).
 

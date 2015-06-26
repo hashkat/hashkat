@@ -132,16 +132,16 @@ type in the following:
 
 Giving us:
 
-![In Degree Distribution](/img/tutorial01/in-degree_distribution_month_002.svg =1x  "In Degree Distribution")
+![In Degree Distribution](/img/tutorial01/in-degree_distribution_month_002.svg "In Degree Distribution")
 
 where *k* is the number of degrees or followers an agent has, and *P(k)* is the probability that an agent would have that many
 degrees/followers.
 
 Repeating these steps in a similar fashion for the ou-degree an d cumulative-degree distributions gives us:
 
-![Out Degree Distribution](/img/tutorial01/out-degree_distribution_month_002.svg =1x  "Out Degree Distribution")
+![Out Degree Distribution](/img/tutorial01/out-degree_distribution_month_002.svg "Out Degree Distribution")
 
-![Cumulative Degree Distribution](/img/tutorial01/cumulative-degree_distribution_month_002.svg =1x  "Cumulative Degree Distribution")
+![Cumulative Degree Distribution](/img/tutorial01/cumulative-degree_distribution_month_002.svg "Cumulative Degree Distribution")
 
 As expected, most agents have an in-degree of 10, an out-degree of 10, and a cumulative degree of
 20.
@@ -165,7 +165,7 @@ press the refresh symbol, and choose the partition parameter 'Label' and click '
 for this network directly below the 'Apply' button you just pushed, and can run it for a few seconds. The following visualization
 was made using the 'Fruchterman Reingold' and 'Clockwise Rotate' layout:
 
-![Visualization](/img/tutorial01/visualization.png =1x  "Visualization")
+![Visualization](/img/tutorial01/visualization.png "Visualization")
 
 We can see that these agents are randomly connected within this network simulation we created, with the highly connected agents at the centre
 of the visualization and the agents with less connections on the sides.
