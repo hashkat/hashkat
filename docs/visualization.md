@@ -4,7 +4,12 @@
 
 # Visualization
 
-Here we shall outline ways in which you can visualize some of that data you have collected using [Gephi](http://gephi.github.io/). There are many other programs you can use for visualization, and you are encouraged to try them.
-We're just going to focus using Gephi however on this website.
+Here we shall outline ways in which you can visualize some of that data you have collected using [Gephi](http://gephi.github.io/). There are many other programs you can use for visualization, and you are encouraged to try them, we're just going to focus using Gephi however in this documentation.
+
+## How to Visualize a Network
+
+
+
+## Different Network Layouts
 
 
