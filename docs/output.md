@@ -6,6 +6,15 @@
 
 This page serves as a reference for users who have run a simulation, and wish to analyze the data this run has outputted. This page goes over every aspect of the files found in the output directory.
 
+`agenttype_info.dat`
+
+Present and named for every single agent type in the network (e.g. 'Standard'
+agent type would have a file named *Standard_info.dat*). Outlines the percentage of agents 
+that follow this agent type, the percentage of the proportion of agent types that this agent 
+type follows with respect to each other, and the number of possible degrees for this agent 
+type and their weighted in-degree, out-degree, and cumulative-degree that match this value, 
+as well as the logs of each.
+
 `Categories_Distro.dat`
 
 Outlines the number of tweets, follows, and retweets in their respective bin
@@ -85,15 +94,6 @@ retweets within the network simulation.
 *retweet_viz.gexf* is a file that can be used to vizualize how tweets were retweeted 
 in the network simulation using visualization software such as
 [Gephi](http://gephi.github.io/).
-
-`agenttype_info.dat`
-
-Present and named for every single agent type in the network (e.g. 'Standard'
-agent type would have a file named *Standard_info.dat*). Outlines the percentage of agents 
-that follow this agent type, the percentage of the proportion of agent types that this agent 
-type follows with respect to each other, and the number of possible degrees for this agent 
-type and their weighted in-degree, out-degree, and cumulative-degree that match this value, 
-as well as the logs of each.
 
 `tweets_distro.dat`
 
