@@ -6,7 +6,7 @@
 
 ## Simulation Workflow
 
-The 'simulation workflow' conecpt map below gives a brief summary of how the #k@ program runs.
+The 'simulation workflow' concept map below gives a brief summary of how the #k@ program runs.
 
 ![Simulation Workflow](/img/simulation_workflow.jpg "Simulation Workflow")
 
@@ -17,6 +17,8 @@ As we can see, after configuring the **INFILE.yaml** input file, the input file 
 * if continuing on from an existent network, the simulation will continue running with calculations and analysis done in the **io.cpp** file; the simulation finishes and exits 
 
 ## Code Map
+
+The code map below outlines how rates work in #k@.
 
 ![Code Map](/img/code_map.jpg "Code Map")
 
