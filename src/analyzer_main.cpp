@@ -187,6 +187,18 @@ struct Analyzer {
         return (SIGNAL_ATTEMPTS == 0);
     }
 
+    void fix_agents_upon_resubmission(AnalysisState& state) {
+        Network& n = state.network;
+        auto& R = state.config.regions;
+        for (int i = 0; i < n.n_agents; i ++) {
+
+            cout << "fixed agent: " << i << "\n";
+            Agent& a = n[i];
+            auto& region = R.regions[a.region_bin];
+            a.language = (Language) rng.kmc_select(region.language_probs);
+        }
+    }
+
     void load_network_state(const char* fname) {
         printf("LOADING NETWORK STATE FROM %s\n", fname);
         DataReader reader(state, fname);
@@ -204,6 +216,7 @@ struct Analyzer {
         state.sync_rates();
 
         lua_hook_load_network(state);
+        fix_agents_upon_resubmission(state);
     }
 
     void save_network_state(const char* fname) {
