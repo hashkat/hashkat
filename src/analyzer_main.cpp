@@ -191,8 +191,6 @@ struct Analyzer {
         Network& n = state.network;
         auto& R = state.config.regions;
         for (int i = 0; i < n.n_agents; i ++) {
-
-            cout << "fixed agent: " << i << "\n";
             Agent& a = n[i];
             auto& region = R.regions[a.region_bin];
             a.language = (Language) rng.kmc_select(region.language_probs);
