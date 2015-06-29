@@ -47,7 +47,7 @@ on the increment cubed.
 Command to change directories in the terminal. Entering `cd <directoryname>` will change into the named directory. Entering `cd ..` will have you change into the parent directory, which is the directory from which the directory you are currently in, is in. Just entering the command `cd` into the terminal will have you change into the home directory.
 
 ####command
-What you type into the terminal to prompt the computer to do. Several fundamental commands include : `ls`, `touch`, `mkdir`, `cd`, `rm`, `rm -r`, `mv`, `cp`, `cp -r`, and `nano`.
+What you type into the terminal to prompt the computer to do. Several fundamental commands include : `pwd`, `ls`, `touch`, `mkdir`, `cd`, `rm`, `rm -r`, `mv`, `cp`, `cp -r`, and `nano`.
 
 ####command line
 Where you type in the commands you issue on the terminal.
@@ -457,6 +457,10 @@ Here the weights for each preference classes are also summed and divided by the 
 
 ####'preference_classes' section
 **(type: n/a)** This section of the input file is for the declaration of preference classes which describe how tweets are passed in the system. Here you must set the tweet transmission for different scenarios based on different agent characteristics
+
+####`pwd`
+
+Acronym for 'print working directory'. Command used in the command line to display on the screen the path of the working directory that you are currently in.
 
 ##Q
 
