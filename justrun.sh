@@ -77,5 +77,4 @@ if ! handle_flag "--no-generate" ; then
     python "$HASHKAT/hashkat_pre.py" $args
 fi
 
-# Entire the hashkat 
 "$HASHKAT/build/src/hashkat" $args
