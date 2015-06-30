@@ -6,6 +6,8 @@ print "If output is True, files are the same, if False, files are different."
 
 print "Bot_info - " + str(filecmp.cmp('output/Bot_info.dat', 'output/Bot_info.ref', shallow = False))
 
+print "Categories_Distro - " + str(filecmp.cmp('output/Categories_Distro.dat', 'output/Categories_Distro.ref', shallow = False))
+
 print "Celebrity_info - " + str(filecmp.cmp('output/Celebrity_info.dat', 'output/Celebrity_info.ref', shallow = False))
 
 print "cumulative-degree_distribution_month_000.dat - " + str(filecmp.cmp('output/cumulative-degree_distribution_month_000.dat', 'output/cumulative-degree_distribution_month_000.ref', shallow = False))

@@ -57,7 +57,7 @@ analysis:
   use_barabasi: 
     true 
   barabasi_connections: # number of connections we want to make when use_barabasi == true
-    100
+    1
   barabasi_exponent:
     1
   use_random_time_increment: 

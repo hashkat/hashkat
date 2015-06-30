@@ -1,0 +1,48 @@
+--------------------
+| MAIN NETWORK STATS |
+--------------------
+
+USERS
+_____
+
+Total: 11070
+Standard: 2813	(25.411% of total agents)
+Celebrity: 2796	(25.2575% of total agents)
+Bot: 2725	(24.6161% of total agents)
+Organization: 2736	(24.7154% of total agents)
+
+TWEETS
+_____
+
+Total: 243
+Hashtags: 133	(54.7325% of total tweets)
+Standard: 82	(33.7449% of total tweets)
+Celebrity: 65	(26.749% of total tweets)
+Bot: 3	(1.23457% of total tweets)
+Organization: 93	(38.2716% of total tweets)
+
+RETWEETS
+_______
+
+Total: 0
+Standard: 0	(nan% of total retweets)
+Celebrity: 0	(nan% of total retweets)
+Bot: 0	(nan% of total retweets)
+Organization: 0	(nan% of total retweets)
+
+FOLLOWS
+_______
+
+Total follows: 288
+Total follow attempts: 435
+Random: 0	(0% of total follow attempts)
+Preferential: 348	(80% of total follow attempts)
+Agent: 0	(0% of total follows attempts)
+Preferential-agent: 0	(0% of total follow attempts)
+Retweet: 0	(0% of total follows attempts)
+Hashtag: 0	(0% of total follows attempts)
+Followbacks: 87	 (20% of total follow attempts)
+Standard: 86	(29.8611% of total follows)
+Celebrity: 20	(6.94444% of total follows)
+Bot: 105	(36.4583% of total follows)
+Organization: 77	(26.7361% of total follows)
