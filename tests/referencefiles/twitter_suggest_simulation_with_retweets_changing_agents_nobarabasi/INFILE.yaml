@@ -47,7 +47,7 @@ analysis:
   max_analysis_steps: 
     unlimited
   max_real_time: 
-    0.1                
+    hour                
   enable_interactive_mode:
     false
   enable_lua_hooks: # Defined in same file as interactive_mode. Can slow down simulation considerably.
@@ -131,9 +131,9 @@ output:
 #################################################################
 
 tweet_ranks: 
-  thresholds: {bin_spacing: linear, min: 10, max: 300, increment: 10}
+  thresholds: {bin_spacing: linear, min: 10, max: 1000000, increment: 10}
 retweet_ranks:
-  thresholds: {bin_spacing: linear, min: 10, max: 300, increment: 10}
+  thresholds: {bin_spacing: linear, min: 10, max: 1000000, increment: 10}
 follow_ranks:
   thresholds: {bin_spacing: linear, min: 0, max: 540000, increment: 1}    # for preferential following
   weights:    {bin_spacing: linear, min: 1, max: 540001, increment: 1}
