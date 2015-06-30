@@ -4,14 +4,6 @@
 
 # Give Us Your Feedback
 
-<form action="/html/tags/html_form_tag_action.cfm" method="post">
-Comments:<br />
-<textarea name="comments" id="comments">
-Hey... say something!
-</textarea><br />
-<input type="submit" value="Submit" />
-</form>
-
 <!-- begin htmlcommentbox.com -->
  <div id="HCB_comment_box"><a href="http://www.htmlcommentbox.com">HTML Comment Box</a> is loading comments...</div>
  <link rel="stylesheet" type="text/css" href="http://www.htmlcommentbox.com/static/skins/default/skin.css" />
