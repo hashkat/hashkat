@@ -85,8 +85,15 @@ struct AnalyzerRates {
         }
 
         if (crossed_month && config.degree_distributions) {
-            degree_distributions(network, state);
-            fraction_of_connections_distro(network, state, stats);
+            if (config.degree_distributions) {
+                degree_distributions(network, state);
+            }
+            if (config.region_connection_matrix) {
+                region_stats(network, state);
+            }
+            
+
+            //fraction_of_connections_distro(network, state, stats);
             
             //cout << "\nNumber of Months = " << state.n_months() << "\n\n";
         }

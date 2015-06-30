@@ -2,13 +2,53 @@
 
 <span style="color:black; font-family:Georgia; font-size:1.5em;">June 2015 - This site is currently under construction. Please return regularly over the course of the summer for further updates. </span>
 
-# Input
+# The *hashkat* Directory
 
-This page serves as a reference for users working with the input file INFILE.yaml. This page goes through every aspect of the file in which users can manipulate.
+
+
+## benchmarks
+
+
+
+## build
+
+
+
+## CMakeLists.txt
+
+
+
+## COPYING
+
+
+
+## DATA_vs_TIME
+
+
+
+## DEFAULT.yaml
+
+
+
+## docs
+
+
+
+## examples
+
+
+
+## hashkat_pre.py
+
+
+
+## INFILE.yaml
+
+This section serves as a reference for users working with the input file INFILE.yaml. This page goes through every aspect of the file in which users can manipulate.
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/4X063IPFzM4" frameborder="0" allowfullscreen></iframe>
 
-## analysis
+### analysis
 
 The first section of this program is titled analysis, and it outlines what is the general focus of this simulation. Let's go over what each variable means.
 
@@ -179,7 +219,7 @@ use_hashtag_probability:
 
 The probability of a tweet containing a # from 0 to 1. As we can see in this example, the probability of using a # is 1, so every tweet will contain a #.
 
-##rates
+### rates
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/_NNOtwrPTg0" frameborder="0" allowfullscreen></iframe>
 
@@ -198,7 +238,7 @@ rates:
 
 where the y-intercept is the initial arbitrary value of agents added to the network and the slope, multipled by the number of simulated months that have elapsed within the simulation, is the value by which the y-intercept is increased by. 
 
-## output
+### output
 
 This section of the program outlines what is present in the output directory once the simulation is concluded. To acquire as much data as possible, it is recommended to initally set all these to *true*, and to input *false* to whatever you don't need after more 
 experience running simulations.
@@ -337,7 +377,7 @@ region_connection_matrix:
 
 If set to true, creates the 'region_connection_matrix.dat' file, which displays a chart showing the connections made in regions.
 
-## ranks
+### ranks
 
 #### Tweet Ranks
 
@@ -369,7 +409,7 @@ follow_ranks:
 
 Similar to *tweet_ranks* and *retweet_ranks*, *follow_ranks* serves to categorize and organize agents based on the number of followers that they have. However, an additional factor is taken into consideration, the bin weights. The bin weights gives each bin threshold a weight equal to its value increased by one. These weights are essential in the twitter suggest and preferential agent follow models, because they are what cause agents with a higher degree to have a greater probability of being followed by other agents since they will be placed in bins that are more heavily weighted than those of agents with fewer followers.
 
-## tweet observations
+### tweet observations
 
 #### Density Function
 
@@ -425,7 +465,7 @@ density_function:
 
 
 
-## ideologies
+### ideologies
 
 ```python
   - name: Red
@@ -435,7 +475,7 @@ density_function:
 The *ideologies* are the arbitrary dogma that you would like agents of that ideology to have. They can be named whatever you would like, and can be as numerous as you would like as well, though their quantity must be equal or less than the number of
 N_BIN_IDEOLOGIES specified in config_static.h. 
 
-## regions
+### regions
 
 ```python
 - name: Ontario
@@ -451,7 +491,7 @@ N_BIN_REGIONS in config_static.h. *add_weight* corresponds to the probability th
 The *ideology_weights* are the possible ideologies that an agent from that region can have, and are weighted with respect to one another. Similar to the *ideology_weights*, the *language_weights* are the possible languages that an agent from that region can speak,
 and are also weighted with respect to each other.
 
-## config_static
+### config_static
 
 #### Humour Bins
 
@@ -461,7 +501,7 @@ humour_bins: 2
 
 
 
-## preference classes
+### preference classes
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/Sx0U1Fy5Bbo" frameborder="0" allowfullscreen></iframe>
 
@@ -493,7 +533,7 @@ The *preference classes* are the traits of an agent that influence whether or no
 Under *tweet_transmissions* one can dictate the probabilities that each type of agent will retweet a tweet, based on the content of that tweet, whether it be plain or musical, have a different ideology, have the same ideology, or be humourous.
 The *follow_reaction_prob* relates to the probability that an agent will follow an agent based on seeing a tweet by them being retweeted by another agent that that agent is following as opposed to just retweeting that retweet. With the *follow_reaction_prob* set to 0.5 in the above example, there is a 50% chance that an agent will retweet a retweet and a 50% chance that they will follow the speaker of the original tweet.   
 
-## agents
+### agents
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/w_BVsSwb7cw" frameborder="0" allowfullscreen></iframe>
 
@@ -526,3 +566,158 @@ then agents will only follow other agents that live in the same region as them, 
 while this won't matter to them if set to false. It is important to note that *use_hashtag_probability* in the **analysis** section must be set to a value greater than zero for this to work, or else no one will be implementing hastags into their tweets.
 The *follow* and *tweet* rates are the rates in which agents of this particular type will follow and tweet with respect to simulated minues respectively. It works in the exact same manner as the add rate outlined in the **rates** section.
 
+## INFILE.yaml-generated
+
+
+
+## INSTALL
+
+
+
+## INTERACT.lua
+
+
+
+## justrun.sh
+
+
+
+## mdocs.yml
+
+
+
+## network_state.dat
+
+
+
+## output
+
+This section serves as a reference for users who have run a simulation, and wish to analyze the data this run has outputted. This page goes over every aspect of the files found in the output directory.
+
+`agenttype_info.dat`
+
+Present and named for every single agent type in the network (e.g. 'Standard'
+agent type would have a file named *Standard_info.dat*). Outlines the percentage of agents 
+that follow this agent type, the percentage of the proportion of agent types that this agent 
+type follows with respect to each other, and the number of possible degrees for this agent 
+type and their weighted in-degree, out-degree, and cumulative-degree that match this value, 
+as well as the logs of each.
+
+`Categories_Distro.dat`
+
+Outlines the number of tweets, follows, and retweets in their respective bin
+thresholds. Appears in twitter-preferential modelled simulations.
+
+`connections_vs_nodes.dat`
+
+
+
+`cumulative-degree_distribution_month_000.dat`
+
+Outlines all the possible total degrees an agent can have in that particular
+month in the simulation, as well as its normalized probability, logarithm, and
+normalized probability logarithm in columns in that order.
+
+`dd_by_follow_model.dat`
+
+
+
+`in-degree_distribution_month_000.dat`
+
+Outlines all the possible in degrees an agent can have in that particular
+month in the simulation, as well as its normalized probability, logarithm, and
+normalized probability logarithm in columns in that order.
+
+`main_stats.dat`
+
+Outlines the most important network statistics for this simulation.
+Under **USERS** we have the total number of agents by the simulation's end,
+and the number and percentage of those agents of each particular agent
+type. Under **TWEETS** we have the total number of tweets made
+during the simulation, as well as the number and percentage of those that
+have a hashtag and the number and percentage of those that were tweeted by
+agents of each type. Under **RETWEETS** we have the total number of
+retweets that occurred throughout the course of the simulation, and how
+many of those were done by agents of each type.
+Under **FOLLOWS** we have the total number of follows and the total number
+of follow attempts that occurred in the simulation, the number and
+percentage of follow attempts achieved through each follow method, and the 
+number and percentage of follows made by agents of each agent type.
+
+
+`model_match.dat`
+
+
+
+`network.dat`
+
+Outlines which agents are following who. In this file there are two columns,
+with the agents in the first column (classified by an ID number)
+following the agents in the listed in the second column (also classified
+by an ID number).
+
+`network.gexf`
+
+*network.gexf* is a file that can be used to vizualize the connections
+between users on your network using visualization software such as
+[Gephi](http://gephi.github.io/).
+
+`out-degree_distribution_month_000.dat`
+
+Outlines all the possible out degrees an agent can have in that particular
+month in the simulation, as well as its normalized probability, logarithm, and
+normalized probability logarithm in columns in that order.
+
+`region_connection_matrix.dat`
+
+Displays the connections made between regions.
+
+`retweets_distro.dat`
+
+Outlines the distribution of how many agents have made every possible number of 
+retweets within the network simulation.
+
+`retweet_viz.gexf`
+
+*retweet_viz.gexf* is a file that can be used to vizualize how tweets were retweeted 
+in the network simulation using visualization software such as
+[Gephi](http://gephi.github.io/).
+
+`tweets_distro.dat`
+
+Outlines the distribution of how many agents have made every possible number of tweets
+within the network simulation. 
+
+## README.md
+
+
+
+## run.sh
+
+
+
+## SAMPLE_INTERACT.lua
+
+
+
+## scripts
+
+
+
+## src
+
+
+
+## tests
+
+
+
+## tests.sh
+
+
+
+## tutorials
+
+
+
+## yaml

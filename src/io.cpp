@@ -759,7 +759,10 @@ bool region_stats(Network& n, AnalysisState& state) {
     holder region_self[N_BIN_REGIONS];
     int connections[N_BIN_REGIONS][N_BIN_REGIONS] = {};
     ofstream output;
-    output.open("output/region_connection_matrix.dat");
+    char out[100];
+    sprintf(out, "output/region_connection_matrix_month_%03d.dat", state.n_months());
+    output.open(((string) out).c_str());
+    
     for (int i = 0; i < n.n_agents; i ++) {
         Agent& e = n[i];
         int reg = e.region_bin;

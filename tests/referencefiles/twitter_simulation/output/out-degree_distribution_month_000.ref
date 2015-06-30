@@ -1,0 +1,8 @@
+# This is the out-degree distribution. The data order is:
+# degree, normalized probability, log of degree, log of normalized probability
+
+0	0.930976	-inf	-0.0715214
+1	0.0670383	0	-2.70249
+2	0.00171335	0.693147	-6.3693
+3	0.000217569	1.09861	-8.433
+4	5.43922e-05	1.38629	-9.81929

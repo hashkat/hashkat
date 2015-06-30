@@ -117,33 +117,25 @@ To access gnuplot, type in the command:
 
 `gnuplot`
 
-To plot the in-degree distributions for *month002*, which contains the most up to date data, with appropriate axis labels and a title,
+To plot the in-degree, out-degree, and cumulative-degree distributions for *month002*, which contains the most up to date data, on the same graph with appropriate axis labels and a title,
 type in the following:
 
 `set style data linespoints`
 
-`set title 'In-Degree Distribution'`
+`set title 'Agent Degree Distributions'`
 
 `set xlabel 'k'`
 
 `set ylabel 'P(k)'`
 
-`plot 'in-degree_distribution_month_002.dat' title ''`
+`plot 'in-degree_distribution_month_002.dat', 'out-degree_distribution_month_002.dat', 'cumulative-degree_distribution_month_002.dat'`
 
 Giving us:
 
-![In Degree Distribution](/img/tutorial01/in-degree_distribution_month_002.svg =1x  "In Degree Distribution")
+![Agent Degree Distributions](/img/tutorial01/degree_distributions_month_002.svg "Agent Degree Distributions")
 
 where *k* is the number of degrees or followers an agent has, and *P(k)* is the probability that an agent would have that many
-degrees/followers.
-
-Repeating these steps in a similar fashion for the ou-degree an d cumulative-degree distributions gives us:
-
-![Out Degree Distribution](/img/tutorial01/out-degree_distribution_month_002.svg =1x  "Out Degree Distribution")
-
-![Cumulative Degree Distribution](/img/tutorial01/cumulative-degree_distribution_month_002.svg =1x  "Cumulative Degree Distribution")
-
-As expected, most agents have an in-degree of 10, an out-degree of 10, and a cumulative degree of
+degrees/followers. As expected, most agents have an in-degree of 10, an out-degree of 10, and a cumulative degree of
 20.
 
 Note that you can save your plots as .svg files by typing in the commands
@@ -165,7 +157,7 @@ press the refresh symbol, and choose the partition parameter 'Label' and click '
 for this network directly below the 'Apply' button you just pushed, and can run it for a few seconds. The following visualization
 was made using the 'Fruchterman Reingold' and 'Clockwise Rotate' layout:
 
-![Visualization](/img/tutorial01/visualization.png =1x  "Visualization")
+![Visualization](/img/tutorial01/visualization.png "Visualization")
 
 We can see that these agents are randomly connected within this network simulation we created, with the highly connected agents at the centre
 of the visualization and the agents with less connections on the sides.

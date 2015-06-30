@@ -24,7 +24,7 @@ We shall now create a network simulation that does not use these follow methods.
 
 Running this network simulation and visualizing it, we produced the following:
 
-![Visualization](/img/tutorial09_without_other_follow/visualization.png =1x  "Visualization")
+![Visualization](/img/tutorial09_without_other_follow/visualization.png "Visualization")
 
 ## Constructing a Network With These Other Follow Methods
 
@@ -34,7 +34,7 @@ We shall now implement the other follow methods into a network simulation. Using
 
 Running this network simulation we produced the following visualization:
 
-![Visualization](/img/tutorial09_with_other_follow/visualization.png =1x  "Visualization")
+![Visualization](/img/tutorial09_with_other_follow/visualization.png "Visualization")
 
 ## Compare and Contrast
 
