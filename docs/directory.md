@@ -4,13 +4,17 @@
 
 # The *hashkat* Directory
 
-
+The following gives a brief summary of every file and directory that you will immediately find in the #k@ directory.
 
 ## benchmarks
 
 
 
 ## build
+
+
+
+## build.sh
 
 
 
@@ -32,13 +36,17 @@
 
 ## docs
 
-
+Contains the pages and images used in the write-up of the #k@ documentation.
 
 ## examples
 
-
+Contains a list of directories, each with there own **INFILE.yaml** that can be used as an example of a particular network simulation.
 
 ## hashkat_pre.py
+
+
+
+## hashkat.sh
 
 
 
@@ -578,17 +586,13 @@ The *follow* and *tweet* rates are the rates in which agents of this particular 
 
 
 
-## justrun.sh
-
-
-
-## mdocs.yml
+## mkdocs.yml
 
 
 
 ## network_state.dat
 
-
+Save file in which your network simulation information will be saved to if *save_network_on_timeout* is enabled. If a network simulation is paused midway through, it can only be continued if *load_network_on_startup* is enabled, in which case the simulation will look for this file to load the existing network information. 
 
 ## output
 
@@ -692,10 +696,6 @@ within the network simulation.
 
 
 
-## run.sh
-
-
-
 ## SAMPLE_INTERACT.lua
 
 
@@ -718,6 +718,6 @@ within the network simulation.
 
 ## tutorials
 
-
+Contains a directory corresponding to almost every tutorial found in the #k@ documentation. Each tutorial directory contains an INFILE.yaml file that will be created during its respective tutorial.
 
 ## yaml
