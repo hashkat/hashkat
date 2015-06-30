@@ -1,3 +1,3 @@
 #!/bin/bash
 set -e
-./run.sh --tests $@
+./hashkat.sh --tests $@
