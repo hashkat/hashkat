@@ -7,7 +7,7 @@
 #    The initial agent amount to create.
 #  max_agents: 
 #    The maximum amount of agents for which to allocate. Once the network
-#    has grown to this amount, the agent add rate will artifically drop to 0.
+#    has grown to this amount, the agent add rme: Celebrity
 #  max_time:
 #    The maximum simulation-time for the simulation. Once it has elapsed, the simulation halts.
 #    Interacting with the simulation does not alter the simulation-time.
@@ -39,15 +39,15 @@
 
 analysis:
   initial_agents:
-    100000  # start out from something small, could be when only the developers were online.
+    100000
   max_agents: 
-    100000     # 1 million max users
+    1000000     # 1 million max users
   max_time: 
     1000000
   max_analysis_steps: 
     unlimited
   max_real_time: 
-    hour                
+    hour                 
   enable_interactive_mode:
     false
   enable_lua_hooks: # Defined in same file as interactive_mode. Can slow down simulation considerably.
@@ -55,7 +55,7 @@ analysis:
   lua_script: # Defines behaviour of interactive mode & lua hooks
     INTERACT.lua
   use_barabasi: 
-    false 
+    false
   barabasi_connections: # number of connections we want to make when use_barabasi == true
     1
   barabasi_exponent:
@@ -65,10 +65,10 @@ analysis:
   use_followback: 
     true        # followback turned on, from literature it makes sense for a realistic system
   follow_model: # See notes above
-    random
+    twitter
   # model weights ONLY necessary for follow method 'twitter'  
   # educated guesses for the follow models  
-  model_weights: {random: 0.0, twitter_suggest: 1.0, agent: 0.0, preferential_agent: 0.0, hashtag: 0.0}
+  model_weights: {random: 1.0, twitter_suggest: 1.0, agent: 1.0, preferential_agent: 1.0, hashtag: 1.0}
   
   stage1_unfollow: 
     true
@@ -84,7 +84,7 @@ analysis:
 #################################################################
 
 rates:
-  add: {function: constant, value: 0.0}  # found from experiment
+  add: {function: constant, value: 1.0}
 
 #################################################################
 # >> output:
@@ -131,9 +131,9 @@ output:
 #################################################################
 
 tweet_ranks: 
-  thresholds: {bin_spacing: linear, min: 10, max: 300, increment: 10}
+  thresholds: {bin_spacing: linear, min: 10, max: 500, increment: 10}
 retweet_ranks:
-  thresholds: {bin_spacing: linear, min: 10, max: 300, increment: 10}
+  thresholds: {bin_spacing: linear, min: 10, max: 500, increment: 10}
 follow_ranks:
   thresholds: {bin_spacing: linear, min: 0, max: 540000, increment: 1}    # for preferential following
   weights:    {bin_spacing: linear, min: 1, max: 540001, increment: 1}
@@ -174,7 +174,7 @@ tweet_observation: # 'Omega'
    density_function: 
        2.45 / (x)**1.1 
    x_start: 
-       5
+       1
    x_end: 
        600
    initial_resolution: 
@@ -222,21 +222,21 @@ regions:
   - name: Ontario
     add_weight: 5
 
-    preference_class_weights: {StandardPref: 100}
+    preference_class_weights: {NoRetweetPref: 100}
     ideology_weights: {Red: 100, Blue: 100, Green: 100, Orange: 100}
-    language_weights: {English: 90, French: 10, Spanish: 0, French+English: 0}
+    language_weights: {English: 100, French: 0, Spanish: 0, French+English: 0}
 
   - name: Quebec
-    add_weight: 5
+    add_weight: 0
 
-    preference_class_weights: {StandardPref: 100}
+    preference_class_weights: {NoRetweetPref: 100}
     ideology_weights: {Red: 100, Blue: 100, Green: 100, Orange: 100}
-    language_weights: {English: 30, French: 70, Spanish: 0, French+English: 0}
-    
+    language_weights: {English: 0, French: 100, Spanish: 0, French+English: 0}
+
   - name: Mexico
     add_weight: 0
 
-    preference_class_weights: {StandardPref: 100}
+    preference_class_weights: {NoRetweetPref: 100}
     ideology_weights: {Red: 100, Blue: 100, Green: 100, Orange: 100}
     language_weights: {English: 0, French: 0, Spanish: 100, French+English: 0}
 
@@ -299,7 +299,7 @@ preference_classes:
  - name: NoRetweetPref
    tweet_transmission: 
       plain: # Also applies to musical tweets
-        Standard: 0.0
+        Standard: 0
         Celebrity: 0
         else: 0
       different_ideology:
@@ -333,22 +333,22 @@ agents:
       # Weight with which this agent is created
       add: 100.0
       # Weight with which this agent is followed in agent follow
-      follow: 15
+      follow: 15.0
       tweet_type:
         ideological: 1.0
         plain: 1.0
         musical: 1.0
         humourous: 1.0 # Can be considered the humourousness of the agent type
     # Probability that following this agent results in a follow-back
-    followback_probability: .44
+    followback_probability: 0.44
     hashtag_follow_options:
       care_about_region: true # does the agent care about where the agent they will follow is from?
-      care_about_ideology: false # does the entiy care about which ideology the agent has?
+      care_about_ideology: false # does the agent care about which ideology the agent has?
     rates: 
         # Rate for follows from this agent:
         follow: {function: constant, value: 0.001}
         # Rate for tweets from this agent:
-        tweet: {function: constant, value: 0.001}   #0.000256944444444 0.37 per day
+        tweet: {function: constant, value: 0.001}
 
   - name: Celebrity
     weights:
@@ -415,5 +415,4 @@ agents:
         follow: {function: constant, value: 0.001}
         # Rate for tweets from this agent:
         tweet: {function: constant, value: 0.0001}   #0.000256944444444 0.37 per day
-
 
