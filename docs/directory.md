@@ -46,10 +46,6 @@ Contains a list of directories, each with there own **INFILE.yaml** that can be 
 
 
 
-## hashkat.sh
-
-
-
 ## INFILE.yaml
 
 This section serves as a reference for users working with the input file INFILE.yaml. This page goes through every aspect of the file in which users can manipulate.
@@ -693,6 +689,10 @@ Outlines the distribution of how many agents have made every possible number of 
 within the network simulation. 
 
 ## README.md
+
+
+
+## run.sh
 
 
 
