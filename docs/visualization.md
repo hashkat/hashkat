@@ -8,6 +8,16 @@ Here we shall outline ways in which you can visualize some of that data you have
 
 ## How to Visualize a Network
 
+You can download Gephi through there [website](http://gephi.github.io/). Once you have finished downloading Gephi, enter the program, and we will go over the steps necessary to visualize the networks you've created.
+
+
+
+1. When entering the program, you will see a prompt similar to the one below appear on the screen. 
+
+	![Gephi - Welcome](/img/visualization/gephi_welcome.png "Gephi - Welcome")
+
+    Under 'New Project' click 'Open Graph File...' to access the appropriate output file created from your network simulation to be used on Gephi.
+
 
 
 ## Different Network Layouts
