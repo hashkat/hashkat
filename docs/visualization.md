@@ -36,10 +36,10 @@ You can download Gephi through there [website](http://gephi.github.io/). Once yo
 
 ## Explore
 
-    ![Gephi - Choose Layout](/img/visualization/gephi_choose_layout.png "Gephi - Choose Layout")
+![Gephi - Choose Layout](/img/visualization/gephi_choose_layout.png "Gephi - Choose Layout")
 
-    ![Gephi - Fruchterman Reingold](/img/visualization/gephi_fruchterman_reingold.png "Gephi - Fruchterman Reingold")
+![Gephi - Fruchterman Reingold](/img/visualization/gephi_fruchterman_reingold.png "Gephi - Fruchterman Reingold")
 
-    ![Gephi - Yifan Hu](/img/visualization/gephi_yifan_hu.png "Gephi - Yifan Hu")
+![Gephi - Yifan Hu](/img/visualization/gephi_yifan_hu.png "Gephi - Yifan Hu")
 
-    ![Gephi - Modifications](/img/visualization/gephi_modifications.png "Gephi - Modifications")
+![Gephi - Modifications](/img/visualization/gephi_modifications.png "Gephi - Modifications")
