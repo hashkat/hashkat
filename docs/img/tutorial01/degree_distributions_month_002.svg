@@ -92,10 +92,10 @@
 		<text> 50</text>
 	</g>
 	<path stroke='black'  d='M80.2,54.1 L80.2,422.4 L575.0,422.4 L575.0,54.1 L80.2,54.1 Z  h0.01'/>	<g transform="translate(17.6,238.3) rotate(270)" style="stroke:none; fill:black; font-family:Arial; font-size:12.00pt; text-anchor:middle">
-		<text>P(k)</text>
+		<text>Degree Probability</text>
 	</g>
 	<g transform="translate(327.6,471.9)" style="stroke:none; fill:black; font-family:Arial; font-size:12.00pt; text-anchor:middle">
-		<text>k</text>
+		<text>Degree</text>
 	</g>
 	<g transform="translate(327.6,31.6)" style="stroke:none; fill:black; font-family:Arial; font-size:12.00pt; text-anchor:middle">
 		<text>Agent Degree Distributions</text>
@@ -104,7 +104,7 @@
 	<g id="gnuplot_plot_1" ><title>gnuplot_plot_1</title>
 <g style="fill:none; color:red; stroke:currentColor; stroke-width:1.00; stroke-linecap:butt; stroke-linejoin:miter">
 	<g transform="translate(507.9,76.6)" style="stroke:none; fill:black; font-family:Arial; font-size:12.00pt; text-anchor:end">
-		<text>'cumulative-degree_distribution_month_002.dat'</text>
+		<text>Cumulative-Degree</text>
 	</g>
 	<path  d='M516.2,72.1 L558.4,72.1 M80.2,422.4 L90.1,422.4 L100.0,422.4 L109.9,422.4 L119.8,422.4 L129.7,422.4 
 		L139.6,422.4 L149.5,419.8 L159.4,419.8 L169.3,414.5 L179.2,414.5 L189.1,380.3 L199.0,388.2 L208.8,343.5 
@@ -166,7 +166,7 @@
 	<g id="gnuplot_plot_2" ><title>gnuplot_plot_2</title>
 <g style="fill:none; color:green; stroke:currentColor; stroke-width:1.00; stroke-linecap:butt; stroke-linejoin:miter">
 	<g transform="translate(507.9,94.6)" style="stroke:none; fill:black; font-family:Arial; font-size:12.00pt; text-anchor:end">
-		<text>'in-degree_distribution_month_002.dat'</text>
+		<text>In-Degree</text>
 	</g>
 	<path  d='M516.2,90.1 L558.4,90.1 M80.2,422.4 L90.1,422.4 L100.0,417.1 L109.9,393.5 L119.8,377.7 L129.7,359.3 
 		L139.6,259.3 L149.5,164.6 L159.4,83.0 L169.3,83.0 L179.2,119.9 L189.1,106.7 L199.0,159.3 L208.8,230.4 
@@ -202,7 +202,7 @@
 	<g id="gnuplot_plot_3" ><title>gnuplot_plot_3</title>
 <g style="fill:none; color:blue; stroke:currentColor; stroke-width:1.00; stroke-linecap:butt; stroke-linejoin:miter">
 	<g transform="translate(507.9,112.6)" style="stroke:none; fill:black; font-family:Arial; font-size:12.00pt; text-anchor:end">
-		<text>'out-degree_distribution_month_002.dat'</text>
+		<text>Out-Degree</text>
 	</g>
 	<path  d='M516.2,108.1 L558.4,108.1 M80.2,422.4 L90.1,419.8 L100.0,411.9 L109.9,414.5 L119.8,361.9 L129.7,317.2 
 		L139.6,254.0 L149.5,193.5 L159.4,133.0 L169.3,62.0 L179.2,104.1 L189.1,148.8 L199.0,130.4 L208.8,256.7 
