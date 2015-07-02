@@ -1,7 +1,6 @@
 #!/bin/bash
 
 # these tests test...?
-
 #set -e
 #./run.sh --tests $@
 
