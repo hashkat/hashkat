@@ -95,9 +95,9 @@ rates:
 
 output:
   save_network_on_timeout: 
-    true
+    false
   load_network_on_startup:
-    true
+    false
   ignore_load_config_check: # Whether to allow loading configuration with mismatching configuration (generally OK)    
     true
   save_file: # File to save to, and load from
