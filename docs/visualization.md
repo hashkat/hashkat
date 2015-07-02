@@ -22,4 +22,58 @@ You can download Gephi through there [website](http://gephi.github.io/). Once yo
 
 ## Different Network Layouts
 
+### Clockwise Rotate
 
+
+
+### Contraction
+
+
+
+### Counter Clockwise Rotate
+
+
+
+### Expansion
+
+
+
+### Force Atlas
+
+
+
+### Force Atlas 2
+
+
+
+### Fruchterman Reingold
+
+
+
+### Label Adjust
+
+
+
+### Random Layout
+
+
+
+### Yifan Hu
+
+
+
+### Yifan Hu Proportional
+
+
+
+### YifanHu's Multilevel
+
+
+
+### Force Atlas 3D
+
+
+
+## Explore
+
+![Explore](/img/visualization/gephi_final.png "Explore")
