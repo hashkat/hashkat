@@ -50,7 +50,7 @@ it just means that you've downloaded a newer version of #k@.
 
 11. You must do a build of #k@ on your computer by typing in the command:
 
-    `./run.sh -O --build`
+    `./build.sh -O --build`
 
     You may need to install additional tools on to your computer to build #k@. If a prompt appears asking you to do so, please do. You may also need to install the 'CMake' package to your computer to build #k@. If so, steps 12 and 13 outline how to install this package.
 
@@ -63,7 +63,7 @@ To install homebrew to your computer, simply type in the command:
 
     `brew install cmake`
 
-    With this installed, you should be able to build #k@ in the manner outlined in step 11.
+    With this installed, you should be able to build #k@ in the manner outlined in step 11. Steps 14-20 outline a manner in which you can run hashkat from not only this directory, but any directory where **INFILE.yaml** is present. It involves modifying your .bashrc and .profile, and is not essential to the running of hashkat if you do not wish to do so. Proceed to the next step if you wish to make these changes, or skip ahead to step 21 if you do not.
 
 14. In order to run simulations on hashkat, you must first edit the .bashrc file. You can enter this file
 by typing in the command:
@@ -95,13 +95,15 @@ by typing in the command:
 20. You can now run hashkat in this hashkat directory, as well as any other directory as long as it has **INFILE.yaml**
 within in it.
 
-21. You can test the build by typing in the command:
+21. You can run hashkat by typing in:
 
-    `hashkat_pre.py`
+    `./run.sh`
 
-    And then typing in the following command to run the simulation:
+    or
 
-    `hashkat`
+    `run.sh`
+
+    to run it in this directory and subdirectories if you completed steps 14 - 20.
 
 22. It is also recommended to download and install [Gephi](http://gephi.github.io/) from their website to use for visualization of collected data.
 
@@ -161,7 +163,7 @@ it just means that you've downloaded a newer version of #k@.
 
     `sudo apt-get install build-essential -y` 
 
-    With this installed, you should be able to build #k@ in the manner outlined in step 11.
+    With this installed, you should be able to build #k@ in the manner outlined in step 11. Steps 13-19 outline a manner in which you can run hashkat from not only this directory, but any directory where **INFILE.yaml** is present. It involves modifying your .bashrc and .profile, and is not essential to the running of hashkat if you do not wish to do so. Proceed to the next step if you wish to make these changes, or skip ahead to step 20 if you do not.
 
 13. In order to run simulations on hashkat, you must first edit the .bashrc file. You can enter this file
 by typing in the command:
@@ -193,13 +195,15 @@ by typing in the command:
 19. You can now run hashkat in this hashkat directory, as well as any other directory as long as it has **INFILE.yaml**
 within in it.
 
-20. You can test the build by typing in the command:
+20. You can run hashkat by typing in:
 
-    `hashkat_pre.py`
+    `./run.sh`
 
-    And then typing in the following command to run the simulation:
+    or
 
-    `hashkat`
+    `run.sh`
+
+    to run it in this directory and subdirectories if you completed steps 14 - 20.
 
 21. It is also recommended to download and install [Gephi](http://gephi.github.io/) from their website
 to use for visualization of collected data.
