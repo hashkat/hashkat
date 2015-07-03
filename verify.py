@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import filecmp
+import os.path
 
 print "The files printed below are those in which have an output different from what was expected. If no files are printed, there was no discrepancies"
 
@@ -8,9 +9,11 @@ if filecmp.cmp('output/Bot_info.dat', 'output/Bot_info.ref', shallow = False) ==
 
     print "Bot_info.dat"
 
-if filecmp.cmp('output/Categories_Distro.dat', 'output/Categories_Distro.ref', shallow = False) == False:
+if os.path.exists('output/Categories_Distro.dat') == True:
+    
+    if filecmp.cmp('output/Categories_Distro.dat', 'output/Categories_Distro.ref', shallow = False) == False:    
 
-    print "Categories_Distro.dat"
+        print "Categories_Distro.dat"
 
 if filecmp.cmp('output/Celebrity_info.dat', 'output/Celebrity_info.ref', shallow = False) == False:
 
