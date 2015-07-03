@@ -18,7 +18,9 @@ do
   echo $dir
   echo "This will take approximately 30 seconds"
   $rootdir/run.sh >& log
+  cd output
   $rootdir/verify.py
+  cd ..
   # clean up after the tests
   rm log DATA_vs_TIME INFILE.yaml-generated output/*.dat output/*.gexf 
   cd $rootdir
