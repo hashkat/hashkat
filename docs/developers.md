@@ -22,6 +22,14 @@ The code map below outlines how rates work in #k@.
 
 ![Code Map](/img/code_map.jpg "Code Map")
 
+In the *analyzer_main.cpp* file, ff the simulated time is less than the maximum simulated time and the real time that has occurreed is less than the maximum real time, a random number, *r1*, is generated. If *r1* and the add rate have a difference less than zero, a new agent is added to the network. If this is not the case, the value of *r1* is decreased by the add rate. If *r1*'s new value and the follow rate have a difference less than zero, an agent follows some other agent via *analyzer_follow.cpp*. If this is not the case, the value of *r1* is decreased by the follow rate. If *r1*'s new value and the tweet rate have a difference less than zero, an agent tweets. If this is not the case, the value of *r1* is decreased by the tweet rate. If *r1*'s new value and the retweet rate hae a difference less than zero, an agent retweets via the *analyzer_retweet.cpp*. If this is not the case, the value of *r1* is decreased by the retweet rate.   
+
+Once this is completed, another random number, *r2* is generated. If *use_random_tme_increment*, the simulated time moves forward by:
+
+t += -ln(*r2*) / **R**
+
+where **R** is the cumulative rate function, the sum of all the rates. All the rates are then updated, and if the maximum simulated or real time has not been reached, this process repeats.
+
 ## Build Tests
 
 Build tests can be run in #k@ by running the *tests.sh* script. This script runs network simulations using the input files found in *tests/referencefiles/*, and compares the output of these files to what is expected using the *verify.py* script. If there are any discrepancies between the data of a particular output file and its corresponding reference data, that file for that particular test is printed to the screen.
