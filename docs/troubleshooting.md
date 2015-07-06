@@ -56,3 +56,4 @@ This error message is due to improper formatting in at least one of the function
 
 ## Reporting an Issue
 
+Check out our **Feedback** page if you have any issues using the #k@ project not discussed above. There you can find our email address where you can contact us and a link to a webpage where you can post any issues you may have, which will be addressed and remedied as soon as possible. 
