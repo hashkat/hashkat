@@ -7,7 +7,7 @@
 A brief description and explanation for all of the terminology used in this documentation and in hashkat.
 ##A
 
-####add weight
+####add_weight
 **(type: double/float)** This variable declares the percentage of the certain agent type in the network. Before the simulation is done, a loop is placed over all the different agents declared, and the add variables are summed. The value of add
 declared in each agent type will then be divided by the add sum. For example if agent type A has an add value of 75, and agent type B has an add value of 25, then the network will consist of 75% of agent type A, and 25% of agent type B.
 
@@ -43,20 +43,8 @@ on the increment cubed.
 
 ##C
 
-####'cd'
-Command to change directories in the terminal. Entering `cd <directoryname>` will change into the named directory. Entering `cd ..` will have you change into the parent directory, which is the directory from which the directory you are currently in, is in. Just entering the command `cd` into the terminal will have you change into the home directory.
-
-####command
-What you type into the terminal to prompt the computer to do. Several fundamental commands include : `pwd`, `ls`, `touch`, `mkdir`, `cd`, `rm`, `rm -r`, `mv`, `cp`, `cp -r`, and `nano`.
-
-####command line
-Where you type in the commands you issue on the terminal.
-
 ####'config_static' section
 **(type: n/a)** There are constant values that can be found in ‘config static.h’. Some of the static values can be changed in the input file for simplicity. An example of this is the humour bins described below.
-
-####'cp'
-The command to copy and paste a file to a different location on your computer through the terminal. You must include where the file is located and where you would like it scopy to be placed in the command. An example of copying a file would be `cp ~/hashkat/randomfile ~/hashkat/tutorials/`. This command would result in the randomfile being copied and pasted into the 'tutorials' directory from its parent directory 'hashkat'. Typing in `cp -r` is used instead of `cp` for copying and pasting directories.
 
 ####cummulative rate function (**R**)
 The sum of the agent add rate, tweet rate, follow rate, and retweet rate.
@@ -104,9 +92,6 @@ else: 0.1
 
 As you can see from above, the agent types declared in the agents section are used in the preference classes. If you also declared an agent type ‘AgentType3’ then that agent type would fall under the ‘else’ set above.
 You can see that the transmission probabilities for all of the agent types are the same.
-
-####directory
-Another name for 'folders', where files are stored.
 
 ##E
 
@@ -190,10 +175,7 @@ A command-line driven utility for graphing used in several tutorials for the plo
 ##H
 
 ####hashkat
-The 'hashkat' directory contains all the filess and directories necessary to run #k@. The 'hashkat' command runs the simulation.
-
-####hashkat_pre.py
-Command that prepares the desired configuration for network simulation prior to running #k@ using the implementations inputted into 'INFILE.yaml'.
+The 'hashkat' directory contains all the filess and directories necessary to run #k@.
 
 ####hashtag
 Used in tweets, and marked by the # symbol, to classify messages by keyword or topic.
@@ -286,7 +268,7 @@ these thresholds.
 The input file which users can modify to design the network simulation of their liking.
 
 ####INFILE.yaml-generated
-Generated when typing in the command `hashkat_pre.py` and used to run the network simulation.
+Generated when running the network simulation.
 
 ####initial_agents
 **(type: integer)** This parameter is the number of initial agents in the simulation. The agent type and characterizations are determined before any time will pass in the simulation.
@@ -330,9 +312,6 @@ Here the weights for each language are also summed and divided by the sum to gen
 ####load_network_on_startup
 **(type: boolean)** If set to true, all of the information of the network that was sent into the file declared for the save file will be loaded from when the simulation begins.
 
-####'ls'
-Command to list all the contents of a directory. Typing in the command `ls` will print to the screen all the files and directories within the directory that you are currently in. Typing in the command `ls randomdirectory` displays all the files and directories within the directory `randomdirectory`. 
-
 ##M
 
 ####main_statistics
@@ -352,9 +331,6 @@ Also, you can put ‘minute’, ‘hour’, ‘day’, or ‘year’, and the si
 **(type: integer)** This parameter is the maximum time allowed in the simulation. The units of time in the simulation is minutes. The simulation will terminate once the maximum amount of time has been reached. 
 Conveniently, you can put ‘minute’, ‘hour’, ‘day’, or ‘year’, and the simulation will know the value in minutes.
 
-####mkdir
-Command to create a directory in the terminal. Typing the command `mkdir <newdirectory>` will create the directory called 'newdirectory'.
-
 ####min
 **(type: integer)** This variable sets the minimum threshold for grouping agents. If the agents have a value less than the minimum threshold, then no binning will occur.
 
@@ -363,9 +339,6 @@ Command to create a directory in the terminal. Typing the command `mkdir <newdir
 of calling each method. As an example, if you would like to call the follow methods equally you would set it as so:
 
 model_weights{random: 0.20, preferential: 0.20, agent: 0.20, preferential agent: 0.20, hashtag: 0.20}
-
-####'mv'
-Command to move a file from one location to another using the terminal. This command can also be used to rename a file. Typing in the command `mv ~/hashkat/randomfile ~/hashkat/tutorials/` will move the file 'randomfile' from the 'hashkat' directory to its subdirectory 'tutorials'. Typing in the command `mv ~/hashkat/randomfile ~/hashkat/newrandomfile` will change the name of the file 'randomfile' to 'newrandomfile'.
 
 ##N
 
@@ -458,10 +431,6 @@ Here the weights for each preference classes are also summed and divided by the 
 ####'preference_classes' section
 **(type: n/a)** This section of the input file is for the declaration of preference classes which describe how tweets are passed in the system. Here you must set the tweet transmission for different scenarios based on different agent characteristics
 
-####`pwd`
-
-Acronym for 'print working directory'. Command used in the command line to display on the screen the path of the working directory that you are currently in.
-
 ##Q
 
 ##R
@@ -517,9 +486,6 @@ A retweet is the rebroadcasting of tweet by an agent who did not actually create
 ####retweet_visualization
 **(type: boolean)** If set to true, there will be a Gephi file called “retweet_viz.gexf” that is produced after the simulation terminates. This file can be found in the ‘output’ directory. The graph produced is a visualization of the most retweeted
 tweet in the network.
-
-####'rm'
-The command to remove a file through the terminal. Typing in the command `rm randomfile`, will remove the file named 'randomfile'. The command `rm -r` is used instead of `cp` for copying and pasting directories.
 
 ##S
 
@@ -579,9 +545,6 @@ A computer terminal is a device on a computer that allows a user to enter data i
 ####time_span
 **(type: double)** This value determines when the density function will disappear allowing no more retweets or follow by retweets to occur. Since the function found experimentally approaches 0 quite slowly, it is convenient to define a time span for
 the function to improve efficiency of the retweet algorithm. Like the max time parameter you can use convenient strings like ‘minute’, ‘hour’, ‘day’, ‘month’, or ‘year’. You can also use Python syntax and multiply numbers to these strings.
-
-####'touch'
-Command to create a file in the terminal. Typing the command `touch <newfile>` will create the file called 'newfile'.
 
 ####tweet
 A tweet is a message, consisting of 140 characters or less, that a Twitter user creates on Twitter.

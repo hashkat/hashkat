@@ -20,6 +20,8 @@ pages:
  - [tutorial14.md, Tutorial 14 - A Complex Network]
  - [commandline.md, Using The Command Line]
  - [directory.md, The 'hashkat' Directory]
+ - [input.md, Input]
+ - [output.md, Output]
  - [keywords.md, Key Words]
  - [visualization.md, Visualization]
  - [troubleshooting.md, Troubleshooting]
