@@ -1,3 +1,9 @@
+[hashkat.org](http://hashkat.org)
+
+<span style="color:black; font-family:Georgia; font-size:1.5em;">July 2015 - This site is currently under construction. Please return regularly over the course of the summer for further updates. </span>
+
+# Input
+
 This section serves as a reference for users working with the input file INFILE.yaml. This page goes through every aspect of the file in which users can manipulate.
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/4X063IPFzM4" frameborder="0" allowfullscreen></iframe>
