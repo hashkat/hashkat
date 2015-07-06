@@ -11,8 +11,8 @@ This is open-source software for generating kinetic complex networks. The events
         |    TO CREATE DESIRED SIMULATIONS MODIFY                |
         |    'INFILE.yaml'.                                      |
         |                                                        |
-        |    FOR EXAMPLES, SEE 'doc' DIRECTORY.                  |
-        |    ALSO, SEE 'doc' DIRECTORY FOR FULL                  |
+        |    FOR EXAMPLES, SEE 'docs' DIRECTORY.                  |
+        |    ALSO, SEE 'docs' DIRECTORY FOR FULL                  |
         |    DOCUMENTATION.                                      |
          -------------------------------------------------------
 
