@@ -28,7 +28,7 @@ will build #k@ without running it.
 
 ## COPYING
 
-
+Contains the GNU General Public License, Version 3, 29 June, 2007..
 
 ## DATA_vs_TIME
 
@@ -584,7 +584,7 @@ File generated when *build.sh* or *run.sh* is run. Used in the running of networ
 
 ## INTERACT.lua
 
-
+Used when running interactive mode in #k@. Details what is done when making certain commands.
 
 ## mkdocs.yml
 
@@ -710,7 +710,7 @@ Script that runs the #k@ program.
 
 ## src
 
-
+Contains the #k@ source code.
 
 ## tests
 
