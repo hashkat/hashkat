@@ -36,7 +36,7 @@ Build tests can be run in #k@ by running the *tests.sh* script. This script runs
 
 ## The Source Code
 
-Here we will go through all the files and directories that encompass that source code.
+Here we will give a brief description of all the files and directories that encompass that source code.
 
 ### dependencies
 
@@ -100,7 +100,7 @@ Here we will go through all the files and directories that encompass that source
 
 ### agent.h
 
-
+Contains the *Agent* struct which determines the characteristics and collects information on each and every agent in the network, such as their id number, agent type, number of tweets made, number of followers, etc., and ensures that this is written into the *network_state.dat* file. Also contains the **AgentType* struct, which determines the characteristics of each agent type and ensures that it is also written into *network_state.dat*. 
 
 ### analyzer.h
 
@@ -112,7 +112,7 @@ Here we will go through all the files and directories that encompass that source
 
 ### analyzer_main.cpp
 
-
+The principal file in the source code, it deals with many aspect of #k@. It ensures that when you stop a simulation using **Ctrl-c** the simulation halts gracefully, contains the *Analyzer* struct which contains numerous other structs with #k@.
 
 ### analyzer_rates.cpp
 
@@ -172,11 +172,11 @@ File where certain fixed configurations of your network simulation are made. Her
 
 ### main.cpp
 
-
+When running a network simulation, this is the file that will read in **INFILE.yaml**, and call *analyzer_main.cpp. It also prints to the screen certain information about the network simulation such as the version of #k@ you are using, the seed you will be using, and how long the analysis took in real time. 
 
 ### network.h
 
-
+Contains the *Network* struct which places all the *Agent* struct into an array and enables several commands that #k@ users can use to gather specific information about the simulated network, such as if an id number exists in the network, how many followers does a specific id have, etc.
 
 ### tweets.h
 
