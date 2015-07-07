@@ -60,7 +60,7 @@ Defined in the *agents* section of **INFILE.yaml**, an agent's tweet rate dictat
 
 ## Popularity Contest
 
-
+All the files that we will use in this simulation can be found for reference in the tutorials directory in hashkat, with this one under the title *tutorial05*. You can also view the input file we will be creating for this example [here](https://github.com/hashkat/hashkat/blob/master/tutorials/tutorial05).
 
 ## Next Steps
 
