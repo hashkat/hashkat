@@ -220,14 +220,14 @@ ideologies:
 
 regions:
   - name: Ontario
-    add_weight: 5
+    add_weight: 3
 
     preference_class_weights: {NoRetweetPref: 100}
     ideology_weights: {Red: 100, Blue: 100, Green: 100, Orange: 100}
     language_weights: {English: 100, French: 100, Spanish: 0, French+English: 0}
 
   - name: Quebec
-    add_weight: 5
+    add_weight: 2
 
     preference_class_weights: {StandardPref: 100}
     ideology_weights: {Red: 100, Blue: 100, Green: 100, Orange: 0}

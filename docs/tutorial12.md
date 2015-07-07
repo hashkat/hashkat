@@ -60,7 +60,39 @@ Defined in the *agents* section of **INFILE.yaml**, an agent's tweet rate dictat
 
 ## Popularity Contest
 
-All the files that we will use in this simulation can be found for reference in the tutorials directory in hashkat, with this one under the title *tutorial05*. You can also view the input file we will be creating for this example [here](https://github.com/hashkat/hashkat/blob/master/tutorials/tutorial05).
+Now that we have seen all the factors that make agents unique, we are going to create a network simulation that consists of these diverse agents, and see which agent type out of the ones we created are the most popular.
+
+For this exercise, we will actually not go through how to configure **INFILE.yaml** to create the desired network with you. You've had enough experience with it that you should be able to do this on your own. We're just going to outline the network that we would like. If you're having any problems with this, the desired input file can be found for reference in the tutorials directory in hashkat, with this one under the title *tutorial12*. You can also view the desired input file you will be creating for this example [here](https://github.com/hashkat/hashkat/blob/master/tutorials/tutorial12/INFILE.yaml). Now, on to creating the network.
+
+For this network simulation, we would like to have the following:
+
+* a constant number of 1000 agents
+* a maximum simulation time of 1000 simulated minutes
+* a maximum real time of 1 minute
+* followback implemented
+* the twitter follow model implemented, with the twitter_suggest and the hashtag follow model evenly weighted and the other follow models being excluded from this simulation
+* No unfollowing allowed
+* Hashtag presence in tweets 50% of the time
+* 4 ideologies: 'Red', 'Blue', 'Green', and 'Orange'
+* agents being located in either Ontario or Quebec, with the ratio of Ontarians to Quebecers being 3:2
+* Ontarians having a *NoRetweetPref* preference class, with 4 evenly wieghted ideologies and the ratio of English to French speaking Ontarians being 1:1
+* Quebecers having the *StandardPref* preference class, with only 3 ideologies ('Red', 'Blue', 'Green') evenly weighted, with the ratio of English speaking to French speaking Quebecers being 1:1
+* for the *StandardPref* preference class, the tweet transmission rates for the agent types present in this network are 0.1 for 'plain'/'musical' tweets, 0.0 for 'different_ideology' tweets, 0.2 'same_ideology' tweets, and 0.4 for 'humourous' tweets, with the 'follow_reaction_prob' being 0.3
+* the *NoRetweetPref* preference class will remain the same, with 0 for all
+
+We would also like you to use only the following agent types with their respective characteristics:
+
+![Standard-Chatty](/img/tutorial12/standard_chatty.png "Standard-Chatty")
+
+![Standard-Friendly](/img/tutorial12/standard_friendly.png "Standard-Friendly")
+
+![Standard-Funny](/img/tutorial12/standard_funny.png "Standard-Funny")
+
+![Standard-Musical](/img/tutorial12/standard_musical.png "Standard-Musical")
+
+![Standard-Political](/img/tutorial12/standard_political.png "Standard-Political")
+
+Once you have configured **INFILE.yaml** to account for all this, run and visualize your network simulation.
 
 ## Next Steps
 
