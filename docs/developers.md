@@ -36,30 +36,156 @@ Build tests can be run in #k@ by running the *tests.sh* script. This script runs
 
 ## The Source Code
 
-## Analyzer Main
+Here we will go through all the files and directories that encompass that source code.
+
+### dependencies
 
 
 
-## Analyzer Follow
+### unit_tests
 
 
 
-## Analyzer Rates
+### util
 
 
 
-## Other Analyzers
+### CMakeLists.txt
 
 
 
-## Config Static
+### CategoryGrouper.h
 
 
 
-## Rest of the Source Code
+### CircularBuffer.h
+
+
+
+### DataReadWrite.h
+
+
+
+### FollowerSet.cpp
+
+
+
+### FollowerSet.h
+
+
+
+### FollowingSet.cpp
+
+
+
+### FollowingSet.h
+
+
+
+### RateTree.h
+
+
+
+### TimeDepBinner.h
+
+
+
+### TweetBank.cpp
+
+
+
+### TweetBank.h
+
+
+
+### agent.h
+
+
+
+### analyzer.h
+
+
+
+### analyzer_follow.cpp
+
+
+
+### analyzer_main.cpp
+
+
+
+### analyzer_rates.cpp
+
+
+
+### analyzer_retweet.cpp
+
+
+
+### analyzer_select.cpp
+
+
+
+### config_dynamic.cpp
+
+
+
+### config_dynamic.h
+
+
+
+### config_static.h 
+
+File where certain fixed configurations of your network simulation are made. Here we can identify the tweet types and languages present in the system, as well as the standard output rate and the maximum humour bins, follow models, preference classes, agent types, regions, and ideolgies present in your network.
+
+### events.cpp
+
+
+
+### events.h
+
+
+
+### gexf.lua
+
+
+
+### interactive_mode.cpp
+
+
+
+### interactive_mode.h
+
+
+
+### interactive_mode.lua
+
+
+
+### io.cpp
+
+
+
+### io.h
+
+
+
+### main.cpp
+
+
+
+### network.h
+
+
+
+### tweets.h
+
+
+
+### util.h
 
 
 
 ## Latest Build
 
-For the latest build of #k@, see the github repository at [github.com/hashkat/hashkat](https://github.com/hashkat/hashkat)
+For the latest build of #k@, see the github repository at [github.com/hashkat/hashkat](https://github.com/hashkat/hashkat).
