@@ -333,107 +333,107 @@ agents:
       # Weight with which this agent is created
       add: 100.0
       # Weight with which this agent is followed in agent follow
-      follow: 10.0
+      follow: 5.0
       tweet_type:
         ideological: 1.0
         plain: 1.0
         musical: 1.0
         humourous: 1.0 # Can be considered the humourousness of the agent type
     # Probability that following this agent results in a follow-back
-    followback_probability: 0
+    followback_probability: 0.2
     hashtag_follow_options:
       care_about_region: false # does the agent care about where the agent they will follow is from?
       care_about_ideology: true # does the agent care about which ideology the agent has?
     rates: 
         # Rate for follows from this agent:
-        follow: {function: constant, value: 0.01}
+        follow: {function: constant, value: 0.05}
         # Rate for tweets from this agent:
-        tweet: {function: constant, value: 0.01}
+        tweet: {function: constant, value: 0.5}
 
   - name: Standard-Friendly
     weights:
       # Weight with which this agent is created
       add: 100.0
       # Weight with which this agent is followed in agent follow
-      follow: 10.0
+      follow: 5.0
       tweet_type:
         ideological: 1.0
-        plain: 1.0
+        plain: 7.0
         musical: 1.0
-        humourous: 1.0 # Can be considered the humourousness of the agent type
+        humourous: 3.0 # Can be considered the humourousness of the agent type
     # Probability that following this agent results in a follow-back
-    followback_probability: 0
+    followback_probability: 1.0
     hashtag_follow_options:
       care_about_region: false # does the agent care about where the agent they will follow is from?
-      care_about_ideology: true # does the agent care about which ideology the agent has?
+      care_about_ideology: false # does the agent care about which ideology the agent has?
     rates:
         # Rate for follows from this agent:
-        follow: {function: constant, value: 0.01}
+        follow: {function: constant, value: 0.3}
         # Rate for tweets from this agent:
-        tweet: {function: constant, value: 0.01}
+        tweet: {function: constant, value: 0.04}
 
   - name: Standard-Funny
     weights:
       # Weight with which this agent is created
       add: 100.0
       # Weight with which this agent is followed in agent follow
-      follow: 10.0
+      follow: 5.0
       tweet_type:
         ideological: 1.0
         plain: 1.0
-        musical: 1.0
-        humourous: 1.0 # Can be considered the humourousness of the agent type
+        musical: 0.0
+        humourous: 6.0 # Can be considered the humourousness of the agent type
     # Probability that following this agent results in a follow-back
-    followback_probability: 0
+    followback_probability: 0.44
     hashtag_follow_options:
-      care_about_region: false # does the agent care about where the agent they will follow is from?
-      care_about_ideology: true # does the agent care about which ideology the agent has?
+      care_about_region: true # does the agent care about where the agent they will follow is from?
+      care_about_ideology: false # does the agent care about which ideology the agent has?
     rates:
         # Rate for follows from this agent:
-        follow: {function: constant, value: 0.01}
+        follow: {function: constant, value: 0.02}
         # Rate for tweets from this agent:
-        tweet: {function: constant, value: 0.01}
+        tweet: {function: constant, value: 0.1}
 
   - name: Standard-Musical
     weights:
       # Weight with which this agent is created
       add: 100.0
       # Weight with which this agent is followed in agent follow
-      follow: 10.0
+      follow: 5.0
       tweet_type:
-        ideological: 1.0
+        ideological: 0.0
         plain: 1.0
-        musical: 1.0
-        humourous: 1.0 # Can be considered the humourousness of the agent type
+        musical: 5.0
+        humourous: 0.0 # Can be considered the humourousness of the agent type
     # Probability that following this agent results in a follow-back
-    followback_probability: 0
+    followback_probability: 0.1
     hashtag_follow_options:
       care_about_region: false # does the agent care about where the agent they will follow is from?
-      care_about_ideology: true # does the agent care about which ideology the agent has?
+      care_about_ideology: false # does the agent care about which ideology the agent has?
     rates:
         # Rate for follows from this agent:
         follow: {function: constant, value: 0.01}
         # Rate for tweets from this agent:
-        tweet: {function: constant, value: 0.01}
+        tweet: {function: constant, value: 0.02}
 
   - name: Standard-Political
     weights:
       # Weight with which this agent is created
       add: 100.0
       # Weight with which this agent is followed in agent follow
-      follow: 10.0
+      follow: 5.0
       tweet_type:
-        ideological: 1.0
+        ideological: 8.0
         plain: 1.0
-        musical: 1.0
-        humourous: 1.0 # Can be considered the humourousness of the agent type
+        musical: 0.0
+        humourous: 3.0 # Can be considered the humourousness of the agent type
     # Probability that following this agent results in a follow-back
-    followback_probability: 0
+    followback_probability: 0.44
     hashtag_follow_options:
-      care_about_region: false # does the agent care about where the agent they will follow is from?
+      care_about_region: true # does the agent care about where the agent they will follow is from?
       care_about_ideology: true # does the agent care about which ideology the agent has?
     rates:
         # Rate for follows from this agent:
         follow: {function: constant, value: 0.01}
         # Rate for tweets from this agent:
-        tweet: {function: constant, value: 0.01}
+        tweet: {function: constant, value: 0.12}
