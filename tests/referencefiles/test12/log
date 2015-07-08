@@ -9,4 +9,4 @@ Loading input configuration from 'INFILE.yaml-generated'.
 Starting simulation with seed '1'.
 Time		Users		Follows		Tweets		Retweets		Unfollows	R		Time (s)
 
-1.00e+00	1.11e+03	0.00e+00	0.00e+00	0.00e+00(0.00e+00)	0.00e+00	1.00e+02	6.40e+00/home/itamblyn/git/hashkat/run.sh: line 80: 18672 Segmentation fault      (core dumped) "$HASHKAT/build/src/hashkat" $args
+1.00e+00	1.11e+03	0.00e+00	0.00e+00	0.00e+00(0.00e+00)	0.00e+00	1.00e+02	6.41e+00/home/itamblyn/git/hashkat/run.sh: line 80: 18862 Segmentation fault      (core dumped) "$HASHKAT/build/src/hashkat" $args
