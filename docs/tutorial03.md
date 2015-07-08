@@ -70,7 +70,7 @@ tutorial, where agents will follow other agents based on their agent type.
 
 Running this simulation, and visualizing it, we produce a network similar to the one shown below: 
 
-![Visualization](/img/tutorial03/visualization.png "Visualization")
+![Random Follow Model Network Visualization](/img/tutorial03/visualization.png "Random Follow Model Network Visualization")
 
 As we can quite clearly see this a truly random network, with no clear agent or group of agents being the most popular.
 

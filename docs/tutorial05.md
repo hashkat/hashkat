@@ -16,7 +16,7 @@ Starting with the INFILE.yaml file we used in **Tutorial 4** for **Other Twitter
 
 Running this simulation we produced the following network:
 
-![Visualization](/img/tutorial05/visualization.png "Visualization")
+![Agent Follow Model Network Visualization](/img/tutorial05/visualization.png "Agent Follow Model Network Visualization")
 
 As expected, the *Celebrity* agents (red dots) tend to have much more followers than the *Standard* agents (blue dots).
 

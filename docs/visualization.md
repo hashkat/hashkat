@@ -26,7 +26,7 @@ You can download Gephi through there [website](http://gephi.github.io/). Once yo
 
     There is nothing that you have to change here so you can simply press 'OK', and the outline of your created network will appear:
 
-    ![Gephi - Origin](/img/visualization/gephi_origin.png "Gephi - Origin")
+    ![Gephi - Network Outline](/img/visualization/gephi_origin.png "Gephi - Network Outline")
 
     It is important to note that in the top right hand corner of the screen you will see the following, though with most likely different numbers: 
     

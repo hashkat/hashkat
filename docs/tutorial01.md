@@ -157,7 +157,7 @@ press the refresh symbol, and choose the partition parameter 'Label' and click '
 for this network directly below the 'Apply' button you just pushed, and can run it for a few seconds. The following visualization
 was made using the 'Fruchterman Reingold' and 'Clockwise Rotate' layout:
 
-![Visualization](/img/tutorial01/visualization.png "Visualization")
+![Simple Network Visualization](/img/tutorial01/visualization.png "Simple Network Visualization")
 
 We can see that these agents are randomly connected within this network simulation we created, with the highly connected agents at the centre
 of the visualization and the agents with less connections on the sides.
