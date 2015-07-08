@@ -1,0 +1,12 @@
+~/git/hashkat ~/git/hashkat/tests/referencefiles/test12
+~/git/hashkat/tests/referencefiles/test12
+hashkat_pre.py -- Loading defaults from /home/itamblyn/git/hashkat/DEFAULT.yaml
+hashkat_pre.py -- Generating rates for INFILE.yaml
+hashkat_pre.py -- An output directory already exists, leaving it intact
+hashkat_pre.py -- Done generating rates
+Starting #k@ network simulator (version v0.1-136-ga529693.b1039)
+Loading input configuration from 'INFILE.yaml-generated'.
+Starting simulation with seed '1'.
+Time		Users		Follows		Tweets		Retweets		Unfollows	R		Time (s)
+
+1.00e+00	1.11e+03	0.00e+00	0.00e+00	0.00e+00(0.00e+00)	0.00e+00	1.00e+02	6.40e+00/home/itamblyn/git/hashkat/run.sh: line 80: 18672 Segmentation fault      (core dumped) "$HASHKAT/build/src/hashkat" $args
