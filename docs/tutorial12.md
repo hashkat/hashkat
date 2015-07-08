@@ -82,15 +82,15 @@ For this network simulation, we would like to have the following:
 
 We would also like you to use only the following agent types with their respective characteristics:
 
-![Standard-Chatty](/img/tutorial12/standard_chatty.svg "Standard-Chatty")
+![Standard-Chatty](/img/tutorial12/standard_chatty.png "Standard-Chatty")
 
-![Standard-Friendly](/img/tutorial12/standard_friendly.svg "Standard-Friendly")
+![Standard-Friendly](/img/tutorial12/standard_friendly.png "Standard-Friendly")
 
-![Standard-Funny](/img/tutorial12/standard_funny.svg "Standard-Funny")
+![Standard-Funny](/img/tutorial12/standard_funny.png "Standard-Funny")
 
-![Standard-Musical](/img/tutorial12/standard_musical.svg "Standard-Musical")
+![Standard-Musical](/img/tutorial12/standard_musical.png "Standard-Musical")
 
-![Standard-Political](/img/tutorial12/standard_political.svg "Standard-Political")
+![Standard-Political](/img/tutorial12/standard_political.png "Standard-Political")
 
 Once you have configured **INFILE.yaml** to account for all this, run and visualize your network simulation.
 
