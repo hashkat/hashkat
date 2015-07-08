@@ -68,7 +68,7 @@ For this network simulation, we would like to have the following:
 
 * a constant number of 1000 agents
 * a maximum simulation time of 1000 simulated minutes
-* a maximum real time of 1 minute
+* a maximum real time of 30 minutes
 * followback implemented
 * the twitter follow model implemented, with the twitter_suggest and the hashtag follow model evenly weighted and the other follow models being excluded from this simulation
 * No unfollowing allowed
@@ -92,8 +92,16 @@ We would also like you to use only the following agent types with their respecti
 
 ![Standard-Political](/img/tutorial12/standard_political.png "Standard-Political")
 
-Once you have configured **INFILE.yaml** to account for all this, run and visualize your network simulation.
+Make sure that your tweet, retweet, and follow ranks have also been updated accordingly to properly account for this network. As you've probably noticed, we've set the max real time to 30 minutes instead of the regular 1 minute. The simulation should definitely not run for this long, we just want to allow enough time for the simulation to run to completion. When running this simulation on our computer, it took around 16 minutes real time to complete due to the complexity of the network. You do not have to run your simulation for this long if you wish. You can change the maximum real time to a time of your choosing or press **Ctrl-c** at any time during the simulation to pause it. Once you have configured **INFILE.yaml** to account for all this, run and visualize your network simulation.
+
+Running the network simulation to completion, we produced the following network visualization:
+
+![Diverse Network Visualization](/img/tutorial12/visualization.png "Diverse Network Visualization")
+
+In the above visualization, the green nodes correspond to the 'Standard-Chatty' agents, the purple nodes correspond to the 'Standard-Friendly' agents, the blue nodes correspond to the 'Standard-Musical' agents, the yellow nodes correspond to 'Standard-Funny' agents, and the red nodes correspond to the 'Standard-Political' agents. As we can see, our social network has been divided into networks based on language, with one network corresponding to English-speaking agents and the other corresponding to French-speaking agents. Judging from this visualization, there seems to be no dominant agent type based on connectivity. The 'Standard-Chatty' agents and 'Standard-Musical agents' seems to be slightly less popular, as evident by their more abundant presence on the sides of each network simulation, while the 'Standard-Friendly', 'Standard-Funny', and 'Standard-Political' agents seem to be slightly more popular due to there more ample presence near the centre of the networks.
+
+In the end, there really seems to be no true 'most popular' agent type. In a social network of agents with such a variety of interests and personalities, it can be expected that every agent type has something that draws other agents into following them. In this social network we have simulated, there are agents of every type with similar attributes that are both very popular and not as much.
 
 ## Next Steps
 
- With the completion of this tutorial, you have knowledge and experience with every different configuration you can implement into #k@. From here, we will move on to a discussion on interactive mode in #k@.
+ With the completion of this tutorial, you now have knowledge and experience with every different agent configuration you can implement into #k@. From here, we will move on to a discussion on interactive mode in #k@, where you can make changes to your network mid-simulation.
