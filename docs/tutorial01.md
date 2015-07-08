@@ -23,18 +23,23 @@ For the #k@ project, we have **R**, which is our cummulative rate function,
 which is the sum of the user add rate, tweet rate, follow rate, retweet rate.  
 It should be noted that the tweet rate, follow rate, and retweet rate are
 all multiplied by the number of user in the network.
-At a simulated time of 0, a random number is generated. Depending on this
-number's value, it will either cause a user to be added into the network,
+At a simulated time of 0, a random number, *r<sub>1</sub>*, is generated. Depending on this number's value, it will either cause a user to be added into the network,
 a random user to tweet, a random user to follow another random user, or a
 random user to retweet a tweet from another user. **R** will then change
-accordingly.  Another random number *u* will then be generated,
+accordingly.  Another random number *r<sub>2</sub>* will then be generated,
 and time will move forward by:
 
-&Delta;t = -ln(u) / **R**
+&Delta;*t* = -ln(*r<sub>2</sub>*) / **R**
 
 All of the rate functions will then be recalibrated to their new values and
 this cycle will repeat until either the maximum simulation time or real time
 has been reached.
+
+The following is a model of how this works in #k@.
+
+![KMC Loop Model](/img/code_map.jpg "KMC Loop Model")
+
+More information on how this is run in #k@ can be found on the **Developers** page.
 
 ## Running a Simple Network
 
