@@ -29,6 +29,8 @@ Most importantly, we're going to set *use_barabasi* to *true* causing the simula
 Since we are running a twitter suggest follow model, we are going to set the *follow_model* as such. In the *rates* section of the input file, we are now adding agents to the network throughout the simulation,
 so we will change the add rate value to 1.0, so that one agent will be added to the network per simulated minute.
 
+![INFILE.yaml-analysis](/img/tutorial04_classic_barabasi/INFILE-analysis.png "INFILE.yaml-analysis")
+
 As mentioned in the previous tutorial, the follow ranks are essential to the twitter suggest follow model. Agents are placed into bins based on their degree or the number of followers they have.
 All the agents in the bin with threshold 0 have 0 followers, while all the agents in bin 200 have 200 followers.The weight of each bin threshold determines the probability that an agent from this bin
 will be randomly chosen to be followed in comparison to agents in other bins. The bin thresholds are linearly spacecd in increments of 1 and have a minimum value of 0 and a maximum value equal to the maximum
@@ -37,6 +39,8 @@ equal to the max number of agents plus one. Therefore, the weighted probability 
 agents with a greater number of followers have a better chance of being followed by other agents. It is thus very important that the max follow rank threshold be equal to or greater than the number of max agents
 within the simulation. If this number is less than that, your network simulation may give inaccurate results and the total number of followers the most popular agent has may be impossible to determine. Since the
 minimum threshold follow rank has a weight of 1, the maximum threshold follow rank must have a weight equal to its value increased by one. 
+
+![INFILE.yaml-ranks](/img/tutorial04_classic_barabasi/INFILE-ranks.png "INFILE.yaml-ranks")
 
 To better demonstrate the results of a twitter preferential follow model, we are again only going to use *Standard* users in this simulation. It is imperative that we have also set the *Standard* agent type's follow rate to 0.0,
 so that the only manner in which agents are connecting with each other is through the *barabasi_connections* they are assigned to make.

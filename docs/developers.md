@@ -118,7 +118,7 @@ The principal file in the source code, it deals with many aspect of #k@. It ensu
 
 ### analyzer_rates.cpp
 
-
+Manages updating all the rates present in #k@ and adding them together to find the cumulative rate function at every time step. This allows us to move forward in time correctly via the KMC Loop. The rates being updated are the add, tweet, retweet, and follow rates, as well as of course the cumulative rate function. If necessary, new simulated months are created in this file and rates are updated accordingly if any of them happen to change over time.
 
 ### analyzer_retweet.cpp
 

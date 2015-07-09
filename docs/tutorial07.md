@@ -10,6 +10,8 @@ The hashtag follow method is one in which an agent follows another agent through
 
 Using the INFILE.yaml we used from **Tutorial 6**, as a starting point, we will of course change the follow model to *hashtag*. We will let the *use_hashtag_probability* remain at 0.5 or 50%, so that 50% of the tweets will contain the hashtags necessary for following in the hashtag follow model. Under the agent types section, there are *hashtag_follow_options*, where you can decide if agents of that particular agent type will only follow other agents living in the same region as them and/or that share the same ideology as them through hashtags present in tweets by inputting *true* for *care_about_region* and/or *care_about_ideology* respectively. For this simulation, we will only have agents follow other agents that share the same ideology as them, so input *true* for *care_about_ideology* and have *care_about_region* remain *false*. For simplicity, we will also remove any *Celebrity* agents from this network simulation by changing the *Celebrity* add rate to 0.0.
 
+![INFILE.yaml-hashtag_follow_options](/img/tutorial07/INFILE-hashtag.png "INFILE.yaml-hashtag_follow_options")
+
 ## Running and Visualizing The Network
 
 Creating a network with this configuration, we produced the following visualization:
