@@ -713,47 +713,27 @@ void network_statistics(Network& n, NetworkStats& net_stats, AgentTypeVector& et
     output << "USERS\n_____\n\n";
     output << "Total: " << n.n_agents << "\n";
     for (auto& et : etv) {
-        if (n.n_agents == 0) {
-            output << et.name << ": " << et.agent_list.size() << 0 << "% of total agents)\n";
-        }
-        else {
-            output << et.name << ": " << et.agent_list.size() << "\t(" << 100*et.agent_list.size() / (double) n.n_agents << "% of total agents)\n";
-        }
+        output << et.name << ": " << et.agent_list.size() << "\t(" << 100*et.agent_list.size() / (double) n.n_agents << "% of total agents)\n";
     }
 
     AgentStats& stats = net_stats.global_stats;
 
     output << "\nTWEETS\n_____\n\n";
     output << "Total: " << stats.n_tweets << "\n";
-    if (stats.n_tweets == 0) {
-        output << "Hashtags: " << stats.n_hashtags << "\t(" << 0 << "% of total tweets)\n";
-    }
-    else {
-        output << "Hashtags: " << stats.n_hashtags << "\t(" << 100*stats.n_hashtags / (double) stats.n_tweets << "% of total tweets)\n";
-    }
+    double hashtag_ratio = (stats.n_tweets == 0 ? 0.0 : stats.n_hashtags / (double) stats.n_tweets);
+    output << "Hashtags: " << stats.n_hashtags << "\t(" << 100*hashtag_ratio << "% of total tweets)\n";
     for (auto& et : etv) {
-        if (stats.n_tweets == 0) {
-            output << et.name << ": " << et.stats.n_tweets << "\t("
-                   << 0 << "% of total tweets)\n";
-            }
-        else {    
-            output << et.name << ": " << et.stats.n_tweets << "\t("
-               << 100*et.stats.n_tweets / (double) stats.n_tweets << "% of total tweets)\n";
-        }
+        double tweet_ratio = (stats.n_tweets == 0 ? 0.0 : et.stats.n_tweets / (double) stats.n_tweets);
+        output << et.name << ": " << et.stats.n_tweets << "\t("
+               << 100*tweet_ratio << "% of total tweets)\n";
     }
     output << "\nRETWEETS\n_______\n\n";
     output << "Total: " << stats.n_retweets << "\n";
     for (auto& et : etv) {
-        if (stats.n_retweets == 0) {
-            output << et.name << ": "
-                    << et.stats.n_retweets
-                    << "\t(" << 0 << "% of total retweets)\n";
-        }
-        else {
-            output << et.name << ": "
+        double retweet_ratio = (stats.n_retweets == 0 ? 0.0 : et.stats.n_retweets / (double) stats.n_retweets);
+        output << et.name << ": "
                 << et.stats.n_retweets
-                << "\t(" << 100*et.stats.n_retweets / (double) stats.n_retweets << "% of total retweets)\n";
-        }
+                << "\t(" << 100*retweet_ratio << "% of total retweets)\n";
     }
     double total_follow_calls = stats.n_random_follows + stats.n_preferential_follows + stats.n_agent_follows + stats.n_pref_agent_follows + stats.n_retweet_follows + stats.n_hashtag_follows + stats.n_followback;
     output << "\nFOLLOWS\n_______\n\n";
@@ -815,12 +795,8 @@ bool region_stats(Network& n, AnalysisState& state) {
             if (j == 0) {
                 output << "\n" << i;
             }
-            if (follow_counts[i] == 0) {
-                output << "\t" << 0 << "\%";
-            }
-            else {
-                output << "\t" << 100.0 * connections[i][j] / follow_counts[i] << "\%";
-            }
+            double connections_ratio = (follow_counts[i] == 0 ? 0.0 : connections[i][j] / follow_counts[i]);
+            output << "\t" << 100.0 * connections_ratio << "\%";
             if (j+1 == N_BIN_REGIONS) {
                 output << "\n";
             }
