@@ -978,6 +978,11 @@ void dd_by_follow_method(Network& n, AnalysisState& as, NetworkStats& ns) {
     ofstream output;
     output.open("output/dd_by_follow_model.dat");
     
+    output << "This is the degree distribution by follow model. The data order is:\n# degree\tlog_of_degree\tRandom - normalized_degree\tRandom - log_of_normalized_degree\tPreferential - normalized_degree\tPreferential - log_of_normalized_degree\t"
+    "Agent - normalized_degree\tAgent - log_of_normalized_degree\tPreferential-agent - normalized_degree\tPreferential-agent - log_of_normalized_degree\t"
+    "Hashtag - normalized_degree\tHashtag - log_of_normalized_degree\t"
+    "Twitter - normalized_degree\tTwitter - log_of_normalized_degree\tFollowbacks - normalized_degree\tFollowbacks - log_of_normalized_degree\n\n";
+
     for (int i = 0; i < max_degree; i ++) {
         output << i << "\t" << log(i);
         for (auto& ent_type : follow_models) {
