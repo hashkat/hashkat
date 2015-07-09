@@ -10,6 +10,8 @@ An agent-based follow method is one in which agents follow a twitter user based 
 
 Starting with the INFILE.yaml file we used in **Tutorial 4** for **Other Twitter Suggest Models**, we will of course change the follow model from *twitter_suggest* to *agent*, and finally get to implement our *Celebrity* agents into our network. This can be done by simply changing the *Celebrity* add weight to 100.0. With both the *Standard* agents and *Celebrity* agents having an add weight of 100.0, the number of *Standard* agents and *Celebrity* agents within the simulation will be roughly the same, with the proportion of *Standard* agents and *Celebrity* agents being added to the network being 1:1. Since celebrities tend to garner vastly more followers than ordinary people, it makes sense for our simulation of *Standard* and *Celebrity* agents to mimic this. Therefore, we will change the *Standard* follow weight to 10.0 and the *Celebrity* follow weight to 90.0. From this we should expect to see *Celebrity* agents to garner about 90% of the follows and Standard agents to garner about 10%.
 
+![INFILE.yaml-agents](/img/tutorial05/INFILE-agents.png "INFILE.yaml-agents")
+
 <iframe width="560" height="315" src="https://www.youtube.com/embed/_SXyLB0O30s" frameborder="0" allowfullscreen></iframe>
 
 ## Running and Visualizing The Network

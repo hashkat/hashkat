@@ -10,6 +10,8 @@ The twitter follow model is a combination of all of the other follow models, wit
 
 Using the INFILE.yaml file used in the previous tutorial as a starting point, we shall change the follow model to *twitter* for this simulation. Since the *twitter* follow model incorporates all the other follow models, we will have to fill out the model weights to control the proportion of each follow model that is present in the simulation relative to the others. We would like to have all the follow models weighted equally for this simulation. Therefore, every follow model will have a weight of 1.0 to accomplish this. Any value you use for the model weights is fine since they will all be normalized, but it is important that all the values are the same value to ensure that they are weighted equally. We would like to have *Celebrity* agents return to our simulation to make use of the agent and preferential agent follow models, so will change their add weight back to 100.0, to ensure that they are added into the network at an equal weight as the *Standard* agents.
 
+![INFILE.yaml - twitter follow model & model weights](/img/tutorial08/INFILE-twitter.png "INFILE.yaml - twitter follow model & model weights")
+
 ## Running and Visualizing The Network
 
 Running this simulation, we produced the following visualization:
