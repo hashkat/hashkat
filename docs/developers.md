@@ -52,23 +52,23 @@ Here we will give a brief description of all the files and directories that enco
 
 ### CMakeLists.txt
 
-
+Used to compile the code.
 
 ### CategoryGrouper.h
 
-
+Handles categorizing agents. Creates the data structures enabling categorizing agents into bins based on the number of tweets, retweets, and follows they have, and moving them into different bins if any of these tweet, retweet, or follow values change. Allows you to move agent ids around within those bins.
 
 ### CircularBuffer.h
 
-
+CHECK TO SEE IF STILL IN USE
 
 ### DataReadWrite.h
 
-
+Handles all the reading and writing to the *network_state.dat* file.
 
 ### FollowerSet.cpp
 
-
+Handles the organizing of each agent's list of followers based on region, language, etc. as well as its size and the addition or removal of a follower.
 
 ### FollowerSet.h
 
@@ -76,7 +76,7 @@ Here we will give a brief description of all the files and directories that enco
 
 ### FollowingSet.cpp
 
-
+Handles the organizing of each agent's list of agent ids they are following based on region, language, etc. as well as its size and the addition or removal of an agent they are following.
 
 ### FollowingSet.h
 
@@ -130,11 +130,11 @@ Determines which agent is selected at every KMC step to make a tweet, retweet, e
 
 ### config_dynamic.cpp
 
-
+Reads the input file. Parses all the necessary information from the input file.
 
 ### config_dynamic.h
 
-
+All the information obtained in *config_dynamic.cpp* is stored here in the *ParsedConfig* struct, which is then stored in the *analyzer.h* file.
 
 ### config_static.h 
 
@@ -142,11 +142,11 @@ File where certain fixed configurations of your network simulation are made. Her
 
 ### events.cpp
 
-
+Contains functions which control the actions you can make in interactive mode.
 
 ### events.h
 
-
+Header file used to allow other '.cpp' files to call the functions found in *events.cpp*.
 
 ### gexf.lua
 
