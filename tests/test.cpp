@@ -27,6 +27,7 @@
 #include <array>
 #include <iostream>
 #include <fstream>
+#include <cstdlib>
 
 #define BOOST_TEST_MAIN
 #include <boost/test/included/unit_test.hpp>
@@ -40,7 +41,10 @@ struct INIT_TEST
     INIT_TEST()
     :   folder_(std::getenv("HASHKAT"))
     {
-        folder_ += "/tests/referencefiles/";
+        if (!folder_.empty())
+            folder_ += "/tests/referencefiles/";
+        else
+            std::cout << "HASHKAT environment variable is not defined\n";
 
         files_ =
         {
@@ -53,16 +57,45 @@ struct INIT_TEST
         };
     }
 
-    void verify(const std::string& folder)
+    bool ready() const
+    {   return !folder_.empty();  }
+
+    void run(const std::string& test)
     {
-        folder_ += folder + "/output/";
+        std::string cmd("python ");
+        cmd += std::getenv("HASHKAT");
+        cmd += "/hashkat_pre.py --input ";
+        cmd += folder_ + test;
+        cmd += "/INFILE.yaml >/dev/null 2>&1";
+        std::system(cmd.c_str());
+
+        cmd = "cd ";
+        cmd += folder_ + test + ';';
+        cmd += std::getenv("HASHKAT");
+        cmd += "/build/src/hashkat >/dev/null 2>&1";
+        std::system(cmd.c_str());
+    }
+
+    void verify(const std::string& test)
+    {
+        std::string folder = folder_ + test + "/output/";
         for (auto file : files_)
         {
-            std::ifstream cin(folder_ + file + ".ref"); // ".dat");
-            output_test_stream cout(folder_ + file + ".ref");
+            std::ifstream cin(folder + file + ".dat");
+            BOOST_CHECK_MESSAGE(cin, "no .dat file to read");
+            output_test_stream cout(folder + file + ".ref");
             cout << cin.rdbuf();
             BOOST_CHECK(cout.match_pattern());
         }
+    }
+
+    void clean(const std::string& test)
+    {
+        std::string cmd("cd ");
+        cmd += folder_ + test;
+        cmd += ";rm -f DATA_vs_TIME INFILE.yaml-generated "
+               "output/*.dat output/*.gexf";
+        std::system(cmd.c_str());
     }
 
 private:
@@ -72,5 +105,63 @@ private:
 
 BOOST_FIXTURE_TEST_CASE(test01, INIT_TEST)
 {
-    verify("test01");
+    BOOST_REQUIRE(ready());
+    std::string test("test01");
+    run(test);
+    verify(test);
+    clean(test);
+}
+
+BOOST_FIXTURE_TEST_CASE(test03, INIT_TEST)
+{
+    BOOST_REQUIRE(ready());
+    std::string test("test03");
+    run(test);
+    verify(test);
+    clean(test);
+}
+
+BOOST_FIXTURE_TEST_CASE(test04, INIT_TEST)
+{
+    BOOST_REQUIRE(ready());
+    std::string test("test04");
+    run(test);
+    verify(test);
+    clean(test);
+}
+
+BOOST_FIXTURE_TEST_CASE(test05, INIT_TEST)
+{
+    BOOST_REQUIRE(ready());
+    std::string test("test05");
+    run(test);
+    verify(test);
+    clean(test);
+}
+
+BOOST_FIXTURE_TEST_CASE(test06, INIT_TEST)
+{
+    BOOST_REQUIRE(ready());
+    std::string test("test06");
+    run(test);
+    verify(test);
+    clean(test);
+}
+
+BOOST_FIXTURE_TEST_CASE(test07, INIT_TEST)
+{
+    BOOST_REQUIRE(ready());
+    std::string test("test07");
+    run(test);
+    verify(test);
+    clean(test);
+}
+
+BOOST_FIXTURE_TEST_CASE(test12, INIT_TEST)
+{
+    BOOST_REQUIRE(ready());
+    std::string test("test12");
+    run(test);
+    verify(test);
+    clean(test);
 }
