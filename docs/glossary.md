@@ -473,6 +473,13 @@ Displays the percentage of connections agents of each region have with other reg
 **(type: n/a)** This section of the input file is for declaring different regions where the agents in the network are ‘from’. When an agent is created, where the agent is ‘from’ is
 selected randomly with weights that can be set. Here you can set the weights for many different parameters, all of which is explained below.
 
+####resolution_growth_factor
+
+**type: double** This value changes how the integrals are
+evaluated for the density function. Since the resolution of the function found experimentally needs to be more accurate initially then after some amount of time, we have
+introduced this parameter. For example if *x_start* is 5, the *initial_resolution* is 1, and this
+parameter is 1.5, then the integrals will be evaluated at [5, 6], [6, 7.5], [7.5, 9.0], etc.
+
 ####retweet
 A retweet is the rebroadcasting of tweet by an agent who did not actually create the tweet.
 
