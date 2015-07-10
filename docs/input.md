@@ -8,7 +8,7 @@ This section serves as a reference for users working with the input file INFILE.
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/4X063IPFzM4" frameborder="0" allowfullscreen></iframe>
 
-### analysis
+### **analysis**
 
 The first section of this program is titled analysis, and it outlines what is the general focus of this simulation. Let's go over what each variable means.
 
@@ -179,7 +179,7 @@ use_hashtag_probability:
 
 The probability of a tweet containing a # from 0 to 1. As we can see in this example, the probability of using a # is 1, so every tweet will contain a #.
 
-### rates
+### **rates**
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/_NNOtwrPTg0" frameborder="0" allowfullscreen></iframe>
 
@@ -198,7 +198,7 @@ rates:
 
 where the y-intercept is the initial arbitrary value of agents added to the network and the slope, multipled by the number of simulated months that have elapsed within the simulation, is the value by which the y-intercept is increased by. 
 
-### output
+### **output**
 
 This section of the program outlines what is present in the output directory once the simulation is concluded. To acquire as much data as possible, it is recommended to initally set all these to *true*, and to input *false* to whatever you don't need after more 
 experience running simulations.
@@ -327,7 +327,7 @@ degree_distribution_by_follow_model:
   true
 ```
 
-If set to true, creates the *dd_by_follow_model.dat* output file, which contains !!!!!!!!!!!!!!!!
+If set to true, creates the *dd_by_follow_model.dat* output file, which contains the normalized probability and the ln of the normalized probability for each follow method in network simulation. 
 
 #### Region Connection Matrix
 ```python
@@ -337,7 +337,7 @@ region_connection_matrix:
 
 If set to true, creates the 'region_connection_matrix.dat' file, which displays a chart showing the connections made in regions.
 
-### ranks
+### **ranks**
 
 #### Tweet Ranks
 
@@ -369,7 +369,9 @@ follow_ranks:
 
 Similar to *tweet_ranks* and *retweet_ranks*, *follow_ranks* serves to categorize and organize agents based on the number of followers that they have. However, an additional factor is taken into consideration, the bin weights. The bin weights gives each bin threshold a weight equal to its value increased by one. These weights are essential in the twitter suggest and preferential agent follow models, because they are what cause agents with a higher degree to have a greater probability of being followed by other agents since they will be placed in bins that are more heavily weighted than those of agents with fewer followers.
 
-### tweet observations
+### **tweet observations**
+
+As time moves on tweets lose relevance to the point where they will never be retweeted. This section deals with the decay function for retweet rates.
 
 #### Density Function
 
@@ -377,8 +379,7 @@ Similar to *tweet_ranks* and *retweet_ranks*, *follow_ranks* serves to categoriz
 density_function:
        2.45 / (x)**1.1
 ```
-
-
+This density function in which retweet rates decay over time. This function will be integrated and each discrete element of this function will be divided by the total integral. This is done to normalize the function and ensure that it truly is a probability density function. Agents that can be retweeted are binned according to the values determined by the function. As time progresses, they are moved to bins of smaller values or retweet rates. The discrete elements of the function can be adjusted below.
 
 #### x_start
 
@@ -387,7 +388,7 @@ density_function:
        5
 ```
 
-
+This is the initial value of the density function. Make sure that the value you choose for this does not cause a discontinuity in the function (e.g. using 0 for this value would cause the above density function to be divided by 0, causing a discontinuity).
 
 #### x_end
 
@@ -396,7 +397,7 @@ density_function:
        600
 ```
 
-
+This is the final value of the density function. Just like for *x_start*, make sure that this value does not cause a discontinuity in the function.
 
 #### Initial Resolution
 
@@ -405,7 +406,7 @@ density_function:
        1.0
 ```
 
-
+Determines the initial boundary spacing for integration of the density function. For example, here we have an *initial_resolution* of 1.0 and *x_start* equal to 5, so we could expect the first integral to be bounded from 5 to 6, since they have a difference of 1.
 
 #### Resolution Growth Factor
 
@@ -414,7 +415,7 @@ density_function:
        1.05
 ```
 
-
+This value determines the density function integral boundary spacing subsequently after the initial resolution boundary spacing. This is implemented due to function resolution needing to be much more accurate during the time immediately after a tweet is tweeted as opposed to some time after this has occurred. If you had an *initial_resolution* of 1.0 and a *resolution_growth_factor* of 1.05 with *x_start* set to 5, the integrals would be evaluated at [5,6], [6, 7.05], [7.05, 8.10], etc. 
 
 #### Time Span
 
@@ -423,9 +424,9 @@ density_function:
        8*hour
 ```
 
+Determines for how long after a tweet has been made that it can be retweeted. Once this time has elapsed, the density function will disappear, allowing no more retweets or following via retweets to occur for this tweet.
 
-
-### ideologies
+### **ideologies**
 
 ```python
   - name: Red
@@ -435,7 +436,7 @@ density_function:
 The *ideologies* are the arbitrary dogma that you would like agents of that ideology to have. They can be named whatever you would like, and can be as numerous as you would like as well, though their quantity must be equal or less than the number of
 N_BIN_IDEOLOGIES specified in config_static.h. 
 
-### regions
+### **regions**
 
 ```python
 - name: Ontario
@@ -451,7 +452,7 @@ N_BIN_REGIONS in config_static.h. *add_weight* corresponds to the probability th
 The *ideology_weights* are the possible ideologies that an agent from that region can have, and are weighted with respect to one another. Similar to the *ideology_weights*, the *language_weights* are the possible languages that an agent from that region can speak,
 and are also weighted with respect to each other.
 
-### config_static
+### **config_static**
 
 #### Humour Bins
 
@@ -459,9 +460,9 @@ and are also weighted with respect to each other.
 humour_bins: 2
 ```
 
+Determines the degree of funny. Not currently implemented in #k@.
 
-
-### preference classes
+### **preference classes**
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/Sx0U1Fy5Bbo" frameborder="0" allowfullscreen></iframe>
 
@@ -493,7 +494,7 @@ The *preference classes* are the traits of an agent that influence whether or no
 Under *tweet_transmissions* one can dictate the probabilities that each type of agent will retweet a tweet, based on the content of that tweet, whether it be plain or musical, have a different ideology, have the same ideology, or be humourous.
 The *follow_reaction_prob* relates to the probability that an agent will follow an agent based on seeing a tweet by them being retweeted by another agent that that agent is following as opposed to just retweeting that retweet. With the *follow_reaction_prob* set to 0.5 in the above example, there is a 50% chance that an agent will retweet a retweet and a 50% chance that they will follow the speaker of the original tweet.   
 
-### agents
+### **agents**
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/w_BVsSwb7cw" frameborder="0" allowfullscreen></iframe>
 
@@ -509,7 +510,7 @@ The *follow_reaction_prob* relates to the probability that an agent will follow 
         plain: 1.0
         musical: 1.0
         humourous: 1.0
-    followback_probability: 44
+    followback_probability: 0.44
     hashtag_follow_options:
       care_about_region: true
       care_about_ideology: false

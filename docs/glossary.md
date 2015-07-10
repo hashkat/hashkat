@@ -7,7 +7,7 @@
 A brief description and explanation for all of the terminology used in this documentation and in hashkat.
 ##A
 
-####add_weight
+####'add' weight
 **(type: double/float)** This variable declares the percentage of the certain agent type in the network. Before the simulation is done, a loop is placed over all the different agents declared, and the add variables are summed. The value of add
 declared in each agent type will then be divided by the add sum. For example if agent type A has an add value of 75, and agent type B has an add value of 25, then the network will consist of 75% of agent type A, and 25% of agent type B.
 
@@ -76,19 +76,16 @@ The discrete elements of the function can be adjusted by the parameters mentione
 **(type: n/a)** In the agents section, there are different types of tweets that agents can tweet. One of the tweet types is ‘ideological’ which is a tweet related to an agents ideology. When an agent tweets a ideological tweet, the agents that
 follows the agent who tweeted may retweet the tweet depending on the tweet transmission value and density function. An example of the syntax for declaring a ideological tweet preference class is:
 
+```python
 preference classes:
+ - name: Pref1
 
--name: Pref1
-
-tweet transmission:
-
-different ideology:
-
-AgentType1: 0.1
-
-AgentType2: 0.1
-
-else: 0.1
+   tweet transmission:
+      different ideology:
+         AgentType1: 0.1
+         AgentType2: 0.1
+         else: 0.1
+```
 
 As you can see from above, the agent types declared in the agents section are used in the preference classes. If you also declared an agent type ‘AgentType3’ then that agent type would fall under the ‘else’ set above.
 You can see that the transmission probabilities for all of the agent types are the same.
@@ -108,12 +105,12 @@ If you type ‘exit()’ while in the interpreter the simulation will terminate.
 ####follow
 The act of an agent connecting with another agent.
 
-####follow weight
+####'follow' weight
 **(type: double/float)** This variable sets the weights for following each agent type. Like the add variable, these weights are summed, and then each follow variable is divided by the total. This variable is not used if the follow model is
 random or preferential, but is used for the other models. For example if agent type A has a follow variable of 85, and agent type B has a follow variable of 15, then
 agent type A will be followed 85% of the time, and agent type B will be followed 15% of the time.
 
-####follow rate
+####'follow' rate
 **(type: n/a)** Like the function parameter to add agents into the network, the functions that can be set for the follow rate are ‘constant’ and ‘linear’. The
 usage for defining the follow rate is the exact same as the agent add rate. See link for further implementation details.
 
@@ -134,11 +131,13 @@ The descriptions for how you can set your thresholds for tweets, retweets, and f
 **(type: double)** If an agent is selected to act on a retweet and they are not following the original tweeter, then they can either retweet the retweet or follow the original tweeter. This probability set here (from 0 to 1) describes how often
 an agent would follow rather than retweeting the retweet. They need to be set for every preference class. An example is below:
 
+
+```python
 preference classes:
-
--name: Pref1
-
-follow reaction prob: 0.5
+ - name: Pref1
+   follow reaction prob:
+      0.5
+```
 
 This probability set above would allow for half follows and half retweeted retweets.
 
@@ -149,15 +148,19 @@ This probability set above would allow for half follows and half retweeted retwe
 **(type: string)** The function for the add rate can either be constant or linear; other options can be coded into the software if necessary. If function is set to ‘constant’, then you must also declare the constant value by setting the ‘value’
 parameter to a real constant > 0. An example of of constant add rate is as follows:
 
+```python
 add: {function: constant, value: 1.0}
+```
 
 This will set the add rate to 1 agent per minute. If function is set to ‘linear’, then you must set 2 other variables, the ‘y intercept’ and ‘slope’ variables. An example of a linearly increasing add rate is as follows:
 
+```python
 add: {function: linear, y_intercept: 1.0, slope: 0.1}
+```
 
 This will create an add user rate of the form:
 
-R_add = 1.0 + n_months · 0.1
+*R*<sub>add</sub> = 1.0 + *n*<sub>months</sub> · 0.1
 
 where n months is the number of months that have passed in the simulation. The number of months is determined by a constant approximate month of 30 · 60 · 24 minutes. This constant value can be changed in the software to achieve desired result.
 
@@ -189,15 +192,13 @@ their hashtag preferences. These preferences can be set in the hashtag follow op
 **(type: n/a)** When agents tweet in the network, they can also attach hashtags to their tweets. When they do attach hashtags, they are binned according to their ideology and region. If another agent searches for a hashtag based on
 their characteristics, they can follow agents with a specific ideology or location. They can either follow agents that have the same ideology and region as them or just ideology and different region. An example of these options is below:
 
+```python
 agents:
-
--name: AgentType1
-
-hashtag follow options:
-
-care about region: true
-
-care about ideology: true
+  - name: AgentType1
+    hashtag follow options:
+      care about region: true
+      care about ideology: true
+```
 
 From this example, the AgentType1 will only follow other agents that have the same ideology and region because they care about the region and ideology for the hashtag
 follow method. If both are set to false, then the AgentType1 will follow agents with any ideology from any location.
@@ -210,19 +211,16 @@ The value for each bin is what ever value is set in the preference classes secti
 **(type: n/a)** In the agents section, there are different types of tweets that agents can tweet. One of the tweet types is ‘humourous’ which can be thought of as how often they tweet humourous tweets. When an agent tweets a humourous tweet,
 the agents that follows the agent who tweeted may retweet the tweet depending on the tweet transmission value and density function. An example of the syntax for declaring a ideological tweet preference class is:
 
+```python
 preference classes:
+ - name: Pref1
 
--name: Pref1
-
-tweet transmission:
-
-humourous:
-
-AgentType1: 0.1
-
-AgentType2: 0.1
-
-else: 0.1
+   tweet transmission:
+      humourous:
+        AgentType1: 0.1
+        AgentType2: 0.1
+        else: 0.1
+```
 
 As you can see from above, the agent types declared in the agents section are used in the preference classes. If you also declared an agent type ‘AgentType3’ then that agent type would fall under the ‘else’ set above.
 You can see that the transmission probabilities for all of the agent types are the same.
@@ -243,13 +241,13 @@ regions section of the input file. You can also set the weights of a certain age
 **(type: n/a)** After declaring ideologies which define a characteristic for an agent, you must set the weights for each ideology in the region section. For more information on ideologies, click here: ideologies.
 Let’s say you have defined ideologies ‘Red’ and ‘Blue’. The correct syntax for setting the weighting of these ideologies is as follows:
 
+```python
 regions:
+  - name: Canada
+    add_weight: 5
 
--name: Canada
-
-add weight: 5
-
-ideology weights: {Red: 10, Blue: 10}
+    ideology_weights: {Red: 10, Blue: 10}
+```
 
 Here the weights for each ideology are also summed and divided by the sum to generate a probability. These probabilities are used when an agent is created to determine which ideology they are.
 
@@ -259,7 +257,9 @@ squared, if cubic, the separation between bins is the increment cubed.
 
 An example of linear thresholds is:
 
+```python
 thresholds: {bin spacing: linear, min: 10, max: 100, increment: 10}
+```
 
 This will create thresholds 10, 20, 30,..., 100; the agents will be grouped according to
 these thresholds.
@@ -289,9 +289,9 @@ The #k@ program is designed to allow users to create and interact with the most 
 ####Kinetic Monte Carlo Method
 An algorithm designed to carry out a simulation where the rate of which time is increased by is influenced by the cummulative rate function of the rates within the system through the formula:
 
-&Delta;t = -ln(u) / **R**
+&Delta;*t* = -ln(*u*) / **R**
 
-where &Delta;t is the change in time, *u* is a generated random number, and **R** is the cumulative rate function.
+where &Delta;*t* is the change in time, *u* is a generated random number, and **R** is the cumulative rate function.
 
 ##L
 
@@ -299,13 +299,13 @@ where &Delta;t is the change in time, *u* is a generated random number, and **R*
 **(type: n/a)** After declaring languages in ‘config static.h’ which defines the language for the agent, you must set the weights for each language in the region section. Let’s say you have defined languages ‘English’, ‘French’, and ‘English+French’.
 The correct syntax for setting the weighting of these languages is as follows:
 
+```python
 regions:
+  - name: Canada
+    add_weight: 5
 
--name: Canada
-
-add_weight: 5
-
-language_weights: {English: 10, French: 10, English+French: 10}
+    language_weights: {English: 10, French: 10, English+French: 10}
+```
 
 Here the weights for each language are also summed and divided by the sum to generate a probability. These probabilities are used when an agent is created to determine which language they speak.
 
@@ -348,21 +348,21 @@ model_weights{random: 0.20, preferential: 0.20, agent: 0.20, preferential agent:
 ####naming_ideologies
 **(type: string)** The names of your ideologies is completely up to you and the syntax for declaring ideologies is as such:
 
+```python
 ideologies:
-
--name: Red
-
--name: Blue
-
+  - name: Red
+  - name: Blue
+```
 You can see that I have set 2 ideologies, Red and Blue. The weights for each ideology must be set in the regions section of the input file.
 
 ####naming_preference_classes
 **(type: string)** You can name your preference classes however you want. The names of your preference classes are needed in the regions section of the input file to determine the weights for an agent having a certain preference class.
 An example is as follows:
 
+```python
 preference classes:
-
--name: Pref1
+ - name: Pref1
+```
 
 ####naming_regions
 **(type: string)** The name of your region can be anything that consists of a string. The name is a necessary part of the region so you will get a warning if it is not set.
@@ -390,19 +390,16 @@ Directory which contains all the analysis files created from running a network s
 **(type: n/a)** In the agents section, there are different types of tweets that agents can tweet. One of the tweet types is ‘plain’ which is a generic tweet. When an agent tweets a plain tweet, the agents that follows the agent who tweeted may retweet
 the tweet depending on the tweet transmission value and density function. An example of the syntax for declaring a plain tweet preference class is:
 
+```python
 preference classes:
+ - name: Pref1
 
--name: Pref1
-
-tweet transmission:
-
-plain:
-
-AgentType1: 0.1
-
-AgentType2: 0.1
-
-else: 0.1
+   tweet transmission:
+      plain:
+        AgentType1: 0.1
+        AgentType2: 0.1
+        else: 0.1
+```
 
 As you can see from above, the agent types declared in the agents section are used in the preference classes. If you also declared an agent type ‘AgentType3’ then that agent type would fall under the ‘else’ set above.
 You can see that the transmission probabilities for all of the agent types are the same.
@@ -418,13 +415,13 @@ an agent will be selected to follow.
 **(type: n/a)** After declaring preference classes which describe how retweets pass from agent to agent, you must set the weights for each preference class in the region section. For more information on preference classes, click here: preference classes.
 Let’s say you have defined preference classes ‘Pref1’ and ‘Pref2’. The correct syntax for setting the weighting of these preference classes is as follows:
 
+```python
 regions:
+  - name: Canada
+    add weight: 5
 
--name: Canada
-
-add weight: 5
-
-preference class weights: {Pref1: 10, Pref2: 10}
+    preference class weights: {Pref1: 10, Pref2: 10}
+```
 
 Here the weights for each preference classes are also summed and divided by the sum to generate a probability. These probabilities are used when an agent is created to determine which preference class they use.
 
@@ -458,15 +455,14 @@ the number of months in the simulation are determined by a constant value define
 **(type: double)** As mentioned above, when an agent is added into the network, we randomly generate where they are from. The weights set for each region declares the probability of an agent being from a specific region. The weights for
 all of the regions are summed and then divided by the sum to create a probability. The units for the weights of each region should be the same to normalize them correctly. The syntax for declaring the add weight is as such:
 
+```
 regions:
+  - name: Canada
+    add weight: 5
 
--name: Canada
-
-add weight: 5
-
--name: USA
-
-add weight: 10
+  - name: USA
+    add weight: 10
+```
 
 From these weights, two thirds of the population will be from USA and one third from Canada.
 
@@ -476,6 +472,13 @@ Displays the percentage of connections agents of each region have with other reg
 ####'regions' section
 **(type: n/a)** This section of the input file is for declaring different regions where the agents in the network are ‘from’. When an agent is created, where the agent is ‘from’ is
 selected randomly with weights that can be set. Here you can set the weights for many different parameters, all of which is explained below.
+
+####resolution_growth_factor
+
+**type: double** This value changes how the integrals are
+evaluated for the density function. Since the resolution of the function found experimentally needs to be more accurate initially then after some amount of time, we have
+introduced this parameter. For example if *x_start* is 5, the *initial_resolution* is 1, and this
+parameter is 1.5, then the integrals will be evaluated at [5, 6], [6, 7.5], [7.5, 9.0], etc.
 
 ####retweet
 A retweet is the rebroadcasting of tweet by an agent who did not actually create the tweet.
@@ -493,19 +496,16 @@ tweet in the network.
 **(type: n/a)** In the agents section, there are different types of tweets that agents can tweet. One of the tweet types is ‘ideological’ which is a tweet related to an agents ideology. When an agent tweets a ideological tweet, the agents that follows the
 agent who tweeted may retweet the tweet depending on the tweet transmission value and density function. An example of the syntax for declaring a ideological tweet preference class is:
 
+```python
 preference classes:
+ - name: Pref1
 
--name: Pref1
-
-tweet transmission:
-
-same ideology:
-
-AgentType1: 0.1
-
-AgentType2: 0.1
-
-else: 0.1
+   tweet transmission:
+      same ideology:
+        AgentType1: 0.1
+        AgentType2: 0.1
+        else: 0.1
+```
 
 As you can see from above, the agent types declared in the agents section are used in the preference classes. If you also declared an agent type ‘AgentType3’ then that agent type would fall under the ‘else’ set above.
 You can see that the transmission probabilities for all of the agent types are the same.
@@ -573,21 +573,17 @@ For example if a threshold is 10, then the agents with 10 or less tweets will be
 There are four different tweet types currently implemented and they are ‘ideological’, ‘plain’, ‘musical’, and ‘humourous’. The weights associated with each tweet type can also be set along with the tweet type. These weights can be different for each agent type and
 the weights are summed and each weight is divided by the sum to produce a probability for generating each tweet type. An example of how to set the tweet types is below:
 
+```python
 agents:
 
--name: AgentType1
-
-weights:
-
-tweet type:
-
-ideological: 1.0
-
-plain: 1.0
-
-musical: 1.0
-
-humourous: 1.0
+  - name: AgentType1
+    weights:
+      tweet type:
+        ideological: 1.0
+        plain: 1.0
+        musical: 1.0
+        humourous: 1.0
+```
 
 From above you can see that all of the weights are the same and therefore there would be the same amount of each tweet type for AgentType1.
 
@@ -629,7 +625,7 @@ If set to 0.5, then half of the tweets will have hashtags. If 1.0, then all of t
 ####use_random_time_increment
 **(type: boolean)** If true, the time in the simulation will be incremented at a non-constant rate; the increment of time is determined by
 
-&Delta;t = -ln(u) / **R**
+&Delta;*t* = -ln(*u*) / **R**
 
 where *u* is a random number in the interval 0 < *u* ≤ 1, and **R** is the sum of the rates for the simulation. On average, the value of −ln(*u*) is unity, and therefore you can increment time by 1/**R** ; this is how time is incremented if set to false.
 
