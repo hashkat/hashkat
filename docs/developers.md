@@ -44,7 +44,7 @@ Here we will give a brief description of all the files and directories that enco
 
 ### unit_tests
 
-
+Tests that have been run throughout the construction of #k@.
 
 ### util
 
@@ -88,7 +88,7 @@ Handles the organizing of each agent's list of agent ids they are following base
 
 ### TimeDepBinner.h
 
-
+Used for updating the retweets. Handles moving tweeters into a different bin after a certain amount of time has elapsed, giving them less of a chance of having that tweet be retweeted.
 
 ### TweetBank.cpp
 
@@ -154,11 +154,11 @@ Header file used to allow other '.cpp' files to call the functions found in *eve
 
 ### interactive_mode.cpp
 
-
+This sets up interactive mode, ensures everything is running properly, shows the menu. Connects the '.cpp' and '.lua' files together in order to print out different things in the interactive mode.
 
 ### interactive_mode.h
 
-
+Header file corresponding to 'interactive_mode.cpp' allowing other files to call the 'start_interactive_mode(AnalysisState& state)' function.
 
 ### interactive_mode.lua
 
@@ -166,27 +166,26 @@ Header file used to allow other '.cpp' files to call the functions found in *eve
 
 ### io.cpp
 
-
+Used for analysis at the completion of a network simulation. Makes calculations based on the data collected to create the output files
 
 ### io.h
 
-
+Header file corresponding to 'io.cpp' enabling other files to call particular functions from 'io.cpp'.
 
 ### main.cpp
 
 When running a network simulation, this is the file that will read in **INFILE.yaml**, and call *analyzer_main.cpp. It also prints to the screen certain information about the network simulation such as the version of #k@ you are using, the seed you will be using, and how long the analysis took in real time. 
-
 ### network.h
 
 Contains the *Network* struct which places all the *Agent* struct into an array and enables several commands that #k@ users can use to gather specific information about the simulated network, such as if an id number exists in the network, how many followers does a specific id have, etc.
 
 ### tweets.h
 
-
+Sets all the information stored within tweets.
 
 ### util.h
 
-
+Contains helper functions. 
 
 ## Latest Build
 
