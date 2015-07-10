@@ -327,7 +327,7 @@ degree_distribution_by_follow_model:
   true
 ```
 
-If set to true, creates the *dd_by_follow_model.dat* output file, which contains !!!!!!!!!!!!!!!!
+If set to true, creates the *dd_by_follow_model.dat* output file, which contains the normalized probability and the ln of the normalized probability for each follow method in network simulation. 
 
 #### Region Connection Matrix
 ```python
@@ -459,7 +459,7 @@ and are also weighted with respect to each other.
 humour_bins: 2
 ```
 
-
+Determines the degree of funny. Not currently implemented in #k@.
 
 ### preference classes
 

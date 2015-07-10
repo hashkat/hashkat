@@ -22,11 +22,11 @@ The code map below outlines how rates work in #k@.
 
 ![Code Map](/img/code_map.jpg "Code Map")
 
-In the *analyzer_main.cpp* file, ff the simulated time is less than the maximum simulated time and the real time that has occurreed is less than the maximum real time, a random number, *r1*, is generated. If *r1* and the add rate have a difference less than zero, a new agent is added to the network. If this is not the case, the value of *r1* is decreased by the add rate. If *r1*'s new value and the follow rate have a difference less than zero, an agent follows some other agent via *analyzer_follow.cpp*. If this is not the case, the value of *r1* is decreased by the follow rate. If *r1*'s new value and the tweet rate have a difference less than zero, an agent tweets. If this is not the case, the value of *r1* is decreased by the tweet rate. If *r1*'s new value and the retweet rate hae a difference less than zero, an agent retweets via the *analyzer_retweet.cpp*. If this is not the case, the value of *r1* is decreased by the retweet rate.   
+In the *analyzer_main.cpp* file, ff the simulated time is less than the maximum simulated time and the real time that has occurreed is less than the maximum real time, a random number, *r*<sub>1</sub>, is generated. If *r*<sub>1</sub> and the add rate have a difference less than zero, a new agent is added to the network. If this is not the case, the value of *r*<sub>1</sub> is decreased by the add rate. If *r*<sub>1</sub>'s new value and the follow rate have a difference less than zero, an agent follows some other agent via *analyzer_follow.cpp*. If this is not the case, the value of *r*<sub>1</sub> is decreased by the follow rate. If *r*<sub>1</sub>'s new value and the tweet rate have a difference less than zero, an agent tweets. If this is not the case, the value of *r*<sub>1</sub> is decreased by the tweet rate. If *r*<sub>1</sub>'s new value and the retweet rate hae a difference less than zero, an agent retweets via the *analyzer_retweet.cpp*. If this is not the case, the value of *r*<sub>1</sub> is decreased by the retweet rate.   
 
-Once this is completed, another random number, *r2* is generated. If *use_random_tme_increment*, the simulated time moves forward by:
+Once this is completed, another random number, *r*<sub>2</sub> is generated. If *use_random_tme_increment*, the simulated time moves forward by:
 
-t += -ln(*r2*) / **R**
+*t* += -ln(*r*<sub>2</sub>) / **R**
 
 where **R** is the cumulative rate function, the sum of all the rates. All the rates are then updated, and if the maximum simulated or real time has not been reached, this process repeats.
 
@@ -92,11 +92,11 @@ Here we will give a brief description of all the files and directories that enco
 
 ### TweetBank.cpp
 
-
+Everyone who tweets is placed here. Determines the age of a tweet. Updates the rate for certain tweets. Tweets are binned by when they occur. After a certain amount of time, tweets are moved to the next bin with a lower transmission probability. obs_prob determines the probability that the tweet will be transmitted. TimeDepRateTree allows #k@ to do this.
 
 ### TweetBank.h
 
-
+Includes google/spare_hash_set. This file takes the list of followers an agent has and organizes it in a way so that followers who retweet an agent are ones that are most similar to the agent personality-wise. Contains numerous functions to allow this to happen. Also enables visualiztions of tweets. 
 
 ### agent.h
 
@@ -104,7 +104,7 @@ Contains the *Agent* struct which determines the characteristics and collects in
 
 ### analyzer.h
 
-
+Stores all of the information for a simulation in #k@.
 
 ### analyzer_follow.cpp
 
@@ -122,11 +122,11 @@ Manages updating all the rates present in #k@ and adding them together to find t
 
 ### analyzer_retweet.cpp
 
-
+Manages all the retweets in a simulation. Analyzes retweet rate and how it changes over time. Keeps track of tweet observation and how it decreases over time. AnalyzerRetwweet struct has all this information passed to it. Retweets are update via calling functions in the tweetbank. Tweets are updated as well, in terms of their relevance. If enough time has passed where they are no longer relevant, checks if they need to be removed. total retweet rate is found here and is called by analyzer_rates. RetweetCHoice determines which agent will be retweeting a tweet, based on google sparse hash table. Ensures that the agents speak the same language, perhaps have the same ideology, etc.
 
 ### analyzer_select.cpp
 
-
+Determines which agent is selected at every KMC step to make a tweet, retweet, etc. Ensures that the agent selection process is done so properly.
 
 ### config_dynamic.cpp
 
