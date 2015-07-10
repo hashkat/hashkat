@@ -38,8 +38,11 @@ using boost::test_tools::output_test_stream;
 struct INIT_TEST
 {
     INIT_TEST()
+    :   folder_(std::getenv("HASHKAT"))
     {
-        files =
+        folder_ += "/tests/referencefiles/";
+
+        files_ =
         {
             "Bot_info", "Celebrity_info",
             "cumulative-degree_distribution_month_000", "dd_by_follow_model",
@@ -50,20 +53,24 @@ struct INIT_TEST
         };
     }
 
-    std::array<std::string, 14> files;
+    void verify(const std::string& folder)
+    {
+        folder_ += folder + "/output/";
+        for (auto file : files_)
+        {
+            std::ifstream cin(folder_ + file + ".ref"); // ".dat");
+            output_test_stream cout(folder_ + file + ".ref");
+            cout << cin.rdbuf();
+            BOOST_CHECK(cout.match_pattern());
+        }
+    }
+
+private:
+    std::string folder_;
+    std::array<std::string, 14> files_;
 };
 
 BOOST_FIXTURE_TEST_CASE(test01, INIT_TEST)
 {
-    std::string folder = std::getenv("HASHKAT");
-    folder += "/tests/referencefiles/test01/output/";
-    //std::cout << folder << std::endl;
-    for (auto file : files)
-    {
-        //std::cout << file << std::endl;
-        std::ifstream cin(folder + file + ".ref"); // ".dat");
-        output_test_stream cout(folder + file + ".ref");
-        cout << cin.rdbuf();
-        BOOST_CHECK(cout.match_pattern());
-    }
+    verify("test01");
 }
