@@ -20,10 +20,6 @@ as well as the logs of each.
 Outlines the number of tweets, follows, and retweets in their respective bin
 thresholds. Appears in twitter-preferential modelled simulations.
 
-`connections_vs_nodes.dat`
-
-
-
 `cumulative-degree_distribution_month_000.dat`
 
 Outlines all the possible total degrees an agent can have in that particular
@@ -32,7 +28,7 @@ normalized probability logarithm in columns in that order.
 
 `dd_by_follow_model.dat`
 
-
+Indicates the normalized probability and ln of the normalized probability for each degree per follow method.
 
 `in-degree_distribution_month_000.dat`
 
