@@ -34,6 +34,19 @@ export HASHKAT_VERSION="`git describe --abbrev=0`b`git rev-list HEAD --count`"
 popd
 
 ###############################################################################
+#  --tests: Run tests, including functionality equivalent tests (testing
+# against reference files from previous runs), and unit tests.
+#
+#  TODO: A possible argument like eg --quick to only run unit tests (once
+# we have them back in)
+###############################################################################
+
+if handle_flag "--tests" ; then
+    "$HASHKAT/build/src/test" $args
+    exit
+fi
+
+###############################################################################
 # Show help for run.sh options available.
 #  --help/help: Show options available.
 ###############################################################################
@@ -53,7 +66,6 @@ Misc options:
     --no-ctrlc, do not handle Ctrl+C (note, results in immediate termination with Ctrl+C)"
     exit
 fi
-
 
 # If the flag is NOT present, handle ctrl-c
 if ! handle_flag "--no-ctrlc" ; then
