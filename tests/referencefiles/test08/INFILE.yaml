@@ -275,26 +275,26 @@ preference_classes:
   # preference class:
    tweet_transmission: 
       plain: # Also applies to musical tweets
-        Standard: 1.0
+        Standard: 0.0
         Celebrity: 0.01
         else: 0.01
       different_ideology:   # no retweeting for different ideologies
-        Standard: 1.0
+        Standard: 0.0
         Celebrity: 0.00
         else: 0.00
       same_ideology:
-        Standard: 1.0
+        Standard: 0.0
         Celebrity: 0.01
         else: 0.01
       humourous:
-        Standard: 1.0
+        Standard: 0.0
         Celebrity: 0.02
         else: 0.02
    # Probability that we will follow as a reaction.
    # Only applies to 2nd generation retweets, otherwise
    # the agent would already be a follower.
    follow_reaction_prob:
-      1.0
+      0.0
 
  - name: NoRetweetPref
    tweet_transmission: 

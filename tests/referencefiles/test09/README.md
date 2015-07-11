@@ -1,0 +1,1 @@
+Test file created to test the number of retweets made in a network simulation with a tweet transmission rate of 0.5. The network simulation has a constant number of 100 agents, runs for 1000 simulated minutes, each agent has a tweet rate of 0.005 tweets/simulated_minute.

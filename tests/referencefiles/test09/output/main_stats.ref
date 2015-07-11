@@ -11,26 +11,26 @@ Standard: 100	(100% of total agents)
 TWEETS
 _____
 
-Total: 489
-Hashtags: 489	(100% of total tweets)
-Standard: 489	(100% of total tweets)
+Total: 533
+Hashtags: 533	(100% of total tweets)
+Standard: 533	(100% of total tweets)
 
 RETWEETS
 _______
 
-Total: 8510
-Standard: 8510	(100% of total retweets)
+Total: 2560
+Standard: 2560	(100% of total retweets)
 
 FOLLOWS
 _______
 
-Total follows: 1525
-Total follow attempts: 1803
-Random: 1018	(56.4615% of total follow attempts)
+Total follows: 1127
+Total follow attempts: 1277
+Random: 991	(77.6038% of total follow attempts)
 Preferential: 0	(0% of total follow attempts)
 Agent: 0	(0% of total follows attempts)
 Preferential-agent: 0	(0% of total follow attempts)
-Retweet: 785	(43.5385% of total follows attempts)
+Retweet: 286	(22.3962% of total follows attempts)
 Hashtag: 0	(0% of total follows attempts)
 Followbacks: 0	 (0% of total follow attempts)
-Standard: 1525	(100% of total follows)
+Standard: 1127	(100% of total follows)

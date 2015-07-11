@@ -294,7 +294,7 @@ preference_classes:
    # Only applies to 2nd generation retweets, otherwise
    # the agent would already be a follower.
    follow_reaction_prob:
-      1.0
+      0.5
 
  - name: NoRetweetPref
    tweet_transmission: 
