@@ -30,7 +30,7 @@ function handle_flag(){
 
 pushd "$HASHKAT"
 # TODO When packaging, this must be replaced with the version string
-export HASHKAT_VERSION="`git describe`.b`git rev-list HEAD --count`"
+export HASHKAT_VERSION="`git describe --abbrev=0`b`git rev-list HEAD --count`"
 popd
 
 ###############################################################################

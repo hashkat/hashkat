@@ -23,8 +23,7 @@ endif()
 add_definitions ("-DHASHKAT_VERSION=\"$ENV{HASHKAT_VERSION}\"")
 
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-    if(APPLE) 
-    elseif ($ENV{BUILD_SANITIZE})
+    if ($ENV{BUILD_SANITIZE})
         SET (CMAKE_EXE_LINKER_FLAGS
             -fsanitize=address 
         )

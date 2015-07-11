@@ -73,8 +73,7 @@ Configuration options:
 
 Build options:
     --eclipse (or -e), create Eclipse project files in sibling directory ‘../KMCEclipse’
-    --force (or -f), do not rebuild (can be used to run last without compilation error)
-    --build (or -B), only build (note -f with -B is a no-op)
+    --run (or -R), run after building
  
 Optimization options:
     --optimize (or -O), build with optimization. Prevents debugging.
@@ -147,7 +146,9 @@ if handle_flag "--debug-std" ; then
 fi
 
 # Configure version string
-export HASHKAT_VERSION="`git describe`.b`git rev-list HEAD --count`"
+pushd "$HASHKAT"
+export HASHKAT_VERSION="`git describe --abbrev=0`b`git rev-list HEAD --count`"
+popd
 
 # Configure amount of cores used
 if [[ -e /proc/cpuinfo ]] ; then
@@ -168,22 +169,15 @@ cp "./src/gexf.lua" "./.libs/"
 # Ensure folder exists for output
 mkdir -p output/
 
-#   --force/-f: Do not build (use last successful compiled binary)
-if ! handle_flag "-f" && ! handle_flag "--force" ; then
-    echo "Compiling hashkat version $HASHKAT_VERSION"
-    mkdir -p build
-    cd build
-    cmake .. | colorify '1;33'
-    if handle_flag "--clean" ; then
-        make clean
-    fi
-    make -j$((cores+1))
-    cd ..
+echo "Compiling hashkat version $HASHKAT_VERSION"
+mkdir -p build
+pushd build
+cmake .. | colorify '1;33'
+if handle_flag "--clean" ; then
+    make clean
 fi
-
-if handle_flag "-B" || handle_flag "--build" ; then
-    exit # Only do a build
-fi
+make -j$((cores+1))
+popd
 
 ###############################################################################
 # Generating YAML files by expansion of Python
@@ -195,20 +189,23 @@ fi
 # can generate it, and run with --no-generate.
 
 if ! handle_flag "--no-generate" ; then
-
     # Clear all existing generated YAML files:
     rm -f *yaml-generated
 
-    # We must generate X-generated.yaml from X.yaml (defaults
-
+    # We must generate, eg, INFILE.yaml-generated from INFILE.yaml
     python hashkat_pre.py "$@"
 fi
 
 ###############################################################################
 # Running the program. Options exist for running within a gdb, lldb, oprofile, 
 # or valgrind context.  
+#   --run/-R: Run after building.
 #   Use '--help' or 'help' for details.
 ###############################################################################
+
+if ! handle_flag "--run" && ! handle_flag "-R" ; then
+    exit
+fi
 
 # If the flag is NOT present, handle ctrl-c
 if ! handle_flag "--no-ctrlc" ; then
