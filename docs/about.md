@@ -26,5 +26,5 @@ which implements the Kinetic Monte Carlo Method and all the functionalities of T
 [N. Buhagiar](https://github.com/nbuhagiar)
 
 <p align='center'>
-  <img src='/img/logo.svg'>
+  <img src='about/img/logo.svg'>
 </p>
