@@ -39,7 +39,9 @@ has been reached.
 
 The following is a model of how this works in #k@.
 
-![KMC Loop Model](/img/code_map.jpg "KMC Loop Model")
+<p align='center'>
+  <img src='img/code_map.jpg'>
+</p>
 
 More information on how this is run in #k@ can be found on the **Developers** page.
 
@@ -141,7 +143,9 @@ type in the following:
 
 Giving us:
 
-![Agent Degree Distributions](/img/tutorial01/degree_distributions_month_002.svg "Agent Degree Distributions")
+<p align='center'>
+  <img src='img/tutorial01/degree_distributions_month_002.svg'>
+</p>
 
 where *k* is the number of degrees or followers an agent has, and *P(k)* is the probability that an agent would have that many
 degrees/followers. As expected, most agents have an in-degree of 10, an out-degree of 10, and a cumulative degree of
@@ -168,7 +172,9 @@ press the refresh symbol, and choose the partition parameter 'Label' and click '
 for this network directly below the 'Apply' button you just pushed, and can run it for a few seconds. The following visualization
 was made using the 'Fruchterman Reingold' and 'Clockwise Rotate' layout:
 
-![Simple Network Visualization](/img/tutorial01/visualization.png "Simple Network Visualization")
+<p align='center'>
+  <img src='img/tutorial01/visualization.png'>
+</p>
 
 We can see that these agents are randomly connected within this network simulation we created, with the highly connected agents at the centre
 of the visualization and the agents with less connections on the sides.

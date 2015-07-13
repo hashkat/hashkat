@@ -6,7 +6,9 @@
 
 The following gives a brief summary of every file and directory that you will immediately find in the #k@ directory.
 
-![The hashkat Directory](/img/directory.png "The hashkat Directory")
+<p align='center'>
+  <img src='img/directory.png'>
+</p>
 
 ## benchmarks
 

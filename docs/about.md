@@ -3,7 +3,7 @@
 <span style="color:black; font-family:Georgia; font-size:1.5em;">July 2015 - This site is currently under construction. Please return regularly over the course of the summer for further updates. </span>
 
 <p align='center'>
-  <img src='/img/new_logo.svg'>
+  <img src='img/logo.svg'>
 </p>
 
 At first glance, Twitter can be viewed as nothing more than an outlet for people to connect with others and speak their mind in 140 characters or less. However, when looking closer, one can find that Twitter truly is an abundant source of information.
