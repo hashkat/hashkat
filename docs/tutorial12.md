@@ -82,21 +82,15 @@ For this network simulation, we would like to have the following:
 
 We would also like you to use only the following agent types with their respective characteristics:
 
-![Standard-Chatty Agent Type](/img/tutorial12/standard_chatty.png "Standard-Chatty Agent Type")
 
-![Standard-Friendly Agent Type](/img/tutorial12/standard_friendly.png "Standard-Friendly Agent Type")
-
-![Standard-Funny Agent Type](/img/tutorial12/standard_funny.png "Standard-Funny Agent Type")
-
-![Standard-Musical Agent Type](/img/tutorial12/standard_musical.png "Standard-Musical Agent Type")
-
-![Standard-Political Agent Type](/img/tutorial12/standard_political.png "Standard-Political Agent Type")
 
 Make sure that your tweet, retweet, and follow ranks have also been updated accordingly to properly account for this network. As you've probably noticed, we've set the max real time to 30 minutes instead of the regular 1 minute. The simulation should definitely not run for this long, we just want to allow enough time for the simulation to run to completion. When running this simulation on our computer, it took around 16 minutes real time to complete due to the complexity of the network. You do not have to run your simulation for this long if you wish. You can change the maximum real time to a time of your choosing or press **Ctrl-c** at any time during the simulation to pause it. Once you have configured **INFILE.yaml** to account for all this, run and visualize your network simulation.
 
 Running the network simulation to completion, we produced the following network visualization:
 
-![Diverse Network Visualization](/img/tutorial12/visualization.png "Diverse Network Visualization")
+<p align='center'>
+<img src='../img/tutorial12/visualization.png'>
+</p>
 
 In the above visualization, the green nodes correspond to the 'Standard-Chatty' agents, the purple nodes correspond to the 'Standard-Friendly' agents, the blue nodes correspond to the 'Standard-Musical' agents, the yellow nodes correspond to 'Standard-Funny' agents, and the red nodes correspond to the 'Standard-Political' agents. As we can see, our social network has been divided into networks based on language, with one network corresponding to English-speaking agents and the other corresponding to French-speaking agents. Judging from this visualization, there seems to be no dominant agent type based on connectivity. The 'Standard-Chatty' agents and 'Standard-Musical agents' seems to be slightly less popular, as evident by their more abundant presence on the sides of each network simulation, while the 'Standard-Friendly', 'Standard-Funny', and 'Standard-Political' agents seem to be slightly more popular due to there more ample presence near the centre of the networks.
 

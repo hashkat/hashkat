@@ -66,13 +66,13 @@ You may notice that when visualizing a twitter suggest follow model network simu
 The following visualization is that of a network we ran using the twitter suggest follow model:
 
 <p align='center'>
-  <img src='img/troubleshooting/incorrect_twitter_suggest.png'>
+<img src='../img/troubleshooting/incorrect_twitter_suggest.png'>
 </p>
 
 As you can clearly see, this network clearly resembles a random follow model simulation than a twitter suggest. Looking into the **INFILE.yaml** file, we discovered that the follow rank max threshold and weight were much smaller than the total number of agents in the simulation. Changing these values to their correct amount, we ran the network simulation again and produced the following visualization:
 
 <p align='center'>
-  <img src='img/troubleshooting/correct_twitter_suggest.png'>
+<img src='../img/troubleshooting/correct_twitter_suggest.png'>
 </p>
 
 As you can see, this is clearly now a preferential attachment model network, with the most popular agents in the centre of the visualization, and the less popular ones at the sides. 
@@ -80,7 +80,7 @@ As you can see, this is clearly now a preferential attachment model network, wit
 ### No Retweets Present in Network When They Should Be
 
 <p align='center'>
-  <img src='img/troubleshooting/no_retweets_present.png'>
+<img src='../img/troubleshooting/no_retweets_present.png'>
 </p>
 
 Running a network simulation that enables retweeting, you may find that there are no retweets actually present in the simulation at its completion. This could be due to agents having a tweet rate of zero, since if there are no tweets in the simulation, there can't possibly be any retweets. This could also be due to an error in the tweet observation probability density function, where perhaps tweets aren;t relevant for a long enough time to be retweeted. The *NoRetweetPref* could also be enabled instead of a preference class that allows retweeting, and/or the preference class that is enabled has miniscule tweet transmission rates, leading to very few or no tweets being retweeted. Take a look over all these factors, and ensure that they are set properly before running the network simulation again. If you find that there are still no retweets occurring in the network, increase the tweet transmission rates, tweet rates, maximum simulated time, and/or maximum real time to allows agents ample opportunity to retweet tweets. 

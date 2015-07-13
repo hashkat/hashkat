@@ -16,7 +16,9 @@ Since we've already modified our input file for an agent follow model in the pre
 
 Running this simulation, we produce the following visualization:
 
-![Preferential Agent Follow Model Network Visualization](/img/tutorial06/visualization.png "Preferential Agent Follow Model Network Visualization")
+<p align='center'>
+<img src='../img/tutorial06/visualization.png'>
+</p>
 
 As you can see, not only do the *Celebrity* agents (red dots) generally have much more connections than the *Standard* agents (blue dots), but through the twitter suggest follow model, there are particular agents within each agent type that have much more connections than other agents of the same type.
 

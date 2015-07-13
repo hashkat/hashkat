@@ -20,29 +20,41 @@ Following via retweets is a follow method in which an agent sees a tweet that wa
 
 We shall now create a network simulation that does not use these follow methods. We have created plenty of these already in the previous tutorials, so we will use the INFILE.yaml we used in **Tutorial 4** for the Classic Barabasi Configuration as a starting point. The input file we created for this can be found [here](https://github.com/hashkat/hashkat/blob/master/tutorials/tutorial04_classic_barabasi/INFILE.yaml). Some slight changes will be made to this input file. The Ontario region preference class will be changed to the *StandardPref* to enable retweeting in the simulation, with the *StandardPref* preference class being changed as well. The tweet transmission for Standard agents will be changed to 0.1 for *plain* and *same_ideology* tweets and 0.2 for *humourous* tweets, while the *follow_reaction_prob* within the Standard preference class will be reduced to 0.0 to prevent following via retweets to occur. With all these changes in order, we can now run and visualize this network simulation.
 
-![INFILE.yaml-StandardPref](/img/tutorial09_without_other_follow/INFILE-StandardPref.png "INFILE.yaml-StandardPref")
+<p align='center'>
+<img src='../img/tutorial09_without_other_follow/INFILE-StandardPref.png'>
+</p>
 
 ## Running and Visualizing This Network Lacking These Other Follow Methods
 
 Running this network simulation and visualizing it, we produced the following:
 
-![Network Visualization Without Other Follow Methods](/img/tutorial09_without_other_follow/visualization.png "Network Visualization Without Other Follow Methods")
+<p align='center'>
+<img src='../img/tutorial09_without_other_follow/visualization.png'>
+</p>
 
 ## Constructing a Network With These Other Follow Methods
 
 We shall now implement the other follow methods into a network simulation. Using the INFILE.yaml we just created as a starting point, we will change the *follow_reaction_prob* back to 0.2 to enable following via retweets, and have *use_followback* switched to *true* and the *Standard* agent type *followback_probability* to 0.44, to permit followback to occur in the network simulation at a rate that matches what was found through experiment. With these follow methods now permitted to occur, we shall run and visualize this network simulation and see what we find.
 
-![INFILE.yaml-follow_reaction_prob](/img/tutorial09_with_other_follow/INFILE-followreactionprob.png "INFILE.yaml-follow_reaction_prob")
+<p align='center'>
+<img src='../img/tutorial09_with_other_follow/INFILE-followreactionprob.png'>
+</p>
 
-![INFILE.yaml-usefollowback](/img/tutorial09_with_other_follow/INFILE-usefollowback.png "INFILE.yaml-use_followback")
+<p align='center'>
+<img src='../img/tutorial09_with_other_follow/INFILE-usefollowback.png'>
+</p>
 
-![INFILE.yaml-followback_probability](/img/tutorial09_with_other_follow/INFILE-followbackprob.png "INFILE.yaml-followback_probability")
+<p align='center'>
+<img src='../img/tutorial09_with_other_follow/INFILE-followbackprob.png'>
+</p>
 
 ## Running and Visualizing This Network With These Other Follow Methods
 
 Running this network simulation we produced the following visualization:
 
-![Network Visualization With Other Follow Methods](/img/tutorial09_with_other_follow/visualization.png "Network Visualization With Other Follow Methods")
+<p align='center'>
+<img src='../img/tutorial09_with_other_follow/visualization.png'>
+</p>
 
 ## Compare and Contrast
 

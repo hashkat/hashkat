@@ -40,7 +40,7 @@ has been reached.
 The following is a model of how this works in #k@.
 
 <p align='center'>
-  <img src='img/code_map.jpg'>
+<img src='../img/code_map.jpg'>
 </p>
 
 More information on how this is run in #k@ can be found on the **Developers** page.
@@ -97,7 +97,7 @@ accummulated through simulation necessary for analysis. We shall discuss
 these files below.
 
 <p align = 'center'>
-	<iframe width="420" height="315" src="https://www.youtube.com/embed/i921pJBAPmM" frameborder="0" allowfullscreen></iframe>
+<iframe width="420" height="315" src="https://www.youtube.com/embed/i921pJBAPmM" frameborder="0" allowfullscreen></iframe>
 </p>
 
 ## Output of a Simple Network
@@ -144,7 +144,7 @@ type in the following:
 Giving us:
 
 <p align='center'>
-  <img src='img/tutorial01/degree_distributions_month_002.svg'>
+<img src='../img/tutorial01/degree_distributions_month_002.svg'>
 </p>
 
 where *k* is the number of degrees or followers an agent has, and *P(k)* is the probability that an agent would have that many
@@ -173,7 +173,7 @@ for this network directly below the 'Apply' button you just pushed, and can run 
 was made using the 'Fruchterman Reingold' and 'Clockwise Rotate' layout:
 
 <p align='center'>
-  <img src='img/tutorial01/visualization.png'>
+<img src='../img/tutorial01/visualization.png'>
 </p>
 
 We can see that these agents are randomly connected within this network simulation we created, with the highly connected agents at the centre

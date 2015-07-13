@@ -29,7 +29,9 @@ Most importantly, we're going to set *use_barabasi* to *true* causing the simula
 Since we are running a twitter suggest follow model, we are going to set the *follow_model* as such. In the *rates* section of the input file, we are now adding agents to the network throughout the simulation,
 so we will change the add rate value to 1.0, so that one agent will be added to the network per simulated minute.
 
-![INFILE.yaml-analysis](/img/tutorial04_classic_barabasi/INFILE-analysis.png "INFILE.yaml-analysis")
+<p align='center'>
+<img src='../img/tutorial04_classic_barabasi/INFILE-analysis.png'>
+</p>
 
 As mentioned in the previous tutorial, the follow ranks are essential to the twitter suggest follow model. Agents are placed into bins based on their degree or the number of followers they have.
 All the agents in the bin with threshold 0 have 0 followers, while all the agents in bin 200 have 200 followers.The weight of each bin threshold determines the probability that an agent from this bin
@@ -40,7 +42,9 @@ agents with a greater number of followers have a better chance of being followed
 within the simulation. If this number is less than that, your network simulation may give inaccurate results and the total number of followers the most popular agent has may be impossible to determine. Since the
 minimum threshold follow rank has a weight of 1, the maximum threshold follow rank must have a weight equal to its value increased by one. 
 
-![INFILE.yaml-ranks](/img/tutorial04_classic_barabasi/INFILE-ranks.png "INFILE.yaml-ranks")
+<p align='center'>
+<img src='../img/tutorial04_classic_barabasi/INFILE-ranks.png'>
+</p>
 
 To better demonstrate the results of a twitter preferential follow model, we are again only going to use *Standard* users in this simulation. It is imperative that we have also set the *Standard* agent type's follow rate to 0.0,
 so that the only manner in which agents are connecting with each other is through the *barabasi_connections* they are assigned to make.
@@ -58,14 +62,18 @@ the command:
 
 This gave us the following graph:
 
-![Cumulative Degree Distribution](/img/tutorial04_classic_barabasi/cumulative-degree_distribution_month_000.svg "Cumulative Degree Distribution")
+<p align='center'>
+<img src='../img/tutorial04_classic_barabasi/cumulative-degree_distribution_month_000.svg'>
+</p>
 
 We can see that this produces a linear plot with a negative slope, which makes sense since we would expect agents with a small degree to be great in number, while agents with a very large degree to
 be very small in number.
 
 A visualization of this network is shown below:
 
-![Twitter Suggest Follow Model Network Visualization with Classic Barabasi](/img/tutorial04_classic_barabasi/visualization.png "Twitter Suggest Follow Model Network Visualization with Classic Barabasi")
+<p align='center'>
+<img src='../img/tutorial04_classic_barabasi/visualization.png'>
+</p>
 
 As we can see, we have the much more highly connected agents at the centre of the visualization, and the agents lower in degree on the sides. As expected, by implementing the Classic Barabsi configuration,
 every agent, by following one other user, has at least one connection.
@@ -89,7 +97,9 @@ For this example, we will use the exact same INFILE.yaml as used above, but our 
 
 Running this network simulation, we produced the visualization shown below:
 
-![Twitter Suggest Follow Model Network Visualization with Non-Classic Barabasi](/img/tutorial04_nonclassic_barabasi/visualization.png "Twitter Suggest Follow Model Network Visualization with Non-Classic Barabasi")
+<p align='center'>
+<img src='../img/tutorial04_nonclassic_barabasi/visualization.png'>
+</p>
 
 As expected, this network is quite similar to the one we produced using the Classic Barabasi configuration, with the more highly connected agents at
 the centre of the visualization and those less connected on the sides. This is, however, a much more highly connected network, since every
@@ -113,7 +123,9 @@ Designing a twitter suggest follow model network simulation without implementing
 
 Running hashkat, we produced the following visualization of this simulation:
 
-![Twitter Suggest Follow Model Network Visualization](/img/tutorial04_other/visualization.png "Twitter Suggest Follow Model Network Visualization")
+<p align='center'>
+<img src='../img/tutorial04_other/visualization.png'>
+</p>
 
 As we can see, we again have some very highly connected agents in the centre of the visualization and unconnected agents on the sides. However, as opposed to twitter suggest follow model simulations that implement the Barabasi configuration, there are no set number
 of connections that every agent has, which explains the presence of agents with 0 connections.

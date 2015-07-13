@@ -49,7 +49,7 @@ and the unfollow tweet rate to an exceptionally high number for this simulation 
 We have also kept the probability of hashtag presence in tweets to be 50%.
 
 <p align='center'>
-  <img src='img/tutorial03/INFILE-analysis.png'>
+<img src='../img/tutorial03/INFILE-analysis.png'>
 </p>
 
 Since the number of agents within this simulation will remain constant, the add rate will therefore be 0. The output section of INFILE.yaml
@@ -69,7 +69,7 @@ and a constant follow rate and tweet rate of 0.01. The *Celebrity* agent type wi
 tutorial, where agents will follow other agents based on their agent type.  
 
 <p align='center'>
-  <img src='img/tutorial03/INFILE-agents.png'>
+<img src='../img/tutorial03/INFILE-agents.png'>
 </p>
 
 <p align = 'center'>
@@ -81,7 +81,7 @@ tutorial, where agents will follow other agents based on their agent type.
 Running this simulation, and visualizing it, we produce a network similar to the one shown below: 
 
 <p align='center'>
-  <img src='img/tutorial03/visualization.png'>
+<img src='../img/tutorial03/visualization.png'>
 </p>
 
 As we can quite clearly see this a truly random network, with no clear agent or group of agents being the most popular.

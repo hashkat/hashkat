@@ -7,7 +7,7 @@
 The following gives a brief summary of every file and directory that you will immediately find in the #k@ directory.
 
 <p align='center'>
-  <img src='img/directory.png'>
+<img src='../img/directory.png'>
 </p>
 
 ## benchmarks

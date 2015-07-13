@@ -76,6 +76,8 @@ You can modify the contents of a file using a text editor. There are numerous te
 
 `nano newerfile`
 
+## Tips
+
 To save time when using the command line, you can use **tab** to finish the name of a file or directory you are typing out and the **up** and **down** directional arrows to see and use previous commands that you have entered into the command line.
 
 You can find more information on using the command line [here](http://cli.learncodethehardway.org/book/).
