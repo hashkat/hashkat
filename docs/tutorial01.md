@@ -94,7 +94,9 @@ There is also the 'output' directory, which contains all the data you've
 accummulated through simulation necessary for analysis. We shall discuss
 these files below.
 
-<iframe width="420" height="315" src="https://www.youtube.com/embed/i921pJBAPmM" frameborder="0" allowfullscreen></iframe>
+<p align = 'center'>
+	<iframe width="420" height="315" src="https://www.youtube.com/embed/i921pJBAPmM" frameborder="0" allowfullscreen></iframe>
+</p>
 
 ## Output of a Simple Network
 
