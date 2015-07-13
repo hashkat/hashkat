@@ -29,7 +29,9 @@ random user to retweet a tweet from another user. **R** will then change
 accordingly.  Another random number *r*<sub>2</sub> will then be generated,
 and time will move forward by:
 
-&Delta;*t* = -ln(*r*<sub>2</sub>) / **R**
+<p align = 'center'>
+&Delta;<i>t</i> = -ln(<i>r</i><sub>2</sub>) / <b>R</b>
+</p>
 
 All of the rate functions will then be recalibrated to their new values and
 this cycle will repeat until either the maximum simulation time or real time
