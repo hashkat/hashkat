@@ -10,15 +10,16 @@ The following gives a brief summary of every file and directory that you will im
 <img src='../img/directory.png'>
 </p>
 
-## benchmarks
+## <span style="color:blue">benchmarks</span>
 
 Contains several input files used in the testing and development of #k@.
 
-## build
+## <span style="color:blue">build</span> 
 
 
 
-## build.sh
+
+## <span style="color:green">build.sh</span> 
 
 Script that builds and runs #k@. Typing in the command
 
@@ -42,15 +43,15 @@ File created when running a network simulation. Details the length of simulated 
 
 
 
-## docs
+## <span style="color:blue">docs</span> 
 
 Contains the pages and images used in the write-up of the #k@ documentation.
 
-## examples
+## <span style="color:blue">examples</span> 
 
 Contains a list of directories, each with there own **INFILE.yaml** that can be used as an example of a particular network simulation.
 
-## hashkat_pre.py
+## <span style="color:green">hashkat_pre.py</span>
 
 
 
@@ -78,7 +79,7 @@ File used to organize the documentation of #k@.
 
 Save file in which your network simulation information will be saved to if *save_network_on_timeout* is enabled. If a network simulation is paused midway through, it can only be continued if *load_network_on_startup* is enabled, in which case the simulation will look for this file to load the existing network information. 
 
-## output
+## <span style="color:blue">output</span>
 
 
 
@@ -86,7 +87,7 @@ Save file in which your network simulation information will be saved to if *save
 
 Summary of what can be found in the *hashkat* directory.
 
-## run.sh
+## <span style="color:green">run.sh</span>
 
 Script that runs the #k@ program.
 
@@ -94,28 +95,28 @@ Script that runs the #k@ program.
 
 
 
-## scripts
+## <span style="color:blue">scripts</span> 
 
 
 
-## src
+## <span style="color:blue">src</span>
 
 Contains the #k@ source code.
 
-## tests
+## <span style="color:blue">tests</span>
 
 Contains several basic tests used in the development of #k@. Its subdirectory *referencefiles* contains the various input files that are tested when running *tests.sh*.
 
-## tests.sh
+## <span style="color:green">tests.sh</span> 
 
 Script that runs *verify.py* on every single reference network simulation in *tests/referencefiles/*. Used in the development of #k@ to confirm if any changes made to the source code did or did not affect impact the output of a netowkr simulation.
 
-## tutorials
+## <span style="color:blue">tutorials</span> 
 
 Contains a directory corresponding to almost every tutorial found in the #k@ documentation. Each tutorial directory contains an INFILE.yaml file that will be created during its respective tutorial.
 
-## verify.py
+## <span style="color:green">verify.py</span> 
 
 Script run in *tests.sh* to compare the data of output files in a network simulation to what is expected. If there is discrepancy between an output file and its reference, the file name is printed to the screen. Used in the development of #k@ to confirm if any changes made to the source code did or did not affect impact the output of a netowkr simulation.   
 
-## yaml
+## <span style="color:blue">yaml</span>
