@@ -20,7 +20,9 @@ Creating a network with this configuration, we produced the following visualizat
 
 As you can see from this visualization, agents are separated into 4 main groups, with several other agents having no connections, being unable to follow or be followed by another agent in time. These 4 groups correspond to the 4 different ideologies we have in our network, named *Red*, *Blue*, *Green*, and *Orange*. It is important to note that the colours of agents in the visualization do not correspond to ideolgy colours, but are arbitrarily given to differentiate enities of different types (e.g. *Standard* agents, *Celebrity* agents, etc.).
 
+<p align = 'center'>
 <iframe width="420" height="315" src="https://www.youtube.com/embed/50nUnyawKNU" frameborder="0" allowfullscreen></iframe>
+</p>
 
 ## Next Steps
 

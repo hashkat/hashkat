@@ -110,7 +110,9 @@ by typing in the command:
 
 With **#k@** installed on your computer, please proceed to the following pages in the documentation to learn how to fully utilize this program.
 
+<p align = 'center'>
 <iframe width="420" height="315" src="https://www.youtube.com/embed/kzK3W0aydqM" frameborder="0" allowfullscreen></iframe>
+</p>
 
 # Linux
 
@@ -212,5 +214,6 @@ by typing in the command:
 
 With **#k@** installed on your computer, please proceed to the following pages in the documentation to learn how to fully utilize this program.
 
+<p align = 'center'>
 <iframe width="420" height="315" src="https://www.youtube.com/embed/ppI80vBbZqs" frameborder="0" allowfullscreen></iframe>
-
+</p>

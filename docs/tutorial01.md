@@ -155,7 +155,9 @@ Note that you can save your plots as .svg files by typing in the commands
 
 when you first start up gnuplot and prior to actually plotting the data.
 
+<p align = 'center'>
 <iframe width="420" height="315" src="https://www.youtube.com/embed/cGzzACPLu8c" frameborder="0" allowfullscreen></iframe>
+</p>
 
 ## Visualization
 
@@ -171,7 +173,9 @@ was made using the 'Fruchterman Reingold' and 'Clockwise Rotate' layout:
 We can see that these agents are randomly connected within this network simulation we created, with the highly connected agents at the centre
 of the visualization and the agents with less connections on the sides.
 
+<p align = 'center'>
 <iframe width="420" height="315" src="https://www.youtube.com/embed/k4ULWpnRq8s" frameborder="0" allowfullscreen></iframe>
+</p>
 
 ## Next Steps
 

@@ -39,7 +39,9 @@ to continue this simulation from where you left off, simply type in:
 
 again and the simulation will recommence running.
 
+<p align = 'center'>
 <iframe width="420" height="315" src="https://www.youtube.com/embed/EomkuFDMQ30" frameborder="0" allowfullscreen></iframe>
+</p>
 
 ## Next Steps
 

@@ -45,7 +45,9 @@ minimum threshold follow rank has a weight of 1, the maximum threshold follow ra
 To better demonstrate the results of a twitter preferential follow model, we are again only going to use *Standard* users in this simulation. It is imperative that we have also set the *Standard* agent type's follow rate to 0.0,
 so that the only manner in which agents are connecting with each other is through the *barabasi_connections* they are assigned to make.
 
+<p align = 'center'>
 <iframe width="420" height="315" src="https://www.youtube.com/embed/bHvmbQA2fEk" frameborder="0" allowfullscreen></iframe>
+</p>
 
 ### Running and Visualizing The Network
 
@@ -68,7 +70,9 @@ A visualization of this network is shown below:
 As we can see, we have the much more highly connected agents at the centre of the visualization, and the agents lower in degree on the sides. As expected, by implementing the Classic Barabsi configuration,
 every agent, by following one other user, has at least one connection.
 
+<p align = 'center'>
 <iframe width="420" height="315" src="https://www.youtube.com/embed/VDL76lvsa0E" frameborder="0" allowfullscreen></iframe>
+</p>
 
 ## Example - Non-Classic Barabasi
 
@@ -91,7 +95,9 @@ As expected, this network is quite similar to the one we produced using the Clas
 the centre of the visualization and those less connected on the sides. This is, however, a much more highly connected network, since every
 agent has at least two connections.
 
+<p align = 'center'>
 <iframe width="420" height="315" src="https://www.youtube.com/embed/dFcaSDv--PI" frameborder="0" allowfullscreen></iframe>
+</p>
 
 ## Example - Other Twitter Suggest Models
 
@@ -112,7 +118,9 @@ Running hashkat, we produced the following visualization of this simulation:
 As we can see, we again have some very highly connected agents in the centre of the visualization and unconnected agents on the sides. However, as opposed to twitter suggest follow model simulations that implement the Barabasi configuration, there are no set number
 of connections that every agent has, which explains the presence of agents with 0 connections.
 
+<p align = 'center'>
 <iframe width="420" height="315" src="https://www.youtube.com/embed/qViyqLsfnf4" frameborder="0" allowfullscreen></iframe>
+</p>
 
 ## Next Steps
 

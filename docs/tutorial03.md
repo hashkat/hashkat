@@ -68,7 +68,9 @@ tutorial, where agents will follow other agents based on their agent type.
 
 ![INFILE.yaml-agents](/img/tutorial03/INFILE-agents.png "INFILE.yaml-agents")
 
+<p align = 'center'>
 <iframe width="420" height="315" src="https://www.youtube.com/embed/k6s25BWN4d8" frameborder="0" allowfullscreen></iframe>
+</p>
 
 ## Running and Visualizing The Network
 
@@ -78,7 +80,9 @@ Running this simulation, and visualizing it, we produce a network similar to the
 
 As we can quite clearly see this a truly random network, with no clear agent or group of agents being the most popular.
 
+<p align = 'center'>
 <iframe width="560" height="315" src="https://www.youtube.com/embed/6-GtOReq6Cg" frameborder="0" allowfullscreen></iframe>
+</p>
 
 ## Next Steps
 

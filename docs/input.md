@@ -6,7 +6,9 @@
 
 This section serves as a reference for users working with the input file INFILE.yaml. This page goes through every aspect of the file in which users can manipulate.
 
+<p align = 'center'>
 <iframe width="560" height="315" src="https://www.youtube.com/embed/4X063IPFzM4" frameborder="0" allowfullscreen></iframe>
+</p>
 
 ### **analysis**
 
@@ -181,7 +183,9 @@ The probability of a tweet containing a # from 0 to 1. As we can see in this exa
 
 ### **rates**
 
+<p align = 'center'>
 <iframe width="560" height="315" src="https://www.youtube.com/embed/_NNOtwrPTg0" frameborder="0" allowfullscreen></iframe>
+</p>
 
 ```python
 rates:
@@ -464,7 +468,9 @@ Determines the degree of funny. Not currently implemented in #k@.
 
 ### **preference classes**
 
+<p align = 'center'>
 <iframe width="560" height="315" src="https://www.youtube.com/embed/Sx0U1Fy5Bbo" frameborder="0" allowfullscreen></iframe>
+</p>
 
 ```python
 - name: StandardPref
@@ -496,7 +502,9 @@ The *follow_reaction_prob* relates to the probability that an agent will follow 
 
 ### **agents**
 
+<p align = 'center'>
 <iframe width="560" height="315" src="https://www.youtube.com/embed/w_BVsSwb7cw" frameborder="0" allowfullscreen></iframe>
+</p>
 
 #### Agent Type
 
