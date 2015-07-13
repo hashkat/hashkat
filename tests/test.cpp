@@ -157,6 +157,42 @@ BOOST_FIXTURE_TEST_CASE(test07, INIT_TEST)
     clean(test);
 }
 
+BOOST_FIXTURE_TEST_CASE(test08, INIT_TEST)
+{
+    BOOST_REQUIRE(ready());
+    std::string test("test08");
+    run(test);
+    verify(test);
+    clean(test);
+}
+
+BOOST_FIXTURE_TEST_CASE(test09, INIT_TEST)
+{
+    BOOST_REQUIRE(ready());
+    std::string test("test09");
+    run(test);
+    verify(test);
+    clean(test);
+}
+
+BOOST_FIXTURE_TEST_CASE(test10, INIT_TEST)
+{
+    BOOST_REQUIRE(ready());
+    std::string test("test10");
+    run(test);
+    verify(test);
+    clean(test);
+}
+
+BOOST_FIXTURE_TEST_CASE(test11, INIT_TEST)
+{
+    BOOST_REQUIRE(ready());
+    std::string test("test11");
+    run(test);
+    verify(test);
+    clean(test);
+}
+
 BOOST_FIXTURE_TEST_CASE(test12, INIT_TEST)
 {
     BOOST_REQUIRE(ready());
@@ -165,3 +201,13 @@ BOOST_FIXTURE_TEST_CASE(test12, INIT_TEST)
     verify(test);
     clean(test);
 }
+
+BOOST_FIXTURE_TEST_CASE(test99, INIT_TEST)
+{
+    BOOST_REQUIRE(ready());
+    std::string test("test99");
+    run(test);
+    verify(test);
+    clean(test);
+}
+
