@@ -1,5 +1,5 @@
 <p align='center'>
-  <img src='/img/new_logo.svg'>
+  <img src="/img/new_logo.svg">
 </p>
 
 <span style="color:black; font-family:Georgia; font-size:2em;">Welcome to the official #k@ documentation</span>
@@ -11,3 +11,7 @@
 </p>
 
 [hashkat.org](http://hashkat.org)
+
+<p align='center'>
+  <img src="/img/new_logo.svg">
+</p>
