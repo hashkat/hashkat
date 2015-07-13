@@ -6,6 +6,10 @@
   <img src='img/logo.svg'>
 </p>
 
+<p align='center'>
+  <img src="img/logo.svg">
+</p>
+
 At first glance, Twitter can be viewed as nothing more than an outlet for people to connect with others and speak their mind in 140 characters or less. However, when looking closer, one can find that Twitter truly is an abundant source of information.
 Through the trending topics people are discussing, and their views on those trends, one can determine which political candidate will win the next election, the potential box office success of a new movie, company sales, etc.
 With this revelation, one can easily see that social networks contain a lot of valuable, hidden information.
