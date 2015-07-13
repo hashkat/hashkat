@@ -61,5 +61,7 @@ else()
    set(UV_LIBS rt m pthread)
 endif()
 
+include_directories("src/dependencies/boost_1_58_0")
+
 add_subdirectory(src)
 add_subdirectory(tests)
