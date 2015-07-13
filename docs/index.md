@@ -13,5 +13,5 @@
 [hashkat.org](http://hashkat.org)
 
 <p align='center'>
-  <img src="hashkat/docs/img/new_logo.svg">
+  <img src = 'https://github.com/hashkat/hashkat/blob/master/docs/img/new_logo.svg'>
 </p>
