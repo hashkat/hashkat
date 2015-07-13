@@ -11,7 +11,7 @@ We will go over the steps to install these programs for each particular operatin
 Here outlines the following steps on how to install **#k@** on Mac OS X:
 
 1. Download the latest build of **#k@** at [hashkat.org](http://hashkat.org).
-2. Enter a terminal and go into your *Downloads* directory by typing in the following command and pressing **Enter**:
+2. Enter a terminal and go into your *Downloads* directory/folder by typing in the following command and pressing **Enter**:
 
     `cd Downloads`
 
@@ -34,11 +34,11 @@ it just means that you've downloaded a newer version of **#k@**!
 
     `hashkat`
 
-7. For ease of access, move this directory into your home directory by typing in the command:
+7. For ease of access, move this directory into your 'home' directory by typing in the command:
 
     `mv ~/Downloads/hashkat/ ~/`	
 
-8. Now return to you home directory by typing in the command:
+8. Now return to you 'home' directory by typing in the command:
 
     `cd`
 
@@ -72,7 +72,7 @@ by typing in the command:
 
     `nano ~/.bashrc`
 
-15. Once inside this file, assuming you have *hashkat* at the top of your home directory, you must type in:
+15. Once inside this file, assuming you have *hashkat* at the top of your 'home' directory, you must type in:
 
     `export HASHKAT=~/hashkat`
 
@@ -117,7 +117,7 @@ With **#k@** installed on your computer, please proceed to the following pages i
 Here outlines the following steps on how to install **#k@** on Linux:
 
 1. Download the latest build of **#k@** at [hashkat.org](http://hashkat.org).
-2. Enter a terminal and go into your *Downloads* directory by typing in the following command and pressing **Enter**:
+2. Enter a terminal and go into your *Downloads* directory/folder by typing in the following command and pressing **Enter**:
 
     `cd Downloads`
 
@@ -139,11 +139,11 @@ Here outlines the following steps on how to install **#k@** on Linux:
 
     `hashkat`
 
-7. For ease of access, move this directory into your home directory by typing in the command:
+7. For ease of access, move this directory into your 'home' directory by typing in the command:
 
     `mv ~/Downloads/hashkat/ ~/`
 
-8. Now return to you home directory by typing in the command:
+8. Now return to you 'home' directory by typing in the command:
 
     `cd`
 
@@ -174,7 +174,7 @@ by typing in the command:
 
     `nano ~/.bashrc`
 
-14. Once inside this file, assuming you have *hashkat* at the top of your home directory, you must type in:
+14. Once inside this file, assuming you have *hashkat* at the top of your 'home' directory, you must type in:
 
     `export HASHKAT=~/hashkat`
 
