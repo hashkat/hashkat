@@ -2,8 +2,8 @@
 
 # these tests test...?
 
-set -e
-./run.sh --tests $@
+#set -e
+#./run.sh --tests $@
 
 # where are we?
 
