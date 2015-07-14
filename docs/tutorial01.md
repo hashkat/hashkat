@@ -128,18 +128,17 @@ To access gnuplot, type in the command:
 
 `gnuplot`
 
-To plot the in-degree, out-degree, and cumulative-degree distributions for *month002*, which contains the most up to date data, on the same graph with appropriate axis labels and a title,
-type in the following:
+To plot the in-degree, out-degree, and cumulative-degree distributions for *month002*, which contains the most up to date data, on the same graph with appropriate axis labels and a title, type in the following:
 
-`set style data linespoints`
+`set style fill transparent solid 0.5 noborder `
 
 `set title 'Agent Degree Distributions'`
 
-`set xlabel 'k'`
+`set xlabel 'Degree'`
 
-`set ylabel 'P(k)'`
+`set ylabel 'Degree Probability'`
 
-`plot 'in-degree_distribution_month_002.dat', 'out-degree_distribution_month_002.dat', 'cumulative-degree_distribution_month_002.dat'`
+`plot 'in-degree_distribution_month_002.dat' u 1:2 lc rgb 'red' with filledcurves, 'out-degree_distribution_month_002.dat' u 1:2 lc rgb 'goldenrod' with filledcurves, 'cumulative-degree_distribution_month_002.dat' u 1:2 lc rgb 'blue' with filledcurves`
 
 Giving us:
 
@@ -147,9 +146,7 @@ Giving us:
 <img src='../img/tutorial01/degree_distributions_month_002.svg'>
 </p>
 
-where *k* is the number of degrees or followers an agent has, and *P(k)* is the probability that an agent would have that many
-degrees/followers. As expected, most agents have an in-degree of 10, an out-degree of 10, and a cumulative degree of
-20.
+As expected, most agents have an in-degree of 10, an out-degree of 10, and a cumulative degree of 20.
 
 Note that you can save your plots as .svg files by typing in the commands
 

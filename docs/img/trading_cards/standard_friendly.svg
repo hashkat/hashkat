@@ -26,7 +26,7 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.70910507"
-     inkscape:cx="-108.63491"
+     inkscape:cx="-105.81445"
      inkscape:cy="513.92477"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
@@ -237,7 +237,7 @@
          style="font-size:19.96217918px;font-style:italic;line-height:100%;-inkscape-font-specification:Lato Bold Italic"
          id="tspan3909"><tspan
    style="font-style:italic;font-weight:bold;-inkscape-font-specification:Lato Bold Italic"
-   id="tspan3941">          Follow</tspan>: {function: constant, value: 0.3}</tspan><tspan
+   id="tspan3941">          Follow</tspan>: {function: constant, value: 0.3} # follows per simulated minute</tspan><tspan
          sodipodi:role="line"
          x="40.82188"
          y="1000.3517"
@@ -249,7 +249,7 @@
          style="font-size:19.96217918px;font-style:italic;line-height:100%;-inkscape-font-specification:Lato Bold Italic"
          id="tspan3921"><tspan
    style="font-style:italic;font-weight:bold;-inkscape-font-specification:Lato Bold Italic"
-   id="tspan3943">          Tweet</tspan>: {function: constant, value: 0.04}</tspan><tspan
+   id="tspan3943">          Tweet</tspan>: {function: constant, value: 0.04} # tweets per simulated minute</tspan><tspan
          sodipodi:role="line"
          x="40.82188"
          y="1040.276"
