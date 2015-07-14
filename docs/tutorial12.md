@@ -82,7 +82,7 @@ For this network simulation, we would like to have the following:
 
 We would also like you to use only the following agent types with their respective characteristics:
 
-### Standard - Chatty Agent
+### Standard - Self-Centered Chatty Agent
 
 <p align='center'>
 <img src='../img/trading_cards/standard_self_centered_chatty_card.jpg'>
@@ -113,7 +113,7 @@ We would also like you to use only the following agent types with their respecti
 
 ```
 
-### Standard - Friendly Agent
+### Standard - Friendly Networking Agent
 
 <p align='center'>
 <img src='../img/trading_cards/standard_friendly_networking_card.jpg'>
@@ -144,7 +144,7 @@ We would also like you to use only the following agent types with their respecti
 
 ```
 
-### Standard - Funny Agent
+### Standard - Funny Social Commentator Agent
 
 <p align='center'>
 <img src='../img/trading_cards/standard_funny_social_commentator_card.jpg'>
@@ -175,7 +175,7 @@ We would also like you to use only the following agent types with their respecti
 
 ```
 
-### Standard - Musical Agent
+### Standard - Music Advocate Agent
 
 <p align='center'>
 <img src='../img/trading_cards/standard_music_advocate_card.jpg'>
@@ -206,7 +206,7 @@ We would also like you to use only the following agent types with their respecti
 
 ```
 
-### Standard - Political
+### Standard - Political Satirist Agent
 
 <p align='center'>
 <img src='../img/trading_cards/standard_political_satirist_card.jpg'>
