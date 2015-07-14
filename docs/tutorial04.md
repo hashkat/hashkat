@@ -18,7 +18,7 @@ following through retweets within your simulation.
 
 Let's try running a Classic Barabasi twitter suggest follow model simulation, with our starting point being the INFILE.yaml we used in the previous tutorial.
 As always, all the files that we will use in this simulation can be found for reference in the tutorials directory in hashkat, with this one under the title *tutorial04_classic_barabasi*.
-You can also view the input file we will be creating for this example [here](https://github.com/hashkat/hashkat/blob/master/tutorials/tutorial04_classic_barabasi/INFILE.yaml).
+You can also view the input file we will be creating for this example [here](https://github.com/hashkat/hashkat/blob/master/docs/tutorials/tutorial04_classic_barabasi/INFILE.yaml).
 
 ### Constructing The Network
 
@@ -87,7 +87,7 @@ every agent, by following one other user, has at least one connection.
 The Non-Classic Barabasi configuration is exactly the same as the classic configuration except that the number of connections agents make when entering the simulation is a number greater than 1.
 
 The files used in this simulation can be found for reference in the tutorials directory in hashkat under the title *tutorial04_nonclassic_barabasi*.
-You can also view the input file used for this example [here](https://github.com/hashkat/hashkat/blob/master/tutorials/tutorial04_nonclassic_barabasi/INFILE.yaml).
+You can also view the input file used for this example [here](https://github.com/hashkat/hashkat/blob/master/docs/tutorials/tutorial04_nonclassic_barabasi/INFILE.yaml).
 
 ### Constructing The Network
 
@@ -113,7 +113,7 @@ agent has at least two connections.
 
 We shall now run a twitter suggest follow model network simulation without implementing the Barabasi configuration.
 The files that were used in this example can be found for reference in the tutorials directory in hashkat under the title *tutorial04_other*.
-You can also view the input file used for this example [here](https://github.com/hashkat/hashkat/blob/master/tutorials/tutorial04_other/INFILE.yaml).
+You can also view the input file used for this example [here](https://github.com/hashkat/hashkat/blob/master/docs/tutorials/tutorial04_other/INFILE.yaml).
 
 ### Constructing The Network
 

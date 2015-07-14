@@ -62,7 +62,7 @@ Defined in the *agents* section of **INFILE.yaml**, an agent's tweet rate dictat
 
 Now that we have seen all the factors that make agents unique, we are going to create a network simulation that consists of these diverse agents, and see which agent type out of the ones we created are the most popular.
 
-For this exercise, we will actually not go through how to configure **INFILE.yaml** to create the desired network with you. You've had enough experience with it that you should be able to do this on your own. We're just going to outline the network that we would like. If you're having any problems with this, the desired input file can be found for reference in the tutorials directory in hashkat, with this one under the title *tutorial12*. You can also view the desired input file you will be creating for this example [here](https://github.com/hashkat/hashkat/blob/master/tutorials/tutorial12/INFILE.yaml). Now, on to creating the network.
+For this exercise, we will actually not go through how to configure **INFILE.yaml** to create the desired network with you. You've had enough experience with it that you should be able to do this on your own. We're just going to outline the network that we would like. If you're having any problems with this, the desired input file can be found for reference in the tutorials directory in hashkat, with this one under the title *tutorial12*. You can also view the desired input file you will be creating for this example [here](https://github.com/hashkat/hashkat/blob/master/docs/tutorials/tutorial12/INFILE.yaml). Now, on to creating the network.
 
 For this network simulation, we would like to have the following:
 
