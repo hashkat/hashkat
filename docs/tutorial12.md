@@ -82,6 +82,9 @@ For this network simulation, we would like to have the following:
 
 We would also like you to use only the following agent types with their respective characteristics:
 
+<p align='center'>
+<img src='../img/trading_cards/standard_chatty.svg'>
+</p>
 
 
 Make sure that your tweet, retweet, and follow ranks have also been updated accordingly to properly account for this network. As you've probably noticed, we've set the max real time to 30 minutes instead of the regular 1 minute. The simulation should definitely not run for this long, we just want to allow enough time for the simulation to run to completion. When running this simulation on our computer, it took around 16 minutes real time to complete due to the complexity of the network. You do not have to run your simulation for this long if you wish. You can change the maximum real time to a time of your choosing or press **Ctrl-c** at any time during the simulation to pause it. Once you have configured **INFILE.yaml** to account for all this, run and visualize your network simulation.
