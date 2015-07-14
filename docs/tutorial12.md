@@ -82,10 +82,160 @@ For this network simulation, we would like to have the following:
 
 We would also like you to use only the following agent types with their respective characteristics:
 
+### Standard - Chatty Agent
+
 <p align='center'>
-<img src='../img/trading_cards/standard_chatty.svg'>
+<img src='../img/trading_cards/standard_self_centered_chatty_card.jpg'>
 </p>
 
+```python
+- name: Standard-Chatty
+  weights:
+    # Weight with which this agent is created
+    add: 100.0
+    # Weight with which this agent is followed in agent follow
+    follow: 5.0
+    tweet_type:
+      ideological: 1.0
+      plain: 1.0
+      musical: 1.0
+      humourous: 1.0 # Can be considered the humourousness of the agent type
+  # Probability that following this agent results in a follow-back
+  followback_probability: 0.2
+  hashtag_follow_options:
+    care_about_region: false # does the agent care about where the agent they will follow is from?
+    care_about_ideology: true # does the agent care about which ideology the agent has?
+  rates:
+      # Rate for follows from this agent:
+      follow: {function: constant, value: 0.05}
+      # Rate for tweets from this agent:
+      tweet: {function: constant, value: 0.5}
+
+```
+
+### Standard - Friendly Agent
+
+<p align='center'>
+<img src='../img/trading_cards/standard_friendly_networking_card.jpg'>
+</p>
+
+```python
+- name: Standard-Friendly
+  weights:
+    # Weight with which this agent is created
+    add: 100.0
+    # Weight with which this agent is followed in agent follow
+    follow: 5.0
+    tweet_type:
+      ideological: 1.0
+      plain: 7.0
+      musical: 1.0
+      humourous: 3.0 # Can be considered the humourousness of the agent type
+  # Probability that following this agent results in a follow-back
+  followback_probability: 1.0
+  hashtag_follow_options:
+    care_about_region: false # does the agent care about where the agent they will follow is from?
+    care_about_ideology: false # does the agent care about which ideology the agent has?
+  rates:
+      # Rate for follows from this agent:
+      follow: {function: constant, value: 0.3}
+      # Rate for tweets from this agent:
+      tweet: {function: constant, value: 0.04}
+
+```
+
+### Standard - Funny Agent
+
+<p align='center'>
+<img src='../img/trading_cards/standard_funny_social_commentator_card.jpg'>
+</p>
+
+```python
+- name: Standard-Funny
+  weights:
+    # Weight with which this agent is created
+    add: 100.0
+    # Weight with which this agent is followed in agent follow
+    follow: 5.0
+    tweet_type:
+      ideological: 1.0
+      plain: 1.0
+      musical: 0.0
+      humourous: 6.0 # Can be considered the humourousness of the agent type
+  # Probability that following this agent results in a follow-back
+  followback_probability: 0.44
+  hashtag_follow_options:
+    care_about_region: true # does the agent care about where the agent they will follow is from?
+    care_about_ideology: false # does the agent care about which ideology the agent has?
+  rates:
+      # Rate for follows from this agent:
+      follow: {function: constant, value: 0.02}
+      # Rate for tweets from this agent:
+      tweet: {function: constant, value: 0.1}
+
+```
+
+### Standard - Musical Agent
+
+<p align='center'>
+<img src='../img/trading_cards/standard_music_advocate_card.jpg'>
+</p>
+
+```python
+- name: Standard-Musical
+  weights:
+    # Weight with which this agent is created
+    add: 100.0
+    # Weight with which this agent is followed in agent follow
+    follow: 5.0
+    tweet_type:
+      ideological: 0.0
+      plain: 1.0
+      musical: 5.0
+      humourous: 0.0 # Can be considered the humourousness of the agent type
+  # Probability that following this agent results in a follow-back
+  followback_probability: 0.1
+  hashtag_follow_options:
+    care_about_region: false # does the agent care about where the agent they will follow is from?
+    care_about_ideology: false # does the agent care about which ideology the agent has?
+  rates:
+      # Rate for follows from this agent:
+      follow: {function: constant, value: 0.01}
+      # Rate for tweets from this agent:
+      tweet: {function: constant, value: 0.02}
+
+```
+
+### Standard - Political
+
+<p align='center'>
+<img src='../img/trading_cards/standard_political_satirist_card.jpg'>
+</p>
+
+```python
+- name: Standard-Political
+  weights:
+    # Weight with which this agent is created
+    add: 100.0
+    # Weight with which this agent is followed in agent follow
+    follow: 5.0
+    tweet_type:
+      ideological: 8.0
+      plain: 1.0
+      musical: 0.0
+      humourous: 3.0 # Can be considered the humourousness of the agent type
+  # Probability that following this agent results in a follow-back
+  followback_probability: 0.44
+  hashtag_follow_options:
+    care_about_region: true # does the agent care about where the agent they will follow is from?
+    care_about_ideology: true # does the agent care about which ideology the agent has?
+  rates:
+      # Rate for follows from this agent:
+      follow: {function: constant, value: 0.01}
+      # Rate for tweets from this agent:
+      tweet: {function: constant, value: 0.12}
+
+```
 
 Make sure that your tweet, retweet, and follow ranks have also been updated accordingly to properly account for this network. As you've probably noticed, we've set the max real time to 30 minutes instead of the regular 1 minute. The simulation should definitely not run for this long, we just want to allow enough time for the simulation to run to completion. When running this simulation on our computer, it took around 16 minutes real time to complete due to the complexity of the network. You do not have to run your simulation for this long if you wish. You can change the maximum real time to a time of your choosing or press **Ctrl-c** at any time during the simulation to pause it. Once you have configured **INFILE.yaml** to account for all this, run and visualize your network simulation.
 
