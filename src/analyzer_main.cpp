@@ -190,7 +190,7 @@ struct Analyzer {
     void fix_agents_upon_resubmission(AnalysisState& state) {
         Network& n = state.network;
         auto& R = state.config.regions;
-        for (int i = 0; i < n.n_agents; i ++) {
+        for (int i = 0; i < n.size(); i ++) {
             Agent& a = n[i];
             auto& region = R.regions[a.region_bin];
             a.language = (Language) rng.kmc_select(region.language_probs);
@@ -257,13 +257,13 @@ struct Analyzer {
     bool action_create_agent() {
         PERF_TIMER();
 
-        if (network.n_agents == network.max_agents) {
+        if (network.size() == network.max_size()) {
             // Make sure we do not try to add!
             return false;
         }
 
-        int id = network.n_agents;
-        network.n_agents++;
+        int id = network.size();
+        network.increase();
 
         double creation_time = time;
         Agent& e = network[id];
@@ -619,7 +619,7 @@ struct Analyzer {
             stream << scientific << setprecision(2)
             //<< HEADER  
             << time << "\t\t"
-            << network.n_agents << "\t\t"
+            << network.size() << "\t\t"
             << stats.global_stats.n_follows << "\t\t"
             << stats.global_stats.n_tweets << "\t\t"
             << stats.global_stats.n_retweets << "(" << state.tweet_bank.n_active_tweets() << ")\t\t"
@@ -630,7 +630,7 @@ struct Analyzer {
         } else {
             stream << setprecision(2) << scientific
             << time << "\t"
-            << (double) network.n_agents << "\t"
+            << (double) network.size() << "\t"
             << (double) stats.global_stats.n_follows << "\t"
             << (double) stats.global_stats.n_tweets << "\t"
             << (double) stats.global_stats.n_retweets << "(" << (double) state.tweet_bank.n_active_tweets() << ")\t"

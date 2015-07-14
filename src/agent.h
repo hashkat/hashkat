@@ -1,29 +1,30 @@
-/*
- * This file is part of the #KAT Social Network Simulator.
- *
- * The #KAT Social Network Simulator is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * The #KAT Social Network Simulator is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with the #KAT Social Network Simulator.  If not, see <http://www.gnu.org/licenses/>.
- *
- * Addendum:
- *
- * Under this license, derivations of the #KAT Social Network Simulator typically must be provided in source
- * form. The #KAT Social Network Simulator and derivations thereof may be relicensed by decision of 
- * the original authors (Kevin Ryczko & Adam Domurad, Isaac Tamblyn), as well, in the case of a derivation,
- * subsequent authors. 
- */
+///////////////////////////////////////////////////////////////////////////////
+// This file is part of the #KAT Social Network Simulator.
+//
+// The #KAT Social Network Simulator is free software: you can redistribute it
+// and/or modify it under the terms of the GNU General Public License as
+// published by the Free Software Foundation, either version 3 of the License,
+// or (at your option) any later version.
+//
+// The #KAT Social Network Simulator is distributed in the hope that it will be
+// useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General
+// Public License for more details.
+//
+// You should have received a copy of the GNU General Public License along with
+// the #KAT Social Network Simulator. If not, see http://www.gnu.org/licenses.
+//
+// Addendum:
+//
+// Under this license, derivations of the #KAT Social Network Simulator
+// typically must be provided in source form. The #KAT Social Network Simulator
+// and derivations thereof may be relicensed by decision of the original
+// authors (Kevin Ryczko & Adam Domurad, Isaac Tamblyn), as well, in the case
+// of a derivation, subsequent authors.
+//
 
-#ifndef AGENT_H_
-#define AGENT_H_
+#ifndef HASHKAT_AGENT_H
+#define HASHKAT_AGENT_H
 
 #include <string>
 #include <vector>
@@ -45,7 +46,8 @@
 // Forward declare, to prevent circular header inclusion:
 struct AnalysisState;
 
-struct Agent {
+struct Agent
+{
     // Storing the id is redundant (since it can be inferred), but provides convenient handling
     int id = -1;
 
@@ -75,6 +77,7 @@ struct Agent {
     // Store the two directions of the follow relationship
     FollowingSet following_set;
     FollowerSet follower_set;
+
     // these store how someone followed you, or how you followed someone
     std::vector<int> following_method_counts;
     std::vector<int> follower_method_counts;
@@ -188,4 +191,4 @@ struct AgentType {
 typedef std::vector<AgentType> AgentTypeVector;
 
 
-#endif
+#endif  // HASHKAT_AGENT_H

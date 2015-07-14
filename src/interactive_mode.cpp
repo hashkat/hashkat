@@ -87,8 +87,8 @@ struct InteractiveModeBindings {
         using namespace luawrap;
 
         LuaValue G = globals(L);
-        G["n_agents"] = state->network.n_agents;
-        G["max_agents"] = state->network.max_agents;
+        G["n_agents"] = state->network.size();
+        G["max_agents"] = state->network.max_size();
         G["analysis_time"] = state->time;
         G["analysis_step"] = state->stats.n_steps;
 

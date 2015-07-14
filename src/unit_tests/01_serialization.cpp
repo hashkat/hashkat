@@ -48,7 +48,7 @@ SUITE(serialization) {
         AnalysisState state(config, /*seed*/ 1);
         int N_GENERATED = 3;
         state.network.allocate(N_GENERATED);
-        state.network.n_agents = N_GENERATED;
+//        state.network.n_agents = N_GENERATED; // removed for refactoring
 
         for (int i = 0; i < N_GENERATED; i++) {
             Agent& e = state.network[i];
@@ -98,9 +98,9 @@ SUITE(serialization) {
             DataReader reader(state, file_name);
             Network network;
             network.visit(reader);
-            CHECK(network.n_agents == state.network.n_agents);
-            CHECK(network.max_agents == state.network.max_agents);
-            for (int i = 0; i < network.n_agents; i++) {
+            CHECK(network.size() == state.network.size());
+            CHECK(network.max_size() == state.network.max_size());
+            for (int i = 0; i < network.size(); i++) {
                 check_eq(network[i], state.network[i]);
             }
         }

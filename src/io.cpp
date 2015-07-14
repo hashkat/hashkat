@@ -63,7 +63,7 @@ void output_network_statistics(AnalysisState& state) {
             cout << "\nSimulation (Gracefully) Interrupted: ctrl-c was pressed\n";
         } else if (state.end_time >= C.max_sim_time) {
             cout << "\nSimulation Completed: desired duration reached\n";
-//        } else if (network.n_agents >= C.max_agents) { // AD: No longer an exit condition
+//        } else if (network.size() >= C.max_agents) { // AD: No longer an exit condition
 //            cout << "\nSimulation Completed: desired agent amount reached\n";
         } else if (!analyzer_real_time_check(state)) {
             cout << "\nSimulation Completed: desired wall-clock time reached\n";
@@ -80,7 +80,7 @@ void output_network_statistics(AnalysisState& state) {
     }
     int MAX_AGENTS = C.max_agents;
     double rate_add = C.rate_add;
-    int N_AGENTS = network.n_agents;
+    int N_AGENTS = network.size();
     int initial_agents = C.initial_agents;
 
     // Depending on our INFILE/configuration, we may output various analysis
@@ -140,7 +140,7 @@ void brief_agent_statistics(AnalysisState& state) {
     Network& network = state.network;
     ParsedConfig& config = state.config;
 
-    for (int i = 0; i < min(/*For now:*/2, network.n_agents); i++) {
+    for (int i = 0; i < min(/*For now:*/2, network.size()); i++) {
        Agent& e = network[i];
        AgentType& et = state.agent_types[e.agent_type];
 
@@ -281,11 +281,11 @@ void output_position(Network& network, int n_agents) {
 
 void model_match(Network& network, vector<int> & counts, int max_degree) {
     int sum_k = 0;
-    for (int i = 0; i < network.n_agents; i ++) {
+    for (int i = 0; i < network.size(); i++) {
        sum_k += network.n_followers(i);
        sum_k += network.n_followings(i); 
     }
-    double average_degree = (double) sum_k / (double) network.n_agents;
+    double average_degree = (double)sum_k / (double)network.size();
     double sum_jN = 0;
     for (int j = 0; j < counts.size(); j++) {
         sum_jN += j*counts[j];
@@ -314,7 +314,7 @@ void model_match(Network& network, vector<int> & counts, int max_degree) {
 
 void degree_distributions(Network& network,AnalysisState& state) {
     int max_following = 0, max_followers = 0;
-    for (int i = 0; i < network.n_agents; i ++) {
+    for (int i = 0; i < network.size(); i++) {
         if (network.n_followings(i) >= max_following) {
             max_following = network.n_followings(i) + 1;
         }
@@ -364,7 +364,7 @@ void degree_distributions(Network& network,AnalysisState& state) {
         cumulative_distro[i] = 0;
     }
     //go through network and generate distributions
-    for (int i = 0; i < network.n_agents; i ++) {
+    for (int i = 0; i < network.size(); i++) {
         out_degree_distro[network.n_followings(i)] ++;
         in_degree_distro[network.n_followers(i)] ++;
         cumulative_distro[network.n_followers(i) + network.n_followings(i)] ++;
@@ -380,13 +380,13 @@ void degree_distributions(Network& network,AnalysisState& state) {
     model_match(network, cumulative_distro, max_degree);
     // output the distributions
     for (int i = 0; i < max_following; i ++) {
-        outdd << i << "\t" << out_degree_distro[i] / (double) network.n_agents << "\t" << log(i) << "\t" << log(out_degree_distro[i] / (double)network.n_agents) << "\n";
+        outdd << i << "\t" << out_degree_distro[i] / (double)network.size() << "\t" << log(i) << "\t" << log(out_degree_distro[i] / (double)network.size()) << "\n";
     }
     for (int i = 0; i < max_followers; i ++) {
-        indd << i << "\t" << in_degree_distro[i] / (double) network.n_agents << "\t" << log(i) << "\t" << log(in_degree_distro[i] / (double)network.n_agents) << "\n";
+        indd << i << "\t" << in_degree_distro[i] / (double)network.size() << "\t" << log(i) << "\t" << log(in_degree_distro[i] / (double)network.size()) << "\n";
     }
     for (int i = 0; i < max_degree; i ++) {
-        cumuldd << i << "\t" << cumulative_distro[i] / (double) network.n_agents << "\t" << log(i) << "\t" << log(cumulative_distro[i] / (double)network.n_agents) << "\n";
+        cumuldd << i << "\t" << cumulative_distro[i] / (double)network.size() << "\t" << log(i) << "\t" << log(cumulative_distro[i] / (double)network.size()) << "\n";
     }
     //for (int i = 0; i < max_degree; i ++) {
      //   scaled << i / (double) max_degree << "\t" << cumulative_distro[i] / (double) max << "\t" << log(i / (double) max_degree) << "\t" << log(cumulative_distro[i] / (double) max) << "\n";
@@ -550,7 +550,7 @@ bool agent_checks(AgentTypeVector& ets, Network& network, AnalysisState& state, 
     int check_count = 0;
     double rate_add = add_rates.RF.monthly_rates[state.n_months()];
     for (auto& et : ets) {
-        double add_correct = network.n_agents * et.prob_add;
+        double add_correct = network.size() * et.prob_add;
         if (abs(add_correct - et.agent_list.size()) / add_correct >= tolerence) {
             //cout << "\nNumber of agent type \'" << ets[i].name << "\' is not correct. " << (int) add_correct << " is the right number.\n";
             //cout << "was: " << ets[i].agent_list.size() << "\n";
@@ -559,11 +559,11 @@ bool agent_checks(AgentTypeVector& ets, Network& network, AnalysisState& state, 
         }
         for (int j = 0; j < number_of_diff_events; j ++) {
             if (rate_add == 0 && et.RF[j].function_type == "constant") {
-                double correct_val = et.RF[j].const_val * state.time * network.n_agents * et.prob_add;
+                double correct_val = et.RF[j].const_val * state.time * network.size() * et.prob_add;
                 final_check += quick_rate_check(et, correct_val, j);
                 check_count ++;
             } else if (rate_add == 0 && et.RF[j].function_type == "linear" ) {
-                double correct_val = (et.RF[j].y_intercept + 0.5 * et.RF[j].slope * state.n_months()) * state.time * network.n_agents * et.prob_add;
+                double correct_val = (et.RF[j].y_intercept + 0.5 * et.RF[j].slope * state.n_months()) * state.time * network.size() * et.prob_add;
                 final_check += quick_rate_check(et, correct_val, j);
                 check_count ++;
             } else if (rate_add != 0 && et.RF[j].function_type == "constant") {
@@ -711,9 +711,9 @@ void network_statistics(Network& n, NetworkStats& net_stats, AgentTypeVector& et
     output.open("output/main_stats.dat");
     output << "--------------------\n| MAIN NETWORK STATS |\n--------------------\n\n";
     output << "USERS\n_____\n\n";
-    output << "Total: " << n.n_agents << "\n";
+    output << "Total: " << n.size() << "\n";
     for (auto& et : etv) {
-        output << et.name << ": " << et.agent_list.size() << "\t(" << 100*et.agent_list.size() / (double) n.n_agents << "% of total agents)\n";
+        output << et.name << ": " << et.agent_list.size() << "\t(" << 100 * et.agent_list.size() / (double)n.size() << "% of total agents)\n";
     }
 
     AgentStats& stats = net_stats.global_stats;
@@ -766,7 +766,7 @@ bool region_stats(Network& n, AnalysisState& state) {
     sprintf(out, "output/region_connection_matrix_month_%03d.dat", state.n_months());
     output.open(((string) out).c_str());
     
-    for (int i = 0; i < n.n_agents; i ++) {
+    for (int i = 0; i < n.size(); i++) {
         Agent& e = n[i];
         int reg = e.region_bin;
         region_self[reg].ids.push_back(i);
@@ -817,7 +817,7 @@ void fraction_of_connections_distro(Network& network, AnalysisState& state, Netw
     if (!total_follows){
         return;
     }
-    for (int i = 0; i < network.n_agents; i ++) {
+    for (int i = 0; i < network.size(); i++) {
         // frac_connect_bin -> fcb
         int fcb = (double) network.n_followers(i) / (double) total_follows * (double) bin_grid;
         agent_counts[fcb] ++;
@@ -826,7 +826,7 @@ void fraction_of_connections_distro(Network& network, AnalysisState& state, Netw
     ofstream output;
     output.open("output/connections_vs_nodes.dat");
     for (int i = 0; i < bin_grid; i ++) {
-        output << i / (double) bin_grid << "\t" << (double) agent_counts[i] / (double) network.n_agents << "\t" << log(i / (double) bin_grid) << "\t" << log((double) agent_counts[i] / (double) network.n_agents) <<"\n";
+        output << i / (double)bin_grid << "\t" << (double)agent_counts[i] / (double)network.size() << "\t" << log(i / (double)bin_grid) << "\t" << log((double)agent_counts[i] / (double)network.size()) << "\n";
     }
     output.close();  
 }
@@ -850,7 +850,7 @@ void dd_by_age(Network& n, AnalysisState& as, NetworkStats& ns) {
     YearVector years(length);
     
     int max_following = 0, max_followers = 0;
-    for (int i = 0; i < n.n_agents; i ++) {
+    for (int i = 0; i < n.size(); i++) {
         
         Agent& e = n[i];
         int age = e.creation_time / year;
@@ -889,7 +889,7 @@ void dd_by_age(Network& n, AnalysisState& as, NetworkStats& ns) {
     for (int i = 0; i < max_degree; i ++) {
         output << i << "\t" << log(i);
         for (auto& year : years) {
-            output << "\t" << year.dd[i] / n.n_agents << "\t" << log(year.dd[i] / n.n_agents);
+            output << "\t" << year.dd[i] / n.size() << "\t" << log(year.dd[i] / n.size());
         }
         output << "\n";
     }
@@ -905,7 +905,7 @@ void dd_by_agent(Network& n, AnalysisState& as, NetworkStats& ns) {
     vector<Year> agent_types(n_ent_types);
     
     int max_following = 0, max_followers = 0;
-    for (int i = 0; i < n.n_agents; i ++) {
+    for (int i = 0; i < n.size(); i++) {
         
         Agent& e = n[i];
         int ent_type = e.agent_type;
@@ -942,7 +942,7 @@ void dd_by_agent(Network& n, AnalysisState& as, NetworkStats& ns) {
     for (int i = 0; i < max_degree; i ++) {
         output << i << "\t" << log(i);
         for (auto& ent_type : agent_types) {
-            output << "\t" << ent_type.dd[i] / n.n_agents << "\t" << log(ent_type.dd[i] / n.n_agents);
+            output << "\t" << ent_type.dd[i] / n.size() << "\t" << log(ent_type.dd[i] / n.size());
         }
         output << "\n";
     }
@@ -952,7 +952,7 @@ void dd_by_agent(Network& n, AnalysisState& as, NetworkStats& ns) {
 void dd_by_follow_method(Network& n, AnalysisState& as, NetworkStats& ns) {
     vector<Year> follow_models(N_FOLLOW_MODELS + 2); // + 2 for retweeting and followback
     int max_following = 0, max_followers = 0;
-    for (int i = 0; i < n.n_agents; i ++) {
+    for (int i = 0; i < n.size(); i++) {
         if (n.n_followings(i) >= max_following) {
             max_following = n.n_followings(i) + 1;
         }
@@ -967,7 +967,7 @@ void dd_by_follow_method(Network& n, AnalysisState& as, NetworkStats& ns) {
             follow_model.dd[i] = 0;
         }
     }
-    for (int i = 0; i < n.n_agents; i ++) {
+    for (int i = 0; i < n.size(); i++) {
         for (int j = 0; j < N_FOLLOW_MODELS + 2; j ++) {
             Agent& e = n[i];
             int degree = e.following_method_counts[j] + e.follower_method_counts[j];
@@ -987,7 +987,7 @@ void dd_by_follow_method(Network& n, AnalysisState& as, NetworkStats& ns) {
     for (int i = 0; i < max_degree; i ++) {
         output << i << "\t" << log(i);
         for (auto& ent_type : follow_models) {
-            output << "\t" << ent_type.dd[i] / n.n_agents << "\t" << log(ent_type.dd[i] / n.n_agents);
+            output << "\t" << ent_type.dd[i] / n.size() << "\t" << log(ent_type.dd[i] / n.size());
         }
         output << "\n";
     }

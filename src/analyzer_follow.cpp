@@ -300,7 +300,7 @@ struct AnalyzerFollow {
        int follow_method = rng.kmc_select(&config.model_weights[0], N_FOLLOW_MODELS);
        if (follow_method == 0) {
            // Random follow method:
-           return random_follow_method(e, network.n_agents);
+           return random_follow_method(e, network.size());
        } else if (follow_method == 1) {
            return twitter_preferential_follow_method(e, time_of_follow);
        } else if (follow_method == 2) {
@@ -323,7 +323,7 @@ struct AnalyzerFollow {
         const int follow_model = config.follow_model;
         if (follow_model == RANDOM_FOLLOW) {
             // find a random agent within [0:number of agents - 1]
-            agent_to_follow = random_follow_method(e, network.n_agents);
+            agent_to_follow = random_follow_method(e, network.size());
         } else if (follow_model == TWITTER_PREFERENTIAL_FOLLOW && config.use_barabasi) {
             agent_to_follow = preferential_barabasi_follow_method();
         } else if(follow_model == TWITTER_PREFERENTIAL_FOLLOW && !config.use_barabasi) {
