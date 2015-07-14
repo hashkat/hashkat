@@ -16,6 +16,60 @@ Both *Coke* and *Pepsi* only follow agents that follow them, and they will do so
 
 The **INFILE.yaml** used for this scenario can be found in the *tutorials* directory in *hashkat* under *tutorial14* as well as [here](). To find out who wins this competition, copy this input file into your *hashkat* directory and run the simulation. Feel free to look through the input file to see what we did to produce this scenario.
 
+#### Coke
+
+```python
+- name: Coke
+  weights:
+    # Weight with which this agent is created
+    add: 100.0
+    # Weight with which this agent is followed in agent follow
+    follow: 50
+    tweet_type:
+      ideological: 0.0
+      plain: 0.0
+      musical: 0.0
+      humourous: 1.0 # Can be considered the humourousness of the agent type
+  # Probability that following this agent results in a follow-back
+  followback_probability: 1.00
+  hashtag_follow_options:
+    care_about_region: false # does the agent care about where the agent they will follow is from?
+    care_about_ideology: false # does the agent care about which ideology the agent has?
+  rates:
+      # Rate for follows from this agent:
+      follow: {function: constant, value: 0.0}
+      # Rate for tweets from this agent:
+      tweet: {function: constant, value: 0.0101}
+```
+
+#### Pepsi
+
+```python
+```python
+- name: Pepsi
+  weights:
+    # Weight with which this agent is created
+    add: 100.0
+    # Weight with which this agent is followed in agent follow
+    follow: 50
+    tweet_type:
+      ideological: 0.0
+      plain: 0.0
+      musical: 1.0
+      humourous: 1.0 # Can be considered the humourousness of the agent type
+  # Probability that following this agent results in a follow-back
+  followback_probability: 1.00
+  hashtag_follow_options:
+    care_about_region: false # does the agent care about where the agent they will follow is from?
+    care_about_ideology: false # does the agent care about which ideology the agent has?
+  rates:
+      # Rate for follows from this agent:
+      follow: {function: constant, value: 0.0}
+      # Rate for tweets from this agent:
+      tweet: {function: constant, value: 0.01}
+```
+```
+
 ### Scenario 2 - Different Regions, Different Ideologies
 
 
