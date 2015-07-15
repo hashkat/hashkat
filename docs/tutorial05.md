@@ -8,6 +8,10 @@ An agent-based follow method is one in which agents follow a twitter user based 
 
 ## Constructing The Network
 
+<p align = 'center'>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/_SXyLB0O30s" frameborder="0" allowfullscreen></iframe>
+</p>
+
 Starting with the INFILE.yaml file we used in **Tutorial 4** for **Other Twitter Suggest Models**, we will of course change the follow model from *twitter_suggest* to *agent*, and finally get to implement our *Celebrity* agents into our network. This can be done by simply changing the *Celebrity* add weight to 100.0. With both the *Standard* agents and *Celebrity* agents having an add weight of 100.0, the number of *Standard* agents and *Celebrity* agents within the simulation will be roughly the same, with the proportion of *Standard* agents and *Celebrity* agents being added to the network being 1:1. Since celebrities tend to garner vastly more followers than ordinary people, it makes sense for our simulation of *Standard* and *Celebrity* agents to mimic this. Therefore, we will change the *Standard* follow weight to 10.0 and the *Celebrity* follow weight to 90.0. From this we should expect to see *Celebrity* agents to garner about 90% of the follows and Standard agents to garner about 10%.
 
 ```python
@@ -57,11 +61,11 @@ agents:
         tweet: {function: constant, value: 0.01}
 ```
 
-<p align = 'center'>
-<iframe width="560" height="315" src="https://www.youtube.com/embed/_SXyLB0O30s" frameborder="0" allowfullscreen></iframe>
-</p>
-
 ## Running and Visualizing The Network
+
+<p align = 'center'>
+<iframe width="420" height="315" src="https://www.youtube.com/embed/-bYzbWOc8yc" frameborder="0" allowfullscreen></iframe>
+</p>
 
 Running this simulation we produced the following network:
 
@@ -91,15 +95,6 @@ We can do this using 'gnuplot' by entering 'gnuplot' in the *output* directory a
 
 As we can see, there are no *Standard* agents with a cumulative degree greater than 20, with most having a cumulative degree just under or just above 5. The *Celebrity* agents' cumulative degree distribution has much more variance, with *Celebrity* agents in this network having up to almost 35 connections in this simulation. The *Overall* cumulative degree distribution illustrates all this by !!!!!!! 
 
-<p align = 'center'>
-<iframe width="420" height="315" src="https://www.youtube.com/embed/-bYzbWOc8yc" frameborder="0" allowfullscreen></iframe>
-</p>
-
 ## Next Steps
 
 Continue experimenting with the agent follow model. Adding more agent types into your simulation, such as bots and organizations, and manipulating all of their add weights, follow weights, follow rates, etc., can lead to some truly complex and interesting networks. When you are comfortable using the agent follow model, proceed to the next tutorial, where we actually combine the twitter suggest follow model and agent follow model to create the preferential agent follow model.
-
-
-
-
-

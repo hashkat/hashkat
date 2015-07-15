@@ -43,6 +43,10 @@ More information on how this is run in #k@ can be found on the **Developers** pa
 
 ## Running a Simple Network
 
+<p align = 'center'>
+<iframe width="420" height="315" src="https://www.youtube.com/embed/i921pJBAPmM" frameborder="0" allowfullscreen></iframe>
+</p>
+
 For this first tutorial, we're going to run a simple network using #k@.
 If you look into the #k@ directory / folder, you will find several 
 different files and directories. For now we are just going to look at
@@ -55,6 +59,12 @@ of these configurations can be found on the 'Input' page. For this tutorial,
 it is only necessary to know that we have a constant number of agents 
 or users in this network, 1000, and that the simulation will run for 100,000
 simulated minutes and a maximum of 1 minute real time.
+
+Each agent will have their own particular characteristics that will be changed and manipulated in the following tutorials. A summary of these characteristics is outlined below:
+
+<p align='center'>
+<img src='../img/tutorial01/agent_info.png'>
+</p>
 
 Run the simulation. If you experience any issues running the simulation,
 you can reference the installation page for details on running a simulation
@@ -92,11 +102,12 @@ There is also the 'output' directory, which contains all the data you've
 accummulated through simulation necessary for analysis. We shall discuss
 these files below.
 
-<p align = 'center'>
-<iframe width="420" height="315" src="https://www.youtube.com/embed/i921pJBAPmM" frameborder="0" allowfullscreen></iframe>
-</p>
 
 ## Output of a Simple Network
+
+<p align = 'center'>
+<iframe width="420" height="315" src="https://www.youtube.com/embed/cGzzACPLu8c" frameborder="0" allowfullscreen></iframe>
+</p>
 
 Going into the output directory and viewing its contents by inputting the commands
 
@@ -152,11 +163,11 @@ Note that you can save your plots as .svg files by typing in the commands
 
 when you first start up gnuplot and prior to actually plotting the data.
 
-<p align = 'center'>
-<iframe width="420" height="315" src="https://www.youtube.com/embed/cGzzACPLu8c" frameborder="0" allowfullscreen></iframe>
-</p>
-
 ## Visualization
+
+<p align = 'center'>
+<iframe width="420" height="315" src="https://www.youtube.com/embed/k4ULWpnRq8s" frameborder="0" allowfullscreen></iframe>
+</p>
 
 You can also use this data you collected to visualize your simulated network. Using [Gephi](http://gephi.github.io/), open the graph
 file *network.gexf* found in the output directory of your simulation. Press 'OK' for the 'Import report' window that pops up,
@@ -171,10 +182,6 @@ was made using the 'Fruchterman Reingold' and 'Clockwise Rotate' layout:
 
 We can see that these agents are randomly connected within this network simulation we created, with the highly connected agents at the centre
 of the visualization and the agents with less connections on the sides.
-
-<p align = 'center'>
-<iframe width="420" height="315" src="https://www.youtube.com/embed/k4ULWpnRq8s" frameborder="0" allowfullscreen></iframe>
-</p>
 
 ## Next Steps
 

@@ -4,6 +4,10 @@
 
 # Restarting a Network
 
+<p align = 'center'>
+<iframe width="420" height="315" src="https://www.youtube.com/embed/EomkuFDMQ30" frameborder="0" allowfullscreen></iframe>
+</p>
+
 A brief explanation on how to restart a network, this tutorial should take approximately 10 minutes to complete.
 
 ## Running a New Simulation
@@ -38,10 +42,6 @@ to continue this simulation from where you left off, simply type in:
 `run.sh`
 
 again and the simulation will recommence running.
-
-<p align = 'center'>
-<iframe width="420" height="315" src="https://www.youtube.com/embed/EomkuFDMQ30" frameborder="0" allowfullscreen></iframe>
-</p>
 
 ## Next Steps
 

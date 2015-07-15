@@ -22,6 +22,10 @@ You can also view the input file we will be creating for this example [here](htt
 
 ### Constructing The Network
 
+<p align = 'center'>
+<iframe width="420" height="315" src="https://www.youtube.com/embed/bHvmbQA2fEk" frameborder="0" allowfullscreen></iframe>
+</p>
+
 So let's make some modifications to our input file. As opposed to the random follow model simulations, where the number of agents within the network remained constant throughout the simulation,
 we are going to have the number of agents within the simulation increase over time, by setting our *initial_agents* to 10, and our *max_agents* to 1000.
 Most importantly, we're going to set *use_barabasi* to *true* causing the simulation to implement the Barabasi configuration.
@@ -93,11 +97,11 @@ follow_ranks:
 To better demonstrate the results of a twitter preferential follow model, we are again only going to use *Standard* users in this simulation. It is imperative that we have also set the *Standard* agent type's follow rate to 0.0,
 so that the only manner in which agents are connecting with each other is through the *barabasi_connections* they are assigned to make.
 
-<p align = 'center'>
-<iframe width="420" height="315" src="https://www.youtube.com/embed/bHvmbQA2fEk" frameborder="0" allowfullscreen></iframe>
-</p>
-
 ### Running and Visualizing The Network
+
+<p align = 'center'>
+<iframe width="420" height="315" src="https://www.youtube.com/embed/VDL76lvsa0E" frameborder="0" allowfullscreen></iframe>
+</p>
 
 Let's now run this simulation. You can plot the log-log graph of the *cumulative-degree_distribution_month_000.dat* in gnuplot, by following the same plotting steps outlined in Tutorial 1 but when plotting typing in
 the command:
@@ -122,10 +126,6 @@ A visualization of this network is shown below:
 As we can see, we have the much more highly connected agents at the centre of the visualization, and the agents lower in degree on the sides. As expected, by implementing the Classic Barabsi configuration,
 every agent, by following one other user, has at least one connection.
 
-<p align = 'center'>
-<iframe width="420" height="315" src="https://www.youtube.com/embed/VDL76lvsa0E" frameborder="0" allowfullscreen></iframe>
-</p>
-
 ## Example - Non-Classic Barabasi
 
 The Non-Classic Barabasi configuration is exactly the same as the classic configuration except that the number of connections agents make when entering the simulation is a number greater than 1.
@@ -139,6 +139,11 @@ For this example, we will use the exact same INFILE.yaml as used above, but our 
 
 ### Running and Visualizing The Network
 
+
+<p align = 'center'>
+<iframe width="420" height="315" src="https://www.youtube.com/embed/dFcaSDv--PI" frameborder="0" allowfullscreen></iframe>
+</p>
+
 Running this network simulation, we produced the visualization shown below:
 
 <p align='center'>
@@ -148,10 +153,6 @@ Running this network simulation, we produced the visualization shown below:
 As expected, this network is quite similar to the one we produced using the Classic Barabasi configuration, with the more highly connected agents at
 the centre of the visualization and those less connected on the sides. This is, however, a much more highly connected network, since every
 agent has at least two connections.
-
-<p align = 'center'>
-<iframe width="420" height="315" src="https://www.youtube.com/embed/dFcaSDv--PI" frameborder="0" allowfullscreen></iframe>
-</p>
 
 ## Example - Other Twitter Suggest Models
 
@@ -165,6 +166,10 @@ Designing a twitter suggest follow model network simulation without implementing
 
 ### Running and Visualizing The Network
 
+<p align = 'center'>
+<iframe width="420" height="315" src="https://www.youtube.com/embed/qViyqLsfnf4" frameborder="0" allowfullscreen></iframe>
+</p>
+
 Running hashkat, we produced the following visualization of this simulation:
 
 <p align='center'>
@@ -173,10 +178,6 @@ Running hashkat, we produced the following visualization of this simulation:
 
 As we can see, we again have some very highly connected agents in the centre of the visualization and unconnected agents on the sides. However, as opposed to twitter suggest follow model simulations that implement the Barabasi configuration, there are no set number
 of connections that every agent has, which explains the presence of agents with 0 connections.
-
-<p align = 'center'>
-<iframe width="420" height="315" src="https://www.youtube.com/embed/qViyqLsfnf4" frameborder="0" allowfullscreen></iframe>
-</p>
 
 ## Next Steps
 

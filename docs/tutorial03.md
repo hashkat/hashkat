@@ -32,6 +32,10 @@ For more information on what goes into the input file, and what sort of informat
 
 ## Constructing The Network
 
+<p align = 'center'>
+<iframe width="420" height="315" src="https://www.youtube.com/embed/k6s25BWN4d8" frameborder="0" allowfullscreen></iframe>
+</p>
+
 Let's go into the INFILE.yaml file in the hashkat directory and make some changes. Using the INFILE.yaml used in Tutorial 1 as a starting point,
 we'll keep the number of agents within the
 simulation constant by having 1000 initial and maximum agents. For quickness, we'll lower the maximum simulated time to 1000 simulated minutes.
@@ -153,11 +157,11 @@ agents:
         tweet: {function: constant, value: 0.01}
 ```
 
-<p align = 'center'>
-<iframe width="420" height="315" src="https://www.youtube.com/embed/k6s25BWN4d8" frameborder="0" allowfullscreen></iframe>
-</p>
-
 ## Running and Visualizing The Network
+
+<p align = 'center'>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/6-GtOReq6Cg" frameborder="0" allowfullscreen></iframe>
+</p>
 
 Running this simulation, and visualizing it, we produce a network similar to the one shown below: 
 
@@ -166,10 +170,6 @@ Running this simulation, and visualizing it, we produce a network similar to the
 </p>
 
 As we can quite clearly see this a truly random network, with no clear agent or group of agents being the most popular.
-
-<p align = 'center'>
-<iframe width="560" height="315" src="https://www.youtube.com/embed/6-GtOReq6Cg" frameborder="0" allowfullscreen></iframe>
-</p>
 
 ## Next Steps
 
