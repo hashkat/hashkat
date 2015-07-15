@@ -48,9 +48,47 @@ but you are encouraged to experiment with it when creating your own network simu
 and the unfollow tweet rate to an exceptionally high number for this simulation like 10,000 tweets.
 We have also kept the probability of hashtag presence in tweets to be 50%.
 
-<p align='center'>
-<img src='../img/tutorial03/INFILE-analysis.png'>
-</p>
+```python
+analysis:
+  initial_agents:
+    1000  # start out from something small, could be when only the developers were online.
+  max_agents: 
+    1000     # 1 million max users
+  max_time: 
+    1000
+  max_analysis_steps: 
+    unlimited
+  max_real_time: 
+    1                 
+  enable_interactive_mode:
+    false
+  enable_lua_hooks: # Defined in same file as interactive_mode. Can slow down simulation considerably.
+    false
+  lua_script: # Defines behaviour of interactive mode & lua hooks
+    INTERACT.lua
+  use_barabasi: 
+    false 
+  barabasi_connections: # number of connections we want to make when use_barabasi == true
+    100
+  barabasi_exponent:
+    1
+  use_random_time_increment: 
+    true
+  use_followback: 
+    false        # followback turned on, from literature it makes sense for a realistic system
+  follow_model: # See notes above
+    random
+  # model weights ONLY necessary for follow method 'twitter'  
+  # educated guesses for the follow models  
+  model_weights: {random: 0.0, twitter_suggest: 0.0, agent: 0.0, preferential_agent: 0.0, hashtag: 0.0}
+  
+  stage1_unfollow: 
+    false
+  unfollow_tweet_rate: 
+    10000
+  use_hashtag_probability:
+    0.5    # 50 % chance of using a hashtag
+```
 
 Since the number of agents within this simulation will remain constant, the add rate will therefore be 0. The output section of INFILE.yaml
 will also be left as is, to produce as many data files for analysis as possible. The tweet and retweets ranks have remained the same,
@@ -68,9 +106,52 @@ and a constant follow rate and tweet rate of 0.01. The *Celebrity* agent type wi
 *Standard* agent type, except that its add weight will be zero. Though we have included them in the input file, the *Celebrity* agents will not be used until a later
 tutorial, where agents will follow other agents based on their agent type.  
 
-<p align='center'>
-<img src='../img/tutorial03/INFILE-agents.png'>
-</p>
+```python
+agents:
+  - name: Standard
+    weights:
+      # Weight with which this agent is created
+      add: 100.0
+      # Weight with which this agent is followed in agent follow
+      follow: 5
+      tweet_type:
+        ideological: 1.0
+        plain: 1.0
+        musical: 1.0
+        humourous: 1.0 # Can be considered the humourousness of the agent type
+    # Probability that following this agent results in a follow-back
+    followback_probability: 0
+    hashtag_follow_options:
+      care_about_region: false # does the agent care about where the agent they will follow is from?
+      care_about_ideology: false # does the agent care about which ideology the agent has?
+    rates: 
+        # Rate for follows from this agent:
+        follow: {function: constant, value: 0.01}
+        # Rate for tweets from this agent:
+        tweet: {function: constant, value: 0.01}
+
+  - name: Celebrity
+    weights:
+      # Weight with which this agent is created
+      add: 0
+      # Weight with which this agent is followed in agent follow
+      follow: 5
+      tweet_type:
+        ideological: 1.0
+        plain: 1.0
+        musical: 1.0
+        humourous: 1.0 # Can be considered the humourousness of the agent type
+    # Probability that following this agent results in a follow-back
+    followback_probability: 0
+    hashtag_follow_options:
+      care_about_region: false # does the agent care about where the agent they will follow is from?
+      care_about_ideology: false # does the agent care about which ideology the agent has?
+    rates:
+        # Rate for follows from this agent:
+        follow: {function: constant, value: 0.01}
+        # Rate for tweets from this agent:
+        tweet: {function: constant, value: 0.01}
+```
 
 <p align = 'center'>
 <iframe width="420" height="315" src="https://www.youtube.com/embed/k6s25BWN4d8" frameborder="0" allowfullscreen></iframe>

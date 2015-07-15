@@ -10,9 +10,52 @@ An agent-based follow method is one in which agents follow a twitter user based 
 
 Starting with the INFILE.yaml file we used in **Tutorial 4** for **Other Twitter Suggest Models**, we will of course change the follow model from *twitter_suggest* to *agent*, and finally get to implement our *Celebrity* agents into our network. This can be done by simply changing the *Celebrity* add weight to 100.0. With both the *Standard* agents and *Celebrity* agents having an add weight of 100.0, the number of *Standard* agents and *Celebrity* agents within the simulation will be roughly the same, with the proportion of *Standard* agents and *Celebrity* agents being added to the network being 1:1. Since celebrities tend to garner vastly more followers than ordinary people, it makes sense for our simulation of *Standard* and *Celebrity* agents to mimic this. Therefore, we will change the *Standard* follow weight to 10.0 and the *Celebrity* follow weight to 90.0. From this we should expect to see *Celebrity* agents to garner about 90% of the follows and Standard agents to garner about 10%.
 
-<p align='center'>
-<img src='../img/tutorial05/INFILE-agents.png'>
-</p>
+```python
+agents:
+  - name: Standard
+    weights:
+      # Weight with which this agent is created
+      add: 100.0
+      # Weight with which this agent is followed in agent follow
+      follow: 10.0
+      tweet_type:
+        ideological: 1.0
+        plain: 1.0
+        musical: 1.0
+        humourous: 1.0 # Can be considered the humourousness of the agent type
+    # Probability that following this agent results in a follow-back
+    followback_probability: 0
+    hashtag_follow_options:
+      care_about_region: false # does the agent care about where the agent they will follow is from?
+      care_about_ideology: false # does the agent care about which ideology the agent has?
+    rates: 
+        # Rate for follows from this agent:
+        follow: {function: constant, value: 0.01}
+        # Rate for tweets from this agent:
+        tweet: {function: constant, value: 0.01}
+
+  - name: Celebrity
+    weights:
+      # Weight with which this agent is created
+      add: 100.0
+      # Weight with which this agent is followed in agent follow
+      follow: 90.0
+      tweet_type:
+        ideological: 1.0
+        plain: 1.0
+        musical: 1.0
+        humourous: 1.0 # Can be considered the humourousness of the agent type
+    # Probability that following this agent results in a follow-back
+    followback_probability: 0
+    hashtag_follow_options:
+      care_about_region: false # does the agent care about where the agent they will follow is from?
+      care_about_ideology: false # does the agent care about which ideology the agent has?
+    rates:
+        # Rate for follows from this agent:
+        follow: {function: constant, value: 0.01}
+        # Rate for tweets from this agent:
+        tweet: {function: constant, value: 0.01}
+```
 
 <p align = 'center'>
 <iframe width="560" height="315" src="https://www.youtube.com/embed/_SXyLB0O30s" frameborder="0" allowfullscreen></iframe>

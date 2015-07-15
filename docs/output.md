@@ -13,7 +13,11 @@ agent type would have a file named *Standard_info.dat*). Outlines the percentage
 that follow this agent type, the percentage of the proportion of agent types that this agent 
 type follows with respect to each other, and the number of possible degrees for this agent 
 type and their weighted in-degree, out-degree, and cumulative-degree that match this value, 
-as well as the logs of each.
+as well as the logs of each. An example of the information stored in this file is shown below:
+
+<p align='center'>
+<img src='../img/output/agenttype_info_file.png'>
+</p>
 
 `Categories_Distro.dat`
 
@@ -24,7 +28,11 @@ thresholds. Appears in twitter-preferential modelled simulations.
 
 Outlines all the possible total degrees an agent can have in that particular
 month in the simulation, as well as its normalized probability, logarithm, and
-normalized probability logarithm in columns in that order.
+normalized probability logarithm in columns in that order. The following shows some of the information stored in this output file:
+
+<p align='center'>
+<img src='../img/output/cumulative-degree_distribution_file.png'>
+</p>
 
 `dd_by_follow_model.dat`
 
@@ -34,7 +42,11 @@ Indicates the normalized probability and ln of the normalized probability for ea
 
 Outlines all the possible in degrees an agent can have in that particular
 month in the simulation, as well as its normalized probability, logarithm, and
-normalized probability logarithm in columns in that order.
+normalized probability logarithm in columns in that order. An example of this file's contents is shown below:
+
+<p align='center'>
+<img src='../img/output/in-degree_distribution_file.png'>
+</p>
 
 `main_stats.dat`
 
@@ -52,7 +64,6 @@ of follow attempts that occurred in the simulation, the number and
 percentage of follow attempts achieved through each follow method, and the 
 number and percentage of follows made by agents of each agent type.
 
-
 `model_match.dat`
 
 
@@ -62,23 +73,40 @@ number and percentage of follows made by agents of each agent type.
 Outlines which agents are following who. In this file there are two columns,
 with the agents in the first column (classified by an ID number)
 following the agents in the listed in the second column (also classified
-by an ID number).
+by an ID number). The following is an example of what the content's of this file would like:
+
+<p align='center'>
+<img src='../img/output/network_dat_file.png'>
+</p>
 
 `network.gexf`
 
 *network.gexf* is a file that can be used to vizualize the connections
 between users on your network using visualization software such as
-[Gephi](http://gephi.github.io/).
+[Gephi](http://gephi.github.io/). Though the details in this file are less relevant than the 
+visualization created from this file itself, the following shows the contents of this file:
+
+<p align='center'>
+<img src='../img/output/network_gexf_file.png'>
+</p>
 
 `out-degree_distribution_month_000.dat`
 
 Outlines all the possible out degrees an agent can have in that particular
 month in the simulation, as well as its normalized probability, logarithm, and
-normalized probability logarithm in columns in that order.
+normalized probability logarithm in columns in that order. Below is an image of some of the contents of this file:
+
+<p align='center'>
+<img src='../img/output/out-degree_distribution_file.png'>
+</p>
 
 `region_connection_matrix.dat`
 
-Displays the connections made between regions.
+Displays the connections made between regions. An example of this output file is shown below:
+
+<p align='center'>
+<img src='../img/output/region_connection_matrix_file.png'>
+</p>
 
 `retweets_distro.dat`
 
@@ -89,7 +117,12 @@ retweets within the network simulation.
 
 *retweet_viz.gexf* is a file that can be used to vizualize how tweets were retweeted 
 in the network simulation using visualization software such as
-[Gephi](http://gephi.github.io/).
+[Gephi](http://gephi.github.io/). Though the contents of this file are less relevant than the 
+visualization created from this file itself, an example of this file can be seen below:
+
+<p align='center'>
+<img src='../img/output/retweet_viz_gexf_file.png'>
+</p>
 
 `tweets_distro.dat`
 

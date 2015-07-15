@@ -57,7 +57,7 @@ Contains a list of directories, each with there own **INFILE.yaml** that can be 
 
 ## INFILE.yaml
 
-
+Input file where configurations are made to design the network simulation of your choosing.
 
 ## INFILE.yaml-generated
 
@@ -81,7 +81,7 @@ Save file in which your network simulation information will be saved to if *save
 
 ## <span style="color:blue">output</span>
 
-
+Directory which contains all the analysis files created from running a network simulation.
 
 ## README.md
 
