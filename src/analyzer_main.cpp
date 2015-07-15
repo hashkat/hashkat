@@ -263,7 +263,7 @@ struct Analyzer {
         }
 
         int id = network.size();
-        network.increase();
+        network.grow();
 
         double creation_time = time;
         Agent& e = network[id];

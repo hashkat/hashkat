@@ -23,8 +23,8 @@
 // of a derivation, subsequent authors.
 //
 
-#ifndef HASHKAT_AGENT_H
-#define HASHKAT_AGENT_H
+#ifndef HASHKAT_AGENT_H_
+#define HASHKAT_AGENT_H_
 
 #include <string>
 #include <vector>
@@ -191,4 +191,4 @@ struct AgentType {
 typedef std::vector<AgentType> AgentTypeVector;
 
 
-#endif  // HASHKAT_AGENT_H
+#endif  // HASHKAT_AGENT_H_

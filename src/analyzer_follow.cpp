@@ -382,6 +382,9 @@ struct AnalyzerFollow {
                 // We were able to add the follow:
                 et.follow_ranks.categorize(agent_to_follow, target.follower_set.size());
                 follow_ranks.categorize(agent_to_follow, target.follower_set.size());
+#ifdef REFACTORING
+                network.connect(agent_to_follow, id_follower);
+#endif // REFACTORING
 
                 return true;
             }
@@ -401,6 +404,9 @@ struct AnalyzerFollow {
             AgentType& et = agent_types[et_id];
             et.follow_ranks.categorize(prev_actor_id, prev_actor.follower_set.size());
             follow_ranks.categorize(prev_actor_id, prev_actor.follower_set.size());
+#ifdef REFACTORING
+            network.connect(prev_actor_id, prev_target_id);
+#endif // REFACTORING
             RECORD_STAT(state, prev_target.agent_type, n_followback);
             return true;
         }
@@ -423,7 +429,10 @@ struct AnalyzerFollow {
         // Remove our unfollowed person from our target's followers:
 		Agent& e_lost_follower = network[id_unfollower];
 		bool had_follow = e_lost_follower.following_set.remove(state, id_unfollowed);
-		DEBUG_CHECK(had_follow, "unfollow: Did not exist in follow list");
+#ifdef REFACTORING
+        network.disconnect(id_unfollowed, id_unfollower);
+#endif // REFACTORING
+        DEBUG_CHECK(had_follow, "unfollow: Did not exist in follow list");
 		RECORD_STAT(state, e_lost_follower.agent_type, n_unfollows);
 		return true;
 	}

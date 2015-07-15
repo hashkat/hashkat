@@ -31,10 +31,12 @@
 
 #include <cstdlib>
 #include <vector>
+#include <unordered_set>
 #include <exception>
 #include <cmath>
 #include <iostream>
 #include <iomanip>
+
 #include "util.h"
 
 #include "CategoryGrouper.h"
@@ -61,7 +63,7 @@ struct Network {
     {   return n_agents;    }
     int max_size() const
     {   return max_agents;  }
-    void increase()
+    void grow()
     {   ++n_agents;  }
 
     Agent& operator[](int index) { //** This allows us to index our Network struct as if it were an array.
@@ -131,6 +133,9 @@ class network
 {
     Agent* agents_; // This is a pointer - used to create a dynamic array
     T n_agents_, max_agents_;
+// new member variables
+    std::vector<std::unordered_set<T>> followers_;
+    std::vector<std::unordered_set<T>> following_;
 
 public:
     network()
@@ -144,10 +149,19 @@ public:
 
     T size() const
     {   return n_agents_;    }
+
     T max_size() const
     {   return max_agents_;  }
-    void increase()
-    {   ++n_agents_;  }
+
+    void grow(T n = 1)
+    {
+        for (auto i = 0; i < n; ++i)
+        {
+            followers_.emplace_back(std::unordered_set<T>());
+            following_.emplace_back(std::unordered_set<T>());
+            ++n_agents_;
+        }
+    }
 
     Agent& operator[](T index)
     {
@@ -162,6 +176,8 @@ public:
             delete[] agents_;
         max_agents_ = n;
         agents_ = new Agent[max_agents_];
+        followers_.reserve(max_agents_);
+        following_.reserve(max_agents_);
     }
 
     // Convenient network queries:
@@ -203,6 +219,34 @@ public:
         for (auto i = 0; i < n_agents_; ++i)
             agents_[i].visit(rw);
     }
+
+    // new member methods
+    bool can_grow() const
+    {   return n_agents_ < max_agents_;    }
+
+    void connect(T followed_id, T follower_id)
+    {
+        if (followed_id != follower_id)
+        {
+            followers_[followed_id].insert(follower_id);
+            following_[follower_id].insert(followed_id);
+        }
+    }
+
+    void disconnect(T unfollowed_id, T unfollower_id)
+    {
+        if (unfollowed_id != unfollower_id)
+        {
+            followers_[unfollowed_id].erase(unfollower_id);
+            following_[unfollower_id].erase(unfollowed_id);
+        }
+    }
+
+    T following_size(T id)
+    {   return following_[id].size();   }
+
+    T followers_size(T id)
+    {   return followers_[id].size();   }
 };
 
 typedef network<std::size_t> Network;

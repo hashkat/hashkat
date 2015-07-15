@@ -67,12 +67,14 @@ struct INIT_TEST
         cmd += "/hashkat_pre.py --input ";
         cmd += folder_ + test;
         cmd += "/INFILE.yaml >/dev/null 2>&1";
+        //cmd += "/INFILE.yaml";
         std::system(cmd.c_str());
 
         cmd = "cd ";
         cmd += folder_ + test + ';';
         cmd += std::getenv("HASHKAT");
         cmd += "/build/src/hashkat >/dev/null 2>&1";
+        //cmd += "/build/src/hashkat";
         std::system(cmd.c_str());
     }
 
@@ -87,6 +89,7 @@ struct INIT_TEST
             {
                 output_test_stream cout(folder + file + ".ref");
                 cout << cin.rdbuf();
+                //std::cout << file << std::endl;
                 BOOST_CHECK(cout.match_pattern());
             }
         }
@@ -196,21 +199,21 @@ BOOST_FIXTURE_TEST_CASE(test11, INIT_TEST)
     clean(test);
 }
 
-BOOST_FIXTURE_TEST_CASE(test12, INIT_TEST)
-{
-    BOOST_REQUIRE(ready());
-    std::string test("test12");
-    run(test);
-    verify(test);
-    clean(test);
-}
+//BOOST_FIXTURE_TEST_CASE(test12, INIT_TEST)
+//{
+//    BOOST_REQUIRE(ready());
+//    std::string test("test12");
+//    run(test);
+//    verify(test);
+//    clean(test);
+//}
 
-BOOST_FIXTURE_TEST_CASE(test99, INIT_TEST)
-{
-    BOOST_REQUIRE(ready());
-    std::string test("test99");
-    run(test);
-    verify(test);
-    clean(test);
-}
+//BOOST_FIXTURE_TEST_CASE(test99, INIT_TEST)
+//{
+//    BOOST_REQUIRE(ready());
+//    std::string test("test99");
+//    run(test);
+//    verify(test);
+//    clean(test);
+//}
 
