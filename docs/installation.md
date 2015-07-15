@@ -217,3 +217,11 @@ With **#k@** installed on your computer, please proceed to the following pages i
 <p align = 'center'>
 <iframe width="420" height="315" src="https://www.youtube.com/embed/ppI80vBbZqs" frameborder="0" allowfullscreen></iframe>
 </p>
+
+# Using clang?
+
+1. sudo apt-get install clang
+2. add these to bashrc
+export CC=clang
+export CXX=clang++
+
