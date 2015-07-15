@@ -30,6 +30,8 @@
 #include <iomanip>
 #include <set>
 #include <cstdio>
+#include <algorithm>
+
 #include "dependencies/mtwist.h"
 #include "analyzer.h"
 #include "io.h"
@@ -140,7 +142,7 @@ void brief_agent_statistics(AnalysisState& state) {
     Network& network = state.network;
     ParsedConfig& config = state.config;
 
-    for (int i = 0; i < min(/*For now:*/2, network.size()); i++) {
+    for (auto i = 0; i < min(/*For now:*/(decltype(network.size()))2, network.size()); ++i) {
        Agent& e = network[i];
        AgentType& et = state.agent_types[e.agent_type];
 

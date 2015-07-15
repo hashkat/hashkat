@@ -26,8 +26,8 @@
 
 // Network state structures
 
-#ifndef HASHKAT_NETWORK_H   //** Header guards are necessary because C++ has a very low-level include syntax.
-#define HASHKAT_NETWORK_H   //** Without them, you can get strange multiple-definition errors due to text duplication.
+#ifndef HASHKAT_NETWORK_H_   //** Header guards are necessary because C++ has a very low-level include syntax.
+#define HASHKAT_NETWORK_H_   //** Without them, you can get strange multiple-definition errors due to text duplication.
 
 #include <cstdlib>
 #include <vector>
@@ -126,85 +126,88 @@ struct Network {
 };
 
 #else
-
-class Network
+template <typename T>
+class network
 {
-    Agent* agents; // This is a pointer - used to create a dynamic array
-    int n_agents, max_agents;
+    Agent* agents_; // This is a pointer - used to create a dynamic array
+    T n_agents_, max_agents_;
 
 public:
-    Network()
-    :   agents(nullptr)
-    ,   n_agents(0)
-    ,   max_agents(0)
+    network()
+    :   agents_(nullptr)
+    ,   n_agents_(0)
+    ,   max_agents_(0)
     {}
 
-    ~Network()
-    {   delete[] agents;    }
+    ~network()
+    {   delete[] agents_;    }
 
-    int size() const
-    {   return n_agents;    }
-    int max_size() const
-    {   return max_agents;  }
+    T size() const
+    {   return n_agents_;    }
+    T max_size() const
+    {   return max_agents_;  }
     void increase()
-    {   ++n_agents;  }
+    {   ++n_agents_;  }
 
-    Agent& operator[](int index)
+    Agent& operator[](T index)
     {
-        DEBUG_CHECK(index >= 0 && index < n_agents,
+        DEBUG_CHECK(index >= 0 && index < n_agents_,
             "Network out-of-bounds agent access");
-        return agents[index];
+        return agents_[index];
     }
 
-    void allocate(int n)
+    void allocate(T n)
     {
-        if (agents)
-            delete[] agents;
-        max_agents = n;
-        agents = new Agent[max_agents];
+        if (agents_)
+            delete[] agents_;
+        max_agents_ = n;
+        agents_ = new Agent[max_agents_];
     }
 
     // Convenient network queries:
-    FollowingSet& following_set(int id)
-    {   return agents[id].following_set;    }
+    FollowingSet& following_set(T id)
+    {   return agents_[id].following_set;    }
 
-    bool is_valid_id(int id)
-    {   return (id >= 0 && id < n_agents);  }
+    bool is_valid_id(T id)
+    {   return (id >= 0 && id < n_agents_);  }
 
-    FollowerSet& follower_set(int id)
-    {   return agents[id].follower_set;     }
+    FollowerSet& follower_set(T id)
+    {   return agents_[id].follower_set;     }
 
     // Return last agent:
     Agent& back()
-    {   return (*this)[n_agents - 1];       }
+    {   return (*this)[n_agents_ - 1];       }
 
-    size_t n_followings(int id)
+    T n_followings(T id)
     {   return following_set(id).size();    }
-    size_t n_followers(int id)
+    T n_followers(T id)
     {   return follower_set(id).size();     }
 
     // To allow for-each style loops:
     Agent* begin()
-    {   return agents;  }
+    {   return agents_;  }
     Agent* end()
-    {   return agents + n_agents;   }
+    {   return agents_ + n_agents_;   }
 
     // 'Visits' every node, eg for serialization or testing
     READ_WRITE(rw)
     {
-        rw << n_agents << max_agents;
+        rw << n_agents_ << max_agents_;
         if (rw.is_reading())
-            allocate(max_agents);
+            allocate(max_agents_);
 
         // First, 'previsit' every agent so that we can init their basic data,
         // needed by their visit() method afterwards
-        for (int i = 0; i < n_agents; i++)
-            agents[i].previsit(rw);
-        for (int i = 0; i < n_agents; i++)
-            agents[i].visit(rw);
+        for (auto i = 0; i < n_agents_; ++i)
+            agents_[i].previsit(rw);
+        for (auto i = 0; i < n_agents_; ++i)
+            agents_[i].visit(rw);
     }
 };
 
+typedef network<std::size_t> Network;
+//typedef network<int> Network;
+
 #endif  // REFACTORING
 
-#endif  // HASHKAT_NETWORK_H
+#endif  // HASHKAT_NETWORK_H_
