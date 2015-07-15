@@ -39,10 +39,6 @@ has been reached.
 
 The following is a model of how this works in #k@.
 
-<p align='center'>
-<img src='../img/code_map.jpg'>
-</p>
-
 More information on how this is run in #k@ can be found on the **Developers** page.
 
 ## Running a Simple Network
