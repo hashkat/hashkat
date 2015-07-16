@@ -22,7 +22,11 @@ as well as the logs of each. An example of the information stored in this file i
 `Categories_Distro.dat`
 
 Outlines the number of tweets, follows, and retweets in their respective bin
-thresholds. Appears in twitter-preferential modelled simulations.
+thresholds.
+
+<p align='center'>
+<img src='../img/output/categories_distro_file.png'>
+</p>
 
 `cumulative-degree_distribution_month_000.dat`
 
