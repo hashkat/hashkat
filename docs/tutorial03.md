@@ -171,6 +171,36 @@ Running this simulation, and visualizing it, we produce a network similar to the
 
 As we can quite clearly see this a truly random network, with no clear agent or group of agents being the most popular.
 
+## Network Output
+
+With agents having a follow rate of 0.01 follows per simulated minute in a simulation 1000 simulated minutes long, we would expect most agents to have a cumulative degree distribution of 20. Let's plot this up using 'gnuplot', using data points instead of filled curves to graph our data. The commands to do this are shown below:
+
+`set title 'Cumulative Degree Distribution'`
+
+`set xlabel 'Cumulative Degree'`
+
+`set ylabel 'Normalized Cumulative Degree Probability'`
+
+`plot 'cumulative-degree_distribution_month_000.dat' title ''`
+
+Giving us:
+
+<p align='center'>
+<img src='../img/tutorial03/cumulative-degree_distribution_month_000.svg'>
+</p>
+
+As we can see, there is a definite peak surrounding 20 degrees, though it seems that more agents have a cumulative degree just below or just above 20.
+
+What's interesting about **#k@** is that if you were to remove the corresponding *network_state.dat* file and *output* files for this simulation and ran it again, you would receive the exact same output as you did before. That is because this simulation we always run with the same seed. A seed is a value used to initialize a random number generator. If the same seed is used every time you run the same network simulation, you will get the exact same output since the exact same random numbers will be used for the simulation. To run a network simulation with a random seed, thereby giving you a different output, type in the command:
+
+`./run.sh --rand`
+
+Running this network simulation multiple times using different seeds, we produced the following cumulative degree distribution plot:
+
+<p align='center'>
+<img src='../img/tutorial03/cumulative-degree_distribution_random.svg'>
+</p>
+
 ## Next Steps
 
 With the completion of this tutorial, we have worked with the simplest of the six types of follow models.

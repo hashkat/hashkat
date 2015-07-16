@@ -90,7 +90,7 @@ void output_network_statistics(AnalysisState& state) {
         output_position(network, N_AGENTS);
     }
     /* ADD FUNCTIONS THAT RUN AFTER NETWORK IS BUILT HERE */
-    if (C.use_barabasi) {
+    if (C.categories_distro) {
         Categories_Check(state.tweet_ranks, state.follow_ranks, state.retweet_ranks);
     }
     if (C.output_tweet_analysis) {

@@ -122,6 +122,10 @@ output:
     false
   degree_distribution_by_follow_model:
     false
+  region_connection_matrix:
+    true
+  categories_distro:
+    true
 
 #################################################################
 # >> *_ranks:

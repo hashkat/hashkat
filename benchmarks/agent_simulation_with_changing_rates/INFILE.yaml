@@ -124,6 +124,8 @@ output:
     true
   region_connection_matrix:
     true
+  categories_distro:
+    true
 
 #################################################################
 # >> *_ranks:

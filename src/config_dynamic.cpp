@@ -218,6 +218,7 @@ static void parse_output_configuration(ParsedConfig& config, const Node& node) {
     parse(node, "main_statistics", config.main_stats);
     parse(node, "degree_distribution_by_follow_model", config.dd_by_follow_model);
     parse(node ,"region_connection_matrix", config.region_connection_matrix);
+    parse(node ,"categories_distro", config.categories_distro);
 }
 
 static CategoryGrouper parse_category_thresholds(const Node& node) {

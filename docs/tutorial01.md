@@ -20,26 +20,59 @@ of which time is increased by is influenced by the cummulative rate function
 of the rates within the system.
 
 For the #k@ project, we have **R**, which is our cummulative rate function,
-which is the sum of the user add rate, tweet rate, follow rate, retweet rate.  
+which is the sum of the agent add rate, tweet rate, follow rate, and retweet rate.  
 It should be noted that the tweet rate, follow rate, and retweet rate are
-all multiplied by the number of user in the network.
-At a simulated time of 0, a random number, *r*<sub>1</sub>, is generated. Depending on this number's value, it will either cause a user to be added into the network,
-a random user to tweet, a random user to follow another random user, or a
-random user to retweet a tweet from another user. **R** will then change
-accordingly.  Another random number *r*<sub>2</sub> will then be generated,
-and time will move forward by:
+all multiplied by the number of agents in the network.
+At a simulated time of 0, a random number, *r*<sub>1</sub>, is generated. Depending on this number's value, it will either cause an agent to be added into the network,
+a random agent to tweet, a random agent to follow another random agent, or a
+random agent to retweet a tweet from another agent. **R** will then change
+accordingly. If *use_random_time_increment* is enabled. another random number *r*<sub>2</sub> will then be generated, and time will move forward by:
 
 <p align = 'center'>
 &Delta;<i>t</i> = -ln(<i>r</i><sub>2</sub>) / <b>R</b>
+</p>
+
+If this is not enabled, time will move forward by:
+
+<p align = 'center'>
+&Delta;<i>t</i> = 1 / <b>R</b>
 </p>
 
 All of the rate functions will then be recalibrated to their new values and
 this cycle will repeat until either the maximum simulation time or real time
 has been reached.
 
-The following is a model of how this works in #k@.
+The following is a model of how this works in #k@. We initially have one agent in the network, with the agent add rate having been set to 1 agent per simulated minute and the agent tweet rate being set to 1 tweet per simulated minute (we've ignored the follow rate and retweet rate for this example). At this moment, there is an even chance that another agent will be added to the network or the initial agent will make a tweet. A random number is generated. If the random number is less than 0.5, another agent will be added, if it is greater or equal to 0.5, the initial agent will tweet. Time will then move forward based on the cumulative rate function and possibly another generated random number, again depending on whether or not *use_random_time_increment* is permitted.
 
-More information on how this is run in #k@ can be found on the **Developers** page.
+<p align='center'>
+<img src='../img/tutorial01/kmc_1.png'>
+</p>
+
+Let's say that an agent has been added to the network.
+
+<p align='center'>
+<img src='../img/tutorial01/kmc_2.png'>
+</p>
+
+With this addition to our network, the agent add rate will remain the same but the agent tweet rate will now double since we have double the number of agents from what we originally had in the network. With this change, an agent tweeting is twice as likely to happen in comparison to an agent being added in the KMC loop, though the expected rates for each agent will remain the same since the simulated time will move more slowly, since the change in time is inversely proportional to the steadily increasing cummulative rate function.
+
+<p align='center'>
+<img src='../img/tutorial01/kmc_3.png'>
+</p>
+
+Let's add an additional agent to the network.
+
+<p align='center'>
+<img src='../img/tutorial01/kmc_4.png'>
+</p>
+
+Just as before, the agent add rate will remain the same but the agent tweet rate will increase since we now have 3 times the number of agents we initially had, though the expected rates for each agent will remain the same.
+
+<p align='center'>
+<img src='../img/tutorial01/kmc_5.png'>
+</p>
+
+This cycle will continue until the end of the simulation. For more information on how this is run in #k@, please visit the **Developers** page.
 
 ## Running a Simple Network
 
