@@ -247,10 +247,31 @@ public:
 
     T followers_size(T id)
     {   return followers_[id].size();   }
+
+    std::ostream& print(std::ostream& out) const
+    {
+        for (auto i = 0; i < n_agents_; ++i)
+        {
+            out << agents_[i].id << "\t [ ";
+            for (auto follower : followers_[i])
+                    out << follower << ' ';
+            out << "] [ ";
+            for (auto following : following_[i])
+                    out << following << ' ';
+            out << "]\n";
+
+        }
+        return out;
+    }
 };
 
 typedef network<std::size_t> Network;
 //typedef network<int> Network;
+
+//std::ostream& operator<<(std::ostream& out, const Network& n)
+//{
+//    return n.print(out);
+//}
 
 #endif  // REFACTORING
 
