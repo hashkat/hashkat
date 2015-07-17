@@ -109,16 +109,16 @@ int main(int argc, char** argv) {
         analyzer_main(analysis_state);
         output_network_statistics(analysis_state);
 
-#ifdef REFACTORING
-        std::string log = std::getenv("HASHKAT");
-        log += "/network.log";
-        std::ofstream out(log);
-        analysis_state.network.print(out);
-#endif  // REFACTORING
-
         printf("Analysis took %.2fms.\n", t.get_microseconds() / 1000.0);
 
-		return 0;
+#ifdef REFACTORING
+        //std::string log = std::getenv("HASHKAT");
+        //log += "/network.log";
+        //std::ofstream out(log);
+        //analysis_state.network.print(out);
+#endif  // REFACTORING
+        
+        return 0;
     }
 
 	// Abnormal execution path

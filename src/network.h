@@ -227,6 +227,12 @@ public:
     }
 
     // new member methods
+    T following_size(T id)
+    {   return following_[id].size();   }
+
+    T followers_size(T id)
+    {   return followers_[id].size();   }
+
     bool can_grow() const
     {   return n_agents_ < max_agents_;    }
 
@@ -260,11 +266,27 @@ public:
         }
     }
 
-    T following_size(T id)
-    {   return following_[id].size();   }
-
-    T followers_size(T id)
-    {   return followers_[id].size();   }
+    int find_agent_to_follow(MTwist& rng)
+    {
+        T rand_idx = rng.rand_int(n_agents_);
+        do
+        {
+            if (bins_[rand_idx].empty())
+            {
+                ++rand_idx;
+                continue;
+            }
+            
+            int bucket;
+            do
+            {
+                bucket = rng.rand_int(bins_[rand_idx].bucket_count());
+            } while (bins_[rand_idx].bucket_size(bucket) == 0);
+            auto agent = bins_[rand_idx].cbegin(bucket);
+            return *agent;
+        } while (rand_idx < n_agents_);
+        return -1;
+    }
 
     std::ostream& print(std::ostream& out) const
     {

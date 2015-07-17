@@ -129,7 +129,14 @@ struct AnalyzerFollow {
        }
        return val;
    }
-   
+
+#ifdef REFACTORING
+   int preferential_barabasi_follow_method()
+   {
+       PERF_TIMER();
+       return network.find_agent_to_follow(rng);
+   }
+#else
    int preferential_barabasi_follow_method() {
        PERF_TIMER();
 
@@ -139,18 +146,18 @@ struct AnalyzerFollow {
        double sum_of_weights = 0;
        updating_follow_probabilities.resize(follow_probabilities.size());
        /* search through the probabilities for each threshold and find
-          the right bin to land in */
-       
-       for (int i = 0; i < follow_probabilities.size(); i ++){
+       the right bin to land in */
+
+       for (int i = 0; i < follow_probabilities.size(); i++){
            // look at each category
            CategoryAgentList& C = follow_ranks.categories[i];
-           updating_follow_probabilities[i] = follow_probabilities[i]*C.agents.size();
+           updating_follow_probabilities[i] = follow_probabilities[i] * C.agents.size();
            sum_of_weights += C.agents.size()*follow_probabilities[i];
        }
-       for (int i = 0; i < follow_probabilities.size(); i ++ ){
+       for (int i = 0; i < follow_probabilities.size(); i++){
            updating_follow_probabilities[i] /= sum_of_weights;
        }
-       for (int i = 0; i < updating_follow_probabilities.size(); i ++) {
+       for (int i = 0; i < updating_follow_probabilities.size(); i++) {
            if (rand_num <= updating_follow_probabilities[i]) {
                // point to the category we landed in
                CategoryAgentList& C = follow_ranks.categories[i];
@@ -166,6 +173,8 @@ struct AnalyzerFollow {
        }
        return -1;
    }
+#endif  // REFACTORING
+
    int twitter_preferential_follow_method(Agent& e,double time_of_follow) {
        PERF_TIMER();
        int referral_bin = (time_of_follow - e.creation_time ) / (double) APPROX_MONTH;

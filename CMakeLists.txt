@@ -61,7 +61,7 @@ else()
    set(UV_LIBS rt m pthread)
 endif()
 
-add_definitions(-DREFACTORING)
+#add_definitions(-DREFACTORING)
 include_directories("src/dependencies/boost_1_58_0")
 
 add_subdirectory(src)
