@@ -37,6 +37,8 @@
 #include <iostream>
 #include <iomanip>
 
+#include <boost/assert.hpp>
+
 #include "util.h"
 
 #include "CategoryGrouper.h"
@@ -136,6 +138,7 @@ class network
 // new member variables
     std::vector<std::unordered_set<T>> followers_;
     std::vector<std::unordered_set<T>> following_;
+    std::vector<std::unordered_set<T>> bins_;
 
 public:
     network()
@@ -159,6 +162,8 @@ public:
         {
             followers_.emplace_back(std::unordered_set<T>());
             following_.emplace_back(std::unordered_set<T>());
+            bins_.emplace_back(std::unordered_set<T>());
+            bins_[0].insert(n_agents_);
             ++n_agents_;
         }
     }
@@ -178,6 +183,7 @@ public:
         agents_ = new Agent[max_agents_];
         followers_.reserve(max_agents_);
         following_.reserve(max_agents_);
+        bins_.reserve(max_agents_);
     }
 
     // Convenient network queries:
@@ -226,19 +232,31 @@ public:
 
     void connect(T followed_id, T follower_id)
     {
+        BOOST_ASSERT_MSG(is_valid_id(followed_id),
+            "not a valid agent id :(");
+        BOOST_ASSERT_MSG(is_valid_id(follower_id),
+            "not a valid agent id :(");
         if (followed_id != follower_id)
         {
+            bins_[followers_size(followed_id)].erase(followed_id);
             followers_[followed_id].insert(follower_id);
             following_[follower_id].insert(followed_id);
+            bins_[followers_size(followed_id)].insert(followed_id);
         }
     }
 
     void disconnect(T unfollowed_id, T unfollower_id)
     {
+        BOOST_ASSERT_MSG(is_valid_id(unfollowed_id),
+            "not a valid agent id :(");
+        BOOST_ASSERT_MSG(is_valid_id(unfollower_id),
+            "not a valid agent id :(");
         if (unfollowed_id != unfollower_id)
         {
+            bins_[followers_size(unfollowed_id)].erase(unfollowed_id);
             followers_[unfollowed_id].erase(unfollower_id);
             following_[unfollower_id].erase(unfollowed_id);
+            bins_[followers_size(unfollowed_id)].insert(unfollowed_id);
         }
     }
 
@@ -253,6 +271,7 @@ public:
         for (auto i = 0; i < n_agents_; ++i)
         {
             out << agents_[i].id << "\t [ ";
+            out << bins_[i].size() << " ] [ ";
             for (auto follower : followers_[i])
                     out << follower << ' ';
             out << "] [ ";
