@@ -431,8 +431,8 @@ struct AnalyzerFollow {
 
 		DEBUG_CHECK(id_unfollower != -1, "Should not be -1 after choice!");
 
-        // Remove our target from our actor's follows:
-        bool had_follower = candidate_followers.remove(network[id_unfollower]);
+    // Remove our target from our actor's follows:
+    bool had_follower = candidate_followers.remove(network[id_unfollower]);
 		DEBUG_CHECK(had_follower, "unfollow: Did not exist in follower list");
 
         // Remove our unfollowed person from our target's followers:
@@ -456,6 +456,12 @@ bool analyzer_handle_follow(AnalysisState& state, int id_actor, int id_target, i
     PERF_TIMER();
     AnalyzerFollow analyzer(state);
     return analyzer.handle_follow(id_actor, id_target, follow_method);
+}
+
+bool analyzer_handle_unfollow(AnalysisState& state, int id_actor, int id_target) {
+    PERF_TIMER();
+    AnalyzerFollow analyzer(state);
+    return analyzer.action_unfollow(id_target, id_actor);
 }
 
 bool analyzer_follow_agent(AnalysisState& state, int agent, double time_of_follow) {

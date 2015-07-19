@@ -190,10 +190,16 @@ struct Analyzer {
     void fix_agents_upon_resubmission(AnalysisState& state) {
         Network& n = state.network;
         auto& R = state.config.regions;
+        cout << "Fixing agents who have changed attributes...\n";
         for (int i = 0; i < n.size(); i ++) {
             Agent& a = n[i];
             auto& region = R.regions[a.region_bin];
             a.language = (Language) rng.kmc_select(region.language_probs);
+            auto temp = network.follower_set(a.id).as_vector();
+            for (int id : temp) {
+                analyzer_handle_unfollow(state, id, a.id);
+                analyzer_handle_follow(state, id, a.id, 0);
+            }
         }
     }
 

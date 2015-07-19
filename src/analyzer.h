@@ -265,12 +265,14 @@ void analyzer_rate_update(AnalysisState& state);
 // Follow a specific user
 bool analyzer_handle_follow(AnalysisState& state, int id_actor, int id_target, int follow_method);
 double preferential_weight(AnalysisState& state);
+bool analyzer_handle_unfollow(AnalysisState& state, int id_target, int id_actor);
 
 bool analyzer_sim_time_check(AnalysisState& state);
 bool analyzer_real_time_check(AnalysisState& state);
 void analyzer_save_network_state(AnalysisState& state, const char* fname);
 void analyzer_load_network_state(AnalysisState& state, const char* fname);
 bool analyzer_follow_agent(AnalysisState& state, int agent, double time_of_follow);
+
 
 // Implements a follow-back
 bool analyzer_followback(AnalysisState& state, int follower, int followed);
