@@ -183,6 +183,24 @@ Running hashkat, we produced the following visualization of this simulation:
 As we can see, we again have some very highly connected agents in the centre of the visualization and unconnected agents on the sides. However, as opposed to twitter suggest follow model simulations that implement the Barabasi configuration, there are no set number
 of connections that every agent has, which explains the presence of agents with 0 connections.
 
+Looking into the *Categories_Distro.dat* file, we can see a vast amount of information that includes the following:
+
+<p align='center'>
+<img src='../img/tutorial04_other/categories_distro.png'>
+</p>
+
+We can see here that the majority of agents made 10 or less tweets, though some made 20 or less. Retweeting was disallowed in this simulation, so the retweet ranks all have zero agents within them. We can also see how many agents have a certain number of followers in this network simulation. Looking further through this file, we can see that the most followed agent has 86 followers, since after that follow rank, there are zero agents present.
+
+<p align='center'>
+<img src='../img/tutorial04_other/categories_distro1.png'>
+</p>
+
+A plot of these follow ranks up to a follow rank of 15 is shown below:
+
+<p align='center'>
+<img src='../img/tutorial04_other/follow_ranks.svg'>
+</p>
+
 ## Next Steps
 
 We have now worked with a few configurations of the twitter suggest follow method. Though we did not implement agent types with a follow rate when runing Barabasi configurations,

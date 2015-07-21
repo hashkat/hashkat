@@ -484,7 +484,7 @@ parameter is 1.5, then the integrals will be evaluated at [5, 6], [6, 7.5], [7.5
 A retweet is the rebroadcasting of tweet by an agent who did not actually create the tweet.
 
 ####retweet ranks
-**(type: n/a)** This has the same functionality as the tweet ranks, except it is for retweets. See above description about tweet ranks for more information.
+**(type: n/a)** This has the same functionality as the tweet ranks, except it is for retweets. *tweet ranks* for more information.
 
 ####retweet_visualization
 **(type: boolean)** If set to true, there will be a Gephi file called “retweet_viz.gexf” that is produced after the simulation terminates. This file can be found in the ‘output’ directory. The graph produced is a visualization of the most retweeted
@@ -562,8 +562,7 @@ The files created are titled “tweet distro.dat” and “retweets distro.dat.�
 **(type: n/a)** This denotes the section of the input file that provides the decay function for the retweet rates. Experimentally, the retweet rate for a tweet decays over time by approximately 1/t where t is the time in minutes.
 
 ####tweet_ranks
-**(type: n/a)** This variable must stay in the input file, it allows the code to determine the thresholds for the tweets in the simulation. The agents in the simulation will be categorized in the thresholds provided.
-For example if a threshold is 10, then the agents with 10 or less tweets will be stored an a list. Once an agent in this list tweets more than 10 times, the agent will be moved into a bin with a higher threshold.
+**(type: n/a)** This variable must stay in the input file, it allows the code to determine the thresholds for the tweets in the simulation. The agents in the simulation will be categorized in the thresholds provided. For example if a threshold is 10, then the agents with 10 or less tweets will be stored an a list. Once an agent in this list tweets more than 10 times, the agent will be moved into a bin with a higher threshold.
 
 ####tweet_transmission
 **(type: n/a)** Here you must set the transmission probabilities for different situations which can be found below. The transmission probabilities are then multiplied by the density function which has been found experimentally to decrease over time.

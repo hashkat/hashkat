@@ -350,9 +350,7 @@ tweet_ranks:
   thresholds: {bin_spacing: linear, min: 10, max: 300, increment: 10}
 ```
 
-Serves as a way to organize and categorize agents by the number of tweets they make in bins. The *bin_spacing* can be linear, quadratic, or cubic, and the can have an arbitrary minimum, maximum, and increment value. In the above case, agents with 10 or less tweets will be stored on a list in the
-intitial bin. If some of these agents continue to tweet, and end up having a total number of tweets greater than 10 but less than 20, they will move to the next bin. If their total number of tweets increases to a value greater than 20 but less than 30, they will
-then move on to the next bin, and so on, until they have reached a value of 300 tweets, where they shall remain.
+Serves as a way to organize and categorize agents by the number of tweets they make in bins. The *bin_spacing* can be linear, quadratic, or cubic, and they can have an arbitrary minimum, maximum, and increment value. In the above case, with tweeting enabled, agents with 10 or less tweets will be stored on a list in the intitial bin. If some of these agents continue to tweet, and end up having a total number of tweets greater than 10 but less than 20, they will move to the next bin. If their total number of tweets increases to a value greater than 20 but less than 30, they will then move on to the next bin, and so on, until they have reached a value of 300 tweets, where they shall remain. If tweeting is disabled, the number of agents in each tweet rank wll be listed as zero.
 
 #### Retweet Ranks
 
