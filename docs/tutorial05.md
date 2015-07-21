@@ -93,7 +93,7 @@ We can do this using 'gnuplot' by entering 'gnuplot' in the *output* directory a
 <img src='../img/tutorial05/cumulative-degree_distribution.svg'>
 </p>
 
-As we can see, there are no *Standard* agents with a cumulative degree greater than 20, with most having a cumulative degree just under or just above 5. The *Celebrity* agents' cumulative degree distribution has much more variance, with *Celebrity* agents in this network having up to almost 35 connections in this simulation. The *Overall* cumulative degree distribution illustrates all this by !!!!!!! 
+As we can see, there are no *Standard* agents with a cumulative degree greater than 20, with most having a cumulative degree just under or just above 5. The *Celebrity* agents' cumulative degree distribution has much more variance, with *Celebrity* agents in this network having up to almost 35 connections in this simulation. The *Overall* cumulative degree distribution illustrates this for all agents in the network.
 
 ## Next Steps
 

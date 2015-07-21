@@ -32,6 +32,18 @@ Running this simulation, we produced the following visualization:
 
 As we can see, this combination of all the follow models produces a very interesting network. Due to the presence of the agent and preferential agent follow models, we can see that *Celebrity* agents (red dots) are predominantly the more connected agents, though there are many highly connected *Standard* agents thanks to the random follow model leading to *Standard* agents being followed randomly and the twitter suggest follow model allowing *Standard* agents who randomly gained a lot of followers to gather even more followers fue to their high degree. Due to the presence of all the other follow models, it is difficult to notice the presence of the hashtag follow model since though agents may care on who they follow based on ideology for a few of their follows, they do not for many others, so there is no obvious separation between ideological groups as there is in the visualization generated for the hashtag follow model example in the previous tutorial. 
 
+Looking into our *main_stats.dat* output file, we can see that every follow model was used in this network simulation as shown below:
+
+<p align='center'>
+<img src='../img/tutorial08/main_stats.png'>
+</p>
+
+A comparison of the weights in which these follow model are present in this network can be seen in the pie graph constructed below:
+
+<p align='center'>
+<img src='../img/tutorial08/follow_model_graph.png'>
+</p>
+
 ## Next Steps
 
 With the completion of this tutorial, you have now familiarized yourslef with all of the follow models offered by #k@. You now have the fundamental knowledge necessary to create a variety of different network simulations using this program. Move onwards to the following tutorials, where we shall move on from the basics, and proceed to some of the more advanced aspects of #k@ which are necessary to be implemented into your network simulations to produce the more realistic data possible. 

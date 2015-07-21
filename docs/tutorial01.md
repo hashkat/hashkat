@@ -154,15 +154,14 @@ Going into our *main_stats.dat* file by typing in the command
 
 `nano main_stats.dat`
 
-we can the see the primary data compiled from our simulation. We can also use gnuplot to
-plot the in-degree, out-degree, and cumulative-degree distributions for each simulated months
-for all the agents. An agent's in-degree is the number of agents following them, while its
-out-degree is the number of agents its following, and the cumulative-degree is the sum of these
-two values. The agents in this simulation were configured to  have a follow rate of 0.0001,
-which basically means that in a simulation 100,000 simulated minutes long, each agent will follow
-around 10 users, and be followed by about 10 users. So we can therefore expect most agents to
-have an in-degree magnitude of 10, an out-degree magnitude of 10, and a cumlative-degree
-magnitude of 20. Let's plot and see!
+we can the see the primary data compiled from our simulation shown below. 
+
+<p align='center'>
+<img src='../img/tutorial01/main_stats.png'>
+</p>
+
+We can also use gnuplot to plot the in-degree, out-degree, and cumulative-degree distributions for each simulated months for all the agents. An agent's in-degree is the number of agents following them, while its
+out-degree is the number of agents its following, and the cumulative-degree is the sum of these two values. The agents in this simulation were configured to  have a follow rate of 0.0001, which basically means that in a simulation 100,000 simulated minutes long, each agent will follow around 10 users, and be followed by about 10 users. So we can therefore expect most agents to have an in-degree magnitude of 10, an out-degree magnitude of 10, and a cumlative-degree magnitude of 20. Let's plot and see!
 
 To access gnuplot, type in the command:
 

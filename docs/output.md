@@ -6,6 +6,8 @@
 
 This section serves as a reference for users who have run a simulation, and wish to analyze the data this run has outputted. This page goes over every aspect of the files found in the output directory.
 
+## Agent Tyoe Info
+
 `agenttype_info.dat`
 
 Present and named for every single agent type in the network (e.g. 'Standard'
@@ -19,6 +21,8 @@ as well as the logs of each. An example of the information stored in this file i
 <img src='../img/output/agenttype_info_file.png'>
 </p>
 
+## Categories Distribution
+
 `Categories_Distro.dat`
 
 Outlines the number of tweets, follows, and retweets in their respective bin
@@ -27,6 +31,8 @@ thresholds.
 <p align='center'>
 <img src='../img/output/categories_distro_file.png'>
 </p>
+
+## Cumulative-Degree Distribution
 
 `cumulative-degree_distribution_month_000.dat`
 
@@ -38,9 +44,13 @@ normalized probability logarithm in columns in that order. The following shows s
 <img src='../img/output/cumulative-degree_distribution_file.png'>
 </p>
 
+## Degree Distribution by Follow Model
+
 `dd_by_follow_model.dat`
 
 Indicates the normalized probability and ln of the normalized probability for each degree per follow method.
+
+## In-Degree Distribution
 
 `in-degree_distribution_month_000.dat`
 
@@ -51,6 +61,8 @@ normalized probability logarithm in columns in that order. An example of this fi
 <p align='center'>
 <img src='../img/output/in-degree_distribution_file.png'>
 </p>
+
+## Main Statistics
 
 `main_stats.dat`
 
@@ -68,9 +80,13 @@ of follow attempts that occurred in the simulation, the number and
 percentage of follow attempts achieved through each follow method, and the 
 number and percentage of follows made by agents of each agent type.
 
+## Model Match
+
 `model_match.dat`
 
 
+
+## Network Connections
 
 `network.dat`
 
@@ -83,6 +99,8 @@ by an ID number). The following is an example of what the content's of this file
 <img src='../img/output/network_dat_file.png'>
 </p>
 
+## Network Visualization
+
 `network.gexf`
 
 *network.gexf* is a file that can be used to vizualize the connections
@@ -94,6 +112,8 @@ visualization created from this file itself, the following shows the contents of
 <img src='../img/output/network_gexf_file.png'>
 </p>
 
+## Out-Degree Distribution
+
 `out-degree_distribution_month_000.dat`
 
 Outlines all the possible out degrees an agent can have in that particular
@@ -104,7 +124,9 @@ normalized probability logarithm in columns in that order. Below is an image of 
 <img src='../img/output/out-degree_distribution_file.png'>
 </p>
 
-`region_connection_matrix.dat`
+## Region Connection Matrix
+
+`region_connection_matrix_month_000.dat`
 
 Displays the connections made between regions. An example of this output file is shown below:
 
@@ -112,10 +134,14 @@ Displays the connections made between regions. An example of this output file is
 <img src='../img/output/region_connection_matrix_file.png'>
 </p>
 
+## Retweet Distribution
+
 `retweets_distro.dat`
 
 Outlines the distribution of how many agents have made every possible number of 
 retweets within the network simulation.
+
+## Retweet Visualization
 
 `retweet_viz.gexf`
 
@@ -127,6 +153,8 @@ visualization created from this file itself, an example of this file can be seen
 <p align='center'>
 <img src='../img/output/retweet_viz_gexf_file.png'>
 </p>
+
+## Tweet Distribution
 
 `tweets_distro.dat`
 

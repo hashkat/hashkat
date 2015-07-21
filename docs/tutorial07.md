@@ -30,6 +30,14 @@ Creating a network with this configuration, we produced the following visualizat
 
 As you can see from this visualization, agents are separated into 4 main groups, with several other agents having no connections, being unable to follow or be followed by another agent in time. These 4 groups correspond to the 4 different ideologies we have in our network, named *Red*, *Blue*, *Green*, and *Orange*. It is important to note that the colours of agents in the visualization do not correspond to ideolgy colours, but are arbitrarily given to differentiate enities of different types (e.g. *Standard* agents, *Celebrity* agents, etc.).
 
+We can also plot the tweet distribution through use of the *tweets_distro.dat* file.
+
+<p align='center'>
+<img src='../img/tutorial07/tweets_distro.svg'>
+</p>
+
+As we can see from this plot of the tweet distribution, most agents have made 1 to 6 tweets in this simulation and that as the number of tweets increases, the number of agents that have made this many tweets decreases.
+
 ## Next Steps
 
 You have now gained experience with the hashtag follow model. You are encouraged to try experimenting with different simulations of this model. Implementing more regions and ideologies into a network using the follow model is bound to lead to some fascinating results. When you feel you are ready, move on to the next tutorial, where we will discuss the final follow model, the twitter follow model, which incorporates all of the other follow models into a network simulation.

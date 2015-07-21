@@ -742,9 +742,9 @@ void network_statistics(Network& n, NetworkStats& net_stats, AgentTypeVector& et
     output << "Total follows: " << stats.n_follows << "\n";
     output << "Total follow attempts: " << total_follow_calls << "\n";
     output << "Random: " << stats.n_random_follows << "\t(" << 100*stats.n_random_follows / total_follow_calls << "% of total follow attempts)\n";
-    output << "Preferential: " << stats.n_preferential_follows << "\t(" << 100*stats.n_preferential_follows / total_follow_calls << "% of total follow attempts)\n";
+    output << "Twitter_Suggest: " << stats.n_preferential_follows << "\t(" << 100*stats.n_preferential_follows / total_follow_calls << "% of total follow attempts)\n";
     output << "Agent: " << stats.n_agent_follows << "\t(" << 100*stats.n_agent_follows / total_follow_calls << "% of total follows attempts)\n";
-    output << "Preferential-agent: " << stats.n_pref_agent_follows << "\t(" << 100*stats.n_pref_agent_follows / total_follow_calls << "% of total follow attempts)\n";
+    output << "Preferential_Agent: " << stats.n_pref_agent_follows << "\t(" << 100*stats.n_pref_agent_follows / total_follow_calls << "% of total follow attempts)\n";
     output << "Retweet: " << stats.n_retweet_follows << "\t(" << 100*stats.n_retweet_follows / total_follow_calls << "% of total follows attempts)\n";
     output << "Hashtag: " << stats.n_hashtag_follows << "\t(" << 100*stats.n_hashtag_follows / total_follow_calls << "% of total follows attempts)\n";
     output << "Followbacks: " << stats.n_followback << "\t (" << 100*stats.n_followback / total_follow_calls << "% of total follow attempts)\n";

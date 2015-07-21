@@ -249,6 +249,14 @@ In the above visualization, the green nodes correspond to the 'Standard-Chatty' 
 
 In the end, there really seems to be no true 'most popular' agent type. In a social network of agents with such a variety of interests and personalities, it can be expected that every agent type has something that draws other agents into following them. In this social network we have simulated, there are agents of every type with similar attributes that are both very popular and not as much.
 
+The *region_connection_matrix_month_000.dat* outlines the connections made between regions for each simulated month within this network simulation. A screenshot of this file is shown below:
+
+<p align='center'>
+<img src='../img/tutorial12/region_connection_matrix_month_000.png'>
+</p>
+
+As we can see, !!!!!
+
 ## Next Steps
 
  With the completion of this tutorial, you now have knowledge and experience with every different agent configuration you can implement into #k@. From here, we will move on to a discussion on interactive mode in #k@, where you can make changes to your network mid-simulation.
