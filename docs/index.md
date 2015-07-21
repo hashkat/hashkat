@@ -1,3 +1,5 @@
+[hashkat.org](http://hashkat.org)
+
 <p align='center'>
 <img src='img/logo.svg'>
 </p>
@@ -9,5 +11,3 @@
 <p align='center'>
 <img src='img/front_page.png'>
 </p>
-
-[hashkat.org](http://hashkat.org)

@@ -201,6 +201,8 @@ Running this network simulation multiple times using different seeds, we produce
 <img src='../img/tutorial03/cumulative-degree_distribution_random.svg'>
 </p>
 
+As we can see, the cumulative degree distribution of a random follow model network simulation matches the ['Poisson Distribution'](https://en.wikipedia.org/wiki/Poisson_distribution) very well.
+
 ## Next Steps
 
 With the completion of this tutorial, we have worked with the simplest of the six types of follow models.
