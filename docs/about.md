@@ -24,3 +24,7 @@ which implements the Kinetic Monte Carlo Method and all the functionalities of T
 ##**Documentation and Tutorials**
 
 [N. Buhagiar](https://github.com/nbuhagiar)
+
+<p align='center'>
+<a href="http://hashkat.org">hashkat.org</a>
+</p>
