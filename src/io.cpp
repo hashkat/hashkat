@@ -981,8 +981,8 @@ void dd_by_follow_method(Network& n, AnalysisState& as, NetworkStats& ns) {
     output.open("output/dd_by_follow_model.dat");
     
     output << "This is the degree distribution by follow model. The data order is:\n# degree\tlog_of_degree\tRandom-normalized_probability\tRandom-log_of_normalized_probability\t"
-    "Preferential-normalized_probability\tPreferential-log_of_normalized_probability\t"
-    "Agent-normalized_probability\tAgent-log_of_normalized_probability\tPreferential-agent-normalized_probability\tPreferential-agent-log_of_normalized_probability\t"
+    "Twitter_Suggest-normalized_probability\tTwitter_Suggest-log_of_normalized_probability\t"
+    "Agent-normalized_probability\tAgent-log_of_normalized_probability\tPreferential_Agent-normalized_probability\tPreferential_Agent-log_of_normalized_probability\t"
     "Hashtag-normalized_probability\tHashtag-log_of_normalized_probability\t"
     "Twitter-normalized_probability\tTwitter-log_of_normalized_probability\tFollowbacks-normalized_probability\tFollowbacks-log_of_normalized_probability\n\n";
 
