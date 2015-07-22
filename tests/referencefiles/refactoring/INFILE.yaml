@@ -41,13 +41,13 @@ analysis:
   initial_agents:
     10  # start out from something small, could be when only the developers were online.
   max_agents: 
-    200000     # 1 million max users
+    1000     # 1 million max users
   max_time: 
     1000
   max_analysis_steps: 
     unlimited
   max_real_time: 
-    10                 
+    50 
   enable_interactive_mode:
     false
   enable_lua_hooks: # Defined in same file as interactive_mode. Can slow down simulation considerably.
@@ -137,8 +137,8 @@ tweet_ranks:
 retweet_ranks:
   thresholds: {bin_spacing: linear, min: 10, max: 500, increment: 10}
 follow_ranks:
-  thresholds: {bin_spacing: linear, min: 0, max: 10000, increment: 1}    # for preferential following
-  weights:    {bin_spacing: linear, min: 1, max: 10001, increment: 1}
+  thresholds: {bin_spacing: linear, min: 0, max: 1000, increment: 1}    # for preferential following
+  weights:    {bin_spacing: linear, min: 1, max: 1001, increment: 1}
 
 #################################################################
 # >> tweet_observation: 

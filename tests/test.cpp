@@ -223,6 +223,6 @@ BOOST_FIXTURE_TEST_CASE(refactoring, INIT_TEST)
     std::string test("refactoring");
     run(test);
     verify(test);
-//    clean(test);
+    clean(test);
 }
 

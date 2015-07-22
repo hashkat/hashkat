@@ -62,11 +62,17 @@ struct Network {
     }
 
     int size() const
-    {   return n_agents;    }
+    {
+        return n_agents;
+    }
     int max_size() const
-    {   return max_agents;  }
+    {
+        return max_agents;
+    }
     void grow()
-    {   ++n_agents;  }
+    {
+        ++n_agents;
+    }
 
     Agent& operator[](int index) { //** This allows us to index our Network struct as if it were an array.
         DEBUG_CHECK(index >= 0 && index < n_agents, "Network out-of-bounds agent access");
@@ -135,26 +141,34 @@ class network
 {
     Agent* agents_; // This is a pointer - used to create a dynamic array
     T n_agents_, max_agents_;
-// new member variables
+    // new member variables
     std::vector<std::unordered_set<T>> followers_;
     std::vector<std::unordered_set<T>> following_;
     std::vector<std::unordered_set<T>> bins_;
+    T denominator_;
 
 public:
     network()
     :   agents_(nullptr)
     ,   n_agents_(0)
     ,   max_agents_(0)
+    ,   denominator_(0)
     {}
 
     ~network()
-    {   delete[] agents_;    }
+    {
+        delete[] agents_;
+    }
 
     T size() const
-    {   return n_agents_;    }
+    {
+        return n_agents_;
+    }
 
     T max_size() const
-    {   return max_agents_;  }
+    {
+        return max_agents_;
+    }
 
     void grow(T n = 1)
     {
@@ -164,6 +178,7 @@ public:
             following_.emplace_back(std::unordered_set<T>());
             bins_.emplace_back(std::unordered_set<T>());
             bins_[0].insert(n_agents_);
+            ++denominator_;
             ++n_agents_;
         }
     }
@@ -188,28 +203,44 @@ public:
 
     // Convenient network queries:
     FollowingSet& following_set(T id)
-    {   return agents_[id].following_set;    }
+    {
+        return agents_[id].following_set;
+    }
 
     bool is_valid_id(T id)
-    {   return (id >= 0 && id < n_agents_);  }
+    {
+        return (id >= 0 && id < n_agents_);
+    }
 
     FollowerSet& follower_set(T id)
-    {   return agents_[id].follower_set;     }
+    {
+        return agents_[id].follower_set;
+    }
 
     // Return last agent:
     Agent& back()
-    {   return (*this)[n_agents_ - 1];       }
+    {
+        return (*this)[n_agents_ - 1];
+    }
 
     T n_followings(T id)
-    {   return following_set(id).size();    }
+    {
+        return following_set(id).size();
+    }
     T n_followers(T id)
-    {   return follower_set(id).size();     }
+    {
+        return follower_set(id).size();
+    }
 
     // To allow for-each style loops:
     Agent* begin()
-    {   return agents_;  }
+    {
+        return agents_;
+    }
     Agent* end()
-    {   return agents_ + n_agents_;   }
+    {
+        return agents_ + n_agents_;
+    }
 
     // 'Visits' every node, eg for serialization or testing
     READ_WRITE(rw)
@@ -228,13 +259,19 @@ public:
 
     // new member methods
     T following_size(T id)
-    {   return following_[id].size();   }
+    {
+        return following_[id].size();
+    }
 
     T followers_size(T id)
-    {   return followers_[id].size();   }
+    {
+        return followers_[id].size();
+    }
 
     bool can_grow() const
-    {   return n_agents_ < max_agents_;    }
+    {
+        return n_agents_ < max_agents_;
+    }
 
     void connect(T followed_id, T follower_id)
     {
@@ -248,6 +285,7 @@ public:
             followers_[followed_id].insert(follower_id);
             following_[follower_id].insert(followed_id);
             bins_[followers_size(followed_id)].insert(followed_id);
+            ++denominator_;
         }
     }
 
@@ -263,44 +301,86 @@ public:
             followers_[unfollowed_id].erase(unfollower_id);
             following_[unfollower_id].erase(unfollowed_id);
             bins_[followers_size(unfollowed_id)].insert(unfollowed_id);
+            --denominator_;
         }
     }
 
     int find_agent_to_follow(MTwist& rng)
     {
-        T rand_idx = rng.rand_int(n_agents_);
-        do
+        double rand_num = rng.rand_real_not0();
+        for (auto i = 0; i < bins_.size(); ++i)
         {
-            if (bins_[rand_idx].empty())
+            double probab = (double(i+1) * bins_[i].size()) / double(denominator_);
+            if (rand_num <= probab)
             {
-                ++rand_idx;
-                continue;
+                if (!bins_[i].empty())
+                {
+#ifdef REFACTORING_DEBUG_OUTPUT
+                    static unsigned n = 0;
+                    std::ostringstream name;
+                    name << "output/mine/" << std::setfill('0') << std::setw(5) << n++ << ".txt";
+                    std::ofstream out(name.str());
+                    out << "# Random Number: " << rand_num << std::endl;
+                    out << "# Number of Agents: " << n_agents_ << std::endl;
+                    out << "# Denominator: " << denominator_ << std::endl;
+                    out << "\n# Degree (k)\tCount\tk*Count\tProbability (k*Count/Den)\tAgent Ids\n";
+                    for (auto i = 0; i < n_agents_; ++i)
+                    {
+                        out << std::setw(7) << i+1 << ' ';
+                        out << std::setw(6) << bins_[i].size() << ' ';
+                        out << std::setw(6) << (i + 1) * bins_[i].size() << ' ';
+                        out << std::setw(15) << (double(i + 1) * bins_[i].size()) / double(denominator_);
+                        out << '\t';
+                        for (auto followed : bins_[i])
+                            out << followed << ',';
+                        out << std::endl;
+                    }
+#endif  // REFACTORING_DEBUG_OUTPUT
+                    //int bucket;
+                    //do
+                    //{
+                    //    bucket = rng.rand_int(bins_[i].bucket_count());
+                    //} while (bins_[i].bucket_size(bucket) == 0);
+                    //auto agent_id = bins_[i].cbegin(bucket);
+                    //return *agent_id;
+
+                    auto agent_id = bins_[i].cbegin();
+                    std::advance(agent_id, rng.rand_int(bins_[i].size()));
+                    return *agent_id;
+
+                    //auto agent_id = bins_[i].cbegin();
+                    //return *agent_id;
+                }
             }
-            
-            int bucket;
-            do
-            {
-                bucket = rng.rand_int(bins_[rand_idx].bucket_count());
-            } while (bins_[rand_idx].bucket_size(bucket) == 0);
-            auto agent = bins_[rand_idx].cbegin(bucket);
-            return *agent;
-        } while (rand_idx < n_agents_);
+            rand_num -= probab;
+        }
         return -1;
     }
 
     std::ostream& print(std::ostream& out) const
     {
+        out << "# Number of Agents: " << n_agents_ << std::endl;
+        out << "# Number of Bins: " << bins_.size() << std::endl;
+        out << "# Denominator: " << denominator_ << std::endl;
+        out << "\n# Agent Id\tFollowers\tFollowing\tDegree (k)\tCount\tk*Count\tProbability (k*Count/Den)\tFollower Ids\n";
+
         for (auto i = 0; i < n_agents_; ++i)
         {
-            out << agents_[i].id << "\t [ ";
-            out << bins_[i].size() << " ] [ ";
-            for (auto follower : followers_[i])
-                    out << follower << ' ';
-            out << "] [ ";
-            for (auto following : following_[i])
-                    out << following << ' ';
-            out << "]\n";
-
+            out << std::setw(7) << agents_[i].id << ' ';
+            out << std::setw(6) << followers_[i].size() << ' ';
+            out << std::setw(6) << following_[i].size() << ' ';
+            out << std::setw(6) << i+1 << ' ';
+            out << std::setw(6) << bins_[i].size() << ' ';
+            out << std::setw(6)
+                << (double((i+1) * bins_[i].size()) / double(denominator_));
+            out << '\t';
+            for (auto followed : bins_[i])
+                out << followed << ',';
+            out << std::endl;
+            //out << std::setw(6) << log(bins_[i].size()) << ' ';
+            //out << std::setw(6)
+            //    << log((double(i * bins_[i].size()) / double(denominator_)))
+            //    << std::endl;
         }
         return out;
     }

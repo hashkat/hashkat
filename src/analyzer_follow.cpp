@@ -157,6 +157,29 @@ struct AnalyzerFollow {
        for (int i = 0; i < follow_probabilities.size(); i++){
            updating_follow_probabilities[i] /= sum_of_weights;
        }
+
+#ifdef REFACTORING_DEBUG_OUTPUT
+       static unsigned n = 0;
+       std::ostringstream name;
+       name << "output/org/" << std::setfill('0') << std::setw(5) << n++ << ".txt";
+       std::ofstream out(name.str());
+       out << "# Random Number: " << rand_num << std::endl;
+       out << "# Number of Agents: " << network.size() << std::endl;
+       out << "# Denominator: " << sum_of_weights << std::endl;
+       out << "\n# Degree (k)\tCount\tk*Count\tProbability (k*Count/Den)\tAgent Ids\n";
+       for (auto i = 0; i < updating_follow_probabilities.size(); ++i)
+       {
+           out << std::setw(7) << follow_probabilities[i] << ' ';
+           out << std::setw(6) << follow_ranks.categories[i].agents.size() << ' ';
+           out << std::setw(6) << follow_probabilities[i] * follow_ranks.categories[i].agents.size() << ' ';
+           out << std::setw(15) << updating_follow_probabilities[i];
+           out << '\t';
+           for (auto followed : follow_ranks.categories[i].agents)
+               out << followed << ',';
+           out << std::endl;
+       }
+#endif  // REFACTORING_DEBUG_OUTPUT
+
        for (int i = 0; i < updating_follow_probabilities.size(); i++) {
            if (rand_num <= updating_follow_probabilities[i]) {
                // point to the category we landed in

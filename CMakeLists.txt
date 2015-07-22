@@ -62,6 +62,7 @@ else()
 endif()
 
 #add_definitions(-DREFACTORING)
+#add_definitions(-DREFACTORING_DEBUG_OUTPUT)
 include_directories("src/dependencies/boost_1_58_0")
 
 add_subdirectory(src)
