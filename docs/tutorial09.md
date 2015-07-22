@@ -86,9 +86,24 @@ Running this network simulation we produced the following visualization:
 
 ## Compare and Contrast
 
-Looking at these two visualizations, we can draw several conclusions. We can see from the visualization of the network without the other follow methods that the network looks almost exactly the same as the one created in **Tutorial 4** for the Classic Barabasi configuration. This makes sense since the only major change made to the network was the implementation of retweets, which wouldn't affect how agents connect with one another in this simulation since following via retweets was disabled. The visualization for the network with the other follow methods, however, showed a must more deeply connected network. With agents free to not only just make that one *Barabasi connnection*, but other connections through followback and following via retweets as well, agents were able to make much more connections with one another, allowing for the creation of a much more realistic network.
+Looking through our output files for these two simulations, it is quite clear that implemnting these other follow methods resulted in a definite increase in the number of follows that occurred in this network simulation. However, it would be very hard to draw that conclusion just from looking at the network visualizations we produced. Looking at the above visualizations, it is hard to see much difference between the two networks, though the second network has a great deal more edges within it. This is due to most of the additional follows occurring in this network being *followbacks*. When an agent follows another agent back, there is already an established connection between them, therefore, in the visualization there seems to be no additional edges being made between nodes in the network. The only way in which one can really see the effects of implmenting *followback* into their network visualization is to look at the nodes much more closely, where one can see that there are actually arrowheads on the edges between nodes. This is because these visualizations have all been directed graphs, where the arrowhead on an edge between nodes points to the node being followed.
+
+In these network visualization we've been creating, there are two different types of edges that can occur, they are:
+
+* Simple Directed Edge
+
+<p align='center'>
+<img src='../img/tutorial09_without_other_follow/one_follow_connection.png'>
+</p>
+
+* Bidirected Edge
+
+<p align='center'>
+<img src='../img/tutorial09_with_other_follow/followback_connection.png'>
+</p>
+
+A simple directed edge is when one node is following another node. A bidrected edge is when the two nodes are following each other. Though a bidrected edge is considered two edges in 'Gephi', they appear as one in the netwrok visualizations. Bidirected edges are much more prevalent in the second network visualization, where *followback* is implemented.
 
 ## Next Steps
 
 With the completion of this tutorial, you are now familiar with all of the possible manners in which agents can connect with one another in #k@. The followback and following via retweets method of following discussed in this tutorial are essential applications of hashkat, and their presence in network simulations are necessary for them to be authentic. We've enabled retweeting for the first time in this tutorial. Proceed to the next tutorial where we use these retweets that we are now accustomed to to discover the most popular tweet in a given network simulation.
-
