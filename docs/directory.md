@@ -117,6 +117,6 @@ Contains a directory corresponding to almost every tutorial found in the #k@ doc
 
 ## <span style="color:green">verify.py</span> 
 
-Script run in *tests.sh* to compare the data of output files in a network simulation to what is expected. If there is discrepancy between an output file and its reference, the file name is printed to the screen. Used in the development of #k@ to confirm if any changes made to the source code did or did not affect impact the output of a netowkr simulation.   
+Script run in *tests.sh* to compare the data of output files in a network simulation to what is expected. If there is discrepancy between an output file and its reference, the file name is printed to the screen. Used in the development of #k@ to confirm if any changes made to the source code did or did not affect impact the output of a network simulation.   
 
 ## <span style="color:blue">yaml</span>
