@@ -69,7 +69,7 @@ Contains instructions on how to install #k@ on Linux and Mac OS X.
 
 ## INTERACT.lua
 
-Used when running interactive mode in #k@. Details what is done when making certain commands.
+
 
 ## mkdocs.yml
 
