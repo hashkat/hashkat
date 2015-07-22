@@ -104,6 +104,14 @@ In these network visualization we've been creating, there are two different type
 
 A simple directed edge is when one node is following another node. A bidrected edge is when the two nodes are following each other. Though a bidrected edge is considered two edges in 'Gephi', they appear as one in the netwrok visualizations. Bidirected edges are much more prevalent in the second network visualization, where *followback* is implemented.
 
+We can also see that implementing the other follow methods into our simulation resulted in an increase in the total number of retweets. This is due to more follows occurring, thereby increasing the number of agents that see particular tweets, resulting in a better chance of retweeting taking place. A plot of the retweet distributions for both network simulations is shown below:
+
+<p align='center'>
+<img src='../img/tutorial09_with_other_follow/retweets_distro.svg'>
+</p>
+
+As we can see much more agents in the network without the other follow methods make 5 or less retweets, while in the network with these follow methods, agents with up to 25 retweets are present. It is quite clear that more follows leads to much more retweets.
+
 ## Next Steps
 
 With the completion of this tutorial, you are now familiar with all of the possible manners in which agents can connect with one another in #k@. The followback and following via retweets method of following discussed in this tutorial are essential applications of hashkat, and their presence in network simulations are necessary for them to be authentic. We've enabled retweeting for the first time in this tutorial. Proceed to the next tutorial where we use these retweets that we are now accustomed to to discover the most popular tweet in a given network simulation.
