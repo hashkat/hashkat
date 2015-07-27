@@ -673,10 +673,10 @@ void most_popular_tweet_content(MostPopularTweet& mpt, Network& network) {
     }
 
     output << "Contains basic information relating to the most retweeted tweet in this network simulation. \n\n"
-           << "Tweeter ID:\t" << id << "\n"
-           << "Tweeter Agent Type:\t" << a.agent_type << "\n"
-           << "Tweeter Ideology:\t" << a.ideology_bin << "\n"
-           << "Tweeter Region:\t" << a.region_bin << "\n"
+           << "Author ID:\t" << id << "\n"
+           << "Author Agent Type:\t" << a.agent_type << "\n"
+           << "Author Ideology:\t" << a.ideology_bin << "\n"
+           << "Author Region:\t" << a.region_bin << "\n"
            << "Tweet Creation Time:\t" << t.creation_time << "\n"
            << "Tweet Language:\t" << t.content->language << "\n"
            << "Tweet Type:\t" << t.content->type << "\n"
