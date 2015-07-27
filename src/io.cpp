@@ -677,10 +677,10 @@ void most_popular_tweet_content(MostPopularTweet& mpt, Network& network) {
            << "Author Agent Type:\t" << a.agent_type << "\n"
            << "Author Ideology:\t" << a.ideology_bin << "\n"
            << "Author Region:\t" << a.region_bin << "\n"
-           << "Tweet Creation Time:\t" << t.creation_time << "\n"
+           << "Tweet Creation Time (simulated minutes):\t" << t.creation_time << "\n"
            << "Tweet Language:\t" << t.content->language << "\n"
            << "Tweet Type:\t" << t.content->type << "\n"
-           << "Hashtag Presence:\t" << t.hashtag << "\n"
+           << "Hashtag Present:\t" << std::boolalpha << t.hashtag << "\n"
            << "Number of Times Tweet Retweeted:\t" << t.content->used_agents.size() << "\n";
 
     output.close();

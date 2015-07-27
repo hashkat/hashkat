@@ -6,7 +6,7 @@
 
 This section serves as a reference for users who have run a simulation, and wish to analyze the data this run has outputted. This page goes over every aspect of the files found in the output directory.
 
-## Agent Tyoe Info
+## Agent Type Info
 
 `agenttype_info.dat`
 
@@ -83,6 +83,10 @@ number and percentage of follows made by agents of each agent type.
 ## Model Match
 
 `model_match.dat`
+
+
+
+## Most Populat Tweet Content
 
 
 
