@@ -39,11 +39,11 @@
 
 analysis:
   initial_agents:
-    1000  # start out from something small, could be when only the developers were online.
+    10  # start out from something small, could be when only the developers were online.
   max_agents: 
     1000     # 1 million max users
   max_time: 
-    100000
+    1000
   max_analysis_steps: 
     unlimited
   max_real_time: 
@@ -57,7 +57,7 @@ analysis:
   use_barabasi: 
     false 
   barabasi_connections: # number of connections we want to make when use_barabasi == true
-    100
+    1
   barabasi_exponent:
     1
   use_random_time_increment: 
@@ -65,7 +65,7 @@ analysis:
   use_followback: 
     false        # followback turned on, from literature it makes sense for a realistic system
   follow_model: # See notes above
-    random
+    twitter_suggest
   # model weights ONLY necessary for follow method 'twitter'  
   # educated guesses for the follow models  
   model_weights: {random: 0.0, twitter_suggest: 0.0, agent: 0.0, preferential_agent: 0.0, hashtag: 0.0}
@@ -84,7 +84,7 @@ analysis:
 #################################################################
 
 rates:
-  add: {function: constant, value: 0.0}
+  add: {function: constant, value: 1.0}
 
 #################################################################
 # >> output:
@@ -125,6 +125,8 @@ output:
   region_connection_matrix:
     true
   categories_distro:
+    true
+  most_popular_tweet_content:
     true
 
 #################################################################
@@ -224,12 +226,12 @@ regions:
   - name: Ontario
     add_weight: 5
 
-    preference_class_weights: {NoRetweetPref: 100}
+    preference_class_weights: {StandardPref: 100}
     ideology_weights: {Red: 100, Blue: 100, Green: 100, Orange: 100}
     language_weights: {English: 100, French: 0, Spanish: 0, French+English: 0}
 
   - name: Quebec
-    add_weight: 5
+    add_weight: 0
 
     preference_class_weights: {NoRetweetPref: 100}
     ideology_weights: {Red: 100, Blue: 100, Green: 100, Orange: 100}
@@ -277,7 +279,7 @@ preference_classes:
   # preference class:
    tweet_transmission: 
       plain: # Also applies to musical tweets
-        Standard: 0.01
+        Standard: 0.1
         Celebrity: 0.01
         else: 0.01
       different_ideology:   # no retweeting for different ideologies
@@ -285,18 +287,18 @@ preference_classes:
         Celebrity: 0.00
         else: 0.00
       same_ideology:
-        Standard: 0.01
+        Standard: 0.1
         Celebrity: 0.01
         else: 0.01
       humourous:
-        Standard: 0.02
+        Standard: 0.2
         Celebrity: 0.02
         else: 0.02
    # Probability that we will follow as a reaction.
    # Only applies to 2nd generation retweets, otherwise
    # the agent would already be a follower.
    follow_reaction_prob:
-      0.1
+      0.0
 
  - name: NoRetweetPref
    tweet_transmission: 
@@ -342,12 +344,35 @@ agents:
         musical: 1.0
         humourous: 1.0 # Can be considered the humourousness of the agent type
     # Probability that following this agent results in a follow-back
-    followback_probability: .44
+    followback_probability: 0
     hashtag_follow_options:
       care_about_region: false # does the agent care about where the agent they will follow is from?
       care_about_ideology: false # does the agent care about which ideology the agent has?
     rates: 
         # Rate for follows from this agent:
-        follow: {function: constant, value: 0.0001}
+        follow: {function: constant, value: 0.01}
         # Rate for tweets from this agent:
-        tweet: {function: constant, value: 0.0}
+        tweet: {function: constant, value: 0.01}
+
+  - name: Celebrity
+    weights:
+      # Weight with which this agent is created
+      add: 0
+      # Weight with which this agent is followed in agent follow
+      follow: 5
+      tweet_type:
+        ideological: 1.0
+        plain: 1.0
+        musical: 1.0
+        humourous: 1.0 # Can be considered the humourousness of the agent type
+    # Probability that following this agent results in a follow-back
+    followback_probability: 0
+    hashtag_follow_options:
+      care_about_region: false # does the agent care about where the agent they will follow is from?
+      care_about_ideology: false # does the agent care about which ideology the agent has?
+    rates:
+        # Rate for follows from this agent:
+        follow: {function: constant, value: 0.01}
+        # Rate for tweets from this agent:
+        tweet: {function: constant, value: 0.01}
+

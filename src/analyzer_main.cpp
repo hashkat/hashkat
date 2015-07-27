@@ -166,7 +166,7 @@ struct Analyzer {
             lua_hook_new_network(state);
         }
         run_network_simulation(timer);
-        if (config.retweet_viz) {
+        if (config.most_popular_tweet_content) {
             find_most_popular_tweet();
         }
         return time;

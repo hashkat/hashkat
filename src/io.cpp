@@ -120,6 +120,9 @@ void output_network_statistics(AnalysisState& state) {
     if (C.region_connection_matrix) {
         region_stats(network, state);
     }
+    if (C.most_popular_tweet_content) {
+        most_popular_tweet_content(mpt, network);
+    }
     //fraction_of_connections_distro(network, state, stats);
     //if (C.dd_by_age) {
     //    dd_by_age(network, state, stats);
@@ -656,6 +659,31 @@ void whos_following_who(AgentTypeVector& types, Network& network) {
     for (int i = 0; i < types.size(); i ++ ) {
         whos_following_who(types, types[i], network);
     }
+}
+
+void most_popular_tweet_content(MostPopularTweet& mpt, Network& network) {
+    int id;
+    ofstream output;
+    output.open("output/most_popular_tweet_content.dat");
+    Tweet& t = mpt.most_popular_tweet;
+    id = t.id_tweeter;
+    Agent& a = network[id];
+    if (t.content.empty()) {
+        return; // Nothing to see here
+    }
+
+    output << "Contains basic information relating to the most retweeted tweet in this network simulation. \n\n"
+           << "Tweeter ID:\t" << id << "\n"
+           << "Tweeter Agent Type:\t" << a.agent_type << "\n"
+           << "Tweeter Ideology:\t" << a.ideology_bin << "\n"
+           << "Tweeter Region:\t" << a.region_bin << "\n"
+           << "Tweet Creation Time:\t" << t.creation_time << "\n"
+           << "Tweet Language:\t" << t.content->language << "\n"
+           << "Tweet Type:\t" << t.content->type << "\n"
+           << "Hashtag Presence:\t" << t.hashtag << "\n"
+           << "Number of Times Tweet Retweeted:\t" << t.content->used_agents.size() << "\n";
+
+    output.close();
 }
 
 void visualize_most_popular_tweet(MostPopularTweet& mpt, Network& network) {

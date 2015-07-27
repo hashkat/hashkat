@@ -51,5 +51,6 @@ void fraction_of_connections_distro(Network& network, AnalysisState& state, Netw
 void dd_by_age(Network& n, AnalysisState& as, NetworkStats& ns);
 void dd_by_agent(Network& n, AnalysisState& as, NetworkStats& ns);
 void dd_by_follow_method(Network& n, AnalysisState& as, NetworkStats& ns);
+void most_popular_tweet_content(MostPopularTweet& mpt, Network& network);
 
 #endif
