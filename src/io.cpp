@@ -681,7 +681,7 @@ void most_popular_tweet_content(MostPopularTweet& mpt, Network& network) {
            << "Tweet Language:\t" << t.content->language << "\n"
            << "Tweet Type:\t" << t.content->type << "\n"
            << "Hashtag Present:\t" << std::boolalpha << t.hashtag << "\n"
-           << "Number of Times Tweet Retweeted:\t" << t.content->used_agents.size() << "\n";
+           << "Number of Retweeters:\t" << t.content->used_agents.size() << "\n";
 
     output.close();
 }
