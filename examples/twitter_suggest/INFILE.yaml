@@ -126,6 +126,8 @@ output:
     true
   categories_distro:
     true
+  most_popular_tweet_content:
+    true
 
 #################################################################
 # >> *_ranks:
