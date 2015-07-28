@@ -30,6 +30,14 @@ Creating a network with this configuration, we produced the following visualizat
 
 As you can see from this visualization, agents are separated into 4 main groups, with several other agents having no connections, being unable to follow or be followed by another agent in time. These 4 groups correspond to the 4 different ideologies we have in our network, named *Red*, *Blue*, *Green*, and *Orange*. It is important to note that the colours of agents in the visualization do not correspond to ideolgy colours, but are arbitrarily given to differentiate enities of different types (e.g. *Standard* agents, *Celebrity* agents, etc.).
 
+A plot of the cumulative degree distribution of these agents is shown below:
+
+<p align='center'>
+<img src='../img/tutorial07/cumulative-degree_distribution_month_000.svg'>
+</p>
+
+As expected given the number of unconnected agents in this network, there are either agents with a very low degree or high degree in this network, though there are much more agents with a low degree.
+
 We can also plot the tweet distribution through use of the *tweets_distro.dat* file.
 
 <p align='center'>

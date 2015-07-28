@@ -56,7 +56,7 @@ it just means that you've downloaded a newer version of **#k@**!
 
 1. You must now do a build of **#k@** on your computer by typing in the command:
 
-    `./build.sh -O --build`
+    `./build.sh`
 
     You may need to install additional tools on to your computer to build **#k@**. If a prompt appears asking you to do so, please do. You may also need to install the 'CMake' package to your computer to build **#k@**. If so, steps 12 and 13 outline how to install this package.
 
@@ -163,7 +163,7 @@ Here outlines the following steps on how to install **#k@** on Linux:
 
 1. You must now do a build of **#k@** on your computer by typing in the command:
 
-    `./run.sh -O --build`
+    `./build.sh`
 
     You may need to install the 'CMake' package and the appropriate build tools to your computer to build **#k@**. If so, step 12 outlines how to install these.
 
