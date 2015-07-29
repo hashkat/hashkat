@@ -27,14 +27,14 @@ Celebrity: 0	(0% of total retweets)
 FOLLOWS
 _______
 
-Total follows: 59843
+Total follows: 59531
 Total follow attempts: 0
 Random: 0	(-nan% of total follow attempts)
-Preferential: 0	(-nan% of total follow attempts)
+Twitter_Suggest: 0	(-nan% of total follow attempts)
 Agent: 0	(-nan% of total follows attempts)
-Preferential-agent: 0	(-nan% of total follow attempts)
+Preferential_Agent: 0	(-nan% of total follow attempts)
 Retweet: 0	(-nan% of total follows attempts)
 Hashtag: 0	(-nan% of total follows attempts)
 Followbacks: 0	 (-nan% of total follow attempts)
-Standard: 30923	(51.6735% of total follows)
-Celebrity: 28920	(48.3265% of total follows)
+Standard: 30714	(51.5933% of total follows)
+Celebrity: 28817	(48.4067% of total follows)

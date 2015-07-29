@@ -134,7 +134,24 @@ struct AnalyzerFollow {
    int preferential_barabasi_follow_method()
    {
        PERF_TIMER();
-       return network.find_agent_to_follow(rng);
+
+       double rand_num = rng.rand_real_not0();
+       auto& bins = network.bins();
+       double den = network.denominator();
+       for (auto i = 0; i <= network.kmax(); ++i)
+       {
+           double probab = (double(i+1) * bins[i].size()) / den;
+           if (rand_num <= probab)
+           {
+               if (!bins[i].empty())
+               {
+                   auto agent_id = bins[i].cbegin();
+                   return *agent_id;
+               }
+           }
+           rand_num -= probab;
+       }
+       return -1;
    }
 #else
    int preferential_barabasi_follow_method() {
