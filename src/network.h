@@ -146,6 +146,7 @@ class network
     std::vector<std::unordered_set<T>> following_;
     std::vector<std::unordered_set<T>> bins_;
     T denominator_;
+    T kmax_;
 
 public:
     network()
@@ -153,6 +154,7 @@ public:
     ,   n_agents_(0)
     ,   max_agents_(0)
     ,   denominator_(0)
+    ,   kmax_(0)
     {}
 
     ~network()
@@ -258,14 +260,29 @@ public:
     }
 
     // new member methods
-    T following_size(T id)
+    T following_size(T id) const
     {
         return following_[id].size();
     }
 
-    T followers_size(T id)
+    T followers_size(T id) const
     {
         return followers_[id].size();
+    }
+
+    const std::vector<std::unordered_set<T>>& bins() const
+    {
+        return bins_;
+    }
+
+    T denominator() const
+    {
+        return denominator_;
+    }
+
+    T kmax() const
+    {
+        return kmax_;
     }
 
     bool can_grow() const
@@ -286,6 +303,8 @@ public:
             following_[follower_id].insert(followed_id);
             bins_[followers_size(followed_id)].insert(followed_id);
             ++denominator_;
+            if (kmax_ < followers_size(followed_id))
+                kmax_ = followers_size(followed_id);
         }
     }
 

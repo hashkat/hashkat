@@ -8,9 +8,12 @@ include_directories(
 	dependencies/yaml-cpp/include
         dependencies/luawrap-lib/include/
 	dependencies/lua/
+	dependencies/boost_1_58_0/
 )
 
 add_definitions(-Wuninitialized -std=c++11)
+#add_definitions(-DREFACTORING)
+#add_definitions(-DREFACTORING_DEBUG_OUTPUT)
 
 # Find source files
 aux_source_directory(
