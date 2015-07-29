@@ -341,6 +341,22 @@ region_connection_matrix:
 
 If set to true, creates the 'region_connection_matrix.dat' file, which displays a chart showing the connections made in regions.
 
+#### Categories Distribution
+```python
+categories_distro:
+  true
+```
+
+
+
+#### Most Popular Tweet Content
+```python
+most_popular_tweet_content:
+  true
+```
+
+
+
 ### **ranks**
 
 #### Tweet Ranks
