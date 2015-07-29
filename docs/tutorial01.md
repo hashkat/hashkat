@@ -177,7 +177,7 @@ To plot the in-degree, out-degree, and cumulative-degree distributions for *mont
 
 `set ylabel 'Degree Probability'`
 
-`plot 'in-degree_distribution_month_002.dat' u 1:2 lc rgb 'red' with filledcurves, 'out-degree_distribution_month_002.dat' u 1:2 lc rgb 'goldenrod' with filledcurves, 'cumulative-degree_distribution_month_002.dat' u 1:2 lc rgb 'blue' with filledcurves`
+`plot 'in-degree_distribution_month_002.dat' u 1:2 lc rgb 'red' with filledcurves title 'In-Degree', 'out-degree_distribution_month_002.dat' u 1:2 lc rgb 'goldenrod' with filledcurves title 'Out-Degree', 'cumulative-degree_distribution_month_002.dat' u 1:2 lc rgb 'blue' with filledcurves title 'Cumulative-Degree'`
 
 Giving us:
 
