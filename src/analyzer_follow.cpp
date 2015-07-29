@@ -236,6 +236,31 @@ struct AnalyzerFollow {
        for (auto& p : updating_probs) {
            p /= prob_sum;
        }
+
+#ifdef REFACTORING_DEBUG_OUTPUT
+       static unsigned n = 0;
+       std::ostringstream name;
+       name << "output/org/" << std::setfill('0') << std::setw(5) << n++ << ".txt";
+       std::ofstream out(name.str());
+       out << "# Random Number: " << rand_num << std::endl;
+       out << "# Number of Agents: " << network.size() << std::endl;
+       out << "# Number of Categories: " << follow_ranks.categories.size() << std::endl;
+       out << "# Denominator: " << prob_sum << std::endl;
+       out << "\n# Degree (k)\tCount\tProb\tCount*Prob\tProbability (Prob*Count/Den)\tAgent Ids\n";
+       for (auto i = 0; i < follow_ranks.categories.size(); ++i)
+       {
+           out << std::setw(7) << i+1 << ' ';
+           out << std::setw(6) << follow_ranks.categories[i].agents.size() << ' ';
+           out << std::setw(7) << follow_ranks.categories[i].prob << ' ';
+           out << std::setw(6) << follow_ranks.categories[i].prob * follow_ranks.categories[i].agents.size() << ' ';
+           out << std::setw(15) << updating_probs[i];
+           out << '\t';
+           for (auto followed : follow_ranks.categories[i].agents)
+               out << followed << ',';
+           out << std::endl;
+       }
+#endif  // REFACTORING_DEBUG_OUTPUT
+
        int i = 0;
        for (auto& p : updating_probs) {
            if (rand_num <= p) {

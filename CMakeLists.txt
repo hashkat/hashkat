@@ -4,13 +4,13 @@
 
 cmake_minimum_required( VERSION 2.6 )
 
-if ($ENV{BUILD_OPTIMIZE})
-    message("Building release... no debug symbols will be available.")
+#if ($ENV{BUILD_OPTIMIZE})
+#    message("Building release... no debug symbols will be available.")
     set(CMAKE_BUILD_TYPE Release)
-else()
-    message("Building debug... performance will not be optimal.")
-    set(CMAKE_BUILD_TYPE Debug)
-endif()
+#else()
+#    message("Building debug... performance will not be optimal.")
+#    set(CMAKE_BUILD_TYPE Debug)
+#endif()
 
 if (${CMAKE_SYSTEM_NAME} MATCHES "SunOS") 
     add_definitions(-Du_int16_t="unsigned short")

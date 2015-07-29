@@ -55,7 +55,7 @@ analysis:
   lua_script: # Defines behaviour of interactive mode & lua hooks
     INTERACT.lua
   use_barabasi: 
-    true 
+    false 
   barabasi_connections: # number of connections we want to make when use_barabasi == true
     100
   barabasi_exponent:
