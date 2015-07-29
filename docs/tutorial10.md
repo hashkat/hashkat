@@ -18,6 +18,10 @@ Running this network simulation, we shall view the 'most_popular_tweet_content.d
 
 ## Retweet Visualization
 
-
+<p align='center'>
+<img src='../img/tutorial10/retweet_visualization.png'>
+</p>
 
 ## Next Steps
+
+With the completion of this tutorial, we have now worked with not only how agents connect with one another, but also the content of the broadcasts they make to each other. However, in the next tutorial, we will discuss how agents may disconnect with each other throughout hte course of a network simulation. Proceed to the next tutorial for a run through on 'Unfollowing'.  
