@@ -6,7 +6,7 @@
 
 This tutorial should take approximately 10 minutes to complete
 
-The preferential agent follow model is exactly like the agent follow model, except that instead of following a random agent within a particular agent class, agents tend to follow other agents within that agent class with the highest number of followers (degrees). Let's try running a preferential agent follow model simualtion, using the input file from *Tutorial 5* as a starting point. The files that we will use in this simulation can be found for reference in the tutorials directory in hashkat, with this one under the title *tutorial06*. You can also view the input file we will be creating for this example [here](https://github.com/hashkat/hashkat/blob/master/docs/tutorials/tutorial06/INFILE.yaml).
+The preferential agent follow model is exactly like the agent follow model, except that instead of following a random agent within a particular agent class, agents tend to follow other agents within that agent class with the highest number of followers (degrees). Let's try running a preferential agent follow model simualtion, using the input file from *Tutorial 5* as a starting point. The input file that we will use in this simulation can be found for reference in the *docs/tutorials/* directory in hashkat, with this one under the title *tutorial06*. You can also view the input file we will be creating for this example [here](https://github.com/hashkat/hashkat/blob/master/docs/tutorials/tutorial06/INFILE.yaml).
 
 <p align = 'center'>
 <iframe width="420" height="315" src="https://www.youtube.com/embed/hYDfrBMERho" frameborder="0" allowfullscreen></iframe>

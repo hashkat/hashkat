@@ -25,7 +25,7 @@ You've already had some experience working with the random follow model, the sim
 but in this tutorial we are going to go into this model in much more detail. We are going to actually go through the input file and make some changes
 to create a simulation of our desired framework.
 
-For reference, all the files that we will use in this simulation can be found in the tutorials directory in hashkat, under the title *tutorial03*.
+For reference, the *INFILE.yaml* file we will create in this simulation can be found in the *docs/tutorials/* directory in hashkat, under the title *tutorial03*.
 You can also view the input file we will be creating for this example [here](https://github.com/hashkat/hashkat/blob/master/docs/tutorials/tutorial03/INFILE.yaml).
 For more information on what goes into the input file, and what sort of information you can output from your simulation, check out the **Input** and
 **Output** page respectively.
