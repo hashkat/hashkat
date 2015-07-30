@@ -215,7 +215,65 @@ struct AnalyzerFollow {
    }
 #endif  // REFACTORING
 
-   int twitter_preferential_follow_method(Agent& e,double time_of_follow) {
+#ifdef REFACTORING
+   int twitter_preferential_follow_method(Agent& e, double time_of_follow)
+   {
+       PERF_TIMER();
+
+       int referral_bin = (time_of_follow - e.creation_time) / (double)APPROX_MONTH;
+       double follow_prob = config.referral_rate_function.monthly_rates[referral_bin];
+       if (!rng.random_chance(follow_prob))
+           return -1;
+
+       double rand_num = rng.rand_real_not0();
+       double prob_sum = 0;
+
+       for (auto i = 0; i < follow_ranks.categories.size(); ++i)
+           prob_sum += follow_ranks.categories[i].prob
+                     * follow_ranks.categories[i].agents.size();
+
+#ifdef REFACTORING_DEBUG_OUTPUT
+       static unsigned n = 0;
+       std::ostringstream name;
+       name << "output/mine/" << std::setfill('0') << std::setw(5) << n++ << ".txt";
+       std::ofstream out(name.str());
+       out << "# Random Number: " << rand_num << std::endl;
+       out << "# Number of Agents: " << network.size() << std::endl;
+       out << "# Number of Categories: " << follow_ranks.categories.size() << std::endl;
+       out << "# Denominator: " << prob_sum << std::endl;
+       out << "\n# Degree (k)\tCount\tMy Count\tProb\tCount*Prob\tAgent Ids\n";
+       for (auto i = 0; i < follow_ranks.categories.size(); ++i)
+       {
+           out << std::setw(7) << i + 1 << ' ';
+           out << std::setw(6) << follow_ranks.categories[i].agents.size() << ' ';
+           out << std::setw(6) << network.bins()[i].size() << ' ';
+           out << std::setw(6) << follow_ranks.categories[i].prob << ' ';
+           out << std::setw(6) << follow_ranks.categories[i].prob * follow_ranks.categories[i].agents.size() << ' ';
+           out << '\t';
+           for (auto followed : follow_ranks.categories[i].agents)
+               out << followed << ',';
+           out << std::endl;
+       }
+#endif  // REFACTORING_DEBUG_OUTPUT
+
+       for (auto i = 0; i <= network.kmax(); ++i)
+       {
+           auto& cat = follow_ranks.categories[i];
+           double probab = cat.prob
+                         * cat.agents.size()
+                         / prob_sum;
+           if (rand_num <= probab)
+           {
+               auto agent_id = cat.agents[rng.rand_int(cat.agents.size())];
+               RECORD_STAT(state, e.agent_type, n_preferential_follows);
+               return agent_id;
+           }
+           rand_num -= probab;
+       }
+       return -1;
+   }
+#else
+   int twitter_preferential_follow_method(Agent& e, double time_of_follow) {
        PERF_TIMER();
        int referral_bin = (time_of_follow - e.creation_time ) / (double) APPROX_MONTH;
        double follow_prob = config.referral_rate_function.monthly_rates[referral_bin];
@@ -251,7 +309,7 @@ struct AnalyzerFollow {
        {
            out << std::setw(7) << i+1 << ' ';
            out << std::setw(6) << follow_ranks.categories[i].agents.size() << ' ';
-           out << std::setw(7) << follow_ranks.categories[i].prob << ' ';
+           out << std::setw(6) << follow_ranks.categories[i].prob << ' ';
            out << std::setw(6) << follow_ranks.categories[i].prob * follow_ranks.categories[i].agents.size() << ' ';
            out << std::setw(15) << updating_probs[i];
            out << '\t';
@@ -276,7 +334,8 @@ struct AnalyzerFollow {
        }
        return -1;
    }
-   
+#endif  // REFACTORING
+
    int agent_follow_method(Agent& e) {
        PERF_TIMER();
 

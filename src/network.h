@@ -75,7 +75,9 @@ struct Network {
     }
 
     Agent& operator[](int index) { //** This allows us to index our Network struct as if it were an array.
-        DEBUG_CHECK(index >= 0 && index < n_agents, "Network out-of-bounds agent access");
+        //DEBUG_CHECK(index >= 0 && index < n_agents, "Network out-of-bounds agent access");
+        BOOST_ASSERT_MSG(index >= 0 && index < n_agents,
+            "network out-of-bounds agent access :(");
         return agents[index];
     }
 
@@ -187,8 +189,10 @@ public:
 
     Agent& operator[](T index)
     {
-        DEBUG_CHECK(index >= 0 && index < n_agents_,
-            "Network out-of-bounds agent access");
+        //DEBUG_CHECK(index >= 0 && index < n_agents_,
+        //    "Network out-of-bounds agent access");
+        BOOST_ASSERT_MSG(index >= 0 && index < n_agents,
+            "network out-of-bounds agent access :(");
         return agents_[index];
     }
 

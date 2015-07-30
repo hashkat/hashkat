@@ -217,12 +217,20 @@ BOOST_FIXTURE_TEST_CASE(test11, INIT_TEST)
 //    clean(test);
 //}
 
-BOOST_FIXTURE_TEST_CASE(refactoring, INIT_TEST)
+BOOST_FIXTURE_TEST_CASE(refactoring01, INIT_TEST)
 {
     BOOST_REQUIRE(ready());
-    std::string test("refactoring");
+    std::string test("refactoring01");
     run(test);
     verify(test);
     clean(test);
 }
 
+BOOST_FIXTURE_TEST_CASE(refactoring02, INIT_TEST)
+{
+    BOOST_REQUIRE(ready());
+    std::string test("refactoring02");
+    run(test);
+    verify(test);
+    clean(test);
+}
