@@ -6,10 +6,6 @@
 
 This section serves as a reference for users working with the input file INFILE.yaml. This page goes through every aspect of the file in which users can manipulate.
 
-<p align = 'center'>
-<iframe width="560" height="315" src="https://www.youtube.com/embed/4X063IPFzM4" frameborder="0" allowfullscreen></iframe>
-</p>
-
 ### **analysis**
 
 The first section of this program is titled analysis, and it outlines what is the general focus of this simulation. Let's go over what each variable means.
@@ -182,10 +178,6 @@ use_hashtag_probability:
 The probability of a tweet containing a # from 0 to 1. As we can see in this example, the probability of using a # is 1, so every tweet will contain a #.
 
 ### **rates**
-
-<p align = 'center'>
-<iframe width="560" height="315" src="https://www.youtube.com/embed/_NNOtwrPTg0" frameborder="0" allowfullscreen></iframe>
-</p>
 
 ```python
 rates:
@@ -482,10 +474,6 @@ Determines the degree of funny. Not currently implemented in #k@.
 
 ### **preference classes**
 
-<p align = 'center'>
-<iframe width="560" height="315" src="https://www.youtube.com/embed/Sx0U1Fy5Bbo" frameborder="0" allowfullscreen></iframe>
-</p>
-
 ```python
 - name: StandardPref
 
@@ -515,10 +503,6 @@ Under *tweet_transmissions* one can dictate the probabilities that each type of 
 The *follow_reaction_prob* relates to the probability that an agent will follow an agent based on seeing a tweet by them being retweeted by another agent that that agent is following as opposed to just retweeting that retweet. With the *follow_reaction_prob* set to 0.5 in the above example, there is a 50% chance that an agent will retweet a retweet and a 50% chance that they will follow the speaker of the original tweet.   
 
 ### **agents**
-
-<p align = 'center'>
-<iframe width="560" height="315" src="https://www.youtube.com/embed/w_BVsSwb7cw" frameborder="0" allowfullscreen></iframe>
-</p>
 
 #### Agent Type
 
