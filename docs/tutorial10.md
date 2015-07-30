@@ -16,11 +16,17 @@ Running this network simulation, we shall view the 'most_popular_tweet_content.d
 <img src='../img/tutorial10/most_popular_tweet_content.png'>
 </p>
 
+As we can gather from this file, the author of this tweet was agent ID 5, who was a 'Standard' agent (since 'Standard' is the zeroth agent type in the list of agent types) with a 'Green' ideology living in 'Ontario'. The tweet was created 496.326 simulated minutes after the simulation started, being a 'humourous' tweet in 'English', with no hashtag present. There were 17 agents who retweeted this tweet. Analyzing the input file used for this simulation, all of this info that we have collected on the most popular tweet makes sense. Since there was only a 'Standard' agent type, the 'Ontario' region, and the 'English' language implemented in our network, it of course makes sense that these would be the qualities of the author of this tweet. Since the ideology weights were all equally weighted, the author ideology could have just as easily have been 'Red', 'Blue', or 'Orange' instead of 'Green'. The fact that the author of this tweet had a 'Green' ideology was simply by chance. It makes sense that the most popular tweet was a 'humourous' one since if we look at the preference class enabled for agents in this simulation (the 'StandardPref' preference class), 'humourous' tweets have a higher tweet transmission rate than all the other tweet types, meaning that it is much more likely to be tweeted and therefore the most retweeted tweet in most likely to be a humorous one.
+
 ## Retweet Visualization
+
+We can visualize this data by opening the graph file we created, *retweet_viz.gexf*, and visualizing it using 'Gephi'. The visualization we created is shown below:
 
 <p align='center'>
 <img src='../img/tutorial10/retweet_visualization.png'>
 </p>
+
+
 
 ## Next Steps
 
