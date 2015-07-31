@@ -20,5 +20,5 @@ for file in listoffiles:
             print 'Test failed, difference between test and reference data'
             print file
 
-if (no_differences_detected == False):
+if (no_differences_detected == True):
     print 'All tests passed'
