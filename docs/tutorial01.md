@@ -80,6 +80,8 @@ This cycle will continue until the end of the simulation. For more information o
 <iframe width="420" height="315" src="https://www.youtube.com/embed/i921pJBAPmM" frameborder="0" allowfullscreen></iframe>
 </p>
 
+(**Note**: The videos used in this documentation were created using a previous version of **#k@**. There are slight differences made between some of the commands issued and the files used in this video. The documentation itself is the most updated version of **#k@**.)
+
 For this first tutorial, we're going to run a simple network using #k@.
 If you look into the #k@ directory / folder, you will find several 
 different files and directories. For now we are just going to look at
