@@ -146,6 +146,7 @@ struct AnalyzerFollow {
                if (!bins[i].empty())
                {
                    auto agent_id = bins[i].cbegin();
+                   std::advance(agent_id, rng.rand_int(bins[i].size()));
                    return *agent_id;
                }
            }
