@@ -27,9 +27,9 @@ _______
 Total follows: 1127
 Total follow attempts: 1277
 Random: 991	(77.6038% of total follow attempts)
-Preferential: 0	(0% of total follow attempts)
+Twitter_Suggest: 0	(0% of total follow attempts)
 Agent: 0	(0% of total follows attempts)
-Preferential-agent: 0	(0% of total follow attempts)
+Preferential_Agent: 0	(0% of total follow attempts)
 Retweet: 286	(22.3962% of total follows attempts)
 Hashtag: 0	(0% of total follows attempts)
 Followbacks: 0	 (0% of total follow attempts)

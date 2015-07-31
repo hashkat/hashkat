@@ -36,9 +36,9 @@ _______
 Total follows: 209
 Total follow attempts: 318
 Random: 30	(9.43396% of total follow attempts)
-Preferential: 48	(15.0943% of total follow attempts)
+Twitter_Suggest: 48	(15.0943% of total follow attempts)
 Agent: 30	(9.43396% of total follows attempts)
-Preferential-agent: 27	(8.49057% of total follow attempts)
+Preferential_Agent: 27	(8.49057% of total follow attempts)
 Retweet: 0	(0% of total follows attempts)
 Hashtag: 119	(37.4214% of total follows attempts)
 Followbacks: 64	 (20.1258% of total follow attempts)
