@@ -1,0 +1,25 @@
+This is the degree distribution by follow model. The data order is:
+# degree	log_of_degree	Random-normalized_probability	Random-log_of_normalized_probability	Twitter_Suggest-normalized_probability	Twitter_Suggest-log_of_normalized_probability	Agent-normalized_probability	Agent-log_of_normalized_probability	Preferential_Agent-normalized_probability	Preferential_Agent-log_of_normalized_probability	Hashtag-normalized_probability	Hashtag-log_of_normalized_probability	Twitter-normalized_probability	Twitter-log_of_normalized_probability	Followbacks-normalized_probability	Followbacks-log_of_normalized_probability
+
+0	-inf	1	0	1	0	1	0	1	0	0.77321	-0.257205	1	0	0.87139	-0.137666
+1	0	0	-inf	0	-inf	0	-inf	0	-inf	0.14485	-1.93206	0	-inf	0.09754	-2.32749
+2	0.693147	0	-inf	0	-inf	0	-inf	0	-inf	0.04304	-3.14563	0	-inf	0.02145	-3.84203
+3	1.09861	0	-inf	0	-inf	0	-inf	0	-inf	0.01841	-3.99486	0	-inf	0.00649	-5.03749
+4	1.38629	0	-inf	0	-inf	0	-inf	0	-inf	0.00975	-4.63049	0	-inf	0.002	-6.21461
+5	1.60944	0	-inf	0	-inf	0	-inf	0	-inf	0.00494	-5.31039	0	-inf	0.00068	-7.29342
+6	1.79176	0	-inf	0	-inf	0	-inf	0	-inf	0.00273	-5.90345	0	-inf	0.00032	-8.04719
+7	1.94591	0	-inf	0	-inf	0	-inf	0	-inf	0.00128	-6.6609	0	-inf	6e-05	-9.72117
+8	2.07944	0	-inf	0	-inf	0	-inf	0	-inf	0.00083	-7.09408	0	-inf	5e-05	-9.90349
+9	2.19722	0	-inf	0	-inf	0	-inf	0	-inf	0.00046	-7.68428	0	-inf	1e-05	-11.5129
+10	2.30259	0	-inf	0	-inf	0	-inf	0	-inf	0.00016	-8.74034	0	-inf	1e-05	-11.5129
+11	2.3979	0	-inf	0	-inf	0	-inf	0	-inf	0.00017	-8.67971	0	-inf	0	-inf
+12	2.48491	0	-inf	0	-inf	0	-inf	0	-inf	7e-05	-9.56702	0	-inf	0	-inf
+13	2.56495	0	-inf	0	-inf	0	-inf	0	-inf	2e-05	-10.8198	0	-inf	0	-inf
+14	2.63906	0	-inf	0	-inf	0	-inf	0	-inf	2e-05	-10.8198	0	-inf	0	-inf
+15	2.70805	0	-inf	0	-inf	0	-inf	0	-inf	3e-05	-10.4143	0	-inf	0	-inf
+16	2.77259	0	-inf	0	-inf	0	-inf	0	-inf	1e-05	-11.5129	0	-inf	0	-inf
+17	2.83321	0	-inf	0	-inf	0	-inf	0	-inf	1e-05	-11.5129	0	-inf	0	-inf
+18	2.89037	0	-inf	0	-inf	0	-inf	0	-inf	0	-inf	0	-inf	0	-inf
+19	2.94444	0	-inf	0	-inf	0	-inf	0	-inf	0	-inf	0	-inf	0	-inf
+20	2.99573	0	-inf	0	-inf	0	-inf	0	-inf	0	-inf	0	-inf	0	-inf
+21	3.04452	0	-inf	0	-inf	0	-inf	0	-inf	0	-inf	0	-inf	0	-inf
