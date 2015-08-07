@@ -43,11 +43,11 @@ analysis:
   max_agents: 
     100000     # 1 million max users
   max_time: 
-    2880
+    1000000000
   max_analysis_steps: 
     unlimited
   max_real_time: 
-    1                 
+    4320                 
   enable_interactive_mode:
     false
   enable_lua_hooks: # Defined in same file as interactive_mode. Can slow down simulation considerably.
@@ -84,7 +84,7 @@ analysis:
 #################################################################
 
 rates:
-  add: {function: constant, value: 100.0}
+  add: {function: constant, value: 10.0}
 
 #################################################################
 # >> output:
@@ -139,8 +139,8 @@ tweet_ranks:
 retweet_ranks:
   thresholds: {bin_spacing: linear, min: 10, max: 500, increment: 10}
 follow_ranks:
-  thresholds: {bin_spacing: linear, min: 0, max: 10000, increment: 1}    # for preferential following
-  weights:    {bin_spacing: linear, min: 1, max: 10001, increment: 1}
+  thresholds: {bin_spacing: linear, min: 0, max: 100000, increment: 1}    # for preferential following
+  weights:    {bin_spacing: linear, min: 1, max: 100001, increment: 1}
 
 #################################################################
 # >> tweet_observation: 
@@ -350,6 +350,6 @@ agents:
       care_about_ideology: false # does the agent care about which ideology the agent has?
     rates: 
         # Rate for follows from this agent:
-        follow: {function: constant, value: 0.01}
+        follow: {function: constant, value: 0.0000001}
         # Rate for tweets from this agent:
         tweet: {function: constant, value: 0.0}
