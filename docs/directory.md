@@ -29,7 +29,7 @@ will build #k@ without running it.
 
 ## CMakeLists.txt
 
-
+File required to run 'CMake' with the build of **#k@**.
 
 ## COPYING
 
