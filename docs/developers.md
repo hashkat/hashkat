@@ -2,11 +2,11 @@
 
 <span style="color:black; font-family:Georgia; font-size:1.5em;">August 2015 - This site is currently under construction. Please return regularly over the course of the summer for further updates. </span>
 
-If you are interested in contributing to the **#k@** project, please check out our github repository [here](https://github.com/hashkat/hashkat). If you wish to make any developments to **#k@**, feel free to do so, and create a [pull request](https://help.github.com/articles/creating-a-pull-request/), where it will be reviewed and potentially merged in to the *hashkat* repository. We do ask when modifying **#k@**, please respect the [Google C++ Style Guide](https://google-styleguide.googlecode.com/svn/trunk/cppguide.html).
-
-The following 
+If you are interested in contributing to the **#k@** project, please check out the latest build of **#k@** at our github repository [here](https://github.com/hashkat/hashkat). If you wish to make any developments to **#k@**, feel free to do so, and create a [pull request](https://help.github.com/articles/creating-a-pull-request/), where it will be reviewed and potentially merged in to the *hashkat* repository. We do ask when modifying **#k@**, please respect the [Google C++ Style Guide](https://google-styleguide.googlecode.com/svn/trunk/cppguide.html).
 
 # How Does #k@ Work?
+
+The following delivers a brief overview of how **#k@** actually works.  
 
 ## Simulation Workflow
 
@@ -36,12 +36,8 @@ Once this is completed, another random number, *r*<sub>2</sub> is generated. If 
 
 *t* += -ln(*r*<sub>2</sub>) / **R**
 
-where **R** is the cumulative rate function, the sum of all the rates. All the rates are then updated, and if the maximum simulated or real time has not been reached, this process repeats.
+where **R** is the cumulative rate function, the sum of all the rates. All the rates are then updated, and if the maximum simulated or real time has not been reached, this process repeats until either of these times are reached.
 
-## Build Tests
+# Build Tests
 
 Build tests can be run in #k@ by running the *tests.sh* script. This script runs network simulations using the input files found in *tests/referencefiles/*, and compares the output of these files to what is expected using the *verify.py* script. If there are any discrepancies between the data of a particular output file and its corresponding reference data, that file for that particular test is printed to the screen.
-
-## Latest Build
-
-For the latest build of #k@, see the github repository at [github.com/hashkat/hashkat](https://github.com/hashkat/hashkat).
