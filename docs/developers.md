@@ -2,6 +2,10 @@
 
 <span style="color:black; font-family:Georgia; font-size:1.5em;">August 2015 - This site is currently under construction. Please return regularly over the course of the summer for further updates. </span>
 
+If you are interested in contributing to the **#k@** project, please check out our github repository [here](https://github.com/hashkat/hashkat). If you wish to make any developments to **#k@**, feel free to do so, and create a [pull request](https://help.github.com/articles/creating-a-pull-request/), where it will be reviewed and potentially merged in to the *hashkat* repository. We do ask when modifying **#k@**, please respect the [Google C++ Style Guide](https://google-styleguide.googlecode.com/svn/trunk/cppguide.html).
+
+The following 
+
 # How Does #k@ Work?
 
 ## Simulation Workflow
