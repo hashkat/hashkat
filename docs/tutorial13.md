@@ -14,7 +14,7 @@ We have two organizations, *Coke* and *Pepsi*, who are taking full advantage of 
 
 Both *Coke* and *Pepsi* only follow agents that follow them, and they will do so for every single one of their followers. *Pepsi* tweets both musical and humourous tweets evenly weighted, while *Coke* only tweets humourous tweets, though they tweet at a slightly higher rate. Musical tweets do have a slightly better chance of being retweeted however.
 
-The **INFILE.yaml** used for this scenario can be found in the *tutorials* directory in *hashkat* under *tutorial14* as well as [here](). To find out who wins this competition, copy this input file into your *hashkat* directory and run the simulation. Feel free to look through the input file to see what we did to produce this scenario.
+The **INFILE.yaml** used for this scenario can be found in the *docs/tutorials* directory in *hashkat* under *tutorial14* as well as [here](). To find out who wins this competition, copy this input file into your *hashkat* directory and run the simulation. Feel free to look through the input file to see what we did to produce this scenario.
 
 #### Coke
 
