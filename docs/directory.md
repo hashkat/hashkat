@@ -69,7 +69,7 @@ Contains instructions on how to install #k@ on Linux and Mac OS X.
 
 ## INTERACT.lua
 
-
+File used in the running of Interactive Mode in **#k@**.
 
 ## mkdocs.yml
 
@@ -93,11 +93,11 @@ Script that runs the #k@ program.
 
 ## SAMPLE_INTERACT.lua
 
-
+Example file on how *INTERACT.lua* can be modified to suit one's means in interactive mode.
 
 ## <span style="color:blue">scripts</span> 
 
-
+Contains several scripts used in the running of **#k@**. 
 
 ## <span style="color:blue">src</span>
 
