@@ -40,7 +40,7 @@ File created when running a network simulation. Details the length of simulated 
 
 ## DEFAULT.yaml
 
-
+Contains all the possible paramters that can be configured in INFILE.yaml with assigned values. If any of these variables are not present in *INFILE.yaml*, than the value assigned to them in this file will be used.
 
 ## <span style="color:blue">docs</span> 
 
@@ -89,10 +89,6 @@ Summary of what can be found in the *hashkat* directory.
 ## <span style="color:green">run.sh</span>
 
 Script that runs the #k@ program.
-
-## SAMPLE_INTERACT.lua
-
-Example file on how *INTERACT.lua* can be modified to suit one's means in interactive mode.
 
 ## <span style="color:blue">scripts</span> 
 
