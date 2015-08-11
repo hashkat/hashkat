@@ -155,7 +155,7 @@ stage1_unfollow:
   false
 ```
 
-Inputting *true* into *stage1_unfollow*  will enable the program to flag agents in which a twitter user is following that are tweeting much more than others. These flagged agents are at risk of being unfollowed by the agent following them later in the simulation.
+Inputting *true* into *stage1_unfollow*  will enable agents to unfollow agents that have a tweet rate double the average tweet rate of all the other agents the original agent is following.
 
 #### Unfollow Tweet Rate
 
@@ -164,7 +164,7 @@ unfollow_tweet_rate:
   10
 ```
 
-The *unfollow_tweet_rate* is an integer by which, if the number of tweets by an agent exceeds this value, will cause this agent to randomly lose one of its followers.
+The *unfollow_tweet_rate* is a value by which, if the number of tweets by an agent exceeds this value, will cause this agent to randomly lose one of its followers.
 
 #### Use Hashtag Probability
 

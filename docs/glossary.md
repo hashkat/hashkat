@@ -524,9 +524,7 @@ A simulation is an enactment of something that is anticipated or is being tested
 An association of agents connecting with one another within a certain framework for the means of interacting with one another.
 
 ####stage1_unfollow
-**(type: boolean)** If set to true, agents can be flagged when followed based on their tweet rates. If the tweet rate of the newly followed agent is greater than twice the average tweet rate of the pre-existent agents you follow,
-than the agent is placed into an array. This array is looked to when the unfollow function is called. This algorithm is supposed to encapsulate an unfollow method on Twitter.
-In Twitter if your feed is being dominated by a user you may become annoyed and want to unfollow that user. This is the process that occurs in this unfollow method.
+**(type: boolean)** If set to true, agents can be unfollowed based on their tweet rates. If the tweet rate of an agent is greater than twice the average tweet rate of the other agents an agent is following, than that agent will unfollow this chatty agent. This algorithm is supposed to encapsulate an unfollow method on Twitter. In Twitter if your feed is being dominated by a user you may become annoyed and want to unfollow that user. This is the process that occurs in this unfollow method.
 
 ####stdout_basic
 **(type: boolean)** If set to true, the number of months in the simulation will be outputted to the screen. Once all of the analysis in complete in the simulation, a message will also be printed to the screen.
@@ -604,7 +602,7 @@ with linear spacing from 0 to the max number of agents and set the weights to in
 An unfollow is when an agent stops following another agent.
 
 ####unfollow_tweet_rate
-**(type: double)** This tweet rate is not associated with the stage1 unfollow method described above. This is a more simplified unfollow algorithm and can be considered the stage 0 unfollow method.
+**(type: double)** This tweet rate is not associated with the 'stage1_unfollow' method described above. This is a more simplified unfollow algorithm and can be considered the 'stage0_unfollow' method.
 When an agent tweets, we look to see how many tweets they have put out since the agent was created. If the tweet rate of the agent exceeds the value set here, then the agent will be randomly unfollowed by one of its followers.
 
 ####use_barabasi

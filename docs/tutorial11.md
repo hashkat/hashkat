@@ -12,11 +12,11 @@ One of the many factors that influence an agent's decision to unfollow another a
 
 #### Stage 1 Unfollow
 
-If *stage1_unfollow* is implemented into a network configuration, whenever an agent follows another agent, the tweet rate of this newly followed agent will be compared to that of the other agents that the agent was following. If this newly followed agent's tweet rate is greater than double the average tweet rate of all the other agents that the original agent was following, then this newly followed agent will be put into an array, where it may be randomly chosen to be unfollowed when the unfollow function is called.
+If *stage1_unfollow* is implemented into a network configuration, whenever an agent is following another agent, the tweet rate of this newly followed agent will be compared to that of the other agents that the agent was following. If this followed agent's tweet rate is greater than double the average tweet rate of all the other agents that the original agent was following, then this chatty agent will be unfollowed.
 
 #### Unfollow Tweet Rate
 
-The *unfollow_tweet_rate* is a number inputted into the **INFILE.yaml** file that causes an agent who has created more tweets than this value to be randomly unfollowed by one of his/her followers.
+The *unfollow_tweet_rate* is a number inputted into the **INFILE.yaml** file that causes an agent who has a tweet rate greater than this value to be randomly unfollowed by one of his/her followers.
 
 ### A Network that Implements Unfollowing Due to Chattiness
 
