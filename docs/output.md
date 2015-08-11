@@ -124,12 +124,6 @@ visualization created from this file itself, the following shows the contents of
 <img src='../img/output/network_gexf_file.png'>
 </p>
 
-## Network Refactoring
-
-`network_refactoring.dat'
-
-
-
 ## Out-Degree Distribution
 
 `out-degree_distribution_month_000.dat`
