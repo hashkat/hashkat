@@ -53,7 +53,6 @@ The **INFILE.yaml** used for this scenario can be found in the *docs/tutorial_in
 </p>
 
 ```python
-```python
 - name: Pepsi
   weights:
     # Weight with which this agent is created
@@ -76,7 +75,7 @@ The **INFILE.yaml** used for this scenario can be found in the *docs/tutorial_in
       # Rate for tweets from this agent:
       tweet: {function: constant, value: 0.01}
 ```
-```
+
 
 ### Scenario 2 - Different Regions, Different Ideologies
 

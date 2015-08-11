@@ -35,8 +35,7 @@ max_time:
   hour
 ```
 
-The *max_time* variable coincides with the maximum simulation time in which you want the simulation to run. Once this simulated time has been reached, the simulation ends. This time is in minutes, and as we can see for this case, has a value of 1 hour or 60 minutes.
-Note that interacting with the simulation has no impact on the simulation time.
+The *max_time* variable coincides with the maximum simulation time in which you want the simulation to run. Once this simulated time has been reached, the simulation ends. This time is in minutes, and as we can see for this case, has a value of 1 hour or 60 minutes. For simplicity, you can just input 'minute', 'hour', 'day', or 'year' multiplied by a constant and **#k@** will know the value in minutes as well (e.g. 3 days can be inputted as 3*day, which is equal to 4,320 minutes). Note that interacting with the simulation has no impact on the simulation time.
 
 #### Max Analysis Steps
 
@@ -54,8 +53,7 @@ max_real_time:
   hour
 ```
 
-*max_real_time* is the maximum real itme in which you want the simulation to run. Once this actual time has elapsed, the simulation ends. This time is also in minutes, and in the above example has a value of 1 hour or 60 minutes. It is important to note that as
-opposed to the simulated time, interacting with the simulation does affect the real time. 
+*max_real_time* is the maximum real itme in which you want the simulation to run. Once this actual time has elapsed, the simulation ends. This time is also in minutes, and in the above example has a value of 1 hour or 60 minutes. For simplicity, you can just input 'minute', 'hour', 'day', or 'year' multiplied by a constant and **#k@** will know the value in minutes as well (e.g. 3 days can be inputted as 3*day, which is equal to 4,320 minutes). It is important to note that as opposed to the simulated time, interacting with the simulation does affect the real time. 
 
 #### Enable Interactive Mode
 
