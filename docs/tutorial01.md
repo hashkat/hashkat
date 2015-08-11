@@ -227,4 +227,6 @@ distributions, you must have more agents present during your simulation. However
 [Gephi](http://gephi.github.io/) to visualize your network, so take that into consideration when configuring your network
 input file. 
 
+If you would like to reference the input files used in this tutorial, you can find it in the *tutorial01* directory within the *docs/tutorial_input_files* in *hashkat* as well as [here](https://github.com/hashkat/hashkat/blob/master/docs/tutorial_input_files/tutorial01/INFILE.yaml).
+
 Feel free to move on to the next tutorial, where we will discuss restarting a network.

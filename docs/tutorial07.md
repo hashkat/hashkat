@@ -4,7 +4,7 @@
 
 # The Hashtag Follow Model
 
-The hashtag follow method is one in which an agent follows another agent through a hashtag that matches their hashtag preferences. In order for this follow method to be possible, *use_hashtag_probabilty* must be greater than zero, or else there will be no hashtags present in the simulation. Let's run a hashtag follow model simulation. The *INFILE.yaml* that we will use in this simulation can be found for reference in the *docs/tutorials/* directory in hashkat, with this one under the title *tutorial07*. You can also view the input file we will be creating for this example [here](https://github.com/hashkat/hashkat/blob/master/docs/tutorial_input_files/tutorial07/INFILE.yaml). This tutorial should take approximately 15 minutes to complete.
+The hashtag follow method is one in which an agent follows another agent through a hashtag that matches their hashtag preferences. In order for this follow method to be possible, *use_hashtag_probabilty* must be greater than zero, or else there will be no hashtags present in the simulation. Let's run a hashtag follow model simulation. The *INFILE.yaml* that we will use in this simulation can be found for reference in the *docs/tutorial_input_files* directory in hashkat, with this one under the title *tutorial07*. You can also view the input file we will be creating for this example [here](https://github.com/hashkat/hashkat/blob/master/docs/tutorial_input_files/tutorial07/INFILE.yaml). This tutorial should take approximately 15 minutes to complete.
 
 <p align = 'center'>
 <iframe width="420" height="315" src="https://www.youtube.com/embed/50nUnyawKNU" frameborder="0" allowfullscreen></iframe>

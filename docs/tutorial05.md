@@ -4,7 +4,7 @@
 
 # The Agent Follow Model
 
-An agent-based follow method is one in which agents follow a twitter user based on their agent class, though who they follow within that agent class is totally random. Let's run an agent follow model using #k@. The input file used in this simulation can be found for reference in the *docs/tutorials/* directory in hashkat, with this one under the title *tutorial05*. You can also view the input file we will be creating for this example [here](https://github.com/hashkat/hashkat/blob/master/docs/tutorial_input_files/tutorial05/INFILE.yaml). This tutorial should take approximately 20 minutes to complete.
+An agent-based follow method is one in which agents follow a twitter user based on their agent class, though who they follow within that agent class is totally random. Let's run an agent follow model using #k@. The input file used in this simulation can be found for reference in the *docs/tutorial_input_files* directory in hashkat, with this one under the title *tutorial05*. You can also view the input file we will be creating for this example [here](https://github.com/hashkat/hashkat/blob/master/docs/tutorial_input_files/tutorial05/INFILE.yaml). This tutorial should take approximately 20 minutes to complete.
 
 ## Constructing The Network
 
