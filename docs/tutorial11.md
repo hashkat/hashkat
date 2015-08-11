@@ -24,7 +24,7 @@ Let's now create a network simulation that implements unfollowing due to chattin
 
 The *INFILE.yaml* file created for this tutorial can be found in the *docs/tutorial_input_files* directory in the directory *tutorial11*. This file can also be viewed [here](https://github.com/hashkat/hashkat/blob/master/docs/tutorial_input_files/tutorial11/INFILE.yaml).
 
-
+So using the input file from **Tutorial 1** as a starting point, let's implement unfollowing. We will set 'stage1_unfollow' to true, and since the tweet rate of the all the agents in this network is 0.001, we will set the *'unfollow_tweet_rate' to 0.0009. With these modifications, we should expect a high number of unfollows due to 'unfollow_tweet_rate' being lower than the average agent tweet rate.
 
 ## Next Steps
 
