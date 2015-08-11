@@ -306,11 +306,11 @@ void model_match(Network& network, vector<int> & counts, int max_degree) {
         }
     }
     H *= -1;
-    ofstream output;
+    /*ofstream output;
     output.open("output/model_match.dat");
     output << "This file is generated to calculate parameters for a general P(k) distribution.\n\n";
     output << "<k> = " << average_degree << "\n";
-    output << "H = " << H << "\n";
+    output << "H = " << H << "\n";*/
 }
 /* This is a function that gives you the probability of a agent following a
  a given number of people. If you want to use this function, simply put

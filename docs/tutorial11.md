@@ -4,7 +4,7 @@
 
 # Unfollowing
 
-Unfollowing is the act in which an agent stops following another agent due to a variety of reasons. In this tutorial, we are going to discuss the different methods in which unfollowing can be implemented into your network simulation.
+Unfollowing is the act in which an agent stops following another agent due to a variety of reasons. In this tutorial, we are going to discuss how unfollowing can be implemented into your network simulation, where agents unfollow other agents due to their tweet content..
 
 ## Unfollowing Due to Chattiness
 
@@ -26,5 +26,4 @@ The *INFILE.yaml* file created for this tutorial can be found in the *docs/tutor
 
 ## Next Steps
 
-
-
+With the completion of this tutorial, not only have we learned all the different ways in which agents can connect with each other, but also how they cut these connections. Moving on to the next tutorial, we shall discuss how to make these agents in our network simulations unique.
