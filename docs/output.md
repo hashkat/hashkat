@@ -48,7 +48,11 @@ normalized probability logarithm in columns in that order. The following shows s
 
 `dd_by_follow_model.dat`
 
-Indicates the normalized probability and ln of the normalized probability for each degree per follow method.
+Indicates the normalized probability and log of the normalized probability for each degree per follow method.
+
+<p align='center'>
+<img src='../img/output/dd_by_follow_model_file.png'>
+</p>
 
 ## In-Degree Distribution
 
@@ -79,6 +83,10 @@ Under **FOLLOWS** we have the total number of follows and the total number
 of follow attempts that occurred in the simulation, the number and
 percentage of follow attempts achieved through each follow method, and the 
 number and percentage of follows made by agents of each agent type.
+
+<p align='center'>
+<img src='../img/output/main_stats_file.png'>
+</p>
 
 ## Model Match
 
@@ -122,6 +130,12 @@ visualization created from this file itself, the following shows the contents of
 <img src='../img/output/network_gexf_file.png'>
 </p>
 
+## Network Refactoring
+
+`network_refactoring.dat'
+
+
+
 ## Out-Degree Distribution
 
 `out-degree_distribution_month_000.dat`
@@ -151,6 +165,10 @@ Displays the connections made between regions. An example of this output file is
 Outlines the distribution of how many agents have made every possible number of 
 retweets within the network simulation.
 
+<p align='center'>
+<img src='../img/output/retweets_distro_file.png'>
+</p>
+
 ## Retweet Visualization
 
 `retweet_viz.gexf`
@@ -169,4 +187,8 @@ visualization created from this file itself, an example of this file can be seen
 `tweets_distro.dat`
 
 Outlines the distribution of how many agents have made every possible number of tweets
-within the network simulation. 
+within the network simulation.
+
+<p align='center'>
+<img src='../img/output/tweets_distro_file.png'>
+</p>
