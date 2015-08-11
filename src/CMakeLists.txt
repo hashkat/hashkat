@@ -12,7 +12,7 @@ include_directories(
 )
 
 add_definitions(-Wuninitialized -std=c++11)
-add_definitions(-DREFACTORING)
+#add_definitions(-DREFACTORING)
 #add_definitions(-DREFACTORING_DEBUG_OUTPUT)
 
 # Find source files
