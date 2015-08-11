@@ -191,6 +191,8 @@ Giving us:
 
 As we can see, there is a definite peak surrounding 20 degrees, though it seems that more agents have a cumulative degree just below or just above 20.
 
+## Running a Network Simulation with a Random Seed
+
 What's interesting about **#k@** is that if you were to remove the corresponding *network_state.dat* file and *output* files for this simulation and ran it again, you would receive the exact same output as you did before. That is because this simulation we always run with the same seed. A seed is a value used to initialize a random number generator. If the same seed is used every time you run the same network simulation, you will get the exact same output since the exact same random numbers will be used for the simulation. To run a network simulation with a random seed, thereby giving you a different output, type in the command:
 
 `./run.sh --rand`

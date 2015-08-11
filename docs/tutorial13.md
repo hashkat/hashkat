@@ -18,6 +18,10 @@ The **INFILE.yaml** used for this scenario can be found in the *docs/tutorial_in
 
 #### Coke
 
+<p align='center'>
+<img src='../img/trading_cards/organization_coke_card.jpg'>
+</p>
+
 ```python
 - name: Coke
   weights:
@@ -43,6 +47,10 @@ The **INFILE.yaml** used for this scenario can be found in the *docs/tutorial_in
 ```
 
 #### Pepsi
+
+<p align='center'>
+<img src='../img/trading_cards/organization_pepsi_card.jpg'>
+</p>
 
 ```python
 ```python
