@@ -10,7 +10,7 @@ Up to this point, we have used #k@ in very abstract terms.
 
 ### Scenario 1 - Organization Rivalry
 
-We have two organizations, *Coke* and *Pepsi*, who are taking full advantage of the access social networks allow them to have with consumers. They have both made accounts on this social network and both currently have zero followers. They have decided to each launch their own marketing campaign to,  garner as much follows from *Standard* agents on this social network as possible in a span of one week.
+We have two organizations, *Coke* and *Pepsi*, who are taking full advantage of the access social networks allow them to have with consumers. They have both made accounts on this social network and both currently have zero followers. They have decided to each launch their own marketing campaign to garner as much follows from *Standard* agents in this social network as possible in a span of one week.
 
 Both *Coke* and *Pepsi* only follow agents that follow them, and they will do so for every single one of their followers. *Pepsi* tweets both musical and humourous tweets evenly weighted, while *Coke* only tweets humourous tweets, though they tweet at a slightly higher rate. Musical tweets do have a slightly better chance of being retweeted however.
 

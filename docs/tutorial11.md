@@ -22,7 +22,9 @@ The *unfollow_tweet_rate* is a number inputted into the **INFILE.yaml** file tha
 
 Let's now create a network simulation that implements unfollowing due to chattiness. We will use the input file we used in **Tutorial 1** as a starting point, and make the appropriate changes to incorporate unfollowing. Looking back on the **Tutorial 1** documentation page, we can see in the *main_stats.dat* output file screenshot that there were 9,968 total follows that occurred in that network simulation. It will be interesting to see how that number changes with the implementation of unfollowing due to chattiness.
 
-The *INFILE.yaml* file created for this tutorial can be found in the *docs/tutorials/* directory in the directory *tutorial11*. This file can also be viewed [here]().
+The *INFILE.yaml* file created for this tutorial can be found in the *docs/tutorials/* directory in the directory *tutorial11*. This file can also be viewed [here](https://github.com/hashkat/hashkat/blob/master/docs/tutorials/tutorial11/INFILE.yaml).
+
+
 
 ## Next Steps
 
