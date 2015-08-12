@@ -71,9 +71,9 @@ analysis:
   model_weights: {random: 0.0, twitter_suggest: 0.0, agent: 0.0, preferential_agent: 0.0, hashtag: 0.0}
   
   stage1_unfollow: 
-    false
+    true
   unfollow_tweet_rate: 
-    10000
+    0.01
   use_hashtag_probability:
     0.5    # 50 % chance of using a hashtag
 
@@ -353,3 +353,26 @@ agents:
         follow: {function: constant, value: 0.0001}
         # Rate for tweets from this agent:
         tweet: {function: constant, value: 0.001}
+
+  - name: Chatty
+    weights:
+      # Weight with which this agent is created
+      add: 100.0
+      # Weight with which this agent is followed in agent follow
+      follow: 5
+      tweet_type:
+        ideological: 1.0
+        plain: 1.0
+        musical: 1.0
+        humourous: 1.0 # Can be considered the humourousness of the agent type
+    # Probability that following this agent results in a follow-back
+    followback_probability: .44
+    hashtag_follow_options:
+      care_about_region: false # does the agent care about where the agent they will follow is from?
+      care_about_ideology: false # does the agent care about which ideology the agent has?
+    rates:
+        # Rate for follows from this agent:
+        follow: {function: constant, value: 0.0001}
+        # Rate for tweets from this agent:
+        tweet: {function: constant, value: 0.01}
+
