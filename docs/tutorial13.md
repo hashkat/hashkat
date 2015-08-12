@@ -14,7 +14,7 @@ We have two organizations, *Coke* and *Pepsi*, who are taking full advantage of 
 
 Both *Coke* and *Pepsi* only follow agents that follow them, and they will do so for every single one of their followers. *Pepsi* tweets both musical and humourous tweets evenly weighted, while *Coke* only tweets humourous tweets, though they tweet at a slightly higher rate. Musical tweets do have a slightly better chance of being retweeted however.
 
-The **INFILE.yaml** used for this scenario can be found in the *docs/tutorial_input_files* directory in *hashkat* under *tutorial13* as well as [here](). To find out who wins this competition, copy this input file into your *hashkat* directory and run the simulation. Feel free to look through the input file to see what we did to produce this scenario.
+The **INFILE.yaml** used for this scenario can be found in the *docs/tutorial_input_files* directory in *hashkat* under *tutorial13_scenario_1* as well as [here](https://github.com/hashkat/hashkat/blob/master/docs/tutorial_input_files/tutorial13_scenario_1/INFILE.yaml). To find out who wins this competition, copy this input file into your *hashkat* directory and run the simulation. Feel free to look through the input file to see what we did to produce this scenario.
 
 #### Coke
 
@@ -23,12 +23,12 @@ The **INFILE.yaml** used for this scenario can be found in the *docs/tutorial_in
 </p>
 
 ```python
-- name: Coke
+- name: Organization-Coke
   weights:
     # Weight with which this agent is created
     add: 100.0
     # Weight with which this agent is followed in agent follow
-    follow: 50
+    follow: 100.0
     tweet_type:
       ideological: 0.0
       plain: 0.0
@@ -53,12 +53,12 @@ The **INFILE.yaml** used for this scenario can be found in the *docs/tutorial_in
 </p>
 
 ```python
-- name: Pepsi
+- name: Organization-Pepsi
   weights:
     # Weight with which this agent is created
     add: 100.0
     # Weight with which this agent is followed in agent follow
-    follow: 50
+    follow: 100.0
     tweet_type:
       ideological: 0.0
       plain: 0.0
@@ -75,7 +75,6 @@ The **INFILE.yaml** used for this scenario can be found in the *docs/tutorial_in
       # Rate for tweets from this agent:
       tweet: {function: constant, value: 0.01}
 ```
-
 
 ### Scenario 2 - Different Regions, Different Ideologies
 
