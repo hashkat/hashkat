@@ -236,17 +236,17 @@ For this exercise, we will actually not go through how to configure **INFILE.yam
 
 For this network simulation, we would like to have the following:
 
-* a constant number of 1000 agents
+* a constant number of 100 agents
 * a maximum simulation time of 1000 simulated minutes
-* a maximum real time of 30 minutes
+* a maximum real time of 10 minutes
 * followback implemented
 * the twitter follow model implemented, with the twitter_suggest and the hashtag follow model evenly weighted and the other follow models being excluded from this simulation
 * No unfollowing allowed
 * Hashtag presence in tweets 50% of the time
 * 4 ideologies: 'Red', 'Blue', 'Green', and 'Orange'
 * agents being located in either Ontario or Quebec, with the ratio of Ontarians to Quebecers being 3:2
-* Ontarians having a *NoRetweetPref* preference class, with 4 evenly wieghted ideologies and the ratio of English to French speaking Ontarians being 1:1
-* Quebecers having the *StandardPref* preference class, with only 3 ideologies ('Red', 'Blue', 'Green') evenly weighted, with the ratio of English speaking to French speaking Quebecers being 1:1
+* Ontarians having a *StandardPref* preference class, with 4 evenly wieghted ideologies and the ratio of English to French speaking Ontarians being 1:1
+* Quebecers having the *NoRetweetPref* preference class, with only 3 ideologies ('Red', 'Blue', 'Green') evenly weighted, with the ratio of English speaking to French speaking Quebecers being 1:1
 * for the *StandardPref* preference class, the tweet transmission rates for the agent types present in this network are 0.1 for 'plain'/'musical' tweets, 0.0 for 'different_ideology' tweets, 0.2 'same_ideology' tweets, and 0.4 for 'humourous' tweets, with the 'follow_reaction_prob' being 0.3
 * the *NoRetweetPref* preference class will remain the same, with 0 for all
 
@@ -407,7 +407,7 @@ We would also like you to use only the following agent types with their respecti
 
 ```
 
-Make sure that your tweet, retweet, and follow ranks have also been updated accordingly to properly account for this network. As you've probably noticed, we've set the max real time to 30 minutes instead of the regular 1 minute. The simulation should definitely not run for this long, we just want to allow enough time for the simulation to run to completion. When running this simulation on our computer, it took around 16 minutes real time to complete due to the complexity of the network. You do not have to run your simulation for this long if you wish. You can change the maximum real time to a time of your choosing or press **Ctrl-c** at any time during the simulation to pause it. Once you have configured **INFILE.yaml** to account for all this, run and visualize your network simulation.
+Make sure that your tweet, retweet, and follow ranks have also been updated accordingly to properly account for this network. As you've probably noticed, we've set the max real time to 10 minutes instead of the regular 1 minute. The simulation should definitely not run for this long, we just want to allow enough time for the simulation to run to completion. When running this simulation on our computer, it took almost 4 minutes real time to complete due to the complexity of the network. You do not have to run your simulation for this long if you wish. You can change the maximum real time to a time of your choosing or press **Ctrl-c** at any time during the simulation to pause it. Once you have configured **INFILE.yaml** to account for all this, run and visualize your network simulation.
 
 Running the network simulation to completion, we produced the following network visualization:
 
