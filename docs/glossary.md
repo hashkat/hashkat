@@ -475,7 +475,7 @@ selected randomly with weights that can be set. Here you can set the weights for
 
 ####resolution_growth_factor
 
-**type: double** This value changes how the integrals are
+**(type: double)** This value changes how the integrals are
 evaluated for the density function. Since the resolution of the function found experimentally needs to be more accurate initially then after some amount of time, we have
 introduced this parameter. For example if *x_start* is 5, the *initial_resolution* is 1, and this
 parameter is 1.5, then the integrals will be evaluated at [5, 6], [6, 7.5], [7.5, 9.0], etc.
@@ -531,6 +531,9 @@ An association of agents connecting with one another within a certain framework 
 
 ####stdout_summary
 **(type: boolean)** If set to true, the amount of time, number of agents, number of follows, number of tweets, number of retweets, total rate, and real time spent between each successive output is outputted to the screen.
+
+####summary_output_rate
+**(type: double)** The number of step intervals in the KMC loop where the 'stdout_summary' information is updated and printed to the screen.
 
 ##T
 
