@@ -43,7 +43,7 @@ analysis:
   max_agents: 
     1000     # 1 million max users
   max_time: 
-    10080
+    7*day
   max_analysis_steps: 
     unlimited
   max_real_time: 
@@ -57,13 +57,13 @@ analysis:
   use_barabasi: 
     false 
   barabasi_connections: # number of connections we want to make when use_barabasi == true
-    2
+    1
   barabasi_exponent:
     1
   use_random_time_increment: 
     true
   use_followback: 
-    false        # followback turned on, from literature it makes sense for a realistic system
+    true        # followback turned on, from literature it makes sense for a realistic system
   follow_model: # See notes above
     agent
   # model weights ONLY necessary for follow method 'twitter'  
@@ -226,7 +226,7 @@ regions:
   - name: Ontario
     add_weight: 5
 
-    preference_class_weights: {NoRetweetPref: 100}
+    preference_class_weights: {StandardPref: 100}
     ideology_weights: {Red: 100, Blue: 100, Green: 100, Orange: 100}
     language_weights: {English: 100, French: 0, Spanish: 0, French+English: 0}
 
@@ -279,7 +279,7 @@ preference_classes:
   # preference class:
    tweet_transmission: 
       plain: # Also applies to musical tweets
-        Standard: 0.01
+        Standard: 0.1
         Celebrity: 0.01
         else: 0.01
       different_ideology:   # no retweeting for different ideologies
@@ -287,11 +287,11 @@ preference_classes:
         Celebrity: 0.00
         else: 0.00
       same_ideology:
-        Standard: 0.01
+        Standard: 0.1
         Celebrity: 0.01
         else: 0.01
       humourous:
-        Standard: 0.02
+        Standard: 0.2
         Celebrity: 0.02
         else: 0.02
    # Probability that we will follow as a reaction.
@@ -337,7 +337,7 @@ agents:
       # Weight with which this agent is created
       add: 100.0
       # Weight with which this agent is followed in agent follow
-      follow: 10.0
+      follow: 0.0
       tweet_type:
         ideological: 1.0
         plain: 1.0
@@ -352,14 +352,14 @@ agents:
         # Rate for follows from this agent:
         follow: {function: constant, value: 0.01}
         # Rate for tweets from this agent:
-        tweet: {function: constant, value: 0.01}
+        tweet: {function: constant, value: 0.0}
 
   - name: Organization-Coke
     weights:
       # Weight with which this agent is created
       add: 100.0
       # Weight with which this agent is followed in agent follow
-      follow: 90.0
+      follow: 100.0
       tweet_type:
         ideological: 0.0
         plain: 0.0
@@ -381,7 +381,7 @@ agents:
       # Weight with which this agent is created
       add: 100.0
       # Weight with which this agent is followed in agent follow
-      follow: 90.0
+      follow: 100.0
       tweet_type:
         ideological: 0.0
         plain: 0.0

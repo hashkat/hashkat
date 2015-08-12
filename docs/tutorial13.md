@@ -81,10 +81,6 @@ The **INFILE.yaml** used for this scenario can be found in the *docs/tutorial_in
 
 
 
-### Scenario 3 - A Moment That Gets People Talking
-
-
-
 ## Constructing a Realisitic Network
 
 
