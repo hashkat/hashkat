@@ -415,17 +415,23 @@ Running the network simulation to completion, we produced the following network 
 <img src='../img/tutorial12/visualization.png'>
 </p>
 
-In the above visualization, the green nodes correspond to the 'Standard-Chatty' agents, the purple nodes correspond to the 'Standard-Friendly' agents, the blue nodes correspond to the 'Standard-Musical' agents, the yellow nodes correspond to 'Standard-Funny' agents, and the red nodes correspond to the 'Standard-Political' agents. As we can see, our social network has been divided into networks based on language, with one network corresponding to English-speaking agents and the other corresponding to French-speaking agents. Judging from this visualization, there seems to be no dominant agent type based on connectivity. The 'Standard-Chatty' agents and 'Standard-Musical agents' seems to be slightly less popular, as evident by their more abundant presence on the sides of each network simulation, while the 'Standard-Friendly', 'Standard-Funny', and 'Standard-Political' agents seem to be slightly more popular due to there more ample presence near the centre of the networks.
+In the above visualization, the red nodes correspond to the 'Standard-Chatty' agents, the green nodes correspond to the 'Standard-Friendly' agents, the yellow nodes correspond to the 'Standard-Funny' agents, the blue nodes correspond to 'Standard-Musical' agents, and the purple nodes correspond to the 'Standard-Political' agents.
 
-In the end, there really seems to be no true 'most popular' agent type. In a social network of agents with such a variety of interests and personalities, it can be expected that every agent type has something that draws other agents into following them. In this social network we have simulated, there are agents of every type with similar attributes that are both very popular and not as much.
+As we can see, our social network has been divided into networks based on language, with one network corresponding to English-speaking agents and the other corresponding to French-speaking agents.
 
-The *region_connection_matrix_month_000.dat* outlines the connections made between regions for each simulated month within this network simulation. A screenshot of this file is shown below:
+Clicking the 'Filters' tab on the right-hand side of the pae on 'Gephi' and clicking 'Degree-Range' under 'Topology', we can filter our network visualization based on the cumulative degree of the agents in the network.
 
 <p align='center'>
-<img src='../img/tutorial12/region_connection_matrix_month_000.png'>
+<img src='../img/tutorial12/filter_tab.png'>
 </p>
 
-As we can see, !!!!!
+Setting the 'Degree-Range Settings' from 80 to 100 and clicking 'Filter', we can see the following:
+
+<p align='center'>
+<img src='../img/tutorial12/filtered_visualization.png'>
+</p>
+
+As we can see from this visualization, the most highly connected nodes are the green and yellow nodes, also known as the 'Standard-Friendly' and 'Standard-Funny' agents. Therefore, it is quite clear that the friendly and funny agents won the popularity contest.
 
 ## Next Steps
 
