@@ -39,15 +39,15 @@
 
 analysis:
   initial_agents:
-    1000  # start out from something small, could be when only the developers were online.
+    100  # start out from something small, could be when only the developers were online.
   max_agents: 
-    1000     # 1 million max users
+    100     # 1 million max users
   max_time: 
     1000
   max_analysis_steps: 
     unlimited
   max_real_time: 
-    30                 
+    10                 
   enable_interactive_mode:
     false
   enable_lua_hooks: # Defined in same file as interactive_mode. Can slow down simulation considerably.
@@ -226,14 +226,14 @@ regions:
   - name: Ontario
     add_weight: 3
 
-    preference_class_weights: {NoRetweetPref: 100}
+    preference_class_weights: {StandardPref: 100}
     ideology_weights: {Red: 100, Blue: 100, Green: 100, Orange: 100}
     language_weights: {English: 100, French: 100, Spanish: 0, French+English: 0}
 
   - name: Quebec
     add_weight: 2
 
-    preference_class_weights: {StandardPref: 100}
+    preference_class_weights: {NoRetweetPref: 100}
     ideology_weights: {Red: 100, Blue: 100, Green: 100, Orange: 0}
     language_weights: {English: 100, French: 100, Spanish: 0, French+English: 0}
 
