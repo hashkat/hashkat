@@ -80,10 +80,6 @@ The **INFILE.yaml** used for this scenario can be found in the *docs/tutorial_in
 
 
 
-## Constructing a Realisitic Network
-
-
-
 ## Moving Forward with #k@
 
 With the completion of this, the final tutorial, you now have proficency and experience working with all the different implementations and aspects of #k@. However, we have only scratched the surface of all the different applications and utilizations of #k@. From the World Wide Web to a food web, from people to atoms, there is no end to all the entities and situations you can model using #k@. With that, press on and experiment with #k@, and see what you can model using this program.
