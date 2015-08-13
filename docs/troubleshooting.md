@@ -44,6 +44,15 @@ terminate called after throwing an instance of 'YAML::RepresentationException'
 
 This error message is due to improper formatting in at least one of the functions present in your **INFILE.yaml* file. When using a constant function for your add rate, follow rate, or tweet rate, you must have a value for this constant rate. When using a linear function, you must have a y-intercept and slope for this increasing or decreasing rate. If these corresponding variables are not present for each particular function, then you will receive an error similar to the one above, which was caused by having a linear add rate with a corresponding value instead of a y-intercept and slope. Simply changing your function configuration so that it coincides with the function you are implementing will fix this error.
 
+### Adding Too Many Follow Models, Preference Classes, Agent Types, Regions, or Ideologies
+
+`
+Number of ideologies must not be more than N_BIN_IDEOLOGIES (4)! Please adjust src/config_static.h.
+terminate called after throwing an instance of 'char const*'
+/home/mobile/hashkat/run.sh: line 92: 12264 Aborted                 (core dumped) "$HASHKAT/build/src/hashkat" $args
+`
+
+You may recieve an error similar to the one above for adding too many, follow models, preference classes, agent types, regions, or ideologies into your simulation (in the above case, we have added too many ideologies). If you recieve this error, you may either remove the additional follow model, preference class, agent type, region, or ideology from the *INFILE.yaml* file, or increase the value of the quantity of the parameter in question in the *config_static.h* file in *src* and rebuild **#k@** by running *build.sh*.
 
 ### Not Having Enough Memory
 
