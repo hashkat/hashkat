@@ -78,7 +78,7 @@ struct Tweet {
     int id_tweet = -1; // The tweet number
     // The agent broadcasting the tweet
     // A tweet is an orignal tweet if tweeter_id == content.author_id
-    int id_tweeter = -1;
+    int id_tweeter = 0;
 
     // The 'linking' agent the tweet was retweeted from (a following of id_tweeter)
     // Equal to id_tweeter if the tweet was original content.
