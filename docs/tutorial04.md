@@ -31,7 +31,7 @@ we are going to have the number of agents within the simulation increase over ti
 Most importantly, we're going to set *use_barabasi* to *true* causing the simulation to implement the Barabasi configuration.
 *barabasi_connections* specifies the number of connections an agent makes when entering the simulation, so for this Classic Barabasi example, we're going to set this value to 1.
 Since we are running a twitter suggest follow model, we are going to set the *follow_model* as such. In the *rates* section of the input file, we are now adding agents to the network throughout the simulation,
-so we will change the add rate value to 1.0, so that one agent will be added to the network per simulated minute.
+so we will change the add rate value to 1.0, so that one agent will be added to the network per simulated minute. This add rate is much lower than it's actual value, where users join Twitter at a rate of about 100 per minute, but we will use this value for this tutorial.
 
 ```python
 analysis:

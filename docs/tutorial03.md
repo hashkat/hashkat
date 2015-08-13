@@ -20,9 +20,7 @@ Each of these follow models will be discussed and analyzed in each of their own 
 The input data used to create the networks will be relatively the same for each follow model tutorial, so that the results from running each different follow model
 can be easily compared and constrasted.
 
-As the name implies, a random follow model is one in which the agents in which a twitter user follows is totally arbitrary.
-You've already had some experience working with the random follow model, the simple network we created in Tutorial 1 implemented it,
-but in this tutorial we are going to go into this model in much more detail. We are going to actually go through the input file and make some changes
+As the name implies, a random follow model is one in which the agents in which a twitter user follows is totally arbitrary. Based on the work of Paul Erdos and Alfred Renyi, you can read up on the Erdos-Renyi Model [here](https://en.wikipedia.org/wiki/Erd%C5%91s%E2%80%93R%C3%A9nyi_model). You've already had some experience working with the random follow model, the simple network we created in Tutorial 1 implemented it, but in this tutorial we are going to go into this model in much more detail. We are going to actually go through the input file and make some changes
 to create a simulation of our desired framework.
 
 For reference, the *INFILE.yaml* file we will create in this simulation can be found in the *docs/tutorial_input_files* directory in hashkat, under the title *tutorial03*.
