@@ -47,7 +47,7 @@ analysis:
   max_analysis_steps: 
     unlimited
   max_real_time: 
-    5                 
+    1                 
   enable_interactive_mode:
     false
   enable_lua_hooks: # Defined in same file as interactive_mode. Can slow down simulation considerably.
@@ -127,7 +127,7 @@ output:
   categories_distro:
     true
   most_popular_tweet_content:
-    false
+    true
 
 #################################################################
 # >> *_ranks:
@@ -279,21 +279,21 @@ preference_classes:
   # preference class:
    tweet_transmission: 
       plain: # Also applies to musical tweets
-        Standard: 0.1
-        Celebrity: 0.01
-        else: 0.01
+        Standard: 0.0
+        Celebrity: 0.0
+        else: 0.1
       different_ideology:   # no retweeting for different ideologies
-        Standard: 0.00
-        Celebrity: 0.00
-        else: 0.00
+        Standard: 0.0
+        Celebrity: 0.0
+        else: 0.0
       same_ideology:
-        Standard: 0.1
-        Celebrity: 0.01
-        else: 0.01
+        Standard: 0.0
+        Celebrity: 0.0
+        else: 0.0
       humourous:
-        Standard: 0.2
-        Celebrity: 0.02
-        else: 0.02
+        Standard: 0.0
+        Celebrity: 0.0
+        else: 0.2
    # Probability that we will follow as a reaction.
    # Only applies to 2nd generation retweets, otherwise
    # the agent would already be a follower.
@@ -335,14 +335,14 @@ agents:
   - name: Standard
     weights:
       # Weight with which this agent is created
-      add: 998.0
+      add: 999.0
       # Weight with which this agent is followed in agent follow
       follow: 0.0
       tweet_type:
-        ideological: 1.0
-        plain: 1.0
-        musical: 1.0
-        humourous: 1.0 # Can be considered the humourousness of the agent type
+        ideological: 0.0
+        plain: 0.0
+        musical: 0.0
+        humourous: 0.0 # Can be considered the humourousness of the agent type
     # Probability that following this agent results in a follow-back
     followback_probability: 0
     hashtag_follow_options:
@@ -357,7 +357,7 @@ agents:
   - name: Organization-Coke
     weights:
       # Weight with which this agent is created
-      add: 1.0
+      add: 0.5
       # Weight with which this agent is followed in agent follow
       follow: 100.0
       tweet_type:
@@ -366,7 +366,7 @@ agents:
         musical: 0.0
         humourous: 1.0 # Can be considered the humourousness of the agent type
     # Probability that following this agent results in a follow-back
-    followback_probability: 1.00
+    followback_probability: 0
     hashtag_follow_options:
       care_about_region: false # does the agent care about where the agent they will follow is from?
       care_about_ideology: false # does the agent care about which ideology the agent has?
@@ -374,12 +374,12 @@ agents:
         # Rate for follows from this agent:
         follow: {function: constant, value: 0.0}
         # Rate for tweets from this agent:
-        tweet: {function: constant, value: 0.0101}
+        tweet: {function: constant, value: 0.1}
 
   - name: Organization-Pepsi
     weights:
       # Weight with which this agent is created
-      add: 1.0
+      add: 0.5
       # Weight with which this agent is followed in agent follow
       follow: 100.0
       tweet_type:
@@ -388,7 +388,7 @@ agents:
         musical: 1.0
         humourous: 1.0 # Can be considered the humourousness of the agent type
     # Probability that following this agent results in a follow-back
-    followback_probability: 1.00
+    followback_probability: 0
     hashtag_follow_options:
       care_about_region: false # does the agent care about where the agent they will follow is from?
       care_about_ideology: false # does the agent care about which ideology the agent has?
@@ -396,6 +396,6 @@ agents:
         # Rate for follows from this agent:
         follow: {function: constant, value: 0.0}
         # Rate for tweets from this agent:
-        tweet: {function: constant, value: 0.01}
+        tweet: {function: constant, value: 0.1}
 
 
