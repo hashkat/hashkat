@@ -14,7 +14,7 @@ We have two organizations, *Coke* and *Pepsi*, who are taking full advantage of 
 
 Both *Coke* and *Pepsi* only follow agents that follow them, and they will do so for every single one of their followers. *Pepsi* tweets both musical and humourous tweets evenly weighted, while *Coke* only tweets humourous tweets, though they tweet at a slightly higher rate. Humourous tweets do have a better chance of being retweeted however.
 
-The **INFILE.yaml** used for this scenario can be found in the *docs/tutorial_input_files* directory in *hashkat* under *tutorial13_scenario_1* as well as [here](https://github.com/hashkat/hashkat/blob/master/docs/tutorial_input_files/tutorial13_scenario_1/INFILE.yaml). To find out who wins this competition, copy this input file into your *hashkat* directory and run the simulation. Feel free to look through the input file to see what we did to produce this scenario.
+The **INFILE.yaml** used for this scenario can be found in the *docs/tutorial_input_files* directory in *hashkat* under *tutorial13_scenario_1* as well as [here](https://github.com/hashkat/hashkat/blob/master/docs/tutorial_input_files/tutorial13_scenario_1/INFILE.yaml). To find out who wins this competition, copy this input file into your *hashkat* directory and run the simulation. Feel free to look through the input file to see what we did to produce this scenario. Due to the complexity of this network, the simulation may run slightly longer than the simulations done in previous tutorials.
 
 #### Coke
 
@@ -78,29 +78,62 @@ The **INFILE.yaml** used for this scenario can be found in the *docs/tutorial_in
 
 ### Scenario 2 - Different Regions, Different Ideologies
 
-We have two regions in our network, Canada and the USA, and both are in the midst of a federal election. In both regions, there are two main political parties, 'Red' and 'Blue'. However, the 'Red' party and 'Blue' party in Canada are vastly different from the 'Red' party and 'Blue' party in the USA. Citizens of these regions have taken to this social network to voice their views on their particular regions' upcoming elections. These citizens can be categorized into 4 main agent types in the social network. These agent types are:
+We have two regions in our network, Canada and the USA, and both are in the midst of a federal election. In both regions, there are two main political parties, 'Red' and 'Blue'. However, the 'Red' party and 'Blue' party in Canada are vastly different from the 'Red' party and 'Blue' party in the USA. Citizens of these regions have taken to this social network to voice their views on their particular regions' upcoming elections. These citizens can be categorized into 2 main agent types in the social network. These agent types are:
 
-#### Canada - Red
-
-```python
-```
-
-#### Canada - Blue
+#### Red
 
 ```python
+- name: Red
+  weights:
+    # Weight with which this agent is created
+    add: 100.0
+    # Weight with which this agent is followed in agent follow
+    follow: 5
+    tweet_type:
+      ideological: 1.0
+      plain: 0.0
+      musical: 0.0
+      humourous: 0.0 # Can be considered the humourousness of the agent type
+  # Probability that following this agent results in a follow-back
+  followback_probability: .44
+  hashtag_follow_options:
+    care_about_region: true # does the agent care about where the agent they will follow is from?
+    care_about_ideology: true # does the agent care about which ideology the agent has?
+  rates:
+      # Rate for follows from this agent:
+      follow: {function: linear, y_intercept: 0.1, slope: 0.01}
+      # Rate for tweets from this agent:
+      tweet: {function: linear, y_intercept: 0.1, slope: 0.01}
+
 ```
 
-#### USA - Red
+#### Blue
 
 ```python
+- name: Blue
+  weights:
+    # Weight with which this agent is created
+    add: 100.0
+    # Weight with which this agent is followed in agent follow
+    follow: 5
+    tweet_type:
+      ideological: 1.0
+      plain: 0.0
+      musical: 0.0
+      humourous: 0.0 # Can be considered the humourousness of the agent type
+  # Probability that following this agent results in a follow-back
+  followback_probability: .44
+  hashtag_follow_options:
+    care_about_region: true # does the agent care about where the agent they will follow is from?
+    care_about_ideology: true # does the agent care about which ideology the agent has?
+  rates:
+      # Rate for follows from this agent:
+      follow: {function: linear, y_intercept: 0.1, slope: 0.01}
+      # Rate for tweets from this agent:
+      tweet: {function: linear, y_intercept: 0.1, slope: 0.01}
 ```
 
-#### USA - Blue
-
-```python
-```
-
-Agents started voicing their views 5 days before the day of their country's federal election, which coincidentally happen to occur in both countries on the very same day. The **INFILE.yaml** used for this scenario can be found in the *docs/tutorial_input_files* directory in *hashkat* under *tutorial13_scenario_2* as well as [here](https://github.com/hashkat/hashkat/blob/master/docs/tutorial_input_files/tutorial13_scenario_2/INFILE.yaml). Copy this input file into your *hashkat* directory and run the simulation. Feel free to look through the input file to see what we did to produce this scenario. Judging by the number of supporters you will find in the social network, find a way to discover who will win the election in both Canada and the USA.
+Agents started voicing their views 5 days before the day of their country's federal election, which coincidentally happen to occur in both countries on the very same day. The **INFILE.yaml** used for this scenario can be found in the *docs/tutorial_input_files* directory in *hashkat* under *tutorial13_scenario_2* as well as [here](https://github.com/hashkat/hashkat/blob/master/docs/tutorial_input_files/tutorial13_scenario_2/INFILE.yaml). Copy this input file into your *hashkat* directory and run the simulation. Feel free to look through the input file to see what we did to produce this scenario. Due to the complexity of this network, the simulation may run slightly longer than the simulations done in previous tutorials. Judging by the number of supporters you will find in the social network, find a way to discover who will win the election in both Canada and the USA.
 
 ## Moving Forward with #k@
 
