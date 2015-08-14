@@ -91,9 +91,9 @@ We have two regions in our network, Canada and the USA, and both are in the mids
     follow: 5
     tweet_type:
       ideological: 1.0
-      plain: 0.0
-      musical: 0.0
-      humourous: 0.0 # Can be considered the humourousness of the agent type
+      plain: 1.0
+      musical: 1.0
+      humourous: 1.0 # Can be considered the humourousness of the agent type
   # Probability that following this agent results in a follow-back
   followback_probability: .44
   hashtag_follow_options:
@@ -101,10 +101,9 @@ We have two regions in our network, Canada and the USA, and both are in the mids
     care_about_ideology: true # does the agent care about which ideology the agent has?
   rates:
       # Rate for follows from this agent:
-      follow: {function: linear, y_intercept: 0.1, slope: 0.01}
+      follow: {function: linear, y_intercept: 0.01, slope: 0.001}
       # Rate for tweets from this agent:
-      tweet: {function: linear, y_intercept: 0.1, slope: 0.01}
-
+      tweet: {function: linear, y_intercept: 0.01, slope: 0.001}
 ```
 
 #### Blue
@@ -118,19 +117,19 @@ We have two regions in our network, Canada and the USA, and both are in the mids
     follow: 5
     tweet_type:
       ideological: 1.0
-      plain: 0.0
-      musical: 0.0
-      humourous: 0.0 # Can be considered the humourousness of the agent type
+      plain: 1.0
+      musical: 1.0
+      humourous: 1.0 # Can be considered the humourousness of the agent type
   # Probability that following this agent results in a follow-back
   followback_probability: .44
   hashtag_follow_options:
-    care_about_region: true # does the agent care about where the agent they will follow is from?
-    care_about_ideology: true # does the agent care about which ideology the agent has?
+    care_about_region: true # does the agent care about where the agent they $
+    care_about_ideology: true # does the agent care about which ideology the $
   rates:
       # Rate for follows from this agent:
-      follow: {function: linear, y_intercept: 0.1, slope: 0.01}
+      follow: {function: linear, y_intercept: 0.01, slope: 0.001}
       # Rate for tweets from this agent:
-      tweet: {function: linear, y_intercept: 0.1, slope: 0.01}
+      tweet: {function: linear, y_intercept: 0.01, slope: 0.001}
 ```
 
 Agents started voicing their views 5 days before the day of their country's federal election, which coincidentally happen to occur in both countries on the very same day. The **INFILE.yaml** used for this scenario can be found in the *docs/tutorial_input_files* directory in *hashkat* under *tutorial13_scenario_2* as well as [here](https://github.com/hashkat/hashkat/blob/master/docs/tutorial_input_files/tutorial13_scenario_2/INFILE.yaml). Copy this input file into your *hashkat* directory and run the simulation. Feel free to look through the input file to see what we did to produce this scenario. Due to the complexity of this network, the simulation may run slightly longer than the simulations done in previous tutorials. Judging by the number of supporters you will find in the social network, find a way to discover who will win the election in both Canada and the USA.
