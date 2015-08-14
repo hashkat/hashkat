@@ -330,7 +330,7 @@ preference_classes:
 #################################################################
 
 agents:
-  - name: Red
+  - name: Standard-Red
     weights:
       # Weight with which this agent is created
       add: 100.0
@@ -352,7 +352,7 @@ agents:
         # Rate for tweets from this agent:
         tweet: {function: linear, y_intercept: 0.01, slope: 0.001}
 
-  - name: Blue
+  - name: Standard-Blue
     weights:
       # Weight with which this agent is created
       add: 100.0

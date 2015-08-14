@@ -82,8 +82,12 @@ We have two regions in our network, Canada and the USA, and both are in the mids
 
 #### Red
 
+<p align='center'>
+<img src='../img/trading_cards/standard_red_card.jpg'>
+</p>
+
 ```python
-- name: Red
+- name: Standard-Red
   weights:
     # Weight with which this agent is created
     add: 100.0
@@ -108,8 +112,12 @@ We have two regions in our network, Canada and the USA, and both are in the mids
 
 #### Blue
 
+<p align='center'>
+<img src='../img/trading_cards/standard_blue_card.jpg'>
+</p>
+
 ```python
-- name: Blue
+- name: Standard-Blue
   weights:
     # Weight with which this agent is created
     add: 100.0
