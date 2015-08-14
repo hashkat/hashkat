@@ -24,7 +24,7 @@
 #  lua_script:
 #    Script to use to define the behaviour of interactive mode as well as lua hooks.
 #  use_barabasi: 
-#    If true, the global follow rate is ignored. Follow thresholds not needed.
+#    If true, agents will make a certain number of connections set by barabasi_connections.
 #  use_random_time_increment: 
 #    If true, simulation time will be incremented at a non-constant rate. Increments by 1/sum(rates) on average
 #  use_followback: 
