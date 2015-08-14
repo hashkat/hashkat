@@ -14,7 +14,13 @@ All the files that will be used in this simulation can be found for reference in
 
 ## Follow Through Retweets
 
-Following via retweets is a follow method in which an agent sees a tweet that was retweeted by one of the agents they're following, and, liking the content of the tweet, decides to follow the original tweeter. The likelihood of this occurring is dependent on the value of the *follow_reaction_prob* variable in the *preference_classes* section of the input file. The *follow_reaction_prob* variable determines the probability that an agent, if they are selected to act on a retweet, will follow the tweeter of the original tweet as opposed to just retweeting the retweet. For example, if this value was set 0.8, everytime an agent was selected to act on a retweet, there would be an 80% chance that they would follow the original tweeter, and a 20% chance that they would just retweet the retweet.
+Following via retweets is a follow method in which an agent sees a tweet that was retweeted by one of the agents they're following, and, liking the content of the tweet, decides to follow the original tweeter.
+
+<p align='center'>
+<img src='../img/tutorial09_with_other_follow/following_via_retweets.png'>
+</p>
+
+The likelihood of this occurring is dependent on the value of the *follow_reaction_prob* variable in the *preference_classes* section of the input file. The *follow_reaction_prob* variable determines the probability that an agent, if they are selected to act on a retweet, will follow the tweeter of the original tweet as opposed to just retweeting the retweet. For example, if this value was set 0.8, everytime an agent was selected to act on a retweet, there would be an 80% chance that they would follow the original tweeter, and a 20% chance that they would just retweet the retweet.
 
 ## Constructing a Network Without These Other Follow Methods
 
