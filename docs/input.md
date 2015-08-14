@@ -465,16 +465,6 @@ and are also weighted with respect to each other.
 
 **Note**: if you'd like to change the number of regions in the simulation, make sure te value is less than or equal to the value set to 'N_BIN_REGIONS' in the *config_static.h' file in *src*. You can also change the value set to *N_BIN_REGIONS* and rebuild **#k@** by running *build.sh*.
 
-### **config_static**
-
-#### Humour Bins
-
-```python
-humour_bins: 2
-```
-
-Determines the degree of funny. Not currently implemented in #k@.
-
 ### **preference classes**
 
 ```python
