@@ -10,10 +10,6 @@ The following gives a brief summary of every file and directory that you will im
 <img src='../img/directory.png'>
 </p>
 
-## <span style="color:blue">benchmarks</span>
-
-Contains several input files used in the testing and development of #k@.
-
 ## <span style="color:blue">build</span> 
 
 Contains the files and folders necessary to build **#k@**.
