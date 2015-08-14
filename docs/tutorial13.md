@@ -12,7 +12,7 @@ Up to this point, we have used #k@ in very abstract terms.
 
 We have two organizations, *Coke* and *Pepsi*, who are taking full advantage of the access social networks allow them to have with consumers. They have both made accounts on this social network and both currently have zero followers. They have decided to each launch their own marketing campaign to garner as much follows from *Standard* agents in this social network as possible in a span of one week.
 
-Both *Coke* and *Pepsi* only follow agents that follow them, and they will do so for every single one of their followers. *Pepsi* tweets both musical and humourous tweets evenly weighted, while *Coke* only tweets humourous tweets, though they tweet at a slightly higher rate. Musical tweets do have a slightly better chance of being retweeted however.
+Both *Coke* and *Pepsi* only follow agents that follow them, and they will do so for every single one of their followers. *Pepsi* tweets both musical and humourous tweets evenly weighted, while *Coke* only tweets humourous tweets, though they tweet at a slightly higher rate. Humourous tweets do have a better chance of being retweeted however.
 
 The **INFILE.yaml** used for this scenario can be found in the *docs/tutorial_input_files* directory in *hashkat* under *tutorial13_scenario_1* as well as [here](https://github.com/hashkat/hashkat/blob/master/docs/tutorial_input_files/tutorial13_scenario_1/INFILE.yaml). To find out who wins this competition, copy this input file into your *hashkat* directory and run the simulation. Feel free to look through the input file to see what we did to produce this scenario.
 
@@ -26,7 +26,7 @@ The **INFILE.yaml** used for this scenario can be found in the *docs/tutorial_in
 - name: Organization-Coke
   weights:
     # Weight with which this agent is created
-    add: 100.0
+    add: 0.5
     # Weight with which this agent is followed in agent follow
     follow: 100.0
     tweet_type:
@@ -35,7 +35,7 @@ The **INFILE.yaml** used for this scenario can be found in the *docs/tutorial_in
       musical: 0.0
       humourous: 1.0 # Can be considered the humourousness of the agent type
   # Probability that following this agent results in a follow-back
-  followback_probability: 1.00
+  followback_probability: 1.0
   hashtag_follow_options:
     care_about_region: false # does the agent care about where the agent they will follow is from?
     care_about_ideology: false # does the agent care about which ideology the agent has?
@@ -43,7 +43,7 @@ The **INFILE.yaml** used for this scenario can be found in the *docs/tutorial_in
       # Rate for follows from this agent:
       follow: {function: constant, value: 0.0}
       # Rate for tweets from this agent:
-      tweet: {function: constant, value: 0.0101}
+      tweet: {function: constant, value: 0.11}
 ```
 
 #### Pepsi
@@ -56,7 +56,7 @@ The **INFILE.yaml** used for this scenario can be found in the *docs/tutorial_in
 - name: Organization-Pepsi
   weights:
     # Weight with which this agent is created
-    add: 100.0
+    add: 0.5
     # Weight with which this agent is followed in agent follow
     follow: 100.0
     tweet_type:
@@ -73,7 +73,7 @@ The **INFILE.yaml** used for this scenario can be found in the *docs/tutorial_in
       # Rate for follows from this agent:
       follow: {function: constant, value: 0.0}
       # Rate for tweets from this agent:
-      tweet: {function: constant, value: 0.01}
+      tweet: {function: constant, value: 0.10}
 ```
 
 ### Scenario 2 - Different Regions, Different Ideologies
