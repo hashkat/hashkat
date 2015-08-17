@@ -28,7 +28,7 @@ File required to run 'CMake' with the build of ***#k@***.
 
 ## COPYING
 
-Contains the GNU General Public License, Version 3, 29 June, 2007..
+Contains the GNU General Public License, Version 3, 29 June, 2007.
 
 ## DATA_vs_TIME
 
@@ -36,19 +36,19 @@ File created when running a network simulation. Details the length of simulated 
 
 ## DEFAULT.yaml
 
-Contains all the possible paramters that can be configured in INFILE.yaml with assigned values. If any of these variables are not present in *INFILE.yaml*, than the value assigned to them in this file will be used.
+Contains all the possible paramters that can be configured in *INFILE.yaml* with assigned values. If any of these variables are not present in *INFILE.yaml*, than the value assigned to them in this file will be used.
 
 ## <span style="color:blue">docs</span> 
 
-Contains the pages and images used in the write-up of the ***#k@*** documentation.
+Contains the pages and images used in the write-up of the ***#k@*** documentation. In its subdirectory **tutorial_input_files**, one can find a directory corresponding to almost every tutorial found in the ***#k@*** documentation. The *INFILE.yaml* file that will be created in each tutorial can be found in its respective directory.
 
 ## <span style="color:blue">examples</span> 
 
-Contains a list of directories, each with there own **INFILE.yaml** that can be used as an example of a particular network simulation.
+Contains a list of directories, each with there own *INFILE.yaml* that can be used as an example of a particular network simulation.
 
 ## <span style="color:green">hashkat_pre.py</span>
 
-Generates all inputted parameters made in INFILE.yaml to prepare the ideal network to be run using ***#k@***.
+Generates all inputted parameters made in *INFILE.yaml* to prepare the ideal network to be run using ***#k@***.
 
 ## INFILE.yaml
 
@@ -56,11 +56,11 @@ Input file where configurations are made to design the network simulation of you
 
 ## INFILE.yaml-generated
 
-File generated when *build.sh* or *run.sh* is run. Used in the running of network simulations, it is always replaced with an updated version when a new network simulation is being run.
+File generated when *run.sh* is run. Used in the running of network simulations, it is always replaced with an updated version when a new network simulation is being run.
 
 ## INSTALL
 
-Contains instructions on how to install ***#k@*** on Linux and Mac OS X.
+Contains instructions on how to install ***#k@*** on 'Linux' and 'Mac OS X'.
 
 ## INTERACT.lua
 
@@ -72,7 +72,7 @@ File used to organize the documentation of ***#k@***.
 
 ## network_state.dat
 
-Save file in which your network simulation information will be saved to if *save_network_on_timeout* is enabled. If a network simulation is paused midway through, it can only be continued if *load_network_on_startup* is enabled, in which case the simulation will look for this file to load the existing network information. 
+Save file in which your network simulation information will be saved to if 'save_network_on_timeout' is enabled. If a network simulation is paused midway through, it can only be continued if *load_network_on_startup* is enabled, in which case the simulation will look for this file to load the existing network information. 
 
 ## <span style="color:blue">output</span>
 
@@ -80,7 +80,7 @@ Directory which contains all the analysis files created from running a network s
 
 ## README.md
 
-Summary of what can be found in the *hashkat* directory.
+Summary of what can be found in the **hashkat** directory.
 
 ## <span style="color:green">run.sh</span>
 
@@ -96,15 +96,11 @@ Contains the ***#k@*** source code.
 
 ## <span style="color:blue">tests</span>
 
-Contains several basic tests used in the development of ***#k@***. Its subdirectory *referencefiles* contains the various input files that are tested when running *tests.sh*.
+Contains several basic tests used in the development of ***#k@***. Its subdirectory **referencefiles** contains the various input files that are tested when running *tests.sh*.
 
 ## <span style="color:green">tests.sh</span> 
 
-Script that runs *verify.py* on every single reference network simulation in *tests/referencefiles/*. Used in the development of ***#k@*** to confirm if any changes made to the source code did or did not affect impact the output of a netowkr simulation.
-
-## <span style="color:blue">tutorials</span> 
-
-Contains a directory corresponding to almost every tutorial found in the ***#k@*** documentation. Each tutorial directory contains an INFILE.yaml file that will be created during its respective tutorial.
+Script that runs *verify.py* on every single reference network simulation in **tests/referencefiles**. Used in the development of ***#k@*** to confirm if any changes made to the source code did or did not affect the output of a network simulation.
 
 ## <span style="color:green">verify.py</span> 
 
