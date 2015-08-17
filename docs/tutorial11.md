@@ -4,7 +4,7 @@
 
 # Unfollowing
 
-Unfollowing is the act in which an agent stops following another agent due to a variety of reasons. In this tutorial, we are going to discuss how unfollowing can be implemented into your network simulation, where agents unfollow other agents due to their tweet content..
+Unfollowing is the act in which an agent stops following another agent due to a variety of reasons. In this tutorial, we are going to discuss how unfollowing can be implemented into your network simulation, where agents unfollow other agents due to their tweet content.
 
 ## Unfollowing Due to Chattiness
 
@@ -25,27 +25,27 @@ Let's now create a network simulation that implements unfollowing due to chattin
 So using the input file from **Tutorial 1** as a starting point, let's first add another agent type into this network. Let's call this agent type 'Chatty', and it'll have the same paramters as the 'Standard' agent type, except that the tweet rates for these agents will be 0.01 instead of 0.001.
 
 ```python
-- name: Chatty
-  weights:
-    # Weight with which this agent is created
-    add: 100.0
-    # Weight with which this agent is followed in agent follow
-    follow: 5
-    tweet_type:
-      ideological: 1.0
-      plain: 1.0
-      musical: 1.0
-      humourous: 1.0 # Can be considered the humourousness of the agent type
-  # Probability that following this agent results in a follow-back
-  followback_probability: .44
-  hashtag_follow_options:
-    care_about_region: false # does the agent care about where the agent they will follow is from?
-    care_about_ideology: false # does the agent care about which ideology the agent has?
-  rates:
-      # Rate for follows from this agent:
-      follow: {function: constant, value: 0.0001}
-      # Rate for tweets from this agent:
-      tweet: {function: constant, value: 0.01}
+  - name: Chatty
+    weights:
+      # Weight with which this agent is created
+      add: 100.0
+      # Weight with which this agent is followed in agent follow
+      follow: 5
+      tweet_type:
+        ideological: 1.0
+        plain: 1.0
+        musical: 1.0
+        humourous: 1.0 # Can be considered the humourousness of the agent type
+    # Probability that following this agent results in a follow-back
+    followback_probability: .44
+    hashtag_follow_options:
+      care_about_region: false # does the agent care about where the agent they will follow is from?
+      care_about_ideology: false # does the agent care about which ideology the agent has?
+    rates:
+        # Rate for follows from this agent:
+        follow: {function: constant, value: 0.0001}
+        # Rate for tweets from this agent:
+        tweet: {function: constant, value: 0.01}
 ```
 
 Running a simulation with this new agent type, we can see in the *main_stats.dat* output file that there are 9943 total follows that have occurred in the network. It'll be interesting to see how this value changes when unfollowing is implemented.
@@ -54,7 +54,7 @@ Running a simulation with this new agent type, we can see in the *main_stats.dat
 <img src='../img/tutorial11/main_stats_without_unfollowing.png'>
 </p>
 
-Let's now implement unfollowing to this network. We will set 'stage1_unfollow' to true and set the *'unfollow_tweet_rate' to 0.01. Since half the agents in this network, the 'Chatty' agents, have a tweet rate 10x that of the other agents, we should definitely expect unfollows to occur due to the incorporation of 'stage1_unfollow'. We should also expect some unfollows to occur due to the 'unfollow_tweet_rate' being equal to the 'Chatty' agent tweet rate. This is due to agents having a tweet rate either equal to, or arund the value of their assigned tweet rate. Therefore, we can expect some 'Chatty' agent to have a tweet rate greater than their assigned tweet rate, and thereby having a tweet rate greater than the 'unfollow_tweet_rate'.
+Let's now implement unfollowing in this network. We will set 'stage1_unfollow' to true and set the 'unfollow_tweet_rate' to 0.01. Since half the agents in this network, the 'Chatty' agents, have a tweet rate 10x that of the other agents, we should definitely expect unfollows to occur due to the incorporation of 'stage1_unfollow'. We should also expect some unfollows to occur due to the 'unfollow_tweet_rate' being equal to the 'Chatty' agent tweet rate. This is due to agents having a tweet rate either equal to, or around the value of their assigned tweet rate. Therefore, we can expect some 'Chatty' agent to have a tweet rate greater than their assigned tweet rate, and thereby having a tweet rate greater than the 'unfollow_tweet_rate'.
 
 Running this network simulation with unfollowing implemented, we produced the following data in our *main_stats.dat* file:
 

@@ -53,7 +53,7 @@ regions:
 
 ### Region
 
-'Region' outlines the particular geographical area that an agent lives in. *regions* can be named, added, or removed in the *regions* section of **INFILE.yaml**. They're *add_weight* determines the proportion of agents in a network simulation being from that region as opposed to others. They're *preference_class_weights*, *ideology_weights*, and *language_weights*, also weighs the proportion of agents that will have a particular preference class, ideology, or language respectively in the network as opposed to others within the region. 
+'Region' outlines the particular geographical area that an agent lives in. *regions* can be named, added, or removed in the *regions* section of **INFILE.yaml**. Their *add_weight* determines the proportion of agents in a network simulation being from that region as opposed to others. Their *preference_class_weights*, *ideology_weights*, and *language_weights*, also weighs the proportion of agents that will have a particular preference class, ideology, or language respectively in the network as opposed to others within the region. 
 
 ```python
 regions:
@@ -67,7 +67,7 @@ regions:
 
 ### Preference Class - Tweet Transmission
 
-An agent's tweet transmission is the probability that an agent will retweet a tweet of a particular type. This is defined in the *preference_classes* section of **INFILE.yaml**, where the probability that an agent will retweet a tweet of the possible tweet types (plain/musical, different ideology, same ideology, humourous) is determined by its agent type. 
+An agent's tweet transmission is the probability that an agent will retweet a tweet of a particular type. This is defined in the *preference_classes* section of **INFILE.yaml**, where the probability that an agent will retweet a tweet of the possible tweet types (plain and musical, different ideology, same ideology, humourous) is determined by its agent type. 
 
 ```python
 preference_classes:
@@ -174,7 +174,7 @@ analysis:
 
 ### Agent - Hashtag Follow Options
 
-Defined in the *agents* section of **INFILE.yaml**, the *hashtag_follow_options* determine who agents follow in the *hashtag* follow model. Whether they follow an another agent only if they share the same region and/or ideology as them is based on whether or not you put *true* for the *care_about_region* and/or *care_about_ideology* variable respectively.
+Defined in the *agents* section of **INFILE.yaml**, the *hashtag_follow_options* determine who agents follow in the *hashtag* follow model. Whether they follow another agent only if they share the same region and/or ideology as them is based on whether or not you put *true* for the *care_about_region* and/or *care_about_ideology* variable respectively.
 
 ```python
 agents:
@@ -419,7 +419,7 @@ In the above visualization, the red nodes correspond to the 'Standard-Chatty' ag
 
 As we can see, our social network has been divided into networks based on language, with one network corresponding to English-speaking agents and the other corresponding to French-speaking agents.
 
-Clicking the 'Filters' tab on the right-hand side of the pae on 'Gephi' and clicking 'Degree-Range' under 'Topology', we can filter our network visualization based on the cumulative degree of the agents in the network.
+Clicking the 'Filters' tab on the right-hand side of the page on 'Gephi' and clicking 'Degree-Range' under 'Topology', we can filter our network visualization based on the cumulative degree of the agents in the network.
 
 <p align='center'>
 <img src='../img/tutorial12/filter_tab.png'>

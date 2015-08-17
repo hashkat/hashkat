@@ -94,7 +94,7 @@ analysis:
 
 Since the number of agents within this simulation will remain constant, the add rate will therefore be 0. The output section of INFILE.yaml
 will also be left as is, to produce as many data files for analysis as possible. The tweet and retweets ranks have remained the same,
-though to be honest their purpose is just to organize them and has no real impact on the simulation. The follow ranks max threshold
+though their purpose is just to organize them and has no real impact on the simulation. The follow ranks max threshold
 and weight have also remained the same, with their minimum values being 0 and 1 and their maximum values being a number greater than the number of agents
 and that value increased by one. Though this will not impact this simulation, it is very important for the twitter suggest follow model, and will therefore be
 elaborated on in the next tutorial. The *tweet_observations*
@@ -105,8 +105,7 @@ The *ideologies* and *regions* sections have remained the same, but we have adde
 *Standard* agent is used to portray a typical agent on a social network. In contrast to the *Standard* agents from **Tutorial 1**, the *Standard* agents in this
 simulation will have a *followback_probability* of 0, just to illustrate that they will only follow other agents through the follow model, though we did already have *use_followback* set to false,
 and a constant follow rate and tweet rate of 0.01. The *Celebrity* agent type will have all of the same input values as the
-*Standard* agent type, except that its add weight will be zero. Though we have included them in the input file, the *Celebrity* agents will not be used until a later
-tutorial, where agents will follow other agents based on their agent type.  
+*Standard* agent type, except that its add weight will be zero. Though we have included them in the input file, the *Celebrity* agents will not be used until a **Tutorial 5**, where agents will follow other agents based on their agent type.  
 
 ```python
 agents:

@@ -76,7 +76,7 @@ and the *Yifan Hu* layout:
 <img src='../img/visualization/gephi_yifan_hu.png'>
 </p>
 
-(Note: we used the *Contraction* layout in conjuntion with the *Yifan Hu* layout for the above example to fit everything onto the screen)
+(**Note**: we used the *Contraction* layout in conjuntion with the *Yifan Hu* layout for the above example to fit everything onto the screen)
 
 There are numerous other modifications and adjustments that can be made to your visualization. Ones which we use fairly often can be found at the bottom of your screen.
 

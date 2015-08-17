@@ -30,8 +30,7 @@ So let's make some modifications to our input file. As opposed to the random fol
 we are going to have the number of agents within the simulation increase over time, by setting our *initial_agents* to 10, and our *max_agents* to 1000.
 Most importantly, we're going to set *use_barabasi* to *true* causing the simulation to implement the Barabasi configuration.
 *barabasi_connections* specifies the number of connections an agent makes when entering the simulation, so for this Classic Barabasi example, we're going to set this value to 1.
-Since we are running a twitter suggest follow model, we are going to set the *follow_model* as such. In the *rates* section of the input file, we are now adding agents to the network throughout the simulation,
-so we will change the add rate value to 1.0, so that one agent will be added to the network per simulated minute. This add rate is much lower than it's actual value, where users join Twitter at a rate of about 100 per minute, but we will use this value for this tutorial.
+Since we are running a twitter suggest follow model, we are going to set the *follow_model* as such.
 
 ```python
 analysis:
@@ -75,6 +74,14 @@ analysis:
     0.5    # 50 % chance of using a hashtag
 ```
 
+In the *rates* section of the input file, we are now adding agents to the network throughout the simulation,
+so we will change the add rate value to 1.0, so that one agent will be added to the network per simulated minute. This add rate is much lower than it's actual value, where users join Twitter at a rate of about 100 per minute, but we will use this value for this tutorial.
+
+```python
+rates:
+  add: {function: constant, value: 1.0}
+```
+
 As mentioned in the previous tutorial, the follow ranks are essential to the twitter suggest follow model. Agents are placed into bins based on their degree or the number of followers they have.
 All the agents in the bin with threshold 0 have 0 followers, while all the agents in bin 200 have 200 followers.The weight of each bin threshold determines the probability that an agent from this bin
 will be randomly chosen to be followed in comparison to agents in other bins. The bin thresholds are linearly spacecd in increments of 1 and have a minimum value of 0 and a maximum value equal to the maximum
@@ -94,7 +101,7 @@ follow_ranks:
   weights:    {bin_spacing: linear, min: 1, max: 10001, increment: 1}
 ```
 
-To better demonstrate the results of a twitter preferential follow model, we are again only going to use *Standard* users in this simulation. It is imperative that we have also set the *Standard* agent type's follow rate to 0.0,
+To better demonstrate the results of a twitter preferential follow model, we are again only going to use *Standard* agents in this simulation. It is imperative that we have also set the *Standard* agent type's follow rate to 0.0,
 so that the only manner in which agents are connecting with each other is through the *barabasi_connections* they are assigned to make.
 
 ### Running and Visualizing The Network

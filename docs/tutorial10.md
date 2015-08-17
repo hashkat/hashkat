@@ -30,4 +30,4 @@ In the above visualization, the purple node is the author of the most popular tw
 
 ## Next Steps
 
-With the completion of this tutorial, we have now worked with not only how agents connect with one another, but also the content of the broadcasts they make to each other. However, in the next tutorial, we will discuss how agents may disconnect with each other throughout hte course of a network simulation. Proceed to the next tutorial for a run through on 'Unfollowing'.  
+With the completion of this tutorial, we have now worked with not only how agents connect with one another, but also the content of the broadcasts they make to each other. However, in the next tutorial, we will discuss how agents may disconnect with each other throughout the course of a network simulation. Proceed to the next tutorial for a run through on 'Unfollowing'.  

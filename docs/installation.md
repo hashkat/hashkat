@@ -149,7 +149,7 @@ Here outlines the following steps on how to install ***#k@*** on Linux:
 
     `mv ~/Downloads/hashkat/ ~/`
 
-1. Now return to you 'home' directory by typing in the command:
+1. Now return to your 'home' directory by typing in the command:
 
     `cd`
 

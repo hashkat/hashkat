@@ -34,7 +34,7 @@ You can create a directory using the **mkdir** command. Entering in the followin
 
 ## Change Directory
 
-You can change in to a different directory using the **cd** command. Simply typing in **cd** will move you into the 'home' diectory, while typing in **cd ..** will have you move up one directory in. You can change into a specific directory using **cd** in conjunction with the directory's name, though this directory must be present within the directory that you are currently in. Typing in the following will move you into the **Documents** directory:
+You can change in to a different directory using the **cd** command. Simply typing in **cd** will move you into the 'home' diectory, while typing in **cd ..** will have you move up one directory. You can change into a specific directory using **cd** in conjunction with the directory's name, though this directory must be present within the directory that you are currently in. Typing in the following will move you into the **Documents** directory:
 
 `cd Documents`
 

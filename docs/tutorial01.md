@@ -26,7 +26,7 @@ all multiplied by the number of agents in the network.
 At a simulated time of 0, a random number, *r*<sub>1</sub>, is generated. Depending on this number's value, it will either cause an agent to be added into the network,
 a random agent to tweet, a random agent to follow another random agent, or a
 random agent to retweet a tweet from another agent. **R** will then change
-accordingly. If 'use_random_time_increment' is enabled. another random number *r*<sub>2</sub> will then be generated, and time will move forward by:
+accordingly. If 'use_random_time_increment' is enabled, another random number *r*<sub>2</sub> will then be generated, and time will move forward by:
 
 <p align = 'center'>
 &Delta;<i>t</i> = -ln(<i>r</i><sub>2</sub>) / <b>R</b>
@@ -89,7 +89,7 @@ different files and directories. For now we are just going to look at
 configure our simulated network.
 
 In this file, you will see all the different configurations which you can
-implement into your network. We will discuss these parameters thrughout these tutorials, but a detailed description of every single one
+implement into your network. We will discuss these parameters throughout these tutorials, but a detailed description of every single one
 of these configurations can be found on the [**Input**](http://docs.hashkat.org/en/latest/input/) page. For this tutorial,
 it is only necessary to know that we have a constant number of agents 
 or users in this network, 1000, and that the simulation will run for 100,000
