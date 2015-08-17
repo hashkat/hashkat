@@ -242,11 +242,15 @@ regions:
     language_weights: {English: 0, French: 0, Spanish: 100, French+English: 0}
 
 #################################################################
-# >> humour_bins:
-# Amount of discrete bins for humour
+# >> config_static:
+# The values found in this section should match their value set in config_static.h
+#
+# humour_bins:
+#   Number of discrete bins for humour
 #################################################################
 
-# humour_bins: 2
+config_static:
+    humour_bins: 2
 
 #################################################################
 # >> preference_classes: 
