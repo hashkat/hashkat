@@ -4,11 +4,11 @@
 
 # Visualization
 
-Here we shall outline ways in which you can visualize some of that data you have collected using [Gephi](http://gephi.github.io/). There are many other programs you can use for visualization, and you are encouraged to try them, we're just going to focus using Gephi however in this documentation.
+Here we shall outline ways in which you can visualize some of that data you have collected using ['Gephi'](http://gephi.github.io/). There are many other programs you can use for visualizations, and you are encouraged to try them, we're just going to focus on using 'Gephi' however in this documentation.
 
 ## How to Visualize a Network
 
-You can download Gephi through there [website](http://gephi.github.io/). Once you have finished downloading Gephi, enter the program, and we will go over the steps necessary to visualize the networks you've created.
+You can download 'Gephi' through there [website](http://gephi.github.io/). Once you have finished downloading 'Gephi', enter the program, and we will go over the steps necessary to visualize the networks you've created.
 
 1. When entering the program, you will see a prompt similar to the one below appear on the screen. 
 
@@ -16,9 +16,9 @@ You can download Gephi through there [website](http://gephi.github.io/). Once yo
     <img src='../img/visualization/gephi_welcome.png'>
     </p>
 
-	Under 'New Project' click 'Open Graph File...' to access the appropriate output file created from your network simulation to be used on Gephi.
+	Under 'New Project' click 'Open Graph File...' to access the appropriate output file created from your network simulation to be used on 'Gephi'.
 
-2. The file used to visualize your network and its most popular tweet are the *network.gexf* file and *retweet_viz.gexf* file respectively. These can be found in the output directory after running a simulation. Click on whichever **.gexf** file you prefer and press 'Open'.
+2. The file used to visualize your network and its most popular tweet are the *network.gexf* file and *retweet_viz.gexf* file respectively. These can be found in the **output** directory after running a simulation. Click on whichever *.gexf* file you prefer and press 'Open'.
 
     <p align='center'>
     <img src='../img/visualization/gephi_network_file.png'>
@@ -44,7 +44,7 @@ You can download Gephi through there [website](http://gephi.github.io/). Once yo
     
     This details the number of nodes (agents) in the network and the total number of edges (connections/followings) within it.
 
-4. To differentiate between the node types in your system, click the refresh button in the 'Partition' box on the left hand side of the screen and under '---Choose a partition parameter' click 'Label'. This will show each node type, their percentage out of the total number of agents, and their corresponding colour in the visualization. An image of this box is shown below:
+4. To differentiate between the node types in your system, click the refresh button in the 'Partition' box on the left hand side of the screen and under '---Choose a partition parameter' click 'Label'. This will show each node type numbered by how they were ordered in the input file, their percentage out of the total number of agents, and their corresponding colour in the visualization. An image of this box is shown below:
 
     <p align='center'>
     <img src='../img/visualization/gephi_label_nodes.png'>
@@ -86,4 +86,4 @@ There are numerous other modifications and adjustments that can be made to your 
 
 By left clicking the light bulb button, you can change the background from white to black or vice-versa, and by right clicking it you can change the background color to whatever colour you'd like. By moving the edge weight scale, you can also adjust how emboldened the connection lines are in your visualization.
 
-This just scratches the surface of all that you can do using **Gephi**. Try experimenting with some of its other features and see what configuration of your network visualization you like the best.
+This just scratches the surface of all that you can do using 'Gephi'. Try experimenting with some of its other features and see what configuration of your network visualization you like the best.
