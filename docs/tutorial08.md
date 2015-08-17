@@ -46,4 +46,4 @@ A comparison of the weights in which these follow model are present in this netw
 
 ## Next Steps
 
-With the completion of this tutorial, you have now familiarized yourslef with all of the follow models offered by #k@. You now have the fundamental knowledge necessary to create a variety of different network simulations using this program. Move onwards to the following tutorials, where we shall move on from the basics, and proceed to some of the more advanced aspects of #k@ which are necessary to be implemented into your network simulations to produce the more realistic data possible. 
+With the completion of this tutorial, you have now familiarized yourslef with all of the follow models offered by ***#k@***. You now have the fundamental knowledge necessary to create a variety of different network simulations using this program. Move onwards to the following tutorials, where we shall move on from the basics, and proceed to some of the more advanced aspects of ***#k@*** which are necessary to be implemented into your network simulations to produce the more realistic data possible. 

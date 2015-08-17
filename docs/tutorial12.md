@@ -4,7 +4,7 @@
 
 # A Diverse Network of Agents
 
-As you have clearly noticed working through these tutorials, #k@ offers the opportunity for users to create network simulations consisiting of a truly dynamic and varied set of agents. A multilingual, multiregional network consisting of agents of many different ideologies, preferences, personalities, and types is one that truly models the human race and is exactly what we strive to do here with #k@.
+As you have clearly noticed working through these tutorials, ***#k@*** offers the opportunity for users to create network simulations consisiting of a truly dynamic and varied set of agents. A multilingual, multiregional network consisting of agents of many different ideologies, preferences, personalities, and types is one that truly models the human race and is exactly what we strive to do here with ***#k@***.
 
 In this tutorial, we will go over every aspect in which you can individualize agents in your network, to give you the freedom and means to create the most realistic network simulations possible. We will also use what we learn in this tutorial to simulate a diverse network of several different agents and see which agent type ends up being the most popular. This tutorial should take about 45 minutes to complete.
 
@@ -435,4 +435,4 @@ As we can see from this visualization, the most highly connected nodes are the g
 
 ## Next Steps
 
- With the completion of this tutorial, you now have knowledge and experience with every different agent configuration you can implement into #k@. From here, we will move on to a discussion on interactive mode in #k@, where you can make changes to your network mid-simulation.
+ With the completion of this tutorial, you now have knowledge and experience with every different agent configuration you can implement into ***#k@***. From here, we will move on to a discussion on interactive mode in ***#k@***, where you can make changes to your network mid-simulation.

@@ -2,15 +2,15 @@
 
 <span style="color:black; font-family:Georgia; font-size:1.5em;">August 2015 - This site is currently under construction. Please return regularly over the course of the summer for further updates. </span>
 
-If you are interested in contributing to the **#k@** project, please check out the latest build of **#k@** at our github repository [here](https://github.com/hashkat/hashkat). If you wish to make any developments to **#k@**, feel free to do so, and create a [pull request](https://help.github.com/articles/creating-a-pull-request/), where it will be reviewed and potentially merged in to the *hashkat* repository. We do ask when modifying **#k@**, please respect the [Google C++ Style Guide](https://google-styleguide.googlecode.com/svn/trunk/cppguide.html).
+If you are interested in contributing to the ***#k@*** project, please check out the latest build of ***#k@*** at our github repository [here](https://github.com/hashkat/hashkat). If you wish to make any developments to ***#k@***, feel free to do so, and create a [pull request](https://help.github.com/articles/creating-a-pull-request/), where it will be reviewed and potentially merged in to the *hashkat* repository. We do ask when modifying ***#k@***, please respect the [Google C++ Style Guide](https://google-styleguide.googlecode.com/svn/trunk/cppguide.html).
 
-# How Does #k@ Work?
+# How Does ***#k@*** Work?
 
-The following delivers a brief overview of how **#k@** actually works.  
+The following delivers a brief overview of how ***#k@*** actually works.  
 
 ## Simulation Workflow
 
-The 'simulation workflow' concept map below gives a brief summary of how the #k@ program runs.
+The 'simulation workflow' concept map below gives a brief summary of how the ***#k@*** program runs.
 
 <p align='center'>
 <img src='../img/simulation_workflow.jpg'>
@@ -24,7 +24,7 @@ As we can see, after configuring the **INFILE.yaml** input file, the input file 
 
 ## Code Map
 
-The code map below outlines how rates work in #k@.
+The code map below outlines how rates work in ***#k@***.
 
 <p align='center'>
 <img src='../img/code_map.jpg'>
@@ -40,4 +40,4 @@ where **R** is the cumulative rate function, the sum of all the rates. All the r
 
 # Build Tests
 
-Build tests can be run in #k@ by running the *tests.sh* script. This script runs network simulations using the input files found in *tests/referencefiles/*, and compares the output of these files to what is expected using the *verify.py* script. If there are any discrepancies between the data of a particular output file and its corresponding reference data, that file for that particular test is printed to the screen.
+Build tests can be run in ***#k@*** by running the *tests.sh* script. This script runs network simulations using the input files found in *tests/referencefiles/*, and compares the output of these files to what is expected using the *verify.py* script. If there are any discrepancies between the data of a particular output file and its corresponding reference data, that file for that particular test is printed to the screen.

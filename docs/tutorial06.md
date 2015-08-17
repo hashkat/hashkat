@@ -12,7 +12,7 @@ The preferential agent follow model is exactly like the agent follow model, exce
 
 ## Constructing The Network
 
-Since we've already modified our input file for an agent follow model in the previous tutorial, all we have to do is change the follow model in the INFILE.yaml to *preferential_agent*, and #k@ will do the rest.
+Since we've already modified our input file for an agent follow model in the previous tutorial, all we have to do is change the follow model in the INFILE.yaml to *preferential_agent*, and ***#k@*** will do the rest.
 
 ## Running and Visualizing The Network
 

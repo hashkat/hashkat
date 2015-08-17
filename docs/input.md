@@ -35,7 +35,7 @@ max_time:
   hour
 ```
 
-The *max_time* variable coincides with the maximum simulation time in which you want the simulation to run. Once this simulated time has been reached, the simulation ends. This time is in minutes, and as we can see for this case, has a value of 1 hour or 60 minutes. For simplicity, you can just input 'minute', 'hour', 'day', or 'year' multiplied by a constant and **#k@** will know the value in minutes as well (e.g. 3 days can be inputted as 3*day, which is equal to 4,320 minutes). Note that interacting with the simulation has no impact on the simulation time.
+The *max_time* variable coincides with the maximum simulation time in which you want the simulation to run. Once this simulated time has been reached, the simulation ends. This time is in minutes, and as we can see for this case, has a value of 1 hour or 60 minutes. For simplicity, you can just input 'minute', 'hour', 'day', or 'year' multiplied by a constant and ***#k@*** will know the value in minutes as well (e.g. 3 days can be inputted as 3*day, which is equal to 4,320 minutes). Note that interacting with the simulation has no impact on the simulation time.
 
 #### Max Analysis Steps
 
@@ -53,7 +53,7 @@ max_real_time:
   hour
 ```
 
-*max_real_time* is the maximum real itme in which you want the simulation to run. Once this actual time has elapsed, the simulation ends. This time is also in minutes, and in the above example has a value of 1 hour or 60 minutes. For simplicity, you can just input 'minute', 'hour', 'day', or 'year' multiplied by a constant and **#k@** will know the value in minutes as well (e.g. 3 days can be inputted as 3*day, which is equal to 4,320 minutes). It is important to note that as opposed to the simulated time, interacting with the simulation does affect the real time. 
+*max_real_time* is the maximum real itme in which you want the simulation to run. Once this actual time has elapsed, the simulation ends. This time is also in minutes, and in the above example has a value of 1 hour or 60 minutes. For simplicity, you can just input 'minute', 'hour', 'day', or 'year' multiplied by a constant and ***#k@*** will know the value in minutes as well (e.g. 3 days can be inputted as 3*day, which is equal to 4,320 minutes). It is important to note that as opposed to the simulated time, interacting with the simulation does affect the real time. 
 
 #### Enable Interactive Mode
 
@@ -140,7 +140,7 @@ follow_model:
 The *follow_model* determines the manner in which agents choose who to follow. This will definitely be confered in much greater detail later. The input options for follow_model are: *random*, *twitter_suggest*, *agent*,
 *preferential_agent*, *hashtag*, and *twitter*.
 
-**Note**: if you'd like to change the number of follow models in the simulation, make sure the value is less than or equal to the value set to 'N_FOLLOW_MODELS' in the *config_static.h' file in *src*. You can also change the value set to *N_FOLLOW_MODELS* and rebuild **#k@** by running *build.sh*.
+**Note**: if you'd like to change the number of follow models in the simulation, make sure the value is less than or equal to the value set to 'N_FOLLOW_MODELS' in the *config_static.h' file in *src*. You can also change the value set to *N_FOLLOW_MODELS* and rebuild ***#k@*** by running *build.sh*.
 
 #### Model Weights
 
@@ -445,7 +445,7 @@ Determines for how long after a tweet has been made that it can be retweeted. On
 
 The *ideologies* are the arbitrary dogma that you would like agents of that ideology to have. They can be named whatever you would like.
 
-**Note**: if you'd like to change the number of ideologies in the simulation, make sure te value is less than or equal to the value set to 'N_BIN_IDEOLOGIES' in the *config_static.h' file in *src*. You can also change the value set to *N_BIN_IDEOLOGIES* and rebuild **#k@** by running *build.sh*.
+**Note**: if you'd like to change the number of ideologies in the simulation, make sure te value is less than or equal to the value set to 'N_BIN_IDEOLOGIES' in the *config_static.h' file in *src*. You can also change the value set to *N_BIN_IDEOLOGIES* and rebuild ***#k@*** by running *build.sh*.
 
 ### **regions**
 
@@ -463,7 +463,7 @@ N_BIN_REGIONS in config_static.h. *add_weight* corresponds to the probability th
 The *ideology_weights* are the possible ideologies that an agent from that region can have, and are weighted with respect to one another. Similar to the *ideology_weights*, the *language_weights* are the possible languages that an agent from that region can speak,
 and are also weighted with respect to each other.
 
-**Note**: if you'd like to change the number of regions in the simulation, make sure te value is less than or equal to the value set to 'N_BIN_REGIONS' in the *config_static.h' file in *src*. You can also change the value set to *N_BIN_REGIONS* and rebuild **#k@** by running *build.sh*.
+**Note**: if you'd like to change the number of regions in the simulation, make sure te value is less than or equal to the value set to 'N_BIN_REGIONS' in the *config_static.h' file in *src*. You can also change the value set to *N_BIN_REGIONS* and rebuild ***#k@*** by running *build.sh*.
 
 ### **preference classes**
 
@@ -495,7 +495,7 @@ The *preference classes* are the traits of an agent that influence whether or no
 Under *tweet_transmissions* one can dictate the probabilities that each type of agent will retweet a tweet, based on the content of that tweet, whether it be plain or musical, have a different ideology, have the same ideology, or be humourous.
 The *follow_reaction_prob* relates to the probability that an agent will follow an agent based on seeing a tweet by them being retweeted by another agent that that agent is following as opposed to just retweeting that retweet. With the *follow_reaction_prob* set to 0.5 in the above example, there is a 50% chance that an agent will retweet a retweet and a 50% chance that they will follow the speaker of the original tweet.   
 
-**Note**: if you'd like to change the number of preference classes in the simulation, make sure te value is less than or equal to the value set to 'N_BIN_PREFERENCE_CLASS' in the *config_static.h' file in *src*. You can also change the value set to *N_BIN_PREFERENCE_CLASS* and rebuild **#k@** by running *build.sh*.
+**Note**: if you'd like to change the number of preference classes in the simulation, make sure te value is less than or equal to the value set to 'N_BIN_PREFERENCE_CLASS' in the *config_static.h' file in *src*. You can also change the value set to *N_BIN_PREFERENCE_CLASS* and rebuild ***#k@*** by running *build.sh*.
 
 ### **agents**
 
@@ -528,4 +528,4 @@ then agents will only follow other agents that live in the same region as them, 
 while this won't matter to them if set to false. It is important to note that *use_hashtag_probability* in the **analysis** section must be set to a value greater than zero for this to work, or else no one will be implementing hastags into their tweets.
 The *follow* and *tweet* rates are the rates in which agents of this particular type will follow and tweet with respect to simulated minues respectively. It works in the exact same manner as the add rate outlined in the **rates** section.
 
-**Note**: if you'd like to change the number of agent types in the simulation, make sure te value is less than or equal to the value set to 'N_BIN_AGENT_TYPES' in the *config_static.h' file in *src*. You can also change the value set to *N_BIN_AGENT_TYPES* and rebuild **#k@** by running *build.sh*.
+**Note**: if you'd like to change the number of agent types in the simulation, make sure te value is less than or equal to the value set to 'N_BIN_AGENT_TYPES' in the *config_static.h' file in *src*. You can also change the value set to *N_BIN_AGENT_TYPES* and rebuild ***#k@*** by running *build.sh*.

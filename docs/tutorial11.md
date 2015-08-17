@@ -8,7 +8,7 @@ Unfollowing is the act in which an agent stops following another agent due to a 
 
 ## Unfollowing Due to Chattiness
 
-One of the many factors that influence an agent's decision to unfollow another agent is how talkative they are. If an agent is constantly tweeting at an excessive rate, their followers may find that this chattiness may make it difficult for them to view the tweets of other agents they are following, and they may unfollow this chatty agent because of it. There are currently two implementations of unfollowing due to chattiness found in #k@, *stage1_unfollow* and *unfollow_tweet_rate* which are discussed below.
+One of the many factors that influence an agent's decision to unfollow another agent is how talkative they are. If an agent is constantly tweeting at an excessive rate, their followers may find that this chattiness may make it difficult for them to view the tweets of other agents they are following, and they may unfollow this chatty agent because of it. There are currently two implementations of unfollowing due to chattiness found in ***#k@***, *stage1_unfollow* and *unfollow_tweet_rate* which are discussed below.
 
 #### Stage 1 Unfollow
 

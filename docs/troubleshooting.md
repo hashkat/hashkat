@@ -4,11 +4,11 @@
 
 # Troubleshooting
 
-With such an interactive program such as #k@, it is expected that one will receive errors in running their simulations from time to time. Here we will discuss some of the error messages and errors you may come across while working with #k@, and how to find a solution to them.
+With such an interactive program such as ***#k@***, it is expected that one will receive errors in running their simulations from time to time. Here we will discuss some of the error messages and errors you may come across while working with ***#k@***, and how to find a solution to them.
 
 ## Error Messages
 
-When trying to run #k@ after configuring the **INFILE.yaml** file, you may be unable to run your network simulation and recieve one of the following error messages:
+When trying to run ***#k@*** after configuring the *INFILE.yaml* file, you may be unable to run your network simulation and recieve one of the following error messages:
 
 ### Spelling or Missing Term Error
 
@@ -19,7 +19,7 @@ terminate called after throwing an instance of 'YAML::InvalidScalar'
 /home/mobile/hashkat/run.sh: line 80:  4026 Aborted                 (core dumped) "$HASHKAT/build/src/hashkat" $args
 `
 
-This error message is due to a spelling error that may have been accidentally made in **INFILE.yaml**, such as spelling *true* or *false* wrong or forgetting to give a value for a particular variable. We received this error message when we spelt *false* as *fAlse* under *use_barabasi*. This error can be simply remedied by fixing the spelling mistake and rerunning #k@.
+This error message is due to a spelling error that may have been accidentally made in **INFILE.yaml**, such as spelling *true* or *false* wrong or forgetting to give a value for a particular variable. We received this error message when we spelt *false* as *fAlse* under *use_barabasi*. This error can be simply remedied by fixing the spelling mistake and rerunning ***#k@***.
 
 ### Indentation Error
 
@@ -52,7 +52,7 @@ terminate called after throwing an instance of 'char const*'
 /home/mobile/hashkat/run.sh: line 92: 12264 Aborted                 (core dumped) "$HASHKAT/build/src/hashkat" $args
 `
 
-You may recieve an error similar to the one above for adding too many, follow models, preference classes, agent types, regions, or ideologies into your simulation (in the above case, we have added too many ideologies). If you recieve this error, you may either remove the additional follow model, preference class, agent type, region, or ideology from the *INFILE.yaml* file, or increase the value of the quantity of the parameter in question in the *config_static.h* file in *src* and rebuild **#k@** by running *build.sh*.
+You may recieve an error similar to the one above for adding too many, follow models, preference classes, agent types, regions, or ideologies into your simulation (in the above case, we have added too many ideologies). If you recieve this error, you may either remove the additional follow model, preference class, agent type, region, or ideology from the *INFILE.yaml* file, or increase the value of the quantity of the parameter in question in the *config_static.h* file in *src* and rebuild ***#k@*** by running *build.sh*.
 
 ### Not Having Enough Memory
 
@@ -66,7 +66,7 @@ You may be unable to run certain large network simulations due to your computer 
 
 ## Unexpected Network Produced
 
-Sometimes when running a network simulation, the simulation may run smoothly, but the network you've created is quite different from what you had in mind. This is usually due to an error being made in **INFILE.yaml** that does not prevent the simulation from running, but gives you odd results. The following discuss some of the errors that you may encounter when using #k@, and what the root cause of that problem is.
+Sometimes when running a network simulation, the simulation may run smoothly, but the network you've created is quite different from what you had in mind. This is usually due to an error being made in **INFILE.yaml** that does not prevent the simulation from running, but gives you odd results. The following discuss some of the errors that you may encounter when using ***#k@***, and what the root cause of that problem is.
 
 ### Twitter Suggest Follow Model Network Not Constructed As Such
 
@@ -100,4 +100,4 @@ Though a Barabasi configuration can be implemented into every follow model netwo
 
 ## Reporting an Issue
 
-Check out our **Feedback** page if you have any issues using the #k@ project not discussed above. There you can find our email address where you can contact us and a link to a webpage where you can post any issues you may have, which will be addressed and remedied as soon as possible. 
+Check out our **Feedback** page if you have any issues using the ***#k@*** project not discussed above. There you can find our email address where you can contact us and a link to a webpage where you can post any issues you may have, which will be addressed and remedied as soon as possible. 

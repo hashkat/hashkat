@@ -115,7 +115,7 @@ agent type A will be followed 85% of the time, and agent type B will be followed
 usage for defining the follow rate is the exact same as the agent add rate. See link for further implementation details.
 
 ####follow model
-A framework inputted into the simulation that dictates how agents generally connect with one another. There are currently 6 follow models within #k@: random, twiter suggest, agent, preferential agent, hashtag, and twitter.
+A framework inputted into the simulation that dictates how agents generally connect with one another. There are currently 6 follow models within ***#k@***: random, twiter suggest, agent, preferential agent, hashtag, and twitter.
 
 ####follow_model
 **(type: string)** The variable which determines what follow model the simulation will be running.To use a follow model simply type in
@@ -178,7 +178,7 @@ A command-line driven utility for graphing used in several tutorials for the plo
 ##H
 
 ####hashkat
-The 'hashkat' directory contains all the filess and directories necessary to run #k@.
+The 'hashkat' directory contains all the filess and directories necessary to run ***#k@***.
 
 ####hashtag
 Used in tweets, and marked by the # symbol, to classify messages by keyword or topic.
@@ -277,14 +277,14 @@ Generated when running the network simulation.
 **(type: double)** This is the initial value for determining where the integral of the density function is evaluated at. If the x start value is 5 and this parameter is set to 1, then the first integral will be from 5 to 6.
 
 ####interactive mode
-A feature of #k@ that allows users to pause the simulation midway through and modify the network by adding an agent, causing one agent to follow another agent, etc.
+A feature of ***#k@*** that allows users to pause the simulation midway through and modify the network by adding an agent, causing one agent to follow another agent, etc.
 
 ##J
 
 ##K
 
-####Kinetic Analysis of Twitter (#k@)
-The #k@ program is designed to allow users to create and interact with the most realistic social network simulation possible.
+####Kinetic Analysis of Twitter (***#k@***)
+The ***#k@*** program is designed to allow users to create and interact with the most realistic social network simulation possible.
 
 ####Kinetic Monte Carlo Method
 An algorithm designed to carry out a simulation where the rate of which time is increased by is influenced by the cummulative rate function of the rates within the system through the formula:
@@ -518,7 +518,7 @@ Also if load network on startup is set to true, the simulation will look for thi
 **(type: boolean)** If set to true, all of the information of the network is sent into the file declared for the save file when the simulation is terminated.
 
 ####simulation
-A simulation is an enactment of something that is anticipated or is being tested. In #k@, we create simulations of social networks.
+A simulation is an enactment of something that is anticipated or is being tested. In ***#k@***, we create simulations of social networks.
 
 ####social network
 An association of agents connecting with one another within a certain framework for the means of interacting with one another.

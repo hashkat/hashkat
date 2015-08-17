@@ -204,7 +204,7 @@ A plot of these follow ranks up to a follow rank of 15 is shown below:
 ## Next Steps
 
 We have now worked with a few configurations of the twitter suggest follow method. Though we did not implement agent types with a follow rate when runing Barabasi configurations,
-you are encouraged to try doing so, as well running simulations with more agent types, more agents, less regions, etc. The more practice you get using #k@, the better skilled you will be at
+you are encouraged to try doing so, as well running simulations with more agent types, more agents, less regions, etc. The more practice you get using ***#k@***, the better skilled you will be at
 producing your ideal network simulations.
 
 Proceed to the next tutorial, where we try using the agent follow model.
