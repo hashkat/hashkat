@@ -17,7 +17,7 @@
 #    Note that interacting with the simulation DOES detract from this time.
 #    In minutes.
 #  enable_interactive_mode:
-#    Whether interactive mode should be triggered by Ctrl+C or ./scripts/stop.sh (triggers SIGUSR1).
+#    Whether interactive mode should be triggered by Ctrl+c or ./scripts/stop.sh (triggers SIGUSR1).
 #  enable_lua_hooks:
 #    Whether to use runtime Lua functions that can react to events. **Slow!**
 #    Hooks are availble for running on every tweet, retweet, follow, etc.
