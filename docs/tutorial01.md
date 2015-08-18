@@ -109,9 +109,28 @@ When running this program, you will see something similar to this
 outputted to the screen:
 
 <div style="white-space: pre-wrap;">
-| Time | Users | Follows | Tweets | Retweets | Unfollows | R | Time (s) |
-| --- | --- | --- | --- | --- | --- | --- | --- |
-| 9.93e+04 | 1.00e+03 | 1.00e+04 | 0.00e+00 | 0.00e+00(0.00e+00) | 0.00e+00 | 1.00e-01 | 2.25e+00 |
+<table>
+	<tr>
+		<th>Time</th>
+		<th>Users</th>
+		<th>Follows</th>
+		<th>Tweets</th>
+		<th>Retweets</th>
+		<th>Unfollows</th>
+		<th>R</th>
+		<th>Time (s)</th>
+	</tr>	
+	<tr>
+		<td>9.93e+04</td>
+		<td>1.00e+03</td>
+		<td>1.00e+04</td>
+		<td>0.00e+00</td>
+		<td>0.00e+00(0.00e+00)</td>
+		<td>0.00e+00</td>
+		<td>1.00e-01</td>
+		<td>2.25e+00</td>
+	</tr>
+</table>
 </div>
 
 This gives a list of data at a particular point in your simulation.
