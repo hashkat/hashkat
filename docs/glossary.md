@@ -43,9 +43,6 @@ on the increment cubed.
 
 ##C
 
-####'config_static' section
-**(type: n/a)** There are constant values that can be found in ‘config static.h’. Some of the static values can be changed in the input file for simplicity. An example of this is the humour bins described below.
-
 ####cummulative rate function (**R**)
 The sum of the agent add rate, tweet rate, follow rate, and retweet rate.
 
@@ -202,10 +199,6 @@ agents:
 
 From this example, the AgentType1 will only follow other agents that have the same ideology and region because they care about the region and ideology for the hashtag
 follow method. If both are set to false, then the AgentType1 will follow agents with any ideology from any location.
-
-####humour_bins
-**(type: int)** To determine how a retweet is passed based on humour, there are different values dedicated to each humour bin which describes how a tweet will be passed from agent to agent based on humour.
-The value for each bin is what ever value is set in the preference classes section for ‘humourous’ multiplied by the probability density function.
 
 ####'humourous' tweets
 **(type: n/a)** In the agents section, there are different types of tweets that agents can tweet. One of the tweet types is ‘humourous’ which can be thought of as how often they tweet humourous tweets. When an agent tweets a humourous tweet,
