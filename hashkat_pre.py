@@ -82,8 +82,6 @@ def merge_config(src, dst):
     default_check(src, dst, "ideologies")
     default_check(src, dst, "regions")
 
-    merge_part(src, dst, "config_static")
-
     default_check(src, dst, "preference_classes")
     default_check(src, dst, "agents")
     
@@ -113,10 +111,6 @@ tweet_obs_time_span = obs_pdf["time_span"]
 
 if isinstance(tweet_obs_time_span, str): # Allow for time constants
     tweet_obs_time_span = eval(tweet_obs_time_span)
-
-config_static = CONFIG["config_static"]
-
-humour_bins = config_static["humour_bins"]
 
 pref_classes = CONFIG["preference_classes"]
 
@@ -261,8 +255,6 @@ def load_relevance_function(content):
 def load_relevance_weights():
     weights = []
     for pref in pref_classes:
-        # NOTE: *MUST* be in same order as TweetType in config_static.h!
-
         pref_weights = []
         for tweet_type in ["plain", "same_ideology", "plain", "humourous", "different_ideology"]:
         

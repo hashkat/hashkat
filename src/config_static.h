@@ -87,7 +87,6 @@ const int STDOUT_OUTPUT_RATE = 100; // Once per X file outputs
  * Parameters for tweet relevance functions
  */
 
-const int N_BIN_HUMOUR = 2; // Should be exactly as in INFILE.yaml!
 const int N_FOLLOW_MODELS = 5;
 
 const int N_BIN_PREFERENCE_CLASS = 2;
