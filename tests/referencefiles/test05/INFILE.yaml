@@ -242,17 +242,6 @@ regions:
     language_weights: {English: 20, French: 0, Spanish: 80, French+English: 0}
 
 #################################################################
-# >> config_static:
-# The values found in this section should match their value set in config_static.h
-#
-# humour_bins:
-#   Number of discrete bins for humour
-#################################################################
-
-config_static:
-    humour_bins: 2
-
-#################################################################
 # >> preference_classes: 
 # The different preference stereotypes that users in the network can have.
 #
