@@ -11,43 +11,43 @@
 #  max_time:
 #    The maximum simulation-time for the simulation. Once it has elapsed, the simulation halts.
 #    Interacting with the simulation does not alter the simulation-time.
-#    In seconds.
+#    In simulated minutes.
 #  max_real_time:
 #    The maximum real-time for the simulation. Once it has elapsed, the simulation halts.
 #    Note that interacting with the simulation DOES detract from this time.
-#    In seconds.
+#    In minutes.
 #  enable_interactive_mode:
-#    Whether interactive mode should be triggered by Ctrl+C or ./scripts/stop.sh (triggers SIGUSR1).
+#    Whether interactive mode should be triggered by Ctrl+c or ./scripts/stop.sh (triggers SIGUSR1).
 #  enable_lua_hooks:
 #    Whether to use runtime Lua functions that can react to events. **Slow!**
 #    Hooks are availble for running on every tweet, retweet, follow, etc.
 #  lua_script:
 #    Script to use to define the behaviour of interactive mode as well as lua hooks.
 #  use_barabasi: 
-#    If true, the global follow rate is ignored. Follow thresholds not needed.
+#    If true, agents will make a certain number of connections set by barabasi_connections.
 #  use_random_time_increment: 
-#    Increments by 1/sum(rates) on average
-#  use_flawed_followback: 
-#    Whether to follow-back by a fixed 40%.
+#    If true, simulation time will be incremented at a non-constant rate. Increments by 1/sum(rates) on average
+#  use_followback: 
+#    Whether to enable follow-back in the simulation.
 #  follow_model: 
 #    Accepted models: 'random', 'twitter_suggest', 'agent', 'preferential_agent', 'hashtag', 'twitter'
 #  stage1_unfollow: 
-#    Whether to have an unfollow model assuming constant 'chattiness', compares the chatiness of an agent wrt to the following set.
+#    Whether to have an unfollow model assuming constant 'chattiness', compares the chattiness of an agent wrt to the following set.
 #  unfollow_tweet_rate: 
-#    Tweets per minute. Chattiness for which to be considered for unfollow.
+#    Tweets per simulated minute. Chattiness for which to be considered for unfollow.
 #################################################################
 
 analysis:
   initial_agents:
-    1000  # start out from something small, could be when only the developers were online.
+    1000
   max_agents: 
-    1000     # 1 million max users
+    1000
   max_time: 
     5000
   max_analysis_steps: 
     unlimited
   max_real_time: 
-    240*hour*5        # 10 days         
+    240*hour*5     
   enable_interactive_mode:
     false
   enable_lua_hooks: # Defined in same file as interactive_mode. Can slow down simulation considerably.
@@ -55,7 +55,7 @@ analysis:
   lua_script: # Defines behaviour of interactive mode & lua hooks
     INTERACT.lua
   use_barabasi: 
-    false 
+    false
   barabasi_connections: # number of connections we want to make when use_barabasi == true
     100
   barabasi_exponent:
@@ -63,19 +63,18 @@ analysis:
   use_random_time_increment: 
     true
   use_followback: 
-    false        # followback turned on, from literature it makes sense for a realistic system
+    false        # from literature, it makes sense for a realistic system to have followback enabled
   follow_model: # See notes above
     random
-  # model weights ONLY necessary for follow method 'twitter'  
-  # educated guesses for the follow models  
+  # model weights ONLY necessary for follow method 'twitter'
   model_weights: {random: 0.0, twitter_suggest: 1.0, agent: 0.0, preferential_agent: 0.0, hashtag: 0.0}
-  
+
   stage1_unfollow: 
     false
   unfollow_tweet_rate: 
     100
   use_hashtag_probability:
-    0.5    # 50 % chance of using a hashtag
+    0.5
 
 #################################################################
 # >> rates:
@@ -84,7 +83,7 @@ analysis:
 #################################################################
 
 rates:
-  add: {function: constant, value: 0.0}  # found from experiment
+  add: {function: constant, value: 0.0}
 
 #################################################################
 # >> output:
@@ -113,7 +112,7 @@ output:
   agent_stats: 
     true
   degree_distributions: 
-    true            # set this to true, will print after simulation has finished
+    true
   tweet_analysis: 
     true
   retweet_visualization:
@@ -139,7 +138,8 @@ tweet_ranks:
 retweet_ranks:
   thresholds: {bin_spacing: linear, min: 10, max: 300, increment: 10}
 follow_ranks:
-  thresholds: {bin_spacing: linear, min: 0, max: 540000, increment: 1}    # for preferential following
+# MUST be adjusted for max_agents for simulations which implement the twitter_suggest and/or preferential_agent follow models
+  thresholds: {bin_spacing: linear, min: 0, max: 540000, increment: 1}
   weights:    {bin_spacing: linear, min: 1, max: 540001, increment: 1}
 
 #################################################################
@@ -149,14 +149,14 @@ follow_ranks:
 # the probability that a tweet is observed at a certain time by an 'ideal observer'. 
 # An 'ideal observer' is one which always sees a tweet, eventually.'
 # The observation PDF is used for both retweeting and follow-from-tweet.
-# We combine this with a relevance factor, r, where 0 <= r <= 1.0, we in turn
-# determines the probability that a given agent will act on a given tweet, with enough time.
+# We combine this with a relevance factor, r, where 0.0 <= r <= 1.0. We in turn
+# determine the probability that a given agent will act on a given tweet, with enough time.
 #
 #  density_function:
 #    Probability 'density' function to sample logarithmatically.
-#    Provided as if a Python function of 'x'. It is integrated using the scipy.integrate module. 
-#    Note technically not a true PDF because one does NOT need to have an integral range that sums to 1.0.
-#    The function, after integration, _will_ be normalized for you.
+#    Provided as if a Python function of 'x'. It is integrated, and after integration,
+#    the function will be normalized for you. 
+#    Note: technically not a true PDF because one does NOT need to have an integral range that sums to 1.0.
 #
 #  x_start:
 #    In arbitrary units. The beginning x-value to integrate from.
@@ -170,11 +170,11 @@ follow_ranks:
 #    How quickly the resolution grows from one bin to the next. 
 #    Quicker is more efficient, but with less precise rates in later bins.
 #  time_span:
-#    In minutes. The time over which the function is defined.
+#    In simulated minutes. The time over which the function is defined.
 #    After this, tweets will 'disappear'.
 #################################################################
 
-tweet_observation: # 'Omega'
+tweet_observation:
    density_function: 
        2.45 / (x)**1.1 
    x_start: 
@@ -185,15 +185,14 @@ tweet_observation: # 'Omega'
        1.0
    resolution_growth_factor: 
        1.05
-       # this is now obsolete, the x_start and x_ends are in minutes
    time_span: 
        8*hour
 
 #################################################################
 # >> ideologies: 
 # Abstract categorizations of similar beliefs.
-# The amount of ideologies MUST match N_BIN_IDEOLOGIES in 
-# config_static.h!
+# The amount of ideologies MUST be less than or equal to the value
+# set for N_BIN_IDEOLOGIES in config_static.h!
 #################################################################
 
 ideologies:
@@ -206,19 +205,17 @@ ideologies:
 # >> regions: 
 #
 # Locations, such as countries, can be represented abstractly. 
-# Note that the number of regions must exactly match N_BIN_REGIONS in config_static.h!
-# Additionally, it is required that every region have exactly N_BIN_SUBREGIONS subregions.
+# Note that the number of regions must match the value set for N_BIN_REGIONS
+# in config_static.h EXACTLY!
 #
 # add_weight:
 #   Required for each region. The weight with which 
 #   this region is chosen.
 #
-# The following are definable for each subregion.
-# If specified in the region, it will be an inherited default.
 #  languages_weights:
-#    Weights with which English, French, French-and-English are chosen.
+#    Weights with which each language is chosen.
 #  idealogy_weights:
-#    Weights with which an agent is a of a given 'idealogy'
+#    Weights with which an agent is of a given 'ideology'
 
 #################################################################
 
@@ -245,24 +242,24 @@ regions:
     language_weights: {English: 0, French: 0, Spanish: 100, French+English: 0}
 
 #################################################################
-# >> config_static: 
-# Manually duplicated values from config_static.h. 
-# These values MUST match config_static.h!
+# >> config_static:
+# The values found in this section should match their value set in config_static.h
+#
+# humour_bins:
+#   Number of discrete bins for humour
 #################################################################
 
-#config_static:
-    # These values should match your C++ config_static.h limits!!
-#    humour_bins: 2 # Amount of discrete bins for humour
+config_static:
+    humour_bins: 2
 
 #################################################################
 # >> preference_classes: 
 # The different preference stereotypes that users in the network can have.
 #
 # tweet_transmission:
-#   The transmission probability for a person of a certain preference class towards
-#   a tweet of a given origin & content.
-#   Effectively, this determines the proportion (on average) of a follower type
-#   that will, eventually (according to the tweet observation PDF), retweet a tweet.
+#   The transmission probability for tweets made by agents of a particular agent type
+#   given tweet content and the tweet observation PDF. Effectively, this determines
+#   the proportion (on average) of tweets made by this agent type that will be retweeted.
 #
 #   Can be provided for an agent type, or the keys 'else' or 'all'. 
 #   Both 'else' and 'all' have the functionality of defining the transmission probability
@@ -270,19 +267,20 @@ regions:
 #
 #   Transmission probability functions are automatically converted into the necessary tables
 #   using Python. The strings provided can be any valid Python.
+#
+# follow_reaction_prob:
+# Probability (set from 0 to 1) that an agent would follow rather than retweet an agent.
 #################################################################
 
 preference_classes:
  - name: StandardPref
- 
-  # Determines the probability that a tweet is reacted to by this 
-  # preference class:
+
    tweet_transmission: 
       plain: # Also applies to musical tweets
         Standard: 0.1
         Celebrity: 0.001
         else: 0.001
-      different_ideology:   # no retweeting for different ideologies
+      different_ideology: # generally no retweeting of tweets with different ideological content
         Standard: 0.00
         Celebrity: 0.00
         else: 0.00
@@ -294,16 +292,13 @@ preference_classes:
         Standard: 0.2
         Celebrity: 0.002
         else: 0.002
-   # Probability that we will follow as a reaction.
-   # Only applies to 2nd generation retweets, otherwise
-   # the agent would already be a follower.
    follow_reaction_prob:
       0.1
 
  - name: NoRetweetPref
    tweet_transmission: 
       plain: # Also applies to musical tweets
-        Standard: 0.0
+        Standard: 0
         Celebrity: 0
         else: 0
       different_ideology:
@@ -318,9 +313,6 @@ preference_classes:
         Standard: 0
         Celebrity: 0
         else: 0
-   # Probability that we will follow as a reaction.
-   # Only applies to 2nd generation retweets, otherwise
-   # the agent would already be a follower.
    follow_reaction_prob:
       0.0
 
@@ -342,14 +334,14 @@ agents:
         ideological: 1.0
         plain: 1.0
         musical: 1.0
-        humourous: 1.0 # Can be considered the humourousness of the agent type
+        humourous: 1.0
     # Probability that following this agent results in a follow-back
     followback_probability: .44
     hashtag_follow_options:
       care_about_region: true # does the agent care about where the agent they will follow is from?
-      care_about_ideology: false # does the entiy care about which ideology the agent has?
+      care_about_ideology: false # does the agent care about the ideology of the agent they will follow?
     rates: 
         # Rate for follows from this agent:
         follow: {function: constant, value: 0.001}
         # Rate for tweets from this agent:
-        tweet: {function: constant, value: 0.01}   #0.000256944444444 0.37 per day
+        tweet: {function: constant, value: 0.01}
