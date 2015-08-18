@@ -1,6 +1,6 @@
 [hashkat.org](http://hashkat.org)
 
-<p style="white-space: pre-wrap;">
+<body style="white-space: pre-wrap;">
 
 <span style="color:black; font-family:Georgia; font-size:1.5em;">August 2015 - This site is currently under construction. Please return regularly over the course of the summer for further updates. </span>
 
@@ -227,4 +227,4 @@ input file.
 
 Feel free to move on to the next tutorial, where we will discuss restarting a network.
 
-</p>
+</body>
