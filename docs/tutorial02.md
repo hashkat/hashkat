@@ -20,7 +20,7 @@ However, you will find that after modifying *INFILE.yaml* to your own specificat
 you will find that the simulation is not running properly. Though it looks like it's about to run, no new simulation is created, and no more data is collected. Inside the **output**
 directory you will find that nothing has changed from your previous simulation.
 
-Have no fear! This is simply because you have not removed the data you collected from the previous simulation from ***#k@***. The manner in which to do this is simple, though be warned,
+Have no fear! As briefly discussed on the [**Installation**](http://docs.hashkat.org/en/latest/installation/) page, this is simply because you have not removed the data you collected from the previous simulation from ***#k@***. The manner in which to do this is simple, though be warned,
 once removing this data you will lose it forever. Remove the save file that your previous simulation information was saved to by typing in the command:
 
 `rm network_state.dat`
@@ -28,6 +28,14 @@ once removing this data you will lose it forever. Remove the save file that your
 and remove the old contents of your output directory with the command:
 
 `rm output/*`
+
+Though not necessary, you can also remove the other files created from running a network simulation by typing in the commands:
+
+`rm DATA_vs_TIME`
+
+`rm INFILE.yaml-generated`
+
+These two files are always overwritten when running a new network simulation, so removing them is not necessary. This is just so you are aware that you can remove these files if need be.
 
 You can now run your new simulation by typing in the command:
 

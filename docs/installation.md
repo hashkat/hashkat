@@ -110,6 +110,20 @@ by typing in the command:
 
     to run it in this directory or any other directory that contains *INFILE.yaml* within it if you completed steps 14 - 20.
 
+1. Once you have run ***#k@*** properly, remove all the network save and analysis files created from this simulation by typing in the following commands:
+
+    `rm DATA_vs_TIME`
+
+    `rm INFILE.yaml-generated`
+
+    `rm network_state.dat`
+
+    `rm -r output`
+
+1. [Gnuplot](http://gnuplot.sourceforge.net/) is the primary graphing utility used in this documentation. To install gnuplot, type in the command:
+
+    `brew install gnuplot -x11`
+
 1. It is also recommended to download and install ['Gephi'](http://gephi.github.io/) from their website to use for visualizations of collected data.
 
 With ***#k@*** installed on your computer, please proceed to the following pages in the documentation to learn how to fully utilize this program.
@@ -120,7 +134,7 @@ With ***#k@*** installed on your computer, please proceed to the following pages
 <iframe width="420" height="315" src="https://www.youtube.com/embed/ppI80vBbZqs" frameborder="0" allowfullscreen></iframe>
 </p>
 
-Here outlines the following steps on how to install ***#k@*** on Linux:
+Here outlines the following steps on how to install ***#k@*** on Linux (these instructions assume you are using a Debian-based distribution such as Ubuntu, Linux Mint, or Debian):
 
 1. Download the latest build of ***#k@*** at [hashkat.org](http://hashkat.org).
 1. Enter a terminal and go into your *Downloads* directory/folder by typing in the following command and pressing **Enter**:
@@ -213,6 +227,20 @@ by typing in the command:
     `run.sh`
 
     to run it in this directory or any other directory that contains *INFILE.yaml* within it if you completed steps 13 - 19.
+
+ 1. Once you have run ***#k@*** properly, remove all the network save and analysis files created from this simulation by typing in the following commands:
+
+    `rm DATA_vs_TIME`
+
+    `rm INFILE.yaml-generated`
+
+    `rm network_state.dat`
+
+    `rm -r output`
+
+1. [Gnuplot](http://gnuplot.sourceforge.net/) is the primary graphing utility used in this documentation. To install gnuplot, type in the command:
+
+    `sudo apt-get install gnuplot -x11`
 
 1. It is also recommended to download and install ['Gephi'](http://gephi.github.io/) from their website to use for visualizations of collected data.
 
