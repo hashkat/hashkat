@@ -1,7 +1,5 @@
 [hashkat.org](http://hashkat.org)
 
-<div style="white-space: pre-wrap;">
-
 <span style="color:black; font-family:Georgia; font-size:1.5em;">August 2015 - This site is currently under construction. Please return regularly over the course of the summer for further updates. </span>
 
 # Getting Started
@@ -110,9 +108,11 @@ for the first time.
 When running this program, you will see something similar to this
 outputted to the screen:
 
+<div style="white-space: pre-wrap;">
 | Time | Users | Follows | Tweets | Retweets | Unfollows | R | Time (s) |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | 9.93e+04 | 1.00e+03 | 1.00e+04 | 0.00e+00 | 0.00e+00(0.00e+00) | 0.00e+00 | 1.00e-01 | 2.25e+00 |
+</div>
 
 This gives a list of data at a particular point in your simulation.
 **Time** corresponds to simulation time in minutes, **Users** corresponds to the number
@@ -226,5 +226,3 @@ distributions, you must have more agents present during your simulation. However
 input file. 
 
 Feel free to move on to the next tutorial, where we will discuss restarting a network.
-
-</div>
