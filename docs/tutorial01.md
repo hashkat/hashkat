@@ -1,5 +1,7 @@
 [hashkat.org](http://hashkat.org)
 
+<p style="white-space: pre-wrap;">
+
 <span style="color:black; font-family:Georgia; font-size:1.5em;">August 2015 - This site is currently under construction. Please return regularly over the course of the summer for further updates. </span>
 
 # Getting Started
@@ -200,7 +202,7 @@ when you first start up 'gnuplot' and prior to actually plotting the data.
 <iframe width="420" height="315" src="https://www.youtube.com/embed/k4ULWpnRq8s" frameborder="0" allowfullscreen></iframe>
 </p>
 
-You can also use this data you collected to visualize your simulated network. Using ['Gephi'](http://gephi.github.io/), open the graph
+You can also use this data you collected to visualize your simulated network. We will discuss how to do so using ['Gephi'](http://gephi.github.io/) here, but you can also find a more in-depth walkthrough on visualizaing networks on the [Visualization](http://docs.hashkat.org/en/latest/visualization/) page. Entering 'Gephi', open the graph
 file *network.gexf* found in the **output** directory of your simulation. Press 'OK' for the 'Import report' window that pops up,
 and you will now see a rough outline of your network. Under the 'Partition' subheading on the left side of the page,
 press the refresh symbol, and choose the partition parameter 'Label' and click 'Apply'. You are now free to choose a layout
@@ -224,3 +226,5 @@ distributions, you must have more agents present during your simulation. However
 input file. 
 
 Feel free to move on to the next tutorial, where we will discuss restarting a network.
+
+</p>
