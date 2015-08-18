@@ -56,7 +56,7 @@ it just means that you've downloaded a newer version of ***#k@***!
 
 1. You must now do a build of ***#k@*** on your computer by typing in the command:
 
-    `./build.sh`
+    `build.sh`
 
     You may need to install additional tools on to your computer to build ***#k@***. If a prompt appears asking you to do so, please do. You may also need to install the 'CMake' package to your computer to build ***#k@***. If so, steps 12 and 13 outline how to install this package.
 
@@ -69,46 +69,11 @@ To install 'Hmebrew' to your computer, simply type in the command:
 
     `brew install cmake`
 
-    With this installed, you should be able to build ***#k@*** in the manner outlined in step 11. Steps 14-20 outline a manner in which you can run ***#k@*** from not only this directory, but any directory where *INFILE.yaml* is present. It involves modifying your *.bashrc* and *.profile* files, and is not essential to the running of ***#k@*** if you do not wish to do so. Proceed to the next step if you wish to make these changes, or skip ahead to step 21 if you do not.
+    With this installed, you should be able to build ***#k@*** in the manner outlined in step 11.
 
-1. In order to run simulations using ***#k@*** anywhere on your computer, you must first edit the *.bashrc* file. You can enter this file
-by typing in the command:
-
-    `nano ~/.bashrc`
-
-1. Once inside this file, assuming you have *hashkat* at the top of your 'home' directory, you must type in:
-
-    `export HASHKAT=~/hashkat`
-
-    `export PATH=$PATH:$HASHKAT/build/src`
-
-    `export PATH=$PATH:$HASHKAT`
-
-1. Exit this file by pressing **ctrl-x**. If you are asked whether or not changes should be saved, type in **y** to say 'yes'.
-
-1. You must then enter the *.profile* file by typing in the command:
-
-    `nano ~/.profile`
-
-1. In this file, type in:
-
-    `source ~/.bashrc`
-
-1. Once you have exited this file, reload the *.bashrc* and *.profile* files by typing in the command:
-    
-    `source ~/.profile`
-
-1. You can now run ***#k@*** in this *hashkat* directory, as well as any other directory as long as it has *INFILE.yaml* within in it.
-
-1. You can run ***#k@*** by typing in:
-
-    `./run.sh`
-
-    You can also run it by typing in:
+1. You can now run ***#k@*** in this *hashkat* directory, as well as any other directory as long as it has *INFILE.yaml* within in it by typing in the command:
 
     `run.sh`
-
-    to run it in this directory or any other directory that contains *INFILE.yaml* within it if you completed steps 14 - 20.
 
 1. Once you have run ***#k@*** properly, remove all the network save and analysis files created from this simulation by typing in the following commands:
 
@@ -177,7 +142,7 @@ Here outlines the following steps on how to install ***#k@*** on Linux (these in
 
 1. You must now do a build of ***#k@*** on your computer by typing in the command:
 
-    `./build.sh`
+    `build.sh`
 
     You may need to install the 'CMake' package and the appropriate build tools to your computer to build ***#k@***. If so, step 12 outlines how to install these.
 
@@ -187,46 +152,11 @@ Here outlines the following steps on how to install ***#k@*** on Linux (these in
 
     `sudo apt-get install build-essential -y` 
 
-    With this installed, you should be able to build ***#k@*** in the manner outlined in step 11. Steps 13-19 outline a manner in which you can run hashkat from not only this directory, but any directory where *INFILE.yaml* is present. It involves modifying your *.bashrc* and *.profile* files, and is not essential to the running of ***#k@*** if you do not wish to do so. Proceed to the next step if you wish to make these changes, or skip ahead to step 20 if you do not.
+    With this installed, you should be able to build ***#k@*** in the manner outlined in step 11.
 
-1. In order to run simulations using ***#k@*** anywhere on yur computer, you must first edit the *.bashrc* file. You can enter this file
-by typing in the command:
-
-    `nano ~/.bashrc`
-
-1. Once inside this file, assuming you have *hashkat* at the top of your 'home' directory, you must type in:
-
-    `export HASHKAT=~/hashkat`
-
-    `export PATH=$PATH:$HASHKAT/build/src`
-
-    `export PATH=$PATH:$HASHKAT`
-
-1. Exit this file by pressing **ctrl-x**. If you are asked whether or not changes should be saved, type in **y** to say 'yes'.
-
-1. You must then enter the *.profile* file by typing in the command:
-
-    `nano ~/.profile`
-
-1. In this file, type in:
-
-    `source ~/.bashrc`
-
-1. Once you have exited this file, reload the *.bashrc* and *.profile* files by typing in the commands:
-
-    `source ~/.profile`
-
-1. You can now run ***#k@*** in this *hashkat* directory, as well as any other directory as long as it has *INFILE.yaml* within in it.
-
-1. You can run ***#k@*** by typing in:
-
-    `./run.sh`
-
-    You can also run ***#k@*** by typing in:
+1. You can now run ***#k@*** in this *hashkat* directory, as well as any other directory as long as it has *INFILE.yaml* within in it by typing in the command:
 
     `run.sh`
-
-    to run it in this directory or any other directory that contains *INFILE.yaml* within it if you completed steps 13 - 19.
 
  1. Once you have run ***#k@*** properly, remove all the network save and analysis files created from this simulation by typing in the following commands:
 
