@@ -108,7 +108,7 @@ for the first time.
 When running this program, you will see something similar to this
 outputted to the screen:
 
-<div style="white-space: pre-wrap;">
+<div style="white-space: pre-wrap">
 <table>
 	<tr>
 		<th>Time</th>
