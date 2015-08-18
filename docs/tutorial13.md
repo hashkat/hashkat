@@ -33,12 +33,12 @@ The **INFILE.yaml** used for this scenario can be found in the *docs/tutorial_in
       ideological: 0.0
       plain: 0.0
       musical: 0.0
-      humourous: 1.0 # Can be considered the humourousness of the agent type
+      humourous: 1.0
   # Probability that following this agent results in a follow-back
   followback_probability: 1.0
   hashtag_follow_options:
     care_about_region: false # does the agent care about where the agent they will follow is from?
-    care_about_ideology: false # does the agent care about which ideology the agent has?
+    care_about_ideology: false # does the agent care about the ideology of the agent they will follow?
   rates:
       # Rate for follows from this agent:
       follow: {function: constant, value: 0.0}
@@ -63,12 +63,12 @@ The **INFILE.yaml** used for this scenario can be found in the *docs/tutorial_in
       ideological: 0.0
       plain: 0.0
       musical: 1.0
-      humourous: 1.0 # Can be considered the humourousness of the agent type
+      humourous: 1.0
   # Probability that following this agent results in a follow-back
   followback_probability: 1.00
   hashtag_follow_options:
     care_about_region: false # does the agent care about where the agent they will follow is from?
-    care_about_ideology: false # does the agent care about which ideology the agent has?
+    care_about_ideology: false # does the agent care about the ideology of the agent they will follow?
   rates:
       # Rate for follows from this agent:
       follow: {function: constant, value: 0.0}
@@ -97,13 +97,13 @@ We have two regions in our network, Canada and the USA, and both are in the mids
       ideological: 1.0
       plain: 1.0
       musical: 1.0
-      humourous: 1.0 # Can be considered the humourousness of the agent type
+      humourous: 1.0
   # Probability that following this agent results in a follow-back
   followback_probability: .44
   hashtag_follow_options:
     care_about_region: true # does the agent care about where the agent they will follow is from?
-    care_about_ideology: true # does the agent care about which ideology the agent has?
-  rates:
+    care_about_ideology: true # does the agent care about the ideology of the agent they will follow?
+  rates: 
       # Rate for follows from this agent:
       follow: {function: linear, y_intercept: 0.01, slope: 0.001}
       # Rate for tweets from this agent:
@@ -127,12 +127,12 @@ We have two regions in our network, Canada and the USA, and both are in the mids
       ideological: 1.0
       plain: 1.0
       musical: 1.0
-      humourous: 1.0 # Can be considered the humourousness of the agent type
+      humourous: 1.0
   # Probability that following this agent results in a follow-back
   followback_probability: .44
   hashtag_follow_options:
-    care_about_region: true # does the agent care about where the agent they $
-    care_about_ideology: true # does the agent care about which ideology the $
+    care_about_region: true # does the agent care about where the agent they will follow is from?
+    care_about_ideology: true # does the agent care about the ideology of the agent they will follow?
   rates:
       # Rate for follows from this agent:
       follow: {function: linear, y_intercept: 0.01, slope: 0.001}

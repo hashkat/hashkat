@@ -37,7 +37,7 @@ Agents can also follow other agents based on ideology in the hashtag follow mode
 agents:
   - name: Standard
     hashtag_follow_options:  
-      care_about_ideology: false # does the agent care about which ideology the agent has?
+      care_about_ideology: false # does the agent care about the ideology of the agent they will follow?
 ```
 
 ### Language
@@ -72,26 +72,24 @@ An agent's tweet transmission is the probability that an agent will retweet a tw
 ```python
 preference_classes:
  - name: StandardPref
- 
-  # Determines the probability that a tweet is reacted to by this 
-  # preference class:
+
    tweet_transmission: 
       plain: # Also applies to musical tweets
         Standard: 0.01
         Celebrity: 0.01
-        else: 0.01
-      different_ideology:   # no retweeting for different ideologies
+        else: 0.1
+      different_ideology: # generally no retweeting of tweets with different ideological content
         Standard: 0.00
         Celebrity: 0.00
-        else: 0.00
+        else: 0.0
       same_ideology:
         Standard: 0.01
         Celebrity: 0.01
-        else: 0.01
+        else: 0.2
       humourous:
         Standard: 0.02
         Celebrity: 0.02
-        else: 0.02
+        else: 0.4
 ```
 
 This is also weighted in the *preference_class_weights* factor of a region in the *regions* section. 
@@ -151,7 +149,7 @@ agents:
         ideological: 1.0
         plain: 1.0
         musical: 1.0
-        humourous: 1.0 # Can be considered the humourousness of the agent type
+        humourous: 1.0
 ```
 
 ### Agent - Followback Probability
@@ -161,6 +159,7 @@ Defined in the *agents* section of **INFILE.yaml**, an agent's *followback_proba
 ```python
 agents:
   - name: Standard
+    # Probability that following this agent results in a follow-back
     followback_probability: .44
 ```
 
@@ -168,8 +167,8 @@ In order for *followback_probability* to be enabled, *use_followback* must be se
 
 ```python
 analysis:
-  use_followback: 
-    false        # followback turned on, from literature it makes sense for a realistic system
+use_followback: 
+  true        # from literature, it makes sense for a realistic system to have followback enabled
 ```
 
 ### Agent - Hashtag Follow Options
@@ -179,9 +178,9 @@ Defined in the *agents* section of **INFILE.yaml**, the *hashtag_follow_options*
 ```python
 agents:
   - name: Standard
-    hashtag_follow_options:
-      care_about_region: false # does the agent care about where the agent they will follow is from?
-      care_about_ideology: false # does the agent care about which ideology the agent has?
+  hashtag_follow_options:
+    care_about_region: true # does the agent care about where the agent they will follow is from?
+    care_about_ideology: true # does the agent care about the ideology of the agent they will follow?
 ```
 
 ### Agent - Follow Rate
@@ -196,7 +195,7 @@ agents:
         follow: {function: constant, value: 0.0001}
 ```
 
-For a linear follow rate, the function must be set to *linear* and there must be a *y_intercept* and *slope* instead of a *value*.
+For a linear follow rate, the function must be set to *linear* and there must be a *y_intercept* and *slope* instead of a *value* (this can also be done for the add rate).
 
 ```python
 agents:
@@ -215,17 +214,17 @@ agents:
   - name: Standard
     rates: 
         # Rate for tweets from this agent:
-        follow: {function: constant, value: 0.0001}
+        tweet: {function: constant, value: 0.0001}
 ```
 
-For a linear tweet rate, the function must be set to *linear* and there must be a *y_intercept* and *slope* instead of a *value*.
+For a linear tweet rate, the function must be set to *linear* and there must be a *y_intercept* and *slope* instead of a *value* (this can also be done for the add rate).
 
 ```python
 agents:
   - name: Standard
     rates: 
         # Rate for tweets from this agent:
-        follow: {function: linear, y_intercept: 0.1, slope: 0.1}
+        tweet: {function: linear, y_intercept: 0.1, slope: 0.1}
 ```
 
 ## Popularity Contest
@@ -269,18 +268,17 @@ We would also like you to use only the following agent types with their respecti
       ideological: 1.0
       plain: 1.0
       musical: 1.0
-      humourous: 1.0 # Can be considered the humourousness of the agent type
+      humourous: 1.0
   # Probability that following this agent results in a follow-back
   followback_probability: 0.2
   hashtag_follow_options:
     care_about_region: false # does the agent care about where the agent they will follow is from?
-    care_about_ideology: true # does the agent care about which ideology the agent has?
-  rates:
+    care_about_ideology: true # does the agent care about the ideology of the agent they will follow?
+  rates: 
       # Rate for follows from this agent:
       follow: {function: constant, value: 0.05}
       # Rate for tweets from this agent:
       tweet: {function: constant, value: 0.5}
-
 ```
 
 ### Standard - Friendly Networking Agent
@@ -300,18 +298,17 @@ We would also like you to use only the following agent types with their respecti
       ideological: 1.0
       plain: 7.0
       musical: 1.0
-      humourous: 3.0 # Can be considered the humourousness of the agent type
+      humourous: 3.0
   # Probability that following this agent results in a follow-back
   followback_probability: 1.0
   hashtag_follow_options:
     care_about_region: false # does the agent care about where the agent they will follow is from?
-    care_about_ideology: false # does the agent care about which ideology the agent has?
+    care_about_ideology: false # does the agent care about the ideology of the agent they will follow?
   rates:
       # Rate for follows from this agent:
       follow: {function: constant, value: 0.3}
       # Rate for tweets from this agent:
       tweet: {function: constant, value: 0.04}
-
 ```
 
 ### Standard - Funny Social Commentator Agent
@@ -331,18 +328,17 @@ We would also like you to use only the following agent types with their respecti
       ideological: 1.0
       plain: 1.0
       musical: 0.0
-      humourous: 6.0 # Can be considered the humourousness of the agent type
+      humourous: 6.0
   # Probability that following this agent results in a follow-back
   followback_probability: 0.44
   hashtag_follow_options:
     care_about_region: true # does the agent care about where the agent they will follow is from?
-    care_about_ideology: false # does the agent care about which ideology the agent has?
+    care_about_ideology: false # does the agent care about the ideology of the agent they will follow?
   rates:
       # Rate for follows from this agent:
       follow: {function: constant, value: 0.02}
       # Rate for tweets from this agent:
       tweet: {function: constant, value: 0.1}
-
 ```
 
 ### Standard - Music Advocate Agent
@@ -362,18 +358,17 @@ We would also like you to use only the following agent types with their respecti
       ideological: 0.0
       plain: 1.0
       musical: 5.0
-      humourous: 0.0 # Can be considered the humourousness of the agent type
+      humourous: 0.0
   # Probability that following this agent results in a follow-back
   followback_probability: 0.1
   hashtag_follow_options:
     care_about_region: false # does the agent care about where the agent they will follow is from?
-    care_about_ideology: false # does the agent care about which ideology the agent has?
+    care_about_ideology: false # does the agent care about the ideology of the agent they will follow?
   rates:
       # Rate for follows from this agent:
       follow: {function: constant, value: 0.01}
       # Rate for tweets from this agent:
       tweet: {function: constant, value: 0.02}
-
 ```
 
 ### Standard - Political Satirist Agent
@@ -393,18 +388,17 @@ We would also like you to use only the following agent types with their respecti
       ideological: 8.0
       plain: 1.0
       musical: 0.0
-      humourous: 3.0 # Can be considered the humourousness of the agent type
+      humourous: 3.0
   # Probability that following this agent results in a follow-back
   followback_probability: 0.44
   hashtag_follow_options:
     care_about_region: true # does the agent care about where the agent they will follow is from?
-    care_about_ideology: true # does the agent care about which ideology the agent has?
+    care_about_ideology: true # does the agent care about the ideology of the agent they will follow?
   rates:
       # Rate for follows from this agent:
       follow: {function: constant, value: 0.01}
       # Rate for tweets from this agent:
       tweet: {function: constant, value: 0.12}
-
 ```
 
 Make sure that your tweet, retweet, and follow ranks have also been updated accordingly to properly account for this network. As you've probably noticed, we've set the max real time to 10 minutes instead of the regular 1 minute. The simulation should definitely not run for this long, we just want to allow enough time for the simulation to run to completion. When running this simulation on our computer, it took almost 4 minutes real time to complete due to the complexity of the network. You do not have to run your simulation for this long if you wish. You can change the maximum real time to a time of your choosing or press **Ctrl-c** at any time during the simulation to pause it. Once you have configured **INFILE.yaml** to account for all this, run and visualize your network simulation.

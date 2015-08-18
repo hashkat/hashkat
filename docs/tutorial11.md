@@ -25,27 +25,27 @@ Let's now create a network simulation that implements unfollowing due to chattin
 So using the input file from **Tutorial 1** as a starting point, let's first add another agent type into this network. Let's call this agent type 'Chatty', and it'll have the same paramters as the 'Standard' agent type, except that the tweet rates for these agents will be 0.01 instead of 0.001.
 
 ```python
-  - name: Chatty
-    weights:
-      # Weight with which this agent is created
-      add: 100.0
-      # Weight with which this agent is followed in agent follow
-      follow: 5
-      tweet_type:
-        ideological: 1.0
-        plain: 1.0
-        musical: 1.0
-        humourous: 1.0 # Can be considered the humourousness of the agent type
-    # Probability that following this agent results in a follow-back
-    followback_probability: .44
-    hashtag_follow_options:
-      care_about_region: false # does the agent care about where the agent they will follow is from?
-      care_about_ideology: false # does the agent care about which ideology the agent has?
-    rates:
-        # Rate for follows from this agent:
-        follow: {function: constant, value: 0.0001}
-        # Rate for tweets from this agent:
-        tweet: {function: constant, value: 0.01}
+- name: Chatty
+  weights:
+    # Weight with which this agent is created
+    add: 100.0
+    # Weight with which this agent is followed in agent follow
+    follow: 5
+    tweet_type:
+      ideological: 1.0
+      plain: 1.0
+      musical: 1.0
+      humourous: 1.0
+  # Probability that following this agent results in a follow-back
+  followback_probability: .44
+  hashtag_follow_options:
+    care_about_region: false # does the agent care about where the agent they will follow is from?
+    care_about_ideology: false # does the agent care about the ideology of the agent they will follow?
+  rates:
+      # Rate for follows from this agent:
+      follow: {function: constant, value: 0.0001}
+      # Rate for tweets from this agent:
+      tweet: {function: constant, value: 0.01}
 ```
 
 Running a simulation with this new agent type, we can see in the *main_stats.dat* output file that there are 9943 total follows that have occurred in the network. It'll be interesting to see how this value changes when unfollowing is implemented.

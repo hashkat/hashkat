@@ -29,15 +29,13 @@ We shall now create a network simulation that does not use these follow methods.
 ```python
 preference_classes:
  - name: StandardPref
- 
-  # Determines the probability that a tweet is reacted to by this 
-  # preference class:
+
    tweet_transmission: 
       plain: # Also applies to musical tweets
         Standard: 0.1
         Celebrity: 0.01
         else: 0.01
-      different_ideology:   # no retweeting for different ideologies
+      different_ideology: # generally no retweeting of tweets with different ideological content
         Standard: 0.00
         Celebrity: 0.00
         else: 0.00
@@ -49,9 +47,6 @@ preference_classes:
         Standard: 0.2
         Celebrity: 0.02
         else: 0.02
-   # Probability that we will follow as a reaction.
-   # Only applies to 2nd generation retweets, otherwise
-   # the agent would already be a follower.
    follow_reaction_prob:
       0.0
 ```
@@ -77,10 +72,11 @@ follow_reaction_prob:
 
 ```python
 use_followback: 
-  true        # followback turned on, from literature it makes sense for a realistic system
+  true        # from literature, it makes sense for a realistic system to have followback enabled
 ```
 
 ```python
+# Probability that following this agent results in a follow-back
 followback_probability: 0.44
 ```
 

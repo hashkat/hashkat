@@ -17,7 +17,7 @@ Using the INFILE.yaml we used from **Tutorial 6**, as a starting point, we will 
 ```python
 hashtag_follow_options:
   care_about_region: false # does the agent care about where the agent they will follow is from?
-  care_about_ideology: true # does the agent care about which ideology the agent has?
+  care_about_ideology: true # does the agent care about the ideology of the agent they will follow?
 ```
 
 ## Running and Visualizing The Network

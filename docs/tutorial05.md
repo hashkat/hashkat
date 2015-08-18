@@ -26,12 +26,12 @@ agents:
         ideological: 1.0
         plain: 1.0
         musical: 1.0
-        humourous: 1.0 # Can be considered the humourousness of the agent type
+        humourous: 1.0
     # Probability that following this agent results in a follow-back
     followback_probability: 0
     hashtag_follow_options:
       care_about_region: false # does the agent care about where the agent they will follow is from?
-      care_about_ideology: false # does the agent care about which ideology the agent has?
+      care_about_ideology: false # does the agent care about the ideology of the agent they will follow?
     rates: 
         # Rate for follows from this agent:
         follow: {function: constant, value: 0.01}
@@ -48,12 +48,12 @@ agents:
         ideological: 1.0
         plain: 1.0
         musical: 1.0
-        humourous: 1.0 # Can be considered the humourousness of the agent type
+        humourous: 1.0
     # Probability that following this agent results in a follow-back
     followback_probability: 0
     hashtag_follow_options:
       care_about_region: false # does the agent care about where the agent they will follow is from?
-      care_about_ideology: false # does the agent care about which ideology the agent has?
+      care_about_ideology: false # does the agent care about the ideology of the agent they will follow?
     rates:
         # Rate for follows from this agent:
         follow: {function: constant, value: 0.01}

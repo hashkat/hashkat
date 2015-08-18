@@ -18,7 +18,6 @@ Using the INFILE.yaml file used in the previous tutorial as a starting point, we
 follow_model: # See notes above
   twitter
 # model weights ONLY necessary for follow method 'twitter'  
-# educated guesses for the follow models  
 model_weights: {random: 1.0, twitter_suggest: 1.0, agent: 1.0, preferential_agent: 1.0, hashtag: 1.0}
 ```
 

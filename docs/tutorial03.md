@@ -53,15 +53,15 @@ We have also kept the probability of hashtag presence in tweets to be 50%.
 ```python
 analysis:
   initial_agents:
-    1000  # start out from something small, could be when only the developers were online.
+    1000
   max_agents: 
-    1000     # 1 million max users
+    1000
   max_time: 
     1000
   max_analysis_steps: 
     unlimited
   max_real_time: 
-    1                 
+    1
   enable_interactive_mode:
     false
   enable_lua_hooks: # Defined in same file as interactive_mode. Can slow down simulation considerably.
@@ -69,7 +69,7 @@ analysis:
   lua_script: # Defines behaviour of interactive mode & lua hooks
     INTERACT.lua
   use_barabasi: 
-    false 
+    false
   barabasi_connections: # number of connections we want to make when use_barabasi == true
     100
   barabasi_exponent:
@@ -77,19 +77,18 @@ analysis:
   use_random_time_increment: 
     true
   use_followback: 
-    false        # followback turned on, from literature it makes sense for a realistic system
+    false        # from literature, it makes sense for a realistic system to have followback enabled
   follow_model: # See notes above
     random
   # model weights ONLY necessary for follow method 'twitter'  
-  # educated guesses for the follow models  
   model_weights: {random: 0.0, twitter_suggest: 0.0, agent: 0.0, preferential_agent: 0.0, hashtag: 0.0}
-  
+
   stage1_unfollow: 
     false
   unfollow_tweet_rate: 
     10000
   use_hashtag_probability:
-    0.5    # 50 % chance of using a hashtag
+    0.5
 ```
 
 Since the number of agents within this simulation will remain constant, the add rate will therefore be 0. The output section of INFILE.yaml
@@ -119,12 +118,12 @@ agents:
         ideological: 1.0
         plain: 1.0
         musical: 1.0
-        humourous: 1.0 # Can be considered the humourousness of the agent type
+        humourous: 1.0
     # Probability that following this agent results in a follow-back
     followback_probability: 0
     hashtag_follow_options:
       care_about_region: false # does the agent care about where the agent they will follow is from?
-      care_about_ideology: false # does the agent care about which ideology the agent has?
+      care_about_ideology: false # does the agent care about the ideology of the agent they will follow?
     rates: 
         # Rate for follows from this agent:
         follow: {function: constant, value: 0.01}
@@ -141,12 +140,12 @@ agents:
         ideological: 1.0
         plain: 1.0
         musical: 1.0
-        humourous: 1.0 # Can be considered the humourousness of the agent type
+        humourous: 1.0
     # Probability that following this agent results in a follow-back
     followback_probability: 0
     hashtag_follow_options:
       care_about_region: false # does the agent care about where the agent they will follow is from?
-      care_about_ideology: false # does the agent care about which ideology the agent has?
+      care_about_ideology: false # does the agent care about the ideology of the agent they will follow?
     rates:
         # Rate for follows from this agent:
         follow: {function: constant, value: 0.01}

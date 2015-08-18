@@ -458,12 +458,12 @@ The *ideologies* are the arbitrary dogma that you would like agents of that ideo
     language_weights: {English: 50, French: 25, French+English: 25}
 ```
 
-This sections outlines the regions in which you would like your agents to be located. You can have as many as you want, though it is important to remember that the number of regions must be equal or less than the value of 
+This sections outlines the regions in which you would like your agents to be located. You can have as many as you want, though it is important to remember that the number of regions must be EXACTLY equal to the value of 
 N_BIN_REGIONS in config_static.h. *add_weight* corresponds to the probability that the agent added to the network is from that region, and is weighted with respect to those of the other inputted regions.
 The *ideology_weights* are the possible ideologies that an agent from that region can have, and are weighted with respect to one another. Similar to the *ideology_weights*, the *language_weights* are the possible languages that an agent from that region can speak,
 and are also weighted with respect to each other.
 
-**Note**: if you'd like to change the number of regions in the simulation, make sure te value is less than or equal to the value set to 'N_BIN_REGIONS' in the *config_static.h' file in *src*. You can also change the value set to *N_BIN_REGIONS* and rebuild ***#k@*** by running *build.sh*.
+**Note**: if you'd like to change the number of regions in the simulation, make sure the value is EXACTLY equal to the value set to 'N_BIN_REGIONS' in the *config_static.h' file in *src*. You can also change the value set to *N_BIN_REGIONS* and rebuild ***#k@*** by running *build.sh*.
 
 ### **preference classes**
 
