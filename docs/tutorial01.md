@@ -109,7 +109,7 @@ When running this program, you will see something similar to this
 outputted to the screen:
 
 <div style="white-space: pre-wrap">
-<table>
+<table style="width:80%">
 	<tr>
 		<th>Time</th>
 		<th>Users</th>
