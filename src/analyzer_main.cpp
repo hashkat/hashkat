@@ -234,7 +234,7 @@ struct Analyzer {
     // ROOT ANALYSIS ROUTINE
     /* Run the main analysis routine using this config. */
     void run_network_simulation(Timer& timer) {
-		const char* HEADER = "Time\t\tUsers\t\tFollows\t\tTweets\t\tRetweets\t\tUnfollows\tR\t\tTime (s)";
+		const char* HEADER = "Simulation Time (min)\t\tUsers\t\tFollows\t\tTweets\t\tRetweets\t\tUnfollows\tR\t\tReal Time (s)";
         if (config.output_stdout_summary)
             cout << HEADER << "\n\n";
         while (sim_time_check() && real_time_check()) {
@@ -648,7 +648,7 @@ struct Analyzer {
     }
     void output_summary_stats(Timer& timer) {
 
-		const char* HEADER = "\n#Time\t\tUsers\t\tFollows\t\tTweets\t\tRetweets\tUnfollows\tR\ttime (seconds)\n\n";
+		const char* HEADER = "\n#Simulation Time (min)\t\tUsers\t\tFollows\t\tTweets\t\tRetweets\tUnfollows\tR\tReal Time (s)\n\n";
     
         if (stats.n_outputs % 10000*STDOUT_OUTPUT_RATE == 0) {
             DATA_TIME << HEADER;
