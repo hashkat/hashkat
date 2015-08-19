@@ -31,7 +31,7 @@ regions:
     ideology_weights: {Red: 100, Blue: 100, Green: 100, Orange: 100}
 ```
 
-Agents can also follow other agents based on ideology in the hashtag follow model, where setting the hashtag follow option *care_about_idelogy* in the agent type section to true results in agents only following other agents that share the same ideology as them. 
+Agents can also follow other agents based on ideology in the *hashtag* follow model, where setting the *hashtag* follow option *care_about_idelogy* in the agent type section to true results in agents only following other agents that share the same ideology as them. 
 
 ```python
 agents:
@@ -239,7 +239,7 @@ For this network simulation, we would like to have the following:
 * a maximum simulation time of 1000 simulated minutes
 * a maximum real time of 10 minutes
 * followback implemented
-* the twitter follow model implemented, with the twitter_suggest and the hashtag follow model evenly weighted and the other follow models being excluded from this simulation
+* the *twitter* follow model implemented, with the *twitter_suggest* and the *hashtag* follow model evenly weighted and the other follow models being excluded from this simulation
 * No unfollowing allowed
 * Hashtag presence in tweets 50% of the time
 * 4 ideologies: *Red*, *Blue*, *Green*, and *Orange*

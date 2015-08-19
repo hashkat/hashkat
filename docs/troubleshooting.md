@@ -68,17 +68,17 @@ You may be unable to run certain large network simulations due to your computer 
 
 Sometimes when running a network simulation, the simulation may run smoothly, but the network you've created is quite different from what you had in mind. This is usually due to an error being made in **INFILE.yaml** that does not prevent the simulation from running, but gives you odd results. The following discuss some of the errors that you may encounter when using ***#k@***, and what the root cause of that problem is.
 
-### Twitter Suggest Follow Model Network Not Constructed As Such
+### Twitter_Suggest Follow Model Network Not Constructed As Such
 
-You may notice that when visualizing a twitter suggest follow model network simulation, there seems to be no preferential attachment present in the network. The connections between agents seem to be random, and there is no clear distinction between the most popular and least popular agents. This is most likely due to an error in the follow ranks section of **INFILE.yaml**. It is imperative in any preferential attachment model network simulation that the max follow rank threshold be equal to or greater than the number of agents in the simulation and that the follow rank weight is 1 for the minimum follow rank of zero and that the max follow rank weight is equal to the max follow rank threshold increased by one. This allows agents with more followers to have a better chance of being followed than less popular agents. If the follow ranks are weighted incorrectly, more popular agents may not have a higher probability of being followed. If the follow rank max threshold is a number less than the total number of agents in the simulation, than agents with differing number of followers may eventually have an equal weight because they have reached the max follow rank threshold. Ensuring that these follow ranks values are correct is essential for running an accurate preferential attachment model simulation.
+You may notice that when visualizing a *twitter_suggest* follow model network simulation, there seems to be no preferential attachment present in the network. The connections between agents seem to be random, and there is no clear distinction between the most popular and least popular agents. This is most likely due to an error in the follow ranks section of **INFILE.yaml**. It is imperative in any preferential attachment model network simulation that the max follow rank threshold be equal to or greater than the number of agents in the simulation and that the follow rank weight is 1 for the minimum follow rank of zero and that the max follow rank weight is equal to the max follow rank threshold increased by one. This allows agents with more followers to have a better chance of being followed than less popular agents. If the follow ranks are weighted incorrectly, more popular agents may not have a higher probability of being followed. If the follow rank max threshold is a number less than the total number of agents in the simulation, than agents with differing number of followers may eventually have an equal weight because they have reached the max follow rank threshold. Ensuring that these follow ranks values are correct is essential for running an accurate preferential attachment model simulation.
 
-The following visualization is that of a network we ran using the twitter suggest follow model:
+The following visualization is that of a network we ran using the *twitter_suggest* follow model:
 
 <p align='center'>
 <img src='../img/troubleshooting/incorrect_twitter_suggest.png'>
 </p>
 
-As you can clearly see, this network clearly resembles a random follow model simulation than a twitter suggest. Looking into the **INFILE.yaml** file, we discovered that the follow rank max threshold and weight were much smaller than the total number of agents in the simulation. Changing these values to their correct amount, we ran the network simulation again and produced the following visualization:
+As you can clearly see, this network clearly resembles a random follow model simulation than a *twitter_suggest*. Looking into the **INFILE.yaml** file, we discovered that the follow rank max threshold and weight were much smaller than the total number of agents in the simulation. Changing these values to their correct amount, we ran the network simulation again and produced the following visualization:
 
 <p align='center'>
 <img src='../img/troubleshooting/correct_twitter_suggest.png'>
@@ -96,7 +96,7 @@ Running a network simulation that enables retweeting, you may find that there ar
 
 ### Implementing *use_barabasi* For the Wrong Follow Model
 
-Though a Barabasi configuration can be implemented into every follow model network simulation, it is usually only enabled for follow models that invoke preferential attachment, such as the twitter suggest, preferential agent, and posibly the twitter folow model. You can use the Barabasi configuration for other follow models if you so please, but keep in mind the impact it will have on your network, and how different this may be for a network simulaiton that does not implement this configuration.
+Though a Barabasi configuration can be implemented into every follow model network simulation, it is usually only enabled for follow models that invoke preferential attachment, such as the *twitter_suggest*, *preferential_agent*, and possibly the twitter folow model. You can use the Barabasi configuration for other follow models if you so please, but keep in mind the impact it will have on your network, and how different this may be for a network simulaiton that does not implement this configuration.
 
 ## Reporting an Issue
 

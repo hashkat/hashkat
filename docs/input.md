@@ -90,7 +90,7 @@ use_barabasi:
   false
 ```
 
-Input *true* into *use_barabasi* for a simulation of the [Barabasi-Albert model](http://en.wikipedia.org/wiki/Barab%C3%A1si%E2%80%93Albert_model) when using a twitter suggest, preferential agent, or twitter (that implements either of the two previous) follow
+Input *true* into *use_barabasi* for a simulation of the [Barabasi-Albert model](http://en.wikipedia.org/wiki/Barab%C3%A1si%E2%80%93Albert_model) when using a *twitter_suggest*, *preferential_agent*, or *twitter* (that implements either of the two previous) follow
 models. Input *false* to prevent this.
 
 #### Barabasi Connections
@@ -377,7 +377,7 @@ follow_ranks:
   weights:    {bin_spacing: linear, min: 1, max: 100000, increment: 1}
 ```
 
-Similar to *tweet_ranks* and *retweet_ranks*, *follow_ranks* serves to categorize and organize agents based on the number of followers that they have. However, an additional factor is taken into consideration, the bin weights. The bin weights gives each bin threshold a weight equal to its value increased by one. These weights are essential in the twitter suggest and preferential agent follow models, because they are what cause agents with a higher degree to have a greater probability of being followed by other agents since they will be placed in bins that are more heavily weighted than those of agents with fewer followers.
+Similar to *tweet_ranks* and *retweet_ranks*, *follow_ranks* serves to categorize and organize agents based on the number of followers that they have. However, an additional factor is taken into consideration, the bin weights. The bin weights gives each bin threshold a weight equal to its value increased by one. These weights are essential in the *twitter_suggest* and *preferential_agent* follow models, because they are what cause agents with a higher degree to have a greater probability of being followed by other agents since they will be placed in bins that are more heavily weighted than those of agents with fewer followers.
 
 ### **tweet observations**
 
@@ -521,9 +521,9 @@ The *follow_reaction_prob* relates to the probability that an agent will follow 
 ```
 
 In this section one can identify the types of agents with which to include in their simulation. Under weights we can see *add* which correlates to the probability that the type of agent will be the one added to the network,
-weighted against the other types of agents. The value inputted into *follow* will be the probability, weighted against the other agent types, in which this agent is followed in the agent follow model by other agents.
+weighted against the other types of agents. The value inputted into *follow* will be the probability, weighted against the other agent types, in which this agent is followed in the *agent* follow model by other agents.
 *tweet_type* summarizes the weighted probabilities that the content of an agent of this type's tweet will be ideological, plain, musical, or humorous. The *follow_back* probability is the probability that following an agent of this type
-will result in that agent following you back. The *hashtag_follow_options* are useful for a hashtag follow model, where agents follow other agents based on the hashtags associated with their tweets. In this follow model, if *care_about_region* is set to *true*, 
+will result in that agent following you back. The 'hashtag_follow_options' are useful for a *hashtag* follow model, where agents follow other agents based on the hashtags associated with their tweets. In this follow model, if *care_about_region* is set to *true*, 
 then agents will only follow other agents that live in the same region as them, while this won't matter to them if set to *false*. If *care_about_ideology* is set to *true*, then agents will only follow other agents that share the same ideology as them,
 while this won't matter to them if set to false. It is important to note that *use_hashtag_probability* in the **analysis** section must be set to a value greater than zero for this to work, or else no one will be implementing hastags into their tweets.
 The *follow* and *tweet* rates are the rates in which agents of this particular type will follow and tweet with respect to simulated minues respectively. It works in the exact same manner as the add rate outlined in the **rates** section.

@@ -112,7 +112,7 @@ agent type A will be followed 85% of the time, and agent type B will be followed
 usage for defining the follow rate is the exact same as the agent add rate. See link for further implementation details.
 
 ####follow model
-A framework inputted into the simulation that dictates how agents generally connect with one another. There are currently 6 follow models within ***#k@***: random, twiter suggest, agent, preferential agent, hashtag, and twitter.
+A framework inputted into the simulation that dictates how agents generally connect with one another. There are currently 6 follow models within ***#k@***: *random*, *twitter_suggest*, *agent*, *preferential_agent*, *hashtag*, and *twitter*.
 
 ####follow_model
 **(type: string)** The variable which determines what follow model the simulation will be running.To use a follow model simply type in
@@ -185,7 +185,7 @@ Used in tweets, and marked by the # symbol, to classify messages by keyword or t
 ####‘hashtag’ follow model
 A mechanism introduced to follow other agents based on hashtags. If the use hashtag probability parameter is non-zero, then agents will attach hashtags to their tweets.
 Depending on the ideology and location of the agent, they are then placed into a dynamic array. If another user wants to follow via hashtag, they look to these dynamic arrays to find a specific agent that relates to
-their hashtag preferences. These preferences can be set in the hashtag follow options section.
+their hashtag preferences. These preferences can be set in the *hashtag* follow options section.
 
 ####hashtag_follow_options
 **(type: n/a)** When agents tweet in the network, they can also attach hashtags to their tweets. When they do attach hashtags, they are binned according to their ideology and region. If another agent searches for a hashtag based on
@@ -335,7 +335,7 @@ Conveniently, you can put ‘minute’, ‘hour’, ‘day’, or ‘year’, an
 **(type: n/a)** In the model weights, you can set the probability of calling each follow method. You can use arbitrary units to set the weighting for each follow method because the weights are summed and then normalized to find the probability
 of calling each method. As an example, if you would like to call the follow methods equally you would set it as so:
 
-model_weights{random: 0.20, preferential: 0.20, agent: 0.20, preferential agent: 0.20, hashtag: 0.20}
+`model_weights{random: 0.20, twitter_suggest: 0.20, agent: 0.20, preferential_agent: 0.20, hashtag: 0.20}`
 
 ##N
 

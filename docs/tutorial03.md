@@ -10,9 +10,9 @@ There are six different follow models that have been implemented into ***#k@***,
 The six follow models are:
 
 * Random
-* Twitter Suggest
+* Twitter_Suggest
 * Agent
-* Preferential Agent
+* Preferential_Agent
 * Hashtag
 * Twitter
 
@@ -95,7 +95,7 @@ Since the number of agents within this simulation will remain constant, the add 
 will also be left as is, to produce as many data files for analysis as possible. The tweet and retweets ranks have remained the same,
 though their purpose is just to organize them and has no real impact on the simulation. The follow ranks max threshold
 and weight have also remained the same, with their minimum values being 0 and 1 and their maximum values being a number greater than the number of agents
-and that value increased by one. Though this will not impact this simulation, it is very important for the twitter suggest follow model, and will therefore be
+and that value increased by one. Though this will not impact this simulation, it is very important for the *twitter_suggest* follow model, and will therefore be
 elaborated on in [**Tutorial 4**](http://docs.hashkat.org/en/latest/tutorial04/). The *tweet_observations*
 section of this program will be kept as is for all of these tutorials, though you are encouraged to change it and experiment with it
 when running your own simulations. More information on this can be found on the [**Input**](http://docs.hashkat.org/en/latest/input/) page.
