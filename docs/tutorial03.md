@@ -100,7 +100,7 @@ elaborated on in [**Tutorial 4**](http://docs.hashkat.org/en/latest/tutorial04/)
 section of this program will be kept as is for all of these tutorials, though you are encouraged to change it and experiment with it
 when running your own simulations. More information on this can be found on the [**Input**](http://docs.hashkat.org/en/latest/input/) page.
 
-The *ideologies* and *regions* sections have remained the same, but we have added another agent type to our input file. This *Celebrity* agent type is of course intended to mimic a Celebrity user, while a
+The *ideologies* and *regions* sections have remained the same, but we have added another agent type to our input file. This *Celebrity* agent type is of course intended to mimic a celebrity user, while a
 *Standard* agent is used to portray a typical agent on a social network. In contrast to the *Standard* agents from [**Tutorial 1**](http://docs.hashkat.org/en/latest/tutorial01/), the *Standard* agents in this
 simulation will have a *followback_probability* of 0, just to illustrate that they will only follow other agents through the follow model, though we did already have *use_followback* set to false,
 and a constant follow rate and tweet rate of 0.01. The *Celebrity* agent type will have all of the same input values as the

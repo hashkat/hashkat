@@ -10,7 +10,7 @@ This section serves as a reference for users who have run a simulation, and wish
 
 `agenttype_info.dat`
 
-Present and named for every single agent type in the network (e.g. 'Standard'
+Present and named for every single agent type in the network (e.g. *Standard*
 agent type would have a file named *Standard_info.dat*). Outlines the percentage of agents 
 that follow this agent type, the percentage of the proportion of agent types that this agent 
 type follows with respect to each other, and the number of possible degrees for this agent 
@@ -90,7 +90,7 @@ number and percentage of follows made by agents of each agent type.
 
 ## Most Populat Tweet Content
 
-Details basic information regarding the most retweeted, and therefore most popular, tweet in the entire network simulation. Basic information includes: the ID number of the tweet author,the author agent type, the author's ideology, the region the author lives in, the simulated point in time in the simulaiton when the tweet was created, the language of the tweet, the tweet type, whether or not a hashtag is present in the tweet, and the number of retweeters for this tweet. For many of these variables, a number will be printed instead of a name. For example, for 'Author Ideology', if you have 3 possible ideologies in your network, let's say 'Red', 'Green', and 'Blue' and the author of this tweet is ideologically 'Red', the number 0 will be printed beside 'Author Ideology' instead of 'Red', since it is the zeroth element in the list of ideologies. This will occur, for the variables 'Author Agent Type', 'Author Ideology', 'Author Region', 'Tweet Language', and 'Tweet Type'.
+Details basic information regarding the most retweeted, and therefore most popular, tweet in the entire network simulation. Basic information includes: the ID number of the tweet author,the author agent type, the author's ideology, the region the author lives in, the simulated point in time in the simulaiton when the tweet was created, the language of the tweet, the tweet type, whether or not a hashtag is present in the tweet, and the number of retweeters for this tweet. For many of these variables, a number will be printed instead of a name. For example, for 'Author Ideology', if you have 3 possible ideologies in your network, let's say *Red*, *Green*, and *Blue* and the author of this tweet is ideologically *Red*, the number 0 will be printed beside 'Author Ideology' instead of *Red*, since it is the zeroth element in the list of ideologies. This will occur, for the variables 'Author Agent Type', 'Author Ideology', 'Author Region', 'Tweet Language', and 'Tweet Type'.
 
 An example of the data found in this output file is shown below:
 

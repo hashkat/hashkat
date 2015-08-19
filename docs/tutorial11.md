@@ -22,7 +22,7 @@ The *unfollow_tweet_rate* is a number inputted into the **INFILE.yaml** file tha
 
 Let's now create a network simulation that implements unfollowing due to chattiness. We will use the input file we used in [**Tutorial 1**](https://github.com/hashkat/hashkat/blob/master/docs/tutorial_input_files/tutorial01/INFILE.yaml) as a starting point. The *INFILE.yaml* file created for this tutorial can be found in the *docs/tutorial_input_files* directory in the directory *tutorial11*. This file can also be viewed [here](https://github.com/hashkat/hashkat/blob/master/docs/tutorial_input_files/tutorial11/INFILE.yaml).
 
-So using the input file from [**Tutorial 1**](https://github.com/hashkat/hashkat/blob/master/docs/tutorial_input_files/tutorial01/INFILE.yaml) as a starting point, let's first add another agent type into this network. Let's call this agent type 'Chatty', and it'll have the same paramters as the 'Standard' agent type, except that the tweet rates for these agents will be 0.01 instead of 0.001.
+So using the input file from [**Tutorial 1**](https://github.com/hashkat/hashkat/blob/master/docs/tutorial_input_files/tutorial01/INFILE.yaml) as a starting point, let's first add another agent type into this network. Let's call this agent type 'Chatty', and it'll have the same paramters as the *Standard* agent type, except that the tweet rates for these agents will be 0.01 instead of 0.001.
 
 ```python
 - name: Chatty
@@ -62,7 +62,7 @@ Running this network simulation with unfollowing implemented, we produced the fo
 <img src='../img/tutorial11/main_stats_with_unfollowing.png'>
 </p>
 
-As we can see, there are 9863 total follows at the end of this simulation as opposed to the 9943 total follows present at the end of the simulation that didn't implement unfollowing. With unfollowing implemented, almost 100 connections were cut in this network. Plotting the in-degree distributions of the 'Standard' agents and 'Chatty' agents, we can see that 'Chatty' generally have less followers than 'Standard' agents, due to them losing followers due to their excessive tweet rate.
+As we can see, there are 9863 total follows at the end of this simulation as opposed to the 9943 total follows present at the end of the simulation that didn't implement unfollowing. With unfollowing implemented, almost 100 connections were cut in this network. Plotting the in-degree distributions of the *Standard* agents and *Chatty* agents, we can see that *Chatty* generally have less followers than *Standard* agents, due to them losing followers due to their excessive tweet rate.
 
 <p align='center'>
 <img src='../img/tutorial11/agent_type_in-degree_plot.svg'>

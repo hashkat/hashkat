@@ -80,7 +80,7 @@ The **INFILE.yaml** used for this scenario can be found in the *docs/tutorial_in
 
 ### Scenario 2 - Different Regions, Different Ideologies
 
-We have two regions in our network, Canada and the USA, and both are in the midst of a federal election. In both regions, there are two main political parties, 'Red' and 'Blue'. However, the 'Red' party and 'Blue' party in Canada are vastly different from the 'Red' party and 'Blue' party in the USA. Citizens of these regions have taken to this social network to voice their views on their particular regions' upcoming elections. These citizens can be categorized into 2 main agent types in the social network. These agent types are:
+We have two regions in our network, *Canada* and the *USA*, and both are in the midst of a federal election. In both regions, there are two main political parties, *Red* and *Blue*. However, the *Red* party and *Blue* party in *Canada* are vastly different from the *Red* party and *Blue* party in the *USA*. Citizens of these regions have taken to this social network to voice their views on their particular regions' upcoming elections. These citizens can be categorized into 2 main agent types in the social network. These agent types are:
 
 #### Red
 
@@ -142,7 +142,7 @@ We have two regions in our network, Canada and the USA, and both are in the mids
       tweet: {function: linear, y_intercept: 0.01, slope: 0.001}
 ```
 
-Agents started voicing their views 5 days before the day of their country's federal election, which coincidentally happen to occur in both countries on the very same day. The **INFILE.yaml** used for this scenario can be found in the *docs/tutorial_input_files* directory in *hashkat* under *tutorial13_scenario_2* as well as [here](https://github.com/hashkat/hashkat/blob/master/docs/tutorial_input_files/tutorial13_scenario_2/INFILE.yaml). Copy this input file into your *hashkat* directory and run the simulation. Feel free to look through the input file to see what we did to produce this scenario. Due to the complexity of this network, the simulation may run slightly longer than the simulations done in previous tutorials. Judging by the number of supporters you will find in the social network, find a way to discover who will win the election in both Canada and the USA.
+Agents started voicing their views 5 days before the day of their country's federal election, which coincidentally happen to occur in both countries on the very same day. The **INFILE.yaml** used for this scenario can be found in the *docs/tutorial_input_files* directory in *hashkat* under *tutorial13_scenario_2* as well as [here](https://github.com/hashkat/hashkat/blob/master/docs/tutorial_input_files/tutorial13_scenario_2/INFILE.yaml). Copy this input file into your *hashkat* directory and run the simulation. Feel free to look through the input file to see what we did to produce this scenario. Due to the complexity of this network, the simulation may run slightly longer than the simulations done in previous tutorials. Judging by the number of supporters you will find in the social network, find a way to discover who will win the election in both *Canada* and the *USA*.
 
 ## Moving Forward with ***#k@***
 

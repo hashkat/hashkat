@@ -279,7 +279,7 @@ agent_stats:
   true
 ```
 
-If *true*, a simulation will produce additional files in the output directory named after the particular agent types within the simulation as *agenttype_info.dat* (e.g. the presence of a Standard agent type will produce a file labelled *Standard_info.dat*). Within this file can be found the percentage out of the total number of agents that follow this agent type, the percentage of the proportion of agent types that this agent type follows with respect to each other, and the number of possible degrees of agent for this agent type and their weighted in-degree, out-degree, cumulative-degree, and the logs of each. 
+If *true*, a simulation will produce additional files in the output directory named after the particular agent types within the simulation as *agenttype_info.dat* (e.g. the presence of a *Standard* agent type will produce a file labelled *Standard_info.dat*). Within this file can be found the percentage out of the total number of agents that follow this agent type, the percentage of the proportion of agent types that this agent type follows with respect to each other, and the number of possible degrees of agent for this agent type and their weighted in-degree, out-degree, cumulative-degree, and the logs of each. 
 
 #### Degree Distributions
 

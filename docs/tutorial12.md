@@ -242,10 +242,10 @@ For this network simulation, we would like to have the following:
 * the twitter follow model implemented, with the twitter_suggest and the hashtag follow model evenly weighted and the other follow models being excluded from this simulation
 * No unfollowing allowed
 * Hashtag presence in tweets 50% of the time
-* 4 ideologies: 'Red', 'Blue', 'Green', and 'Orange'
-* agents being located in either Ontario or Quebec, with the ratio of Ontarians to Quebecers being 3:2
+* 4 ideologies: *Red*, *Blue*, *Green*, and *Orange*
+* agents being located in either *Ontario* or *Quebec*, with the ratio of Ontarians to Quebecers being 3:2
 * Ontarians having a *StandardPref* preference class, with 4 evenly wieghted ideologies and the ratio of English to French speaking Ontarians being 1:1
-* Quebecers having the *NoRetweetPref* preference class, with only 3 ideologies ('Red', 'Blue', 'Green') evenly weighted, with the ratio of English speaking to French speaking Quebecers being 1:1
+* Quebecers having the *NoRetweetPref* preference class, with only 3 ideologies (*Red*, *Blue*, *Green*) evenly weighted, with the ratio of English speaking to French speaking Quebecers being 1:1
 * for the *StandardPref* preference class, the tweet transmission rates for the agent types present in this network are 0.1 for 'plain'/'musical' tweets, 0.0 for 'different_ideology' tweets, 0.2 'same_ideology' tweets, and 0.4 for 'humorous' tweets, with the 'follow_reaction_prob' being 0.3
 * the *NoRetweetPref* preference class will remain the same, with 0 for all
 
@@ -409,7 +409,7 @@ Running the network simulation to completion, we produced the following network 
 <img src='../img/tutorial12/visualization.png'>
 </p>
 
-In the above visualization, the red nodes correspond to the 'Standard-Chatty' agents, the green nodes correspond to the 'Standard-Friendly' agents, the yellow nodes correspond to the 'Standard-Funny' agents, the blue nodes correspond to 'Standard-Musical' agents, and the purple nodes correspond to the 'Standard-Political' agents.
+In the above visualization, the red nodes correspond to the *Standard-Chatty* agents, the green nodes correspond to the *Standard-Friendly* agents, the yellow nodes correspond to the *Standard-Funny* agents, the blue nodes correspond to *Standard-Musical* agents, and the purple nodes correspond to the *Standard-Political* agents.
 
 As we can see, our social network has been divided into networks based on language, with one network corresponding to English-speaking agents and the other corresponding to French-speaking agents.
 
@@ -425,7 +425,7 @@ Setting the 'Degree-Range Settings' from 80 to 100 and clicking 'Filter', we can
 <img src='../img/tutorial12/filtered_visualization.png'>
 </p>
 
-As we can see from this visualization, the most highly connected nodes are the green and yellow nodes, also known as the 'Standard-Friendly' and 'Standard-Funny' agents. Therefore, it is quite clear that the friendly and funny agents won the popularity contest.
+As we can see from this visualization, the most highly connected nodes are the green and yellow nodes, also known as the *Standard-Friendly* and *Standard-Funny* agents. Therefore, it is quite clear that the friendly and funny agents won the popularity contest.
 
 ## Next Steps
 

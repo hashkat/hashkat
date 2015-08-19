@@ -234,7 +234,7 @@ regions section of the input file. You can also set the weights of a certain age
 
 ####ideology_weights
 **(type: n/a)** After declaring ideologies which define a characteristic for an agent, you must set the weights for each ideology in the region section. For more information on ideologies, click here: ideologies.
-Let’s say you have defined ideologies ‘Red’ and ‘Blue’. The correct syntax for setting the weighting of these ideologies is as follows:
+Let’s say you have defined ideologies *Red* and *Blue*. The correct syntax for setting the weighting of these ideologies is as follows:
 
 ```python
 regions:
@@ -340,7 +340,7 @@ model_weights{random: 0.20, preferential: 0.20, agent: 0.20, preferential agent:
 ##N
 
 ####name
-**(type: string)** The names of agents is preference; they can be anything one wants. The agents included in the software are Standard, Celebrity, Bot, and Organization.
+**(type: string)** The names of agents is preference; they can be anything one wants. The agents usually used in tutorials are *Standard*, *Celebrity*, *Bot*, and *Organization*.
 
 ####naming_ideologies
 **(type: string)** The names of your ideologies is completely up to you and the syntax for declaring ideologies is as such:
@@ -350,7 +350,7 @@ ideologies:
   - name: Red
   - name: Blue
 ```
-You can see that I have set 2 ideologies, Red and Blue. The weights for each ideology must be set in the regions section of the input file.
+You can see that I have set 2 ideologies, *Red* and *Blue*. The weights for each ideology must be set in the regions section of the input file.
 
 ####naming_preference_classes
 **(type: string)** You can name your preference classes however you want. The names of your preference classes are needed in the regions section of the input file to determine the weights for an agent having a certain preference class.
@@ -461,7 +461,7 @@ regions:
     add weight: 10
 ```
 
-From these weights, two thirds of the population will be from USA and one third from Canada.
+From these weights, two thirds of the population will be from *USA* and one third from *Canada*.
 
 ####region_connection_matrix
 Displays the percentage of connections agents of each region have with other regions out of their respective total number of connections
