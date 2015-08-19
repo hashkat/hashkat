@@ -96,7 +96,7 @@ models. Input *false* to prevent this.
 #### Barabasi Connections
 
 ```python
-barabasi_connections: # number of connections we want to make when use_barabassi == true
+barabasi_connections:
   100
 ```
 
