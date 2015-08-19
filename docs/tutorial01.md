@@ -15,9 +15,7 @@ through implementation of the Kinetic Monte Carlo Method.
 
 ## What is the Kinetic Monte Carlo (KMC) Method?
 
-The Kinetic Monte Carlo (KMC) Method carries out a simulation where the rate
-of which time is increased by is influenced by the cummulative rate function
-of the rates within the system.
+The Kinetic Monte Carlo (KMC) Method carries out a simulation where the change in simulation time is influenced by the cumulative rate function of the rates within the system.
 
 For ***#k@***, we have **R**, the cummulative rate function,
 which is the sum of the agent add rate, tweet rate, follow rate, and retweet rate.  
@@ -101,12 +99,13 @@ Each agent will have their own particular characteristics that will be changed a
 <img src='../img/tutorial01/agent_info.png'>
 </p>
 
-Run the simulation. If you experience any issues running the simulation,
-you can reference the [**Installation**](http://docs.hashkat.org/en/latest/installation/) page for details on running a simulation
-for the first time.
+Run the simulation by typing in the command:
 
-When running this program, you will see something similar to this
-outputted to the screen:
+`run.sh`
+
+If you experience any issues running the simulation, you can reference the [**Installation**](http://docs.hashkat.org/en/latest/installation/) page for details on running a simulation for the first time.
+
+When running this program, you will see something similar to this outputted to the screen:
 
 | Time | Users | Follows | Tweets | Retweets | Unfollows | R | Time (s) |
 | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -133,7 +132,6 @@ Looking into the hashkat directory, you will see a *DATA_vs_TIME* file, which
 contains the chart displayed above at several different simulation times, a
 *network_state.dat* file which is where your simulation data will be saved to, and the **output** directory, which contains all the data you've
 accummulated through simulation necessary for analysis. We shall discuss these analysis files below.
-
 
 ## Output of a Simple Network
 
@@ -166,7 +164,9 @@ To access 'gnuplot', type in the command:
 
 `gnuplot`
 
-To plot the in-degree, out-degree, and cumulative-degree distributions for 'month002', which contains the most up to date data, on the same graph with appropriate axis labels and a title, type in the following:
+To plot the in-degree, out-degree, and cumulative-degree distributions for 'month002', which contains the most up to date data, as an SVG image on the same graph with appropriate axis labels and a title, type in the following:
+
+`set term svg`
 
 `set style fill transparent solid 0.5 noborder `
 
@@ -186,11 +186,9 @@ Giving us:
 
 As expected, most agents have an in-degree of 10, an out-degree of 10, and a cumulative degree of 20.
 
-Note that you can save your plots as '.svg' files by typing in the commands
+Note that you can save your plots by typing in the command:
 
-`set term svg`
-
-`set output 'filename.svg'`
+`set output <filename>`
 
 when you first start up 'gnuplot' and prior to actually plotting the data.
 

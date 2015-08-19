@@ -14,7 +14,7 @@ We will go over the steps to install these programs for each particular operatin
 
 Here outlines the following steps on how to install ***#k@*** on Mac OS X:
 
-1. Download the latest build of ***#k@*** at [hashkat.org](http://hashkat.org).
+1. Download the latest build of ***#k@*** at [hashkat.org](http://hashkat.org) by clicking on 'Latest Build'.
 1. Enter a terminal and go into your *Downloads* directory/folder by typing in the following command and pressing **Enter**:
 
     `cd Downloads`
