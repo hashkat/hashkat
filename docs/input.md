@@ -483,7 +483,7 @@ and are also weighted with respect to each other.
         Standard: 0.0
         Celebrity: 0.0
         else: 0.0
-      humourous:
+      humorous:
         Standard: 0.0
         Celebrity: 0.0
         else: 0.0
@@ -491,8 +491,8 @@ and are also weighted with respect to each other.
       0.5
 ```
 
-The *preference classes* are the traits of an agent that influence whether or not that agent will retweet the tweet of another user. The four possible types of tweets are plain tweets, music-related tweets, ideological tweets, and humourous tweets.
-Under *tweet_transmissions* one can dictate the probabilities that each type of agent will retweet a tweet, based on the content of that tweet, whether it be plain or musical, have a different ideology, have the same ideology, or be humourous.
+The *preference classes* are the traits of an agent that influence whether or not that agent will retweet the tweet of another user. The four possible types of tweets are plain tweets, music-related tweets, ideological tweets, and humorous tweets.
+Under *tweet_transmissions* one can dictate the probabilities that each type of agent will retweet a tweet, based on the content of that tweet, whether it be plain or musical, have a different ideology, have the same ideology, or be humorous.
 The *follow_reaction_prob* relates to the probability that an agent will follow an agent based on seeing a tweet by them being retweeted by another agent that that agent is following as opposed to just retweeting that retweet. With the *follow_reaction_prob* set to 0.5 in the above example, there is a 50% chance that an agent will retweet a retweet and a 50% chance that they will follow the speaker of the original tweet.   
 
 **Note**: if you'd like to change the number of preference classes in the simulation, make sure te value is less than or equal to the value set to 'N_BIN_PREFERENCE_CLASS' in the *config_static.h' file in *src*. You can also change the value set to *N_BIN_PREFERENCE_CLASS* and rebuild ***#k@*** by running *build.sh*.
@@ -510,7 +510,7 @@ The *follow_reaction_prob* relates to the probability that an agent will follow 
         ideological: 1.0
         plain: 1.0
         musical: 1.0
-        humourous: 1.0
+        humorous: 1.0
     followback_probability: 0.44
     hashtag_follow_options:
       care_about_region: true
@@ -522,7 +522,7 @@ The *follow_reaction_prob* relates to the probability that an agent will follow 
 
 In this section one can identify the types of agents with which to include in their simulation. Under weights we can see *add* which correlates to the probability that the type of agent will be the one added to the network,
 weighted against the other types of agents. The value inputted into *follow* will be the probability, weighted against the other agent types, in which this agent is followed in the agent follow model by other agents.
-*tweet_type* summarizes the weighted probabilities that the content of an agent of this type's tweet will be ideological, plain, musical, or humourous. The *follow_back* probability is the probability that following an agent of this type
+*tweet_type* summarizes the weighted probabilities that the content of an agent of this type's tweet will be ideological, plain, musical, or humorous. The *follow_back* probability is the probability that following an agent of this type
 will result in that agent following you back. The *hashtag_follow_options* are useful for a hashtag follow model, where agents follow other agents based on the hashtags associated with their tweets. In this follow model, if *care_about_region* is set to *true*, 
 then agents will only follow other agents that live in the same region as them, while this won't matter to them if set to *false*. If *care_about_ideology* is set to *true*, then agents will only follow other agents that share the same ideology as them,
 while this won't matter to them if set to false. It is important to note that *use_hashtag_probability* in the **analysis** section must be set to a value greater than zero for this to work, or else no one will be implementing hastags into their tweets.

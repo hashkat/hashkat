@@ -118,7 +118,7 @@ agents:
         ideological: 1.0
         plain: 1.0
         musical: 1.0
-        humourous: 1.0
+        humorous: 1.0
     # Probability that following this agent results in a follow-back
     followback_probability: 0
     hashtag_follow_options:
@@ -140,7 +140,7 @@ agents:
         ideological: 1.0
         plain: 1.0
         musical: 1.0
-        humourous: 1.0
+        humorous: 1.0
     # Probability that following this agent results in a follow-back
     followback_probability: 0
     hashtag_follow_options:

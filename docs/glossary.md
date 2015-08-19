@@ -202,8 +202,8 @@ agents:
 From this example, the AgentType1 will only follow other agents that have the same ideology and region because they care about the region and ideology for the hashtag
 follow method. If both are set to false, then the AgentType1 will follow agents with any ideology from any location.
 
-####'humourous' tweets
-**(type: n/a)** In the agents section, there are different types of tweets that agents can tweet. One of the tweet types is ‘humourous’ which can be thought of as how often they tweet humourous tweets. When an agent tweets a humourous tweet,
+####'humorous' tweets
+**(type: n/a)** In the agents section, there are different types of tweets that agents can tweet. One of the tweet types is ‘humorous’ which can be thought of as how often they tweet humorous tweets. When an agent tweets a humorous tweet,
 the agents that follows the agent who tweeted may retweet the tweet depending on the tweet transmission value and density function. An example of the syntax for declaring a ideological tweet preference class is:
 
 ```python
@@ -211,7 +211,7 @@ preference classes:
  - name: Pref1
 
    tweet transmission:
-      humourous:
+      humorous:
         AgentType1: 0.1
         AgentType2: 0.1
         else: 0.1
@@ -567,7 +567,7 @@ The files created are titled “tweet distro.dat” and “retweets distro.dat.�
 
 ####tweet_type
 **(type: double)** When an agent tweets they can be different types of tweets they have. These tweet types are incorporated with the preference classes for retweeting.
-There are four different tweet types currently implemented and they are ‘ideological’, ‘plain’, ‘musical’, and ‘humourous’. The weights associated with each tweet type can also be set along with the tweet type. These weights can be different for each agent type and
+There are four different tweet types currently implemented and they are ‘ideological’, ‘plain’, ‘musical’, and ‘humorous’. The weights associated with each tweet type can also be set along with the tweet type. These weights can be different for each agent type and
 the weights are summed and each weight is divided by the sum to produce a probability for generating each tweet type. An example of how to set the tweet types is below:
 
 ```python
@@ -579,7 +579,7 @@ agents:
         ideological: 1.0
         plain: 1.0
         musical: 1.0
-        humourous: 1.0
+        humorous: 1.0
 ```
 
 From above you can see that all of the weights are the same and therefore there would be the same amount of each tweet type for AgentType1.

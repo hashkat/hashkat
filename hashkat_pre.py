@@ -256,7 +256,7 @@ def load_relevance_weights():
     weights = []
     for pref in pref_classes:
         pref_weights = []
-        for tweet_type in ["plain", "same_ideology", "plain", "humourous", "different_ideology"]:
+        for tweet_type in ["plain", "same_ideology", "plain", "humorous", "different_ideology"]:
         
             weight_set = []
             #print(tweet_type, "=>", weight_set)

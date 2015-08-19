@@ -277,7 +277,7 @@ preference_classes:
         Standard: 0.1
         Celebrity: 0.001
         else: 0.001
-      humourous:
+      humorous:
         Standard: 0.2
         Celebrity: 0.002
         else: 0.002
@@ -298,7 +298,7 @@ preference_classes:
         Standard: 0
         Celebrity: 0
         else: 0
-      humourous:
+      humorous:
         Standard: 0
         Celebrity: 0
         else: 0
@@ -323,7 +323,7 @@ agents:
         ideological: 1.0
         plain: 1.0
         musical: 1.0
-        humourous: 1.0
+        humorous: 1.0
     # Probability that following this agent results in a follow-back
     followback_probability: .44
     hashtag_follow_options:

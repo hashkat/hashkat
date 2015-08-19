@@ -35,7 +35,7 @@ So using the input file from **Tutorial 1** as a starting point, let's first add
       ideological: 1.0
       plain: 1.0
       musical: 1.0
-      humourous: 1.0
+      humorous: 1.0
   # Probability that following this agent results in a follow-back
   followback_probability: .44
   hashtag_follow_options:

@@ -67,7 +67,7 @@ regions:
 
 ### Preference Class - Tweet Transmission
 
-An agent's tweet transmission is the probability that an agent will retweet a tweet of a particular type. This is defined in the *preference_classes* section of **INFILE.yaml**, where the probability that an agent will retweet a tweet of the possible tweet types (plain and musical, different ideology, same ideology, humourous) is determined by its agent type. 
+An agent's tweet transmission is the probability that an agent will retweet a tweet of a particular type. This is defined in the *preference_classes* section of **INFILE.yaml**, where the probability that an agent will retweet a tweet of the possible tweet types (plain and musical, different ideology, same ideology, humorous) is determined by its agent type. 
 
 ```python
 preference_classes:
@@ -86,7 +86,7 @@ preference_classes:
         Standard: 0.01
         Celebrity: 0.01
         else: 0.2
-      humourous:
+      humorous:
         Standard: 0.02
         Celebrity: 0.02
         else: 0.4
@@ -139,7 +139,7 @@ agents:
 
 ### Agent - Tweet Type
 
-Defined in the *agents* section of **INFILE.yaml**, *tweet_type* outlines the weight in which agents of a particular agent type make tweets categorized into *ideological*, *plain*, *musical*, or *humourous* based on their content. 
+Defined in the *agents* section of **INFILE.yaml**, *tweet_type* outlines the weight in which agents of a particular agent type make tweets categorized into *ideological*, *plain*, *musical*, or *humorous* based on their content. 
 
 ```python
 agents:
@@ -149,7 +149,7 @@ agents:
         ideological: 1.0
         plain: 1.0
         musical: 1.0
-        humourous: 1.0
+        humorous: 1.0
 ```
 
 ### Agent - Followback Probability
@@ -246,7 +246,7 @@ For this network simulation, we would like to have the following:
 * agents being located in either Ontario or Quebec, with the ratio of Ontarians to Quebecers being 3:2
 * Ontarians having a *StandardPref* preference class, with 4 evenly wieghted ideologies and the ratio of English to French speaking Ontarians being 1:1
 * Quebecers having the *NoRetweetPref* preference class, with only 3 ideologies ('Red', 'Blue', 'Green') evenly weighted, with the ratio of English speaking to French speaking Quebecers being 1:1
-* for the *StandardPref* preference class, the tweet transmission rates for the agent types present in this network are 0.1 for 'plain'/'musical' tweets, 0.0 for 'different_ideology' tweets, 0.2 'same_ideology' tweets, and 0.4 for 'humourous' tweets, with the 'follow_reaction_prob' being 0.3
+* for the *StandardPref* preference class, the tweet transmission rates for the agent types present in this network are 0.1 for 'plain'/'musical' tweets, 0.0 for 'different_ideology' tweets, 0.2 'same_ideology' tweets, and 0.4 for 'humorous' tweets, with the 'follow_reaction_prob' being 0.3
 * the *NoRetweetPref* preference class will remain the same, with 0 for all
 
 We would also like you to use only the following agent types with their respective characteristics:
@@ -268,7 +268,7 @@ We would also like you to use only the following agent types with their respecti
       ideological: 1.0
       plain: 1.0
       musical: 1.0
-      humourous: 1.0
+      humorous: 1.0
   # Probability that following this agent results in a follow-back
   followback_probability: 0.2
   hashtag_follow_options:
@@ -298,7 +298,7 @@ We would also like you to use only the following agent types with their respecti
       ideological: 1.0
       plain: 7.0
       musical: 1.0
-      humourous: 3.0
+      humorous: 3.0
   # Probability that following this agent results in a follow-back
   followback_probability: 1.0
   hashtag_follow_options:
@@ -328,7 +328,7 @@ We would also like you to use only the following agent types with their respecti
       ideological: 1.0
       plain: 1.0
       musical: 0.0
-      humourous: 6.0
+      humorous: 6.0
   # Probability that following this agent results in a follow-back
   followback_probability: 0.44
   hashtag_follow_options:
@@ -358,7 +358,7 @@ We would also like you to use only the following agent types with their respecti
       ideological: 0.0
       plain: 1.0
       musical: 5.0
-      humourous: 0.0
+      humorous: 0.0
   # Probability that following this agent results in a follow-back
   followback_probability: 0.1
   hashtag_follow_options:
@@ -388,7 +388,7 @@ We would also like you to use only the following agent types with their respecti
       ideological: 8.0
       plain: 1.0
       musical: 0.0
-      humourous: 3.0
+      humorous: 3.0
   # Probability that following this agent results in a follow-back
   followback_probability: 0.44
   hashtag_follow_options:
@@ -429,4 +429,4 @@ As we can see from this visualization, the most highly connected nodes are the g
 
 ## Next Steps
 
- With the completion of this tutorial, you now have knowledge and experience with every different agent configuration you can implement into ***#k@***. From here, we will move on to a discussion on interactive mode in ***#k@***, where you can make changes to your network mid-simulation.
+With the completion of this tutorial, you now have knowledge and experience with every different agent configuration you can implement into ***#k@***. You are welcome to proceed to the next tutorial, where we demonstrate some of the situations you can model using ***#k@***.

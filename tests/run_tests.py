@@ -169,7 +169,7 @@ def config_to_yaml(C):
               "Celebrity": retweet_rate,
               "else": retweet_rate
             },
-            "humourous": {
+            "humorous": {
               "Standard": retweet_rate, 
               "Celebrity": retweet_rate,
               "else": retweet_rate
@@ -188,7 +188,7 @@ def config_to_yaml(C):
               "ideological": 1,
               "plain": 1,
               "musical": 1,
-              "humourous": 1
+              "humorous": 1
             }
           },
           "followback_probability": followback_probability,

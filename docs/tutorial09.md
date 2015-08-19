@@ -24,7 +24,7 @@ The likelihood of this occurring is dependent on the value of the *follow_reacti
 
 ## Constructing a Network Without These Other Follow Methods
 
-We shall now create a network simulation that does not use these follow methods. We have created plenty of these already in the previous tutorials, so we will use the INFILE.yaml we used in **Tutorial 4** for the a twitter_suggest follow model that does not use the Barabasi Configuration as a starting point. This input file can be found [here](https://github.com/hashkat/hashkat/blob/master/docs/tutorial_input_files/tutorial04_other/INFILE.yaml). The input file we will be creating can be found in the *docs/tutorial_input_files* directory in the *tutorial09_without_other_follow* directory and [here](https://github.com/hashkat/hashkat/blob/master/docs/tutorial_input_files/tutorial09_without_other_follow/INFILE.yaml). Some slight changes will be made to this input file. The Ontario region preference class will be changed to the *StandardPref* to enable retweeting in the simulation, with the *StandardPref* preference class being changed as well. The tweet transmission for Standard agents will be changed to 0.1 for *plain* and *same_ideology* tweets and 0.2 for *humourous* tweets, while the *follow_reaction_prob* within the Standard preference class will be reduced to 0.0 to prevent following via retweets to occur. With all these changes in order, we can now run and visualize this network simulation.
+We shall now create a network simulation that does not use these follow methods. We have created plenty of these already in the previous tutorials, so we will use the INFILE.yaml we used in **Tutorial 4** for the a twitter_suggest follow model that does not use the Barabasi Configuration as a starting point. This input file can be found [here](https://github.com/hashkat/hashkat/blob/master/docs/tutorial_input_files/tutorial04_other/INFILE.yaml). The input file we will be creating can be found in the *docs/tutorial_input_files* directory in the *tutorial09_without_other_follow* directory and [here](https://github.com/hashkat/hashkat/blob/master/docs/tutorial_input_files/tutorial09_without_other_follow/INFILE.yaml). Some slight changes will be made to this input file. The Ontario region preference class will be changed to the *StandardPref* to enable retweeting in the simulation, with the *StandardPref* preference class being changed as well. The tweet transmission for Standard agents will be changed to 0.1 for *plain* and *same_ideology* tweets and 0.2 for *humorous* tweets, while the *follow_reaction_prob* within the Standard preference class will be reduced to 0.0 to prevent following via retweets to occur. With all these changes in order, we can now run and visualize this network simulation.
 
 ```python
 preference_classes:
@@ -43,7 +43,7 @@ preference_classes:
         Standard: 0.1
         Celebrity: 0.01
         else: 0.01
-      humourous:
+      humorous:
         Standard: 0.2
         Celebrity: 0.02
         else: 0.02

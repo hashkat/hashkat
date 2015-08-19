@@ -190,7 +190,7 @@ void brief_agent_statistics(AnalysisState& state) {
 
     cout << "Final tweet stats:" << endl;
 
-    int n_humourous = 0, n_musical = 0, n_ideological = 0, n_plain = 0, n_total = 0;
+    int n_humorous = 0, n_musical = 0, n_ideological = 0, n_plain = 0, n_total = 0;
     for (Tweet tweet : state.tweet_bank.as_vector()) {
         TweetType type = tweet.content->type;
         n_total++;
@@ -201,12 +201,12 @@ void brief_agent_statistics(AnalysisState& state) {
         } else if (type == TWEET_MUSICAL) {
             n_musical++;
         } else if (type == TWEET_HUMOUROUS) {
-            n_humourous++;
+            n_humorous++;
         } else {
             ASSERT(false, "LOGIC ERROR!");
         }
     }
-    cout << "n_humourous: " << n_humourous << endl
+    cout << "n_humorous: " << n_humorous << endl
         << "n_musical: " << n_musical << endl
         << "n_ideological: " << n_ideological << endl
         << "n_plain: " << n_plain << endl

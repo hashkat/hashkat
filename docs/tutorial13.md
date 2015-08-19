@@ -2,7 +2,7 @@
 
 <span style="color:black; font-family:Georgia; font-size:1.5em;">August 2015 - This site is currently under construction. Please return regularly over the course of the summer for further updates. </span>
 
-<span style="color:black; font-family:Georgia; font-size:1.5em;">This tutorial is currently under development </span>
+<span style="color:black; font-family:Georgia; font-size:1.5em;">UNDER DEVELOPMENT</span>
 
 # A Complex Network
 
@@ -14,7 +14,7 @@ Up to this point, we have used ***#k@*** in very abstract terms.
 
 We have two organizations, *Coke* and *Pepsi*, who are taking full advantage of the access social networks allow them to have with consumers. They have both made accounts on this social network and both currently have zero followers. They have decided to each launch their own marketing campaign to garner as much follows from *Standard* agents in this social network as possible in a span of one week.
 
-Both *Coke* and *Pepsi* only follow agents that follow them, and they will do so for every single one of their followers. *Pepsi* tweets both musical and humourous tweets evenly weighted, while *Coke* only tweets humourous tweets, though they tweet at a slightly higher rate. Humourous tweets do have a better chance of being retweeted however.
+Both *Coke* and *Pepsi* only follow agents that follow them, and they will do so for every single one of their followers. *Pepsi* tweets both musical and humorous tweets evenly weighted, while *Coke* only tweets humorous tweets, though they tweet at a slightly higher rate. Humourous tweets do have a better chance of being retweeted however.
 
 The **INFILE.yaml** used for this scenario can be found in the *docs/tutorial_input_files* directory in *hashkat* under *tutorial13_scenario_1* as well as [here](https://github.com/hashkat/hashkat/blob/master/docs/tutorial_input_files/tutorial13_scenario_1/INFILE.yaml). To find out who wins this competition, copy this input file into your *hashkat* directory and run the simulation. Feel free to look through the input file to see what we did to produce this scenario. Due to the complexity of this network, the simulation may run slightly longer than the simulations done in previous tutorials.
 
@@ -35,7 +35,7 @@ The **INFILE.yaml** used for this scenario can be found in the *docs/tutorial_in
       ideological: 0.0
       plain: 0.0
       musical: 0.0
-      humourous: 1.0
+      humorous: 1.0
   # Probability that following this agent results in a follow-back
   followback_probability: 1.0
   hashtag_follow_options:
@@ -65,7 +65,7 @@ The **INFILE.yaml** used for this scenario can be found in the *docs/tutorial_in
       ideological: 0.0
       plain: 0.0
       musical: 1.0
-      humourous: 1.0
+      humorous: 1.0
   # Probability that following this agent results in a follow-back
   followback_probability: 1.00
   hashtag_follow_options:
@@ -99,7 +99,7 @@ We have two regions in our network, Canada and the USA, and both are in the mids
       ideological: 1.0
       plain: 1.0
       musical: 1.0
-      humourous: 1.0
+      humorous: 1.0
   # Probability that following this agent results in a follow-back
   followback_probability: .44
   hashtag_follow_options:
@@ -129,7 +129,7 @@ We have two regions in our network, Canada and the USA, and both are in the mids
       ideological: 1.0
       plain: 1.0
       musical: 1.0
-      humourous: 1.0
+      humorous: 1.0
   # Probability that following this agent results in a follow-back
   followback_probability: .44
   hashtag_follow_options:

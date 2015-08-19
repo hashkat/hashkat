@@ -319,17 +319,17 @@ static void parse_category_configurations(ParsedConfig& config, const Node& node
 }
 
 static void parse_agent_tweet_type_probabilities(AgentType& et, const Node& node) {
-    double plain = 0, ideological = 0, musical = 0, humourous = 0;
+    double plain = 0, ideological = 0, musical = 0, humorous = 0;
 
     parse(node, "ideological", ideological, /*Optional:*/ true);
     parse(node, "plain", plain, /*Optional:*/ true);
     parse(node, "musical", musical, /*Optional:*/ true);
-    parse(node, "humourous", humourous, /*Optional:*/ true);
+    parse(node, "humorous", humorous, /*Optional:*/ true);
 
-    double sum = (ideological + plain + musical + humourous);
+    double sum = (ideological + plain + musical + humorous);
 
     // Must match up with definition of TweetType in config_static.h!
-    double probs[N_TWEET_TYPES] = {plain / sum, ideological / sum, musical / sum, humourous / sum, /*Not valid:*/ 0};
+    double probs[N_TWEET_TYPES] = {plain / sum, ideological / sum, musical / sum, humorous / sum, /*Not valid:*/ 0};
     for (int i = 0; i < N_TWEET_TYPES; i++) {
         et.tweet_type_probs[i] = probs[i];
     }
