@@ -58,13 +58,11 @@ it just means that you've downloaded a newer version of ***#k@***!
 
     `ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"`
 
-    The type in the following commands to install the necessary packages and tools:
+    The type in the following commands to install the necessary packages and tools (make sure to click 'Install' in the prompt that appears after entering the first command):
 
     `xcode-select --install`
 
     `brew install cmake`
-
-    `brew install boost`
 
 1. You must now do a build of ***#k@*** on your computer by typing in the command:
 
@@ -146,8 +144,6 @@ Here outlines the following steps on how to install ***#k@*** on Linux (these in
     `sudo apt-get install cmake`
 
     `sudo apt-get install build-essential -y`
-
-    `sudo apt-get install libboost-all-dev` 
 
 1. You must now do a build of ***#k@*** on your computer by typing in the command:
 
