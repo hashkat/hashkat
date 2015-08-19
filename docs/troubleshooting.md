@@ -100,4 +100,4 @@ Though a Barabasi configuration can be implemented into every follow model netwo
 
 ## Reporting an Issue
 
-Check out our **Feedback** page if you have any issues using the ***#k@*** project not discussed above. There you can find our email address where you can contact us and a link to a webpage where you can post any issues you may have, which will be addressed and remedied as soon as possible. 
+Check out our [**Feedback**](http://docs.hashkat.org/en/latest/feedback/) page if you have any issues using the ***#k@*** project not discussed above. There you can find our email address where you can contact us and a link to a webpage where you can post any issues you may have, which will be addressed and remedied as soon as possible. 

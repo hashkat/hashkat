@@ -25,8 +25,8 @@ to create a simulation of our desired framework.
 
 For reference, the *INFILE.yaml* file we will create in this simulation can be found in the *docs/tutorial_input_files* directory in hashkat, under the title *tutorial03*.
 You can also view the input file we will be creating for this example [here](https://github.com/hashkat/hashkat/blob/master/docs/tutorial_input_files/tutorial03/INFILE.yaml).
-For more information on what goes into the input file, and what sort of information you can output from your simulation, check out the **Input** and
-**Output** page respectively.
+For more information on what goes into the input file, and what sort of information you can output from your simulation, check out the [**Input**](http://docs.hashkat.org/en/latest/input/) and
+[**Output**](http://docs.hashkat.org/en/latest/output/) page respectively.
 
 ## Constructing The Network
 
@@ -98,7 +98,7 @@ and weight have also remained the same, with their minimum values being 0 and 1 
 and that value increased by one. Though this will not impact this simulation, it is very important for the twitter suggest follow model, and will therefore be
 elaborated on in [**Tutorial 4**](http://docs.hashkat.org/en/latest/tutorial04/). The *tweet_observations*
 section of this program will be kept as is for all of these tutorials, though you are encouraged to change it and experiment with it
-when running your own simulations. More information on this can be found on the Input page.
+when running your own simulations. More information on this can be found on the [**Input**](http://docs.hashkat.org/en/latest/input/) page.
 
 The *ideologies* and *regions* sections have remained the same, but we have added another agent type to our input file. This *Celebrity* agent type is of course intended to mimic a Celebrity user, while a
 *Standard* agent is used to portray a typical agent on a social network. In contrast to the *Standard* agents from [**Tutorial 1**](http://docs.hashkat.org/en/latest/tutorial01/), the *Standard* agents in this
