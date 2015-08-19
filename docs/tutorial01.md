@@ -101,7 +101,7 @@ Each agent will have their own particular characteristics that will be changed a
 
 Run the simulation by typing in the command:
 
-`run.sh`
+`./run.sh`
 
 If you experience any issues running the simulation, you can reference the [**Installation**](http://docs.hashkat.org/en/latest/installation/) page for details on running a simulation for the first time.
 

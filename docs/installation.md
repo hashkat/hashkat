@@ -56,7 +56,7 @@ it just means that you've downloaded a newer version of ***#k@***!
 
 1. You must now do a build of ***#k@*** on your computer by typing in the command:
 
-    `build.sh`
+    `./build.sh`
 
     You may need to install additional tools on to your computer to build ***#k@***. If a prompt appears asking you to do so, please do. You may also need to install the 'CMake' package to your computer to build ***#k@***. If so, steps 12 and 13 outline how to install this package.
 
@@ -71,9 +71,9 @@ To install 'Hmebrew' to your computer, simply type in the command:
 
     With this installed, you should be able to build ***#k@*** in the manner outlined in step 11.
 
-1. You can now run ***#k@*** in this *hashkat* directory, as well as any other directory as long as it has *INFILE.yaml* within in it by typing in the command:
+1. You can now run ***#k@*** in this *hashkat* directory as long as it has *INFILE.yaml* within in it by typing in the command:
 
-    `run.sh`
+    `./run.sh`
 
 1. Once you have run ***#k@*** properly, remove all the network save and analysis files created from this simulation by typing in the following commands:
 
@@ -142,7 +142,7 @@ Here outlines the following steps on how to install ***#k@*** on Linux (these in
 
 1. You must now do a build of ***#k@*** on your computer by typing in the command:
 
-    `build.sh`
+    `./build.sh`
 
     You may need to install the 'CMake' package and the appropriate build tools to your computer to build ***#k@***. If so, step 12 outlines how to install these.
 
@@ -154,9 +154,9 @@ Here outlines the following steps on how to install ***#k@*** on Linux (these in
 
     With this installed, you should be able to build ***#k@*** in the manner outlined in step 11.
 
-1. You can now run ***#k@*** in this *hashkat* directory, as well as any other directory as long as it has *INFILE.yaml* within in it by typing in the command:
+1. You can now run ***#k@*** in this *hashkat* directory as long as it has *INFILE.yaml* within in it by typing in the command:
 
-    `run.sh`
+    `./run.sh`
 
  1. Once you have run ***#k@*** properly, remove all the network save and analysis files created from this simulation by typing in the following commands:
 

@@ -84,7 +84,9 @@ Summary of what can be found in the **hashkat** directory.
 
 ## <span style="color:green">run.sh</span>
 
-Script that runs the ***#k@*** program.
+Script that runs the ***#k@*** program. With this file and an *INFILE.yaml* file present in the current directory, type in the following command to run ***#k@***:
+
+`./run.sh`
 
 ## <span style="color:blue">scripts</span> 
 

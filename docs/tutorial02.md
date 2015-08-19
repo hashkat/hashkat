@@ -15,7 +15,7 @@ A brief explanation on how to restart a network, this tutorial should take appro
 At the end of **Tutorial 1**, we had run a simple network simulation and studied its output. You now have the knowledge to run your own simple networks and analysis of those networks.
 However, you will find that after modifying *INFILE.yaml* to your own specifications, and typing the command to run the simulation:
 
-`run.sh`
+`./run.sh`
 
 you will find that the simulation is not running properly. Though it looks like it's about to run, no new simulation is created, and no more data is collected. Inside the **output**
 directory you will find that nothing has changed from your previous simulation.
@@ -39,7 +39,7 @@ These two files are always overwritten when running a new network simulation, so
 
 You can now run your new simulation by typing in the command:
 
-`run.sh`
+`./run.sh`
 
 ## Stopping and Continuing a Simulation
 
@@ -47,7 +47,7 @@ If for whatever reason you would like to stop a simulation midway through runnin
 save the information it's collected to the *network_state.dat* file, and you can analyze the data you have so far in the *DATA_vs_TIME* file and **output** directory. If you would like
 to continue this simulation from where you left off, simply type in:
 
-`run.sh`
+`./run.sh`
 
 again and the simulation will recommence running.
 
