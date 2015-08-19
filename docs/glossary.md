@@ -172,7 +172,7 @@ A visualization tool used heavily in this documentation. You can find more infor
 **(type: n/a)** This parameter allows one to adjust the rate at which users are being added into the network. To have different numbers of agents, you can adjust the add weights in the agents section of the input file. Also known as *add_rate*
 
 ####gnuplot
-A command-line driven utility for graphing used in several tutorials for the plotting of data. More information on gnuplot can be found [here](http://gnuplot.sourceforge.net/).
+A command-line driven utility for graphing used in tutorials for the plotting of data. More information on gnuplot can be found [here](http://gnuplot.sourceforge.net/).
 
 ##H
 

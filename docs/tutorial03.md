@@ -20,7 +20,7 @@ Each of these follow models will be discussed and analyzed in each of their own 
 The input data used to create the networks will be relatively the same for each follow model tutorial, so that the results from running each different follow model
 can be easily compared and constrasted.
 
-As the name implies, a random follow model is one in which the agents in which a twitter user follows is totally arbitrary. Based on the work of Paul Erdos and Alfred Renyi, you can read up on the Erdos-Renyi Model [here](https://en.wikipedia.org/wiki/Erd%C5%91s%E2%80%93R%C3%A9nyi_model). You've already had some experience working with the random follow model, the simple network we created in Tutorial 1 implemented it, but in this tutorial we are going to go into this model in much more detail. We are going to actually go through the input file and make some changes
+As the name implies, a random follow model is one in which the agents in which a twitter user follows is totally arbitrary. Based on the work of Paul Erdos and Alfred Renyi, you can read up on the Erdos-Renyi Model [here](https://en.wikipedia.org/wiki/Erd%C5%91s%E2%80%93R%C3%A9nyi_model). You've already had some experience working with the random follow model, the simple network we created in [**Tutorial 1](http://docs.hashkat.org/en/latest/tutorial01/) implemented it, but in this tutorial we are going to go into this model in much more detail. We are going to actually go through the input file and make some changes
 to create a simulation of our desired framework.
 
 For reference, the *INFILE.yaml* file we will create in this simulation can be found in the *docs/tutorial_input_files* directory in hashkat, under the title *tutorial03*.
@@ -34,12 +34,12 @@ For more information on what goes into the input file, and what sort of informat
 <iframe width="420" height="315" src="https://www.youtube.com/embed/k6s25BWN4d8" frameborder="0" allowfullscreen></iframe>
 </p>
 
-Let's go into the INFILE.yaml file in the hashkat directory and make some changes. Using the INFILE.yaml used in Tutorial 1 as a starting point,
+Let's go into the INFILE.yaml file in the hashkat directory and make some changes. Using the INFILE.yaml used in [**Tutorial 1**](https://github.com/hashkat/hashkat/blob/master/docs/tutorial_input_files/tutorial01/INFILE.yaml) as a starting point,
 we'll keep the number of agents within the
 simulation constant by having 1000 initial and maximum agents. For quickness, we'll lower the maximum simulated time to 1000 simulated minutes.
 We'll keep the maximum analysis steps to be unlimited for the most refined simulation, and also keep the max real time to 1 minute since we don't 
 want the simulation to run for any longer than that. Interactive mode shall remain off, so both *enable_interactive_mode* and
-*enable_lua_hooks* shall be *false* and the lua script will be irrelevant.*use_barabasi* we'll be used next tutorial,
+*enable_lua_hooks* shall be *false* and the lua script will be irrelevant.*use_barabasi* we'll be used in [Tutorial 4](http://docs.hashkat.org/en/latest/tutorial04/),
 so this shall be kept *false* and the Barabasi connections will therefore also be inconsequential.
 The Barabasi exponent will remain at 1 since this gives the most realistic results. *use_random_time_increment* will be set to true
 for superior results. *use_followback* will remain *false*, and the follow model will remain *random*, with the model weights,
@@ -96,15 +96,15 @@ will also be left as is, to produce as many data files for analysis as possible.
 though their purpose is just to organize them and has no real impact on the simulation. The follow ranks max threshold
 and weight have also remained the same, with their minimum values being 0 and 1 and their maximum values being a number greater than the number of agents
 and that value increased by one. Though this will not impact this simulation, it is very important for the twitter suggest follow model, and will therefore be
-elaborated on in the next tutorial. The *tweet_observations*
+elaborated on in [**Tutorial 4**](http://docs.hashkat.org/en/latest/tutorial04/). The *tweet_observations*
 section of this program will be kept as is for all of these tutorials, though you are encouraged to change it and experiment with it
 when running your own simulations. More information on this can be found on the Input page.
 
 The *ideologies* and *regions* sections have remained the same, but we have added another agent type to our input file. This *Celebrity* agent type is of course intended to mimic a Celebrity user, while a
-*Standard* agent is used to portray a typical agent on a social network. In contrast to the *Standard* agents from **Tutorial 1**, the *Standard* agents in this
+*Standard* agent is used to portray a typical agent on a social network. In contrast to the *Standard* agents from [**Tutorial 1**](http://docs.hashkat.org/en/latest/tutorial01/), the *Standard* agents in this
 simulation will have a *followback_probability* of 0, just to illustrate that they will only follow other agents through the follow model, though we did already have *use_followback* set to false,
 and a constant follow rate and tweet rate of 0.01. The *Celebrity* agent type will have all of the same input values as the
-*Standard* agent type, except that its add weight will be zero. Though we have included them in the input file, the *Celebrity* agents will not be used until a **Tutorial 5**, where agents will follow other agents based on their agent type.  
+*Standard* agent type, except that its add weight will be zero. Though we have included them in the input file, the *Celebrity* agents will not be used until [**Tutorial 5**](http://docs.hashkat.org/en/latest/tutorial05/), where agents will follow other agents based on their agent type.  
 
 ```python
 agents:
@@ -210,4 +210,4 @@ Though we went through it in great detail, this example was just the tip of the 
 create. Try running your own random follow model simulation different from the one outlined above, and see what you can create.
 
 When ready, move on to the next tutorial, where things get a lot more interesting and a little more complicated with the
-twitter suggest follow model.
+[twitter_suggest follow model](http://docs.hashkat.org/en/latest/tutorial04/).

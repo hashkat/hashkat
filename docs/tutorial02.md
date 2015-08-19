@@ -12,7 +12,7 @@ A brief explanation on how to restart a network, this tutorial should take appro
 
 ## Running a New Simulation
 
-At the end of **Tutorial 1**, we had run a simple network simulation and studied its output. You now have the knowledge to run your own simple networks and analysis of those networks.
+At the end of [**Tutorial 1**](http://docs.hashkat.org/en/latest/tutorial01/), we had run a simple network simulation and studied its output. You now have the knowledge to run your own simple networks and analysis of those networks.
 However, you will find that after modifying *INFILE.yaml* to your own specifications, and typing the command to run the simulation:
 
 `./run.sh`
@@ -54,4 +54,4 @@ again and the simulation will recommence running.
 ## Next Steps
 
 With the completion of this second tutorial using ***#k@***, you are now familiar with restarting the
-basic networks you learned how to create in **Tutorial 1**. Proceed to the next tutorial for an introduction on using the various different follow models offered by ***k@***, starting with a lesson on the Random Follow Model.
+basic networks you learned how to create in [**Tutorial 1**](http://docs.hashkat.org/en/latest/tutorial01/). Proceed to the next tutorial for an introduction on using the various different follow models offered by ***k@***, starting with a lesson on the [Random Follow Model](http://docs.hashkat.org/en/latest/tutorial03/).

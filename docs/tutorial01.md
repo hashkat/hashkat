@@ -221,4 +221,4 @@ distributions, you must have more agents present during your simulation. However
 'Gephi' to visualize your network, so take that into consideration when configuring your network
 input file. 
 
-Feel free to move on to the next tutorial, where we will discuss restarting a network.
+Feel free to move on to the next tutorial, where we will discuss [restarting a network](http://docs.hashkat.org/en/latest/tutorial02/).

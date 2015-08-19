@@ -12,7 +12,7 @@ The preferential agent follow model is exactly like the agent follow model, exce
 
 ## Constructing The Network
 
-Since we've already modified our input file for an agent follow model in the previous tutorial, all we have to do is change the follow model in the INFILE.yaml to *preferential_agent*, and ***#k@*** will do the rest.
+Since we've already modified our input file for an agent follow model in the previous tutorial [here](https://github.com/hashkat/hashkat/blob/master/docs/tutorial_input_files/tutorial05/INFILE.yaml), all we have to do is change the follow model in the INFILE.yaml to *preferential_agent*, and ***#k@*** will do the rest.
 
 ## Running and Visualizing The Network
 
@@ -34,4 +34,4 @@ As we can see, the vast majority of agents in this network have a cumulative deg
 
 ## Next Steps
 
-You have now completed the preferential agent follow model. Similar to the agent follow model, you are encouraged to continue experimenting with this follow model by adding more agent types into your simulation, such as bots and organizations, and manipulating all of their add weights, follow weights, follow rates, etc., to create some compelling networks. You can alse implement *use_barabasi* into your simulation with an arbitrary amont of *barabasi_connections* to see what differences this causes in your network. When you are ready to move on, proceed to the next tutorial, where we deal with the penultimate follow model, the hashtag follow model.
+You have now completed the preferential agent follow model. Similar to the agent follow model, you are encouraged to continue experimenting with this follow model by adding more agent types into your simulation, such as bots and organizations, and manipulating all of their add weights, follow weights, follow rates, etc., to create some compelling networks. You can alse implement *use_barabasi* into your simulation with an arbitrary amont of *barabasi_connections* to see what differences this causes in your network. When you are ready to move on, proceed to the next tutorial, where we deal with the [hashtag follow model](http://docs.hashkat.org/en/latest/tutorial07/).

@@ -429,4 +429,4 @@ As we can see from this visualization, the most highly connected nodes are the g
 
 ## Next Steps
 
-With the completion of this tutorial, you now have knowledge and experience with every different agent configuration you can implement into ***#k@***. You are welcome to proceed to the next tutorial, where we demonstrate some of the situations you can model using ***#k@***.
+With the completion of this tutorial, you now have knowledge and experience with every different agent configuration you can implement into ***#k@***. You are welcome to proceed to the next [tutorial](http://docs.hashkat.org/en/latest/tutorial13/), where we demonstrate some of the situations you can model using ***#k@***.

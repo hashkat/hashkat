@@ -16,7 +16,7 @@ This particular follow model can be implemented using three different types of c
 The Classic Barabasi configuration is one in which agents that are added to the network make one conection with another agent and no other, unless manipulated to do so by allowing follow back or
 following through retweets within your simulation.
 
-Let's try running a Classic Barabasi twitter suggest follow model simulation, with our starting point being the INFILE.yaml we used in the previous tutorial.
+Let's try running a Classic Barabasi twitter suggest follow model simulation, with our starting point being the INFILE.yaml we used in the previous [tutorial](https://github.com/hashkat/hashkat/blob/master/docs/tutorial_input_files/tutorial03/INFILE.yaml).
 As always, the *INFILE.yaml* file we will create in this simulation can be found for reference in the *docs/tutorial_input_files* directory in hashkat, with this one under the title *tutorial04_classic_barabasi*.
 You can also view the input file we will be creating for this example [here](https://github.com/hashkat/hashkat/blob/master/docs/tutorial_input_files/tutorial04_classic_barabasi/INFILE.yaml).
 
@@ -30,7 +30,7 @@ So let's make some modifications to our input file. As opposed to the random fol
 we are going to have the number of agents within the simulation increase over time, by setting our *initial_agents* to 10, and our *max_agents* to 1000.
 Most importantly, we're going to set *use_barabasi* to *true* causing the simulation to implement the Barabasi configuration.
 *barabasi_connections* specifies the number of connections an agent makes when entering the simulation, so for this Classic Barabasi example, we're going to set this value to 1.
-Since we are running a twitter suggest follow model, we are going to set the *follow_model* as such.
+Since we are running a twitter suggest follow model, we are going to set the 'follow_model' as 'twitter_suggest' .
 
 ```python
 analysis:
@@ -81,7 +81,7 @@ rates:
   add: {function: constant, value: 1.0}
 ```
 
-As mentioned in the previous tutorial, the follow ranks are essential to the twitter suggest follow model. Agents are placed into bins based on their degree or the number of followers they have.
+As mentioned in the previous [tutorial](http://docs.hashkat.org/en/latest/tutorial03/), the follow ranks are essential to the twitter suggest follow model. Agents are placed into bins based on their degree or the number of followers they have.
 All the agents in the bin with threshold 0 have 0 followers, while all the agents in bin 200 have 200 followers.The weight of each bin threshold determines the probability that an agent from this bin
 will be randomly chosen to be followed in comparison to agents in other bins. The bin thresholds are linearly spacecd in increments of 1 and have a minimum value of 0 and a maximum value equal to the maximum
 number of agents within the simulation. The weights of these bins are also linearly spaced in increments of 1, and the minimum bin threshold has a weight of 1 and the maximum bin threshold has a weight
@@ -110,7 +110,7 @@ so that the only manner in which agents are connecting with each other is throug
 <iframe width="420" height="315" src="https://www.youtube.com/embed/VDL76lvsa0E" frameborder="0" allowfullscreen></iframe>
 </p>
 
-Let's now run this simulation. You can plot the log-log graph of the *cumulative-degree_distribution_month_000.dat* in gnuplot, by following the same plotting steps outlined in Tutorial 1 but when plotting typing in
+Let's now run this simulation. You can plot the log-log graph of the *cumulative-degree_distribution_month_000.dat* in gnuplot, by following the same plotting steps outlined in [Tutorial 1](http://docs.hashkat.org/en/latest/tutorial01/) but when plotting typing in
 the commands:
 
 `set term svg`
@@ -183,7 +183,7 @@ You can also view the input file used for this example [here](https://github.com
 
 ### Constructing The Network
 
-Designing a twitter suggest follow model network simulation without implementing the Barabasi configuration can be done by simply going into our INFILE.yaml file and inputting 'false' for  *use_barabasi*, and giving the *Standard* agent types a follow rate, which will be 0.01 again for this tutorial.
+Designing a twitter suggest follow model network simulation without implementing the Barabasi configuration can be done by simply going into the INFILE.yaml file we just modified above and inputting 'false' for  *use_barabasi*, and setting the *Standard* agent type follow rate again to 0.01 for this tutorial.
 
 ### Running and Visualizing The Network
 
@@ -224,4 +224,4 @@ We have now worked with a few configurations of the twitter suggest follow metho
 you are encouraged to try doing so, as well running simulations with more agent types, more agents, less regions, etc. The more practice you get using ***#k@***, the better skilled you will be at
 producing your ideal network simulations.
 
-Proceed to the next tutorial, where we try using the agent follow model.
+Proceed to the next tutorial, where we try using the [agent follow model](http://docs.hashkat.org/en/latest/tutorial05/).
