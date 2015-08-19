@@ -111,7 +111,17 @@ so that the only manner in which agents are connecting with each other is throug
 </p>
 
 Let's now run this simulation. You can plot the log-log graph of the *cumulative-degree_distribution_month_000.dat* in gnuplot, by following the same plotting steps outlined in Tutorial 1 but when plotting typing in
-the command:
+the commands:
+
+`set term svg`
+
+`set style data linespoints`
+
+`set title 'log of Cumulative Degree Distribution'`
+
+`set xlabel 'log(Cumulative Degree)'`
+
+`set ylabel 'log(Normalized Cumulative Degree Probability)'`
 
 `plot 'cumulative-degree_distribution_month_000.dat' u 3:4 title ''`
 
