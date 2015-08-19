@@ -54,22 +54,23 @@ it just means that you've downloaded a newer version of ***#k@***!
 
     `ls`
 
+1. You will need to install several packages and tools on to your computer to build ***#k@***. You can install some of these packages to your computer using 'Homebrew'. To install 'Homebrew' to your computer, simply type in the command:
+
+    `ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"`
+
+    The type in the following commands to install the necessary packages and tools:
+
+    `xcode-select --install`
+
+    `brew install cmake`
+
+    `brew install boost`
+
 1. You must now do a build of ***#k@*** on your computer by typing in the command:
 
     `./build.sh`
 
-    You may need to install additional tools on to your computer to build ***#k@***. If a prompt appears asking you to do so, please do. You may also need to install the 'CMake' package to your computer to build ***#k@***. If so, steps 12 and 13 outline how to install this package.
-
-1. You may not be able to build ***#k@*** on your computer due to the lack of the 'CMake' package. You can install this package to your computer using 'Homebrew'.
-To install 'Hmebrew' to your computer, simply type in the command:
-
-    `ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"`
-
-1. With 'Homebrew', you can install 'CMake' into your computer by using the command:
-
-    `brew install cmake`
-
-    With this installed, you should be able to build ***#k@*** in the manner outlined in step 11.
+    You may need to install additional tools on to your computer to build ***#k@***. If a prompt appears asking you to do so, please do and then use the above command again.
 
 1. You can now run ***#k@*** in this *hashkat* directory as long as it has *INFILE.yaml* within in it by typing in the command:
 
@@ -140,19 +141,17 @@ Here outlines the following steps on how to install ***#k@*** on Linux (these in
 
     `ls`
 
-1. You must now do a build of ***#k@*** on your computer by typing in the command:
-
-    `./build.sh`
-
-    You may need to install the 'CMake' package and the appropriate build tools to your computer to build ***#k@***. If so, step 12 outlines how to install these.
-
-1. The simulation may not run due to the lack of the 'CMake' package and the appropriate build tools. You can install these into your computer by typing in the commands:
+1. Enter into the command line the following commands to install the 'CMake' package and the appropriate tools necessary to build ***#k@***:
 
     `sudo apt-get install cmake`
 
-    `sudo apt-get install build-essential -y` 
+    `sudo apt-get install build-essential -y`
 
-    With this installed, you should be able to build ***#k@*** in the manner outlined in step 11.
+    `sudo apt-get install libboost-all-dev` 
+
+1. You must now do a build of ***#k@*** on your computer by typing in the command:
+
+    `./build.sh`
 
 1. You can now run ***#k@*** in this *hashkat* directory as long as it has *INFILE.yaml* within in it by typing in the command:
 
