@@ -22,10 +22,6 @@ You can also view the input file we will be creating for this example [here](htt
 
 ### Constructing The Network
 
-<p align = 'center'>
-<iframe width="420" height="315" src="https://www.youtube.com/embed/bHvmbQA2fEk" frameborder="0" allowfullscreen></iframe>
-</p>
-
 So let's make some modifications to our input file. As opposed to the random follow model simulations, where the number of agents within the network remained constant throughout the simulation,
 we are going to have the number of agents within the simulation increase over time, by setting our *initial_agents* to 10, and our *max_agents* to 1000.
 Most importantly, we're going to set *use_barabasi* to *true* causing the simulation to implement the Barabasi configuration.
@@ -106,10 +102,6 @@ so that the only manner in which agents are connecting with each other is throug
 
 ### Running and Visualizing The Network
 
-<p align = 'center'>
-<iframe width="420" height="315" src="https://www.youtube.com/embed/VDL76lvsa0E" frameborder="0" allowfullscreen></iframe>
-</p>
-
 Let's now run this simulation. You can plot the log-log graph of the *cumulative-degree_distribution_month_000.dat* in gnuplot, by following the same plotting steps outlined in [Tutorial 1](http://docs.hashkat.org/en/latest/tutorial01/) but when plotting typing in
 the commands:
 
@@ -160,11 +152,6 @@ For this example, we will use the exact same INFILE.yaml as used above, but our 
 
 ### Running and Visualizing The Network
 
-
-<p align = 'center'>
-<iframe width="420" height="315" src="https://www.youtube.com/embed/dFcaSDv--PI" frameborder="0" allowfullscreen></iframe>
-</p>
-
 Running this network simulation, we produced the visualization shown below:
 
 <p align='center'>
@@ -186,10 +173,6 @@ You can also view the input file used for this example [here](https://github.com
 Designing a *twitter_suggest* follow model network simulation without implementing the Barabasi configuration can be done by simply going into the INFILE.yaml file we just modified above and inputting 'false' for  *use_barabasi*, and setting the *Standard* agent type follow rate again to 0.01 for this tutorial.
 
 ### Running and Visualizing The Network
-
-<p align = 'center'>
-<iframe width="420" height="315" src="https://www.youtube.com/embed/qViyqLsfnf4" frameborder="0" allowfullscreen></iframe>
-</p>
 
 Running hashkat, we produced the following visualization of this simulation:
 

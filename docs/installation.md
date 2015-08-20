@@ -8,10 +8,6 @@ We will go over the steps to install these programs for each particular operatin
 
 # Mac OS X
 
-<p align = 'center'>
-<iframe width="420" height="315" src="https://www.youtube.com/embed/kzK3W0aydqM" frameborder="0" allowfullscreen></iframe>
-</p>
-
 Here outlines the following steps on how to install ***#k@*** on Mac OS X:
 
 1. Download the latest build of ***#k@*** at [hashkat.org](http://hashkat.org) by clicking on 'Latest Build'.
@@ -93,10 +89,6 @@ it just means that you've downloaded a newer version of ***#k@***!
 With ***#k@*** installed on your computer, please proceed to the following pages in the documentation to learn how to fully utilize this program.
 
 # Linux
-
-<p align = 'center'>
-<iframe width="420" height="315" src="https://www.youtube.com/embed/ppI80vBbZqs" frameborder="0" allowfullscreen></iframe>
-</p>
 
 Here outlines the following steps on how to install ***#k@*** on Linux (these instructions assume you are using a Debian-based distribution such as Ubuntu, Linux Mint, or Debian):
 
