@@ -157,7 +157,7 @@ Here outlines the following steps on how to install ***#k@*** on Linux (these in
 
 1. [Gnuplot](http://gnuplot.sourceforge.net/) is the primary graphing utility used in this documentation. To install gnuplot, type in the command:
 
-    `sudo apt-get install gnuplot -x11`
+    `sudo apt-get install gnuplot-x11`
 
 1. It is also recommended to download and install ['Gephi'](http://gephi.github.io/) from their website to use for visualizations of collected data.
 
