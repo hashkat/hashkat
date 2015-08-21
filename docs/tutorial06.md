@@ -30,6 +30,18 @@ The cumulative degree distribution for this network is shown below:
 
 As we can see, the vast majority of agents in this network have a cumulative degree less than 20, while the other agents have differing cumulative degrees higher than this up to a value of almost 180.
 
+The commands used to plot this graph in 'gnuplot' were:
+
+`set style fill transparent solid 0.5 noborder`
+
+`set title 'Cumulative-Degree Distribution'`
+
+`set xlabel 'Cumulative-Degree'`
+
+`set ylabel 'Normalized Cumulative-Degree Probability'`
+
+`plot 'Celebrity_info.dat' u 1:4 lc rgb 'goldenrod' w filledcurves above y1=0 title 'Celebrity', 'Standard_info.dat' u 1:4 lc rgb 'blue' w filledcurves above y1=0 title 'Standard', 'cumulative-degree_distribution_month_000.dat' u 1:2 lc rgb 'dark-red' w filledcurves above y1=0 title 'Overall'`
+
 ## Next Steps
 
 You have now completed the *preferential_agent* follow model. Similar to the *agent* follow model, you are encouraged to continue experimenting with this follow model by adding more agent types into your simulation, such as bots and organizations, and manipulating all of their add weights, follow weights, follow rates, etc., to create some compelling networks. You can alse implement *use_barabasi* into your simulation with an arbitrary amont of *barabasi_connections* to see what differences this causes in your network. When you are ready to move on, proceed to the next tutorial, where we deal with the [*hashtag* follow model](http://docs.hashkat.org/en/latest/tutorial07/).

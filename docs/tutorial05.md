@@ -73,16 +73,16 @@ We can do this using 'gnuplot' by entering 'gnuplot' in the *output* directory a
 
 `set style fill transparent solid 0.5 noborder`
 
-`set title 'Cumulative Degree Distribution'`
+`set title 'Cumulative-Degree Distribution'`
 
-`set xlabel 'Degree'`
+`set xlabel 'Cumulative-Degree'`
 
-`set ylabel 'Normalized Cumulative Degree Probability'`
+`set ylabel 'Normalized Cumulative-Degree Probability'`
 
 `plot 'Celebrity_info.dat' u 1:4 lc rgb 'goldenrod' w filledcurves above y1=0 title 'Celebrity', 'Standard_info.dat' u 1:4 lc rgb 'blue' w filledcurves above y1=0 title 'Standard', 'cumulative-degree_distribution_month_000.dat' u 1:2 lc rgb 'dark-red' w filledcurves above y1=0 title 'Overall'`
 
 <p align='center'>
-<img src='../img/tutorial05/cumulative-degree_distribution.svg'>
+<img src='../img/tutorial05/cumulative-degree_distribution_month_000.svg'>
 </p>
 
 As we can see, there are no *Standard* agents with a cumulative degree greater than 20, with most having a cumulative degree just under or just above 5. The *Celebrity* agents' cumulative degree distribution has much more variance, with *Celebrity* agents in this network having up to almost 35 connections in this simulation. The *Overall* cumulative degree distribution illustrates this for all agents in the network.

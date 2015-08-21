@@ -34,6 +34,18 @@ A plot of the cumulative degree distribution of these agents is shown below:
 
 As expected given the number of unconnected agents in this network, there are either agents with a very low degree or high degree in this network, though there are much more agents with a low degree.
 
+The commands used to create this graph in 'gnuplot' were:
+
+`set style data linespoints`
+
+`set title 'Cumulative-Degree Distribution'`
+
+`set xlabel 'Cumulative-Degree'`
+
+`set ylabel 'Normalized Cumulative-Degree Probability'`
+
+`plot 'cumulative-degree_distribution_month_000.dat' title ''`
+
 We can also plot the tweet distribution through use of the *tweets_distro.dat* file.
 
 <p align='center'>
@@ -41,6 +53,22 @@ We can also plot the tweet distribution through use of the *tweets_distro.dat* f
 </p>
 
 As we can see from this plot of the tweet distribution, most agents have made 1 to 6 tweets in this simulation and that as the number of tweets increases, the number of agents that have made this many tweets decreases.
+
+The commands used to create this graph in 'gnuplot' were:
+
+`set boxwidth 0.75`
+
+`set style fill solid 0.5`
+
+`set xrange[0:]
+
+`set title 'Tweet Distribution'`
+
+`set xlabel 'Number of Tweets'`
+
+`set ylabel 'Normalized Probability of Agents with that Many Tweets'`
+
+`plot 'tweets_distro.dat' with boxes title ''`
 
 ## Next Steps
 

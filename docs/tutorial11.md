@@ -68,6 +68,18 @@ As we can see, there are 9863 total follows at the end of this simulation as opp
 <img src='../img/tutorial11/agent_type_in-degree_plot.svg'>
 </p>
 
+The commands used to plot this graph in 'gnuplot' were:
+
+`set style fill transparent solid 0.5 noborder`
+
+`set title 'In-Degree Distribution'`
+
+`set xlabel 'In-Degree'`
+
+`set ylabel 'Normalized In-Degree Probability'`
+
+`plot 'Chatty_info.dat' u 1:2 lc rgb 'red' with filledcurves title 'Chatty', 'Standard_info.dat' u 1:2 lc rgb 'blue' with filledcurves title 'Standard'`
+
 ## Next Steps
 
 With the completion of this tutorial, not only have we learned all the different ways in which agents can connect with each other, but also how they cut these connections. Moving on to the next tutorial, we shall discuss how to make these agents in our network simulations [unique](http://docs.hashkat.org/en/latest/tutorial12/).

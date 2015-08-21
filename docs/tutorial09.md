@@ -116,6 +116,22 @@ We can also see that implementing the other follow methods into our simulation r
 
 As we can see much more agents in the network without the other follow methods make 5 or less retweets, while in the network with these follow methods, agents with up to 25 retweets are present. It is quite clear that more follows leads to much more retweets.
 
+You can plot this graph by running the simulation in the **docs/tutorial_input_files/tutorial09_without_other_follow** directory and then running the simulation in the **docs/tutorial_input_files/tutorial09_with_other_follow**. In the **docs/tutorial_input_files** directory, we typed in the following commands to plot this graph in 'gnuplot':
+
+`set boxwidth 0.75`
+
+`set style fill solid 0.5`
+
+`set xrange[0:]
+
+`set title 'Retweet Distribution'`
+
+`set xlabel 'Number of Reweets'`
+
+`set ylabel 'Normalized Probability of Agents with that Many Tweets'`
+
+`plot 'tutorial09_without_other_follow/output/retweets_distro.dat' with boxes title 'Without Other Follow', 'tutorial09_with_other_follow/output/retweets_distro.dat' with boxes title 'With Other Follow'`
+
 ## Next Steps
 
 With the completion of this tutorial, you are now familiar with all of the possible manners in which agents can connect with one another in ***#k@***. The followback and following via retweets method of following discussed in this tutorial are essential applications of hashkat, and their presence in network simulations are necessary for them to be authentic. We've enabled retweeting for the first time in this tutorial. Proceed to the next tutorial, where we use retweeting to discover the [most popular tweet](http://docs.hashkat.org/en/latest/tutorial10/) in a given network simulation.
