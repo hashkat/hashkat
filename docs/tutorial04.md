@@ -105,8 +105,6 @@ so that the only manner in which agents are connecting with each other is throug
 Let's now run this simulation. You can plot the log-log graph of the *cumulative-degree_distribution_month_000.dat* in gnuplot, by following the same plotting steps outlined in [Tutorial 1](http://docs.hashkat.org/en/latest/tutorial01/) but when plotting typing in
 the commands:
 
-`set term svg`
-
 `set style data linespoints`
 
 `set title 'log of Cumulative Degree Distribution'`

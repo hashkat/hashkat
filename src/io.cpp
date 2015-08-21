@@ -275,6 +275,7 @@ void output_position(Network& network, int n_agents) {
 
     ofstream output;
     output.open("output/network.dat");
+    output << "# Agent ID\tFollower ID\n\n";
     for (int id = 0; id < n_agents; id++) {
         for (int id_fol : network.follower_set(id).as_vector()) {
             output << id << "\t" << id_fol << "\n";

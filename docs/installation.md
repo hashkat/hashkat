@@ -62,7 +62,7 @@ it just means that you've downloaded a newer version of ***#k@***!
 
 1. You must now do a build of ***#k@*** on your computer by typing in the command:
 
-    `./build.sh`
+    `./build.sh -O`
 
     You may need to install additional tools on to your computer to build ***#k@***. If a prompt appears asking you to do so, please do and then use the above command again.
 
@@ -139,7 +139,7 @@ Here outlines the following steps on how to install ***#k@*** on Linux (these in
 
 1. You must now do a build of ***#k@*** on your computer by typing in the command:
 
-    `./build.sh`
+    `./build.sh -O`
 
 1. You can now run ***#k@*** in this *hashkat* directory as long as it has *INFILE.yaml* within in it by typing in the command:
 

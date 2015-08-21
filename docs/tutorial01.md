@@ -154,7 +154,7 @@ To access 'gnuplot', type in the command:
 
 `gnuplot`
 
-To plot the in-degree, out-degree, and cumulative-degree distributions for 'month002', which contains the most up to date data, as an SVG image on the same graph with appropriate axis labels and a title, type in the following:
+To plot the in-degree, out-degree, and cumulative-degree distributions for 'month002', which contains the most up to date data, on the same graph with appropriate axis labels and a title, type in the following:
 
 `set style fill transparent solid 0.5 noborder `
 

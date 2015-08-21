@@ -427,6 +427,14 @@ Setting the 'Degree-Range Settings' from 80 to 100 and clicking 'Filter', we can
 
 As we can see from this visualization, the most highly connected nodes are the green and yellow nodes, also known as the *Standard-Friendly* and *Standard-Funny* agents. Therefore, it is quite clear that the friendly and funny agents won the popularity contest.
 
+Looking into the *region_connection_matrix_month_000.dat* output file, we can also see the connections agents made within and between their regions:
+
+<p align='center'>
+<img src='../img/tutorial12/region_connection_matrix.png'>
+</p>
+
+As we can see, agents in *Ontario*, the zeroth region, had 65.0394% of their follows from agents from *Ontario* and 34.9609% of their follows from agents in *Quebec*, while agents in *Quebec* had 52.946% of their follows from agents in *Ontario* and 47.054% of their follows from agents in *Quebec*. So agents in *Ontario* tended to interact amongst themselves while agents in *Quebec* were pretty evenly interacting with agents in both *Ontario* and *Quebec*.
+
 ## Next Steps
 
 With the completion of this tutorial, you now have knowledge and experience with every different agent configuration you can implement into ***#k@***. You are welcome to proceed to the next [tutorial](http://docs.hashkat.org/en/latest/tutorial13/), where we demonstrate some of the situations you can model using ***#k@***.
