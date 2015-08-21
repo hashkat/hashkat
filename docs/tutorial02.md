@@ -23,7 +23,7 @@ once removing this data you will lose it forever. Remove the save file that your
 
 and remove the old contents of your output directory with the command:
 
-`rm output/*`
+`rm -r output`
 
 Though not necessary, you can also remove the other files created from running a network simulation by typing in the commands:
 

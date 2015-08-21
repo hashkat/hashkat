@@ -10,6 +10,12 @@ With such an interactive program such as ***#k@***, it is expected that one will
 
 When trying to run ***#k@*** after configuring the *INFILE.yaml* file, you may be unable to run your network simulation and recieve one of the following error messages:
 
+### Running ***#k@*** in a different directory
+
+`bash: ./run.sh: No such file or directory`
+
+This error message appears if you run ***#k@*** in a directory that doesn't contain the *run.sh* script. As discussed in [**Tutorial 2**](http://docs.hashkat.org/en/latest/tutorial02/), be sure to input the location of *run.sh* when running the script. Typing in '../' prior to 'run.sh' in the command line tells the computer that *run.sh* is one directory up from your current working directory. Typing in a directory name prior to 'run.sh' in thecommand line tells the computer that *run.sh* is in a subdirectory of your current working directory.
+
 ### Spelling or Missing Term Error
 
 `

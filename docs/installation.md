@@ -11,24 +11,24 @@ We will go over the steps to install these programs for each particular operatin
 Here outlines the following steps on how to install ***#k@*** on Mac OS X:
 
 1. Download the latest build of ***#k@*** at [hashkat.org](http://hashkat.org) by clicking on 'Latest Build'.
-1. Enter a terminal and go into your *Downloads* directory/folder by typing in the following command and pressing **Enter**:
+1. Enter a terminal and go into your **Downloads** directory/folder by typing in the following command and pressing **Enter**:
 
     `cd Downloads`
 
-1. To see the list of files in your *Downloads* directory, type into the command line:
+1. To see the list of files in your **Downloads** directory, type into the command line:
 
     `ls`
 
 1. Amongst your various other downloads you should see the following:
 
-    `hashkat.2015.06.24.tar`
+    `hashkat.2015.08.20.tar`
 
     Please note that the date in the file you downloaded may be different from the one above. That's totally fine,
 it just means that you've downloaded a newer version of ***#k@***!
 
 1. To unpack this tar file, type in the command:
 
-    `tar -xf hashkat.2015.06.24.tar`
+    `tar -xf hashkat.2015.08.20.tar`
 
 1. Once this is completed, look into the list of files in this directory and you will see amongst them:
 
@@ -36,7 +36,7 @@ it just means that you've downloaded a newer version of ***#k@***!
 
 1. For ease of access, move this directory into your 'home' directory by typing in the command:
 
-    `mv ~/Downloads/hashkat/ ~/`	
+    `mv ~/Downloads/hashkat ~/`	
 
 1. Now return to you 'home' directory by typing in the command:
 
@@ -50,13 +50,13 @@ it just means that you've downloaded a newer version of ***#k@***!
 
     `ls`
 
-1. You will need to install several packages and tools on to your computer to build ***#k@***. You can install some of these packages to your computer using 'Homebrew'. To install 'Homebrew' to your computer, simply type in the command:
+1. You will need to install the 'CMake' packages on to your computer to build ***#k@***. You can install this package to your computer using 'Homebrew'. To install 'Homebrew' to your computer, simply type in the command:
 
     `ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"`
 
-    The type in the following commands to install the necessary packages and tools (make sure to click 'Install' in the prompt that appears after entering the first command):
+    A prompt may appear asking you if you'd like to install the 'command line developer tools'. Click 'Install' and agree to the licensing agreement to install these tools. Once these tools have been installed, you can continue installing 'Homebrew' by pressing **Return**.
 
-    `xcode-select --install`
+1. With 'Homebrew' installed, you an install the 'CMake' package by typing in the command:
 
     `brew install cmake`
 
@@ -92,12 +92,12 @@ With ***#k@*** installed on your computer, please proceed to the following pages
 
 Here outlines the following steps on how to install ***#k@*** on Linux (these instructions assume you are using a Debian-based distribution such as Ubuntu, Linux Mint, or Debian):
 
-1. Download the latest build of ***#k@*** at [hashkat.org](http://hashkat.org).
-1. Enter a terminal and go into your *Downloads* directory/folder by typing in the following command and pressing **Enter**:
+1. Download the latest build of ***#k@*** at [hashkat.org](http://hashkat.org) by clicking on 'Latest Build'.
+1. Enter a terminal and go into your **Downloads** directory/folder by typing in the following command and pressing **Enter**:
 
     `cd Downloads`
 
-1. To see the list of files in your *Downloads* directory, type into the command line:
+1. To see the list of files in your **Downloads** directory, type into the command line:
 
     `ls`
 
