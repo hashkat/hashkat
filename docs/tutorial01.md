@@ -101,18 +101,18 @@ If you experience any issues running the simulation, you can reference the [**In
 
 When running this program, you will see something similar to this outputted to the screen:
 
-| Time | Users | Follows | Tweets | Retweets | Unfollows | R | Time (s) |
+| Simulation Time (min) | Users | Follows | Tweets | Retweets | Unfollows | R | Real Time (s) |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | 9.93e+04 | 1.00e+03 | 1.00e+04 | 0.00e+00 | 0.00e+00(0.00e+00) | 0.00e+00 | 1.00e-01 | 2.25e+00 |
 
 This gives a list of data at a particular point in your simulation.
-**Time** corresponds to simulation time in minutes, **Users** corresponds to the number
+**Simulation Time (min)** corresponds to simulation time in minutes, **Users** corresponds to the number
 of agents in the network at that particular point in the simulation, 
 **Follows** show the number of follows that have occurred, **Tweets** displays
 the number of tweets that have been made, **Retweets** shows the number of
 retweets and in brackets beside it the number of active tweets (tweets that can be retweeted),
  **Unfollows** displays the number of unfollows that have occurred, **R** is the
-cumulative rate function, and **Time (s)** is the length of real time that has occurred in seconds.
+cumulative rate function, and **Real Time (s)** is the length of real time that has occurred in seconds.
 
 So as we can see from the above example, at a simulated time of 99,300 simulated minutes,
 there were 1,000 agents in the network, 10,000 follows, 0 tweets, 0

@@ -163,11 +163,11 @@ As we can quite clearly see this a truly random network, with no clear agent or 
 
 With agents having a follow rate of 0.01 follows per simulated minute in a simulation 1000 simulated minutes long, we would expect most agents to have a cumulative degree distribution of 20. Let's plot this up using 'gnuplot', using data points instead of filled curves to graph our data. The commands to do this are shown below:
 
-`set title 'Cumulative Degree Distribution'`
+`set title 'Cumulative-Degree Distribution'`
 
-`set xlabel 'Cumulative Degree'`
+`set xlabel 'Cumulative-Degree'`
 
-`set ylabel 'Normalized Cumulative Degree Probability'`
+`set ylabel 'Normalized Cumulative-Degree Probability'`
 
 `plot 'cumulative-degree_distribution_month_000.dat' title ''`
 
