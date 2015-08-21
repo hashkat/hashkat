@@ -2,7 +2,7 @@
 
 <span style="color:black; font-family:Georgia; font-size:1.5em;">August 2015 - This site is currently under construction. Please return regularly over the course of the summer for further updates. </span>
 
-# Restarting, Stopping, and Running a Simulation in a Different Directory
+# Restarting, Stopping a Simulation and Running it in a Different Directory
 
 A brief explanation on how to restart a network, this tutorial should take approximately 10 minutes to complete.
 
