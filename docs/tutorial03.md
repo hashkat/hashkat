@@ -89,7 +89,7 @@ analysis:
 
 Since the number of agents within this simulation will remain constant, the add rate will therefore be 0. The output section of INFILE.yaml
 will also be left as is, to produce as many data files for analysis as possible. The tweet and retweets ranks have remained the same,
-though their purpose is just to organize them and has no real impact on the simulation. The follow ranks max threshold
+though their purpose is just to organize agents based on the number of tweets and retweets respectively they have made, and has no real impact on the simulation. The follow ranks max threshold
 and weight have also remained the same, with their minimum values being 0 and 1 and their maximum values being a number greater than the number of agents
 and that value increased by one. Though this will not impact this simulation, it is very important for the *twitter_suggest* follow model, and will therefore be
 elaborated on in [**Tutorial 4**](http://docs.hashkat.org/en/latest/tutorial04/). The *tweet_observations*

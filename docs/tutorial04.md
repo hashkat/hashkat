@@ -97,7 +97,7 @@ follow_ranks:
   weights:    {bin_spacing: linear, min: 1, max: 10001, increment: 1}
 ```
 
-To better demonstrate the results of a twitter preferential follow model, we are again only going to use *Standard* agents in this simulation. It is imperative that we have also set the *Standard* agent type's follow rate to 0.0,
+To better demonstrate the results of a twitter_suggest follow model, we are again only going to use *Standard* agents in this simulation. It is imperative that we have also set the *Standard* agent type's follow rate to 0.0,
 so that the only manner in which agents are connecting with each other is through the *barabasi_connections* they are assigned to make.
 
 ### Running and Visualizing The Network
@@ -121,7 +121,7 @@ This gave us the following graph:
 <img src='../img/tutorial04_classic_barabasi/cumulative-degree_distribution_month_000.svg'>
 </p>
 
-We can see that this produces a linear plot with a negative slope, which makes sense since we would expect agents with a small degree to be great in number, while agents with a very large degree to
+We can see that this produces a fairly linear plot with a negative slope, which makes sense since we would expect agents with a small degree to be great in number, while agents with a very large degree to
 be very small in number. Plotting these data points with a line of best fit up to a *log(Cumulative Degree)* of 2.5, we can see that this network simulation up to a certain point models a ['Scale-free' network](https://en.wikipedia.org/wiki/Scale-free_network), since this line of best fit clearly has a slope between -2 to -3.
 
 <p align='center'>
