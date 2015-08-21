@@ -122,7 +122,7 @@ You can plot this graph by running the simulation in the **docs/tutorial_input_f
 
 `set style fill solid 0.5`
 
-`set xrange[0:]
+`set xrange[0:]`
 
 `set title 'Retweet Distribution'`
 

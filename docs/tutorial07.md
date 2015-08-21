@@ -60,7 +60,7 @@ The commands used to create this graph in 'gnuplot' were:
 
 `set style fill solid 0.5`
 
-`set xrange[0:]
+`set xrange[0:]`
 
 `set title 'Tweet Distribution'`
 
