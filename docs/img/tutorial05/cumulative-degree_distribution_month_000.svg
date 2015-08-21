@@ -86,13 +86,13 @@
 		<text> 45</text>
 	</g>
 	<path stroke='black'  d='M80.2,54.1 L80.2,422.4 L575.0,422.4 L575.0,54.1 L80.2,54.1 Z  h0.01'/>	<g transform="translate(17.6,238.3) rotate(270)" style="stroke:none; fill:black; font-family:Arial; font-size:12.00pt; text-anchor:middle">
-		<text>Normalized Cumulative Degree Probability</text>
+		<text>Normalized Cumulative-Degree Probability</text>
 	</g>
 	<g transform="translate(327.6,471.9)" style="stroke:none; fill:black; font-family:Arial; font-size:12.00pt; text-anchor:middle">
-		<text>Degree</text>
+		<text>Cumulative-Degree</text>
 	</g>
 	<g transform="translate(327.6,31.6)" style="stroke:none; fill:black; font-family:Arial; font-size:12.00pt; text-anchor:middle">
-		<text>Cumulative Degree Distribution</text>
+		<text>Cumulative-Degree Distribution</text>
 	</g>
 </g>
 	<g id="gnuplot_plot_1" ><title>gnuplot_plot_1</title>

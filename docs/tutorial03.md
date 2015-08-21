@@ -193,6 +193,22 @@ Running this network simulation multiple times using different seeds, we produce
 
 As we can see, the cumulative degree distribution of a random follow model network simulation matches the ['Poisson Distribution'](https://en.wikipedia.org/wiki/Poisson_distribution) very well.
 
+To create this plot, we inputted the following into 'gnuplot':
+
+`poisson( x , mu ) = exp(-mu) * mu**(x) / gamma(x+1)`
+
+`set xrange [0:50]`
+
+`set title 'Cumulative-Degree Distribution for Simulations with Different Seeds'`
+
+`set xlabel 'Cumulative-Degree'`
+
+`set ylabel 'Normalized Cumulative-Degree Probability'`
+
+`plot poisson( x , 20 ) title 'Poisson Distribution', 'cumulative-degree_distribution_month_000.a' title '', 'cumulative-degree_distribution_month_000.b' title '', 'cumulative-degree_distribution_month_000.c' title '', 'cumulative-degree_distribution_month_000.d' title '', 'cumulative-degree_distribution_month_000.e' title '', 'cumulative-degree_distribution_month_000.f title '' 'cumulative-degree_distribution_month_000.g' title ''`
+
+where all these cumulative-degree distribution files were outputted from several different simulations with a random seed.
+
 ## Next Steps
 
 With the completion of this tutorial, we have worked with the simplest of the six types of follow models.
