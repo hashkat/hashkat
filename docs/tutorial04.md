@@ -128,6 +128,22 @@ be very small in number. Plotting these data points with a line of best fit up t
 <img src='../img/tutorial04_classic_barabasi/cumulative-degree_distribution_fit.svg'>
 </p>
 
+The commands used to graph this plot in 'gnuplot' were:
+
+`f(x) = m*x + b`
+
+`set xrange[0:2.5]`
+
+`set title 'log of Cumulative-Degree Distribution Fit'`
+
+`set xlabel 'log(Cumulative-Degree)'`
+
+`set ylabel 'log(Normalized Cumulative Degree Probability)'`
+
+`fit f(x) 'cumulative-degree_distribution_month_000.dat' u 3:4 every ::1::13 via m,b`
+
+`plot f(x), 'cumulative-degree_distribution_month_000.dat' u 3:4 title ''`
+
 A visualization of this network is shown below:
 
 <p align='center'>
