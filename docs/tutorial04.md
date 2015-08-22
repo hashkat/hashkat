@@ -107,11 +107,11 @@ the commands:
 
 `set style data linespoints`
 
-`set title 'log of Cumulative Degree Distribution'`
+`set title 'log of Cumulative-Degree Distribution'`
 
-`set xlabel 'log(Cumulative Degree)'`
+`set xlabel 'log(Cumulative-Degree)'`
 
-`set ylabel 'log(Normalized Cumulative Degree Probability)'`
+`set ylabel 'log(Normalized Cumulative-Degree Probability)'`
 
 `plot 'cumulative-degree_distribution_month_000.dat' u 3:4 title ''`
 
