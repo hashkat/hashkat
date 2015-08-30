@@ -46,7 +46,8 @@ The commands used to plot this graph in 'gnuplot' were:
 
 `plot 'Celebrity_info.dat' u 1:4 lc rgb 'goldenrod' w filledcurves above y1=0 title 'Celebrity',`
 `'Standard_info.dat' u 1:4 lc rgb 'blue' w filledcurves above y1=0 title 'Standard',`
-`'cumulative-degree_distribution_month_000.dat' u 1:2 lc rgb 'dark-red' w filledcurves above y1=0 title 'Overall'`
+`'cumulative-degree_distribution_month_000.dat' u 1:2 lc rgb 'dark-red' w filledcurves above y1=0`
+`title 'Overall'`
 
 ## Next Steps
 
