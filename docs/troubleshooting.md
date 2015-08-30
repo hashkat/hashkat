@@ -104,6 +104,10 @@ Running a network simulation that enables retweeting, you may find that there ar
 
 Though a Barabasi configuration can be implemented into every follow model network simulation, it is usually only enabled for follow models that invoke preferential attachment, such as the *twitter_suggest*, *preferential_agent*, and possibly the twitter folow model. You can use the Barabasi configuration for other follow models if you so please, but keep in mind the impact it will have on your network, and how different this may be for a network simulaiton that does not implement this configuration.
 
+### Simulation Running Even Despite Missing Variable
+
+You may find when checking your *INFILE.yaml* file after running a network simulation that you were a missing a particular variable and its corresponding value in your input file. However, this seems to have not stopped your simulation. The reason for this is that whenever a variable and its corresponding value are missing from *INFILE.yaml*, the value assigned to that variable in *DEFAULT.yaml* will be used in the network simulation. THE *DEFAULT.yaml* file can of course be found in the **hashkat** directory as well as [here](https://github.com/hashkat/hashkat/blob/master/DEFAULT.yaml).
+
 ## Reporting an Issue
 
 Check out our [**Feedback**](http://docs.hashkat.org/en/latest/feedback/) page if you have any issues using the ***#k@*** project not discussed above. There you can find our email address where you can contact us and a link to a webpage where you can post any issues you may have, which will be addressed and remedied as soon as possible. 

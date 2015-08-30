@@ -13,7 +13,7 @@ Here outlines the following steps on how to install ***#k@*** on Mac OS X:
 1. Download the latest build of ***#k@*** at [hashkat.org](http://hashkat.org) by clicking on 'Latest Build'.
 1. Enter a terminal and go into your **Downloads** directory/folder by typing in the following command and pressing **Enter**:
 
-    `cd Downloads`
+    `cd Downloads/`
 
 1. To see the list of files in your **Downloads** directory, type into the command line:
 
@@ -23,8 +23,7 @@ Here outlines the following steps on how to install ***#k@*** on Mac OS X:
 
     `hashkat.2015.08.20.tar`
 
-    Please note that the date in the file you downloaded may be different from the one above. That's totally fine,
-it just means that you've downloaded a newer version of ***#k@***!
+    Please note that the date in the file you downloaded may be different from the one above. That's totally fine, it just means that you've downloaded a newer version of ***#k@***!
 
 1. To unpack this tar file, type in the command:
 
@@ -44,7 +43,7 @@ it just means that you've downloaded a newer version of ***#k@***!
 
 1. Let's now go into the *hashkat* directory by typing in the command:
 
-    `cd hashkat`
+    `cd hashkat/`
 
 1. Once in this directory, you can see the list of all the files and directories that compose the ***#k@*** project by again typing in the command:
 
@@ -64,13 +63,11 @@ it just means that you've downloaded a newer version of ***#k@***!
 
     `./build.sh -O`
 
-    You may need to install additional tools on to your computer to build ***#k@***. If a prompt appears asking you to do so, please do and then use the above command again.
-
-1. You can now run ***#k@*** in this *hashkat* directory as long as it has *INFILE.yaml* within in it by typing in the command:
+1. You can now run ***#k@*** in this **hashkat** directory as long as it has *INFILE.yaml* and *run.sh* within in it by typing in the command:
 
     `./run.sh`
 
-1. Once you have run ***#k@*** properly, remove all the network save and analysis files created from this simulation by typing in the following commands:
+1. Once you have run ***#k@*** properly, remove all the network save and analysis files created from this test simulation by typing in the following commands:
 
     `rm DATA_vs_TIME`
 
@@ -78,7 +75,7 @@ it just means that you've downloaded a newer version of ***#k@***!
 
     `rm network_state.dat`
 
-    `rm -r output`
+    `rm -r output/`
 
 1. [Gnuplot](http://gnuplot.sourceforge.net/) is the primary graphing utility used in this documentation. To install gnuplot, type in the command:
 
