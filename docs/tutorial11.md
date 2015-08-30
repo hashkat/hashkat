@@ -82,7 +82,8 @@ The commands used to plot this graph in 'gnuplot' were:
 
 `set ylabel 'Normalized In-Degree Probability'`
 
-`plot 'Chatty_info.dat' u 1:2 lc rgb 'red' with filledcurves title 'Chatty', 'Standard_info.dat' u 1:2 lc rgb 'blue' with filledcurves title 'Standard'`
+`plot 'Chatty_info.dat' u 1:2 lc rgb 'red' with filledcurves title 'Chatty',`
+`'Standard_info.dat' u 1:2 lc rgb 'blue' with filledcurves title 'Standard'`
 
 ## Next Steps
 

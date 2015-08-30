@@ -130,7 +130,8 @@ You can plot this graph by running the simulation in the **docs/tutorial_input_f
 
 `set ylabel 'Normalized Probability of Agents with that Many Tweets'`
 
-`plot 'tutorial09_without_other_follow/output/retweets_distro.dat' with boxes title 'Without Other Follow', 'tutorial09_with_other_follow/output/retweets_distro.dat' with boxes title 'With Other Follow'`
+`plot 'tutorial09_without_other_follow/output/retweets_distro.dat' with boxes title 'Without Other Follow',`
+`'tutorial09_with_other_follow/output/retweets_distro.dat' with boxes title 'With Other Follow'`
 
 ## Next Steps
 
