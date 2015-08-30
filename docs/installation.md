@@ -8,7 +8,9 @@ We will go over the steps to install these programs for each particular operatin
 
 # Mac OS X
 
-<iframe width="420" height="315" src="https://www.youtube.com/embed/UrqxCDf0NxY" frameborder="0" allowfullscreen></iframe>
+<center>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/UrqxCDf0NxY" frameborder="0" allowfullscreen></iframe>
+</center>
 
 Here outlines the following steps on how to install ***#k@*** on Mac OS X:
 
@@ -89,7 +91,9 @@ With ***#k@*** installed on your computer, please proceed to the following pages
 
 # Linux
 
-<iframe width="420" height="315" src="https://www.youtube.com/embed/xuQIqFKXI9w" frameborder="0" allowfullscreen></iframe>
+<center>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/xuQIqFKXI9w" frameborder="0" allowfullscreen></iframe>
+</center>
 
 Here outlines the following steps on how to install ***#k@*** on Linux (these instructions assume you are using a Debian-based distribution such as Ubuntu, Linux Mint, or Debian):
 

@@ -74,7 +74,9 @@ This cycle will continue until the end of the simulation. For more information o
 
 ## Running a Simple Network
 
+<center>
 <iframe width="560" height="315" src="https://www.youtube.com/embed/jY7m0VDZPjM" frameborder="0" allowfullscreen></iframe>
+</center>
 
 For this first tutorial, we're going to run a simple network using ***#k@***.
 If you look into the **hashkat** directory / folder, you will find several 
@@ -131,7 +133,9 @@ accummulated through simulation necessary for analysis. We shall discuss these a
 
 ## Output of a Simple Network
 
+<center>
 <iframe width="560" height="315" src="https://www.youtube.com/embed/83lnl6UXstQ" frameborder="0" allowfullscreen></iframe>
+</center>
 
 Going into the **output** directory and viewing its contents by inputting the commands
 
@@ -186,7 +190,9 @@ when you first start up 'gnuplot' and prior to actually plotting the data.
 
 ## Visualizing a Simple Network
 
+<center>
 <iframe width="560" height="315" src="https://www.youtube.com/embed/XLLcYKKzI2A" frameborder="0" allowfullscreen></iframe>
+</center>
 
 You can also use this data you collected to visualize your simulated network. We will discuss how to do so using ['Gephi'](http://gephi.github.io/) here, but you can also find a more in-depth walkthrough on visualizaing networks on the [Visualization](http://docs.hashkat.org/en/latest/visualization/) page. Entering 'Gephi', open the graph
 file *network.gexf* found in the **output** directory of your simulation. Press 'OK' for the 'Import report' window that pops up,

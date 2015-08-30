@@ -22,7 +22,9 @@ The *unfollow_tweet_rate* is a number inputted into the **INFILE.yaml** file tha
 
 Let's now create a network simulation that implements unfollowing due to chattiness. We will use the input file we used in [**Tutorial 1**](https://github.com/hashkat/hashkat/blob/master/docs/tutorial_input_files/tutorial01/INFILE.yaml) as a starting point. The *INFILE.yaml* file created for this tutorial can be found in the *docs/tutorial_input_files* directory in the directory *tutorial11*. This file can also be viewed [here](https://github.com/hashkat/hashkat/blob/master/docs/tutorial_input_files/tutorial11/INFILE.yaml).
 
+<center>
 <iframe width="560" height="315" src="https://www.youtube.com/embed/xcZW05GMVZo" frameborder="0" allowfullscreen></iframe>
+</center>
 
 So using the input file from [**Tutorial 1**](https://github.com/hashkat/hashkat/blob/master/docs/tutorial_input_files/tutorial01/INFILE.yaml) as a starting point, let's first add another agent type into this network. Let's call this agent type 'Chatty', and it'll have the same paramters as the *Standard* agent type, except that the tweet rates for these agents will be 0.01 instead of 0.001.
 
