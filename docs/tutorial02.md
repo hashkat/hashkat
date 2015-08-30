@@ -8,6 +8,8 @@ A brief explanation on how to restart a network, this tutorial should take appro
 
 ## Running a New Simulation
 
+<iframe width="560" height="315" src="https://www.youtube.com/embed/EmRJel-eGmw" frameborder="0" allowfullscreen></iframe>
+
 At the end of [**Tutorial 1**](http://docs.hashkat.org/en/latest/tutorial01/), we had run a simple network simulation and studied its output. You now have the knowledge to run your own simple networks and analysis of those networks.
 However, you will find that after modifying *INFILE.yaml* to your own specifications, and typing the command to run the simulation:
 
@@ -39,6 +41,8 @@ You can now run your new simulation by typing in the command:
 
 ## Stopping and Continuing a Simulation
 
+<iframe width="560" height="315" src="https://www.youtube.com/embed/-gQ52JW2s-Y" frameborder="0" allowfullscreen></iframe>
+
 If for whatever reason you would like to stop a simulation midway through running, without losing any of your data, simply press **Ctrl-c**. The simulation will automatically
 save the information it's collected to the *network_state.dat* file, and you can analyze the data you have so far in the *DATA_vs_TIME* file and **output** directory. If you would like
 to continue this simulation from where you left off, simply type in:
@@ -48,6 +52,8 @@ to continue this simulation from where you left off, simply type in:
 again and the simulation will recommence running.
 
 ## Running ***#k@*** in a Different Directory
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/x8RWQmAduHE" frameborder="0" allowfullscreen></iframe>
 
 In all of these tutorials, we shall run ***#k@*** in the **hashkat** directory, where the only files necessary to run a simulation,an *INFILE.yaml* file and *run.sh*, are present. However, you may want to run ***#@*** in a different directory, perhaps in one of the tutorial directories in **docs/tutorial_input_files**. Typing in the command:
 

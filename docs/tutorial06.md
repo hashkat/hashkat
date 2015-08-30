@@ -8,6 +8,8 @@ This tutorial should take approximately 10 minutes to complete
 
 The *preferential_agent* follow model is exactly like the *agent* follow model, except that instead of following a random agent within a particular agent class, agents tend to follow other agents within that agent class with the highest number of followers (degrees). Let's try running a *preferential_agent* follow model simualtion, using the input file from *Tutorial 5* as a starting point. The input file that we will use in this simulation can be found for reference in the *docs/tutorial_input_files* directory in hashkat, with this one under the title *tutorial06*. You can also view the input file we will be creating for this example [here](https://github.com/hashkat/hashkat/blob/master/docs/tutorial_input_files/tutorial06/INFILE.yaml).
 
+<iframe width="560" height="315" src="https://www.youtube.com/embed/_YHp19AxtMI" frameborder="0" allowfullscreen></iframe>
+
 ## Constructing The Network
 
 Since we've already modified our input file for an *agent* follow model in the previous tutorial [here](https://github.com/hashkat/hashkat/blob/master/docs/tutorial_input_files/tutorial05/INFILE.yaml), all we have to do is change the follow model in the INFILE.yaml to *preferential_agent*, and ***#k@*** will do the rest.

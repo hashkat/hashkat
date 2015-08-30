@@ -30,6 +30,8 @@ For more information on what goes into the input file, and what sort of informat
 
 ## Constructing The Network
 
+<iframe width="560" height="315" src="https://www.youtube.com/embed/xx2-3Lh0Dps" frameborder="0" allowfullscreen></iframe>
+
 Let's go into the INFILE.yaml file in the hashkat directory and make some changes. Using the INFILE.yaml used in [**Tutorial 1**](https://github.com/hashkat/hashkat/blob/master/docs/tutorial_input_files/tutorial01/INFILE.yaml) as a starting point,
 we'll keep the number of agents within the
 simulation constant by having 1000 initial and maximum agents. For quickness, we'll lower the maximum simulated time to 1000 simulated minutes.
@@ -151,6 +153,8 @@ agents:
 
 ## Running and Visualizing The Network
 
+<iframe width="560" height="315" src="https://www.youtube.com/embed/16tuo4YkVbo" frameborder="0" allowfullscreen></iframe>
+
 Running this simulation, and visualizing it, we produce a network similar to the one shown below: 
 
 <p align='center'>
@@ -160,6 +164,8 @@ Running this simulation, and visualizing it, we produce a network similar to the
 As we can quite clearly see this a truly random network, with no clear agent or group of agents being the most popular.
 
 ## Network Output
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/b-skHf5rnpk" frameborder="0" allowfullscreen></iframe>
 
 With agents having a follow rate of 0.01 follows per simulated minute in a simulation 1000 simulated minutes long, we would expect most agents to have a cumulative degree distribution of 20. Let's plot this up using 'gnuplot', using data points instead of filled curves to graph our data. The commands to do this are shown below:
 
@@ -180,6 +186,8 @@ Giving us:
 As we can see, there is a definite peak surrounding 20 degrees, though it seems that more agents have a cumulative degree just below or just above 20.
 
 ## Running a Network Simulation with a Random Seed
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/_36T2gGvrEw" frameborder="0" allowfullscreen></iframe>
 
 What's interesting about ***#k@*** is that if you were to remove the corresponding *network_state.dat* file and *output* files for this simulation and ran it again, you would receive the exact same output as you did before. That is because this simulation we always run with the same seed. A seed is a value used to initialize a random number generator. If the same seed is used every time you run the same network simulation, you will get the exact same output since the exact same random numbers will be used for the simulation. To run a network simulation with a random seed, thereby giving you a different output, type in the command:
 

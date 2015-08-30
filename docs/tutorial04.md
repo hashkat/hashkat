@@ -22,6 +22,8 @@ You can also view the input file we will be creating for this example [here](htt
 
 ### Constructing The Network
 
+<iframe width="560" height="315" src="https://www.youtube.com/embed/ENwr6_pTo0k" frameborder="0" allowfullscreen></iframe>
+
 So let's make some modifications to our input file. As opposed to the random follow model simulations, where the number of agents within the network remained constant throughout the simulation,
 we are going to have the number of agents within the simulation increase over time, by setting our *initial_agents* to 10, and our *max_agents* to 1000.
 Most importantly, we're going to set *use_barabasi* to *true* causing the simulation to implement the Barabasi configuration.
@@ -102,6 +104,8 @@ so that the only manner in which agents are connecting with each other is throug
 
 ### Running and Visualizing The Network
 
+<iframe width="560" height="315" src="https://www.youtube.com/embed/Joezk6X4XPU" frameborder="0" allowfullscreen></iframe>
+
 Let's now run this simulation. You can plot the log-log graph of the *cumulative-degree_distribution_month_000.dat* in gnuplot, by following the same plotting steps outlined in [Tutorial 1](http://docs.hashkat.org/en/latest/tutorial01/) but when plotting typing in
 the commands:
 
@@ -160,6 +164,8 @@ The Non-Classic Barabasi configuration is exactly the same as the classic config
 The *INFILE.yaml* file we will create in this simulation can be found for reference in the *docs/tutorial_input_files* directory in hashkat under the title *tutorial04_nonclassic_barabasi*.
 You can also view the input file used for this example [here](https://github.com/hashkat/hashkat/blob/master/docs/tutorial_input_files/tutorial04_nonclassic_barabasi/INFILE.yaml).
 
+<iframe width="560" height="315" src="https://www.youtube.com/embed/JErCat4Qdbw" frameborder="0" allowfullscreen></iframe>
+
 ### Constructing The Network
 
 For this example, we will use the exact same INFILE.yaml as used above, but our *barabasi_connections* will have a value of 2 instead of 1.
@@ -181,6 +187,8 @@ agent has at least two connections.
 We shall now run a *twitter_suggest* follow model network simulation without implementing the Barabasi configuration.
 The *INFILE.yaml* file that was used in this example can be found for reference in the *docs/tutorial_input_files* directory in hashkat under the title *tutorial04_other*.
 You can also view the input file used for this example [here](https://github.com/hashkat/hashkat/blob/master/docs/tutorial_input_files/tutorial04_other/INFILE.yaml).
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/NNK9bQ4K9aU" frameborder="0" allowfullscreen></iframe>
 
 ### Constructing The Network
 

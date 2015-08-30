@@ -8,6 +8,8 @@ We will go over the steps to install these programs for each particular operatin
 
 # Mac OS X
 
+<iframe width="420" height="315" src="https://www.youtube.com/embed/UrqxCDf0NxY" frameborder="0" allowfullscreen></iframe>
+
 Here outlines the following steps on how to install ***#k@*** on Mac OS X:
 
 1. Download the latest build of ***#k@*** at [hashkat.org](http://hashkat.org) by clicking on 'Latest Build'.
@@ -87,9 +89,11 @@ With ***#k@*** installed on your computer, please proceed to the following pages
 
 # Linux
 
+<iframe width="420" height="315" src="https://www.youtube.com/embed/xuQIqFKXI9w" frameborder="0" allowfullscreen></iframe>
+
 Here outlines the following steps on how to install ***#k@*** on Linux (these instructions assume you are using a Debian-based distribution such as Ubuntu, Linux Mint, or Debian):
 
-1. Download the latest build of ***#k@*** at [hashkat.org](http://hashkat.org) by clicking on 'Latest Build'.
+1. Download the latest build of ***#k@*** at [hashkat.org](http://hashkat.org) by clicking on 'Latest Build' and then clicking 'Save File' and then 'OK' on the prompt that appears.
 1. Enter a terminal and go into your **Downloads** directory/folder by typing in the following command and pressing **Enter**:
 
     `cd Downloads`
@@ -100,13 +104,13 @@ Here outlines the following steps on how to install ***#k@*** on Linux (these in
 
 1. Amongst your various other downloads you should see the following:
 
-    `hashkat.2015.06.24.tar.gz`
+    `hashkat.2015.08.20.tar.gz`
 
     Please note that the date in the file you downloaded may be different from the one above. That's totally fine, it just means that you've downloaded a newer version of ***#k@***!
 
 1. To unpack this tar file, type in the command:
 
-    `tar xzvf hashkat.2015.06.24.tar.gz`
+    `tar xzvf hashkat.2015.08.20.tar.gz`
 
 1. Once this is completed, look into the list of files in this directory and you will see amongst them:
 
@@ -114,7 +118,7 @@ Here outlines the following steps on how to install ***#k@*** on Linux (these in
 
 1. For ease of access, move this directory into your 'home' directory by typing in the command:
 
-    `mv ~/Downloads/hashkat/ ~/`
+    `mv ~/Downloads/hashkat  ~/`
 
 1. Now return to your 'home' directory by typing in the command:
 
@@ -138,11 +142,11 @@ Here outlines the following steps on how to install ***#k@*** on Linux (these in
 
     `./build.sh -O`
 
-1. You can now run ***#k@*** in this *hashkat* directory as long as it has *INFILE.yaml* within in it by typing in the command:
+1. You can now run ***#k@*** in this **hashkat** directory as long as it has *INFILE.yaml* and *run.sh* within in it by typing in the command:
 
     `./run.sh`
 
- 1. Once you have run ***#k@*** properly, remove all the network save and analysis files created from this simulation by typing in the following commands:
+ 1. Once you have run ***#k@*** properly, remove all the network save and analysis files created from this test simulation by typing in the following commands:
 
     `rm DATA_vs_TIME`
 
