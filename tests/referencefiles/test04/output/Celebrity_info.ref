@@ -1,11 +1,11 @@
 # Agent percentages following agent type 'Celebrity'
-# Standard: 23.9945   Celebrity: 24.8266   Bot: 26.8377   Organization: 24.3412   
+# Standard: 24.6763   Celebrity: 25.6115   Bot: 24.7482   Organization: 24.964   
 # Agent percentages that agent type 'Celebrity' follows
-# Standard: 24.9473   Celebrity: 25.1581   Bot: 25.7203   Organization: 24.1743   
+# Standard: 26.0522   Celebrity: 25.8345   Bot: 23.73   Organization: 24.3832   
 # degree	in_degree	out_degree	cumulative	log(degree)	log(in_degree)	log(out_degree)	log(cumulative)
 
-0	0.943816	0.944538	0.923349	-inf	-0.0578243	-0.0570593	-0.0797485
-1	0.0546192	0.0538566	0.0411751	0	-2.90737	-2.92143	-3.18992
-2	0.00148487	0.00156513	0.0333895	0.693147	-6.51243	-6.45978	-3.39951
-3	4.01316e-05	4.01316e-05	0.00144474	1.09861	-10.1233	-10.1233	-6.53983
-4	4.01316e-05	0	0.000521711	1.38629	-10.1233	-inf	-7.5584
+0	0.945983	0.946505	0.925235	-inf	-0.0555309	-0.0549795	-0.0777078
+1	0.0522915	0.0517297	0.0414961	0	-2.95092	-2.96172	-3.18216
+2	0.00168553	0.00172566	0.031102	0.693147	-6.38568	-6.36215	-3.47048
+3	4.01316e-05	4.01316e-05	0.00136448	1.09861	-10.1233	-10.1233	-6.59699
+4	0	0	0.000722369	1.38629	-inf	-inf	-7.23297

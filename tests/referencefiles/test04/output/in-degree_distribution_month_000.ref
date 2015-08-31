@@ -1,8 +1,7 @@
 # This is the in-degree distribution. The data order is:
 # degree, normalized probability, log of degree, log of normalized probability
 
-0	0.94466	-inf	-0.0569302
-1	0.05387	0	-2.92118
-2	0.00144	0.693147	-6.54311
-3	2e-05	1.09861	-10.8198
-4	1e-05	1.38629	-11.5129
+0	0.94807	-inf	-0.0533269
+1	0.05047	0	-2.98638
+2	0.00143	0.693147	-6.55008
+3	3e-05	1.09861	-10.4143

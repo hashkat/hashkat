@@ -1,9 +1,9 @@
 # This is the cumulative degree distribution. The data order is:
 # degree, normalized probability, log of degree, log of normalized probability
 
-0	0.965131	-inf	-0.0354915
-1	0.0187895	0	-3.97446
-2	0.0150858	0.693147	-4.194
-3	0.000903342	1.09861	-7.00941
-4	9.03342e-05	1.38629	-9.31199
+0	0.967996	-inf	-0.0325277
+1	0.0171909	0	-4.06337
+2	0.0137162	0.693147	-4.28918
+3	0.000731529	1.09861	-7.22037
+4	0.000365764	1.38629	-7.91352
 5	0	1.60944	-inf

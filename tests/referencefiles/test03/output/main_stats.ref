@@ -5,21 +5,21 @@
 USERS
 _____
 
-Total: 11072
-Standard: 2737	(24.72% of total agents)
-Celebrity: 2873	(25.9483% of total agents)
-Bot: 2763	(24.9548% of total agents)
-Organization: 2699	(24.3768% of total agents)
+Total: 11172
+Standard: 2843	(25.4475% of total agents)
+Celebrity: 2823	(25.2685% of total agents)
+Bot: 2801	(25.0716% of total agents)
+Organization: 2705	(24.2123% of total agents)
 
 TWEETS
 _____
 
-Total: 237
-Hashtags: 129	(54.4304% of total tweets)
-Standard: 80	(33.7553% of total tweets)
-Celebrity: 71	(29.9578% of total tweets)
-Bot: 3	(1.26582% of total tweets)
-Organization: 83	(35.0211% of total tweets)
+Total: 229
+Hashtags: 108	(47.1616% of total tweets)
+Standard: 77	(33.6245% of total tweets)
+Celebrity: 71	(31.0044% of total tweets)
+Bot: 3	(1.31004% of total tweets)
+Organization: 78	(34.0611% of total tweets)
 
 RETWEETS
 _______
@@ -33,16 +33,16 @@ Organization: 0	(0% of total retweets)
 FOLLOWS
 _______
 
-Total follows: 188
-Total follow attempts: 188
+Total follows: 197
+Total follow attempts: 197
 Random: 0	(0% of total follow attempts)
 Twitter_Suggest: 0	(0% of total follow attempts)
 Agent: 0	(0% of total follows attempts)
-Preferential_Agent: 136	(72.3404% of total follow attempts)
+Preferential_Agent: 129	(65.4822% of total follow attempts)
 Retweet: 0	(0% of total follows attempts)
 Hashtag: 0	(0% of total follows attempts)
-Followbacks: 52	 (27.6596% of total follow attempts)
-Standard: 33	(17.5532% of total follows)
-Celebrity: 36	(19.1489% of total follows)
-Bot: 67	(35.6383% of total follows)
-Organization: 52	(27.6596% of total follows)
+Followbacks: 68	 (34.5178% of total follow attempts)
+Standard: 40	(20.3046% of total follows)
+Celebrity: 50	(25.3807% of total follows)
+Bot: 68	(34.5178% of total follows)
+Organization: 39	(19.797% of total follows)

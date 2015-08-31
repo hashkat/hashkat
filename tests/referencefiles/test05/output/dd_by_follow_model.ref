@@ -1,10 +1,13 @@
 This is the degree distribution by follow model. The data order is:
 # degree	log_of_degree	Random-normalized_probability	Random-log_of_normalized_probability	Twitter_Suggest-normalized_probability	Twitter_Suggest-log_of_normalized_probability	Agent-normalized_probability	Agent-log_of_normalized_probability	Preferential_Agent-normalized_probability	Preferential_Agent-log_of_normalized_probability	Hashtag-normalized_probability	Hashtag-log_of_normalized_probability	Twitter-normalized_probability	Twitter-log_of_normalized_probability	Followbacks-normalized_probability	Followbacks-log_of_normalized_probability
 
-0	-inf	1	0	1	0	1	0	1	0	1	0	0.975136	-0.0251782	0.988838	-0.0112243
-1	0	0	-inf	0	-inf	0	-inf	0	-inf	0	-inf	0.0236842	-3.74295	0.0107078	-4.53678
-2	0.693147	0	-inf	0	-inf	0	-inf	0	-inf	0	-inf	0.000998185	-6.90957	0.000453721	-7.69803
-3	1.09861	0	-inf	0	-inf	0	-inf	0	-inf	0	-inf	9.07441e-05	-9.30747	0	-inf
-4	1.38629	0	-inf	0	-inf	0	-inf	0	-inf	0	-inf	9.07441e-05	-9.30747	0	-inf
+0	-inf	1	0	1	0	1	0	1	0	1	0	0.977676	-0.0225772	0.990638	-0.00940588
+1	0	0	-inf	0	-inf	0	-inf	0	-inf	0	-inf	0.021064	-3.86019	0.00882168	-4.73054
+2	0.693147	0	-inf	0	-inf	0	-inf	0	-inf	0	-inf	0.000720137	-7.23607	0.000540103	-7.52375
+3	1.09861	0	-inf	0	-inf	0	-inf	0	-inf	0	-inf	0.000360068	-7.92922	0	-inf
+4	1.38629	0	-inf	0	-inf	0	-inf	0	-inf	0	-inf	9.00171e-05	-9.31551	0	-inf
 5	1.60944	0	-inf	0	-inf	0	-inf	0	-inf	0	-inf	0	-inf	0	-inf
-6	1.79176	0	-inf	0	-inf	0	-inf	0	-inf	0	-inf	0	-inf	0	-inf
+6	1.79176	0	-inf	0	-inf	0	-inf	0	-inf	0	-inf	9.00171e-05	-9.31551	0	-inf
+7	1.94591	0	-inf	0	-inf	0	-inf	0	-inf	0	-inf	0	-inf	0	-inf
+8	2.07944	0	-inf	0	-inf	0	-inf	0	-inf	0	-inf	0	-inf	0	-inf
+9	2.19722	0	-inf	0	-inf	0	-inf	0	-inf	0	-inf	0	-inf	0	-inf
