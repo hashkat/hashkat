@@ -109,32 +109,26 @@ When running this program, you will see something similar to this outputted to t
 |:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
 |9.93e+04|1.00e+03|1.00e+04|0.00e+00|0.00e+00(0.00e+00)|0.00e+00|1.00e-01|2.25e+00|
 
-<style>
-th, td {
-	padding: 100px;
-}
-</style>
-
-<table>
+<table style="border-collapse: collapse">
 	<tr>
-		<th>Simulation Time (min)</th>
-		<th>Users</th>
-		<th>Follows</th>
-		<th>Tweets</th>
-		<th>Retweets</th>
-		<th>Unfollows</th>
-		<th>R</th>
-		<th>Real Time (s)</th>
+		<th align="center">Simulation Time (min)</th>
+		<th align="center">Users</th>
+		<th align="center">Follows</th>
+		<th align="center">Tweets</th>
+		<th align="center">Retweets</th>
+		<th align="center">Unfollows</th>
+		<th align="center">R</th>
+		<th align="center">Real Time (s)</th>
 	</tr>
 	<tr>
-		<td>9.93e+04</td>
-		<td>1.00e+03</td>
-		<td>1.00e+04</td>
-		<td>0.00e+00</td>
-		<td>0.00e+00(0.00e+00)</td>
-		<td>0.00e+00</td>
-		<td>1.00e-01</td>
-		<td>2.25e+00</td>
+		<td align="center">9.93e+04</td>
+		<td align="center">1.00e+03</td>
+		<td align="center">1.00e+04</td>
+		<td align="center">0.00e+00</td>
+		<td align="center">0.00e+00(0.00e+00)</td>
+		<td align="center">0.00e+00</td>
+		<td align="center">1.00e-01</td>
+		<td align="center">2.25e+00</td>
 	</tr>
 </table>
 
