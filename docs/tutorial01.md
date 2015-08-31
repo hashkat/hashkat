@@ -109,7 +109,7 @@ When running this program, you will see something similar to this outputted to t
 | --- | --- | --- | --- | --- | --- | --- | --- |
 |9.93e+04|1.00e+03|1.00e+04|0.00e+00|0.00e+00(0.00e+00)|0.00e+00|1.00e-01|2.25e+00|
 
-<table>
+<table cellpadding="1">
 	<tr>
 		<th>Simulation Time (min)</th>
 		<th>Users</th>
