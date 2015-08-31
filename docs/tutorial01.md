@@ -105,9 +105,9 @@ If you experience any issues running the simulation, you can reference the [**In
 
 When running this program, you will see something similar to this outputted to the screen:
 
-|Simulation Time (min)|Users|Follows|Tweets|Retweets|Unfollows|R|Real Time (s)|
+|<sub>Simulation Time (min)</sub>|<sub>Users</sub>|<sub>Follows</sub>|<sub>Tweets</sub>|<sub>Retweets</sub>|<sub>Unfollows</sub>|<sub>R</sub>|<sub>Real Time (s)</sub>|
 |:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
-|9.93e+04|1.00e+03|1.00e+04|0.00e+00|0.00e+00(0.00e+00)|0.00e+00|1.00e-01|2.25e+00|
+|<sub>9.93e+04</sub>|<sub>1.00e+03</sub>|<sub>1.00e+04</sub>|<sub>0.00e+00</sub>|<sub>0.00e+00(0.00e+00)</sub>|<sub>0.00e+00</sub>|<sub>1.00e-01</sub>|<sub>2.25e+00</sub>|
 
 <table style="border-collapse: collapse">
 	<tr>
