@@ -109,29 +109,6 @@ When running this program, you will see something similar to this outputted to t
 |:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
 |<sub>9.93e+04</sub>|<sub>1.00e+03</sub>|<sub>1.00e+04</sub>|<sub>0.00e+00</sub>|<sub>0.00e+00(0.00e+00)</sub>|<sub>0.00e+00</sub>|<sub>1.00e-01</sub>|<sub>2.25e+00</sub>|
 
-<table style="border-collapse: collapse">
-	<tr>
-		<th align="center">Simulation Time (min)</th>
-		<th align="center">Users</th>
-		<th align="center">Follows</th>
-		<th align="center">Tweets</th>
-		<th align="center">Retweets</th>
-		<th align="center">Unfollows</th>
-		<th align="center">R</th>
-		<th align="center">Real Time (s)</th>
-	</tr>
-	<tr>
-		<td align="center">9.93e+04</td>
-		<td align="center">1.00e+03</td>
-		<td align="center">1.00e+04</td>
-		<td align="center">0.00e+00</td>
-		<td align="center">0.00e+00(0.00e+00)</td>
-		<td align="center">0.00e+00</td>
-		<td align="center">1.00e-01</td>
-		<td align="center">2.25e+00</td>
-	</tr>
-</table>
-
 This gives a list of data at a particular point in your simulation.
 **Simulation Time (min)** corresponds to simulation time in minutes, **Users** corresponds to the number
 of agents in the network at that particular point in the simulation, 
