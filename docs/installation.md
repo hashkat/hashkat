@@ -2,9 +2,9 @@
 
 # Installation
 
-The ***#k@*** project is compatible with both 'Mac OS X' and 'Linux'.
+The ***#k@*** project is compatible with both Mac OS X and Linux.
 
-We will go over the steps to install these programs for each particular operating system below.
+We will go over the steps to install ***#k@*** for each particular operating system below.
 
 ## Mac OS X
 
@@ -15,7 +15,7 @@ We will go over the steps to install these programs for each particular operatin
 Here outlines the following steps on how to install ***#k@*** on Mac OS X:
 
 1. Download the latest build of ***#k@*** at [hashkat.org](http://hashkat.org) by clicking on 'Latest Build'.
-1. Enter a terminal and go into your **Downloads** directory/folder by typing in the following command and pressing **Enter**:
+1. Enter a terminal and go into your **Downloads** directory/folder by typing in the following command and pressing **return**:
 
     `cd Downloads/`
 
@@ -41,11 +41,11 @@ Here outlines the following steps on how to install ***#k@*** on Mac OS X:
 
     `mv ~/Downloads/hashkat ~/`	
 
-1. Now return to you 'home' directory by typing in the command:
+1. Now return to your 'home' directory by typing in the command:
 
     `cd`
 
-1. Let's now go into the *hashkat* directory by typing in the command:
+1. Let's now go into the **hashkat** directory by typing in the command:
 
     `cd hashkat/`
 
@@ -53,11 +53,11 @@ Here outlines the following steps on how to install ***#k@*** on Mac OS X:
 
     `ls`
 
-1. You will need to install the 'CMake' packages on to your computer to build ***#k@***. You can install this package to your computer using 'Homebrew'. To install 'Homebrew' to your computer, simply type in the command:
+1. You will need to install the 'CMake' package on to your computer to build ***#k@***. You can install this package to your computer using 'Homebrew'. To install 'Homebrew' to your computer, simply type in the command:
 
     `ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"`
 
-    A prompt may appear asking you if you'd like to install the 'command line developer tools'. Click 'Install' and agree to the licensing agreement to install these tools. Once these tools have been installed, you can continue installing 'Homebrew' by pressing **Return**.
+    A prompt may appear asking you if you'd like to install the 'command line developer tools'. Click 'Install' and agree to the licensing agreement to install these tools. Once these tools have been installed, you can continue installing 'Homebrew' by pressing **return**.
 
 1. With 'Homebrew' installed, you an install the 'CMake' package by typing in the command:
 
