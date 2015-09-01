@@ -1,10 +1,12 @@
 [hashkat.org](http://hashkat.org)
 
+# Installation
+
 The ***#k@*** project is compatible with both 'Mac OS X' and 'Linux'.
 
 We will go over the steps to install these programs for each particular operating system below.
 
-# Mac OS X
+## Mac OS X
 
 <center>
 <iframe width="560" height="315" src="https://www.youtube.com/embed/UrqxCDf0NxY" frameborder="0" allowfullscreen></iframe>
@@ -87,7 +89,7 @@ Here outlines the following steps on how to install ***#k@*** on Mac OS X:
 
 With ***#k@*** installed on your computer, please proceed to the following pages in the documentation to learn how to fully utilize this program.
 
-# Linux
+## Linux
 
 <center>
 <iframe width="560" height="315" src="https://www.youtube.com/embed/xuQIqFKXI9w" frameborder="0" allowfullscreen></iframe>
@@ -166,7 +168,7 @@ Here outlines the following steps on how to install ***#k@*** on Linux (these in
 
 With ***#k@*** installed on your computer, please proceed to the following pages in the documentation to learn how to fully utilize this program.
 
-# Supplementary Tools
+## Supplementary Tools
 
 This is not necessary for the running of ***#k@***, but you can use the C++ compiler 'Clang' if you're having issues with 'g++' by doing the following:
 
