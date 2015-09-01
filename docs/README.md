@@ -21,3 +21,5 @@ Here contains the write-up, images, and input files used in the #k@ documentatio
 * No video for tutorials 9, 10, 13, and the output of Tutorial 5 due to errors 
 
 * Tutorial 8 would benefit from having a discussion on its dd_by_follow_model output file when it is fixed
+
+* Update citation page when 'Transcending language barriers in a realistic model of an online social network' paper is submitted

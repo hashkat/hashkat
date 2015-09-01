@@ -8,7 +8,7 @@ Using the command line within your computer terminal is required extensively whe
 
 ## Print Working Directory
 
-To display to the screen the path of the working directory you are currently in, enter in the following command:
+To display to the screen the path of the working directory/folder you are currently in, enter in the following command:
 
 `pwd`
 
@@ -32,9 +32,13 @@ You can create a directory using the **mkdir** command. Entering in the followin
 
 ## Change Directory
 
-You can change in to a different directory using the **cd** command. Simply typing in **cd** will move you into the 'home' diectory, while typing in **cd ..** will have you move up one directory. You can change into a specific directory using **cd** in conjunction with the directory's name, though this directory must be present within the directory that you are currently in. Typing in the following will move you into the **Documents** directory:
+You can change in to a different directory using the **cd** command. Simply typing in **cd** will move you into the 'home' diectory, while typing in **cd ..** will have you move up one directory. You can change into a specific directory using **cd** in conjunction with the directory's name, though this directory must be present within the directory that you are currently in. Typing in the following will move you into the **Documents** directory (assuming you are in your 'home' directory:
 
 `cd Documents`
+
+Typing the following will move you back into your 'home' directory:
+
+`cd`
 
 ## Remove a File
 
@@ -50,7 +54,7 @@ You can remove a directory and all its contents from the directory you are curre
 
 ## Move
 
-You can move a file or folder using the **mv** command. When moving a file or folder, you must type in its current location in your computer followed by the location where you would like to move it. Entering in the following command will move the file *newerfile* from your **Downloads** directory into your **Documents** directory:
+You can move a file or folder using the **mv** command. When moving a file or folder, you must type in its current location in your computer followed by the location where you would like to move it. Go into your **Downloads** directory and create the file *newerfile*, and then enter in the following command to move the file *newerfile* from your **Downloads** directory into your **Documents** directory:
 
 `mv ~/Downloads/newerfile ~/Documents/`
 
@@ -70,7 +74,7 @@ You can copy a directory using the **cp -r** command in much the same way you co
 
 ## Enabling a Text Editor
 
-You can modify the contents of a file using a text editor. There are numerous text editors available for you to use, but for this documentation, we will use the 'nano' text editor, simply because it is one of the more basic ones and a good text editor to start out with. You can use 'nano' to edit a file in your current working directory by simply typing in the command **nano** followed by the name of the file you wish to edit. Entering in the following command will edit the file *newerfile*:
+You can modify the contents of a file using a text editor. There are numerous text editors available for you to use, but for this documentation, we will use the 'nano' text editor, simply because it is one of the more basic ones and a good text editor to start out with. You can use 'nano' to edit a file in your current working directory by simply typing in the command **nano** followed by the name of the file you wish to edit. Entering in the following command will allow you to edit the file *newerfile* (assuming you are in the directory that it is currently in):
 
 `nano newerfile`
 
