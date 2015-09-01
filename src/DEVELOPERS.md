@@ -76,7 +76,7 @@ Stores all of the information for a simulation in #k@.
 
 ### analyzer_main.cpp
 
-The principal file in the source code, it deals with many aspect of #k@. It ensures that when you stop a simulation using **Ctrl-c** the simulation halts gracefully, it contains the *Analyzer* struct which contains numerous other structs within #k@, and it has several initialization functions used to make the proper configurations based on the input file.
+The principal file in the source code, it deals with many aspects of #k@. It ensures that when you stop a simulation using **Ctrl-c** the simulation halts gracefully, it contains the *Analyzer* struct which contains numerous other structs within #k@, and it has several initialization functions used to make the proper configurations based on the input file.
 
 !!!!! 
 
