@@ -20,7 +20,7 @@ hashtag_follow_options:
 
 ## Running and Visualizing The Network
 
-Creating a network with this configuration, we produced the following visualization using the *Yifan Hu* layout:
+Creating a network with this configuration, we produced the following visualization using the *Yifan Hu* and *Contraction* layouts:
 
 <p align='center'>
 <img src='../img/tutorial07/visualization.png'>

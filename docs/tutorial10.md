@@ -24,7 +24,7 @@ We can visualize this data by opening the graph file we created, *retweet_viz.ge
 <img src='../img/tutorial10/retweet_visualization.png'>
 </p>
 
-In the above visualization, the purple node is the author of the most popular tweet, the blue nodes are the retweeters, the green nodes are the non-retweeters, and the other various coloured nodes are followers of the most popular tweet author who did not retweet but are also not connected to an agent that did. Viewing the above visualization, it is quite clear that one of the main reasons that this agent is the author of the most popular tweet is because they are very highly connected, thereby giving them a better chance of having their tweets retweeted. 
+In the above visualization, the pink node is the author of the most popular tweet, the green nodes are the retweeters, the blue nodes are the non-retweeters, and the other various coloured nodes are followers of the most popular tweet author who did not retweet but are also not connected to an agent that did. Viewing the above visualization, it is quite clear that one of the main reasons that this agent is the author of the most popular tweet is because they are very highly connected, thereby giving them a better chance of having their tweets retweeted. 
 
 ## Next Steps
 
