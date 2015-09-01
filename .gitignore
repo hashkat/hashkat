@@ -31,6 +31,7 @@ output/*
 *.yaml-generated
 *.csv
 *.pyc
+*.svg
 yaml-cpp.pc
 tests/pass_logs
 tests/fail_logs
