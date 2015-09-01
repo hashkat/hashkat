@@ -1,5 +1,3 @@
-<span style="color:black; font-family:Georgia; font-size:1.5em;">August 2015 - This site is currently under construction. Please return regularly over the course of the summer for further updates. </span>
-
 <p align='center'>
 <img src='../img/logo.svg'>
 </p>
