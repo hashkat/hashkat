@@ -44,7 +44,7 @@ Contains the pages and images used in the write-up of the ***#k@*** documentatio
 
 Contains a list of directories, each with there own *INFILE.yaml* that can be used as an example of a particular network simulation.
 
-## <span style="color:pink">graph.svg</span>
+## <span style="color:hotpink">graph.svg</span>
 
 Contains network graph created by running *visualize.py*.
 

@@ -2,13 +2,15 @@
 
 # Visualization
 
+## Gephi
+
 <center>
 <iframe width="560" height="315" src="https://www.youtube.com/embed/GZYsnLApk24" frameborder="0" allowfullscreen></iframe>
 </center>
 
 Here we shall outline ways in which you can visualize some of that data you have collected using ['Gephi'](http://gephi.github.io/). There are many other programs you can use for visualizations, and you are encouraged to try them, we're just going to focus on using 'Gephi' however in this documentation. The network we visualized here was the one created in [**Tutorial 5**](http://docs.hashkat.org/en/latest/tutorial05/).
 
-## How to Visualize a Network
+### How to Visualize a Network
 
 You can download 'Gephi' through there [website](http://gephi.github.io/). Once you have finished downloading 'Gephi', enter the program, and we will go over the steps necessary to visualize the networks you've created.
 
@@ -64,7 +66,7 @@ You can download 'Gephi' through there [website](http://gephi.github.io/). Once 
 <img src='../img/visualization/gephi_choose_layout.png'>
 </p>
 
-## Explore
+### Explore
 
 Now that you have set up your visualization of your network simulation, you are encouraged to explore all the features of **Gephi** that you can use for your visualizations. Two network layouts that we primarily use in this documentation are the *Fruchterman Reingold* layout:
 
@@ -89,3 +91,51 @@ There are numerous other modifications and adjustments that can be made to your 
 By left clicking the light bulb button, you can change the background from white to black or vice-versa, and by right clicking it you can change the background color to whatever colour you'd like. By moving the edge weight scale, you can also adjust how emboldened the connection lines are in your visualization.
 
 This just scratches the surface of all that you can do using 'Gephi'. Try experimenting with some of its other features and see what configuration of your network visualization you like the best.
+
+## Networkx
+
+You can also visualize the networks you've created using [Networkx](https://networkx.github.io/). Networkx is a Python language software package that can be used to create, modify, and analyze networks. To use Networkx, you must have Python installed in your computer. You can install Python by typing into the command line:
+
+* For Mac OS X:
+
+    `brew install python`
+
+* For Linux:
+
+    `sudo apt-get install python`
+
+To install Networkx on to your computer, enter into the command line:
+
+`pip install networkx`
+
+You now have Networkx installed in your computer! To create a graph of your network after running a simulation, enter Python by typing in the command:
+
+`python`
+
+In Python, type in the following to create a graph of your network:
+
+`import matplotlib.pyplot as plt`
+
+`import networkx as nx`
+
+`G = nx.read_edgelist('output/network.dat')`
+
+`nx.draw(G)`
+
+`plt.show()`
+
+This will produce a plot similar to the one below:
+
+<p align='center'>
+<img src='../img/visualization/networkx_graph.png'>
+</p>
+
+Similar to our visualizations using Gephi, the red nodes in the above graph correspond to agents and the black edges in between them correspond to connections/followings between agents, though it is important to note that there is no way to distinguish between the different agent types via this method.
+
+Though Gephi is of course the visualization tool primarily used in this software, you can visualize your networks using the above manner by running the script in the **hashkat** directory *visualize.py* by entering the command after running a network simulation:
+
+`./visualize.py`
+
+Running this script will not only produce a plot of your network using Networkx, but it will also save that plot to a file named *graph.svg*.
+
+Though as previously mentioned we go over using Gephi in much greater detail in this documentation, you are encouraged to also analyze your networks using Networkx, to have a full handle on how to analyze the data you've collected by running ***#k@***.
