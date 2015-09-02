@@ -44,6 +44,10 @@ Contains the pages and images used in the write-up of the ***#k@*** documentatio
 
 Contains a list of directories, each with there own *INFILE.yaml* that can be used as an example of a particular network simulation.
 
+## <span style="color:pink">graph.svg</span>
+
+Contains network graph created by running *visualize.py*.
+
 ## <span style="color:green">hashkat_pre.py</span>
 
 Generates all inputted parameters made in *INFILE.yaml* to prepare the ideal network to be run using ***#k@***.
@@ -105,6 +109,10 @@ Script that runs *verify.py* on every single reference network simulation in **t
 ## <span style="color:green">verify.py</span> 
 
 Script run in *tests.sh* to compare the data of output files in a network simulation to what is expected. If there is discrepancy between an output file and its reference, the file name is printed to the screen. Used in the development of ***#k@*** to confirm if any changes made to the source code did or did not affect impact the output of a network simulation.   
+
+## <span style="color:green">visualize.py</span>
+
+Script that creates *graph.svg*, which contains a plot of the network created by running ***#k@***.
 
 ## <span style="color:blue">yaml</span>
 
