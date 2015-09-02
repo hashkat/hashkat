@@ -85,7 +85,7 @@ Here outlines the following steps on how to install ***#k@*** on Mac OS X:
 
     `brew install gnuplot -x11`
 
-1. It is also recommended to download and install ['Gephi'](http://gephi.github.io/) from their website to use for visualizations of collected data.
+1. It is also recommended to download and install [Gephi](http://gephi.github.io/) from their website to use for visualizations of collected data.
 
 With ***#k@*** installed on your computer, please proceed to the following pages in the documentation to learn how to fully utilize this program.
 
@@ -150,7 +150,7 @@ Here outlines the following steps on how to install ***#k@*** on Linux (these in
 
     `./run.sh`
 
- 1. Once you have run ***#k@*** properly, remove all the network save and analysis files created from this test simulation by typing in the following commands:
+1. Once you have run ***#k@*** properly, remove all the network save and analysis files created from this test simulation by typing in the following commands:
 
     `rm DATA_vs_TIME`
 
@@ -164,13 +164,13 @@ Here outlines the following steps on how to install ***#k@*** on Linux (these in
 
     `sudo apt-get install gnuplot-x11`
 
-1. It is also recommended to download and install ['Gephi'](http://gephi.github.io/) from their website to use for visualizations of collected data.
+1. It is also recommended to download and install [Gephi](http://gephi.github.io/) from their website to use for visualizations of collected data.
 
 With ***#k@*** installed on your computer, please proceed to the following pages in the documentation to learn how to fully utilize this program.
 
 ## Supplementary Tools
 
-This is not necessary for the running of ***#k@***, but you can use the C++ compiler 'Clang' if you're having issues with 'g++' by doing the following:
+This is not necessary for the running of ***#k@***, but you can use the C++ compiler 'Clang' if you're having issues with the 'g++' compiler by doing the following:
 
 1. For Mac OS X, input the command:
 
@@ -180,7 +180,7 @@ This is not necessary for the running of ***#k@***, but you can use the C++ comp
 
     `sudo apt-get install clang`
 
-1. Add the following to your *.bashrc* file:
+1. Add the following to your *.bashrc* file (for both Mac OS X and Linux):
 
     `export CC=clang`
 
