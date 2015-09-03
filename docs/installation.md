@@ -15,7 +15,7 @@ We will go over the steps to install ***#k@*** for each particular operating sys
 Here outlines the following steps on how to install ***#k@*** on Mac OS X:
 
 1. Download the latest build of ***#k@*** at [hashkat.org](http://hashkat.org) by clicking on 'Latest Build'.
-1. Enter a terminal and go into your **Downloads** directory/folder by typing in the following command and pressing **return**:
+1. Enter a terminal (which can be accessed by searching for 'terminal' in your system) and go into your **Downloads** directory/folder by typing in the following command and pressing **return**:
 
     `cd Downloads/`
 
@@ -98,7 +98,7 @@ With ***#k@*** installed on your computer, please proceed to the following pages
 Here outlines the following steps on how to install ***#k@*** on Linux (these instructions assume you are using a Debian-based distribution such as Ubuntu, Linux Mint, or Debian):
 
 1. Download the latest build of ***#k@*** at [hashkat.org](http://hashkat.org) by clicking on 'Latest Build' and then clicking 'Save File' and then 'OK' on the prompt that appears.
-1. Enter a terminal and go into your **Downloads** directory/folder by typing in the following command and pressing **Enter**:
+1. Enter a terminal (which can be accessed by searching for 'terminal' in your system) and go into your **Downloads** directory/folder by typing in the following command and pressing **Enter**:
 
     `cd Downloads`
 
