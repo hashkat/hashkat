@@ -22,17 +22,17 @@ hashtag_follow_options:
 
 Creating a network with this configuration, we produced the following visualization using the *Yifan Hu* and *Contraction* layouts:
 
-<p align='center'>
+<center>
 <img src='../img/tutorial07/visualization.png'>
-</p>
+</center>
 
 As you can see from this visualization, agents are separated into 4 main groups, with several other agents having no connections, being unable to follow or be followed by another agent in time. These 4 groups correspond to the 4 different ideologies we have in our network, named *Red*, *Blue*, *Green*, and *Orange*. It is important to note that the colours of agents in the visualization do not correspond to ideolgy colours, but are arbitrarily given to differentiate enities of different types (e.g. *Standard* agents, *Celebrity* agents, etc.).
 
 A plot of the cumulative degree distribution of these agents is shown below:
 
-<p align='center'>
+<center>
 <img src='../img/tutorial07/cumulative-degree_distribution_month_000.svg'>
-</p>
+</center>
 
 As expected given the number of unconnected agents in this network, there are either agents with a very low degree or high degree in this network, though there are much more agents with a low degree.
 
@@ -50,9 +50,9 @@ The commands used to create this graph in 'gnuplot' were:
 
 We can also plot the tweet distribution through use of the *tweets_distro.dat* file.
 
-<p align='center'>
+<center>
 <img src='../img/tutorial07/tweets_distro.svg'>
-</p>
+</center>
 
 As we can see from this plot of the tweet distribution, most agents have made 1 to 6 tweets in this simulation and that as the number of tweets increases, the number of agents that have made this many tweets decreases.
 

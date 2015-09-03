@@ -18,9 +18,9 @@ The **INFILE.yaml** used for this scenario can be found in the *docs/tutorial_in
 
 #### Coke
 
-<p align='center'>
+<center>
 <img src='../img/trading_cards/organization_coke_card.jpg'>
-</p>
+</center>
 
 ```python
 - name: Organization-Coke
@@ -48,9 +48,9 @@ The **INFILE.yaml** used for this scenario can be found in the *docs/tutorial_in
 
 #### Pepsi
 
-<p align='center'>
+<center>
 <img src='../img/trading_cards/organization_pepsi_card.jpg'>
-</p>
+</center>
 
 ```python
 - name: Organization-Pepsi
@@ -82,9 +82,9 @@ We have two regions in our network, *Canada* and the *USA*, and both are in the 
 
 #### Red
 
-<p align='center'>
+<center>
 <img src='../img/trading_cards/standard_red_card.jpg'>
-</p>
+</center>
 
 ```python
 - name: Standard-Red
@@ -112,9 +112,9 @@ We have two regions in our network, *Canada* and the *USA*, and both are in the 
 
 #### Blue
 
-<p align='center'>
+<center>
 <img src='../img/trading_cards/standard_blue_card.jpg'>
-</p>
+</center>
 
 ```python
 - name: Standard-Blue

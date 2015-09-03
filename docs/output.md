@@ -15,9 +15,9 @@ type follows with respect to each other, and the number of possible degrees for 
 type and their weighted in-degree, out-degree, and cumulative-degree that match this value, 
 as well as the logs of each. An example of the information stored in this file is shown below:
 
-<p align='center'>
+<center>
 <img src='../img/output/agenttype_info_file.png'>
-</p>
+</center>
 
 ## Categories Distribution
 
@@ -26,9 +26,9 @@ as well as the logs of each. An example of the information stored in this file i
 Outlines the number of tweets, follows, and retweets in their respective bin
 thresholds.
 
-<p align='center'>
+<center>
 <img src='../img/output/categories_distro_file.png'>
-</p>
+</center>
 
 ## Cumulative-Degree Distribution
 
@@ -38,9 +38,9 @@ Outlines all the possible total degrees an agent can have in that particular
 month in the simulation, as well as its normalized probability, logarithm, and
 normalized probability logarithm in columns in that order. The following shows some of the information stored in this output file:
 
-<p align='center'>
+<center>
 <img src='../img/output/cumulative-degree_distribution_file.png'>
-</p>
+</center>
 
 ## Degree Distribution by Follow Model
 
@@ -48,9 +48,9 @@ normalized probability logarithm in columns in that order. The following shows s
 
 Indicates the normalized probability and log of the normalized probability for each degree per follow method.
 
-<p align='center'>
+<center>
 <img src='../img/output/dd_by_follow_model_file.png'>
-</p>
+</center>
 
 ## In-Degree Distribution
 
@@ -60,9 +60,9 @@ Outlines all the possible in degrees an agent can have in that particular
 month in the simulation, as well as its normalized probability, logarithm, and
 normalized probability logarithm in columns in that order. An example of this file's contents is shown below:
 
-<p align='center'>
+<center>
 <img src='../img/output/in-degree_distribution_file.png'>
-</p>
+</center>
 
 ## Main Statistics
 
@@ -82,9 +82,9 @@ of follow attempts that occurred in the simulation, the number and
 percentage of follow attempts achieved through each follow method, and the 
 number and percentage of follows made by agents of each agent type.
 
-<p align='center'>
+<center>
 <img src='../img/output/main_stats_file.png'>
-</p>
+</center>
 
 ## Most Populat Tweet Content
 
@@ -92,9 +92,9 @@ Details basic information regarding the most retweeted, and therefore most popul
 
 An example of the data found in this output file is shown below:
 
-<p align='center'>
+<center>
 <img src='../img/output/most_popular_tweet_content_file.png'>
-</p>
+</center>
 
 ## Network Connections
 
@@ -105,9 +105,9 @@ with the agents in the first column (classified by an ID number)
 following the agents in the listed in the second column (also classified
 by an ID number). The following is an example of what the content's of this file would like:
 
-<p align='center'>
+<center>
 <img src='../img/output/network_dat_file.png'>
-</p>
+</center>
 
 ## Network Visualization
 
@@ -118,9 +118,9 @@ between users on your network using visualization software such as
 [Gephi](http://gephi.github.io/). Though the details in this file are less relevant than the 
 visualization created from this file itself, the following shows the contents of this file:
 
-<p align='center'>
+<center>
 <img src='../img/output/network_gexf_file.png'>
-</p>
+</center>
 
 ## Out-Degree Distribution
 
@@ -130,9 +130,9 @@ Outlines all the possible out degrees an agent can have in that particular
 month in the simulation, as well as its normalized probability, logarithm, and
 normalized probability logarithm in columns in that order. Below is an image of some of the contents of this file:
 
-<p align='center'>
+<center>
 <img src='../img/output/out-degree_distribution_file.png'>
-</p>
+</center>
 
 ## Region Connection Matrix
 
@@ -140,9 +140,9 @@ normalized probability logarithm in columns in that order. Below is an image of 
 
 Displays the connections made between regions. An example of this output file is shown below:
 
-<p align='center'>
+<center>
 <img src='../img/output/region_connection_matrix_file.png'>
-</p>
+</center>
 
 ## Retweet Distribution
 
@@ -151,9 +151,9 @@ Displays the connections made between regions. An example of this output file is
 Outlines the distribution of how many agents have made every possible number of 
 retweets within the network simulation.
 
-<p align='center'>
+<center>
 <img src='../img/output/retweets_distro_file.png'>
-</p>
+</center>
 
 ## Retweet Visualization
 
@@ -164,9 +164,9 @@ in the network simulation using visualization software such as
 [Gephi](http://gephi.github.io/). Though the contents of this file are less relevant than the 
 visualization created from this file itself, an example of this file can be seen below:
 
-<p align='center'>
+<center>
 <img src='../img/output/retweet_viz_gexf_file.png'>
-</p>
+</center>
 
 ## Tweet Distribution
 
@@ -175,6 +175,6 @@ visualization created from this file itself, an example of this file can be seen
 Outlines the distribution of how many agents have made every possible number of tweets
 within the network simulation.
 
-<p align='center'>
+<center>
 <img src='../img/output/tweets_distro_file.png'>
-</p>
+</center>

@@ -123,16 +123,16 @@ the commands:
 
 This gave us the following graph:
 
-<p align='center'>
+<center>
 <img src='../img/tutorial04_classic_barabasi/cumulative-degree_distribution_month_000.svg'>
-</p>
+</center>
 
 We can see that this produces a fairly linear plot with a negative slope, which makes sense since we would expect agents with a small degree to be great in number, while agents with a very large degree to
 be very small in number. Plotting these data points with a line of best fit up to a *log(Cumulative Degree)* of 2.5, we can see that this network simulation up to a certain point models a ['Scale-free' network](https://en.wikipedia.org/wiki/Scale-free_network), since this line of best fit clearly has a slope between -2 to -3.
 
-<p align='center'>
+<center>
 <img src='../img/tutorial04_classic_barabasi/cumulative-degree_distribution_fit.svg'>
-</p>
+</center>
 
 The commands used to graph this plot in 'gnuplot' were:
 
@@ -152,9 +152,9 @@ The commands used to graph this plot in 'gnuplot' were:
 
 A visualization of this network is shown below:
 
-<p align='center'>
+<center>
 <img src='../img/tutorial04_classic_barabasi/visualization.png'>
-</p>
+</center>
 
 As we can see, we have the much more highly connected agents at the centre of the visualization, and the agents lower in degree on the sides. As expected, by implementing the Classic Barabsi configuration,
 every agent, by following one other user, has at least one connection.
@@ -178,9 +178,9 @@ For this example, we will use the exact same INFILE.yaml as used above, but our 
 
 Running this network simulation, we produced the visualization shown below:
 
-<p align='center'>
+<center>
 <img src='../img/tutorial04_nonclassic_barabasi/visualization.png'>
-</p>
+</center>
 
 As expected, this network is quite similar to the one we produced using the Classic Barabasi configuration, with the more highly connected agents at
 the centre of the visualization and those less connected on the sides. This is, however, a much more highly connected network, since every
@@ -204,30 +204,30 @@ Designing a *twitter_suggest* follow model network simulation without implementi
 
 Running hashkat, we produced the following visualization of this simulation:
 
-<p align='center'>
+<center>
 <img src='../img/tutorial04_other/visualization.png'>
-</p>
+</center>
 
 As we can see, we again have some very highly connected agents in the centre of the visualization and unconnected agents on the sides. However, as opposed to *twitter_suggest* follow model simulations that implement the Barabasi configuration, there are no set number
 of connections that every agent has, which explains the presence of agents with 0 connections.
 
 Looking into the *Categories_Distro.dat* file, we can see a vast amount of information that includes the following:
 
-<p align='center'>
+<center>
 <img src='../img/tutorial04_other/categories_distro.png'>
-</p>
+</center>
 
 We can see here that the majority of agents made 10 or less tweets, though some made 20 or less. Retweeting was disallowed in this simulation, so the retweet ranks all have zero agents within them. We can also see how many agents have a certain number of followers in this network simulation. Looking further through this file, we can see that the most followed agent has 86 followers, since after that follow rank, there are zero agents present.
 
-<p align='center'>
+<center>
 <img src='../img/tutorial04_other/categories_distro1.png'>
-</p>
+</center>
 
 A plot of these follow ranks up to a follow rank of 15 is shown below:
 
-<p align='center'>
+<center>
 <img src='../img/tutorial04_other/follow_ranks.svg'>
-</p>
+</center>
 
 ## Next Steps
 

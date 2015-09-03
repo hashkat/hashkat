@@ -24,15 +24,15 @@ a random agent to tweet, a random agent to follow another random agent, or a
 random agent to retweet a tweet from another agent. **R** will then change
 accordingly. If 'use_random_time_increment' is enabled, another random number *r*<sub>2</sub> will then be generated, and time will move forward by:
 
-<p align = 'center'>
+<center>
 &Delta;<i>t</i> = -ln(<i>r</i><sub>2</sub>) / <b>R</b>
-</p>
+</center>
 
 If this is not enabled, time will move forward by:
 
-<p align = 'center'>
+<center>
 &Delta;<i>t</i> = 1 / <b>R</b>
-</p>
+</center>
 
 All of the rate functions will then be recalibrated to their new values and
 this cycle will repeat until either the maximum simulation time or real time
@@ -40,33 +40,33 @@ has been reached.
 
 The following is a model of how this works in ***#k@***. We initially have one agent in the network, with the agent add rate having been set to 1 agent per simulated minute and the agent tweet rate being set to 1 tweet per simulated minute (we've ignored the follow rate and retweet rate for this example). At this moment, there is an even chance that another agent will be added to the network or the initial agent will make a tweet. A random number is generated. If the random number is less than 0.5, another agent will be added, if it is greater or equal to 0.5, the initial agent will tweet. Time will then move forward based on the cumulative rate function and possibly another generated random number, again depending on whether or not 'use_random_time_increment' is permitted.
 
-<p align='center'>
+<center>
 <img src='../img/tutorial01/kmc_1.png'>
-</p>
+</center>
 
 Let's say that an agent has been added to the network.
 
-<p align='center'>
+<center>
 <img src='../img/tutorial01/kmc_2.png'>
-</p>
+</center>
 
 With this addition to our network, the agent add rate will remain the same but the agent tweet rate will now double since we have double the number of agents from what we originally had in the network. With this change, an agent tweeting is twice as likely to happen in comparison to an agent being added in the KMC loop, though the expected rates for each agent will remain the same since the simulated time will move more slowly, since the change in time is inversely proportional to the steadily increasing cummulative rate function.
 
-<p align='center'>
+<center>
 <img src='../img/tutorial01/kmc_3.png'>
-</p>
+</center>
 
 Let's add an additional agent to the network.
 
-<p align='center'>
+<center>
 <img src='../img/tutorial01/kmc_4.png'>
-</p>
+</center>
 
 Just as before, the agent add rate will remain the same but the agent tweet rate will increase since we now have 3 times the number of agents we initially had, though the expected rates for each agent will remain the same.
 
-<p align='center'>
+<center>
 <img src='../img/tutorial01/kmc_5.png'>
-</p>
+</center>
 
 This cycle will continue until the end of the simulation. For more information on how this is run in ***#k@***, please visit the [**Developers**](http://docs.hashkat.org/en/latest/developers/) page.
 
@@ -91,9 +91,9 @@ simulated minutes and a maximum of 1 minute real time.
 
 Each agent will have their own particular characteristics that will be changed and manipulated in the following tutorials. A summary of these characteristics is outlined below:
 
-<p align='center'>
+<center>
 <img src='../img/tutorial01/agent_info.png'>
-</p>
+</center>
 
 Run the simulation by typing in the command:
 
@@ -149,9 +149,9 @@ Going into our *main_stats.dat* file by typing in the command
 
 we can the see the primary data compiled from our simulation shown below. 
 
-<p align='center'>
+<center>
 <img src='../img/tutorial01/main_stats.png'>
-</p>
+</center>
 
 We can also use 'gnuplot' to plot the in-degree, out-degree, and cumulative-degree distributions for each simulated month for all the agents. An agent's in-degree is the number of agents following them, while its
 out-degree is the number of agents it's following, and the cumulative-degree is the sum of these two values. The agents in this simulation were configured to  have a follow rate of 0.0001, which basically means that in a simulation 100,000 simulated minutes long, each agent will follow around 10 other agents, and be followed by about 10 agents. So we can therefore expect most agents to have an in-degree magnitude of 10, an out-degree magnitude of 10, and a cumlative-degree magnitude of 20. Let's plot and see!
@@ -177,9 +177,9 @@ To plot the in-degree, out-degree, and cumulative-degree distributions for 'mont
 
 Giving us:
 
-<p align='center'>
+<center>
 <img src='../img/tutorial01/degree_distributions_month_002.svg'>
-</p>
+</center>
 
 As expected, most agents have an in-degree of 10, an out-degree of 10, and a cumulative degree of 20.
 
@@ -202,9 +202,9 @@ press the refresh symbol, and choose the partition parameter 'Label' and click '
 for this network directly below the 'Apply' button you just pushed, and can run it for a few seconds. The following visualization
 was made using the 'Fruchterman Reingold' and 'Clockwise Rotate' layout:
 
-<p align='center'>
+<center>
 <img src='../img/tutorial01/visualization.png'>
-</p>
+</center>
 
 We can see that these agents are randomly connected within this network simulation we created, with the highly connected agents at the centre
 of the visualization and the agents with less connections on the sides.

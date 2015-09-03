@@ -155,9 +155,9 @@ add: {function: linear, y_intercept: 1.0, slope: 0.1}
 
 This will create an add user rate of the form:
 
-<p align = 'center'>
+<center>
 *R*<sub>add</sub> = 1.0 + *n*<sub>months</sub> · 0.1
-</p>
+</center>
 
 where n months is the number of months that have passed in the simulation. The number of months is determined by a constant approximate month of 30 · 60 · 24 minutes. This constant value can be changed in the software to achieve desired result.
 
@@ -282,9 +282,9 @@ The ***#k@*** program is designed to allow users to create and interact with the
 ####Kinetic Monte Carlo Method
 An algorithm designed to carry out a simulation where the rate of which time is increased by is influenced by the cummulative rate function of the rates within the system through the formula:
 
-<p align = 'center'>
+<center>
 &Delta;*t* = -ln(*u*) / **R**
-</p>
+</center>
 
 where &Delta;*t* is the change in time, *u* is a generated random number, and **R** is the cumulative rate function.
 
@@ -620,9 +620,9 @@ If set to 0.5, then half of the tweets will have hashtags. If 1.0, then all of t
 ####use_random_time_increment
 **(type: boolean)** If true, the time in the simulation will be incremented at a non-constant rate; the increment of time is determined by
 
-<p align = 'center'>
+<center>
 &Delta;*t* = -ln(*u*) / **R**
-</p>
+</center>
 
 where *u* is a random number in the interval 0 < *u* ≤ 1, and **R** is the sum of the rates for the simulation. On average, the value of −ln(*u*) is unity, and therefore you can increment time by 1/**R** ; this is how time is incremented if set to false.
 

@@ -14,9 +14,9 @@ All the files that will be used in this simulation can be found for reference in
 
 Following via retweets is a follow method in which an agent sees a tweet that was retweeted by one of the agents they're following, and, liking the content of the tweet, decides to follow the original tweeter.
 
-<p align='center'>
+<center>
 <img src='../img/tutorial09_with_other_follow/following_via_retweets.png'>
-</p>
+</center>
 
 The likelihood of this occurring is dependent on the value of the *follow_reaction_prob* variable in the *preference_classes* section of the input file. The *follow_reaction_prob* variable determines the probability that an agent, if they are selected to act on a retweet, will follow the tweeter of the original tweet as opposed to just retweeting the retweet. For example, if this value was set 0.8, everytime an agent was selected to act on a retweet, there would be an 80% chance that they would follow the original tweeter, and a 20% chance that they would just retweet the retweet.
 
@@ -53,9 +53,9 @@ preference_classes:
 
 Running this network simulation and visualizing it, we produced the following:
 
-<p align='center'>
+<center>
 <img src='../img/tutorial09_without_other_follow/visualization.png'>
-</p>
+</center>
 
 ## Constructing a Network With These Other Follow Methods
 
@@ -82,9 +82,9 @@ followback_probability: 0.44
 
 Running this network simulation we produced the following visualization:
 
-<p align='center'>
+<center>
 <img src='../img/tutorial09_with_other_follow/visualization.png'>
-</p>
+</center>
 
 ## Compare and Contrast
 
@@ -94,23 +94,23 @@ In these network visualization we've been creating, there are two different type
 
 * Simple Directed Edge
 
-<p align='center'>
+<center>
 <img src='../img/tutorial09_without_other_follow/one_follow_connection.png'>
-</p>
+</center>
 
 * Bidirected Edge
 
-<p align='center'>
+<center>
 <img src='../img/tutorial09_with_other_follow/followback_connection.png'>
-</p>
+</center>
 
 A simple directed edge is when one node is following another node. A bidrected edge is when the two nodes are following each other. Though a bidrected edge is considered two edges in 'Gephi', they appear as one in the netwrok visualizations. Bidirected edges are much more prevalent in the second network visualization, where *followback* is implemented.
 
 We can also see that implementing the other follow methods into our simulation resulted in an increase in the total number of retweets. This is due to more follows occurring, thereby increasing the number of agents that see particular tweets, resulting in a better chance of retweeting taking place. A plot of the retweet distributions for both network simulations is shown below:
 
-<p align='center'>
+<center>
 <img src='../img/tutorial09_with_other_follow/retweets_distro.svg'>
-</p>
+</center>
 
 As we can see much more agents in the network without the other follow methods make 5 or less retweets, while in the network with these follow methods, agents with up to 25 retweets are present. It is quite clear that more follows leads to much more retweets.
 

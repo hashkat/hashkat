@@ -52,23 +52,23 @@ So using the input file from [**Tutorial 1**](https://github.com/hashkat/hashkat
 
 Running a simulation with this new agent type, we can see in the *main_stats.dat* output file that there are 9943 total follows that have occurred in the network. It'll be interesting to see how this value changes when unfollowing is implemented.
 
-<p align='center'>
+<center>
 <img src='../img/tutorial11/main_stats_without_unfollowing.png'>
-</p>
+</center>
 
 Let's now implement unfollowing in this network. We will set 'stage1_unfollow' to true and set the 'unfollow_tweet_rate' to 0.01. Since half the agents in this network, the 'Chatty' agents, have a tweet rate 10x that of the other agents, we should definitely expect unfollows to occur due to the incorporation of 'stage1_unfollow'. We should also expect some unfollows to occur due to the 'unfollow_tweet_rate' being equal to the 'Chatty' agent tweet rate. This is due to agents having a tweet rate either equal to, or around the value of their assigned tweet rate. Therefore, we can expect some 'Chatty' agent to have a tweet rate greater than their assigned tweet rate, and thereby having a tweet rate greater than the 'unfollow_tweet_rate'.
 
 Running this network simulation with unfollowing implemented, we produced the following data in our *main_stats.dat* file:
 
-<p align='center'>
+<center>
 <img src='../img/tutorial11/main_stats_with_unfollowing.png'>
-</p>
+</center>
 
 As we can see, there are 9863 total follows at the end of this simulation as opposed to the 9943 total follows present at the end of the simulation that didn't implement unfollowing. With unfollowing implemented, almost 100 connections were cut in this network. Plotting the in-degree distributions of the *Standard* agents and *Chatty* agents, we can see that *Chatty* generally have less followers than *Standard* agents, due to them losing followers due to their excessive tweet rate.
 
-<p align='center'>
+<center>
 <img src='../img/tutorial11/agent_type_in-degree_plot.svg'>
-</p>
+</center>
 
 The commands used to plot this graph in 'gnuplot' were:
 

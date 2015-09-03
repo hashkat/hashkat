@@ -23,23 +23,23 @@ model_weights: {random: 1.0, twitter_suggest: 1.0, agent: 1.0, preferential_agen
 
 Running this simulation, we produced the following visualization:
 
-<p align='center'>
+<center>
 <img src='../img/tutorial08/visualization.png'>
-</p>
+</center>
 
 As we can see, this combination of all the follow models produces a very interesting network. Due to the presence of the *agent* and *preferential_agent* follow models, we can see that *Celebrity* agents (red dots) are predominantly the more connected agents, though there are many highly connected *Standard* agents thanks to the random follow model leading to *Standard* agents being followed randomly and the twitter suggest follow model allowing *Standard* agents who randomly gained a lot of followers to gather even more followers fue to their high degree. Due to the presence of all the other follow models, it is difficult to notice the presence of the *hashtag* follow model since though agents may care on who they follow based on ideology for a few of their follows, they do not for many others, so there is no obvious separation between ideological groups as there is in the visualization generated for the *hashtag* follow model example in the previous [tutorial](http://docs.hashkat.org/en/latest/tutorial07/). 
 
 Looking into our *main_stats.dat* output file, we can see that every follow model was used in this network simulation as shown below:
 
-<p align='center'>
+<center>
 <img src='../img/tutorial08/main_stats.png'>
-</p>
+</center>
 
 A comparison of the weights in which these follow model are present in this network can be seen in the pie graph constructed below:
 
-<p align='center'>
+<center>
 <img src='../img/tutorial08/follow_model_graph.png'>
-</p>
+</center>
 
 (**Note**: this pie graph was constructed using [meta-chart.com/pie](https://www.meta-chart.com/pie))
 

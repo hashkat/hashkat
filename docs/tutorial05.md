@@ -63,9 +63,9 @@ agents:
 
 Running this simulation we produced the following network:
 
-<p align='center'>
+<center>
 <img src='../img/tutorial05/visualization.png'>
-</p>
+</center>
 
 As expected, the *Celebrity* agents (red dots) tend to have much more followers than the *Standard* agents (blue dots).
 
@@ -86,9 +86,9 @@ We can do this using 'gnuplot' by entering 'gnuplot' in the *output* directory a
 `'cumulative-degree_distribution_month_000.dat' u 1:2 lc rgb 'dark-red' w filledcurves above y1=0`
 `title 'Overall'`
 
-<p align='center'>
+<center>
 <img src='../img/tutorial05/cumulative-degree_distribution_month_000.svg'>
-</p>
+</center>
 
 As we can see, there are no *Standard* agents with a cumulative degree greater than 20, with most having a cumulative degree just under or just above 5. The *Celebrity* agents' cumulative degree distribution has much more variance, with *Celebrity* agents in this network having up to almost 35 connections in this simulation. The *Overall* cumulative degree distribution illustrates this for all agents in the network.
 

@@ -4,9 +4,9 @@
 
 The following gives a brief summary of every file and directory that you will immediately find in the **hashkat** directory.
 
-<p align='center'>
+<center>
 <img src='../img/directory.png'>
-</p>
+</center>
 
 ## <span style="color:blue">build</span> 
 

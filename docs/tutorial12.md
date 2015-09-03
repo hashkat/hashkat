@@ -251,9 +251,9 @@ We would also like you to use only the following agent types with their respecti
 
 ### Standard - Self-Centered Chatty Agent
 
-<p align='center'>
+<center>
 <img src='../img/trading_cards/standard_self_centered_chatty_card.jpg'>
-</p>
+</center>
 
 ```python
 - name: Standard-Chatty
@@ -281,9 +281,9 @@ We would also like you to use only the following agent types with their respecti
 
 ### Standard - Friendly Networking Agent
 
-<p align='center'>
+<center>
 <img src='../img/trading_cards/standard_friendly_networking_card.jpg'>
-</p>
+</center>
 
 ```python
 - name: Standard-Friendly
@@ -311,9 +311,9 @@ We would also like you to use only the following agent types with their respecti
 
 ### Standard - Funny Social Commentator Agent
 
-<p align='center'>
+<center>
 <img src='../img/trading_cards/standard_funny_social_commentator_card.jpg'>
-</p>
+</center>
 
 ```python
 - name: Standard-Funny
@@ -341,9 +341,9 @@ We would also like you to use only the following agent types with their respecti
 
 ### Standard - Music Advocate Agent
 
-<p align='center'>
+<center>
 <img src='../img/trading_cards/standard_music_advocate_card.jpg'>
-</p>
+</center>
 
 ```python
 - name: Standard-Musical
@@ -371,9 +371,9 @@ We would also like you to use only the following agent types with their respecti
 
 ### Standard - Political Satirist Agent
 
-<p align='center'>
+<center>
 <img src='../img/trading_cards/standard_political_satirist_card.jpg'>
-</p>
+</center>
 
 ```python
 - name: Standard-Political
@@ -407,9 +407,9 @@ Make sure that your tweet, retweet, and follow ranks have also been updated acco
 
 Running the network simulation to completion, we produced the following network visualization:
 
-<p align='center'>
+<center>
 <img src='../img/tutorial12/visualization.png'>
-</p>
+</center>
 
 In the above visualization, the red nodes correspond to the *Standard-Chatty* agents, the green nodes correspond to the *Standard-Friendly* agents, the yellow nodes correspond to the *Standard-Funny* agents, the blue nodes correspond to *Standard-Musical* agents, and the purple nodes correspond to the *Standard-Political* agents.
 
@@ -417,23 +417,23 @@ As we can see, our social network has been divided into networks based on langua
 
 Clicking the 'Filters' tab on the right-hand side of the page on 'Gephi' and clicking 'Degree-Range' under 'Topology', we can filter our network visualization based on the cumulative degree of the agents in the network.
 
-<p align='center'>
+<center>
 <img src='../img/tutorial12/filter_tab.png'>
-</p>
+</center>
 
 Setting the 'Degree-Range Settings' from 80 to 100 and clicking 'Filter', we can see the following:
 
-<p align='center'>
+<center>
 <img src='../img/tutorial12/filtered_visualization.png'>
-</p>
+</center>
 
 As we can see from this visualization, the most highly connected nodes are the green and yellow nodes, also known as the *Standard-Friendly* and *Standard-Funny* agents. Therefore, it is quite clear that the friendly and funny agents won the popularity contest.
 
 Looking into the *region_connection_matrix_month_000.dat* output file, we can also see the connections agents made within and between their regions:
 
-<p align='center'>
+<center>
 <img src='../img/tutorial12/region_connection_matrix.png'>
-</p>
+</center>
 
 As we can see, agents in *Ontario*, the zeroth region, had 65.0394% of their follows from agents from *Ontario* and 34.9609% of their follows from agents in *Quebec*, while agents in *Quebec* had 52.946% of their follows from agents in *Ontario* and 47.054% of their follows from agents in *Quebec*. So agents in *Ontario* tended to interact amongst themselves while agents in *Quebec* were pretty evenly interacting with agents in both *Ontario* and *Quebec*.
 

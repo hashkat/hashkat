@@ -16,77 +16,77 @@ You can download 'Gephi' through there [website](http://gephi.github.io/). Once 
 
 1. When entering the program, you will see a prompt similar to the one below appear on the screen. 
 
-    <p align='center'>
+    <center>
     <img src='../img/visualization/gephi_welcome.png'>
-    </p>
+    </center>
 
 	Under 'New Project' click 'Open Graph File...' to access the appropriate output file created from your network simulation to be used on 'Gephi'.
 
 2. The file used to visualize your network and its most popular tweet are the *network.gexf* file and *retweet_viz.gexf* file respectively. These can be found in the **output** directory after running a simulation. Click on whichever *.gexf* file you prefer and press 'Open'.
 
-    <p align='center'>
+    <center>
     <img src='../img/visualization/gephi_network_file.png'>
-    </p>
+    </center>
     
 3. After opening the graph file you will be visualizing, the following prompt will appear:
     
-    <p align='center'>
+    <center>
     <img src='../img/visualization/gephi_import_report.png'>
-    </p> 
+    </center> 
     
     There is nothing that you have to change here so you can simply press 'OK', and the outline of your created network will appear:
 
-    <p align='center'>
+    <center>
     <img src='../img/visualization/gephi_origin.png'>
-    </p>
+    </center>
     
     It is important to note that in the top right hand corner of the screen you will see the following, though with most likely different numbers: 
     
-    <p align='center'>
+    <center>
     <img src='../img/visualization/gephi_network_info.png'>
-    </p>
+    </center>
     
     This details the number of nodes (agents) in the network and the total number of edges (connections/followings) within it.
 
 4. To differentiate between the node types in your system, click the refresh button in the 'Partition' box on the left hand side of the screen and under '---Choose a partition parameter' click 'Label'. This will show each node type numbered by how they were ordered in the input file, their percentage out of the total number of agents, and their corresponding colour in the visualization. An image of this box is shown below:
 
-    <p align='center'>
+    <center>
     <img src='../img/visualization/gephi_label_nodes.png'>
-    </p>
+    </center>
     
     Click 'Apply' to implement this labelling in to your visualization, giivng you a visualization similar to the one below:
 
-    <p align='center'>
+    <center>
     <img src='../img/visualization/gephi_basic_network.png'>
-    </p>
+    </center>
     
 5. To modify the layout of your network, go to the 'Layout' window on the left hand side of your page (shown below), choose the layout you would like to use, and press 'Run'.
 
-<p align='center'>
+<center>
 <img src='../img/visualization/gephi_choose_layout.png'>
-</p>
+</center>
 
 ### Explore
 
 Now that you have set up your visualization of your network simulation, you are encouraged to explore all the features of **Gephi** that you can use for your visualizations. Two network layouts that we primarily use in this documentation are the *Fruchterman Reingold* layout:
 
-<p align='center'>
+<center>
 <img src='../img/visualization/gephi_fruchterman_reingold.png'>
-</p>
+</center>
 
 and the *Yifan Hu* layout:
 
-<p align='center'>
+<center>
 <img src='../img/visualization/gephi_yifan_hu.png'>
-</p>
+</center>
 
 (**Note**: we used the *Contraction* layout in conjuntion with the *Yifan Hu* layout for the above example to fit everything onto the screen)
 
 There are numerous other modifications and adjustments that can be made to your visualization. Ones which we use fairly often can be found at the bottom of your screen.
 
-<p align='center'>
+<center>
 <img src='../img/visualization/gephi_modifications.png'>
-</p>
+</center>
 
 By left clicking the light bulb button, you can change the background from white to black or vice-versa, and by right clicking it you can change the background color to whatever colour you'd like. By moving the edge weight scale, you can also adjust how emboldened the connection lines are in your visualization.
 
@@ -126,9 +126,9 @@ In Python, type in the following to create a graph of your network:
 
 This will produce a plot similar to the one below:
 
-<p align='center'>
+<center>
 <img src='../img/visualization/networkx_graph.png'>
-</p>
+</center>
 
 Similar to our visualizations using Gephi, the red nodes in the above graph correspond to agents and the black edges in between them correspond to connections/followings between agents, though it is important to note that there is no way to distinguish between the different agent types via this method.
 

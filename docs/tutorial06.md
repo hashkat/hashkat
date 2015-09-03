@@ -18,17 +18,17 @@ Since we've already modified our input file for an *agent* follow model in the p
 
 Running this simulation, we produce the following visualization:
 
-<p align='center'>
+<center>
 <img src='../img/tutorial06/visualization.png'>
-</p>
+</center>
 
 As you can see, not only do the *Celebrity* agents (red dots) generally have much more connections than the *Standard* agents (blue dots), but through the *twitter_suggest* follow model, there are particular agents within each agent type that have much more connections than other agents of the same type.
 
 The cumulative degree distribution for this network is shown below:
 
-<p align='center'>
+<center>
 <img src='../img/tutorial06/cumulative-degree_distribution_month_000.svg'>
-</p>
+</center>
 
 As we can see, the vast majority of agents in this network have a cumulative degree less than 20, while the other agents have differing cumulative degrees higher than this up to a value of almost 180.
 

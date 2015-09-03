@@ -10,9 +10,9 @@ The input file created in this tutorial can be referenced in the *tutorial10* di
 
 Running this network simulation, we shall view the 'most_popular_tweet_content.dat' file in the output directory to gather some information about this tweet. Examining this file, you should information similar to the following:
 
-<p align='center'>
+<center>
 <img src='../img/tutorial10/most_popular_tweet_content.png'>
-</p>
+</center>
 
 As we can gather from this file, the author of this tweet was agent ID 5, who was a *Standard* agent (since *Standard* is the zeroth agent type in the list of agent types) with a *Green* ideology living in *Ontario*. The tweet was created 496.326 simulated minutes after the simulation started, being a 'humorous' tweet in English, with no hashtag present. There were 17 agents who retweeted this tweet. Analyzing the input file used for this simulation, all of this info that we have collected on the most popular tweet makes sense. Since there was only a *Standard* agent type, the *Ontario* region, and the 'English' language implemented in our network, it of course makes sense that these would be the qualities of the author of this tweet. Since the ideology weights were all equally weighted, the author ideology could have just as easily have been *Red*, *Blue*, or *Orange* instead of *Green*. The fact that the author of this tweet had a 'Green' ideology was simply by chance. It makes sense that the most popular tweet was a 'humorous' one since if we look at the preference class enabled for agents in this simulation (the *StandardPref* preference class), 'humorous' tweets have a higher tweet transmission rate than all the other tweet types, meaning that it is much more likely to be tweeted and therefore the most retweeted tweet in most likely to be a humorous one.
 
@@ -20,9 +20,9 @@ As we can gather from this file, the author of this tweet was agent ID 5, who wa
 
 We can visualize this data by opening the graph file we created, *retweet_viz.gexf*, and visualizing it using 'Gephi'. The visualization we created is shown below:
 
-<p align='center'>
+<center>
 <img src='../img/tutorial10/retweet_visualization.png'>
-</p>
+</center>
 
 In the above visualization, the pink node is the author of the most popular tweet, the green nodes are the retweeters, the blue nodes are the non-retweeters, and the other various coloured nodes are followers of the most popular tweet author who did not retweet but are also not connected to an agent that did. Viewing the above visualization, it is quite clear that one of the main reasons that this agent is the author of the most popular tweet is because they are very highly connected, thereby giving them a better chance of having their tweets retweeted. 
 

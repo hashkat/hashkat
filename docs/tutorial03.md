@@ -159,9 +159,9 @@ agents:
 
 Running this simulation, and visualizing it, we produce a network similar to the one shown below: 
 
-<p align='center'>
+<center>
 <img src='../img/tutorial03/visualization.png'>
-</p>
+</center>
 
 As we can quite clearly see this a truly random network, with no clear agent or group of agents being the most popular.
 
@@ -183,9 +183,9 @@ With agents having a follow rate of 0.01 follows per simulated minute in a simul
 
 Giving us:
 
-<p align='center'>
+<center>
 <img src='../img/tutorial03/cumulative-degree_distribution_month_000.svg'>
-</p>
+</center>
 
 As we can see, there is a definite peak surrounding 20 degrees, though it seems that more agents have a cumulative degree just below or just above 20.
 
@@ -201,9 +201,9 @@ What's interesting about ***#k@*** is that if you were to remove the correspondi
 
 Running this network simulation multiple times using different seeds, we produced the following cumulative degree distribution plot:
 
-<p align='center'>
+<center>
 <img src='../img/tutorial03/cumulative-degree_distribution_random.svg'>
-</p>
+</center>
 
 As we can see, the cumulative degree distribution of a random follow model network simulation matches the ['Poisson Distribution'](https://en.wikipedia.org/wiki/Poisson_distribution) very well.
 
