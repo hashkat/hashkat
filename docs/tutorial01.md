@@ -38,38 +38,6 @@ All of the rate functions will then be recalibrated to their new values and
 this cycle will repeat until either the maximum simulation time or real time
 has been reached.
 
-The following is a model of how this works in ***#k@***. We initially have one agent in the network, with the agent add rate having been set to 1 agent per simulated minute and the agent tweet rate being set to 1 tweet per simulated minute (we've ignored the follow rate and retweet rate for this example). At this moment, there is an even chance that another agent will be added to the network or the initial agent will make a tweet. A random number is generated. If the random number is less than 0.5, another agent will be added, if it is greater or equal to 0.5, the initial agent will tweet. Time will then move forward based on the cumulative rate function and possibly another generated random number, again depending on whether or not 'use_random_time_increment' is permitted.
-
-<center>
-<img src='../img/tutorial01/kmc_1.png'>
-</center>
-
-Let's say that an agent has been added to the network.
-
-<center>
-<img src='../img/tutorial01/kmc_2.png'>
-</center>
-
-With this addition to our network, the agent add rate will remain the same but the agent tweet rate will now double since we have double the number of agents from what we originally had in the network. With this change, an agent tweeting is twice as likely to happen in comparison to an agent being added in the KMC loop, though the expected rates for each agent will remain the same since the simulated time will move more slowly, since the change in time is inversely proportional to the steadily increasing cummulative rate function.
-
-<center>
-<img src='../img/tutorial01/kmc_3.png'>
-</center>
-
-Let's add an additional agent to the network.
-
-<center>
-<img src='../img/tutorial01/kmc_4.png'>
-</center>
-
-Just as before, the agent add rate will remain the same but the agent tweet rate will increase since we now have 3 times the number of agents we initially had, though the expected rates for each agent will remain the same.
-
-<center>
-<img src='../img/tutorial01/kmc_5.png'>
-</center>
-
-This cycle will continue until the end of the simulation. For more information on how this is run in ***#k@***, please visit the [**Developers**](http://docs.hashkat.org/en/latest/developers/) page.
-
 ## Running a Simple Network
 
 <center>
