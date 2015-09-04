@@ -10,6 +10,8 @@ Here contains the write-up, images, and input files used in the #k@ documentatio
 
 * Output - dd_by_follow_model, tweets_distro, retweets_distro when fixed needs to be replaced
 
+* Tutorial 4 - categories distro output file screenshot may need to be replaced when categories distro is fixed
+
 * No Interactive Mode
 
 * No follow rank plot commands

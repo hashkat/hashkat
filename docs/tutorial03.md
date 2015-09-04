@@ -18,7 +18,7 @@ Each of these follow models will be discussed and analyzed in each of their own 
 
 As the name implies, a random follow model is one in which the agents in which an agent follows is totally arbitrary. Based on the work of Paul Erdos and Alfred Renyi, you can read up on the Erdos-Renyi Model [here](https://en.wikipedia.org/wiki/Erd%C5%91s%E2%80%93R%C3%A9nyi_model). You've already had some experience working with the random follow model, the simple network we created in [**Tutorial 1](http://docs.hashkat.org/en/latest/tutorial01/) implemented it, but in this tutorial we are going to go into this model in much more detail. We are going to actually go through the input file and make some changes to create a simulation of our desired framework.
 
-For reference, the *INFILE.yaml* file we will create in this simulation can be found in the *docs/tutorial_input_files* directory in hashkat, under the title *tutorial03*. You can also view the input file we will be creating for this example [here](https://github.com/hashkat/hashkat/blob/master/docs/tutorial_input_files/tutorial03/INFILE.yaml). For more information on what goes into the input file, and what sort of information you can output from your simulation, check out the [**Input**](http://docs.hashkat.org/en/latest/input/) and [**Output**](http://docs.hashkat.org/en/latest/output/) pages respectively.
+For reference, the *INFILE.yaml* file we will create in this simulation can be found in the **docs/tutorial_input_files** directory in **hashkat**, under the title **tutorial03**. You can also view the input file we will be creating for this example [here](https://github.com/hashkat/hashkat/blob/master/docs/tutorial_input_files/tutorial03/INFILE.yaml). For more information on what goes into the input file, and what sort of information you can output from your simulation, check out the [**Input**](http://docs.hashkat.org/en/latest/input/) and [**Output**](http://docs.hashkat.org/en/latest/output/) pages respectively.
 
 ## Constructing The Network
 
@@ -201,4 +201,4 @@ To create this plot, we ran three simulations with random seeds and renamed thei
 
 With the completion of this tutorial, we have worked with the simplest of the six types of follow models. Though we went through it in great detail, this example was just the tip of the iceberg of all the different *random* follow model simulations you can create. Try running your own *random* follow model simulation that is different from the one outlined above, and see what you can create.
 
-When ready, move on to the next tutorial, where things get a lot more interesting and a little more complicated with the [twitter_suggest follow model](http://docs.hashkat.org/en/latest/tutorial04/).
+When ready, move on to the next tutorial, where things get a lot more interesting and a little more complicated with the [*twitter_suggest* follow model](http://docs.hashkat.org/en/latest/tutorial04/).

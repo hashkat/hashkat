@@ -92,4 +92,4 @@ You have now run ***#k@*** in a subdirectory of the **hashkat** directory.
 
 ## Next Steps
 
-With the completion of this second tutorial using ***#k@***, you are now familiar with running, stopping, and continuing a new network simulation in any directory. Proceed to the next tutorial for an introduction on using the various different follow models offered by ***k@***, starting with a lesson on the [random follow model](http://docs.hashkat.org/en/latest/tutorial03/).
+With the completion of this second tutorial using ***#k@***, you are now familiar with running, stopping, and continuing a new network simulation in any directory. Proceed to the next tutorial for an introduction on using the various different follow models offered by ***k@***, starting with a lesson on the [*random* follow model](http://docs.hashkat.org/en/latest/tutorial03/).
