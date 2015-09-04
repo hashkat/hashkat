@@ -2,17 +2,19 @@
 
 # Visualization
 
+Here we shall outline ways in which you can visualize the networks you've created using ***#k@***.
+
 ## Gephi
 
 <center>
 <iframe width="560" height="315" src="https://www.youtube.com/embed/GZYsnLApk24" frameborder="0" allowfullscreen></iframe>
 </center>
 
-Here we shall outline ways in which you can visualize some of that data you have collected using ['Gephi'](http://gephi.github.io/). There are many other programs you can use for visualizations, and you are encouraged to try them, we're just going to focus on using 'Gephi' however in this documentation. The network we visualized here was the one created in [**Tutorial 5**](http://docs.hashkat.org/en/latest/tutorial05/).
+You can visualize some of the data you have collected using [Gephi](http://gephi.github.io/). There are many other programs you can use for visualizations, and you are encouraged to try them, we're just going to focus on using Gephi however in this documentation. The network we visualized here was the one created in [**Tutorial 5**](http://docs.hashkat.org/en/latest/tutorial05/).
 
 ### How to Visualize a Network
 
-You can download 'Gephi' through there [website](http://gephi.github.io/). Once you have finished downloading 'Gephi', enter the program, and we will go over the steps necessary to visualize the networks you've created.
+You can download Gephi through there [website](http://gephi.github.io/). Once you have finished downloading Gephi, enter the program, and we will go over the steps necessary to visualize the networks you've created.
 
 1. When entering the program, you will see a prompt similar to the one below appear on the screen. 
 
@@ -20,15 +22,17 @@ You can download 'Gephi' through there [website](http://gephi.github.io/). Once 
     <img src='../img/visualization/gephi_welcome.png'>
     </center>
 
-	Under 'New Project' click 'Open Graph File...' to access the appropriate output file created from your network simulation to be used on 'Gephi'.
+	Under 'New Project' click 'Open Graph File...' to access the appropriate output file created from your network simulation to be used in Gephi.
 
-2. The file used to visualize your network and its most popular tweet are the *network.gexf* file and *retweet_viz.gexf* file respectively. These can be found in the **output** directory after running a simulation. Click on whichever *.gexf* file you prefer and press 'Open'.
+
+1. The file used to visualize your network and its most popular tweet are the *network.gexf* file and *retweet_viz.gexf* file respectively. These can be found in the **output** directory after running a simulation. Click on whichever *.gexf* file you prefer and press 'Open'.
 
     <center>
     <img src='../img/visualization/gephi_network_file.png'>
     </center>
+
     
-3. After opening the graph file you will be visualizing, the following prompt will appear:
+1. After opening the graph file you will be visualizing, the following prompt will appear:
     
     <center>
     <img src='../img/visualization/gephi_import_report.png'>
@@ -48,7 +52,8 @@ You can download 'Gephi' through there [website](http://gephi.github.io/). Once 
     
     This details the number of nodes (agents) in the network and the total number of edges (connections/followings) within it.
 
-4. To differentiate between the node types in your system, click the refresh button in the 'Partition' box on the left hand side of the screen and under '---Choose a partition parameter' click 'Label'. This will show each node type numbered by how they were ordered in the input file, their percentage out of the total number of agents, and their corresponding colour in the visualization. An image of this box is shown below:
+
+1. To differentiate between the node types in your system, click the refresh button in the 'Partition' box on the left hand side of the screen and under '---Choose a partition parameter' click 'Label'. This will show each node type numbered by how they were ordered in the input file, their percentage out of the total number of agents, and their corresponding colour in the visualization. An image of this box is shown below:
 
     <center>
     <img src='../img/visualization/gephi_label_nodes.png'>
@@ -59,8 +64,9 @@ You can download 'Gephi' through there [website](http://gephi.github.io/). Once 
     <center>
     <img src='../img/visualization/gephi_basic_network.png'>
     </center>
+
     
-5. To modify the layout of your network, go to the 'Layout' window on the left hand side of your page (shown below), choose the layout you would like to use, and press 'Run'.
+1. To modify the layout of your network, go to the 'Layout' window on the left hand side of your page (shown below), choose the layout you would like to use, and press 'Run'.
 
 <center>
 <img src='../img/visualization/gephi_choose_layout.png'>
@@ -68,7 +74,7 @@ You can download 'Gephi' through there [website](http://gephi.github.io/). Once 
 
 ### Explore
 
-Now that you have set up your visualization of your network simulation, you are encouraged to explore all the features of **Gephi** that you can use for your visualizations. Two network layouts that we primarily use in this documentation are the *Fruchterman Reingold* layout:
+Now that you have set up your visualization of your network simulation, you are encouraged to explore all the features of Gephi that you can use for your visualizations. Two network layouts that we primarily use in this documentation are the *Fruchterman Reingold* layout:
 
 <center>
 <img src='../img/visualization/gephi_fruchterman_reingold.png'>
@@ -90,25 +96,15 @@ There are numerous other modifications and adjustments that can be made to your 
 
 By left clicking the light bulb button, you can change the background from white to black or vice-versa, and by right clicking it you can change the background color to whatever colour you'd like. By moving the edge weight scale, you can also adjust how emboldened the connection lines are in your visualization.
 
-This just scratches the surface of all that you can do using 'Gephi'. Try experimenting with some of its other features and see what configuration of your network visualization you like the best.
+This just scratches the surface of all that you can do using Gephi. Try experimenting with some of its other features and see what configuration of your network visualization you like the best.
 
 ## Networkx
 
-You can also visualize the networks you've created using [Networkx](https://networkx.github.io/). Networkx is a Python language software package that can be used to create, modify, and analyze networks. To use Networkx, you must have Python installed in your computer. You can install Python by typing into the command line:
-
-* For Mac OS X:
-
-    `brew install python`
-
-* For Linux:
-
-    `sudo apt-get install python`
-
-To install Networkx on to your computer, enter into the command line:
+You can also visualize the networks you've created using [Networkx](https://networkx.github.io/). Networkx is a Python language software package that can be used to create, modify, and analyze networks. To install Networkx on to your computer, enter into the command line:
 
 `pip install networkx`
 
-You now have Networkx installed in your computer! To create a graph of your network after running a simulation, enter Python by typing in the command:
+You now have Networkx installed on your computer! To create a graph of your network after running a simulation, enter Python by typing in the command:
 
 `python`
 
