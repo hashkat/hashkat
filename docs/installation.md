@@ -53,13 +53,13 @@ Here outlines the following steps on how to install ***#k@*** on Mac OS X:
 
     `ls`
 
-1. You will need to install the 'CMake' package on to your computer to build ***#k@***. You can install this package to your computer using 'Homebrew'. To install 'Homebrew' to your computer, simply type in the command:
+1. You will need to install the [CMake](http://www.cmake.org/) package on to your computer to build ***#k@***. You can install this package to your computer using [Homebrew](http://brew.sh/). To install Homebrew to your computer, simply type in the command:
 
     `ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"`
 
-    A prompt may appear asking you if you'd like to install the 'command line developer tools'. Click 'Install' and agree to the licensing agreement to install these tools. Once these tools have been installed, you can continue installing 'Homebrew' by pressing **return**.
+    A prompt may appear asking you if you'd like to install the 'command line developer tools'. Click 'Install' and agree to the licensing agreement to install these tools. Once these tools have been installed, you can continue installing Homebrew by pressing **return**.
 
-1. With 'Homebrew' installed, you an install the 'CMake' package by typing in the command:
+1. With Homebrew installed, you an install the CMake package by typing in the command:
 
     `brew install cmake`
 
@@ -136,7 +136,7 @@ Here outlines the following steps on how to install ***#k@*** on Linux (these in
 
     `ls`
 
-1. Enter into the command line the following commands to install the 'CMake' package and the appropriate tools necessary to build ***#k@***:
+1. Enter into the command line the following commands to install the [CMake](http://www.cmake.org/) package and the appropriate tools necessary to build ***#k@***:
 
     `sudo apt-get install cmake`
 

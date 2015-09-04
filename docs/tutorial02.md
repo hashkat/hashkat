@@ -1,8 +1,8 @@
 [hashkat.org](http://hashkat.org)
 
-# Restarting, Stopping a Simulation and Running it in a Different Directory
+# Restarting a Network
 
-A brief explanation on how to restart a network, this tutorial should take approximately 10 minutes to complete.
+A brief explanation on restarting a network simulation, this tutorial should take approximately 10 minutes to complete.
 
 ## Running a New Simulation
 
@@ -10,16 +10,13 @@ A brief explanation on how to restart a network, this tutorial should take appro
 <iframe width="560" height="315" src="https://www.youtube.com/embed/EmRJel-eGmw" frameborder="0" allowfullscreen></iframe>
 </center>
 
-At the end of [**Tutorial 1**](http://docs.hashkat.org/en/latest/tutorial01/), we had run a simple network simulation and studied its output. You now have the knowledge to run your own simple networks and analysis of those networks.
-However, you will find that after modifying *INFILE.yaml* to your own specifications, and typing the command to run the simulation:
+At the end of [**Tutorial 1**](http://docs.hashkat.org/en/latest/tutorial01/), we had run a simple network simulation and studied its output. You now have the knowledge to run your own simple networks and analysis of those networks. However, you will find that after modifying *INFILE.yaml* to your own specifications (assuming you haven't changed the maximum simulated time), and typing the command to run the simulation:
 
 `./run.sh`
 
-you will find that the simulation is not running properly. Though it looks like it's about to run, no new simulation is created, and no more data is collected. Inside the **output**
-directory you will find that nothing has changed from your previous simulation.
+you will find that the simulation is not running properly. Though it looks like it's about to run, no new simulation is created, and no more data is collected. Inside the **output** directory you will find that nothing has changed from your previous simulation.
 
-Have no fear! As briefly discussed on the [**Installation**](http://docs.hashkat.org/en/latest/installation/) page, this is simply because you have not removed the data you collected from the previous simulation from ***#k@***. The manner in which to do this is simple, though be warned,
-once removing this data you will lose it forever. Remove the save file that your previous simulation information was saved to by typing in the command:
+Have no fear! As briefly discussed on the [**Installation**](http://docs.hashkat.org/en/latest/installation/) page, this is simply because you have not removed the data you collected from the previous simulation from ***#k@***. The manner in which to do this is simple, though be warned, once removing this data you will lose it forever. Remove the save file that your previous simulation information was saved to by typing in the command:
 
 `rm network_state.dat`
 
@@ -39,15 +36,15 @@ You can now run your new simulation by typing in the command:
 
 `./run.sh`
 
+**Note**: you will be able to still run a network simulation without doing the above if you increase the maximum simulation time in your *INFILE.yaml* file. The network simulation will simply continue from where it previously left off but with the new configurations you implemented in the input file. This will give you confusing output data and is discouraged.
+
 ## Stopping and Continuing a Simulation
 
 <center>
 <iframe width="560" height="315" src="https://www.youtube.com/embed/-gQ52JW2s-Y" frameborder="0" allowfullscreen></iframe>
 </center>
 
-If for whatever reason you would like to stop a simulation midway through running, without losing any of your data, simply press **Ctrl-c**. The simulation will automatically
-save the information it's collected to the *network_state.dat* file, and you can analyze the data you have so far in the *DATA_vs_TIME* file and **output** directory. If you would like
-to continue this simulation from where you left off, simply type in:
+If for whatever reason you would like to stop a simulation midway through running, without losing any of your data, simply press **Ctrl-c**. The simulation will automatically save the information it's collected to the *network_state.dat* file, and you can analyze the data you have so far in the *DATA_vs_TIME* file and **output** directory. If you would like to continue this simulation from where you left off, simply type in:
 
 `./run.sh`
 
@@ -59,7 +56,7 @@ again and the simulation will recommence running.
 <iframe width="560" height="315" src="https://www.youtube.com/embed/x8RWQmAduHE" frameborder="0" allowfullscreen></iframe>
 </center>
 
-In all of these tutorials, we shall run ***#k@*** in the **hashkat** directory, where the only files necessary to run a simulation,an *INFILE.yaml* file and *run.sh*, are present. However, you may want to run ***#@*** in a different directory, perhaps in one of the tutorial directories in **docs/tutorial_input_files**. Typing in the command:
+In all of these tutorials, we shall run ***#k@*** in the **hashkat** directory, where the only files necessary to run a simulation, an *INFILE.yaml* file and *run.sh*, are present. However, you may want to run ***#k@*** in a different directory, perhaps in one of the tutorial directories in **docs/tutorial_input_files**. Typing in the command:
 
 `./run.sh`
 
@@ -69,7 +66,7 @@ in one of these directories, will not run ***#k@***, even if there is *INFILE.ya
 
 will have you move up one directory. Having './' before inputting the script name *run.sh* tells the computer that this script is present in this current directory. Having '../' before inputting the script name *run.sh* tells the computer that this script is present one directory up from your current location. Inputting a directory name before inputting the script name *run.sh* such as 'hashkat/' tells the computer that this script is present in the subdirectory **hashkat**.
 
-Let's try it out! Remove all the files you need in order to run a new simulation as discussed above, and change to your 'home' directory by typing in the command:
+Let's try it out! Change to your 'home' directory by typing in the command:
 
 `cd`
 
@@ -95,5 +92,4 @@ You have now run ***#k@*** in a subdirectory of the **hashkat** directory.
 
 ## Next Steps
 
-With the completion of this second tutorial using ***#k@***, you are now familiar with restarting, stopping, running in different directories the
-basic networks you learned how to create in [**Tutorial 1**](http://docs.hashkat.org/en/latest/tutorial01/). Proceed to the next tutorial for an introduction on using the various different follow models offered by ***k@***, starting with a lesson on the [Random Follow Model](http://docs.hashkat.org/en/latest/tutorial03/).
+With the completion of this second tutorial using ***#k@***, you are now familiar with running, stopping, and continuing a new network simulation in any directory. Proceed to the next tutorial for an introduction on using the various different follow models offered by ***k@***, starting with a lesson on the [random follow model](http://docs.hashkat.org/en/latest/tutorial03/).
