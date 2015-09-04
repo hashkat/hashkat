@@ -10,13 +10,13 @@ The following gives a brief summary of every file and directory that you will im
 
 ## <span style="color:blue">build</span> 
 
-Contains the files and folders necessary to build ***#k@***.
+Contains the files and folders created in the building of ***#k@***.
 
 ## <span style="color:green">build.sh</span> 
 
 Script that builds and runs ***#k@***. Typing in the command
 
-`./build.sh`
+`./build.sh -O`
 
 will build ***#k@***.
 
@@ -30,7 +30,7 @@ Contains the GNU General Public License, Version 3, 29 June, 2007.
 
 ## DATA_vs_TIME
 
-File created when running a network simulation. Details the length of simulated time that has occurred in simulated minutes, the number of agents that are present, the number of follows, tweets, retweets, and unfollows that have occurred, the cumulative rate function, and the length of real time that had passed in seconds at various points in the network simulation.
+File created when running a network simulation. Details the length of simulated time that has occurred in simulated minutes, the number of agents that are present, the number of follows, tweets, retweets, and unfollows that have occurred, the cumulative rate function, and the length of real time that has passed in seconds at various points in the network simulation.
 
 ## DEFAULT.yaml
 
@@ -38,11 +38,11 @@ Contains all the possible paramters that can be configured in *INFILE.yaml* with
 
 ## <span style="color:blue">docs</span> 
 
-Contains the pages and images used in the write-up of the ***#k@*** documentation. In its subdirectory **tutorial_input_files**, one can find a directory corresponding to almost every tutorial found in the ***#k@*** documentation. The *INFILE.yaml* file that will be created in each tutorial can be found in its respective directory.
+Contains the pages and images used in the write-up of the ***#k@*** documentation. In its subdirectory **tutorial_input_files**, one can find a directory corresponding to almost every tutorial found in the ***#k@*** documentation, where the *INFILE.yaml* file that will be created in each respective tutorial can be found.
 
 ## <span style="color:blue">examples</span> 
 
-Contains a list of directories, each with there own *INFILE.yaml* that can be used as an example of a particular network simulation.
+Contains a list of directories, each containing an example *INFILE.yaml* file for a particular network simulation.
 
 ## <span style="color:hotpink">graph.svg</span>
 
@@ -50,19 +50,19 @@ Contains network graph created by running *visualize.py*.
 
 ## <span style="color:green">hashkat_pre.py</span>
 
-Generates all inputted parameters made in *INFILE.yaml* to prepare the ideal network to be run using ***#k@***.
+Generates all inputted parameters made in *INFILE.yaml* to *INFILE.yaml-generated*, which is used in the running of ***#k@***.
 
 ## INFILE.yaml
 
-Input file where configurations are made to design the network simulation of your choosing.
+Input file where configurations are made to create the network simulation of your design.
 
 ## INFILE.yaml-generated
 
-File generated when *run.sh* is run. Used in the running of network simulations, it is always replaced with an updated version when a new network simulation is being run.
+File generated when *run.sh* is run. Used in the running of network simulations, it contains all the parameters and their respective configurations made in *INFILE.yaml*.
 
 ## INSTALL
 
-Contains instructions on how to install ***#k@*** on 'Linux' and 'Mac OS X'.
+Contains instructions on how to install ***#k@*** on Mac OS X and Linux.
 
 ## INTERACT.lua
 
@@ -108,7 +108,7 @@ Script that runs *verify.py* on every single reference network simulation in **t
 
 ## <span style="color:green">verify.py</span> 
 
-Script run in *tests.sh* to compare the data of output files in a network simulation to what is expected. If there is discrepancy between an output file and its reference, the file name is printed to the screen. Used in the development of ***#k@*** to confirm if any changes made to the source code did or did not affect impact the output of a network simulation.   
+Script run in *tests.sh* to compare the data of output files in a network simulation to what is expected. If there is discrepancy between an output file and its reference, the file name is printed to the screen. Used in the development of ***#k@*** to confirm if any changes made to the source code did or did not affect the output of a network simulation.   
 
 ## <span style="color:green">visualize.py</span>
 
@@ -116,4 +116,4 @@ Script that creates *graph.svg*, which contains a plot of the network created by
 
 ## <span style="color:blue">yaml</span>
 
-Contains files necessary to remove all 'PyYaml' and 'SciPy' requirements when running ***#k@***.
+Contains files necessary to remove all 'PyYaml' and 'SciPy' requirements when building ***#k@***.

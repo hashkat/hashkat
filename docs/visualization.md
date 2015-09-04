@@ -2,7 +2,7 @@
 
 # Visualization
 
-Here we shall outline ways in which you can visualize the networks you've created using ***#k@***.
+Here we shall outline ways in which you can visualize some of the data you've collected from running ***#k@***.
 
 ## Gephi
 
@@ -10,7 +10,7 @@ Here we shall outline ways in which you can visualize the networks you've create
 <iframe width="560" height="315" src="https://www.youtube.com/embed/GZYsnLApk24" frameborder="0" allowfullscreen></iframe>
 </center>
 
-You can visualize some of the data you have collected using [Gephi](http://gephi.github.io/). There are many other programs you can use for visualizations, and you are encouraged to try them, we're just going to focus on using Gephi however in this documentation. The network we visualized here was the one created in [**Tutorial 5**](http://docs.hashkat.org/en/latest/tutorial05/).
+You can visualize some of the data you have collected using [Gephi](http://gephi.github.io/), the visualization tool primarily used in this documentation. The network we visualized here was the one created in [**Tutorial 5**](http://docs.hashkat.org/en/latest/tutorial05/).
 
 ### How to Visualize a Network
 
@@ -128,10 +128,10 @@ This will produce a plot similar to the one below:
 
 Similar to our visualizations using Gephi, the red nodes in the above graph correspond to agents and the black edges in between them correspond to connections/followings between agents, though it is important to note that there is no way to distinguish between the different agent types via this method.
 
-Though Gephi is of course the visualization tool primarily used in this software, you can visualize your networks using the above manner by running the script in the **hashkat** directory *visualize.py* by entering the command after running a network simulation:
+You can visualize your networks using the above manner by running the script in the **hashkat** directory *visualize.py* by entering the command after running a network simulation:
 
 `./visualize.py`
 
 Running this script will not only produce a plot of your network using Networkx, but it will also save that plot to a file named *graph.svg*.
 
-Though as previously mentioned we go over using Gephi in much greater detail in this documentation, you are encouraged to also analyze your networks using Networkx, to have a full handle on how to analyze the data you've collected by running ***#k@***.
+Though we discuss using Gephi in much greater detail in this documentation, you are encouraged to also analyze your networks using Networkx, to have a better understanding on all the ways in which you can analyze the data you've collected from running ***#k@***.
