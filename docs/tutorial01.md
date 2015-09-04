@@ -84,9 +84,9 @@ we can the see the primary data compiled from our simulation shown below.
 <img src='../img/tutorial01/main_stats.png'>
 </center>
 
-We can also use 'gnuplot' to plot the in-degree, out-degree, and cumulative-degree distributions for each simulated month for all the agents. An agent's in-degree is the number of agents following them, while its out-degree is the number of agents it's following, and the cumulative-degree is the sum of these two values. The agents in this simulation were configured to  have a follow rate of 0.0001, which basically means that in a simulation 100,000 simulated minutes long, each agent will follow around 10 other agents, and be followed by about 10 agents. So we can therefore expect most agents to have an in-degree magnitude of 10, an out-degree magnitude of 10, and a cumlative-degree magnitude of 20. Let's plot and see!
+We can also use [gnuplot](http://gnuplot.sourceforge.net/) to plot the in-degree, out-degree, and cumulative-degree distributions for each simulated month for all the agents. An agent's in-degree is the number of agents following them, while its out-degree is the number of agents it's following, and the cumulative-degree is the sum of these two values. The agents in this simulation were configured to have a follow rate of 0.0001 follows per simulated minute, so for a simulation 100,000 simulated minutes long, we should expect each agent to follow around 10 other agents, and be followed by about 10 agents. Therefore, we can expect most agents to have an in-degree value of 10, an out-degree value of 10, and a cumlative-degree value of 20. Let's plot and see!
 
-To access 'gnuplot', type in the command:
+To access gnuplot, type in the command:
 
 `gnuplot`
 
@@ -111,7 +111,7 @@ Giving us:
 <img src='../img/tutorial01/degree_distributions_month_002.svg'>
 </center>
 
-As expected, most agents have an in-degree of 10, an out-degree of 10, and a cumulative degree of 20.
+As expected, most agents have an in-degree of about 10, an out-degree of about 10, and a cumulative degree of about 20.
 
 Note that you can save your plots by typing in the command:
 
@@ -125,7 +125,7 @@ when you first start up 'gnuplot' and prior to actually plotting the data.
 <iframe width="560" height="315" src="https://www.youtube.com/embed/XLLcYKKzI2A" frameborder="0" allowfullscreen></iframe>
 </center>
 
-You can also use this data you collected to visualize your simulated network. We will discuss how to do so using ['Gephi'](http://gephi.github.io/) here, but you can also find a more in-depth walkthrough on visualizaing networks on the [Visualization](http://docs.hashkat.org/en/latest/visualization/) page. Entering 'Gephi', open the graph file *network.gexf* found in the **output** directory of your simulation. Press 'OK' for the 'Import report' window that pops up, and you will now see a rough outline of your network. Under the 'Partition' subheading on the left side of the page, press the refresh symbol, and choose the partition parameter 'Label' and click 'Apply'. You are now free to choose a layout for this network directly below the 'Apply' button you just pushed, and can run it for a few seconds. The following visualization was made using the 'Fruchterman Reingold' and 'Clockwise Rotate' layout:
+You can also use this data you collected to visualize your simulated network. We will discuss how to do so using [Gephi](http://gephi.github.io/) here, but you can also find a more in-depth walkthrough on visualizaing networks on the [Visualization](http://docs.hashkat.org/en/latest/visualization/) page. Entering Gephi, open the graph file *network.gexf* found in the **output** directory of your simulation. Press 'OK' for the 'Import report' window that pops up, and you will now see a rough outline of your network. Under the 'Partition' subheading on the left side of the page, press the refresh symbol, and choose the partition parameter 'Label' and click 'Apply'. You are now free to choose a layout for this network directly below the 'Apply' button you just pushed, and can run it for a few seconds. The following visualization was made using the 'Fruchterman Reingold' and 'Clockwise Rotate' layout:
 
 <center>
 <img src='../img/tutorial01/visualization.png'>
@@ -135,6 +135,6 @@ We can see that these agents are randomly connected within this network simulati
 
 ## Next Steps
 
-You have now completed your first tutorial using ***#k@***, where you ran a simple network simulation, studied its output, and visualized it. The input file used for this tutorial can be found in the **docs/tutorial_input_files** directory under **tutorial01** as well as [here](https://github.com/hashkat/hashkat/blob/master/docs/tutorial_input_files/tutorial01/INFILE.yaml), so don't worry about changing the *INFILE.yaml* file in the **hashkat** directory, this is encouraged! It is important to note that to get more refined graphs for your in-degree, out-degree, and cumulative-degree distributions, you must have more agents present during your simulation. However, doing so will make it more difficult for 'Gephi' to visualize your network, so take that into consideration when configuring your network input file. 
+You have now completed your first tutorial using ***#k@***, where you ran a simple network simulation, studied its output, and visualized it. The input file used for this tutorial can be found in the **hashkat** directory in the **docs/tutorial_input_files** directory under **tutorial01** as well as [here](https://github.com/hashkat/hashkat/blob/master/docs/tutorial_input_files/tutorial01/INFILE.yaml), so don't worry about changing the *INFILE.yaml* file in the **hashkat** directory, this is encouraged!
 
 Feel free to move on to the next tutorial, where we will discuss [restarting a network](http://docs.hashkat.org/en/latest/tutorial02/).
