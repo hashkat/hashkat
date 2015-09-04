@@ -10,7 +10,7 @@ Based on Albert-Laszlo Barabasi's research, a *twitter_suggest* follow model is 
 
 The Classic Barabasi configuration is one in which agents that are added to the network make one conection with another agent and no other, unless manipulated to do so by allowing follow back or following through retweets within your simulation.
 
-Let's try running a Classic Barabasi *twitter_suggest* follow model simulation, with our starting point being the *INFILE.yaml* we created in the previous [tutorial](https://github.com/hashkat/hashkat/blob/master/docs/tutorial_input_files/tutorial03/INFILE.yaml). As always, the *INFILE.yaml* file we will create in this simulation can be found for reference in the **docs/tutorial_input_files** directory in **hashkat**, with this one under the title **tutorial04_classic_barabasi**. You can also view the input file we will be creating for this example [here](https://github.com/hashkat/hashkat/blob/master/docs/tutorial_input_files/tutorial04_classic_barabasi/INFILE.yaml).
+Let's try running a Classic Barabasi *twitter_suggest* follow model simulation, with our starting point being the *INFILE.yaml* we created in the previous [tutorial](https://github.com/hashkat/hashkat/blob/master/docs/tutorial_input_files/tutorial03/INFILE.yaml). As always, the *INFILE.yaml* file we will create in this example can be found for reference in the **docs/tutorial_input_files** directory in **hashkat**, with this one under the title **tutorial04_classic_barabasi**. You can also view the input file we will be creating for this example [here](https://github.com/hashkat/hashkat/blob/master/docs/tutorial_input_files/tutorial04_classic_barabasi/INFILE.yaml).
 
 ### Constructing The Network
 
@@ -142,7 +142,7 @@ every agent, by following one other agent, has at least one connection.
 
 The Non-Classic Barabasi configuration is exactly the same as the classic configuration except that the number of connections agents make when entering the simulation is a number greater than 1.
 
-The *INFILE.yaml* file we will create in this simulation can be found for reference in the **docs/tutorial_input_files** directory in **hashkat** under the title **tutorial04_nonclassic_barabasi**. You can also view the input file used for this example [here](https://github.com/hashkat/hashkat/blob/master/docs/tutorial_input_files/tutorial04_nonclassic_barabasi/INFILE.yaml).
+The *INFILE.yaml* file we will create in this example can be found for reference in the **docs/tutorial_input_files** directory in **hashkat** under the title **tutorial04_nonclassic_barabasi**. You can also view the input file used for this example [here](https://github.com/hashkat/hashkat/blob/master/docs/tutorial_input_files/tutorial04_nonclassic_barabasi/INFILE.yaml).
 
 <center>
 <iframe width="560" height="315" src="https://www.youtube.com/embed/JErCat4Qdbw" frameborder="0" allowfullscreen></iframe>

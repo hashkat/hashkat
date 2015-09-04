@@ -2,7 +2,7 @@
 
 # The Agent Follow Model
 
-An agent-based follow method is one in which agents follow a twitter user based on their agent class, though who they follow within that agent class is totally random. Let's run an *agent* follow model using ***#k@***. The input file used in this simulation can be found for reference in the *docs/tutorial_input_files* directory in hashkat, with this one under the title *tutorial05*. You can also view the input file we will be creating for this example [here](https://github.com/hashkat/hashkat/blob/master/docs/tutorial_input_files/tutorial05/INFILE.yaml). This tutorial should take approximately 20 minutes to complete.
+The *agent* follow model is one in which agents follow another agent based on their agent type, though who they follow within that agent type is totally random. Here we shall run an *agent* follow model using ***#k@***. The input file that will be created in this tutorial can be found for reference in the **docs/tutorial_input_files** directory in **hashkat**, with this one under the title **tutorial05**. You can also view the input file we will be creating for this tutorial [here](https://github.com/hashkat/hashkat/blob/master/docs/tutorial_input_files/tutorial05/INFILE.yaml). This tutorial should take approximately 20 minutes to complete.
 
 <center>
 <iframe width="560" height="315" src="https://www.youtube.com/embed/rBwWCohfato" frameborder="0" allowfullscreen></iframe>
@@ -10,7 +10,7 @@ An agent-based follow method is one in which agents follow a twitter user based 
 
 ## Constructing The Network
 
-Starting with the INFILE.yaml file we used in **Tutorial 4** for [**Other Twitter_Suggest Models**](https://github.com/hashkat/hashkat/blob/master/docs/tutorial_input_files/tutorial04_other/INFILE.yaml), we will of course change the follow model from *twitter_suggest* to *agent*, and finally get to implement our *Celebrity* agents into our network. This can be done by simply changing the *Celebrity* add weight to 100.0. With both the *Standard* agents and *Celebrity* agents having an add weight of 100.0, the number of *Standard* agents and *Celebrity* agents within the simulation will be roughly the same, with the proportion of *Standard* agents and *Celebrity* agents being added to the network being 1:1. Since celebrities tend to garner vastly more followers than ordinary people, it makes sense for our simulation of *Standard* and *Celebrity* agents to mimic this. Therefore, we will change the *Standard* follow weight to 10.0 and the *Celebrity* follow weight to 90.0. From this we should expect to see *Celebrity* agents to garner about 90% of the follows and *Standard* agents to garner about 10%.
+Starting with the *INFILE.yaml* file we created in **Tutorial 4** for [**Other Twitter_Suggest Models**](https://github.com/hashkat/hashkat/blob/master/docs/tutorial_input_files/tutorial04_other/INFILE.yaml), we will of course change the follow model from *twitter_suggest* to *agent*, and finally get to implement our *Celebrity* agents into our network. This can be done by simply changing the *Celebrity* add weight to 100.0. With both the *Standard* agents and *Celebrity* agents having an add weight of 100.0, the number of *Standard* agents and *Celebrity* agents within the simulation will be roughly the same, with the proportion of *Standard* agents and *Celebrity* agents being added to the network being 1:1. Since celebrities tend to garner vastly more followers than ordinary people, it makes sense for our simulation of *Standard* and *Celebrity* agents to mimic this. Therefore, we will change the *Standard* follow weight to 10.0 and the *Celebrity* follow weight to 90.0. From this we should expect to see *Celebrity* agents to garner about 90% of the follows and *Standard* agents to garner about 10%.
 
 ```python
 agents:
@@ -67,11 +67,11 @@ Running this simulation we produced the following network:
 <img src='../img/tutorial05/visualization.png'>
 </center>
 
-As expected, the *Celebrity* agents (red dots) tend to have much more followers than the *Standard* agents (blue dots).
+As expected, the *Celebrity* agents (red nodes) tend to have much more followers than the *Standard* agents (blue nodes).
 
-We can also do further analysis of this network through use of the output files that have been created from running this simulation. As we discussed in [**Tutorial 1**](http://docs.hashkat.org/en/latest/tutorial01/), an agent's cumulative degree distribution is the total number of connections it has. We found the normalized cumulative degree distribution probability for all agents in that [tutorial](http://docs.hashkat.org/en/latest/tutorial01/), let's do the same here but we will also compare the overall normalized cumulative degree distribution to that of each agent type.
+We can also do further analysis of this network through use of the output files that have been created from running this simulation. As we discussed in [**Tutorial 1**](http://docs.hashkat.org/en/latest/tutorial01/), an agent's cumulative-degree distribution is the total number of connections it has. We plotted the normalized cumulative-degree distribution probability for all agents in that [tutorial](http://docs.hashkat.org/en/latest/tutorial01/), let's do the same here but we will also compare the overall normalized cumulative-degree distribution to that of each agent type.
 
-We can do this using 'gnuplot' by entering 'gnuplot' in the *output* directory and inputting the following commands:
+We can do this using Gnuplot by entering Gnuplot in the **output** directory and inputting the following commands:
 
 `set style fill transparent solid 0.5 noborder`
 
@@ -90,8 +90,8 @@ We can do this using 'gnuplot' by entering 'gnuplot' in the *output* directory a
 <img src='../img/tutorial05/cumulative-degree_distribution_month_000.svg'>
 </center>
 
-As we can see, there are no *Standard* agents with a cumulative degree greater than 20, with most having a cumulative degree just under or just above 5. The *Celebrity* agents' cumulative degree distribution has much more variance, with *Celebrity* agents in this network having up to almost 35 connections in this simulation. The *Overall* cumulative degree distribution illustrates this for all agents in the network.
+As we can see, there are no *Standard* agents with a cumulative-degree greater than 20, with most having a cumulative-degree just under or just above 5. The *Celebrity* agents' cumulative-degree distribution has much more variance, with some *Celebrity* agents in this network having up to almost 35 connections in this simulation. The *Overall* cumulative-degree distribution illustrates this for all agents in the network.
 
 ## Next Steps
 
-Continue experimenting with the *agent* follow model. Adding more agent types into your simulation, such as bots and organizations, and manipulating all of their add weights, follow weights, follow rates, etc., can lead to some truly complex and interesting networks. When you are comfortable using the *agent* follow model, proceed to the next tutorial, where we actually combine the *twitter_suggest* follow model and *agent* follow model to create the [*preferential_agent* follow model](http://docs.hashkat.org/en/latest/tutorial06/).
+With the completion of this tutorial, you now have some familiarity with the *agent* follow model, and with networks with more than one agent type. Continue experimenting with the *agent* follow model. Adding more agent types into your simulation, such as bots and organizations, and manipulating all of their add weights, follow weights, follow rates, etc., can lead to some truly complex and interesting networks. When you are comfortable using the *agent* follow model, proceed to the next tutorial, where we actually combine the *twitter_suggest* follow model and *agent* follow model to create the [*preferential_agent* follow model](http://docs.hashkat.org/en/latest/tutorial06/).

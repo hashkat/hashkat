@@ -4,7 +4,7 @@ Here contains the write-up, images, and input files used in the #k@ documentatio
 
 * Tutorial 10 - not all of the retweeters are showing in visualization 
 
-* Tutorial 9 - following via retweet not working properly
+* Tutorial 9 - following via retweet not working properly, viz image needs to be replaced when fixed and explanation updated accordingly
 
 * Tutorial 5 - plot error
 

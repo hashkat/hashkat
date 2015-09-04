@@ -81,7 +81,7 @@ Here outlines the following steps on how to install ***#k@*** on Mac OS X:
 
     `rm -r output/`
 
-1. [Gnuplot](http://gnuplot.sourceforge.net/) is the primary graphing utility used in this documentation. To install gnuplot, type in the command:
+1. [Gnuplot](http://gnuplot.sourceforge.net/) is the primary graphing utility used in this documentation. To install Gnuplot, type in the command:
 
     `brew install gnuplot -x11`
 
@@ -160,7 +160,7 @@ Here outlines the following steps on how to install ***#k@*** on Linux (these in
 
     `rm -r output`
 
-1. [Gnuplot](http://gnuplot.sourceforge.net/) is the primary graphing utility used in this documentation. To install gnuplot, type in the command:
+1. [Gnuplot](http://gnuplot.sourceforge.net/) is the primary graphing utility used in this documentation. To install Gnuplot, type in the command:
 
     `sudo apt-get install gnuplot-x11`
 

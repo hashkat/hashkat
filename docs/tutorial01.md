@@ -117,7 +117,7 @@ Note that you can save your plots by typing in the command:
 
 `set output <filename>`
 
-when you first start up 'gnuplot' and prior to actually plotting the data.
+when you first start up Gnuplot and prior to actually plotting the data.
 
 ## Visualizing a Simple Network
 
@@ -131,7 +131,7 @@ You can also use this data you collected to visualize your simulated network. We
 <img src='../img/tutorial01/visualization.png'>
 </center>
 
-We can see that these agents are randomly connected within this network simulation we created, with the highly connected agents at the centre of the visualization and the agents with less connections on the sides.
+We can see that these agents (the red nodes) are randomly connected within this network simulation we created, with the highly connected agents at the centre of the visualization and the agents with less connections on the sides.
 
 ## Next Steps
 

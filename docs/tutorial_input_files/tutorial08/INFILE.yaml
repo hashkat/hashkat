@@ -12,6 +12,8 @@
 #    The maximum simulation-time for the simulation. Once it has elapsed, the simulation halts.
 #    Interacting with the simulation does not alter the simulation-time.
 #    In simulated minutes.
+#  max_analysis_steps:
+#    The maximum number of steps to be made in the KMC loop. For superior results, set this value to 'unlimited'.
 #  max_real_time:
 #    The maximum real-time for the simulation. Once it has elapsed, the simulation halts.
 #    Note that interacting with the simulation DOES detract from this time.
@@ -25,16 +27,22 @@
 #    Script to use to define the behaviour of interactive mode as well as lua hooks.
 #  use_barabasi: 
 #    If true, agents will make a certain number of connections set by barabasi_connections.
+#  barabasi_exponent:
+#    The value of the exponent assigned to each agent's cumulative-degree.
 #  use_random_time_increment: 
 #    If true, simulation time will be incremented at a non-constant rate. Increments by 1/sum(rates) on average
 #  use_followback: 
 #    Whether to enable follow-back in the simulation.
 #  follow_model: 
 #    Accepted models: 'random', 'twitter_suggest', 'agent', 'preferential_agent', 'hashtag', 'twitter'
+#  model_weights:
+#    The normalized probability of calling each follow model for the 'twitter' follow model.
 #  stage1_unfollow: 
 #    Whether to have an unfollow model assuming constant 'chattiness', compares the chattiness of an agent wrt to the following set.
 #  unfollow_tweet_rate: 
 #    Tweets per simulated minute. Chattiness for which to be considered for unfollow.
+#  use_hashtag_probability:
+#    The probability that tweets will contain a hashtag.
 #################################################################
 
 analysis:
@@ -212,11 +220,12 @@ ideologies:
 #   Required for each region. The weight with which 
 #   this region is chosen.
 #
-#  languages_weights:
-#    Weights with which each language is chosen.
+#  preference_class_weights:
+#    Normalized probability that an agent has a particular 'preference_class'
 #  idealogy_weights:
-#    Weights with which an agent is of a given 'ideology'
-
+#    Normalized probability that an agent has a particular 'ideology' 
+#  languages_weights:
+#    Normalized probability that an agent speaks a particular 'language'
 #################################################################
 
 regions:

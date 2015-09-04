@@ -114,7 +114,7 @@ We can also see that implementing the other follow methods into our simulation r
 
 As we can see much more agents in the network without the other follow methods make 5 or less retweets, while in the network with these follow methods, agents with up to 25 retweets are present. It is quite clear that more follows leads to much more retweets.
 
-You can plot this graph by running the simulation in the **docs/tutorial_input_files/tutorial09_without_other_follow** directory and then running the simulation in the **docs/tutorial_input_files/tutorial09_with_other_follow**. In the **docs/tutorial_input_files** directory, we typed in the following commands to plot this graph in 'gnuplot':
+You can plot this graph by running the simulation in the **docs/tutorial_input_files/tutorial09_without_other_follow** directory and then running the simulation in the **docs/tutorial_input_files/tutorial09_with_other_follow**. In the **docs/tutorial_input_files** directory, we typed in the following commands to plot this graph in Gnuplot:
 
 `set boxwidth 0.75`
 
