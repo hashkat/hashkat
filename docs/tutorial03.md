@@ -2,7 +2,7 @@
 
 # The Random Follow Model
 
-A discussion on follow models and an exercise using the random follow model, this tutorial should take approximately 30 minutes to complete.
+A discussion on follow models and an exercise using the random follow model, this tutorial should take approximately 20 minutes to complete.
 
 There are six different follow models that have been implemented into ***#k@***, to allow greater flexibility and control in the networks the program simulates.
 The six follow models are:

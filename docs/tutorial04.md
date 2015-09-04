@@ -2,7 +2,7 @@
 
 # The Twitter_Suggest Follow Model (The Barabasi-Albert Model)
 
-Going through several exercises on the different configurations of the *twitter_suggest* follow model, this tutorial should take approximately 50 minutes to complete
+Going through several exercises on the different configurations of the *twitter_suggest* follow model, this tutorial should take approximately 30 minutes to complete
 
 Based on Albert-Laszlo Barabasi's research, a *twitter_suggest* follow model is one in which agents tend to follow agents with the highest in-degree, aka the highest number of followers. This model is influenced heavily by the [Barabasi-Albert Model](http://en.wikipedia.org/wiki/Barab%C3%A1si%E2%80%93Albert_model), generating networks where agents with the greater number of followers have a higher probability of being followed. This particular follow model can be implemented using three different configurations of this following method, each of which is outlined below.
 

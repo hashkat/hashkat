@@ -2,7 +2,7 @@
 
 # Getting Started
 
-An introduction to ***#k@***, this tutorial will take approximately 40 minutes to complete.
+An introduction to ***#k@***, this tutorial will take approximately 20 minutes to complete.
 
 ## What is a Social Network?
 

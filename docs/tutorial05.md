@@ -2,7 +2,7 @@
 
 # The Agent Follow Model
 
-The *agent* follow model is one in which agents follow another agent based on their agent type, though who they follow within that agent type is totally random. Here we shall run an *agent* follow model using ***#k@***. The input file that will be created in this tutorial can be found for reference in the **docs/tutorial_input_files** directory in **hashkat**, with this one under the title **tutorial05**. You can also view the input file we will be creating for this tutorial [here](https://github.com/hashkat/hashkat/blob/master/docs/tutorial_input_files/tutorial05/INFILE.yaml). This tutorial should take approximately 20 minutes to complete.
+The *agent* follow model is one in which agents follow another agent based on their agent type, though who they follow within that agent type is totally random. Here we shall run an *agent* follow model using ***#k@***. The input file that will be created in this tutorial can be found for reference in the **docs/tutorial_input_files** directory in **hashkat**, with this one under the title **tutorial05**. You can also view the input file we will be creating for this tutorial [here](https://github.com/hashkat/hashkat/blob/master/docs/tutorial_input_files/tutorial05/INFILE.yaml). This tutorial should take approximately 15 minutes to complete.
 
 <center>
 <iframe width="560" height="315" src="https://www.youtube.com/embed/rBwWCohfato" frameborder="0" allowfullscreen></iframe>
