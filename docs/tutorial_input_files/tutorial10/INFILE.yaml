@@ -65,13 +65,13 @@ analysis:
   use_barabasi: 
     false
   barabasi_connections: # number of connections we want to make when use_barabasi == true
-    1
+    2
   barabasi_exponent:
     1
   use_random_time_increment: 
     true
   use_followback: 
-    false        # from literature, it makes sense for a realistic system to have followback enabled
+    false       # from literature, it makes sense for a realistic system to have followback enabled
   follow_model: # See notes above
     twitter_suggest
   # model weights ONLY necessary for follow method 'twitter'  
