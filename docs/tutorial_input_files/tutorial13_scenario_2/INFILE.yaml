@@ -292,6 +292,7 @@ preference_classes:
       0.1
 
  - name: NoRetweetPref
+
    tweet_transmission: 
       plain: # Also applies to musical tweets
         Standard: 0
