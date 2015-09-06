@@ -1,1 +1,0 @@
-The input file INFILE.yaml will create a graph with the preferential-agent method. This method looks to the probability of following a certain agent type first and then looks to the in-degrees of the agents in a certain agent type. This is the preferential attachment mechanism nested inside the follow by agent type mechanism.

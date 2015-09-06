@@ -40,10 +40,6 @@ Contains all the possible paramters that can be configured in *INFILE.yaml* with
 
 Contains the pages and images used in the write-up of the ***#k@*** documentation. In its subdirectory **tutorial_input_files**, one can find a directory corresponding to almost every tutorial found in the ***#k@*** documentation, where the *INFILE.yaml* file that will be created in each respective tutorial can be found.
 
-## <span style="color:blue">examples</span> 
-
-Contains a list of directories, each containing an example *INFILE.yaml* file for a particular network simulation.
-
 ## <span style="color:hotpink">graph.svg</span>
 
 Contains network graph created by running *visualize.py*.
