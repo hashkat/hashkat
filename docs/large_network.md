@@ -1,4 +1,10 @@
+[hashkat.org](http://hashkat.org)
 
+# Large Network
+
+As you have surely noticed, all of the networks used and created in these tutorials are all relatively small networks. This was of course done to have the network simulations created in tutorial run as quickly as possible. If you would like to run simulations with much larger networks, we've included a template of one such network below that uses over 128 GB of RAM (this input file can also be found in the **docs/tutorial_input_files** directory in **hashkat** in the directory **large_network**):
+
+```python
 #################################################################
 # >> analysis:
 #
@@ -649,3 +655,26 @@ agents:
         follow: {function: constant, value: 0.0}
         # Rate for tweets from this agent:
         tweet: {function: constant, value: 0.2}
+```
+
+It is important to note that in order to run a simulation using the input file above, the following changes must be made to the *config_static.h* file (make sure to rebuild ***#k@*** after modifying the *config_static.h* file in order for the changes to take effect):
+
+* *N_BIN_PREFERENCE_CLASS* must be set to 7:
+
+```python
+const int N_BIN_PREFERENCE_CLASS = 7;
+```
+
+* *N_BIN_REGIONS* must be set to 7:
+
+```python
+const int N_BIN_REGIONS = 7;
+```
+
+* *N_BIN_IDEOLOGIES* must be set to 6
+
+```python
+const int N_BIN_IDEOLOGIES = 6;
+```
+
+Once you have copied the above input file into your *INFILE.yaml* file, you are free to make any changes to it that you'd like.
