@@ -6,15 +6,15 @@
 
 ## Modelling Different Scenarios
 
-Up to this point, we have used ***#k@*** in very abstract terms. 
+Up to this point, we have used ***#k@*** in very abstract terms. Let's use it now to model real life scenarios that can occur in social networks.
 
 ### Scenario 1 - Organization Rivalry
 
 We have two organizations, *Coke* and *Pepsi*, who are taking full advantage of the access social networks allow them to have with consumers. They have both made accounts on this social network and both currently have zero followers. They have decided to each launch their own marketing campaign to garner as much follows from *Standard* agents in this social network as possible in a span of one week.
 
-Both *Coke* and *Pepsi* only follow agents that follow them, and they will do so for every single one of their followers. *Pepsi* tweets both musical and humorous tweets evenly weighted, while *Coke* only tweets humorous tweets, though they tweet at a slightly higher rate. Humourous tweets do have a better chance of being retweeted however.
+Both *Coke* and *Pepsi* only follow agents that follow them, and they will do so for every single one of their followers. *Pepsi* tweets both musical and humorous tweets evenly weighted, while *Coke* only tweets humorous tweets, though at a slightly higher tweet rate. Humourous tweets have a better chance of being retweeted however.
 
-The **INFILE.yaml** used for this scenario can be found in the *docs/tutorial_input_files* directory in *hashkat* under *tutorial13_scenario_1* as well as [here](https://github.com/hashkat/hashkat/blob/master/docs/tutorial_input_files/tutorial13_scenario_1/INFILE.yaml). To find out who wins this competition, copy this input file into your *hashkat* directory and run the simulation. Feel free to look through the input file to see what we did to produce this scenario. Due to the complexity of this network, the simulation may run slightly longer than the simulations done in previous tutorials.
+The *INFILE.yaml* used for this scenario can be found in the **docs/tutorial_input_files** directory in **hashkat** under **tutorial13_scenario_1** as well as [here](https://github.com/hashkat/hashkat/blob/master/docs/tutorial_input_files/tutorial13_scenario_1/INFILE.yaml). To find out who wins this competition, copy this input file into your *INFILE.yaml* file run the simulation. Feel free to look through the input file to see what we did to produce this scenario. Due to the complexity of this network, the simulation may run slightly longer than the simulations done in previous tutorials.
 
 #### Coke
 
@@ -140,10 +140,10 @@ We have two regions in our network, *Canada* and the *USA*, and both are in the 
       tweet: {function: linear, y_intercept: 0.01, slope: 0.001}
 ```
 
-Agents started voicing their views 5 days before the day of their country's federal election, which coincidentally happen to occur in both countries on the very same day. The **INFILE.yaml** used for this scenario can be found in the *docs/tutorial_input_files* directory in *hashkat* under *tutorial13_scenario_2* as well as [here](https://github.com/hashkat/hashkat/blob/master/docs/tutorial_input_files/tutorial13_scenario_2/INFILE.yaml). Copy this input file into your *hashkat* directory and run the simulation. Feel free to look through the input file to see what we did to produce this scenario. Due to the complexity of this network, the simulation may run slightly longer than the simulations done in previous tutorials. Judging by the number of supporters you will find in the social network, find a way to discover who will win the election in both *Canada* and the *USA*.
+Agents started voicing their views 5 days before the day of their country's federal election, which coincidentally happens to occur in both countries on the very same day, and have been increasing their use of this social network ever since. The *INFILE.yaml* used for this scenario can be found in the **docs/tutorial_input_files** directory in **hashkat** under **tutorial13_scenario_2** as well as [here](https://github.com/hashkat/hashkat/blob/master/docs/tutorial_input_files/tutorial13_scenario_2/INFILE.yaml). Copy this input file into your *INFILE.yaml* file and run the simulation. Feel free to look through the input file to see what we did to produce this scenario. Due to the complexity of this network, the simulation may run slightly longer than the simulations done in previous tutorials. Judging by the number of supporters you will find in the social network, find a way to discover who will most likely win the election in both *Canada* and the *USA*.
 
 ## Moving Forward with ***#k@***
 
-With the completion of this, the final tutorial, you now have proficency and experience working with all the different implementations and aspects of ***#k@***. However, we have only scratched the surface of all the different applications and utilizations of ***#k@***. From the World Wide Web to a food web, from people to atoms, there is no end to all the entities and situations you can model using ***#k@***. With that, press on and experiment with ***#k@***, and see what you can model using this program.
+With the completion of this, the final tutorial, you now have proficency and experience working with all the different implementations and aspects of ***#k@***. However, we have only scratched the surface of all the different applications and utilizations of ***#k@***. From the World Wide Web to a food web, from people to atoms, there is no end to all the entities and situations you can model using ***#k@***. With this in mind, press on and experiment with ***#k@***, and see what you can model using this program.
 
 Check out the following pages for further information on some of the components of ***#k@***. Also, please send us your thoughts on ***#k@*** and this documentation on the [**Feedback**](http://docs.hashkat.org/en/latest/feedback/) page. We would love to hear from you!
