@@ -27,3 +27,5 @@ Here contains the write-up, images, and input files used in the #k@ documentatio
 * Update citation page when 'Transcending language barriers in a realistic model of an online social network' paper is submitted
 
 * No mention in the documentation of the network queries from *network.h* that can be inputted to learn certain network information
+
+* the code map image on the developers page needs to be fixed

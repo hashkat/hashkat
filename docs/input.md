@@ -351,7 +351,7 @@ tweet_ranks:
   thresholds: {bin_spacing: linear, min: 10, max: 300, increment: 10}
 ```
 
-Serves as a way to organize and categorize agents by the number of tweets they make in bins. The *bin_spacing* can be linear, quadratic, or cubic, and they can have an arbitrary minimum, maximum, and increment value. In the above case, with tweeting enabled, agents with 10 or less tweets will be stored on a list in the intitial bin. If some of these agents continue to tweet, and end up having a total number of tweets greater than 10 but less than 20, they will move to the next bin. If their total number of tweets increases to a value greater than 20 but less than 30, they will then move on to the next bin, and so on, until they have reached a value of 300 tweets, where they shall remain. If tweeting is disabled, the number of agents in each tweet rank wll be listed as zero.
+Serves as a way to organize and categorize agents by the number of tweets they make in bins. The *bin_spacing* can be *linear*, *quadratic*, or *cubic*, which means that bins can be spaced by the *increment* raised to the power of 1, 2, or 3 respectively. The *tweet_ranks* can also be set to have a minimum, maximum, and increment value. In the above case, with tweeting enabled, agents with 10 or less tweets will be stored on a list in the intitial bin. If some of these agents continue to tweet, and end up having a total number of tweets greater than 10 but less than 20, they will move to the next bin. If their total number of tweets increases to a value greater than 20 but less than 30, they will then move on to the next bin. Agents can keep moving bins until they have made (in this case) 291 tweets, since they will be placed in the final bin where agents with 300 or less tweets are placed and remain there. If tweeting is disabled, the number of agents in each tweet rank wll be listed as zero.
 
 #### Retweet Ranks
 
@@ -360,7 +360,7 @@ retweet_ranks:
   thresholds: {bin_spacing: linear, min: 10, max: 300, increment: 10}
 ```
 
-Serves the exact same purpose as *tweet_ranks*, but for retweets.
+Serves the exact same purpose as *tweet_ranks*, but in this case categorizes agents based on the number of retweets they've made.
 
 #### Follow Ranks
 
