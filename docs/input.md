@@ -232,7 +232,7 @@ stdout_basic:
   true
 ```
 
-If *true* the number of simulated months through a simulation will be displayed on the screen and a message will be printed to the screen once the simulation has finished.
+If *true*, when a network simulation is stopped or completed, a message will print to the screen stating the reason why the simulation was completed, that analysis files are being created and that this can be aborted by pressing **Ctrl-c** multiple times, and, if the analysis files have been created, that the analysis is complete.
 
 #### Stdout Summary
 
@@ -241,8 +241,7 @@ stdout_summary:
   true
 ```
 
-If *true*, the length of simulated time (in minutes), the number of agents, follows, tweets, retweets, cummulative rate function **R**, and the real time that has elapsed will be displayed on the screen throughout the simulation's run. The intervals at which
-this information is changed and displayed is determined by the *summary_output_rate* discussed below.
+If *true*, the length of simulated time (in simulated minutes), the number of agents, follows, tweets, retweets, and unfollows that have occurred, the cumulative rate function **R**, and the real time that has elapsed in seconds during a network simulation will be displayed on the screen throughout the simulation's run. This information is updated at a rate determined by the *summary_output_rate* discussed below.
 
 #### Summary Output Rate
 
@@ -251,7 +250,7 @@ summary_output_rate:
   100
 ```
 
-This value corresponds to the number of step intervals in the [KMC](https://en.wikipedia.org/wiki/Kinetic_Monte_Carlo) loop where *stdout_summary* information is updated and displayed on the screen.
+This value corresponds to how often the *stdout_summary* information that is printed to the screen during a simulation is updated based on steps in the [KMC](https://en.wikipedia.org/wiki/Kinetic_Monte_Carlo). In this case, we can see that this information will update every hundred steps in the [KMC](https://en.wikipedia.org/wiki/Kinetic_Monte_Carlo).
 
 #### Visualize
 
@@ -260,7 +259,7 @@ visualize:
   true
 ```
 
-If *true* a simulation will produce two additional files in the output directory, *network.dat* and *network.gexf*. *network.dat* contains two columns, where the agents in the first column are following the agents in the second column. *network.gexf* is a file which can be used to visualize smulated networks on programs like [Gephi](http://gephi.github.io/).
+If *true* a network simulation will produce two additional files in the **output** directory, *network.dat* and *network.gexf*. *network.dat* shows every single follower that each agent has. *network.gexf* is a file which can be used to visualize simulated networks on programs like [Gephi](http://gephi.github.io/).
 
 #### Agent Stats
 
@@ -269,7 +268,7 @@ agent_stats:
   true
 ```
 
-If *true*, a simulation will produce additional files in the output directory named after the particular agent types within the simulation as *agenttype_info.dat* (e.g. the presence of a *Standard* agent type will produce a file labelled *Standard_info.dat*). Within this file can be found the percentage out of the total number of agents that follow this agent type, the percentage of the proportion of agent types that this agent type follows with respect to each other, and the number of possible degrees of agent for this agent type and their weighted in-degree, out-degree, cumulative-degree, and the logs of each. 
+If *true*, a simulation will produce additional files in the **output** directory named after the particular agent types within the simulation as *agenttype_info.dat* (e.g. the presence of a *Standard* agent type will produce a file labelled *Standard_info.dat*).
 
 #### Degree Distributions
 
@@ -278,7 +277,7 @@ degree_distributions:
   true
 ```
 
-If *true*, the in, out, and cumulative degree distributions will be produced in the output directory for each simulated month, as, in the case of the zeroth month, *in-degree_distribution_month_000.dat*, *out-degree_distribution_month_000.dat*, and *cumulative-degree_distribution_month_000.dat* respectively.
+If *true*, the in-degree, out-degree, and cumulative-degree distributions will be produced in the **output** directory for each simulated month, as, in the case of the zeroth month, *in-degree_distribution_month_000.dat*, *out-degree_distribution_month_000.dat*, and *cumulative-degree_distribution_month_000.dat* respectively.
 
 #### Tweet Analysis
 
@@ -287,7 +286,7 @@ tweet_analysis:
   true
 ```
 
-Setting to *true* creates the *tweets_distro.dat* and *retweets_distro.dat* output files, which contain the relative distributions for every possible number of tweets and retweets respectively that an agent can make in a given simulation.
+Setting to *true* creates the *tweets_distro.dat* and *retweets_distro.dat* output files, which contain the respective distributions for every possible number of tweets and retweets that agents have made in the network simulation.
 
 #### Retweet Visualization
 
@@ -296,7 +295,7 @@ retweet_visualization:
   true
 ```
 
-If *true*, a simulation will produce an additional file titled *retweet_viz.gexf*, which can be used to visualize the most retweeted tweets on programs such as [Gephi](http://gephi.github.io/).
+If *true*, a network simulation will produce an additional output file titled *retweet_viz.gexf*, which can be used to visualize the most popular tweet on programs such as [Gephi](http://gephi.github.io/).
 
 #### Main Statistics
 
@@ -305,39 +304,43 @@ main_statistics:
   true
 ```
 
-Setting to *true* creates the *main_stats.dat* file, which contains all principal information from a given network simulation, such as: the total number of agents in the network, and the number and percentage of those of each agent type; tht total number of tweets in the simulation, the number and percentage of those that contain hashtags, and the number and percentage of those made by each agent type; the total number of retweets, and the number and percentage of those committed by each agent type; the total number of follows and follow attempts, the number and percentage of follow attempts attributed to each type of follow method, and the number and percentage of follows made by each agent type.
+Setting to *true* creates the *main_stats.dat* output file, which contains all principal information from a given network simulation.
 
 #### Degree Distribution by Follow Model
+
 ```python
 degree_distribution_by_follow_model:
   true
 ```
 
-If set to true, creates the *dd_by_follow_model.dat* output file, which contains the normalized probability and the ln of the normalized probability for each follow method in network simulation. 
+If set to *true*, creates the *dd_by_follow_model.dat* output file, which shows the normalized probability and the normalized probability logarithm that an agent of a particular cumulative-degree made its connections via each particular follow method.
 
 #### Region Connection Matrix
+
 ```python
 region_connection_matrix:
   true
 ```
 
-If set to true, creates the 'region_connection_matrix.dat' file, which displays a chart showing the connections made in regions.
+If set to *true*, creates the 'region_connection_matrix.dat' output file, which contains a chart showing the connections made between regions.
 
 #### Categories Distribution
+
 ```python
 categories_distro:
   true
 ```
 
-
+If *true*, creates the *Categories_Distro.dat* output file, which shows how many agents have made a certain number of tweets and retweets and how many agents have a particular number of followers.
 
 #### Most Popular Tweet Content
+
 ```python
 most_popular_tweet_content:
   true
 ```
 
-
+If *true*, creates the *most_popular_tweet_content.dat* output file, which contains details on the most retweeted tweet and its author.
 
 ### **ranks**
 

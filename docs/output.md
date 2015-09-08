@@ -8,7 +8,7 @@ This section serves as a reference for users who have run a simulation, and wish
 
 `agenttype_info.dat`
 
-Present and named for every single agent type in the network (e.g. a *Standard* agent type would have a file named *Standard_info.dat*). Outlines the proportion of agents that follow this agent type, the proportion of each agent type that this particular agent type follows with respect to each other, and the number of possible degrees for agents of this agent type with their corresponding weighted in-degree, out-degree, and cumulative-degree, as well as the logs of each. An example of the information stored in this file is shown below:
+Present and named for every single agent type in the network (e.g. a *Standard* agent type would have a file named *Standard_info.dat*). Outlines the proportion of each agent type that follow this particular agent type, the proportion of each agent type that this particular agent type is following, and all the possible degrees for agents of this agent type with the normalized probability of having an in-degree, out-degree, and cumulative-degree of this value, with the logs of each. An example of the information stored in this file is shown below:
 
 <center>
 <img src='../img/output/agenttype_info_file.png'>
@@ -38,7 +38,7 @@ Outlines all the possible cumulative-degrees an agent can have in that particula
 
 `dd_by_follow_model.dat`
 
-Indicates the normalized probability and the normalized probability logarithm per follow method for each possible cumulative-degree in the network.
+Indicates the normalized probability and the normalized probability logarithm that an agent of a particular cumulative-degree made its connections via each particular follow method.
 
 <center>
 <img src='../img/output/dd_by_follow_model_file.png'>
