@@ -2,7 +2,7 @@
 
 # Input
 
-This section serves as a reference for users working with the input file INFILE.yaml. This page goes through every aspect of the file in which users can manipulate.
+This section serves as a reference for users working with the input file *INFILE.yaml*. This page goes through every aspect of the file in which users can manipulate.
 
 ### **analysis**
 
@@ -15,7 +15,7 @@ initial_agents:
   20
 ```
 
-Agents correspond to Twitter users on the network. The *initial_agents* are therefore the initial Twitter users you will have at the start of the simulation. As we can see, in the above case, this value is 20.
+Agents correspond to users in the social network. The *initial_agents* are therefore the initial users you will have at the start of the simulation. As we can see, in the above case, this value is 20.
 
 #### Max Agents
 
@@ -24,7 +24,7 @@ max_agents:
   100001
 ```
 
-The *max_agents* are the maximum number of Twitter users that will be in the same simulation. Once this number of agents is reached, its magnitude will not increase. In this case we can see its number is 100001.
+The *max_agents* are the maximum number of users that will be in the network simulation. Once this number is reached, the number of agents in the network will no longer increase. In this case we can see its value is 100001.
 
 #### Max Time
 
@@ -33,7 +33,7 @@ max_time:
   hour
 ```
 
-The *max_time* variable coincides with the maximum simulation time in which you want the simulation to run. Once this simulated time has been reached, the simulation ends. This time is in minutes, and as we can see for this case, has a value of 1 hour or 60 minutes. For simplicity, you can just input 'minute', 'hour', 'day', or 'year' multiplied by a constant and ***#k@*** will know the value in minutes as well (e.g. 3 days can be inputted as 3*day, which is equal to 4,320 minutes). Note that interacting with the simulation has no impact on the simulation time.
+The *max_time* variable coincides with the maximum simulation time in which you want the simulation to run for. Once this simulated time has been reached, the simulation ends. This time is in simulated minutes, and as we can see for this case, has a value of 1 hour or 60 minutes. For simplicity, you can also just input *minute*, *hour*, *day*, or *year* multiplied by a constant or each other and ***#k@*** will know the value in simulated minutes (e.g. 3 days can be inputted as 3*day, which is equal to 4,320 minutes). Note that interacting with the simulation has no impact on the simulation time.
 
 #### Max Analysis Steps
 
@@ -42,7 +42,7 @@ max_analysis_steps:
   unlimited
 ```
 
-The *max_analysis_steps* are the maximum number of steps undertaken in the KMC loop throughout the simulation. To achieve the most accurate results possible, it is recommended to keep this value at unlimited.
+The *max_analysis_steps* are the maximum number of steps undertaken in the [KMC](https://en.wikipedia.org/wiki/Kinetic_Monte_Carlo) loop throughout the simulation. To achieve the most accurate results possible, it is recommended to keep this value at unlimited.
 
 #### Max Real Time
 
@@ -51,7 +51,7 @@ max_real_time:
   hour
 ```
 
-*max_real_time* is the maximum real itme in which you want the simulation to run. Once this actual time has elapsed, the simulation ends. This time is also in minutes, and in the above example has a value of 1 hour or 60 minutes. For simplicity, you can just input 'minute', 'hour', 'day', or 'year' multiplied by a constant and ***#k@*** will know the value in minutes as well (e.g. 3 days can be inputted as 3*day, which is equal to 4,320 minutes). It is important to note that as opposed to the simulated time, interacting with the simulation does affect the real time. 
+*max_real_time* is the maximum real itme in which you want the simulation to run for. Once this actual time has elapsed, the simulation ends. This time is in real minutes, and in the above example has a value of 1 hour or 60 minutes. For simplicity, you can also just input *minute*, *hour*, *day*, or *year* multiplied by a constant or each other and ***#k@*** will know the value in minutes (e.g. 3 days can be inputted as 3*day, which is equal to 4,320 minutes). It is important to note that as opposed to the simulated time, interacting with the simulation does affect the real time. 
 
 #### Enable Interactive Mode
 
@@ -60,7 +60,7 @@ enable_interactive_mode:
   true
 ```
 
-Inputting *true* into *enable_interactive_mode* allows the user to interact with the simulation while its running. Inputting *false* into this variable prevents this. We will discuss **Interactive Mode** in much further detail later.
+Inputting *true* into *enable_interactive_mode* allows the user to interact with the simulation while its running. Inputting *false* into this variable prevents this.
 
 #### Enable Lua Hooks
 
@@ -69,8 +69,7 @@ enable_lua_hooks:
   false
 ```
 
-Inputting *true* into *enable_lua_hooks* implements runtime Lua functions that can react to events such as a tweet, a retweet, a follow, etc, while inputting *false* does not. *enable_lua_hooks* is defined in the same file as interactive mode,
-though it should be noted that lua hooks will slow down the simulation immensely.
+Inputting *true* into *enable_lua_hooks* implements runtime Lua functions that can react to events such as a tweet, a retweet, a follow, etc, while inputting *false* does not. It should be noted that setting this to *true* will slow down the simulation immensely.
 
 #### Lua Script
 
@@ -79,7 +78,7 @@ lua_script:
   INTERACT.lua
 ```
 
-*lua_script* contains the script in which all the functions able for use interactive mode can be found. It is highly recommended to keep this variable as INTERACT.lua.
+*lua_script* contains the script in which all the functions able for use in interactive mode can be found. It is highly recommended to keep this variable as *INTERACT.lua*, since that is the default Lua script in the **hashkat** directory.
 
 #### Use Barabasi
 
@@ -88,8 +87,7 @@ use_barabasi:
   false
 ```
 
-Input *true* into *use_barabasi* for a simulation of the [Barabasi-Albert model](http://en.wikipedia.org/wiki/Barab%C3%A1si%E2%80%93Albert_model) when using a *twitter_suggest*, *preferential_agent*, or *twitter* (that implements either of the two previous) follow
-models. Input *false* to prevent this.
+Input *true* into *use_barabasi* to enable agents in a network simulation to only make as many connections as the value set in *barabasi_connections*. Input *false* to prevent this.
 
 #### Barabasi Connections
 
@@ -98,8 +96,7 @@ barabasi_connections:
   100
 ```
 
-*barabasi_connections* outline the number of follows an agent will make when added to the network when *use_barabassi == true*. For a classic Barabasi-Albert model, set this value equal to 1. For a non-classic Barabasi-Albert model, set this value to another value
-greater than 1.
+*barabasi_connections* outlines the number of follows an agent will make in a network simulation when *use_barabassi == true*. For a Classic Barabasi configuration, set this value equal to 1. For a Non-Classic Barabasi configuration, set this value to another value greater than 1.
 
 #### Barabasi Exponent
 
@@ -108,7 +105,7 @@ barabasi_exponent:
   1
 ```
 
-The order of the degrees within the network, the *barabasi_exponent* is normally kept to 1 for the most realistic simulated network.
+The value assigned to the exponent of every agent's cumulative-degree within the network.
 
 #### Use Random Time Increment
 
@@ -117,7 +114,7 @@ use_random_time_increment:
   true
 ```
 
-Input *true* for *use_random_time_increment* to have time increase by random values modelled by the KMC loop, or input *false* to have the simulation move by constant increments of time. Choosing either option will not have a major impact on your results.
+Input *true* for *use_random_time_increment* to have time increase by random values modelled by the [KMC](https://en.wikipedia.org/wiki/Kinetic_Monte_Carlo) loop, or input *false* to have time increase by constant increments of time. Inputting *true* generally gives more refined results.
 
 #### Use Followback
 
@@ -135,10 +132,7 @@ follow_model:
   random
 ```
 
-The *follow_model* determines the manner in which agents choose who to follow. This will definitely be confered in much greater detail later. The input options for follow_model are: *random*, *twitter_suggest*, *agent*,
-*preferential_agent*, *hashtag*, and *twitter*.
-
-**Note**: if you'd like to change the number of follow models in the simulation, make sure the value is less than or equal to the value set to 'N_FOLLOW_MODELS' in the *config_static.h' file in *src*. You can also change the value set to *N_FOLLOW_MODELS* and rebuild ***#k@*** by running *build.sh*.
+The *follow_model* determines the manner in which agents choose who to follow. The input options for follow_model are: *random*, *twitter_suggest*, *agent*, *preferential_agent*, *hashtag*, and *twitter*.
 
 #### Model Weights
 
@@ -146,7 +140,7 @@ The *follow_model* determines the manner in which agents choose who to follow. T
 model_weights: {random: 0.20, twitter_suggest: 0.20, agent: 0.20, preferential_agent: 0.20, hashtag: 0.20}
 ```
 
-*model_weights* are only relevant when using the *twitter* follow model. The *twitter* model is a combination of all the other follow models, so weigh each follow model to your choice proportion to produce a very complex system.
+*model_weights* are only relevant when using the *twitter* follow model. The *twitter* follow model is a combination of all the other follow models, so this allows you to control the proportion of each follow model that is present in the network simulation relative to the others.
 
 #### Stage1 Unfollow
 
@@ -155,7 +149,7 @@ stage1_unfollow:
   false
 ```
 
-Inputting *true* into *stage1_unfollow*  will enable agents to unfollow agents that have a tweet rate double the average tweet rate of all the other agents the original agent is following.
+Inputting *true* into *stage1_unfollow* will enable agents to unfollow agents that have a tweet rate double the average tweet rate of all the other agents they are following. Inputting *false* prevents this from happening.
 
 #### Unfollow Tweet Rate
 
@@ -164,7 +158,7 @@ unfollow_tweet_rate:
   10
 ```
 
-The *unfollow_tweet_rate* is a value by which, if the number of tweets by an agent exceeds this value, will cause this agent to randomly lose one of its followers.
+The *unfollow_tweet_rate* is a value by which, if the number of tweets by an agent exceeds this value, will cause this agent to randomly lose one of its followers. To prevent this from occurring in your network simulation, set this value to a number much greater than the agent tweet rates in the network.
 
 #### Use Hashtag Probability
 
@@ -173,7 +167,7 @@ use_hashtag_probability:
   1
 ```
 
-The probability of a tweet containing a # from 0 to 1. As we can see in this example, the probability of using a # is 1, so every tweet will contain a #.
+The probability of a tweet containing a hashtag(#) from 0(0%) to 1(100%). As we can see in this example, the probability of tweets containing a hashtag is 1, so every tweet will have one.
 
 ### **rates**
 
@@ -182,20 +176,18 @@ rates:
   add: {function: constant, value: 0.0}
 ```
 
-The rate at which agents will be added into the network per minute throughout the course of the simulation. This function can either be a constant or linear add rate. For a constant add rate. the function must be identified as *constant* and the
-number of agents you wish to add per minute must be inputted into *value*. This number must be greater or equal to zero. For a linear add rate, the add rate must be changed to:
+The rate at which agents will be added into the network per simulated minute throughout the course of the simulation. This function can either be *constant* or *linear*. For a constant add rate, the function must be identified as *constant* and the number of agents you wish to add per simulated minute must be inputted into *value*. This number can zero or greater. For a linear add rate, the add rate must be changed to:
 
 ```python
 rates:
   add: {function: linear, y_intercept: 1.0, slope: 0.1}
 ```
 
-where the y-intercept is the initial arbitrary value of agents added to the network and the slope, multipled by the number of simulated months that have elapsed within the simulation, is the value by which the y-intercept is increased by. 
+where the *y_intercept* is the initial value of agents added to the network per simulated minute and the *slope*, multipled by the number of simulated months that have elapsed within the simulation, is the value by which the *y_intercept* is increased by. 
 
 ### **output**
 
-This section of the program outlines what is present in the output directory once the simulation is concluded. To acquire as much data as possible, it is recommended to initally set all these to *true*, and to input *false* to whatever you don't need after more 
-experience running simulations.
+This section of the program outlines what is present in the output directory once the simulation has concluded. To acquire as much data as possible, it is recommended to initally set all these to *true*, and to input *false* to whatever you don't need after having more experience running simulations.
 
 #### Save Network on Timeout
 
@@ -213,7 +205,7 @@ load_network_on_startup:
   true
 ```
 
-If *true* all of the simulated network data within the save file will be loaded from when the simulated commenced
+If *true* all of the simulated network data stored in the *save_file* will be loaded when the network simulation recommences, and the simulation will thereby continue from where it left off. If *false*, a network simulation will simply restart from the beginning if it is stopped and then restarted.
 
 #### Ignore Load Config Check
 
@@ -222,7 +214,7 @@ ignore_load_config_check:
   true
 ```
 
-If *true*, allows you to load a network from the save file and continue the simulation using an input file with differing parameters. Setting this to *false* will prevent you from doing this.
+If *true*, allows you to load a network from the *save_file* and continue the simulation using an input file with differing parameters. Setting this to *false* will prevent you from doing this.
 
 #### Save File
 
@@ -231,7 +223,7 @@ save_file:
   network_state.dat
 ```
 
-Determines the file where all the simulated data is saved to.
+Determines the name of the file where all the simulated data is saved to.
 
 #### Stdout Basic
 
@@ -259,7 +251,7 @@ summary_output_rate:
   100
 ```
 
-This value corresponds to the number of step intervals in the KMC loop where *stdout_summary* information is updated and displayed on the screen.
+This value corresponds to the number of step intervals in the [KMC](https://en.wikipedia.org/wiki/Kinetic_Monte_Carlo) loop where *stdout_summary* information is updated and displayed on the screen.
 
 #### Visualize
 
