@@ -6,7 +6,7 @@ This is open-source software for generating kinetic complex networks. The events
          -------------------------------------------------------
         |  NOTE: you must have cmake, Python, and a C++ compiler |
         |                                                        |
-        |    TO BUILD: './build.sh'                              |
+        |    TO BUILD: './build.sh -O'                              |
         |    TO BEGIN SIMULATION: './run.sh'                     |
         |                                                        |
         |    TO CREATE DESIRED SIMULATIONS MODIFY                |
