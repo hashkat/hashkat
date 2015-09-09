@@ -140,7 +140,7 @@ When running a network simulation, this is the file that will read in *INFILE.ya
 
 ## network.h
 
-Contains the *Network* struct which places all the *Agent* structs into an array and enables several commands that ***#k@*** users can use to gather specific information about the simulated network, such as if an id number exists in the network, how many followers does a specific id have, etc.
+Contains the *Network* struct which places all the *Agent* structs into an array and several convenient network queries.
 
 ## tweets.h
 
