@@ -104,21 +104,39 @@ You can also visualize the networks you've created using [Networkx](https://netw
 
 `pip install networkx`
 
-You now have Networkx installed on your computer! To create a graph of your network after running a simulation, enter Python by typing in the command:
+You now have Networkx installed on your computer!
+
+### Plotting Your Network
+
+To create a graph of your network after running a simulation, enter Python by typing in the command:
 
 `python`
 
 In Python, type in the following to create a graph of your network:
 
-`import matplotlib.pyplot as plt`
+```python
+import matplotlib.pyplot as plt`
+```
 
-`import networkx as nx`
+```python
+import networkx as nx`
+```
 
-`G = nx.read_edgelist('output/network.dat')`
+```python
+G = nx.read_edgelist('output/network.dat')`
+```
 
-`nx.draw(G)`
+```python
+pos = nx.spring_layout(G,iterations=75)`
+```
 
-`plt.show()`
+```python
+nx.draw(G,pos)`
+```
+
+```python
+plt.show()`
+```
 
 This will produce a plot similar to the one below:
 
@@ -128,10 +146,88 @@ This will produce a plot similar to the one below:
 
 Similar to our visualizations using Gephi, the red nodes in the above graph correspond to agents and the black edges in between them correspond to connections/followings between agents, though it is important to note that there is no way to distinguish between the different agent types via this method.
 
+### Analyzing Your Network
+
+You can also use Networkx for analysis of your graph. Here we will outline some of the various commands you can input into Python after yplotting yout graph to collect some information on your network.
+
+#### Number of Nodes
+
+You can find the number of nodes present in your network by typing the command:
+
+```python
+nx.number_of_nodes(G)`
+```
+
+#### Number of Edges
+
+You can find the number of edges in your network by entering the command:
+
+```python
+nx.number_of_edges(G)`
+```
+
+#### Most Popular Agent
+
+To find the most connected agent and it's corresponding cumulative-degree, enter in the commands:
+
+```python
+from operator import itemgetter`
+```
+
+```python
+sorted(G.degree_iter(),key=itemgetter(1),reverse=True)[0:1])`
+```
+
+This will print to the screen (though with most likely different values):
+
+```python
+[(u'938', 35)]
+```
+
+where in this case, '938' corresponds to the ID of the most connected agent and '35' corresponds to the cumulative-degree of this agent.
+
+#### Most Common Cumulative-Degree
+
+You can find the most common cumulative-degree of agents in the network and the number of agents with that cumulative-degree by entering in the command:
+
+```python
+max(enumerate(nx.degree_histogram(G)), key=itemgetter(1)))
+```
+
+This will print to the screen (though with most likely different values):
+
+```python
+(20, 90)
+```
+
+where '20' corresponds to the most common cumulative-degree and 90 corresponds to the number of agents with that cumulative-degree.
+
+#### Graph Density
+
+A dense graph is one in which the number of edges in a network are very close to their maximum value. You can calculate the graph density for your network by typing in the command:
+
+```python
+nx.density(G)
+```
+
+The maximum graph density has a value of 1 and the minimum graph density has a value of 0.
+
+#### Average Shortest Path Length
+
+The average shortest path length is the shortest number of edges on average between any two nodes in the network. You can calculate this value for your network by inputting the command:
+
+```python
+nx.average_shortest_path_length(G))
+```
+
+### visualize.py
+
 You can visualize your networks using the above manner by running the script in the **hashkat** directory *visualize.py* by entering the command after running a network simulation:
 
 `./visualize.py`
 
-Running this script will not only produce a plot of your network using Networkx, but it will also save that plot to a file named *graph.svg*.
+Running this script will not only produce a plot of your network using Networkx, but it will save that plot to a file named *graph.svg*, and run all of the analysis steps we discussed above 
+
+### Explore
 
 Though we discuss using Gephi in much greater detail in this documentation, you are encouraged to also analyze your networks using Networkx, to have a better understanding on all the ways in which you can analyze the data you've collected from running ***#k@***.
