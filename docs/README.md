@@ -1,4 +1,4 @@
-Here contains the write-up, images, and input files used in the #k@ documentation found on http://docs.hashkat.org/en/latest/. Some aspects of the documentation due eventually have to be fixed however. These include:
+This directory contains the write-up, images, and input files used in the ***#k@*** documentation found on http://docs.hashkat.org/en/latest/. Some aspects of the documentation do need to be fixed however. These include:
 
 * Tutorial 13 needs to be fixed (Scenario 1 - tweet and follow rates not working properly; Scenario 2 - needs agent type region weight enhancement); referred to as final tutorial, which may of course change
 
@@ -8,17 +8,11 @@ Here contains the write-up, images, and input files used in the #k@ documentatio
 
 * Tutorial 5 - plot error
 
-* Output - dd_by_follow_model, tweets_distro, retweets_distro when fixed needs to be replaced
+* Output - dd_by_follow_model, tweets_distro, and retweets_distro screenshots need to be replaced when respective files are fixed
 
-* Tutorial 4 - categories distro output file screenshot may need to be replaced when categories distro is fixed
+* Tutorial 4 - categories distro output file screenshot may need to be replaced when categories distro file is fixed
 
-* No Interactive Mode
-
-* No follow rank plot commands
-
-* Possibly Next Steps in Tutorial 12 should be updated when tutorial 13 is fixed and/or further tutorials are created
-
-* doc search engine shows old pages (Search "config_static")
+* No Interactive Mode in documentation
 
 * No video for tutorials 9, 10, 13, and the output of Tutorial 5 due to errors 
 
@@ -26,10 +20,8 @@ Here contains the write-up, images, and input files used in the #k@ documentatio
 
 * Update citation page when 'Transcending language barriers in a realistic model of an online social network' paper is submitted
 
-* No mention in the documentation of the network queries from *network.h* that can be inputted to learn certain network information
-
 * the code map image on the developers page needs to be fixed
 
-* key words page mentions interactive mode is under development
+* key words page mentions that interactive mode is under development, which may need to be edited when interactive mode is finished
 
 * more terms could be added to key words page
