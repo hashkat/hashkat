@@ -44,9 +44,7 @@ If *use_random_time_increment* is disabled, the simulated time moves forward by:
 
 All the rates are then updated, and if the maximum simulated or real time has not been reached, this process repeats until either of these times are reached.
 
-Another way to look at how these rates work in ***#k@*** is as follows.
-
-We initially have one agent in the network, with the agent *add* rate having been set to 1 agent per simulated minute and the agent *tweet* rate being set to 1 tweet per simulated minute (we've ignored the *follow* rate and *retweet* rate for this example). At this moment, there is an even chance that another agent will be added to the network or the initial agent will make a tweet. A random number is generated. If the random number is less than or equal to 0.5, another agent will be added, if it is greater than 0.5, the initial agent will tweet. Time will then move forward based on the cumulative rate function and possibly another generated random number, again depending on whether or not 'use_random_time_increment' is permitted.
+Another way to look at how these rates work in ***#k@*** is as follows. We initially have one agent in the network, with the agent *add* rate having been set to 1 agent per simulated minute and the agent *tweet* rate being set to 1 tweet per simulated minute (we've ignored the *follow* rate and *retweet* rate for this example). At this moment, there is an even chance that another agent will be added to the network or the initial agent will make a tweet. A random number is generated. If the random number is less than or equal to 0.5, another agent will be added, if it is greater than 0.5, the initial agent will tweet. Time will then move forward based on the cumulative rate function and possibly another generated random number, again depending on whether or not 'use_random_time_increment' is permitted.
 
 <center>
 <img src='../img/developers/kmc_1.png'>
