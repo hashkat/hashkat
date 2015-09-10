@@ -80,6 +80,10 @@ This cycle will continue until the end of the simulation.
 
 This is how the [**Kinetic Monte Carlo (KMC)**](https://en.wikipedia.org/wiki/Kinetic_Monte_Carlo) method works in ***#k@***. 
 
+## The Source Code
+
+The source code for ***#k@*** can be found in the **src** directory in the **hashkat** directory. Within there can be found *DEVELOPERS.md*, a file which briefly details the role of every file and directory in the source code.
+
 ## Build Tests
 
 Build tests can be run in ***#k@*** by running the *tests.sh* script. This script runs network simulations using the input files found in *tests/referencefiles/*, and compares the output of these files to what is expected using the *verify.py* script. If there are any discrepancies between the data of a particular output file and its corresponding reference data, that file for that particular test is printed to the screen.
