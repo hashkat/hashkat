@@ -2,7 +2,7 @@
 
 # A Diverse Network of Agents
 
-As you have clearly noticed working through these tutorials, ***#k@*** offers the opportunity for users to create network simulations consisiting of a truly dynamic and varied set of agents. A multilingual, multiregional network consisting of agents of many different ideologies, preferences, personalities, and types is one that truly models the human race and is exactly what we strive to do here with ***#k@***.
+As you have clearly noticed working through these tutorials, ***#k@*** offers the opportunity for users to create network simulations consisting of a truly dynamic and varied set of agents. A multilingual, multiregional network consisting of agents of many different ideologies, preferences, personalities, and types is one that truly models the human race and is exactly what we strive to do here with ***#k@***.
 
 In this tutorial, we will go over every aspect in which you can individualize agents in your network, to give you the freedom and means to create the most realistic network simulations possible. We will also use what we learn in this tutorial to simulate a diverse network of several different agents and see which agent type ends up being the most popular. This tutorial should take about 40 minutes to complete.
 
@@ -10,7 +10,7 @@ In this tutorial, we will go over every aspect in which you can individualize ag
 
 ### Ideology
 
-As previously discussed, an agent's idelogy is the particular dogma that they follow. Ideologies can be added, removed, or renamed in the *ideologies* section of **INFILE.yaml**.
+An agent's ideology is the particular dogma that they follow. Ideologies can be added, removed, or renamed in the *ideologies* section of *INFILE.yaml*.
 
 ```python
 ideologies:
@@ -29,7 +29,7 @@ regions:
     ideology_weights: {Red: 100, Blue: 100, Green: 100, Orange: 100}
 ```
 
-Agents can also follow other agents based on ideology in the *hashtag* follow model, where setting the *hashtag* follow option *care_about_idelogy* in the agent type section to true results in agents only following other agents that share the same ideology as them. 
+Agents can also follow other agents based on ideology in the *hashtag* follow model, where setting the *hashtag* follow option *care_about_idelogy* in the agent type section to *true* results in agents only following other agents that share the same ideology as them. 
 
 ```python
 agents:
@@ -40,7 +40,7 @@ agents:
 
 ### Language
 
-As you would expect, an agent's language is the particular language that they speak. The language of an agent is determined in the *regions* section of **INFILE.yaml** under *language_weights*, where they can be added, removed, or renamed, as well as the proportion of a particular language that agents in that region speak can be weighted against other languages in that region. Agents will never be able to connect with other agents that speak a different language from them, since they are unable to understand one another.
+As you would expect, an agent's language is the particular language that they speak. The language of an agent is determined in the *regions* section of *INFILE.yaml* under *language_weights*, where the proportion of a particular language that agents in that region speak can be weighted against other languages in that region. Agents will never be able to connect with other agents that speak a different language from them, since they are unable to understand one another.
 
 ```python
 regions:
@@ -51,7 +51,7 @@ regions:
 
 ### Region
 
-'Region' outlines the particular geographical area that an agent lives in. *regions* can be named, added, or removed in the *regions* section of **INFILE.yaml**. Their *add_weight* determines the proportion of agents in a network simulation being from that region as opposed to others. Their *preference_class_weights*, *ideology_weights*, and *language_weights*, also weighs the proportion of agents that will have a particular preference class, ideology, or language respectively in the network as opposed to others within the region. 
+A region is the geographical location of an agent. *regions* can be named, added, or removed in the *regions* section of *INFILE.yaml*. Their *add_weight* determines the proportion of agents in a network simulation being from that region as opposed to others. Their *preference_class_weights*, *ideology_weights*, and *language_weights*, also weighs the proportion of agents that will have a particular preference class, ideology, or language respectively in that region as opposed to other agents within that region. 
 
 ```python
 regions:
@@ -65,7 +65,7 @@ regions:
 
 ### Preference Class - Tweet Transmission
 
-An agent's tweet transmission is the probability that an agent will retweet a tweet of a particular type. This is defined in the *preference_classes* section of **INFILE.yaml**, where the probability that an agent will retweet a tweet of the possible tweet types (plain and musical, different ideology, same ideology, humorous) is determined by its agent type. 
+*tweet_transmission* is the probability that an agent of a particular agent type will be retweeted based on tweet content. This is defined in the *preference_classes* section of *INFILE.yaml*.
 
 ```python
 preference_classes:
@@ -75,14 +75,11 @@ preference_classes:
       plain: # Also applies to musical tweets
         Standard: 0.01
         Celebrity: 0.01
-        else: 0.1
-      different_ideology: # generally no retweeting of tweets with different ideological content
-        Standard: 0.00
-        Celebrity: 0.00
         else: 0.0
+      different_ideology: # generally no retweeting of tweets with different ideological content
+        all: 0.0
       same_ideology:
         Standard: 0.01
-        Celebrity: 0.01
         else: 0.2
       humorous:
         Standard: 0.02
@@ -101,7 +98,7 @@ regions:
 
 ### Preference Class - Follow Reaction Probability
 
-An agent's *follow_reaction_probability* is the probability that an agent, after seeing a tweet be retweeted by someone they follow, will follow the speaker of the original tweet as opposed to just retweeting the tweet.
+The *follow_reaction_probability* is the probability that an agent, after seeing a tweet be retweeted by someone they follow, will follow the speaker of the original tweet as opposed to just retweeting the retweet.
 
 ```python
 preference_classes:
@@ -113,7 +110,7 @@ preference_classes:
 
 ### Agent - Add Weight
 
-Defined in the *agents* section of **INFILE.yaml**, an agent's add weight is the proportion in which agents of a particular agent type are added into the network in comparison to those of other types.
+Defined in the *agents* section of *INFILE.yaml*, the *add* weight is the proportion in which agents of a particular agent type are added into the network in comparison to agents of other agent types.
 
 ```python
 agents:
@@ -125,7 +122,7 @@ agents:
 
 ### Agent - Follow Weight
 
-Defined in the *agents* section of **INFILE.yaml**, an agent's follow weight is the proportion in which agents of a particular agent type are followed with respect to those of other agent types in the *agent* or *preferential_agent* follow models.
+Defined in the *agents* section of *INFILE.yaml*, the *follow* weight is the proportion in which agents of a particular agent type are followed in comparison to agents of other agent types in the *agent* or *preferential_agent* follow models.
 
 ```python
 agents:
@@ -137,7 +134,7 @@ agents:
 
 ### Agent - Tweet Type
 
-Defined in the *agents* section of **INFILE.yaml**, *tweet_type* outlines the weight in which agents of a particular agent type make tweets categorized into *ideological*, *plain*, *musical*, or *humorous* based on their content. 
+Defined in the *agents* section of *INFILE.yaml*, *tweet_type* outlines the weight in which agents of a particular agent type make *ideological*, *plain*, *musical*, or *humorous* tweets. 
 
 ```python
 agents:
@@ -152,7 +149,7 @@ agents:
 
 ### Agent - Followback Probability
 
-Defined in the *agents* section of **INFILE.yaml**, an agent's *followback_probability* is the probability in which agents of a particular agent type follow other agents that have followed them. This value has been found to be about 44% or 0.44 in experiment.
+Defined in the *agents* section of *INFILE.yaml*, *followback_probability* is the probability in which agents of a particular agent type follow agents that have followed them. This value has been found to be about 44% in experiment.
 
 ```python
 agents:
@@ -161,7 +158,7 @@ agents:
     followback_probability: .44
 ```
 
-In order for *followback_probability* to be enabled, *use_followback* must be set to *true* in the *section* of **INFILE.yaml**.
+In order for *followback_probability* to be enabled, *use_followback* must be set to *true* in the *analysis* section of *INFILE.yaml*.
 
 ```python
 analysis:
@@ -171,7 +168,7 @@ use_followback:
 
 ### Agent - Hashtag Follow Options
 
-Defined in the *agents* section of **INFILE.yaml**, the *hashtag_follow_options* determine who agents follow in the *hashtag* follow model. Whether they follow another agent only if they share the same region and/or ideology as them is based on whether or not you put *true* for the *care_about_region* and/or *care_about_ideology* variable respectively.
+Defined in the *agents* section of *INFILE.yaml*, the *hashtag_follow_options* determine who agents of a particular agent type follow in the *hashtag* follow model. Whether they follow another agent only if they share the same region and/or ideology as them is based on whether or not you input *true* for the *care_about_region* and/or *care_about_ideology* variable respectively.
 
 ```python
 agents:
@@ -183,7 +180,7 @@ agents:
 
 ### Agent - Follow Rate
 
-Defined in the *agents* section of **INFILE.yaml**, an agent's follow rate dictates the amount of follows an agent of that particular agent type does per simulated minute. The function of this rate can be either constant or linear. For a constant follow rate, the function must be set to *constant* and it must have a value of 0 or greater assigned to it.
+Defined in the *agents* section of *INFILE.yaml*, the *follow* rate dictates the amount of follows an agent of that particular agent type does per simulated minute. The function of this rate can be either *constant* or *linear*. For a constant *follow* rate, the *function* must be set to *constant* and it must have a *value* of 0 or greater assigned to it.
 
 ```python
 agents:
@@ -193,7 +190,7 @@ agents:
         follow: {function: constant, value: 0.0001}
 ```
 
-For a linear follow rate, the function must be set to *linear* and there must be a *y_intercept* and *slope* instead of a *value* (this can also be done for the add rate).
+For a linear *follow* rate, the *function* must be set to *linear* and there must be a *y_intercept* and *slope* instead of a *value*. The *y_intercept* is the initial value of follows per simulated minute and the *slope*, multipled by the number of simulated months that have elapsed within the simulation, is the value by which the *y_intercept* is increased by.
 
 ```python
 agents:
@@ -203,9 +200,11 @@ agents:
         follow: {function: linear, y_intercept: 0.1, slope: 0.1}
 ```
 
+**Note**: the *add* rate can also be a linear function.
+
 ### Agent - Tweet Rate
 
-Defined in the *agents* section of **INFILE.yaml**, an agent's tweet rate dictates the amount of tweets an agent makes of the particular agent type per ismulated minute. The function of this rate can be either constant or linear. For a constant tweet rate, the function must be set to *constant* and it must have a value of 0 or greater assigned to it.
+Defined in the *agents* section of *INFILE.yaml*, the *tweet* rate dictates the amount of tweets an agent of that particular agent type makes per simulated minute. The function of this rate can be either *constant* or *linear*. For a constant *tweet* rate, the *function* must be set to *constant* and it must have a *value* of 0 or greater assigned to it.
 
 ```python
 agents:
@@ -215,7 +214,8 @@ agents:
         tweet: {function: constant, value: 0.0001}
 ```
 
-For a linear tweet rate, the function must be set to *linear* and there must be a *y_intercept* and *slope* instead of a *value* (this can also be done for the add rate).
+For a linear *tweet* rate, the *function* must be set to *linear* and there must be a *y_intercept* and *slope* instead of a *value*. The *y_intercept* is the initial value of tweets per simulated minute and the *slope*, multipled by the number of simulated months that have elapsed within the simulation, is the value by which the *y_intercept* is increased by.
+
 
 ```python
 agents:
@@ -225,11 +225,15 @@ agents:
         tweet: {function: linear, y_intercept: 0.1, slope: 0.1}
 ```
 
+**Note**: the *add* rate can also be a linear function.
+
+**Note**: if you'd like to change the number of *ideologies*, *regions*, *preference classes*, and/or agent types in the simulation, make sure these numbers are less than or equal to (in the case of *regions*, EXACTLY equal to) the value set for *N_BIN_IDEOLOGIES*, *N_BIN_REGIONS*, *N_BIN_PREFERENCE_CLASS*, and/or *N_BIN_AGENT_TYPES* respectively in the *config_static.h* file in **src**. You can change any of these values if need be, but make sure to then rebuild ***#k@*** by running *build.sh -O*, in order for these changes to take effect.
+
 ## Popularity Contest
 
-Now that we have seen all the factors that make agents unique, we are going to create a network simulation that consists of these diverse agents, and see which agent type out of the ones we created are the most popular.
+Now that we have seen all the factors that make agents unique, we are going to create a network simulation that consists of these diverse agents, and see which agent type out of the ones we create is the most popular.
 
-For this exercise, we will actually not go through how to configure **INFILE.yaml** to create the desired network with you. You've had enough experience with it that you should be able to do this on your own. We're just going to outline the network that we would like. If you're having any problems with this, the desired input file can be found for reference in the *docs/tutorial_input_files* directory in hashkat, with this one under the title *tutorial12*. You can also view the desired input file you will be creating for this example [here](https://github.com/hashkat/hashkat/blob/master/docs/tutorial_input_files/tutorial12/INFILE.yaml). Now, on to creating the network.
+For this exercise, we will actually not go through how to configure *INFILE.yaml* to create the desired network with you. You've had enough experience with it that you should be able to do this on your own. We're just going to outline the network that we would like. If you're having any problems with this, the desired input file can be found for reference in the **docs/tutorial_input_files** directory in **hashkat**, with this one under the title **tutorial12**. You can also view the desired input file you will be creating for this example [here](https://github.com/hashkat/hashkat/blob/master/docs/tutorial_input_files/tutorial12/INFILE.yaml). Now, on to creating the network.
 
 For this network simulation, we would like to have the following:
 
@@ -239,13 +243,13 @@ For this network simulation, we would like to have the following:
 * followback implemented
 * the *twitter* follow model implemented, with the *twitter_suggest* and the *hashtag* follow model evenly weighted and the other follow models being excluded from this simulation
 * No unfollowing allowed
-* Hashtag presence in tweets 50% of the time
+* Hashtag present in tweets 50% of the time
 * 4 ideologies: *Red*, *Blue*, *Green*, and *Orange*
 * agents being located in either *Ontario* or *Quebec*, with the ratio of Ontarians to Quebecers being 3:2
 * Ontarians having a *StandardPref* preference class, with 4 evenly wieghted ideologies and the ratio of English to French speaking Ontarians being 1:1
 * Quebecers having the *NoRetweetPref* preference class, with only 3 ideologies (*Red*, *Blue*, *Green*) evenly weighted, with the ratio of English speaking to French speaking Quebecers being 1:1
-* for the *StandardPref* preference class, the tweet transmission rates for the agent types present in this network are 0.1 for 'plain'/'musical' tweets, 0.0 for 'different_ideology' tweets, 0.2 'same_ideology' tweets, and 0.4 for 'humorous' tweets, with the 'follow_reaction_prob' being 0.3
-* the *NoRetweetPref* preference class will remain the same, with 0 for all
+* for the *StandardPref* preference class, the tweet transmission rates for the agent types present in this network are 0.1 for *plain*/*musical* tweets, 0.0 for *different_ideology* tweets, 0.2 for *same_ideology* tweets, and 0.4 for *humorous* tweets, with the *follow_reaction_prob* being 0.3
+* the *NoRetweetPref* preference class will remain the same, with a value of 0 for all variables
 
 We would also like you to use only the following agent types with their respective characteristics:
 
@@ -399,7 +403,7 @@ We would also like you to use only the following agent types with their respecti
       tweet: {function: constant, value: 0.12}
 ```
 
-Make sure that your tweet, retweet, and follow ranks have also been updated accordingly to properly account for this network. As you've probably noticed, we've set the max real time to 10 minutes instead of the regular 1 minute. The simulation should definitely not run for this long, we just want to allow enough time for the simulation to run to completion. When running this simulation on our computer, it took almost 4 minutes real time to complete due to the complexity of the network. You do not have to run your simulation for this long if you wish. You can change the maximum real time to a time of your choosing or press **Ctrl-c** at any time during the simulation to pause it. Once you have configured **INFILE.yaml** to account for all this, run and visualize your network simulation.
+Make sure that your tweet, retweet, and follow ranks have also been updated accordingly to properly account for this network. As you've probably noticed, we've set the *max_real_time* to 10 minutes instead of the usual 1 minute. The simulation should definitely not run for this long, we just want to allow enough time for the simulation to run to completion. When running this simulation on our computer, it took almost 4 minutes real time to complete due to the complexity of the network. You do not have to run your simulation for this long if you wish. You can change the *max_real_time* to a time of your choosing or press **Ctrl-c** at any time during the simulation to stop it. Once you have configured *INFILE.yaml* to account for all this, run and visualize your network simulation.
 
 <center>
 <iframe width="560" height="315" src="https://www.youtube.com/embed/tR0TrumrZSM" frameborder="0" allowfullscreen></iframe>
@@ -415,7 +419,7 @@ In the above visualization, the red nodes correspond to the *Standard-Chatty* ag
 
 As we can see, our social network has been divided into networks based on language, with one network corresponding to English-speaking agents and the other corresponding to French-speaking agents.
 
-Clicking the 'Filters' tab on the right-hand side of the page on 'Gephi' and clicking 'Degree-Range' under 'Topology', we can filter our network visualization based on the cumulative degree of the agents in the network.
+Clicking the 'Filters' tab on the right-hand side of the page in Gephi and clicking 'Degree-Range' under 'Topology', we can filter our network visualization based on the cumulative-degree of the agents in the network.
 
 <center>
 <img src='../img/tutorial12/filter_tab.png'>
@@ -429,13 +433,13 @@ Setting the 'Degree-Range Settings' from 80 to 100 and clicking 'Filter', we can
 
 As we can see from this visualization, the most highly connected nodes are the green and yellow nodes, also known as the *Standard-Friendly* and *Standard-Funny* agents. Therefore, it is quite clear that the friendly and funny agents won the popularity contest.
 
-Looking into the *region_connection_matrix_month_000.dat* output file, we can also see the connections agents made within and between their regions:
+Looking into the *region_connection_matrix_month_000.dat* output file, we can also see the connections agents made within and between regions:
 
 <center>
 <img src='../img/tutorial12/region_connection_matrix.png'>
 </center>
 
-As we can see, agents in *Ontario*, the zeroth region, had 65.0394% of their follows from agents from *Ontario* and 34.9609% of their follows from agents in *Quebec*, while agents in *Quebec* had 52.946% of their follows from agents in *Ontario* and 47.054% of their follows from agents in *Quebec*. So agents in *Ontario* tended to interact amongst themselves while agents in *Quebec* were pretty evenly interacting with agents in both *Ontario* and *Quebec*.
+As we can see, agents in *Ontario*, the zeroth region (region '0' corresponds to the first region in *INFILE.yaml*, region '1' to the second region, etc.), had 65.0394% of their follows from agents from *Ontario* and 34.9609% of their follows from agents in *Quebec*, while agents in *Quebec* had 52.946% of their follows from agents in *Ontario* and 47.054% of their follows from agents in *Quebec*. Therefore, it seems that agents in *Ontario* tended to interact amongst themselves while agents in *Quebec* were pretty evenly interacting with agents in both *Ontario* and *Quebec*.
 
 ## Next Steps
 

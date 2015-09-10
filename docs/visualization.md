@@ -153,7 +153,7 @@ You can use Networkx to analyze the network you've created as well. Here we will
 You can find the number of nodes present in your network by typing in the command:
 
 ```python
-nx.number_of_nodes(G)`
+nx.number_of_nodes(G)
 ```
 
 #### Number of Edges
@@ -161,7 +161,7 @@ nx.number_of_nodes(G)`
 You can find the number of edges in your network by entering the command:
 
 ```python
-nx.number_of_edges(G)`
+nx.number_of_edges(G)
 ```
 
 #### Most Popular Agent
@@ -169,11 +169,11 @@ nx.number_of_edges(G)`
 To find the most connected agent and it's corresponding cumulative-degree, enter in the commands:
 
 ```python
-from operator import itemgetter`
+from operator import itemgetter
 ```
 
 ```python
-sorted(G.degree_iter(),key=itemgetter(1),reverse=True)[0:1])`
+sorted(G.degree_iter(),key=itemgetter(1),reverse=True)[0:1])
 ```
 
 This will print to the screen (though with most likely different values):
@@ -189,7 +189,7 @@ where in this case, '938' corresponds to the ID of the most connected agent and 
 You can find the most common cumulative-degree of agents in the network and the number of agents with that cumulative-degree by entering in the commands:
 
 ```python
-from operator import itemgetter`
+from operator import itemgetter
 ```
 
 ```python

@@ -58,7 +58,7 @@ Let's say that an agent has been added to the network.
 <img src='../img/developers/kmc_2.png'>
 </center>
 
-With this addition to our network, the agent add rate will remain the same but the agent tweet rate will now double since we have double the number of agents from what we originally had in the network. With this change, an agent tweeting is twice as likely to happen in comparison to an agent being added in the KMC loop, though the expected rates for each agent will remain the same since the simulated time will move more slowly, since the change in time is inversely proportional to the steadily increasing cummulative rate function.
+With this addition to our network, the agent add rate will remain the same but the agent tweet rate will now double since we have double the number of agents from what we originally had in the network. With this change, an agent tweeting is twice as likely to happen in comparison to an agent being added in the KMC loop, though the expected rates for each agent will remain the same since the simulated time will move more slowly, since the change in time is inversely proportional to the steadily increasing cumulative rate function.
 
 <center>
 <img src='../img/developers/kmc_3.png'>

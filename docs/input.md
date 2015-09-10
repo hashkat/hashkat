@@ -178,14 +178,14 @@ rates:
   add: {function: constant, value: 0.0}
 ```
 
-For a constant add rate, the function must be identified as *constant* and the number of agents you wish to add per simulated minute must be inputted into *value*. This number can zero or greater. For a linear add rate, the add rate must be changed to:
+For a constant *add* rate, the *function* must be identified as *constant* and the number of agents you wish to add per simulated minute must be inputted into *value*. This number can zero or greater. For a linear *add* rate, the add rate must be changed to:
 
 ```python
 rates:
   add: {function: linear, y_intercept: 1.0, slope: 0.1}
 ```
 
-where the *y_intercept* is the initial value of agents added to the network per simulated minute and the *slope*, multipled by the number of simulated months that have elapsed within the simulation, is the value by which the *y_intercept* is increased by. 
+where the *y_intercept* is the initial value of agents added to the network per simulated minute and the *slope*, multipled by the number of simulated months that have elapsed within the simulation, is the value by which the *y_intercept* is increased by.
 
 ### **output**
 
@@ -442,7 +442,7 @@ Determines for how long after a tweet has been made that it can be retweeted. On
 
 Here lists all the different dogmas that agents in the network simulation can possibly have. They can be named whatever you like.
 
-**Note**: if you'd like to change the number of *ideologies* in a network simulation, make sure this number is less than or equal to the value set for *N_BIN_IDEOLOGIES* in the *config_static.h' file in **src**. You can change the value set for *N_BIN_IDEOLOGIES*, but make sure to then rebuild ***#k@*** by running *build.sh -O* in order for these changes to take effect.
+**Note**: if you'd like to change the number of *ideologies* in a network simulation, make sure this number is less than or equal to the value set for *N_BIN_IDEOLOGIES* in the *config_static.h* file in **src**. You can change the value set for *N_BIN_IDEOLOGIES*, but make sure to then rebuild ***#k@*** by running *build.sh -O* in order for these changes to take effect.
 
 ### **regions**
 
@@ -459,7 +459,7 @@ This sections outlines the *regions* in which you would like your agents to be l
 
 A region's *add_weight* corresponds to the probability that an agent added to the network is from that region, and is weighted with respect to the *add_weights* of all the other regions. The *preference_class_weights* are the possible *preference classes* agents from that region can have, and are weighted with respect to one another. The *ideology_weights* are the possible *ideologies* agents can have, and are weighted with respect to one another. The *language_weights* are the possible *languages* that an agent from that region can speak, and are also weighted with respect to each other.
 
-**Note**: if you'd like to change the number of *regions* in the simulation, make sure this number is EXACTLY equal to the value set for *N_BIN_REGIONS* in the *config_static.h' file in **src**. You can change this value set for *N_BIN_REGIONS*, but make sure to then rebuild ***#k@*** by running *build.sh -O* in order for these changes to take effect.
+**Note**: if you'd like to change the number of *regions* in the simulation, make sure this number is EXACTLY equal to the value set for *N_BIN_REGIONS* in the *config_static.h* file in **src**. You can change this value set for *N_BIN_REGIONS*, but make sure to then rebuild ***#k@*** by running *build.sh -O* in order for these changes to take effect.
 
 ### **preference classes**
 
@@ -468,26 +468,22 @@ A region's *add_weight* corresponds to the probability that an agent added to th
 
    tweet_transmission:
       plain:
-        Standard: 0
-        Celebrity: 0
-        else: 0
+        Standard: 0.5
+        Celebrity: 1.0
       different_ideology:
-        Standard: 0.0
-        Celebrity: 0.0
-        else: 0.0
+        all: 0.0        
       same_ideology:
-        Standard: 0.0
-        Celebrity: 0.0
-        else: 0.0
+        Standard: 0.3
+        else: 0.6
       humorous:
-        Standard: 0.0
-        Celebrity: 0.0
+        Standard: 1.0
+        Celebrity: 1.0
         else: 0.0
    follow_reaction_prob:
       0.5
 ```
 
-The *preference classes* detail how agents react to tweets in a network simulation. The four possible types of tweets are *plain* tweets, *musical* tweets, *ideological* tweets, and *humorous* tweets. Under *tweet_transmission* one can dictate the probability that tweets made by a particular agent type will be retweeted based on the content of that tweet, whether it be plain or musical, have a different ideology, have the same ideology, or be humorous. The *follow_reaction_prob* determines the probability that an agent will follow another agent based on seeing one of their tweets being retweeted as opposed to just retweeting that retweet. With the *follow_reaction_prob* set to 0.5 in the above example, there is a 50% chance that an agent will follow the speaker of an original tweet being retweeted and a 50% chance that they will just retweet the retweet.   
+The *preference classes* detail how agents react to tweets in a network simulation. The four possible types of tweets are *plain* tweets, *musical* tweets, *ideological* tweets, and *humorous* tweets. Under *tweet_transmission* one can dictate the probability that tweets made by a particular agent type will be retweeted based on the content of that tweet, whether it be plain or musical, have a different ideology, have the same ideology, or be humorous. Instead of inserting a particular agent type, one can also input *all* or *else* for any of the *tweet_transmision* rates to dictate the *tweet_transmission* for all the agent types or the rest of the agent types not specified respectively. The *follow_reaction_prob* determines the probability that an agent will follow another agent based on seeing one of their tweets being retweeted as opposed to just retweeting that retweet. With the *follow_reaction_prob* set to 0.5 in the above example, there is a 50% chance that an agent will follow the speaker of an original tweet being retweeted and a 50% chance that they will just retweet the retweet.   
 
 **Note**: if you'd like to change the number of *preference classes* in the simulation, make sure this number is less than or equal to the value set for *N_BIN_PREFERENCE_CLASS* in the *config_static.h* file in **src**. You can change the value set for *N_BIN_PREFERENCE_CLASS*, but make sure to then rebuild ***#k@*** by running *build.sh -O* to have these changes take effect.
 
@@ -518,4 +514,4 @@ In this section, one can create the types of agents that will be included in the
 
 Under *weights* we can see *add*, which correlates to the probability, weighted against all the other agent types, that, when an agent is added into the network, this is its agent type. The value inputted into *follow* will be the probability, weighted against the other agent types, that an agent of this agent type will be the one followed in the *agent* follow model when a follow occurs. *tweet_type* summarizes the weighted probability that the content of an agent of this type's tweets will be ideological, plain, musical, or humorous. The *followback_probability* is the probability that following an agent of this type will result in that agent following you back, though *use_followback* has to be enabled for this to have any effect. The *hashtag_follow_options* are implemented in the *hashtag* follow model, where agents follow other agents based on the hashtags present in their tweets. In this follow model, if *care_about_region* is set to *true*, agents of this agent type will only follow other agents that live in the same region as them, and if *care_about_ideology* is set to *true*, agents of this agent type will only follow other agents that share the same ideology as them. It is important to note that *use_hashtag_probability* in the **analysis** section must be set to a value greater than zero for this to work, or else no one will be implementing hashtags into their tweets, and no one will therefore be able to follow via this method. The *follow* and *tweet* rates are the rates at which agents of this particular agent type will *follow* and *tweet* per simulated minute. These work in the exact same manner as the *add* rate outlined in the **rates** section.
 
-**Note**: if you'd like to change the number of agent types in the simulation, make sure this value is less than or equal to the value set for *N_BIN_AGENT_TYPES* in the *config_static.h' file in **src**. You can change the value set for *N_BIN_AGENT_TYPES*, but make sure to then rebuild ***#k@*** by running *build.sh -O*, in order for these changes to take effect.
+**Note**: if you'd like to change the number of agent types in the simulation, make sure this value is less than or equal to the value set for *N_BIN_AGENT_TYPES* in the *config_static.h* file in **src**. You can change the value set for *N_BIN_AGENT_TYPES*, but make sure to then rebuild ***#k@*** by running *build.sh -O*, in order for these changes to take effect.
