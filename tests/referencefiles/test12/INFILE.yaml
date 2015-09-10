@@ -55,7 +55,7 @@ analysis:
   max_analysis_steps: 
     unlimited
   max_real_time: 
-    1
+    day
   enable_interactive_mode:
     false
   enable_lua_hooks: # Defined in same file as interactive_mode. Can slow down simulation considerably.
