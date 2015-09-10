@@ -12,7 +12,7 @@ Up to this point, we have used ***#k@*** in very abstract terms. Let's use it no
 
 We have two organizations, *Coke* and *Pepsi*, who are taking full advantage of the access social networks allow them to have with consumers. They have both made accounts on this social network and both currently have zero followers. They have decided to each launch their own marketing campaign to garner as much follows from *Standard* agents in this social network as possible in a span of one week.
 
-Both *Coke* and *Pepsi* only follow agents that follow them, and they will do so for every single one of their followers. *Pepsi* tweets both musical and humorous tweets evenly weighted, while *Coke* only tweets humorous tweets, though at a slightly higher tweet rate. Humourous tweets have a better chance of being retweeted however.
+Both *Coke* and *Pepsi* only follow agents that follow them, and they will do so for every single one of their followers. *Pepsi* tweets both *musical* and *humorous* tweets evenly weighted, while *Coke* only tweets humorous tweets, though at a slightly higher *tweet* rate. *Humourous* tweets have a better chance of being retweeted however.
 
 The *INFILE.yaml* used for this scenario can be found in the **docs/tutorial_input_files** directory in **hashkat** under **tutorial13_scenario_1** as well as [here](https://github.com/hashkat/hashkat/blob/master/docs/tutorial_input_files/tutorial13_scenario_1/INFILE.yaml). To find out who wins this competition, copy this input file into your *INFILE.yaml* file run the simulation. Feel free to look through the input file to see what we did to produce this scenario. Due to the complexity of this network, the simulation may run slightly longer than the simulations done in previous tutorials.
 

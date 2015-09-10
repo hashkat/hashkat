@@ -178,7 +178,7 @@ agents:
     care_about_ideology: true # does the agent care about the ideology of the agent they will follow?
 ```
 
-### Agent - Follow Rate
+### Agent - *Follow* Rate
 
 Defined in the *agents* section of *INFILE.yaml*, the *follow* rate dictates the amount of follows an agent of that particular agent type does per simulated minute. The function of this rate can be either *constant* or *linear*. For a constant *follow* rate, the *function* must be set to *constant* and it must have a *value* of 0 or greater assigned to it.
 
@@ -202,7 +202,7 @@ agents:
 
 **Note**: the *add* rate can also be a linear function.
 
-### Agent - Tweet Rate
+### Agent - *Tweet* Rate
 
 Defined in the *agents* section of *INFILE.yaml*, the *tweet* rate dictates the amount of tweets an agent of that particular agent type makes per simulated minute. The function of this rate can be either *constant* or *linear*. For a constant *tweet* rate, the *function* must be set to *constant* and it must have a *value* of 0 or greater assigned to it.
 
@@ -248,7 +248,7 @@ For this network simulation, we would like to have the following:
 * agents being located in either *Ontario* or *Quebec*, with the ratio of Ontarians to Quebecers being 3:2
 * Ontarians having a *StandardPref* preference class, with 4 evenly wieghted ideologies and the ratio of English to French speaking Ontarians being 1:1
 * Quebecers having the *NoRetweetPref* preference class, with only 3 ideologies (*Red*, *Blue*, *Green*) evenly weighted, with the ratio of English speaking to French speaking Quebecers being 1:1
-* for the *StandardPref* preference class, the tweet transmission rates for the agent types present in this network are 0.1 for *plain*/*musical* tweets, 0.0 for *different_ideology* tweets, 0.2 for *same_ideology* tweets, and 0.4 for *humorous* tweets, with the *follow_reaction_prob* being 0.3
+* for the *StandardPref* preference class, the *tweet_transmission* rates for the agent types present in this network are 0.1 for *plain*/*musical* tweets, 0.0 for *different_ideology* tweets, 0.2 for *same_ideology* tweets, and 0.4 for *humorous* tweets, with the *follow_reaction_prob* being 0.3
 * the *NoRetweetPref* preference class will remain the same, with a value of 0 for all variables
 
 We would also like you to use only the following agent types with their respective characteristics:

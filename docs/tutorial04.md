@@ -61,7 +61,7 @@ analysis:
     0.5
 ```
 
-In the *rates* section of the input file, we are now adding agents to the network throughout the simulation, so we will change the add rate value to 1.0, so that one agent will be added to the network per simulated minute. This add rate is much lower than it's actual value, where users join Twitter at a rate of about 100 per minute, but we will use this value for this tutorial.
+In the *rates* section of the input file, we are now adding agents to the network throughout the simulation, so we will change the *add* rate value to 1.0, so that one agent will be added to the network per simulated minute. This *add* rate is much lower than it's actual value, where users join Twitter at a rate of about 100 per minute, but we will use this value for this tutorial.
 
 ```python
 rates:
@@ -81,7 +81,7 @@ follow_ranks:
   weights:    {bin_spacing: linear, min: 1, max: 10001, increment: 1}
 ```
 
-To better demonstrate the results of a twitter_suggest follow model, we are again only going to use *Standard* agents in this simulation. It is imperative that we have also set the *Standard* agent type's follow rate to 0.0, so that the only manner in which agents are connecting with each other is through the *barabasi_connections* they are assigned to make.
+To better demonstrate the results of a twitter_suggest follow model, we are again only going to use *Standard* agents in this simulation. It is imperative that we have also set the *Standard* agent type's *follow* rate to 0.0, so that the only manner in which agents are connecting with each other is through the *barabasi_connections* they are assigned to make.
 
 ### Running and Visualizing The Network
 
@@ -172,7 +172,7 @@ We shall now run a *twitter_suggest* follow model network simulation without imp
 
 ### Constructing The Network
 
-Designing a *twitter_suggest* follow model network simulation without implementing the Barabasi configuration can be done by simply going into the *INFILE.yaml* file we just modified for the Non-Classic Barabasi configuration and inputting 'false' for *use_barabasi*, and setting the *Standard* agent type follow rate again to 0.01.
+Designing a *twitter_suggest* follow model network simulation without implementing the Barabasi configuration can be done by simply going into the *INFILE.yaml* file we just modified for the Non-Classic Barabasi configuration and inputting 'false' for *use_barabasi*, and setting the *Standard* agent type *follow* rate again to 0.01.
 
 ### Running and Visualizing The Network
 
@@ -204,6 +204,6 @@ A plot of these follow ranks up to a follow rank of 15 is shown below:
 
 ## Next Steps
 
-We have now worked with a few configurations of the *twitter_suggest* follow model. Though we did not implement agent types with a follow rate when runing Barabasi configurations, you are encouraged to try doing so, as well as running simulations with more agent types, more agents, less regions, etc. The more practice you get using ***#k@***, the better skilled you will be at producing your ideal network simulations.
+We have now worked with a few configurations of the *twitter_suggest* follow model. Though we did not implement agent types with a *follow* rate when runing Barabasi configurations, you are encouraged to try doing so, as well as running simulations with more agent types, more agents, less regions, etc. The more practice you get using ***#k@***, the better skilled you will be at producing your ideal network simulations.
 
 Proceed to the next tutorial, where we try using the [*agent* follow model](http://docs.hashkat.org/en/latest/tutorial05/).

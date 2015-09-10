@@ -149,7 +149,7 @@ stage1_unfollow:
   false
 ```
 
-Inputting *true* into *stage1_unfollow* will enable agents to unfollow agents that have a tweet rate double the average tweet rate of all the other agents they are following. Inputting *false* prevents this from happening.
+Inputting *true* into *stage1_unfollow* will enable agents to unfollow agents that have a *tweet* rate double the average *tweet* rate of all the other agents they are following. Inputting *false* prevents this from happening.
 
 #### Unfollow Tweet Rate
 
@@ -158,7 +158,7 @@ unfollow_tweet_rate:
   10
 ```
 
-The *unfollow_tweet_rate* is a value by which, if the number of tweets by an agent exceeds this value, will cause this agent to randomly lose one of its followers. To prevent this from occurring in your network simulation, set this value to a number much greater than the agent tweet rates in the network.
+The *unfollow_tweet_rate* is a value by which, if the number of tweets by an agent exceeds this value, will cause this agent to randomly lose one of its followers. To prevent this from occurring in your network simulation, set this value to a number much greater than the agent *tweet* rates in the network.
 
 #### Use Hashtag Probability
 
@@ -178,7 +178,7 @@ rates:
   add: {function: constant, value: 0.0}
 ```
 
-For a constant *add* rate, the *function* must be identified as *constant* and the number of agents you wish to add per simulated minute must be inputted into *value*. This number can zero or greater. For a linear *add* rate, the add rate must be changed to:
+For a constant *add* rate, the *function* must be identified as *constant* and the number of agents you wish to add per simulated minute must be inputted into *value*. This number can zero or greater. For a linear *add* rate, the *add* rate must be changed to:
 
 ```python
 rates:
@@ -378,7 +378,7 @@ Similar to *tweet_ranks* and *retweet_ranks*, *follow_ranks* serve to categorize
 
 ### **tweet observations**
 
-Through a network simulation, tweets lose relevance over time, to the point where they will no longer be retweeted. This section deals with the decay function for retweet rates.
+Through a network simulation, tweets lose relevance over time, to the point where they will no longer be retweeted. This section deals with the decay function for *retweet* rates.
 
 #### Density Function
 
@@ -386,7 +386,7 @@ Through a network simulation, tweets lose relevance over time, to the point wher
 density_function:
        2.45 / (x)**1.1
 ```
-The *density_function* in which retweet rates decay over time, this function will be integrated and each discrete element of this function will be divided by the total integral. This is done to normalize the function and ensure that it truly is a [probability density function](https://en.wikipedia.org/wiki/Probability_density_function). Agents that can be retweeted are binned according to the values determined by this function. As time progresses, they are moved to bins of smaller values or retweet rates. The discrete elements of this function can be adjusted below.
+The *density_function* in which *retweet* rates decay over time, this function will be integrated and each discrete element of this function will be divided by the total integral. This is done to normalize the function and ensure that it truly is a [probability density function](https://en.wikipedia.org/wiki/Probability_density_function). Agents that can be retweeted are binned according to the values determined by this function. As time progresses, they are moved to bins of smaller values or *retweet* rates. The discrete elements of this function can be adjusted below.
 
 #### x_start
 

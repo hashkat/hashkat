@@ -10,11 +10,11 @@ One of the many factors that influence an agent's decision to unfollow another a
 
 #### Stage 1 Unfollow
 
-If **stage1_unfollow** is implemented into a network simulation, whenever an agent is following another agent, the tweet rate of this newly followed agent will be compared to the average tweet rate of all the other agents that the agent is following. If this tweet rate is greater than double the average tweet rate of all the other agents being followed, then this chatty agent will be unfollowed.
+If **stage1_unfollow** is implemented into a network simulation, whenever an agent is following another agent, the *tweet* rate of this newly followed agent will be compared to the average *tweet* rate of all the other agents that the agent is following. If this *tweet* rate is greater than double the average *tweet* rate of all the other agents being followed, then this chatty agent will be unfollowed.
 
 #### Unfollow Tweet Rate
 
-The **unfollow_tweet_rate** is a number inputted into the *INFILE.yaml* file that causes an agent who has a tweet rate greater than this value to be randomly unfollowed by one of his/her followers.
+The **unfollow_tweet_rate** is a number inputted into the *INFILE.yaml* file that causes an agent who has a *tweet* rate greater than this value to be randomly unfollowed by one of his/her followers.
 
 ### A Network that Implements Unfollowing Due to Chattiness
 
@@ -24,7 +24,7 @@ Let's now create a network simulation that incorporates unfollowing due to chatt
 <iframe width="560" height="315" src="https://www.youtube.com/embed/xcZW05GMVZo" frameborder="0" allowfullscreen></iframe>
 </center>
 
-Using the input file from [**Tutorial 1**](https://github.com/hashkat/hashkat/blob/master/docs/tutorial_input_files/tutorial01/INFILE.yaml) as a starting point, let's first add another agent type into this network. Let's call this agent type *Chatty*, and it'll have the same parameters as the *Standard* agent type, except that the tweet rates for these agents will be 0.01 instead of 0.001.
+Using the input file from [**Tutorial 1**](https://github.com/hashkat/hashkat/blob/master/docs/tutorial_input_files/tutorial01/INFILE.yaml) as a starting point, let's first add another agent type into this network. Let's call this agent type *Chatty*, and it'll have the same parameters as the *Standard* agent type, except that the *tweet* rates for these agents will be 0.01 instead of 0.001.
 
 ```python
 - name: Chatty
@@ -56,7 +56,7 @@ Running a simulation with this new agent type, we can see in the *main_stats.dat
 <img src='../img/tutorial11/main_stats_without_unfollowing.png'>
 </center>
 
-Let's now incorporate unfollowing into this network. We will set *stage1_unfollow* to true and set the *unfollow_tweet_rate* to 0.01. Since half the agents in this network, the *Chatty* agents, have a tweet rate 10x that of the other agents, we should definitely expect unfollows to occur due to the incorporation of *stage1_unfollow*. We should also expect some unfollows to occur due to the *unfollow_tweet_rate* being equal to the *Chatty* agent tweet rate. This is due to the fact that agents have a tweet rate either equal to, or around the value of their assigned tweet rate. Therefore, we can expect some *Chatty* agents to have a tweet rate greater than their assigned tweet rate, and thereby have a tweet rate greater than the *unfollow_tweet_rate*.
+Let's now incorporate unfollowing into this network. We will set *stage1_unfollow* to true and set the *unfollow_tweet_rate* to 0.01. Since half the agents in this network, the *Chatty* agents, have a *tweet* rate 10x that of the other agents, we should definitely expect unfollows to occur due to the incorporation of *stage1_unfollow*. We should also expect some unfollows to occur due to the *unfollow_tweet_rate* being equal to the *Chatty* agent *tweet* rate. This is due to the fact that agents have a *tweet* rate either equal to, or around the value of their assigned *tweet* rate. Therefore, we can expect some *Chatty* agents to have a *tweet* rate greater than their assigned *tweet* rate, and thereby have a *tweet* rate greater than the *unfollow_tweet_rate*.
 
 Running this network simulation with unfollowing implemented, we produced the following data in our *main_stats.dat* file:
 
@@ -64,7 +64,7 @@ Running this network simulation with unfollowing implemented, we produced the fo
 <img src='../img/tutorial11/main_stats_with_unfollowing.png'>
 </center>
 
-As we can see, there are 9863 total follows at the end of this simulation as opposed to the 9943 total follows present at the end of the simulation that didn't incorporate unfollowing. With unfollowing implemented, almost 100 connections were cut in this network. Plotting the in-degree distributions of the *Standard* agents and *Chatty* agents for this network simulation, we can see that the *Chatty* agents generally have slightly less followers than the *Standard* agents, due to them losing followers due to their excessive tweet rate.
+As we can see, there are 9863 total follows at the end of this simulation as opposed to the 9943 total follows present at the end of the simulation that didn't incorporate unfollowing. With unfollowing implemented, almost 100 connections were cut in this network. Plotting the in-degree distributions of the *Standard* agents and *Chatty* agents for this network simulation, we can see that the *Chatty* agents generally have slightly less followers than the *Standard* agents, due to them losing followers due to their excessive *tweet* rate.
 
 <center>
 <img src='../img/tutorial11/agent_type_in-degree_plot.svg'>

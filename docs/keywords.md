@@ -36,7 +36,7 @@ The total number of connections (followers and followings) an agent has in a net
 
 #### cumulative rate function (**R**)
 
-The sum of the agent add rate, tweet rate, follow rate, and retweet rate.
+The sum of the agent *add* rate, *tweet* rate, *follow* rate, and *retweet* rate.
 
 ## D
 
@@ -160,7 +160,7 @@ Details the probability that tweets made by agents of a particular agent type wi
 
 #### **R** (cumulative rate funtion)
 
-The sum of the agent add rate, tweet rate, follow rate, and retweet rate.
+The sum of the agent *add* rate, *tweet* rate, *follow* rate, and *retweet* rate.
 
 #### *random* follow model
 
