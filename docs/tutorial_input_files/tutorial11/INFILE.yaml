@@ -71,7 +71,7 @@ analysis:
   use_random_time_increment: 
     true
   use_followback: 
-    false        # from literature, it makes sense for a realistic system to have followback enabled
+    false       # from literature, it makes sense for a realistic system to have followback enabled
   follow_model: # See notes above
     random
   # model weights ONLY necessary for follow method 'twitter'

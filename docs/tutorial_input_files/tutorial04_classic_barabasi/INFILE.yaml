@@ -71,10 +71,10 @@ analysis:
   use_random_time_increment: 
     true
   use_followback: 
-    false        # from literature, it makes sense for a realistic system to have followback enabled
+    false       # from literature, it makes sense for a realistic system to have followback enabled
   follow_model: # See notes above
     twitter_suggest
-  # model weights ONLY necessary for follow method 'twitter'  
+  # model weights ONLY necessary for follow method 'twitter'
   model_weights: {random: 0.0, twitter_suggest: 0.0, agent: 0.0, preferential_agent: 0.0, hashtag: 0.0}
 
   stage1_unfollow: 
