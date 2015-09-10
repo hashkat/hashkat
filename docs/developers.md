@@ -4,6 +4,14 @@
 
 If you are interested in contributing to ***#k@***, please check out the latest build of ***#k@*** at our github repository [here](https://github.com/hashkat/hashkat). If you wish to make any developments to ***#k@***, feel free to do so, and create a [pull request](https://help.github.com/articles/creating-a-pull-request/), where it will be reviewed and potentially merged in to the **hashkat** repository. We do ask when modifying ***#k@***, please respect the [Google C++ Style Guide](https://google-styleguide.googlecode.com/svn/trunk/cppguide.html).
 
+## The Source Code
+
+The source code for ***#k@*** can be found in the **src** directory in the **hashkat** directory. Within there can be found *DEVELOPERS.md*, a file which briefly details the role of every file and directory in the source code. Four very important files in the source code are summarized below:
+
+<center>
+<img src='../img/developers/main_src_files.jpg'>
+</center>
+
 ## How Does ***#k@*** Work?
 
 The following delivers a brief overview of how ***#k@*** actually works.  
@@ -34,7 +42,7 @@ In the *analyzer_main.cpp* file, if the simulated time is less than the maximum 
 
 Once this is completed, another random number, *r*<sub>2</sub> is generated. If *use_random_time_increment* is enabled, the simulated time moves forward by:
 
-*t* += -ln(*r*<sub>2</sub>) / **R**
+*t* += -log(*r*<sub>2</sub>) / **R**
 
 where **R** is the cumulative rate function, the sum of all the rates.
 
@@ -77,10 +85,6 @@ Just as before, the agent *add* rate will remain the same but the *tweet* rate w
 This cycle will continue until the end of the simulation.
 
 This is how the [**Kinetic Monte Carlo (KMC)**](https://en.wikipedia.org/wiki/Kinetic_Monte_Carlo) method works in ***#k@***. 
-
-## The Source Code
-
-The source code for ***#k@*** can be found in the **src** directory in the **hashkat** directory. Within there can be found *DEVELOPERS.md*, a file which briefly details the role of every file and directory in the source code.
 
 ## Build Tests
 

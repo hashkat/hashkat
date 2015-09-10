@@ -15,7 +15,7 @@ The [Kinetic Monte Carlo (KMC)](https://en.wikipedia.org/wiki/Kinetic_Monte_Carl
 For ***#k@***, we have **R**, the cumulative rate function, which is the sum of the agent (user) *add* rate, *tweet* rate, *follow* rate, and *retweet* rate. It should be noted that the *tweet* rate, *follow* rate, and *retweet* rate are all multiplied by the number of agents in the network. At a simulated time of 0, a random number, *r*<sub>1</sub>, is generated. Depending on this number's value, it will either cause an agent to be added into the network, a random agent to tweet, a random agent to follow another agent, or a random agent to retweet a tweet from another agent. **R** will then change accordingly. If *use_random_time_increment* in *INFILE.yaml* is enabled, another random number *r*<sub>2</sub> will then be generated, and time will move forward by:
 
 <center>
-&Delta;<i>t</i> = -ln(<i>r</i><sub>2</sub>) / <b>R</b>
+&Delta;<i>t</i> = -log(<i>r</i><sub>2</sub>) / <b>R</b>
 </center>
 
 If this is not enabled, time will move forward by:
@@ -39,7 +39,7 @@ In this file, you will see all the different configurations which you can implem
 Each agent will have their own particular characteristics that will be changed and manipulated in the following tutorials. A summary of these characteristics is outlined below:
 
 <center>
-<img src='../img/tutorial01/agent_info.png'>
+<img src='../img/tutorial01/agent_info.jpg'>
 </center>
 
 Run the simulation by typing in the command:

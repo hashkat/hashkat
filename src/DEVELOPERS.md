@@ -72,11 +72,11 @@ Stores all of the information in a network simulation.
 
 ## analyzer_follow.cpp
 
-Deals with how agents connect with each other through the various follow methods in ***#k@***.
+Deals with how agents follow and unfollow each other through the various follow and unfollow methods in ***#k@***.
 
 ## analyzer_main.cpp
 
-The principle file in the source code, it deals with many aspects of running ***#k@*** in the *Analyzer* struct, the main struct within ***#k@***.
+The principle file in the source code, it contains the main KMC loop and prompts agents to be created, to tweet, or to retweet.
 
 ## analyzer_rates.cpp
 
