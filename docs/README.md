@@ -29,3 +29,7 @@ Here contains the write-up, images, and input files used in the #k@ documentatio
 * No mention in the documentation of the network queries from *network.h* that can be inputted to learn certain network information
 
 * the code map image on the developers page needs to be fixed
+
+* key words page mentions interactive mode is under development
+
+* more terms could be added to key words page

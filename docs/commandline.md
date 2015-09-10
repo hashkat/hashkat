@@ -90,7 +90,7 @@ Entering in the following command will make a copy of the directoy **newerdirect
 
 ## Enabling a Text Editor
 
-You can modify the contents of a file using a text editor. There are numerous text editors available for use, but if it's your first time using a text editor, we recommend using the 'nano' text editor, simply because it is one of the more basic text editors and a good one to start out with. You can use 'nano' to edit a file in your current working directory by simply typing in the command **nano** followed by the name of the file you wish to edit. Entering in the following command will allow you to edit the file *newerfile* (assuming you are in the directory that it is currently in):
+You can modify the contents of a file using a text editor. There are numerous text editors available for use, but if it's your first time using a text editor, we recommend using the [nano](http://www.nano-editor.org/) text editor, simply because it is one of the more basic text editors and a good one to start out with. You can use nano to edit a file in your current working directory by simply typing in the command **nano** followed by the name of the file you wish to edit. Entering in the following command will allow you to edit the file *newerfile* (assuming you are in the directory that it is currently in):
 
 `nano newerfile`
 
