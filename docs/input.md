@@ -479,11 +479,9 @@ A region's *add_weight* corresponds to the probability that an agent added to th
         Standard: 1.0
         Celebrity: 1.0
         else: 0.0
-   follow_reaction_prob:
-      0.5
 ```
 
-The *preference classes* detail how agents react to tweets in a network simulation. The four possible types of tweets are *plain* tweets, *musical* tweets, *ideological* tweets, and *humorous* tweets. Under *tweet_transmission* one can dictate the probability that tweets made by a particular agent type will be retweeted based on the content of that tweet, whether it be plain or musical, have a different ideology, have the same ideology, or be humorous. Instead of inserting a particular agent type, one can also input *all* or *else* for any of the *tweet_transmision* rates to dictate the *tweet_transmission* for all the agent types or the rest of the agent types not specified respectively. The *follow_reaction_prob* determines the probability that an agent will follow another agent based on seeing one of their tweets being retweeted as opposed to just retweeting that retweet. With the *follow_reaction_prob* set to 0.5 in the above example, there is a 50% chance that an agent will follow the speaker of an original tweet being retweeted and a 50% chance that they will just retweet the retweet.   
+The *preference classes* detail how agents react to tweets in a network simulation. The four possible types of tweets are *plain* tweets, *musical* tweets, *ideological* tweets, and *humorous* tweets. Under *tweet_transmission* one can dictate the probability that tweets made by a particular agent type will be retweeted based on the content of that tweet, whether it be plain or musical, have a different ideology, have the same ideology, or be humorous. Instead of inserting a particular agent type, one can also input *all* or *else* for any of the *tweet_transmision* rates to dictate the *tweet_transmission* for all the agent types or the rest of the agent types not specified respectively.
 
 **Note**: if you'd like to change the number of *preference classes* in the simulation, make sure this number is less than or equal to the value set for *N_BIN_PREFERENCE_CLASS* in the *config_static.h* file in **src**. You can change the value set for *N_BIN_PREFERENCE_CLASS*, but make sure to then rebuild ***#k@*** by running *build.sh -O* to have these changes take effect.
 

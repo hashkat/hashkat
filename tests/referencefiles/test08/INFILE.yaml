@@ -265,9 +265,6 @@ regions:
 #
 #   Transmission probability functions are automatically converted into the necessary tables
 #   using Python. The strings provided can be any valid Python.
-#
-# follow_reaction_prob:
-# Probability (set from 0 to 1) that an agent would follow rather than retweet an agent.
 #################################################################
 
 preference_classes:
@@ -290,8 +287,6 @@ preference_classes:
         Standard: 0.0
         Celebrity: 0.02
         else: 0.02
-   follow_reaction_prob:
-      0.0
 
  - name: NoRetweetPref
 
@@ -312,8 +307,6 @@ preference_classes:
         Standard: 0
         Celebrity: 0
         else: 0
-   follow_reaction_prob:
-      0.0
 
 #################################################################
 # >> agents: 

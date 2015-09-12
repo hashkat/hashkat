@@ -302,9 +302,6 @@ regions:
 #
 #   Transmission probability functions are automatically converted into the necessary tables
 #   using Python. The strings provided can be any valid Python.
-#
-# follow_reaction_prob:
-# Probability (set from 0 to 1) that an agent would follow rather than retweet an agent.
 #################################################################
 
 preference_classes:
@@ -319,8 +316,6 @@ preference_classes:
         all: 0.2
       humorous:
         all: 0.4
-   follow_reaction_prob:
-      0.3
 
  - name: UKPref
 
@@ -333,8 +328,6 @@ preference_classes:
         all: 0.5
       humorous:
         all: 0.2
-   follow_reaction_prob:
-      0.1
 
  - name: MexicoPref
 
@@ -347,8 +340,6 @@ preference_classes:
         all: 0.3
       humorous:
         all: 0.5
-   follow_reaction_prob:
-      0.8
 
  - name: SpainPref
 
@@ -361,8 +352,6 @@ preference_classes:
         all: 0.6
       humorous:
         all: 0.3
-   follow_reaction_prob:
-      0.5
 
  - name: CanadaPref
 
@@ -375,8 +364,6 @@ preference_classes:
         all: 0.3
       humorous:
         all: 0.6
-   follow_reaction_prob:
-      0.7
 
  - name: VenezuelaPref
 
@@ -389,8 +376,6 @@ preference_classes:
         all: 0.8
       humorous:
         all: 0.4
-   follow_reaction_prob:
-      0.3
 
  - name: FrancePref
 
@@ -403,8 +388,6 @@ preference_classes:
         all: 0.6
       humorous:
         all: 0.2
-   follow_reaction_prob:
-      0.8
 
 #################################################################
 # >> agents: 

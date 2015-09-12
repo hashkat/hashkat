@@ -13,4 +13,3 @@ test09 = retweet_test_with_tweet_transmission_set_to_0.5
 test10 = retweet_test_with_tweet_transmission_set_to_1
 
 test99 = hashtag_simulation_with_varying_pref_classes
-
