@@ -63,7 +63,7 @@ regions:
     language_weights: {English: 100, French: 0, Spanish: 0, French+English: 0}
 ```
 
-### Preference Class - Tweet Transmission
+### Preference Class
 
 *tweet_transmission* is the probability that an agent of a particular agent type will be retweeted based on tweet content. This is defined in the *preference_classes* section of *INFILE.yaml*.
 
@@ -94,18 +94,6 @@ regions:
   - name: Ontario
     
     preference_class_weights: {NoRetweetPref: 100}
-```
-
-### Preference Class - Follow Reaction Probability
-
-The *follow_reaction_probability* is the probability that an agent, after seeing a tweet be retweeted by someone they follow, will follow the speaker of the original tweet as opposed to just retweeting the retweet.
-
-```python
-preference_classes:
- - name: StandardPref
-
-   follow_reaction_prob:
-      0.1
 ```
 
 ### Agent - Add Weight
@@ -248,7 +236,7 @@ For this network simulation, we would like to have the following:
 * agents being located in either *Ontario* or *Quebec*, with the ratio of Ontarians to Quebecers being 3:2
 * Ontarians having a *StandardPref* preference class, with 4 evenly wieghted ideologies and the ratio of English to French speaking Ontarians being 1:1
 * Quebecers having the *NoRetweetPref* preference class, with only 3 ideologies (*Red*, *Blue*, *Green*) evenly weighted, with the ratio of English speaking to French speaking Quebecers being 1:1
-* for the *StandardPref* preference class, the *tweet_transmission* rates for the agent types present in this network are 0.1 for *plain*/*musical* tweets, 0.0 for *different_ideology* tweets, 0.2 for *same_ideology* tweets, and 0.4 for *humorous* tweets, with the *follow_reaction_prob* being 0.3
+* for the *StandardPref* preference class, the *tweet_transmission* rates for the agent types present in this network are 0.1 for *plain*/*musical* tweets, 0.0 for *different_ideology* tweets, 0.2 for *same_ideology* tweets, and 0.4 for *humorous* tweets
 * the *NoRetweetPref* preference class will remain the same, with a value of 0 for all variables
 
 We would also like you to use only the following agent types with their respective characteristics:
