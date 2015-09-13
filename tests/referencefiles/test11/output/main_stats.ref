@@ -1,0 +1,36 @@
+--------------------
+| MAIN NETWORK STATS |
+--------------------
+
+USERS
+_____
+
+Total: 100
+Standard: 100	(100% of total agents)
+
+TWEETS
+_____
+
+Total: 464
+Hashtags: 464	(100% of total tweets)
+Standard: 464	(100% of total tweets)
+
+RETWEETS
+_______
+
+Total: 8432
+Standard: 8432	(100% of total retweets)
+
+FOLLOWS
+_______
+
+Total follows: 940
+Total follow attempts: 994
+Random: 994	(100% of total follow attempts)
+Twitter_Suggest: 0	(0% of total follow attempts)
+Agent: 0	(0% of total follows attempts)
+Preferential_Agent: 0	(0% of total follow attempts)
+Retweet: 0	(0% of total follows attempts)
+Hashtag: 0	(0% of total follows attempts)
+Followbacks: 0	 (0% of total follow attempts)
+Standard: 940	(100% of total follows)

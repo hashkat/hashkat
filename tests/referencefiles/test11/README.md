@@ -1,0 +1,1 @@
+Exact same input file as the one used in *test10* except that this test disables *use_follow_via_retweets*.

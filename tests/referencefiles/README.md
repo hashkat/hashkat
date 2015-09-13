@@ -11,5 +11,6 @@ test07 = twitter_suggest_simulation_with_retweets_changing_agents_nobarabasi
 test08 = retweet_test_with_tweet_transmission_set_to_0
 test09 = retweet_test_with_tweet_transmission_set_to_0.5
 test10 = retweet_test_with_tweet_transmission_set_to_1
+test11 = same as test10 but with following via retweets disabled
 
 test99 = hashtag_simulation_with_varying_pref_classes
