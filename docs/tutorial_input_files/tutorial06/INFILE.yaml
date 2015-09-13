@@ -72,6 +72,8 @@ analysis:
     true
   use_followback: 
     false       # from literature, it makes sense for a realistic system to have followback enabled
+  use_follow_via_retweets:
+    false
   follow_model: # See notes above
     preferential_agent
   # model weights ONLY necessary for follow method 'twitter'

@@ -78,6 +78,8 @@ analysis:
     true
   use_followback: 
     true        # from literature, it makes sense for a realistic system to have followback enabled
+  use_follow_via_retweets:
+    true
   follow_model: # See notes above
     twitter
   # model weights ONLY necessary for follow method 'twitter'  

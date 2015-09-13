@@ -125,6 +125,15 @@ use_followback:
 
 Inputting *true* into *use_followback* will allow agents to follow other agents that follow them, while inputting *false* will prevent this from happening.
 
+#### Use Follow via Retweets
+
+```python
+use_follow_via_retweets:
+  true
+```
+
+
+
 #### Follow Model
 
 ```python
