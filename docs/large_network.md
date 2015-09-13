@@ -39,6 +39,8 @@ As you have surely noticed, all of the networks used and created in these tutori
 #    If true, simulation time will be incremented at a non-constant rate. Increments by 1/sum(rates) on average
 #  use_followback: 
 #    Whether to enable follow-back in the simulation.
+#  use_follow_via_retweets:
+#    Whether to enable following via retweets in the simulation.
 #  follow_model: 
 #    Accepted models: 'random', 'twitter_suggest', 'agent', 'preferential_agent', 'hashtag', 'twitter'
 #  model_weights:
