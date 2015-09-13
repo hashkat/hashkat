@@ -405,17 +405,19 @@ struct Analyzer {
 
 		PreferenceClass& obs_pref_class = config.pref_classes[e_observer.preference_class];
 
-		if (choice.generation > 0) {
-		    // Not first-generation tweet? Attempt follow.
-		    // Note this is not attempted for first-generation tweets because the observer
-		    // would necessarily be in the authors follower set already.
-            double val = preferential_weight(state);
-            if (rng.random_chance(val)) {
-                // Return success of follow:
-                RECORD_STAT(state, e_observer.agent_type, n_retweet_follows);
-                return analyzer_handle_follow(state, choice.id_observer, choice.id_author, N_FOLLOW_MODELS + 2);
-            }
-		}
+        if (config.use_follow_via_retweets) {
+    		if (choice.generation > 0) {
+    		    // Not first-generation tweet? Attempt follow.
+    		    // Note this is not attempted for first-generation tweets because the observer
+    		    // would necessarily be in the authors follower set already.
+                double val = preferential_weight(state);
+                if (rng.random_chance(val)) {
+                    // Return success of follow:
+                    RECORD_STAT(state, e_observer.agent_type, n_retweet_follows);
+                    return analyzer_handle_follow(state, choice.id_observer, choice.id_author, N_FOLLOW_MODELS + 2);
+                }
+    		}
+        }
 
 		generate_tweet(choice.id_observer, choice.id_link, choice.generation, *choice.content);
 

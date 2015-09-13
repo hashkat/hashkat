@@ -84,7 +84,6 @@ static vector<PreferenceClass> parse_preference_classes(const Node& node) {
     for (int i = 0; i < pref_classes.size(); i++) {
         PreferenceClass pref_class;
         parse(pref_classes[i], "name", pref_class.name);
-        parse(pref_classes[i], "follow_reaction_prob", pref_class.follow_reaction_prob);
         ret.push_back(pref_class);
     }
     return ret;
@@ -177,6 +176,7 @@ static void parse_analysis_configuration(ParsedConfig& config, const Node& node)
     parse(node, "barabasi_connections", config.barabasi_connections);
     parse(node, "barabasi_exponent", config.barabasi_exponent);
     parse(node, "use_followback", config.use_followback);
+    parse(node, "use_follow_via_retweets", config.use_follow_via_retweets);
     parse(node, "use_random_time_increment", config.use_random_time_increment);
     parse(node, "enable_interactive_mode", config.enable_interactive_mode);
     parse(node, "enable_lua_hooks", config.enable_lua_hooks);

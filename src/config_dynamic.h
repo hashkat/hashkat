@@ -43,7 +43,6 @@ enum FollowModel {
 struct PreferenceClass {
     std::string name;
     // Probability that a tweet reaction results in a follow, rather than a retweet:
-    double follow_reaction_prob;
 };
 
 // Also referred to as the Omega function, see INFILE.yaml for details:
@@ -87,6 +86,7 @@ struct ParsedConfig {
     bool use_random_time_increment = false;
     bool use_preferential_follow = false;
     bool use_followback = false;
+    bool use_follow_via_retweets = false;
     bool use_barabasi = false;
     bool region_connection_matrix = false;
     
