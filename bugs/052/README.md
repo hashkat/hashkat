@@ -1,0 +1,1 @@
+This input file runs the first simulation discussed in issue #52 on https://github.com/hashkat/hashkat/issues, where 0 retweets occur when there are only agents in Quebec with a StandardPref in the network, around 50% of which speak English and around 50% of which speak French. Simple changes to this input file can be made to run the other simulations discussed under this issue.
