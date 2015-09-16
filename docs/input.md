@@ -132,7 +132,7 @@ use_follow_via_retweets:
   true
 ```
 
-
+Inputting *true* into *use_follow_via_retweets* allows an agent to follow another agent based on seeing one of their tweets being retweeted. The probability that they will follow this agent is directly proporitonal to how popular he/she is.
 
 #### Follow Model
 
