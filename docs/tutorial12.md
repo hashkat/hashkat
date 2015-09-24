@@ -228,7 +228,7 @@ For this network simulation, we would like to have the following:
 * a constant number of 100 agents
 * a maximum simulation time of 1000 simulated minutes
 * a maximum real time of 10 minutes
-* followback implemented
+* 'followback' and 'following via retweets' implemented
 * the *twitter* follow model implemented, with the *twitter_suggest* and the *hashtag* follow model evenly weighted and the other follow models being excluded from this simulation
 * No unfollowing allowed
 * Hashtag present in tweets 50% of the time

@@ -18,13 +18,13 @@ All the files that will be used in this simulation can be found for reference in
 <img src='../img/tutorial09_with_other_follow/following_via_retweets.png'>
 </center>
 
-The likelihood of this occurring is dependent on the value of the *follow_reaction_prob* variable in the *preference_classes* section of the input file. The *follow_reaction_prob* variable determines the probability that an agent, if they are selected to act on a retweet, will follow the tweeter of the original tweet as opposed to just retweeting the retweet. For example, if this value was set 0.8, everytime an agent was selected to act on a retweet, there would be an 80% chance that they would follow the original tweeter, and a 20% chance that they would just retweet the retweet.
+'Following via retweets' can be implemented into a network simulation by setting *use_follow_via_retweets* to *true*. This will cause an agent who retweets a tweet to follow the tweeter (assuming they aren't already following them) based on how popular the tweeter is. A tweeter with a high cumulative-degree has a much greater chance of being followed via this method than an agent with a low cumulative-degree.
 
 ## Constructing a Network Without These Other Follow Methods
 
 We shall now create a network simulation that does not use these follow methods. The input file we will be creating can be found in the **docs/tutorial_input_files** directory in **hashkat** in the **tutorial09_without_other_follow** directory and [here](https://github.com/hashkat/hashkat/blob/master/docs/tutorial_input_files/tutorial09_without_other_follow/INFILE.yaml).
 
-We have created plenty of network simulations that do not implement these other follow methods in the previous tutorials, so we will use the *INFILE.yaml* we created in [**Tutorial 4**](http://docs.hashkat.org/en/latest/tutorial04/) for the a *twitter_suggest* follow model that does not use the Barabasi Configuration as a starting point. This input file can be found [here](https://github.com/hashkat/hashkat/blob/master/docs/tutorial_input_files/tutorial04_other/INFILE.yaml). Some slight changes will be made to this input file. The *Ontario* region preference class will be changed to the *StandardPref* to enable retweeting in the simulation, with the *StandardPref* preference class being changed as well. The *tweet_transmission* for *Standard* agents will be changed to 0.1 for *plain* and *same_ideology* tweets and 0.2 for *humorous* tweets, so we can expect around 10% of the *plain* and *same_ideology* tweets to be retweeted and around 20% of the *humorous* tweets to be retweeted. The *tweet_transmission* does not matter for the *Celebrity* or any other agent type (labelled as *else*) since there are no other agent types that will be present in this simulation. The *follow_reaction_prob* within the *StandardPref* preference class will also be reduced to 0.0 to prevent following via retweets to occur. With all these changes in order, we can now run and visualize this network simulation.
+We have created plenty of network simulations that do not implement these other follow methods in the previous tutorials, so we will use the *INFILE.yaml* we created in [**Tutorial 4**](http://docs.hashkat.org/en/latest/tutorial04/) for the a *twitter_suggest* follow model that does not use the Barabasi Configuration as a starting point. This input file can be found [here](https://github.com/hashkat/hashkat/blob/master/docs/tutorial_input_files/tutorial04_other/INFILE.yaml). Some slight changes will be made to this input file. The *Ontario* region preference class will be changed to the *StandardPref* to enable retweeting in the simulation, with the *StandardPref* preference class being changed as well. The *tweet_transmission* for *Standard* agents will be changed to 0.1 for *plain* and *same_ideology* tweets and 0.2 for *humorous* tweets, so we can expect around 10% of the *plain* and *same_ideology* tweets to be retweeted and around 20% of the *humorous* tweets to be retweeted. The *tweet_transmission* does not matter for the *Celebrity* or any other agent type (labelled as *else*) since there are no other agent types that will be present in this simulation.
 
 ```python
 preference_classes:
@@ -47,8 +47,6 @@ preference_classes:
         Standard: 0.2
         Celebrity: 0.02
         else: 0.02
-   follow_reaction_prob:
-      0.0
 ```
 
 ## Running and Visualizing This Network Lacking These Other Follow Methods
@@ -61,23 +59,15 @@ Running this network simulation and visualizing it, we produced the following:
 
 ## Constructing a Network With These Other Follow Methods
 
-We shall now implement the other follow methods into a network simulation. Using the [INFILE.yaml](https://github.com/hashkat/hashkat/blob/master/docs/tutorial_input_files/tutorial09_without_other_follow/INFILE.yaml) we just created as a starting point, we will change the *follow_reaction_prob* to 0.2 to enable following via retweets to occur, and have *use_followback* switched to *true* and the *Standard* agent type *followback_probability* changed to 0.44, to permit followback to occur in the network simulation at a rate that matches what was found through experiment. With these follow methods now permitted to occur, we shall run and visualize this network simulation and see what we find.
+We shall now implement the other follow methods into a network simulation. Using the [INFILE.yaml](https://github.com/hashkat/hashkat/blob/master/docs/tutorial_input_files/tutorial09_without_other_follow/INFILE.yaml) we just created as a starting point, we will have *use_followback* switched to *true* and the *Standard* agent type *followback_probability* changed to 0.44, to permit followback to occur in the network simulation at a rate that matches what was found through experiment. We will also switch *use_follow_via_retweets* to *true* to enable 'following via retweets'. With these follow methods now permitted to occur, we shall run and visualize this network simulation and see what we find.
 
 The *INFILE.yaml* file created for this simulation can be found in the **docs/tutorial_input_files** directory in **hashkat** in the **tutorial09_with_other_follow** directory as well as [here](https://github.com/hashkat/hashkat/blob/master/docs/tutorial_input_files/tutorial09_with_other_follow/INFILE.yaml).
 
 ```python
-follow_reaction_prob:
-   0.2
-```
-
-```python
 use_followback: 
   true        # from literature, it makes sense for a realistic system to have followback enabled
-```
-
-```python
-# Probability that following this agent results in a follow-back
-followback_probability: 0.44
+use_follow_via_retweets:
+  true
 ```
 
 ## Running and Visualizing This Network With These Other Follow Methods
@@ -90,7 +80,7 @@ Running this network simulation we produced the following visualization:
 
 ## Compare and Contrast
 
-Looking through our output files for these two simulations, it is quite clear that implementing these other follow methods resulted in a definite increase in the number of follows that occurred in this network simulation. However, it would be very hard to draw that conclusion just from looking at the network visualizations we produced. Looking at the above visualizations, it is hard to see much difference between the two networks, though the second network has a great deal more edges within it. This is due to most of the additional follows occurring in this network being 'followbacks'. When an agent follows another agent back, there is already an established connection between them, therefore, in the visualization there seems to be no additional edges being made between nodes in the network. The only way in which one can really see the effects of implementing *followback* into their network visualization is to look at the edges much more closely, where one can see that there are actually arrowheads on the edges between nodes. This is because these visualizations have all been directed graphs, where the arrowhead on an edge between nodes points to the node being followed.
+Looking through our output files for these two simulations, it is quite clear that implementing these other follow methods resulted in a substantial increase in the number of follows that occurred in this network simulation. However, it would be hard to draw that conclusion just from looking at the network visualizations we produced. Looking at the above visualizations, it is hard to see much difference between the two networks, though the second network has a great deal more edges within it. This is due to most of the additional follows occurring in this network being 'followbacks'. When an agent follows another agent back, there is already an established connection between them, therefore, in the visualization there seems to be no additional edges being made between nodes in the network. The only way in which one can really see the effects of implementing *followback* into their network visualization is to look at the edges much more closely, where one can see that there are actually arrowheads on the edges between nodes. This is because these visualizations have all been directed graphs, where the arrowhead on an edge between nodes points to the node being followed.
 
 In these network visualizations we've been creating, there are two different types of edges that can occur. They are a:
 
@@ -114,7 +104,7 @@ We can also see that implementing the other follow methods into our simulation r
 <img src='../img/tutorial09_with_other_follow/retweets_distro.svg'>
 </center>
 
-As we can see, much more agents in the network without the other follow methods make 5 or less retweets, while in the network with these follow methods, agents with up to 25 retweets are present. It is quite clear that more follows leads to much more retweets.
+As we can see, much more agents in the network without the other follow methods make 5 or less retweets, while in the network with these follow methods, agents with up to almost 30 retweets are present. It is quite clear that more follows leads to much more retweets.
 
 You can plot this graph by running the simulation in the **docs/tutorial_input_files/tutorial09_without_other_follow** directory and then running the simulation in the **docs/tutorial_input_files/tutorial09_with_other_follow** directory within their respective directories. Then going up into the **docs/tutorial_input_files** directory, type in the following commands to plot this graph in Gnuplot:
 
@@ -126,7 +116,7 @@ You can plot this graph by running the simulation in the **docs/tutorial_input_f
 
 `set title 'Retweet Distribution'`
 
-`set xlabel 'Number of Reweets'`
+`set xlabel 'Number of Retweets'`
 
 `set ylabel 'Normalized Probability of Agents with that Many Tweets'`
 
