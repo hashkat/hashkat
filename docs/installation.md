@@ -2,9 +2,9 @@
 
 # Installation
 
-The ***#k@*** project is compatible with both Mac OS X and Linux.
+The **#k@** project is compatible with both Mac OS X and Linux.
 
-We will go over the steps to install ***#k@*** for each particular operating system below.
+We will go over the steps to install **#k@** for each particular operating system below.
 
 ## Mac OS X
 
@@ -12,9 +12,11 @@ We will go over the steps to install ***#k@*** for each particular operating sys
 <iframe width="560" height="315" src="https://www.youtube.com/embed/UrqxCDf0NxY" frameborder="0" allowfullscreen></iframe>
 </center>
 
-Here outlines the following steps on how to install ***#k@*** on Mac OS X:
+
+Here outlines the following steps on how to install **#k@** on Mac OS X:
 
 1. Download the latest build of ***#k@*** at [hashkat.org](http://hashkat.org) by clicking on 'Latest Build'.
+
 1. Enter a terminal (which can be accessed by searching for 'terminal' in your system) and go into your **Downloads** directory/folder by typing in the following command and pressing **return**:
 
     `cd Downloads/`
@@ -49,23 +51,25 @@ Here outlines the following steps on how to install ***#k@*** on Mac OS X:
 
     `cd hashkat/`
 
-1. Once in this directory, you can see the list of all the files and directories that compose the ***#k@*** project by again typing in the command:
+1. Once in this directory, you can see the list of all the files and directories that compose the **#k@** project by again typing in the command:
 
     `ls`
 
-1. You will need to install the [CMake](http://www.cmake.org/) package on to your computer to build ***#k@***. You can install this package to your computer using [Homebrew](http://brew.sh/). To install Homebrew to your computer, simply type in the command:
+1. You will need to install the [CMake](http://www.cmake.org/) package on to your computer to build **#k@**. You can install this package to your computer using [Homebrew](http://brew.sh/). To install Homebrew to your computer, simply type in the command:
 
     `ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"`
 
     A prompt may appear asking you if you'd like to install the 'command line developer tools'. Click 'Install' and agree to the licensing agreement to install these tools. Once these tools have been installed, you can continue installing Homebrew by pressing **return**.
 
-1. With Homebrew installed, you an install the CMake package by typing in the command:
+1. With **Homebrew** installed, you an install the **CMake** package by typing in the command:
 
     `brew install cmake`
 
-1. You must now do a build of ***#k@*** on your computer by typing in the command:
+1. You must now do a build of **#k@** on your computer by typing in the command:
 
-    `./build.sh -O`
+    `./build.sh -O`  
+
+   **build.sh** is followed by 'space dash capital oh'.
 
 1. You can now run ***#k@*** in this **hashkat** directory as long as it has *INFILE.yaml* and *run.sh* within in it by typing in the command:
 
@@ -81,13 +85,15 @@ Here outlines the following steps on how to install ***#k@*** on Mac OS X:
 
     `rm -r output/`
 
-1. [Gnuplot](http://gnuplot.sourceforge.net/) is the primary graphing utility used in this documentation. To install Gnuplot, type in the command:
+1. [Gnuplot](http://gnuplot.sourceforge.net/) is the primary graphing utility used in this documentation. To install **Gnuplot**, type in the command:
 
     `brew install gnuplot -x11`
 
+   **gnuplot** is followed by 'space dash ex one one'
+
 1. It is also recommended to download and install [Gephi](http://gephi.github.io/) from their website to use for visualizations of collected data.
 
-With ***#k@*** installed on your computer, please proceed to the following pages in the documentation to learn how to fully utilize this program.
+With **#k@** installed on your computer, please proceed to the following pages in the documentation to learn how to fully utilize this program.
 
 ## Linux
 
@@ -95,9 +101,10 @@ With ***#k@*** installed on your computer, please proceed to the following pages
 <iframe width="560" height="315" src="https://www.youtube.com/embed/xuQIqFKXI9w" frameborder="0" allowfullscreen></iframe>
 </center>
 
-Here outlines the following steps on how to install ***#k@*** on Linux (these instructions assume you are using a Debian-based distribution such as Ubuntu, Linux Mint, or Debian):
+Here outlines the following steps on how to install **#k@** on Linux (these instructions assume you are using a Debian-based distribution such as Ubuntu, Linux Mint, or Debian):
 
-1. Download the latest build of ***#k@*** at [hashkat.org](http://hashkat.org) by clicking on 'Latest Build' and then clicking 'Save File' and then 'OK' on the prompt that appears.
+1. Download the latest build of **#k@** at [hashkat.org](http://hashkat.org) by clicking on 'Latest Build' and then clicking 'Save File' and then 'OK' on the prompt that appears.
+
 1. Enter a terminal (which can be accessed by searching for 'terminal' in your system) and go into your **Downloads** directory/folder by typing in the following command and pressing **Enter**:
 
     `cd Downloads`
@@ -132,7 +139,7 @@ Here outlines the following steps on how to install ***#k@*** on Linux (these in
 
     `cd hashkat`
 
-1. Once in this directory, you can see the list of all the files and directories that compose the ***#k@*** project by again typing in the command:
+1. Once in this directory, you can see the list of all the files and directories that compose the **#k@** project by again typing in the command:
 
     `ls`
 
@@ -142,15 +149,19 @@ Here outlines the following steps on how to install ***#k@*** on Linux (these in
 
     `sudo apt-get install build-essential -y`
 
-1. You must now do a build of ***#k@*** on your computer by typing in the command:
+    if asked for sudo permission, enter your Linux password.
+
+1. You must now do a build of **#k@** on your computer by typing in the command:
 
     `./build.sh -O`
 
-1. You can now run ***#k@*** in this **hashkat** directory as long as it has *INFILE.yaml* and *run.sh* within in it by typing in the command:
+   **build.sh** is followed by 'space dash capital oh'.
+
+1. You can now run **#k@** in this **hashkat** directory as long as it has **INFILE.yaml** and **run.sh** within in it by typing in the command:
 
     `./run.sh`
 
-1. Once you have run ***#k@*** properly, remove all the network save and analysis files created from this test simulation by typing in the following commands:
+1. Once you have run **#k@** properly, remove all the network save and analysis files created from this test simulation by typing in the following commands:
 
     `rm DATA_vs_TIME`
 
@@ -160,17 +171,19 @@ Here outlines the following steps on how to install ***#k@*** on Linux (these in
 
     `rm -r output`
 
-1. [Gnuplot](http://gnuplot.sourceforge.net/) is the primary graphing utility used in this documentation. To install Gnuplot, type in the command:
+1. [Gnuplot](http://gnuplot.sourceforge.net/) is the primary graphing utility used in this documentation. To install **Gnuplot**, type in the command:
 
     `sudo apt-get install gnuplot-x11`
 
+    **gnuplot** is followed by 'dash ex one one' with no space.
+
 1. It is also recommended to download and install [Gephi](http://gephi.github.io/) from their website to use for visualizations of collected data.
 
-With ***#k@*** installed on your computer, please proceed to the following pages in the documentation to learn how to fully utilize this program.
+With **#k@** installed on your computer, please proceed to the following pages to learn how to fully utilize this program.
 
 ## Supplementary Tools
 
-This is not necessary for the running of ***#k@***, but you can use the C++ compiler 'Clang' if you're having issues with the 'g++' compiler by doing the following:
+This is not necessary for the running of **#k@**, but you can use the C++ compiler **Clang** if you're having issues with the 'g++' compiler by doing the following:
 
 1. For Mac OS X, input the command:
 
@@ -186,4 +199,4 @@ This is not necessary for the running of ***#k@***, but you can use the C++ comp
 
     `export CXX=clang++`
 
-You can now use 'Clang' as a C++ compiler when using ***#k@***.
+You can now use **Clang** as a C++ compiler when using **#k@**.

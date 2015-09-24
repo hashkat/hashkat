@@ -2,100 +2,143 @@
 
 # Using the Command Line
 
-A computer terminal allows a user to enter data into and display data out of a computer. The command line is where a user can issue commands into the computer from the terminal. Your computer terminal can be accessed very simply by searching for 'terminal' in you Mac OS X or Linux system.
+A computer terminal allows the user to enter data into and display data out of a computer. The command line is where a user can issue commands into the computer from the terminal. Your computer terminal can be accessed very simply by searching for 'terminal' in your Mac OS X or Linux system.  The commands typed into 'terminal' are case sensitive.
 
-Using the command line within your computer terminal is required extensively when using the ***#k@*** program. If this is your first time using the computer terminal, have no fear! Here we will discuss several fundamental commands that may be necessary for you to use in the ***#k@*** program, and that are also essential to know when working a computer terminal:
+Using the command line within the computer terminal is required extensively when using the **#k@** program. If this is your first time using the computer terminal, have no fear! Here we will discuss several fundamental commands that may be necessary for you to use in the **#k@** program, and that are also essential to know when working in a computer terminal.
 
-## Print Working Directory
+### Path
 
-To display to the screen the path of the working directory/folder you are currently in, enter in the following command:
+A terminal used a hierarchical structure, starting at the **home** directory and branching 'downward'.  The path is the file's address within the system.  
+
+Let us assume the **home** directory contains two directories (or folders), **directory_A** and **directory_B**, and each directory has a sub-directory, **sub_directory_A** and **sub_directory_B**, and each sub-directory has one file in it, called **file_A** and **file_B**. 
+Then the path of **file_B** is:
+
+`~/directory_B/sub_directory_B/file_B`
+
+### Home symbol (~)
+
+Note that **~** is the symbol for the **home** directory.
+
+### Print Working Directory
+
+To display to the screen the path of the directory you are currently working in, enter the following command:
 
 `pwd`
 
-## List of Files and Directories
+### List of Files and Directories
 
-To output to the screen the list of files and directories within the directory you are currently in, simply enter into the command line:
+To output to the screen a list of files and directories within the current working directory, simply enter the command:
 
 `ls`
 
-## Create a File
+### Change Directory
 
-You can create a file using the command **touch**. Entering in the following command will create the file *newfile*:
-
-`touch newfile`
-
-## Make a Directory
-
-You can create a directory using the **mkdir** command. Entering in the following command will create the directory **newdirectory**:
-
-`mkdir newdirectory`
-
-## Change Directory
-
-You can change in to a different directory using the **cd** command. Simply typing in **cd** will move you into the 'home' diectory, while typing in **cd ..** will have you move up one directory. You can change into a specific directory by typing in **cd** in conjunction with the directory's name, though this directory must be present within the directory that you are currently in. Typing in the following will move you into the **newdirectory** directory you just created above (assuming you are in your 'home' directory):
-
-`cd newdirectory`
-
-Typing the following will move you back into your 'home' directory:
+One navigates to a different directory using the **cd** command. Typing the following will move you to the 'home' directory:
 
 `cd`
 
-## Remove a File
+To open a directory one level down from the directory you are in, type **cd directory_name**. 
 
-You can remove a file from the directory you are currently in using the **rm** command. Entering in the following command will remove the file you created above *newfile*:
+Typing the following will move you into **directory_A** from the **home** directory:
 
-`rm newfile`
+`cd directory_A`
 
-## Remove a Directory
+Typing the following will move you to the directory one level up:
 
-You can remove a directory and all its contents from the directory you are currently in using the **rm -r** command. Entering in the following command will remove the directory **newdirectory**:
+`cd..`
 
-`rm -r newdirectory`
+If you wish to navigate to a directory not in your current path (i.e. from **sub_directory_B** to **sub_directory_A**) type the path:
 
-## Move
+`cd ~/directory_A/sub_directory_A`
 
-You can move a file or folder using the **mv** command. When moving a file or folder, you must type in its current location in your computer followed by the location where you would like to move it.
+### Create a File
 
-Let's try it out! Create a directory called **newerdirectory** and within this directory create the file *newerfile* by typing in the following:
+You can create a file using the command **touch**. Entering the following command will create the file **new_file**:
 
-`mkdir newerdirectory`
+`touch new_file`
 
-`cd newerdirectory`
+### Create a Directory
 
-`touch newerfile`
+A directory is created using the **mkdir** command. Entering the following command will create a new directory **directory_C**:
 
-Once you have done this, enter in the following command to move the file *newerfile* from your **newerdirectory** directory into your 'home' directory:
+`mkdir directory_C`
 
-`mv ~/newerdirectory/newerfile ~/`
+### Remove a File
 
-Note that '~' symbolizes your 'home' directory.
+One removes a file from the current working directory using the **rm** command. 
 
-## Copy a File
+`rm unwanted_file`
 
-You can copy a file using the **cp** command, where you must enter in the file's current location as well as the location in which you would like its copy to be located in. Entering in the following command will make a copy of the file you created above, *newerfile*, found in the 'home' directory and place a copy of it in the **newerdirectory** directory you created above:
+### Remove a Directory
 
-`cp ~/newerfile ~/newerdirectory/`
+One removes a directory and all its contents with the **rm -r** command. The following command will remove the directory **unwanted_directory**:
 
-## Copy a Directory
+`rm -r unwanted_directory`
 
-You can copy a directory using the **cp -r** command in much the same way you copied a file.
+### Move
 
-Create the directory **copies** by entering the command:
+One may move a file with the **mv** command.  To move a directory use the **mv -r** command.  The command is **mv present_location new_location**.  The two locations are separated by a 'space'. In the end, the file will be in the new location and NOT in the former location.
 
-`mkdir copies`
+Let's try it out!
 
-Entering in the following command will make a copy of the directoy **newerdirectory** found in the 'home' directory and place it in the **copies** directory:
+Using **directory_C** in the **home** directory, let's create **file_C** in **directory_C** then move it to **sub_directory_A**:
 
-`cp -r ~/newerdirectory/ ~/copies/`
+`cd`
 
-## Enabling a Text Editor
+`cd directory_C`
 
-You can modify the contents of a file using a text editor. There are numerous text editors available for use, but if it's your first time using a text editor, we recommend using the [nano](http://www.nano-editor.org/) text editor, simply because it is one of the more basic text editors and a good one to start out with. You can use nano to edit a file in your current working directory by simply typing in the command **nano** followed by the name of the file you wish to edit. Entering in the following command will allow you to edit the file *newerfile* (assuming you are in the directory that it is currently in):
+`touch file_C`
 
-`nano newerfile`
+`mv ~/directory_C/file_C ~/directory_A/sub_directory_A/`
 
-## Tips
+To see if you have been successful, you may go to the old and new directories and list their contents. 
 
-To save time when using the command line, you can press **tab** to finish the name of a file or directory you are typing out and the **up** and **down** directional arrows to see and use previous commands that you have entered into the command line.
+### Copy a File
+
+A file is copied using the **cp** command.  As with **move**, to **copy** you enter the file's current location followed by the desired location. Let's copy **file_B** into **sub_directory_A**.  In the end the file copied will be in BOTH locations:
+
+`cp ~/directory_B/sub_directory_B/file_B  ~/directory_A/sub_directory_A/`
+
+### Copy a Directory
+
+A directory is copied using the **cp -r** command in the same way one copies a file.  
+
+`cp -r ~/directory_C/ ~/directory_B/`
+
+### Open a .tar File
+
+To open a **tar** file in Mac OS X, type the command:
+
+`tar -xf filename.tar`
+
+To open a **tar** file in a Linux system, type the command:
+
+`tar xzvf filename.tar.gz`
+
+### Install a file
+
+For Mac OS X we recommend installing [Homebrew](http://brew.sh/) to install programs. Once **Homebrew** is installed, the command is:
+
+`brew install filename`
+
+For debian Linux machines such as Ubuntu, files may be installed by typing:
+
+`sudo apt-get install filename`
+
+### Sudo
+
+**sudo** is a Linux command that tells the terminal to make a change that requires administrator approval. In most cases, you (the user) are the administrator. The terminal will prompt you for your **sudo** password if required. Enter it and proceed.  
+
+### Enabling a Text Editor
+
+One may modify the contents of a file using a text editor. There are numerous text editors available for use, but if it's your first time using a text editor, we recommend using the [nano](http://www.nano-editor.org/) text editor, simply because it is one of the more basic text editors. You can use **nano** to edit a file in your current working directory by simply typing in the command **nano** followed by the name of the file you wish to edit.  
+
+Entering in the following command will allow you to edit **file_A** (assuming you are in the directory where **file_A** is located):
+
+`nano file_A`
+
+### Tips
+
+To save time when using the command line, press **tab** to finish the name you are typing, or use the **up** or **down** directional arrows to use previous commands into the command line.
 
 You can find more information on using the command line [here](http://cli.learncodethehardway.org/book/).
