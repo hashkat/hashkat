@@ -222,24 +222,28 @@ save_file: network_state.dat```
 
 Determines the name of the file where the simulated data will be saved to.
 
+
 #### Stdout Basic
 
 ```python 
-stdout_basic: true```
+stdout_basic: true
+```
 
 If 'true', when a network simulation is stopped or completed, a message will print to the screen.  If the simulation ends, the message will state why the simulation ended, that analysis files are being created, and that analysis can be aborted by pressing **Ctrl-c** multiple times.  If the analysis files have been created, the message will state the analysis is complete.
 
 #### Stdout Summary
 
 ```python 
-stdout_summary:  true```
+stdout_summary:  true
+```
 
 If 'true', the length of simulated time (in simulated minutes), the number of agents, 'follows', 'tweets', 'retweets', and 'unfollows', the cumulative rate function **R**, and the real time elapsed in seconds during the simulation will be displayed on the screen **throughout** the simulation's run. This information is updated at a rate determined by the **summary_output_rate** described below.
 
 #### Summary Output Rate
 
 ```python 
-summary_output_rate:   100```
+summary_output_rate:   100 
+```
 
 This defines how often the **stdout_summary** information will be updated on screen during a simulation.  The value is based on the loops in the **KMC**. In this case, we can see that information will update every hundred loops or steps.
 
