@@ -2,7 +2,13 @@
 
 # Large Network
 
-As you have surely noticed, all of the networks used and created in these tutorials are all relatively small networks. This was of course done to have the network simulations created in tutorial run as quickly as possible. If you would like to run simulations with much larger networks, we've included a template of one such network below that uses over 128 GB of RAM (this input file can also be found in the **docs/tutorial_input_files** directory in **hashkat** in the directory **large_network**):
+The networks used and created in these tutorials are all relatively small networks. 
+
+If you would like to run simulations with much larger networks, we've included a template of one such network below.
+
+This sample large network uses over 128 GB of RAM.  
+
+This input file can be found in the **docs/tutorial_input_files** directory in **hashkat** in the directory **large_network**):
 
 ```python
 #################################################################

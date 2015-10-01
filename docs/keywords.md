@@ -6,212 +6,220 @@ Serves as a reference for some of the key terms used in this documentation.
 
 ## A
 
-#### agent
+#### Agent
 
-Corresponds to a member of a social network.
+Corresponds to a member of a social network.  In [graph theory](https://en.wikipedia.org/wiki/Graph_theory) an agent is a 'node'.
 
-#### *agent* follow model
+#### Agent Follow Model
 
-Follow model where agents follow other agents based on their agent type. More information on this follow model can be found [here](http://docs.hashkat.org/en/latest/tutorial05/).
+Follow model in which agents follow other agents based on their agent type. More information on this follow model can be found [here](http://docs.hashkat.org/en/latest/tutorial05/).
 
 ## B
 
 #### Barabasi-Albert Model
 
-An algorithm created by Albert-Laszlo Barabasi and Reka Albert to generate networks where agents with the greater number of followers have a higher probability of being followed. More information on this can be found [here](http://en.wikipedia.org/wiki/Barab%C3%A1si%E2%80%93Albert_model).
+An algorithm created by [Albert-Laszlo Barabasi and Reka Albert](http://en.wikipedia.org/wiki/Barab%C3%A1si%E2%80%93Albert_model) to generate networks where agents with a greater number of followers have a higher probability of being followed. 
 
 #### Barabasi Configuration
 
-Network where all agents follow a set number of agents. In the Classic Barabasi configuration, every agent follows only one other agent. In the Non-Classic Barabasi configuration, this number is greater than one.
+Network where all agents follow a set number of agents. In the **Classic Barabasi** configuration, every agent follows only one other agent. In the **Non-Classic Barabasi** configuration, an agent may follow more than one other agent.
 
 ## C
 
-#### command line
+#### Command Line
 
-A place where a user can issue commands into the computer from a terminal.
+A place where a user can enter commands into the computer from a terminal.
 
-#### cumulative-degree
+#### Cumulative-Degree
 
-The total number of connections (followers and followings) an agent has in a network. The sum of an agent's in-degree and out-degree.
+The total number of connections (followers and followings) an agent has in a network. The sum of an agent's **in-degree** and **out-degree** connections.
 
-#### cumulative rate function (**R**)
+#### Cumulative rate function (**R**)
 
-The sum of the agent *add* rate, *tweet* rate, *follow* rate, and *retweet* rate.
+The sum of the agent's rates.  **R** = **add** + **tweet** + **follow** + **retweet** rates.
 
 ## D
 
 ## E
 
-#### edge
+#### Edge
 
-Corresponds to a connection between agents in a network.
+Term in [graph theory](https://en.wikipedia.org/wiki/Graph_theory) that corresponds to a connection between two agents, or a 'follow' in **#k@**.
 
 #### Erdos-Renyi Model
 
-A model developed by Paul Erdos and Alfred Renyi to generate random graphs. More information on thie model can be found [here](https://en.wikipedia.org/wiki/Erd%C5%91s%E2%80%93R%C3%A9nyi_model).
+A model developed by [Paul Erdos and Alfred Renyi](https://en.wikipedia.org/wiki/Erd%C5%91s%E2%80%93R%C3%A9nyi_model). 
 
 ## F
 
-#### follow
+#### Follow
 
-The act of an agent connecting with another agent.
+The act of an agent (A) connecting with another agent (B) such that A receives the transmissions of B.  In [graph theory](https://en.wikipedia.org/wiki/Graph_theory) a follow creates a uni-directional 'edge' between the two agents ('nodes').
+ 
+#### Follow Model
 
-#### follow model
-
-A framework inputted into a network simulation that dictates how agents generally connect with one another. There are currently 6 follow models within ***#k@***: *random*, *twitter_suggest*, *agent*, *preferential_agent*, *hashtag*, and *twitter*.
+A framework input into a network simulation that dictates how agents follow (connect) with one another.  There are currently 6 follow models within **#k@**: **random**, **twitter_suggest**, **agent**, **preferential_agent**, **hashtag**, and **twitter**, where **twitter** is a user defined combination of the other 5 models.
 
 ## G
 
 #### Gephi
 
-A network visualization tool used heavily in this documentation. You can find more information on and download Gephi [here](http://gephi.github.io/).
+[Gelphi](http://gephi.github.io/). is free third party software which enables network visualization. **#k@** output can be rendered in [Gelphi](http://gephi.github.io/).
 
 #### Gnuplot
 
-A command-line driven utility for graphing used in tutorials for the plotting of data. More information on Gnuplot can be found [here](http://gnuplot.sourceforge.net/).
+[Gnuplot](http://gnuplot.sourceforge.net/) is free third party software that is a command-line driven utility for graphing, and is used in tutorials in this documentation for the plotting of data. 
 
 ## H
 
-#### **hashkat**
+#### Hashkat or **#k@**
 
-The **hashkat** directory contains all the filess and directories necessary to run ***#k@***.
+The name of this network simulation program.  The **hashkat** directory contains all the files and directories necessary to run **#k@**.
 
-#### hashtag (#)
+#### Hashtag (#)
 
-Sometimes used in tweets to classify messages by a key word or topic.
+A hashtag is a prefix to words that turns that word into a keyword that can be searched by other users.  If my tweet simply says 'I love pie', my tweet may not be easily found by an agent not connected to me.  If I tweet 'I love **#pie**, my tweet will be accessible to anyone searching keyword 'pie' and may be grouped for display on a page relating to 'pie'.
 
-#### *hashtag* follow model
+#### Hashtag Follow Model
 
 Follow model where agents follow other agents based on their ideology and/or region, which can be determined via the hashtags present in their tweets. More information on this follow model can be found [here](http://docs.hashkat.org/en/latest/tutorial07/).
 
 ## I
 
-#### ideology
+#### Ideology
 
-An agent's belief system or dogma.
+An agent's belief system.  The characteristics of an ideology are user defined in **#k@** and can be based on any criteria, for example, agents may be divided on whether they follow **DC** or **MARVEL** comic book universes.   
 
-#### in-Degree
+#### In-Degree
 
-The total number of followers an agent has in a network.
+The total number of followers an agent has in a network.  The followers receive input ('tweets') from the agent.
 
-#### interactive mode
+#### Interactive Mode
 
-A feature of ***#k@*** under development.
+A feature of **#k@** under development.
 
 ## J
 
 ## K
 
-#### Kinetic Monte Carlo Method
+#### Kinetic Monte Carlo Algorithm
 
-An algorithm designed to carry out a simulation where the rate of which time is increased by is influenced by the cumulative rate function through the formula:
+[Kinetic Monte Carlo (KMC)](https://en.wikipedia.org/wiki/Kinetic_Monte_Carlo) is an algorithm designed to carry out a simulation. 
 
-<center>
-&Delta;*t* = -ln(*u*) / **R**
-</center>
+In **#k@** the rate of increase in time is influenced by the cumulative rate function through the formula:
 
-where &Delta;*t* is the change in time, *u* is a generated random number, and **R** is the cumulative rate function. More information on this can be found [here](https://en.wikipedia.org/wiki/Kinetic_Monte_Carlo).
+**&Delta;t = -ln(*u*) / R**
+
+where **&Delta;t** is the change in time, **u** is a generated random number, and **R** is the cumulative rate function.
 
 ## L
 
-#### language
+#### Language
 
-The particular dialect that an agent speaks.
+The particular language in which an agent transmits.
 
 ## M
 
 ## N
 
-#### nano
+#### Nano
 
-A very basic text editor. Typing in the command `nano randomfile` will allow you to create and/or edit *randomfile* using the text editor nano. More information on nano can be found [here](http://www.nano-editor.org/)
+[Nano](http://www.nano-editor.org/) is a text editor. Typing in the command:
+
+`nano randomfile` 
+
+will allow you to edit 'randomfile'.
 
 #### Networkx
 
 [Networkx](https://networkx.github.io/) is a Python language software package that can be used to create, modify, and analyze networks. Documentation on Networkx can be found [here](https://networkx.github.io/documentation/latest/).
 
-#### node
+#### Node
 
-Corresponds to an agent in a network.
+A term in [graph theory](https://en.wikipedia.org/wiki/Graph_theory) that corresponds to an 'agent' in the **#k@** network.
 
 ## O
 
-#### out-Degree
+#### Out-Degree
 
-The total number of agents a particular agent is following in a network.
+The total number of agents a particular agent follows in the network.  The agent receives output ('tweets') from these other agents.
 
-#### **output**
+#### Output Directory
 
 Directory which contains all the analysis files created from running a network simulation.
 
 ## P
 
-#### *preferential_agent* follow model
+#### Preferential Agent Follow Model
 
 Follow model where agents follow other agents based on their agent type and their popularity within that agent type. More information on this follow model can be found [here](http://docs.hashkat.org/en/latest/tutorial06/).
 
-#### preference class
+#### Preference Class
 
-Details the probability that tweets made by agents of a particular agent type will be retweeted based on their tweet content and the probability that an agent will follow another agent based on seeing their retweeted tweet as opposed to just retweeting the retweet.
+The Preference Class specifies the probability of an agent re-tweeting (retransmitting) a tweet received based on tweeter ideology, type, or tweet content.  
 
-## Q
+This class also contains configuration for the probability that an agent will follow another agent based on the content of the retweet.
 
-## R
+#### **R** 
 
-#### **R** (cumulative rate funtion)
+See **Cumulative Rate Function** above.
 
-The sum of the agent *add* rate, *tweet* rate, *follow* rate, and *retweet* rate.
-
-#### *random* follow model
+#### Random Follow Model
 
 Follow model where agents follow other agents randomly. More information on this follow model can be found [here](http://docs.hashkat.org/en/latest/tutorial03/).
 
-#### region
+#### Region
 
-The geographical location of an agent.
+The geographical location of an agent.  Region characteristics are user defined in **#k@**.
 
-#### retweet
+#### Retweet
 
-A retweet is the rebroadcasting of a tweet.
+If a 'tweet' is a unidirectional signal from agent to follower(s), a 're-tweet' is the retransmission of the same signal from the follower to their followers.
 
-##S
+##S 
 
-#### simulation
+#### Simulation
 
-A simulation is an enactment of something that is anticipated or is being tested. In ***#k@***, we create simulations of social networks.
+A simulation is a modelled enactment of a process over simulated time. In ***#k@***, we create simulations of social networks.
 
-#### social network
+#### Social Network
 
-An association of agents connecting with one another in order to interact with each other within a given framework.
+In [graph theory](https://en.wikipedia.org/wiki/Graph_theory), a 'network' is a graph.  A network is an association of agents connecting with one another to interact in a given framework.  The word "social" implies the association is voluntary and recreational.
 
 ##T
 
-#### terminal
+#### Terminal
 
-A computer terminal is a device on a computer that allows a user to enter data into, and display data out of, it.
+A terminal is a device on a computer that allows a user to direct data and commands to the computer and receive system information and processed data from the computer.
 
-#### tweet
+#### Tweet
 
-A tweet is a message, consisting of 140 characters or less, that a Twitter user creates on Twitter. In ***#k@***, tweets are the broadcasts made by agents
+A tweet is a uni-directional transmission (or broadcast, or signal) of limited size and duration that passes from agent to follower.  
 
+On [Twitter](https://twitter.com/?lang=en) the signals are called 'tweets' and are text messages of 140 characters or less that may include an image.  On [Instagram](https://instagram.com/instagram/) the transmissions are images.
+
+In **#k@**, 'tweet' refers to the signal made by agent to their follower(s).  Tweets may contain 'hashtags' to make their content more searchable by unconnected agents, to increase the likelihood of the agent gaining followers.
+ 
 #### Twitter
 
-Twitter is a social network where users can connect with each other by following one another and create broadcasts called tweets. These tweets can contain a hashtag that associate that tweet with a particular topic or key word. These tweets can be rebroadcasted by other users retweeting them, so that their respective followers can see the broadcast.
+[Twitter](https://twitter.com/?lang=en) is a social network where users may connect with other agents to receive and send broadcasts called 'tweets'. 
 
-#### *twitter* follow model
+#### Twitter Follow Model
 
-Follow model that incorporates all of the other follow models. More information on this follow model can be found [here](http://docs.hashkat.org/en/latest/tutorial08/).
+The Twitter Follow Model is a combination follow model that incorporates the other follow models in user defined proportions.  More information on this follow model can be found [here](http://docs.hashkat.org/en/latest/tutorial08/).
 
-#### *twitter_suggest* follow model
+#### Twitter Suggest Follow Model
 
 Follow model where agents follow other agents based on how many followers they have. More information on this follow model can be found [here](http://docs.hashkat.org/en/latest/tutorial04/).
 
 ##U
 
-#### unfollow
+#### Unfollow
 
-An unfollow is when an agent stops following another agent.
+If a 'follow' is the creation of a connection between two agents, an 'unfollow' deletes this connection.  
 
+In **#k@** an 'unfollow' may be based on a decision by the follower (the agent who created the original connection) or be a random process caused by behavior of the tweeting agent.
+ 
 ##V
 
 ##W
