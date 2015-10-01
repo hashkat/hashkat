@@ -10,15 +10,15 @@ Let's go over what each variable means.
 
 #### Initial Agents
 
-```python
+````python
 initial_agents: 20```
 
 The **initial_agents** are the agents you will have at the start of the simulation. In the above case, this value is 20.
 
 #### Max Agents
 
-```python 
-max_agents: 100001```
+````python 
+max_agents: 100001````
 
 This is the maximum number of users that are permitted in the simulation. Once this number is reached, the number of agents in the network will no longer increase. In this case we can see the value is 100001.
 
