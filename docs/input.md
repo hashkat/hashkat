@@ -143,7 +143,7 @@ The **follow_model** determines how agents chose whom to follow and will have a 
 
 A **random** follow model will result in an agent following another at random.  
 
-A **twitter_suggest* follow model will result in an agent following another based on how popular the other is.
+A **twitter_suggest** follow model will result in an agent following another based on how popular the other is.
 
 The **agent** follow model will have agents follow agents of a certain type.  Within that type, following is at random.
 
