@@ -129,7 +129,7 @@ If set to 'true', agents are permitted to follow agents who follow them.
 use_follow_via_retweets:  true
 ```
 
-Inputting 'true' into **use_follow_via_retweets** allows Agent C to follow Agent A based on receiving a retweet of Agent A's tweet from Agent B. The probability that Agent C will follow Agent A is directly proportional to how popular Agent A is.
+Input 'true' into **use_follow_via_retweets** to allow Agent C to follow Agent A based on Agent C receiving a retweet of Agent A's tweet from Agent B. The probability that Agent C will follow Agent A is directly proportional to how popular Agent A is.
 
 #### Follow Model
 
@@ -156,7 +156,8 @@ The **twitter** model is a combination of the five other models (see **Model Wei
 #### Model Weights
 
 ```python 
-model_weights: {random: 0.20, twitter_suggest: 0.20, agent: 0.20, preferential_agent: 0.20, hashtag: 0.20}
+model_weights: 
+{random: 0.20, twitter_suggest: 0.20, agent: 0.20, preferential_agent: 0.20, hashtag: 0.20}
 ```
 
 This variable is relevant when using the **twitter** follow model. The **twitter** follow model is a combination of all the other follow models.  This variable allows weighting of each follow model in the simulation, to a maximum combined weight of 1.0.
