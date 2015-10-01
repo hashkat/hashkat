@@ -8,7 +8,7 @@ If you would like to run simulations with much larger networks, we've included a
 
 This sample large network uses over 128 GB of RAM.  
 
-This input file can be found in the **docs/tutorial_input_files** directory in **hashkat** in the directory **large_network**):
+This input file can be found in the **~/hashkat/docs/tutorial_input_files** directory in file 'large_network'.
 
 ```python
 #################################################################

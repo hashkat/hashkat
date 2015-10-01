@@ -14,7 +14,7 @@ Let's go over what each variable means.
 initial_agents: 20
 ```
 
-The **initial_agents** are the agents you will have at the start of the simulation. In the above case, this value is 20.
+The initial_agents are the agents you will have at the start of the simulation. In the above case, this value is 20.
 
 #### Max Agents
 
@@ -30,7 +30,7 @@ This is the maximum number of users that are permitted in the simulation. Once t
 max_time:  hour
 ```
 
-This variable refers to the maximum **simulated** time in **minutes** for the simulation to run.  You may also describe time as **minute**, **hour**, **day**, or **year**, multiplied by a constant, or each other, and **#k@** will convert the value to minutes (e.g. 3 days can be input as __3*day__, which is equal to 4,320 minutes). 
+This variable refers to the maximum **simulated** time in **minutes** for the simulation to run.  You may also describe time as 'minute', 'hour', 'day', or 'year', multiplied by a constant, or each other, and **#k@** will convert the value to minutes (e.g. 3 days can be input as __3*day__, which is equal to 4,320 minutes). 
 
 Note: interacting with the network simulation DOES NOT affect simulated time elapsed.
 
@@ -48,7 +48,7 @@ This is the maximum number of loops undertaken in the the simulation. To achieve
 max_real_time:   hour
 ```
 
-This sets the maximum **real** time you will permit the simulation to run. Once this actual time has elapsed, the simulation ends. This time is in **seconds**, and may be input in the same way as **max_time** above.
+This sets the maximum **actual** time you will permit the simulation to run. This time is in **seconds**, and may be input in the same way as 'max_time' above.  Once actual time has elapsed, the simulation ends. 
 
 Note: interacting with the network simulation during the run DOES affect real time elapsed.
 
@@ -76,8 +76,7 @@ Note: setting this to 'true' will slow down the simulation immensely.
 ```python 
 lua_script: INTERACT.lua
 ```
-
-**lua_script** contains all the script for interactive mode. It is highly recommended to keep this variable as 'INTERACT.lua', since that is the default Lua script in the **hashkat** directory.
+'lua_script' contains all the script for interactive mode. It is highly recommended to keep this variable as 'INTERACT.lua', since that is the default Lua script in the **#k@** directory.
 
 #### Use Barabasi
 
@@ -93,11 +92,11 @@ A setting of 'false' allows agents in the simulation to 'follow' as many other a
 barabasi_connections:  100
 ```
 
-If **use_barabasi** is set to 'true', the number of follows an agent may make in a network simulation is limited to the value given.
+Note: if **use_barabasi** is set to 'true', the number of follows an agent may make in a network simulation is limited to the value given.
 
-For a **Classic Barabasi** configuration, set this value equal to 1. 
+For a Classic Barabasi configuration, set this value equal to 1. 
 
-For a **Non-Classic Barabasi** configuration, set this value greater than 1.
+For a Non-Classic Barabasi configuration, set this value greater than 1.
 
 #### Barabasi Exponent
 
@@ -137,21 +136,11 @@ Input 'true' into **use_follow_via_retweets** to allow Agent C to follow Agent A
 follow_model:  random
 ```
 
-The options for **follow_model** are: **random**, **twitter_suggest**, **agent**, **preferential_agent**, **hashtag**, and **twitter**.  
+The options for follow model are: **random**, **twitter_suggest**, **agent**, **preferential_agent**, **hashtag**, and **twitter**.  
 
-The **follow_model** determines how agents chose whom to follow and will have a significant effect on the outcome of your simulation.
+The follow model determines how agents chose whom to follow and will have a significant effect on the outcome of your simulation.
 
-A **random** follow model will result in an agent following another at random.  
-
-A **twitter_suggest** follow model will result in an agent following another based on how popular the other is.
-
-The **agent** follow model will have agents follow agents of a certain type.  Within that type, following is at random.
-
-The **preferential_agent** follow model will have agents follow agents of a certain type.  Within that type, following is based on the popularity of the agent.
-
-The **hashtag** model will have agents follow based upon hashtags that suit their interests.
-
-The **twitter** model is a combination of the five other models (see **Model Weights** below).
+A **random** follow model will result in an agent following another at random.  A **twitter_suggest** follow model will result in an agent following another based on how popular the other is. The **agent** follow model will have agents follow agents of a certain type.  Within that type, following is at random. The **preferential_agent** follow model will have agents follow agents of a certain type.  Within that type, following is based on the popularity of the agent.  The **hashtag** model will have agents follow based upon hashtags that suit their interests.  The **twitter** model is a combination of the five other models (see **Model Weights** below).
 
 #### Model Weights
 
@@ -160,7 +149,7 @@ model_weights:
 {random: 0.20, twitter_suggest: 0.20, agent: 0.20, preferential_agent: 0.20, hashtag: 0.20}
 ```
 
-This variable is relevant when using the **twitter** follow model. The **twitter** follow model is a combination of all the other follow models.  This variable allows weighting of each follow model in the simulation, to a maximum combined weight of 1.0.
+This variable is relevant when using the **twitter** follow model, which is a combination of all the other follow models.  This variable allows weighting of each follow model in the simulation, to a maximum combined weight of 1.0.
 
 #### Stage1 Unfollow
 
@@ -178,9 +167,9 @@ Inputting 'false' prevents an agent from unfollowing for 'chattiness'.
 unfollow_tweet_rate: 10
 ```
 
-The **unfollow_tweet_rate** describes a **constant** tweet rate that, if exceeded by the tweeter, Agent A, will cause the Agent A to **randomly** lose a follower. 
+The unfollow_tweet_rate describes a **constant** tweet rate that, if exceeded by the tweeter, Agent A, will cause the Agent A to **randomly** lose a follower. 
 
-To prevent this, set the **unfollow_tweet_rate** much greater than the typical agent 'tweet_rate' in the simulation.
+To prevent this, set the unfollow_tweet_rate much greater than the typical agent 'tweet_rate' in the simulation.
 
 #### Use Hashtag Probability
 
@@ -188,7 +177,7 @@ To prevent this, set the **unfollow_tweet_rate** much greater than the typical a
 use_hashtag_probability:  1
 ```
 
-The probability of a tweet containing a hashtag(**#**) may range from 0 to 1 (0% to 100%).  Hashtags enable agents with the **hashtag follow model** enabled to follow new agents unconnected to their network.
+The probability of a tweet containing a hashtag(**#**) may range from 0 to 1.  Hashtags enable agents with the **hashtag follow model** enabled to follow new agents unconnected to their network.
 
 #### Rates
 
@@ -198,13 +187,13 @@ The 'add' rate is the rate at which new agents will be added per minute during t
 rates:  add: {function: constant, value: 0.0}
 ```
 
-For a constant 'add' rate, the function must be identified as **constant** and the number of agents you wish to add per simulated minute is the 'value'. This number can zero or greater.  Although described as **constant** this function describes a rate.  A zero rate would not add agents during the simulation.
+For a constant 'add' rate, the function must be identified as **constant** and the number of agents you wish to add per simulated minute is the 'value'. This number can zero or greater.  Although described as constant this function describes a rate.  A zero rate would not add agents during the simulation.
 
 ```python 
 rates:  add: {function: linear, y_intercept: 1.0, slope: 0.1}
 ```
 
-For a linear 'add' function, the slope and y-intercept must be specified.  The classic linear function is **y = ax +b**, where **'a'** is the slope, **'x'** the variable, and **'b'** the y-intercept. 
+For a linear 'add' function, the slope and y-intercept must be specified.  The classic linear function is **y = ax + b**, where **'a'** is the slope, **'x'** the variable, and **'b'** the y-intercept. 
 
 In **#k@**, the 'y_intercept' is the initial rate at which agents are added (the 'value' of the **constant** function above).  The 'slope' is the rate at which the 'add' rate increases over time, where time ('x') is in simulated months.
 
@@ -212,7 +201,7 @@ The 'follow' and 'retweet' rates work in the same manner.
 
 ## Output
 
-This section describes how to initialize your **Output** settings in the **INFILE.yaml**.  Initially it is recommended to set all these variables to 'true'.  With more experience, unnecessary output variables can be set to 'false'.
+This section describes how to initialize your Output settings in the **INFILE.yaml**.  Initially it is recommended to set all these variables to 'true'.  With more experience, unnecessary output variables can be set to 'false'.
 
 The information received as **Output** is further discussed in the **Output** tab of the documentation.  
 
@@ -287,7 +276,7 @@ If 'true', the simulation will output two additional output files, **network.dat
 agent_stats:  true
 ```
 
-If 'true', the simulation will produce additional output files for each **agent type** within the simulation, as **agenttype_info.dat** (i.e. a **Standard** agent type will result in the file **Standard_info.dat**).
+If 'true', the simulation will produce additional output files for each 'agent type' within the simulation, as **agenttype_info.dat** (i.e. a 'Standard' agent type will result in the file **Standard_info.dat**).
 
 #### Degree Distributions
 
@@ -295,7 +284,7 @@ If 'true', the simulation will produce additional output files for each **agent 
 degree_distributions:  true
 ```
 
-If 'true', the **in-degree**, **out-degree**, and **cumulative-degree** distributions will be output with a file for each simulated month. In the case of the zeroth month, **in-degree_distribution_month_000.dat**, **out-degree_distribution_month_000.dat**, and **cumulative-degree_distribution_month_000.dat** respectively.
+If 'true', the 'in-degree', 'out-degree', and 'cumulative-degree' distributions will be output with a file for each simulated month. In the case of the zeroth month, the 'in-degree' file would be called **in-degree_distribution_month_000.dat**.
 
 #### Tweet Analysis
 
@@ -327,7 +316,7 @@ Setting to 'true' creates the **main_stats.dat** output file, which contains all
 degree_distribution_by_follow_model: true
 ```
 
-If 'true', creates the **dd_by_follow_model.dat** output file, which shows the normalized probability and the normalized probability logarithm that an agent of a particular cumulative-degree made its connections via each particular follow method.
+If 'true', creates the **dd_by_follow_model.dat** output file which shows the normalized probability and the normalized probability logarithm that an agent of a particular cumulative-degree made its connections via each particular follow method.
 
 #### Region Connection Matrix
 
@@ -383,9 +372,9 @@ thresholds: {bin_spacing: linear, min: 0, max: 100001, increment: 1}
 weights:    {bin_spacing: linear, min: 1, max: 100000, increment: 1}
 ```
 
-This rank serves to categorize agents based on the number of followers they have. However the bins are **weighted**. Here the bins have a weight equal to its corresponding value increased by 1 (assuming the 'bin_spacing' is 'linear' and 'increment' is 1). 
+This rank serves to categorize agents based on the number of followers they have. However the bins are weighted. Here the bins have a weight equal to its corresponding value increased by 1 (assuming the 'bin_spacing' is 'linear' and 'increment' is 1). 
 
-The weights are essential in the **twitter_suggest** and **preferential_agent** follow models, since they are what cause agents with a higher **in-degree** (number of followers) to have a better chance of being followed than agents with fewer followers. 
+The weights are essential in the **twitter_suggest** and **preferential_agent** follow models, since they are what cause agents with a higher 'in-degree' (number of followers) to have a better chance of being followed than agents with fewer followers. 
 
 ## Tweet Observations
 
@@ -421,7 +410,7 @@ This is the final value of the density function. Make sure that this value does 
 initial_resolution:  1.0
 ```
 
-Determines the initial boundary spacing for integration of the density function. For example, here we have **initial_resolution** equal to 1.0 and **x_start** equal to 5, so we could expect the **first** integral to be bounded from 5 to 6 [5,6]
+Determines the initial boundary spacing for integration of the density function. For example, here we have 'initial resolution' equal to 1.0 and 'x_start' equal to 5, so we could expect the first integral to be bounded from 5 to 6 [5,6]
 
 #### Resolution Growth Factor
 
@@ -429,7 +418,7 @@ Determines the initial boundary spacing for integration of the density function.
 resolution_growth_factor:  1.05
 ```
 
-Determines the density function integral boundary spacing after the initial resolution. This has been implemented due to a function resolution needing to be much more accurate during the time immediately after a tweet is tweeted as opposed to some time after this has occurred. If you had an **initial_resolution** of 1.0 and a **resolution_growth_factor** of 1.05 with **x_start** set to 5, the integrals would be evaluated at [5,6], [6, 7.05], [7.05, 8.10], etc. 
+Determines the density function integral boundary spacing after the initial resolution. This has been implemented due to a function resolution needing to be much more accurate during the time immediately after a tweet is tweeted as opposed to some time after this has occurred. If you had an 'initial_resolution' of 1.0, a 'resolution_growth_factor' of 1.05 and an 'x_start' of 5, the integrals would be evaluated at [5,6], [6, 7.05], [7.05, 8.10], etc. 
 
 #### Time Span
 
@@ -452,9 +441,11 @@ In **#k@** the number of the attributes are found in the **config_static.h ** fi
 	N_BIN_REGIONS = 3;
 	N_BIN_AGENT_TYPES = 200;
 
-**Language** is also an attribute, as an enumerated class in the same file.  
+**Language** is also an attribute. It is treated an enumerated class, also in the **src** file.  
 
-If a greater number of, for example, **regions** is desired, the value of the **N_BIN** file must be changed and **#k@** must be rebuilt before the simulation can be run. To build **#k@**, run:
+If a greater number of, for example, **regions** is desired, the value of the **N_BIN** file must be changed and **#k@** must be rebuilt before the simulation can be run. 
+
+To build **#k@**, run:
 
 `./build.sh -O`
 
@@ -462,11 +453,11 @@ The values of the attributes are configured through **INFILE.yaml**.
 
 #### Ideologies
 
-**Ideologies** are named after colours and have no other attributes. The names may be changed. 
+Ideologies are named after colours in **#k@**. The names may be changed. 
 
 Through **INFILE.yaml** the simulation may configure 0-4 **ideologies**.  
 
-Note: if you'd like to increase the number of **ideologies** in the simulation, change the value set in the **N_BIN** file.  If **N_BIN** is changed, remember to then rebuild **#k@** to have these changes take effect.
+Note: if you'd like to increase the number of ideologies in the simulation, change the value set in the **N_BIN** file.  If **N_BIN** is changed, remember to then rebuild **#k@** to have these changes take effect.
 
 #### Preference Classes
 
@@ -492,9 +483,9 @@ The four possible types of tweets are: 'plain', 'musical', 'ideological', and 'h
         else: 0.0
 ```
 
-Under **tweet_transmission** one can specify the probability that tweets made by a particular **agent_type** ('Standard', 'Celebrity') will be retweeted based on the content of that tweet. Instead of inserting a particular **agent_type**, one can also input 'all' or 'else' for any of the **tweet_transmision** rates.
+Under **tweet_transmission** one can specify the probability that tweets made by a particular 'agent type' ('Standard', 'Celebrity') will be retweeted based on the content of that tweet. Instead of inserting a particular 'agent type', one can also input 'all' or 'else' for any of the **tweet_transmision** rates.
 
-Note: if you'd like to change the number of **preference classes** in the simulation, make sure this number is less than or equal to the value set in the **N_BIN** file.  If **N_BIN** is changed, remember to then rebuild **#k@** to have these changes take effect.
+Note: if you'd like to increase the number of preference classes in the simulation, change the value set in the **N_BIN** file.  If **N_BIN** is changed, remember to then rebuild **#k@** to have these changes take effect.
 
 
 #### Regions
@@ -517,15 +508,15 @@ The **ideology_weights** are the possible 'ideologies' agents can have, and are 
 
 The **language_weights** are the possible 'languages' that an agent from that region can speak, and are weighted with respect to each other.
 
-Note: make sure the number of **regions** is EXACTLY equal to the value set for **N_BIN_REGIONS**.  You may change the value of the **N_BIN**, but remember to then rebuild **#k@** to have these changes take effect.
+Note: make sure the number of regions is EXACTLY equal to the value set for **N_BIN_REGIONS**.  You may change the value of the **N_BIN**, but remember to then rebuild **#k@** to have these changes take effect.
 
 ## Agent Types
 
 Agents are defined as **Standard** or **Celebrity**.  **Standard** agents may be further configured as **Organizations** and **Bots** each of which have different behavior patterns from the typical **Standard** agent.  As an example, a **Celebrity** does not typically 'follow back' while an **Organization** always will.  
 
-The specified behavior of each type sets it apart.  In a normal build, the user may define from 1 to 200 **agent_types**, although 200 types can be costly in terms of memory. 
+The specified behavior of each type sets it apart.  In a normal build, the user may define from 1 to 200 agent types, although 200 types can be costly in terms of memory. 
 
-Note: one may increase the number of **agent_types** in the simulation by increasing the value in the **N_BIN**, but make sure to then rebuild **#k@** for these changes to take effect.
+Note: one may increase the number of agent types in the simulation by increasing the value in the **N_BIN**, but make sure to then rebuild **#k@** for these changes to take effect.
 
 
 ```python
@@ -549,13 +540,13 @@ Note: one may increase the number of **agent_types** in the simulation by increa
 
 #### Weights
 
-Under weights we can see **add**, which correlates to the probability, weighted against the sum of the **add** weights of all the **agent_types**, that a new agent added is of this type. 
+Under weights we can see **add**, which correlates to the probability, weighted against the sum of the **add** weights of all the agent types, that a new agent added is of this type. 
 
-The value input into **follow** will be the probability, weighted against the **follow** weights of all the other **agent_types**, that an agent of this type will be the one followed in the **agent_follow model** when a follow occurs. 
+The value input into **follow** will be the probability, weighted against the **follow** weights of all the other agent types, that an agent of this type will be the one followed in the **agent_follow model** when a follow occurs. 
 
 #### Tweet Types
 
-There are four tweet types in **#k@**.  These are **plain**, **political**, **humorous** and **musical**.  The weights of the **tweet_types** are summarized to create a weighted probability of the type of the agent's next tweet.  In the above case, each type of tweet has a 1/4 chance of occurring. 
+There are four tweet types in **#k@**.  These are **plain**, **political**, **humorous** and **musical**.  The weights of the tweet types are summarized to create a weighted probability of the type of the agent's next tweet.  In the above case, each type of tweet has a 1/4 chance of occurring. 
 
 The type of tweet is relevant to the dissemination of the tweet.  **Plain** tweets may only have meaning to an agent's followers and may not be retweeted.  **Political** tweets may be relevant only to agents of the same region and language.  **Humorous** tweets may attract followers of the same language in different regions, and the appeal of **musical** tweets may transcend region and language. 
 
@@ -567,11 +558,11 @@ Note: **use_followback** must be enabled for 'follow back probability' to have a
 
 #### Hashtag Follow Options
 
-The hashtag_follow_options are implemented in the **hashtag follow model**, where agents follow other agents based on the hashtags present in their tweets. In this follow model, if **care_about_region** is set to 'true', agents of this type will only follow other agents from the same region.  If **care_about_ideology** is set to 'true', agents will only follow agents that share their ideology. 
+The hashtag follow options are implemented in the **hashtag follow model**, where agents follow other agents based on the hashtags present in their tweets. In this follow model, if **care_about_region** is set to 'true', agents of this type will only follow other agents from the same region.  If **care_about_ideology** is set to 'true', agents will only follow agents that share their ideology. 
 
-Note: **use_hashtag_probability** (above in the **Analysis** section) must not be zero.
+Note: **use_hashtag_probability** must not be zero.
 
 #### Rates 
 
-The **follow** and **tweet** rates are the rates at which agents of this particular agent type will follow and tweet per simulated minute. These work in the exact same manner (**constant** or **linear**) as the 'add' rate outlined in the **Rates** section at the start of this document.
+The 'follow' and 'tweet' rates are the rates at which agents of this particular agent type will follow and tweet per simulated minute. These work in the same manner (**constant** or **linear**) as the 'add' rate in the **Rates** section at the start of this document.
 
