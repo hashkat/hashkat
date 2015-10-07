@@ -95,9 +95,9 @@ and the 'Yifan Hu' layout:
 
 There are numerous other modifications and adjustments that can be made to your visualization. Ones which we use fairly often can be found at the bottom of your screen.
 
-    <center>
-    <img src='../img/visualization/gephi_modifications.png'>
-    </center>
+<center>
+<img src='../img/visualization/gephi_modifications.png'>
+</center>
 
 By left clicking the light bulb button, you can change the background from white to black or vice-versa, and by right clicking it you can change the background color to whatever colour you'd like. By moving the edge weight scale, you can also adjust how emboldened the connection lines are in your visualization.
 
