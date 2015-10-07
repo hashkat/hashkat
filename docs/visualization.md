@@ -4,16 +4,16 @@
 
 Here we outline ways in which you can visualize the data you've collected from running **#k@**.
 
-### Gephi
+## Gephi
 
 <center>
 <iframe width="560" height="315" src="https://www.youtube.com/embed/GZYsnLApk24" frameborder="0" allowfullscreen></iframe>
 </center> <br /> 
 You can visualize some of the data you have collected using [Gephi](http://gephi.github.io/), the visualization tool primarily used in this documentation. 
 
-The network we visualize here is the one created in [**Tutorial 5**](http://docs.hashkat.org/en/latest/tutorial05/).
+The network we visualize here is the one created in [Tutorial 5](http://docs.hashkat.org/en/latest/tutorial05/).
 
-### How to Visualize a Network
+#### How to Visualize a Network
 
 Download [Gephi](http://gephi.github.io/) then enter the program and start a **new file**. 
 
@@ -77,21 +77,21 @@ These are the steps necessary to visualize the networks you've created:
     </center>
 
 
-### Explore
+#### Explore
 
 Now that you have set up your visualization of your network simulation, you are encouraged to explore all the features of Gephi that you can use for your visualizations. Two network layouts that we primarily use in this documentation are the 'Fruchterman Reingold' layout:
 
-    <center>
-    <img src='../img/visualization/gephi_fruchterman_reingold.png'>
-    </center>
+<center>
+<img src='../img/visualization/gephi_fruchterman_reingold.png'>
+</center>
 
 and the **Yifan Hu** layout:
 
-    <center>
-    <img src='../img/visualization/gephi_yifan_hu.png'>
-    </center>
+<center>
+<img src='../img/visualization/gephi_yifan_hu.png'>
+</center>
 
-(**Note**: we used the 'Contraction' layout in conjuntion with the 'Yifan Hu' layout for the above example to fit everything onto the screen)
+(Note: we used the 'Contraction' layout in conjuntion with the 'Yifan Hu' layout for the above to fit everything onto the screen)
 
 There are numerous other modifications and adjustments that can be made to your visualization. Ones which we use fairly often can be found at the bottom of your screen.
 
@@ -109,7 +109,7 @@ You can also visualize the networks you've created using [Networkx](https://netw
 
 `pip install networkx`
 
-### Plotting Your Network
+#### Plotting Your Network
 
 To create a graph of your network after running a simulation using Networkx, enter Python by typing in the command:
 
@@ -146,16 +146,17 @@ This will produce a plot similar to the one below:
 <center>
 <img src='../img/visualization/networkx_graph.png'>
 </center>
+<br />
 
 Similar to our visualizations using Gephi, the red nodes in the above graph correspond to agents and the black edges in between them correspond to connections/followings between agents. It is important to note however that there is no way to distinguish between the different agent types via this method.
 
-### Analyzing Your Network
+#### Analyzing Your Network
 
-You can use Networkx to analyze the network you've created as well. Here we will outline some of the various functions and algorithms you can input into Python after plotting your graph to collect some information on your network. To learn more about some of the analysis tools you can implement using Networkx, visit their documentation page [here](https://networkx.github.io/documentation/latest/).
+You may use Networkx to analyze the network you've created as well. Here we will outline some of the various functions and algorithms you can input into Python after plotting your graph to collect some information on your network. To learn more about some of the analysis tools you can implement using Networkx, visit their documentation page [here](https://networkx.github.io/documentation/latest/).
 
-#### Number of Nodes
-
-You can find the number of nodes present in your network by typing in the command:
+##### Number of Nodes
+ 
+To ascertain the number of nodes present in your network, type the command:
 
 ```python
 nx.number_of_nodes(G)
@@ -163,7 +164,7 @@ nx.number_of_nodes(G)
 
 #### Number of Edges
 
-You can find the number of edges in your network by entering the command:
+To find the number of edges in your network, entering the command:
 
 ```python
 nx.number_of_edges(G)
@@ -171,7 +172,7 @@ nx.number_of_edges(G)
 
 #### Most Popular Agent
 
-To find the most connected agent and it's corresponding cumulative-degree, enter in the commands:
+To find the most connected agent and its corresponding 'cumulative-degree', enter the commands:
 
 ```python
 from operator import itemgetter
@@ -181,17 +182,17 @@ from operator import itemgetter
 sorted(G.degree_iter(),key=itemgetter(1),reverse=True)[0:1])
 ```
 
-This will print to the screen (though with most likely different values):
+This will print to the screen (though most likely with different values):
 
 ```python
 [(u'938', 35)]
 ```
 
-where in this case, '938' corresponds to the ID of the most connected agent and '35' corresponds to the cumulative-degree of this agent.
+In this case, '938' corresponds to the ID of the most connected agent and '35' corresponds to the cumulative-degree of this agent.
 
 #### Most Common Cumulative-Degree
 
-You can find the most common cumulative-degree of agents in the network and the number of agents with that cumulative-degree by entering in the commands:
+You can find the most common cumulative-degree of agents in the network and the number of agents with that cumulative-degree by entering the commands:
 
 ```python
 from operator import itemgetter
@@ -201,7 +202,7 @@ from operator import itemgetter
 max(enumerate(nx.degree_histogram(G)), key=itemgetter(1)))
 ```
 
-This will print to the screen (though with most likely different values):
+This will print to the screen (though most likely with different values):
 
 ```python
 (20, 90)
@@ -227,11 +228,11 @@ nx.average_shortest_path_length(G))
 
 #### visualize.py
 
-You can visualize and analyze your networks in the above manner by running the script in the **hashkat** directory *visualize.py*, by entering in the command after running a network simulation:
+You can visualize and analyze your networks in the above manner by running the script in the '/~hashkat/visualize.py', by entering in the command after running a network simulation:
 
-`./visualize.py`
+`../visualize.py`
 
-Running this script will not only produce a plot of your network using Networkx, but it will also save that plot to a file named *graph.svg*. This script will also run the analysis functions and algorithms discussed above on your network. 
+Running this script will not only produce a plot of your network using Networkx, but it will also save that plot to a file named **graph.svg**. This script will also run the analysis functions and algorithms discussed above on your network. 
 
 #### Explore
 
