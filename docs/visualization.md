@@ -85,7 +85,7 @@ Now that you have set up your visualization of your network simulation, you are 
 <img src='../img/visualization/gephi_fruchterman_reingold.png'>
 </center>
 
-and the **Yifan Hu** layout:
+and the 'Yifan Hu' layout:
 
 <center>
 <img src='../img/visualization/gephi_yifan_hu.png'>
@@ -236,4 +236,4 @@ Running this script will not only produce a plot of your network using Networkx,
 
 #### Explore
 
-Though we discuss using Gephi in much greater detail in this documentation, you are encouraged to also analyze your networks using Networkx. This documentation only scratches the surface of all that you can do using Networkx, but you are encouraged to explore all of its features and functionalities to have a firm grasp on all the ways in which you can analyze the data you've collected from running ***#k@***.
+Though we discuss using Gephi in much greater detail in this documentation, you are encouraged to also analyze your networks using [Networkx](https://networkx.github.io/). You are encouraged to explore all of Networkx's features and functionalities to understand all the ways in which you can analyze the data you've collected from running **#k@**.
