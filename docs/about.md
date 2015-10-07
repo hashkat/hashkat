@@ -1,6 +1,7 @@
 <center>
 <img src='../img/logo.svg'>
 </center>
+<br />
 
 **#k@** is a dynamic network simulation tool designed to model information growth and propagation within an online social network. It is an agent-based kinetic [Monte Carlo](https://en.wikipedia.org/wiki/Kinetic_Monte_Carlo) engine capable of simulating online networks such as [Facebook](https://www.facebook.com/), [Twitter](https://twitter.com/), [LinkedIn](https://www.linkedin.com/), etc.
 

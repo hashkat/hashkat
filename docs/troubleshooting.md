@@ -2,19 +2,29 @@
 
 # Troubleshooting
 
-With ***#k@*** being such an interactive program, it is expected that one will receive errors in running their simulations from time to time. Here we will discuss some of the error messages and errors you may come across while working with ***#k@*** and how to find a solution to them.
+With **#k@** being such an interactive program, it is expected that one will receive errors in running their simulations from time to time. 
 
-## Error Messages
+Here we will discuss some of the error messages and incorrect results you may come across while working with **#k@** and how to find a solution to them.
 
-When trying to run ***#k@*** after configuring the *INFILE.yaml* file, you may be unable to run your network simulation and recieve one of the following error messages:
+## Errors
 
-### Running ***#k@*** in a different directory
+When trying to run **#k@** after configuring the **INFILE.yaml** file, you may be unable to run your network simulation and receive one of the following error messages:
+
+#### Running **#k@** in a different directory
 
 `bash: ./run.sh: No such file or directory`
 
-This error message appears if you run ***#k@*** in a directory that doesn't contain the *run.sh* script. As discussed in [**Tutorial 2**](http://docs.hashkat.org/en/latest/tutorial02/), be sure to input the location of *run.sh* when running the script. Typing in '../' prior to 'run.sh' in the command line tells the computer that *run.sh* is one directory up from your current working directory. Typing in a directory name and a '/' prior to 'run.sh' in the command line tells the computer that *run.sh* is in a subdirectory of your current working directory.
+This error message appears if you run **#k@*** in a directory that doesn't contain the **run.sh** script. As discussed in [Tutorial 2](http://docs.hashkat.org/en/latest/tutorial02/), be sure to input the location of **run.sh** when running the script. 
 
-### Spelling or Missing Term Error
+`../run.sh` 
+
+Tells the computer that **run.sh** is one directory up from your current working directory. 
+
+`/run.sh` 
+
+Tells the computer that **run.sh** is in a subdirectory of your current working directory.
+
+#### Spelling or Missing Term Error
 
 `
 Exception occurred while reading 'INFILE.yaml-generated': yaml-cpp: error at line 90, column 17: invalid scalar
@@ -23,11 +33,9 @@ terminate called after throwing an instance of 'YAML::InvalidScalar'
 /home/mobile/hashkat/run.sh: line 80:  4026 Aborted                 (core dumped) "$HASHKAT/build/src/hashkat" $args
 `
 
-This error message is due to a spelling error that may have been accidentally made in *INFILE.yaml*, such as spelling *true* or *false* wrong or forgetting to give a value for a particular variable. We received this error message when we spelt *false* as *fAlse* under *use_barabasi*. This error can be simply remedied by fixing the spelling mistake and rerunning ***#k@***.
+This error message is due to a spelling error that may have been accidentally made in **INFILE.yaml**, such as spelling 'true' or 'false' wrong or forgetting to give a value for a particular variable. We received this error message when we spelled 'false' as 'fAlse' under 'use_barabasi'. Simply fix the spelling mistake and rerun **#k@**.
 
-### Indentation Error
-
-You may receive a long error message ending with something similar to the following:
+#### Tab Error
 
 `
 terminate called after throwing an instance of 'YAML::BadDereference'
@@ -35,9 +43,9 @@ terminate called after throwing an instance of 'YAML::BadDereference'
 /home/mobile/hashkat/run.sh: line 80: 22283 Aborted                 (core dumped) "$HASHKAT/build/src/hashkat" $args
 `
 
-This is due to accidentally indenting one of the variables using **Tab** in *INFILE.yaml*. To fix this error, simply move the term back to its proper position in the file.
+This is due to accidentally indenting one of the variables using 'Tab' in **INFILE.yaml**. To fix this error, simply move the term back to its proper position in the file.
 
-### Incorrect Function Formatting
+#### Incorrect Function Formatting
 
 `
 Exception occurred while reading 'INFILE.yaml-generated': yaml-cpp: error at line 124, column 8: 'y_intercept' was not found!
@@ -46,9 +54,17 @@ terminate called after throwing an instance of 'YAML::RepresentationException'
 /home/mobile/hashkat/run.sh: line 80:  4312 Aborted                 (core dumped) "$HASHKAT/build/src/hashkat" $args
 `
 
-This error message is due to improper formatting for at least one of the functions present in your *INFILE.yaml* file. When using a constant function for your *add* rate, *follow* rate, or *tweet* rate, you must have a *value* for this constant rate. When using a linear function, you must have a *y_intercept* and *slope* for this increasing or decreasing rate. If these corresponding variables are not present for each particular function, then you will receive an error similar to the one above, which was caused by having a linear *add* rate with a corresponding *value* instead of a *y_intercept* and *slope*. Simply changing your function configuration so that it coincides with the function you are implementing will fix this error.
+The above error message was shown when we configured a linear function incorrectly.  A similar message will show if there is improper format in the input for at least one of the functions present in **INFILE.yaml**, i.e. missing a parameter.
 
-### Adding Too Many Follow Models, Preference Classes, Agent Types, Regions, or Ideologies
+When using a constant function for your 'add', 'follow', or 'tweet' rates, you must have a 'value' or number for this rate (1 parameter). 
+
+When using a linear function, you must have a 'y_intercept' AND 'slope' for this increasing or decreasing rate (2 parameters).  
+
+Matching your input so that it coincides with the function you are implementing will fix this error.  
+
+Note that if an error message is not thrown, it may be because **#k@** used a default value instead of your incorrect input.
+
+#### Adding Too Many Follow Models, Preference Classes, Agent Types, Regions, or Ideologies
 
 `
 Number of ideologies must not be more than N_BIN_IDEOLOGIES (4)! Please adjust src/config_static.h.
@@ -56,9 +72,30 @@ terminate called after throwing an instance of 'char const*'
 /home/mobile/hashkat/run.sh: line 92: 12264 Aborted                 (core dumped) "$HASHKAT/build/src/hashkat" $args
 `
 
-You may recieve an error similar to the one above for adding too many follow models, preference classes, agent types, regions, or ideologies into your simulation (in the above case, we have added too many ideologies). If you recieve this error, you may either remove the additional follow model, preference class, agent type, region, or ideology from the *INFILE.yaml* file, or increase the value of the quantity of the parameter in question in the *config_static.h* file in *src* and rebuild ***#k@*** by running *build.sh*. It is important to note that you will also receive an error if the number of regions in your network does not EXACTLY match the quantity specified in *config_static.h*, so be sure to modify your input file or *config_static.h* file accordingly and rebuild ***#k@*** if this situation arises.
+You may receive a similar error if you attempt to configure more follow models, preference classes, agent types, regions, or ideologies in **INFILE.yaml** than have been built in the default **#k@** build.  In the above case, we have added too many ideologies. 
 
-### Not Having Enough Memory
+To fix this, you may either remove the excess entries from the **INFILE.yaml**, or rebuild **#k@** to permit the number you want.  
+
+To rebuild **#k@** with a different number of, for example, ideologies, go to
+
+`~/hashkat/src/config_static.h`
+
+Look for **N_BIN** files such as
+
+    N_BIN_PREFERENCE_CLASS = 2;
+    N_BIN_AGENT_TYPES = 200;
+    N_BIN_REGIONS = 3;
+    N_BIN_IDEOLOGIES = 4;
+
+These are the default values in the **#k@** build.  Revise the defaults to the values you want.
+
+Then rebuild **#k@** by running **build.sh**. 
+
+Note:  the number of regions in your network must EXACTLY match the quantity specified in 'config_static.h', so be sure to modify your 'INFILE.yaml' or the **N_BIN** in 'config_static.h' so they match.
+
+After **#k@** is rebuilt, the particular 'ideology' may be configured in **INFILE.yaml**.
+
+#### Not Enough Memory
 
 `
 terminate called after throwing an instance of 'std::bad_alloc'
@@ -66,46 +103,62 @@ terminate called after throwing an instance of 'std::bad_alloc'
 /home/mobile/hashkat/run.sh: line 80:  6088 Aborted                 (core dumped) "$HASHKAT/build/src/hashkat" $args
 `
 
-You may be unable to run certain large network simulations due to your computer not having enough memory to run a simulation of a network of such size. This will be evident by the above error message appearing when you try to run a network simulation. If this error message or one similar to it ever appears, it is recommended that you lower the number of agents in your network simulation by reducing the value of the *initial_agents* and/or *max_agents* in the *INFILE.yaml* file.
+Simulations take memory, particularly with many agents, 'agent types' or over a long allocated time.  The above error message will appear if you exceed your available memory when running a network simulation. 
+
+If this error message or one similar appears, it is recommended that you lower the number of agents in your network simulation by reducing the value of the 'initial_agents' and/or 'max_agents' in **INFILE.yaml** file.
 
 ## Unexpected Network Produced
 
-Sometimes when running a network simulation, the simulation may run smoothly, but the network you've created is quite different from what you had in mind. This is usually due to an error being made in *INFILE.yaml* that does not prevent the simulation from running, but gives you odd results. The following discusses some of the errors that you may encounter when using ***#k@***, and what the root cause of that problem is.
+Sometimes the simulation may run smoothly, but the network you've created is quite different from what you had in mind.  The following discusses some of the configuration errors that you may encounter when using **#k@**.
 
-### Twitter_Suggest Follow Model Network Not Constructed As Such
+#### Twitter_Suggest Follow Model Network Not Properly Constructed
 
-You may notice that when visualizing a *twitter_suggest* follow model network simulation, there seems to be no preferential attachment present in the network. The connections between agents seem to be random, and there is no clear distinction between the most popular and least popular agents. This is most likely due to an error in the follow ranks section of *INFILE.yaml*. It is imperative in any preferential attachment model network simulation that the max follow rank threshold be equal to or greater than the number of agents in the simulation and that the follow rank weight is 1 for the minimum follow rank of zero and that the max follow rank weight is equal to the max follow rank threshold increased by one (assuming the follow rank bins are spaced linearly in increments of 1). This allows agents with more followers to have a better chance of being followed than less popular agents. If the follow ranks are weighted incorrectly, more popular agents may not have a higher probability of being followed. If the follow rank max threshold is a number less than the total number of agents in the simulation, than agents with a differing number of followers may eventually have an equal weight of being followed because they have reached the max follow rank threshold. Ensuring that these follow ranks values are correct is essential for running an accurate preferential attachment follow model simulation.
+You may notice that when visualizing a 'twitter_suggest' follow model simulation that there seems to be no preferential attachment present in the network. The connections between agents seem to be random, and there is no clear distinction between the most popular and least popular agents. 
 
-The following visualization is that of a network we ran using the *twitter_suggest* follow model:
+It is imperative in any preferential attachment model network simulation that the 'max follow rank threshold' be equal to or greater than the number of agents in the simulation and that the 'follow rank weight' is 1 for the 'minimum follow rank' of zero and that the 'max follow rank weight' is equal to the 'max follow rank threshold' + 1 (assuming the follow rank bins are spaced linearly in increments of 1). 
+
+This allows agents with more followers to have a better chance of being followed than less popular agents. If the follow ranks are weighted incorrectly, more popular agents may not have a higher probability of being followed. If the 'follow rank max threshold' is a number less than the total number of agents in the simulation, then agents with a differing number of followers may eventually have an equal weight of being followed because they have reached the 'max follow rank threshold'. Ensuring that these follow ranks values are correct is essential for running an accurate preferential attachment follow model simulation.
+
+The following visualization is that of an incorrect simulation we ran using the 'twitter_suggest' follow model:
 
 <center>
 <img src='../img/troubleshooting/incorrect_twitter_suggest.png'>
 </center>
 
-As you can clearly see, this network clearly resembled a *random* follow model simulation as opposed to a *twitter_suggest* follow model simulation. Looking into the *INFILE.yaml* file, we discovered that the follow rank max threshold and weight were much smaller than the total number of agents in the simulation. Changing these values to their correct amount, we ran the network simulation again and produced the following visualization:
+This network resembled a 'random' follow model simulation as opposed to a 'twitter_suggest' simulation. 
+
+Looking in **INFILE.yaml**, we discovered that the 'follow rank max threshold' and 'weight' were much smaller than the total number of agents in the simulation. Changing these values to their correct amount, we ran the network simulation again and produced the following visualization:
 
 <center>
 <img src='../img/troubleshooting/correct_twitter_suggest.png'>
 </center>
 
-As you can see, this is clearly now a preferential attachment follow model network, with the most popular agents in the centre of the visualization, and the less popular ones at the sides. 
+As you can see, this is now a preferential attachment follow model network, with the most popular agents in the centre of the visualization, and the less popular ones at the sides. 
 
-### No Retweets Present in Network When They Should Be
+#### No Retweets Present in Network When They Should Be
 
 <center>
 <img src='../img/troubleshooting/no_retweets_present.png'>
 </center>
 
-Running a network simulation that enables retweeting, you may find that there are no retweets actually present in the simulation at its completion. This could be due to agents having a *tweet* rate of zero, since if there are no tweets in the simulation, there can't possibly be any retweets. This could also be due to an error in the tweet observation probability density function, where perhaps tweets aren't relevant for a long enough time to be retweeted. The *NoRetweetPref* could also be enabled instead of a preference class that allows retweeting, and/or the preference class that is enabled has miniscule *tweet_transmission* rates, leading to very few or no tweets being retweeted. Take a look over all these factors, and ensure that they are set properly before running the network simulation again. If you find that there are still no retweets occurring in the network, increase the *tweet_transmission* rates, *tweet* rates, maximum simulated time, and/or maximum real time variables to allow agents ample opportunity to retweet tweets. 
+After running a network simulation that enables retweeting, you may find that there are no retweets actually present in the simulation at its completion. This could be due to agents having a 'tweet rate' of zero.  It could also be due to an error in the 'tweet observation probability density function' or decay rate, where perhaps tweets aren't relevant for a long enough time to be retweeted. The 'NoRetweetPref' could also be enabled instead of a preference class that allows retweeting, and/or the preference class that is enabled has a too small 'tweet_transmission' rate, leading to very few or no tweets being retweeted. 
 
-### Implementing *use_barabasi* For the Wrong Follow Model
+Take a look over all these factors and run the network simulation again. 
 
-Though a Barabasi configuration can be implemented into every follow model network simulation, it is usually only enabled for follow models that invoke preferential attachment, such as the *twitter_suggest*, *preferential_agent*, and possibly the *twitter* folow model. You can use the Barabasi configuration for other follow models if you so please, but keep in mind the impact it will have on your network, and how different your results may be for a network simulation that does not implement this configuration.
+If you find that there are still no retweets occurring in the network, increase the 'tweet_transmission' rate, 'tweet' rate, and maximum simulated and/or maximum real time to allow agents ample opportunity to retweet. 
 
-### Simulation Running Even Despite Missing Variable
+#### Implementing *use_barabasi* For the Wrong Follow Model
 
-You may find when checking your *INFILE.yaml* file after running a network simulation that you were missing a particular variable and its corresponding value in your input file. However, this seems to have not stopped your simulation from running. The reason for this is that whenever a variable and its corresponding value are missing from *INFILE.yaml*, the value assigned to that variable in *DEFAULT.yaml* will be used in the network simulation in its place. THE *DEFAULT.yaml* file can of course be found in the **hashkat** directory as well as [here](https://github.com/hashkat/hashkat/blob/master/DEFAULT.yaml).
+A Barabasi configuration is usually only enabled for follow models that invoke preferential attachment, such as the 'twitter_suggest', 'preferential_agent', and the combination 'twitter' follow model. You can use the Barabasi configuration for other follow models, but it will impact your network and give you different results.
+
+#### Simulation Running With an Unintended Variable Value
+
+You may find your simulation ran with a value you did not expect.  When you check **INFILE.yaml** you discover you were missing a particular variable or its value yet the simulation ran. When a variable or its value are missing from **INFILE.yaml**, the default values will be used in the simulation.  The default values can be found here:
+
+`~/hashkat/DEFAULT.yaml`
+
+**DEFAULT.yaml** can also be found [here](https://github.com/hashkat/hashkat/blob/master/DEFAULT.yaml).
 
 ## Reporting an Issue
 
-Check out our [**Feedback**](http://docs.hashkat.org/en/latest/feedback/) page if you have any issues using ***#k@*** that are not discussed above. There you can find our email address where you can contact us as well as a link to a webpage where you can post any issues you may have. These issues will be addressed and remedied as soon as possible. 
+To report an issue, go to [Feedback](http://docs.hashkat.org/en/latest/feedback/). There you will find our email address as well as a link to a webpage where you can post any issues you may have. These issues will be addressed and remedied as soon as possible. 
