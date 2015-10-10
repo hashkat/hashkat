@@ -120,9 +120,14 @@ void output_network_statistics(AnalysisState& state) {
     if (C.region_connection_matrix) {
         region_stats(network, state);
     }
+<<<<<<< Updated upstream
     if (C.most_popular_tweet_content) {
         most_popular_tweet_content(mpt, network);
     }
+=======
+    cout << "\n\n\n\n\n\n\n";
+    n_agents_in_regions(network);
+>>>>>>> Stashed changes
     //fraction_of_connections_distro(network, state, stats);
     //if (C.dd_by_age) {
     //    dd_by_age(network, state, stats);
@@ -788,6 +793,18 @@ void network_statistics(Network& n, NetworkStats& net_stats, AgentTypeVector& et
 struct holder {
     vector<int> ids;
 };
+
+void n_agents_in_regions(Network& n) {
+    int region_counts[N_BIN_REGIONS] = {0};
+    for (int i = 0; i < n.size(); i ++) { 
+    	region_counts[n[i].region_bin] ++;
+    }
+    cout << "REGION BIN COUNTS: ";
+    for (int i = 0; i < N_BIN_REGIONS; i ++) {
+    	cout << region_counts[i] << "\t";
+    }
+    cout << "\n\n";
+}
 
 bool region_stats(Network& n, AnalysisState& state) {
     holder region_self[N_BIN_REGIONS];
