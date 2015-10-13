@@ -153,7 +153,7 @@ The agents in this simulation were configured to have a follow rate of 0.0001 fo
 
 
 <center>
-<img src='~/hashkat/docs/img/tutorial01/main_stats.png'>
+<img src='../img/tutorial01/main_stats.png'>
 </center>
 
 To plot the results, we may use [gnuplot](http://gnuplot.sourceforge.net/).  To access gnuplot, type in the command:
