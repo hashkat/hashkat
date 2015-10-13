@@ -61,7 +61,7 @@ or more specifically, for **n** number of agents_types in the system, the indivi
 
 **R = add_rate + (tweet_rate<sub>1</sub> + follow_rate<sub>1</sub> + retweet_rate<sub>1</sub>) + ... + (tweet_rate<sub>n</sub> + follow_rate<sub>n</sub> + retweet_rate<sub>n</sub>)**
 
-The default build of **#k@** permits 200 different agent_types (n = 200).  However, you may wish modify the proportions of each agent type, i.e. to have 1000 agents of type 1 (T<sub>1</sub> = 1000), but only 10 of type 2, for a 100:1 ration of A:B.  Then the **R** function becomes:
+The default build of **#k@** permits 200 different agent_types (n = 200).  However, you may wish modify the proportions of each agent type, i.e. to have 1000 agents of type 1 (T<sub>1</sub> = 1000), but only 10 of type 2, for a 100:1 ratio A:B.  Then the **R** function becomes:
 
 **R = add_rate + T<sub>1</sub>(tweet_rate<sub>1</sub> + follow_rate<sub>1</sub> + retweet_rate<sub>1</sub>)+...+T<sub>n</sub>(tweet_rate<sub>n</sub> + follow_rate<sub>n</sub> + retweet_rate<sub>n</sub>)**
 
