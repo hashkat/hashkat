@@ -91,7 +91,7 @@ Then one configures the network, to give Agents their **particular** Region, Lan
 
 For now, we will use the default build, and simply demonstrate how to modify configuration.  
 
-Note:  The tutorial files are stored separately and do not affect the main build and configuration files of **#k@**.
+Note:  The tutorial files are stored separately and do not affect the main build and configuration files of **hashkat**.
 
 
 #### Running a Simple Network
@@ -101,13 +101,13 @@ Note:  The tutorial files are stored separately and do not affect the main build
 <iframe width="560" height="315" src="https://www.youtube.com/embed/jY7m0VDZPjM" frameborder="0" allowfullscreen></iframe>
 </center>
 
-For this first tutorial, we're going to run a simple network using **#k@**.  This network is unrealistic and is used for demonstration purposed only.
+For this first tutorial, we're going to run a simple network using **#k@**.  This network is unrealistic and is used for demonstration purposes only.
 
 If you look into the **hashkat** directory, you will find several different files and directories. For now we are just going to look at **INFILE.yaml**, which is the file we use to configure our simulated network.
 
 We will discuss the configuration parameters throughout these tutorials.  A detailed description of the parameters can be found on the [**Input**](http://docs.hashkat.org/en/latest/input/) page. 
 
-For this tutorial, we will have a constant (unchanging) number of agents (n = 1000), one agent type, and the simulation will run for 100,000 simulated minutes and a maximum of 1 minute real time.  The **tweet** rate was set to 0.0001, while  **retweet**, and **unfollow** rates are set to zero.  Therefore:  **R = 0 + (1000)(0.0001 + 0 + 0) = 0.1**
+For this tutorial, we will have a constant (unchanging) number of agents (n = 1000), one agent_type, and the simulation will run for 100,000 simulated minutes and a maximum of 1 minute real time.  The **tweet** rate was set to 0.0001, while  **retweet**, and **unfollow** rates are set to zero.  Therefore:  **R = 0 + (1000)(0.0001 + 0 + 0) = 0.1**
 
 Run the simulation by typing in the command:
 
