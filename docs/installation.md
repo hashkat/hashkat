@@ -15,7 +15,7 @@ We will go over the steps to install **#k@** for each particular operating syste
 
 Here outlines the following steps on how to install **#k@** on Mac OS X:
 
-1. Download the latest build of ***#k@*** at [hashkat.org](http://hashkat.org) by clicking on 'Latest Build'.
+1. Download the latest build of **#k@** at [hashkat.org](http://hashkat.org) by clicking on 'Latest Build'.
 
 1. Enter a terminal (which can be accessed by searching for 'terminal' in your system) and go into your **Downloads** directory/folder by typing in the following command and pressing **return**:
 
@@ -71,11 +71,11 @@ Here outlines the following steps on how to install **#k@** on Mac OS X:
 
    **build.sh** is followed by 'space dash capital oh'.
 
-1. You can now run ***#k@*** in this **hashkat** directory as long as it has *INFILE.yaml* and *run.sh* within in it by typing in the command:
+1. You can now run **#k@** in this **hashkat** directory as long as it has *INFILE.yaml* and *run.sh* within in it by typing in the command:
 
     `./run.sh`
 
-1. Once you have run ***#k@*** properly, remove all the network save and analysis files created from this test simulation by typing in the following commands:
+1. Once you have run **#k@** properly, remove all the network save and analysis files created from this test simulation by typing in the following commands:
 
     `rm DATA_vs_TIME`
 
