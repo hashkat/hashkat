@@ -2,11 +2,9 @@
 
 # Output
 
-This section serves as a reference for users who have run a simulation, and wish to analyze the data this simulation has outputted. This page goes over every aspect of the files found in the output directory.  To recap:
+This section serves as a reference for users who have run a simulation, and wish to analyze the data this simulation has outputted. This page goes over every aspect of the files found in the output directory.  
 
-**in-degree** means number (or list) of followers, or subscribers to our agent.
-**out-degree** is the number (or list) of agents whom our agent is following.
-**culmulative-degree** is both who follows our agent and those whom our agent follows.
+To recap:  **in-degree** means number (or list) of followers, or subscribers to our agent, **out-degree** is the number (or list) of agents whom our agent is following, and **culmulative-degree** includes those whom our agent follows and our agent's followers.
 
 #### Agent Type Info
 
