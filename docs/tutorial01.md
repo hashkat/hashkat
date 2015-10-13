@@ -20,21 +20,21 @@ In the **#k@** simulation, the network is set up with a certain number of initia
 
 The agents are set up to be of different types, with different preferences.  The agents are configured for:
 
-1.  The type of Agent (Standard, Celebrity, Organization or Bot).
+1.  The type of agent (Standard, Celebrity, Organization or Bot).
 
-2.  The Agent's characteristics in terms of Region, Language, and Ideology.
+2.  The agent's characteristics in terms of Region, Language, and Ideology.
 
-3.  The type of signal the Agent is likely to generate (tweet).  Signal types are General, Political, Humorous, Musical.  The signal type affects the signal's scope of transmission.
+3.  The type of signal the agent is likely to generate (tweet).  Signal types are General, Political, Humorous, Musical.  The signal type affects the signal's scope of transmission.
 
-4.  The type of signal the Agent is likely to retransmit (retweet).
+4.  The type of signal the agent is likely to retransmit (retweet).
 
-5.  The events that will cause the Agent to follow another Agent (follow-model)(edge creation).
+5.  The events that will cause the agent to follow another agent (follow-model, related to edge creation).
 
-6.  The events that will cause the Agent to unfollow another Agent (edge deletion).
+6.  The events that will cause the agent to unfollow another agent (edge deletion).
 
-7.  Rates (probabilities) are set for each type of behavior.  For example, Agent-type A may 50% likely to generate a political tweet and 50% likely to generate a musical tweet.  Agent-type B may only generate and retweet humorous tweets.  Agent A may tweet once a day, Agent B may tweet 10 times a day. 
+7.  Rates (probabilities) are set for each type of behavior.  For example, Agent_type A may 50% likely to generate a political tweet and 50% likely to generate a musical tweet.  Agent_type B may only generate and retweet humorous tweets.  Agent A may tweet once a day, Agent B may tweet 10 times a day. 
 
-8.  A simulated time and real time are set for the simulation to run.  
+A simulated time and real time are set for the simulation to run.  
 
 The simulation commences.  
 
@@ -107,7 +107,7 @@ If you look into the **hashkat** directory, you will find several different file
 
 We will discuss the configuration parameters throughout these tutorials.  A detailed description of the parameters can be found on the [**Input**](http://docs.hashkat.org/en/latest/input/) page. 
 
-For this tutorial, we will have a constant (unchanging) number of agents (n = 1000), one agent_type, and the simulation will run for 100,000 simulated minutes and a maximum of 1 minute real time.  The **tweet** rate was set to 0.0001, while  **retweet**, and **unfollow** rates are set to zero.  Therefore:  **R = 0 + (1000)(0.0001 + 0 + 0) = 0.1**
+For this tutorial, we will have a constant (unchanging) number of agents (add_rate = 0, n = 1000), one agent_type, and the simulation will run for 100,000 simulated minutes and a maximum of 1 minute real time.  The **tweet** rate was set to 0.0001, while  **retweet**, and **unfollow** rates are set to zero.  Therefore:  **R = 0 + (1000)(0.0001 + 0 + 0) = 0.1**
 
 Run the simulation by typing in the command:
 
