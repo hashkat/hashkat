@@ -197,7 +197,7 @@ struct Analyzer {
             a.language = (Language) rng.kmc_select(region.language_probs);
             auto temp = network.follower_set(a.id).as_vector();
             for (int id : temp) {
-                analyzer_handle_unfollow(state, id, a.id);
+                analyzer_handle_unfollow(state, a.id, id);
                 analyzer_handle_follow(state, id, a.id, 0);
             }
         }

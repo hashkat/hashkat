@@ -122,7 +122,7 @@ public:
     inline int kmc_select(double* start, int len) {
         double num =  genrand_real1();
         for (int i = 0; i < len; i++) {
-            if (num < start[i]) {
+            if (num <= start[i]) {
                 return i;
             }
             num -= start[i];
