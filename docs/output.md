@@ -4,7 +4,7 @@
 
 This section serves as a reference for users who have run a simulation, and wish to analyze the data this simulation has outputted. This page goes over every aspect of the files found in the output directory.
 
-## Agent Type Info
+#### Agent Type Info
 
 `agenttype_info.dat`
 
@@ -14,7 +14,7 @@ Present and named for every single agent type in the network (e.g. a *Standard* 
 <img src='../img/output/agenttype_info_file.png'>
 </center>
 
-## Categories Distribution
+#### Categories Distribution
 
 `Categories_Distro.dat`
 
@@ -24,7 +24,7 @@ Outlines the number of tweets, follows, and retweets that have occurred in a net
 <img src='../img/output/categories_distro_file.png'>
 </center>
 
-## Cumulative-Degree Distribution
+#### Cumulative-Degree Distribution
 
 `cumulative-degree_distribution_month_000.dat`
 
@@ -34,7 +34,7 @@ Outlines all the possible cumulative-degrees an agent can have in that particula
 <img src='../img/output/cumulative-degree_distribution_file.png'>
 </center>
 
-## Degree Distribution by Follow Model
+#### Degree Distribution by Follow Model
 
 `dd_by_follow_model.dat`
 
@@ -44,7 +44,7 @@ Indicates the normalized probability and the normalized probability logarithm th
 <img src='../img/output/dd_by_follow_model_file.png'>
 </center>
 
-## In-Degree Distribution
+#### In-Degree Distribution
 
 `in-degree_distribution_month_000.dat`
 
@@ -54,7 +54,7 @@ Outlines all the possible in-degrees an agent can have in that particular month 
 <img src='../img/output/in-degree_distribution_file.png'>
 </center>
 
-## Main Statistics
+#### Main Statistics
 
 `main_stats.dat`
 
@@ -64,7 +64,7 @@ Outlines the most important network statistics for this simulation. Under **USER
 <img src='../img/output/main_stats_file.png'>
 </center>
 
-## Most Populat Tweet Content
+#### Most Popular Tweet Content
 
 `most_popular_tweet_content.dat`
 
@@ -76,7 +76,7 @@ An example of the data found in this output file is shown below:
 <img src='../img/output/most_popular_tweet_content_file.png'>
 </center>
 
-## Network Connections
+#### Network Connections
 
 `network.dat`
 
@@ -86,7 +86,7 @@ Outlines which agents are following who. In this file there are two columns, wit
 <img src='../img/output/network_dat_file.png'>
 </center>
 
-## Network Visualization
+#### Network Visualization
 
 `network.gexf`
 
@@ -96,7 +96,7 @@ Outlines which agents are following who. In this file there are two columns, wit
 <img src='../img/output/network_gexf_file.png'>
 </center>
 
-## Out-Degree Distribution
+#### Out-Degree Distribution
 
 `out-degree_distribution_month_000.dat`
 
@@ -106,7 +106,7 @@ Outlines all the possible out-degrees an agent can have in that particular month
 <img src='../img/output/out-degree_distribution_file.png'>
 </center>
 
-## Region Connection Matrix
+#### Region Connection Matrix
 
 `region_connection_matrix_month_000.dat`
 
@@ -116,7 +116,7 @@ Displays the connections made between regions for a particular month in the simu
 <img src='../img/output/region_connection_matrix_file.png'>
 </center>
 
-## Retweet Distribution
+#### Retweet Distribution
 
 `retweets_distro.dat`
 
@@ -126,7 +126,7 @@ Outlines the distribution of how many agents have made every possible number of 
 <img src='../img/output/retweets_distro_file.png'>
 </center>
 
-## Retweet Visualization
+#### Retweet Visualization
 
 `retweet_viz.gexf`
 
@@ -136,7 +136,7 @@ Outlines the distribution of how many agents have made every possible number of 
 <img src='../img/output/retweet_viz_gexf_file.png'>
 </center>
 
-## Tweet Distribution
+#### Tweet Distribution
 
 `tweets_distro.dat`
 
