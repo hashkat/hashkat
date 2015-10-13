@@ -10,9 +10,9 @@ A network as seen through graph theory is a set of users or agents (nodes) and c
 
 In the real world, a social network is a set of connections made by agents acting voluntarily, for recreational purposes.  Unlike, for example, a network set up to connect government offices, or all outlets of General Motors (tm), which can be considered top-down designed networks, (also with proprietary content), social networks are created bottom up, by agents who are NOT obligated to participate or produce signals.  Social networks are fluid and unique to the agent.
   
-Within the social network, connected agents receive signals (content) from each other, either in one direction only (Twitter) or bidirectionally (Facebook).  For purposes of these tutorials, language appropriate to Twitter will be used.
+Within the social network, connected agents receive signals (content) from each other, either in one direction only (Twitter) or bidirectionally (Facebook).  For purpose of these tutorials, language appropriate to Twitter will be used.
 
-The goal of **#k@** is to simulate the growth of social networks and how signals propagate through them.  
+The goal of **#k@** is to simulate the growth of social networks and track how signals propagate through the network.  
 
 #### What is **#k@**?
 
@@ -34,13 +34,15 @@ The agents are set up to be of different types, with different preferences.  The
 
 7.  Rates (probabilities) are set for each type of behavior.  For example, Agent-type A may 50% likely to generate a political tweet and 50% likely to generate a musical tweet.  Agent-type B may only generate and retweet humorous tweets.  Agent A may tweet once a day, Agent B may tweet 10 times a day. 
 
-A simulated time and real time are set for the simulation to run.  The simulation commences.  
+8.  A simulated time and real time are set for the simulation to run.  
+
+The simulation commences.  
 
 At each increment in time agents chose:  whom to follow (and receive signals from);  whether or not to generate a signal (tweet); the content of the signal;  whether or not to retransmit a signal (retweet); and whether or not to cease following another agent (unfollow).
 
 At the end of the allotted time, the simulation ceases.  Output files are generated and stored in **~/hashkat/output/**.  
 
-The output files describe multiple characteristics of the network including most popular tweet, the transmission path of same, and show all connected nodes in the network.  The output files may be visualized through third party programs such as [Gnuplot](http://gnuplot.sourceforge.net/), [Gephi](http://gephi.github.io/) or 
+The output files describe multiple characteristics of the network. The output files may be visualized through third party programs such as [Gnuplot](http://gnuplot.sourceforge.net/), [Gephi](http://gephi.github.io/) or 
 [Networkx](https://networkx.github.io/). 
 
 
@@ -59,13 +61,11 @@ or more specifically, for **n** number of agents_types in the system, the indivi
 
 **R = add_rate + (tweet_rate<sub>1</sub> + follow_rate<sub>1</sub> + retweet_rate<sub>1</sub>) + ... + (tweet_rate<sub>n</sub> + follow_rate<sub>n</sub> + retweet_rate<sub>n</sub>)**
 
-The default build of **#k@** permits 200 different agent_types.  However, you may wish to have 1000 agents of type 1 (T<sub>1</sub> = 1000), but only 10 of type 2, etc.
+The default build of **#k@** permits 200 different agent_types (n = 200).  However, you may wish modify the proportions of each agent type, i.e. to have 1000 agents of type 1 (T<sub>1</sub> = 1000), but only 10 of type 2, for a 100:1 ration of A:B.  Then the **R** function becomes:
 
 **R = add_rate + T<sub>1</sub>(tweet_rate<sub>1</sub> + follow_rate<sub>1</sub> + retweet_rate<sub>1</sub>)+...+T<sub>n</sub>(tweet_rate<sub>n</sub> + follow_rate<sub>n</sub> + retweet_rate<sub>n</sub>)**
 
-At simulated time of 0, a random number **r<sub>1</sub>** is generated.  
-
-This random number is used to determine all choices at that point in time in the system.  For Agent A, there is a 50:50 chance of a Political or Musical tweet.  If **r** equals, say, 0.40, Agent A will tweet politically, if **r** is 0.60, Agent B will tweet with musical content.
+At simulated time of 0, a random number **r<sub>1</sub>** is generated. This random number is used to determine all choices at that point in time in the system.  For Agent A, there is a 50:50 chance of a Political or Musical tweet.  If **r<sub>1</sub>** equals, say, 0.40, Agent A will tweet politically, if **r<sub>1</sub>** is 0.60, Agent B will tweet with musical content.
 
 The culmulative **R** will then change to reflect choices that have been made.  
 
@@ -89,7 +89,9 @@ All of the rate functions will then be recalibrated to their new values and this
 
 Then one configures the network, to give Agents their **particular** Region, Language, tweet Preferences, and rates etc.  Configuration is done in the file **~/hashkat/INFILE.yaml**.
 
-For now, we will use the default build, and simply modify configuration.  The tutorials stand alone from the main **hashkat** files, the tutorial configuration files are stored separately.
+For now, we will use the default build, and simply demonstrate how to modify configuration.  
+
+Note:  The tutorial files are stored separately and do not affect the main build and configuration files of **#k@**.
 
 
 #### Running a Simple Network
@@ -120,13 +122,13 @@ When running this program, you will see something similar to this on the screen:
 |<sub>9.93e+04</sub>|<sub>1.00e+03</sub>|<sub>1.00e+04</sub>|<sub>0.00e+00</sub>|<sub>0.00e+00(0.00e+00)</sub>|<sub>0.00e+00</sub>|<sub>1.00e-01</sub>|<sub>2.25e+00</sub>|
 
 
-This gives a list of data at particular points in your simulation.  Note that **Retweets** shows the number of retweets and in brackets beside it the number of **active** tweets (tweets that have not 'decayed'). 
+This gives a list of data at particular points in your simulation.  **Retweets** shows the number of retweets and in brackets beside it the number of **active** tweets.  'Active' tweets have not yet 'decayed' and are still eligible for retweeting. 
 
 
 
 So as we can see, at a simulated time of 99,300 simulated minutes, there were 1,000 agents in the network, 10,000 follows, 0 tweets, 0 retweets, and 0 unfollows.  The cumulative rate function was 0.1, and the real time that elapsed was 2.25 seconds.
 
-Once the simulation is concluded, the real time that the total analysis took will be displayed on the screen in milliseconds.
+Once the simulation is concluded, the real time elapsed of the total analysis will be displayed on the screen in milliseconds.
 
 Looking into the hashkat directory, you will see a **DATA_vs_TIME** file, which contains the chart displayed above at several different simulation times, a **network_state.dat** file which is where your simulation data will be saved to, and the **output** directory, which contains all the data you've accummulated during the simulation. 
 #### Output of a Simple Network
@@ -151,7 +153,7 @@ The agents in this simulation were configured to have a follow rate of 0.0001 fo
 
 
 <center>
-<img src='../img/tutorial01/main_stats.png'>
+<img src='~/hashkat/docs/img/tutorial01/main_stats.png'>
 </center>
 
 To plot the results, we may use [gnuplot](http://gnuplot.sourceforge.net/).  To access gnuplot, type in the command:
