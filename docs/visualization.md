@@ -152,7 +152,7 @@ Similar to our visualizations using Gephi, the red nodes in the above graph corr
 
 #### Analyzing Your Network
 
-You may use Networkx to analyze the network you've created as well. Here we will outline some of the various functions and algorithms you can input into Python after plotting your graph to collect some information on your network. To learn more about some of the analysis tools you can implement using Networkx, visit their documentation page [here](https://networkx.github.io/documentation/latest/).
+You may use Networkx to analyze the network you've created as well. Here we will outline some of the various functions and algorithms you can input into Python after plotting your graph to collect some information on your network. More information on [Networkx](https://networkx.github.io/documentation/latest/) can be found at their website [here](https://networkx.github.io/documentation/latest/).
 
 ##### Number of Nodes
  
