@@ -38,7 +38,7 @@ A simulated time and real time are set for the simulation to run.
 
 The simulation commences.  
 
-At each increment in time agents chose:  whom to follow (and receive signals from);  whether or not to generate a signal (tweet); the content of the signal;  whether or not to retransmit a signal (retweet); and whether or not to cease following another agent (unfollow).
+At each increment in time agents chose:  whom to follow;  whether or not to generate a signal; the content of the signal;  whether or not to retransmit a signal received; and whether or not to unfollow another agent.
 
 At the end of the allotted time, the simulation ceases.  Output files are generated and stored in **~/hashkat/output/**.  The output files may be visualized through third party programs such as [Gnuplot](http://gnuplot.sourceforge.net/), [Gephi](http://gephi.github.io/) or 
 [Networkx](https://networkx.github.io/). 
@@ -58,6 +58,8 @@ The default build of **#k@** permits 200 different agent_types (**n = 200**).  H
 
 As time increments, a random number **r<sub>1</sub>** is generated. which will determine which action, of all actions available at that point in time, is taken in the system.  
 
+The **R** will change, reflecting new rates in the system (i.e. each new agent enters the systems with a set of their own rates). 
+
 If 'use_random_time_increment' in 'INFILE.yaml' is enabled, another random number **r<sub>t</sub>** is generated, and time will move forward by:
 
 <center>
@@ -70,9 +72,9 @@ If it is not enabled, time will move forward by:
 &Delta;<i>t</i> = 1 / <b>R</b>
 </center>
 
-The **R** will change, reflecting choices that have been made, and new rates in the system (i.e. each new agent enters the systems with a set of their own rates).  The cycle will repeat with a new random number generated.
+The cycle will repeat with a new random number **r<sub>2</sub>** generated.
 
-#### How to Run **#k@** In Tutorial
+#### How to Run **#k@**
 
 **#k@** is written in C++, a compiled (built) language.  First one builds the **#k@** program.  
 
@@ -88,9 +90,11 @@ When configuration is complete, one runs the simulation:
 
 `./run.sh`
 
-For now, we will use the default build, and simply demonstrate how to modify configuration.  
+For now, we will use the default build, and simply demonstrate how to modify configuration. 
 
-Note:  The tutorial files are stored separately.  To do the tutorials, for example **tutorial01**, open:
+#### How to Run **#k@** For Tutorials
+
+The tutorial files are stored separately.  To do the tutorials, for example **tutorial01**, open:
 
 `~/hashkat/docs/tutorial_input_files/tutorial01`
 
