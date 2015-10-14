@@ -10,7 +10,7 @@ The source code for **#k@** can be found in the **src** directory. The file **~/
 
 **Hashkat** is a simulation. Actions have a probability of occurring set by the user.  At each increment in time, a random number is generated which determines which action is taken.  
 
-In **#k@** all potential actions have rates.  The actions are 'add' (to network), and for each agent 'tweet', 'retweet', 'follow', and 'unfollow'.  A further network rate is the 'decay' rate, time after which tweets lose eligibility to be retweeted.
+In **#k@** all potential actions have rates.  The actions are 'add_agent' (to network), and for each agent 'tweet', 'retweet', 'follow', and 'unfollow'.  A further network rate is the 'decay' rate, time after which tweets lose eligibility to be retweeted.
 
 **Hashkat** takes one action per time increment.  Therefore, as the network gets larger, time gets compressed, i.e., if a network with one agent takes an action every hour, a network with 60 agents will take an action every minute, and a network with 3600 agents will take an action every second.  This example shows time compression which is dependent on the number of agents.
 
