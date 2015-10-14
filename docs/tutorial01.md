@@ -116,9 +116,9 @@ This will not affect the main configuration file of **hashkat**.
 
 For this first tutorial, we're going to run a simple network.  This network is unrealistic and is used for demonstration purposes only.
 
-We will discuss the configuration parameters throughout these tutorials.  A detailed description of the parameters can be found on the [**Input**](http://docs.hashkat.org/en/latest/input/) page. 
+We will explain configuration parameters as we progress through the tutorials, however more information is available on the [**Input**](http://docs.hashkat.org/en/latest/input/) page. 
 
-For this tutorial, we will have a constant (unchanging) number of agents (add_rate = 0), 1000 initial agents (n = 1000), and one agent_type with a 'tweet' rate of 0.0001 per minute.  The simulation will run for 100,000 simulated minutes or 1 minute real time.  The 'follow', 'retweet', and 'unfollow' rates are set to zero.  Therefore:  
+In this tutorial, we will have a constant (unchanging) number of agents (add_rate = 0), 1000 initial agents (n = 1000), and one agent_type with a 'tweet' rate of 0.0001 per minute.  The simulation will run for 100,000 simulated minutes or 1 minute real time.  The 'follow', 'retweet', and 'unfollow' rates are set to zero.  Therefore:  
 
 **R = 0 + (1000)(0.0001 + 0 + 0) = 0.1**
 
@@ -128,22 +128,22 @@ Run the simulation by typing in the command:
 
 You may refer to [**Installation**](http://docs.hashkat.org/en/latest/installation/) for more information on running a simulation for the first time and using the [command line](ttp://docs.hashkat.org/en/latest/commandline/).
 
-When running this program, you will see something similar to this on the screen:
+When running this program, you will see something similar to this on the screen which shows data at particular points in the simulation:
 
 |<sub>Simulation Time (min)</sub>|<sub>Users</sub>|<sub>Follows</sub>|<sub>Tweets</sub>|<sub>Retweets</sub>|<sub>Unfollows</sub>|<sub>R</sub>|<sub>Real Time (s)</sub>|
 |:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
 |<sub>9.93e+04</sub>|<sub>1.00e+03</sub>|<sub>1.00e+04</sub>|<sub>0.00e+00</sub>|<sub>0.00e+00(0.00e+00)</sub>|<sub>0.00e+00</sub>|<sub>1.00e-01</sub>|<sub>2.25e+00</sub>|
 
 
-This gives a list of data at particular points in your simulation.  We can see both 'Retweets' and a number beside it in brackets.  This is the number of 'active' tweets.  Active tweets are signals that have not yet 'decayed' and are still eligible for retweeting. 
+Note we can see both 'Retweets' and a number beside it in brackets.  This is the number of 'active' tweets, which are signals that have not yet 'decayed' and are eligible to be retransmitted. 
 
-So as we can see, at a simulated time of 99,300 simulated minutes, there were 1,000 agents in the network, 10,000 follows, 0 tweets, 0 retweets, and 0 unfollows.  The cumulative rate function was 0.1, and the real time that elapsed was 2.25 seconds.
+We see that at simulated time of 99,300 minutes, there were still 1,000 agents in the network (0 = add_rate), with 10,000 follows, 0 tweets, 0 retweets, and 0 unfollows.  The cumulative rate function was 0.1, and the real time that elapsed was 2.25 seconds.
 
 Once the simulation is concluded, output files will be created and the real time elapsed will be displayed on the screen in milliseconds.
 
 #### Output of a Simple Network
 
-The simulation creates several output files including:
+The simulation creates several output files in the **hashkat** directory and in a new **output** directory, including:
 
 `~/hashkat/DATA_vs_TIME`
 `~/hashkat/network_state.dat` 
@@ -175,7 +175,7 @@ To plot the results, we may use [gnuplot](http://gnuplot.sourceforge.net/).  To 
 
 `gnuplot`
 
-To plot the in-degree, out-degree, and cumulative-degree distributions for 'month002', which contains the most up to date data, on the same graph with appropriate axis labels and a title, type in the following:
+The most up-to-date data is in 'month002'.  To plot the in-degree, out-degree, and cumulative-degree distributions for this month on the same graph with appropriate axis labels and a title, type in the following:
 
 `set style fill transparent solid 0.5 noborder `
 
