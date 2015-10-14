@@ -44,7 +44,7 @@ because this is off the path, you may simply move the unwanted files & directori
 
 `mv ~/hashkat/network_stat.dat ~/hashkat/MyOldSimulations/`
 
-`mv -r ~/hashkat/output/ ~/hashkat/output`
+`mv -r ~/hashkat/output/ ~/hashkat/MyOldSimulations/`
 
 If you do this more than once, you will end up with a lot of output directories of the same name in 'MyOldSimulations'.  Therefore you may want to move and rename them.
 
@@ -76,13 +76,15 @@ You can now run your new simulation by typing in the command:
 <iframe width="560" height="315" src="https://www.youtube.com/embed/-gQ52JW2s-Y" frameborder="0" allowfullscreen></iframe>
 </center>
 
-If for whatever reason you would like to stop a simulation midway through, without losing your data, simply press **Ctrl-c**. The simulation will automatically save the information it's collected to the 'network_state.dat' file.  You may analyze the data you have so far in the 'DATA_vs_TIME' file and 'output' directory. 
+If for whatever reason you would like to stop a simulation midway through, without losing your data, simply press **Ctrl-c**. The simulation will automatically save the information it's collected to the **network_state.dat** file.  
 
-If you would like to continue this simulation from where you left off, simply type in:
+You may analyze the data you have so far which is in the **DATA_vs_TIME** file and **output** directory. 
+
+If you would like to continue the simulation from where you left off, simply type in:
 
 `./run.sh`
 
-again and the simulation will recommence running, if you have time left.  Note: you may increase the maximum simulation time in your 'INFILE.yaml' file and the network simulation will simply continue from where it previously left off.
+and the simulation will recommence running, if you have time left.  Note: you may increase the maximum simulation time in your 'INFILE.yaml' file and the network simulation will simply continue from where it previously left off.
 
 It is possible to continue running the same simulation with a new configuration of 'INFILE.yaml', but this gives complex output data and is discouraged.
 
