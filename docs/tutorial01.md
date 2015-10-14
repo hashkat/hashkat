@@ -61,8 +61,8 @@ or more specifically, for **n** number of agents_types in the system, the indivi
 
 **R = add_rate + (tweet_rate<sub>1</sub> + follow_rate<sub>1</sub> + retweet_rate<sub>1</sub>) + ... + (tweet_rate<sub>n</sub> + follow_rate<sub>n</sub> + retweet_rate<sub>n</sub>)**
 
-The default build of **#k@** permits 200 different agent_types (n = 200).  However, you may wish modify the proportions of each agent type, i.e. to have 1000 agents of type 1 (T<sub>1</sub> = 1000), but only 10 of type 2, for a 100:1 ratio A:B.  Then the **R** function becomes:
-
+The default build of **#k@** permits 200 different agent_types (n = 200).  However, you may wish modify the proportions of each agent type, i.e. to have 1000 agents of type 1 (T<sub>1</sub> = 1000), but only 10 of type 2, for a 100:1 ratio Agent_1:Agent_2.  Then the **R** function becomes:
+A
 **R = add_rate + T<sub>1</sub>(tweet_rate<sub>1</sub> + follow_rate<sub>1</sub> + retweet_rate<sub>1</sub>)+...+T<sub>n</sub>(tweet_rate<sub>n</sub> + follow_rate<sub>n</sub> + retweet_rate<sub>n</sub>)**
 
 At simulated time of 0, a random number **r<sub>1</sub>** is generated. This random number is used to determine all choices at that point in time in the system.  For Agent A, there is a 50:50 chance of a Political or Musical tweet.  If **r<sub>1</sub>** equals, say, 0.40, Agent A will tweet politically, if **r<sub>1</sub>** is 0.60, Agent B will tweet with musical content.
