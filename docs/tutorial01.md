@@ -12,7 +12,7 @@ In the real world, a social network is a set of connections made by agents actin
   
 Within the social network, connected agents receive signals (content) from each other, either in one direction only (Twitter) or bidirectionally (Facebook).  For purpose of these tutorials, language appropriate to Twitter will be used.
 
-The goal of **#k@** is to simulate the growth of social networks and track how signals propagate through the network.  
+The goal of **#k@** is to simulate the growth of social networks and track how signals propagate through them.  
 
 #### What is **#k@**?
 
@@ -20,19 +20,19 @@ In the **#k@** simulation, the network is set up with a certain number of initia
 
 The agents are set up to be of different types, with different preferences.  The agents are configured for:
 
-1.  The type of agent (Standard, Celebrity, Organization or Bot).
+1.  The type of agent (standard, celebrity, organization or bot).
 
-2.  The agent's characteristics in terms of Region, Language, and Ideology.
+2.  The agent's characterstics in terms of region, language, and ideology.
 
-3.  The type of signal the agent is likely to generate (tweet).  Signal types are General, Political, Humorous, Musical.  The signal type affects the signal's scope of transmission.
+3.  The type of signal the agent is likely to generate (tweet).  Signal types are general, political, humorous, musical.  The type of signal affects its scope of retransmission.
 
-4.  The type of signal the agent is likely to retransmit (retweet).
+4.  The type of signal the agent is likely to retransmit.
 
-5.  The events that will cause the agent to follow another agent (follow-model, related to edge creation).
+5.  The events that will cause the agent to follow another agent (follow-model and edge creation).
 
 6.  The events that will cause the agent to unfollow another agent (edge deletion).
 
-7.  Rates (probabilities) are set for each type of behavior.  For example, Agent_type A may 50% likely to generate a political tweet and 50% likely to generate a musical tweet.  Agent_type B may only generate and retweet humorous tweets.  Agent A may tweet once a day, Agent B may tweet 10 times a day. 
+7.  Rates (probabilities) are set for each type of behavior.  For example, Agent_type A may 50% likely to generate a political tweet and 50% likely to generate a musical tweet. Agent A may tweet once a day, Agent B may tweet 10 times a day. 
 
 A simulated time and real time are set for the simulation to run.  
 
@@ -40,9 +40,7 @@ The simulation commences.
 
 At each increment in time agents chose:  whom to follow (and receive signals from);  whether or not to generate a signal (tweet); the content of the signal;  whether or not to retransmit a signal (retweet); and whether or not to cease following another agent (unfollow).
 
-At the end of the allotted time, the simulation ceases.  Output files are generated and stored in **~/hashkat/output/**.  
-
-The output files describe multiple characteristics of the network. The output files may be visualized through third party programs such as [Gnuplot](http://gnuplot.sourceforge.net/), [Gephi](http://gephi.github.io/) or 
+At the end of the allotted time, the simulation ceases.  Output files are generated and stored in **~/hashkat/output/**.  The output files may be visualized through third party programs such as [Gnuplot](http://gnuplot.sourceforge.net/), [Gephi](http://gephi.github.io/) or 
 [Networkx](https://networkx.github.io/). 
 
 
@@ -50,17 +48,17 @@ The output files describe multiple characteristics of the network. The output fi
 
 **Hashkat** takes one action per time increment.  As the network gets larger, the time increment gets smaller, i.e., if a network with one agent takes an action every hour, a network with 60 agents will take an action every minute, and a network with 3600 agents will take an action every second.  This example shows time compression which is dependent on the number of agents.
 
-The [Kinetic Monte Carlo (KMC)](https://en.wikipedia.org/wiki/Kinetic_Monte_Carlo) algorithm compresses the time increment based on the cumulative rate function **R** (the sum of the rates within the system).  The [KMC algorithm](http://docs.hashkat.org/en/latest/developers/) as used by **#k@** is further discussed in **`/hashkat/
+The [Kinetic Monte Carlo (KMC)](https://en.wikipedia.org/wiki/Kinetic_Monte_Carlo) algorithm compresses the time increment based on the cumulative rate function **R** (the sum of the rates within the system).  The [KMC](http://docs.hashkat.org/en/latest/developers/) algorithm as used by **#k@** is further discussed in **~/hashkat/docs/developers.md**.
 
 For **#k@**, the cumulative rate function **R** is the sum of the network 'add' rate, and the different agents' 'tweet','follow', and 'retweet' rates. Note:  the 'tweet', 'follow', and 'retweet' rates are multiplied by the number of agents of that type in the network.
 
 **R = add_rate + T<sub>1</sub>(tweet_rate<sub>1</sub> + follow_rate<sub>1</sub> + retweet_rate<sub>1</sub>)+...+T<sub>n</sub>(tweet_rate<sub>n</sub> + follow_rate<sub>n</sub> + retweet_rate<sub>n</sub>)**
 
-The default build of **#k@** permits 200 different agent_types (n = 200).  However, you may wish modify the proportions of each agent type, i.e. to have 1000 agents of type 1 (T<sub>1</sub> = 1000), but only 10 of type 2, for a 100:1 ratio Agent_1:Agent_2. 
+The default build of **#k@** permits 200 different agent_types (**n = 200**).  However, you may wish modify the proportion of each agent_type, i.e. to have 1000 agents of Type_1 (T<sub>1</sub> = 1000), but only 10 of Type_2, for a 100:1 ratio Type_1:Type_2. 
 
-At each time , a random number **r<sub>1</sub>** is generated. which will determine which actions, of all actions available at that point in time, is taken in the system.  
+As time increments, a random number **r<sub>1</sub>** is generated. which will determine which actions, of all actions available at that point in time, is taken in the system.  
 
-If **use_random_time_increment** in **INFILE.yaml** is enabled, another random number **r<sub>t</sub>** is generated, and time will move forward by:
+If 'use_random_time_increment' in 'INFILE.yaml' is enabled, another random number **r<sub>t</sub>** is generated, and time will move forward by:
 
 <center>
 &Delta;<i>t</i> = -log(<i>r</i><sub>t</sub>) / <b>R</b>
@@ -72,7 +70,7 @@ If it is not enabled, time will move forward by:
 &Delta;<i>t</i> = 1 / <b>R</b>
 </center>
 
-The culmulative **R** will then change to reflect choices that have been made, and new rates available, and this cycle will repeat.
+The **R** will change, reflecting choices that have been made, and the new rates available (i.e. each new agent enters the systems with a set of their own rates).  The cycle will repeat with a new random number generated.
 
 #### How to Run **#k@** In Tutorial
 
@@ -80,13 +78,13 @@ The culmulative **R** will then change to reflect choices that have been made, a
 
 `./build.sh`
 
-The build defines the **number** of Regions, Ideologies, Agent-types, and Preferences the agents may have in your simulated network.  
+The build defines the **number** of Regions, Ideologies, Agent-types, and Preferences the agents may have in the simulated network.  
 
 Then one configures the network, to give Agents their **particular** Region, Language, tweet Preferences, and rates etc.  Configuration is done in the file 
 
 `~/hashkat/INFILE.yaml`  
 
-When configuration is complete, one runs the program:
+When configuration is complete, one runs the simulation:
 
 `./run.sh`
 
