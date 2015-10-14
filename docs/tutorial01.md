@@ -145,9 +145,9 @@ Once the simulation is concluded, output files will be created and the real time
 
 The simulation creates several output files in the **hashkat** directory and in a new **output** directory, including:
 
-`~/hashkat/DATA_vs_TIME`
-`~/hashkat/network_state.dat` 
-`~/haskhat/output directory` 
+*  `~/hashkat/DATA_vs_TIME`
+*  `~/hashkat/network_state.dat` 
+*  `~/haskhat/output directory` 
 
 <center>
 <iframe width="560" height="315" src="https://www.youtube.com/embed/83lnl6UXstQ" frameborder="0" allowfullscreen></iframe>
@@ -165,7 +165,7 @@ This lists all the files of information collected from the simulation. Let's loo
 
 **Nano** will display the contents of **main_stats.dat** as text. We can see the 'in-degree distribution' (an agent's followers), 'out-degree distribution' (those an agent follows), and 'cumulative-degree distribution' (both an agent's followers & following) for ALL the agents, by simulated month. 
 
-The agents in this simulation had a follow rate set at 0.0001 per simulated minute.  In 100,000 simulated minutes we would expect each agent to follow approximately 10 agents, and be followed by the same number. Therefore, we can expect most agents to have an in-degree value of 10, an out-degree value of 10, and a cumlative-degree value of 20. Let's plot and see!
+The agents in this simulation had a follow rate set at 0.0001 per simulated minute.  In 100,000 simulated minutes we would expect each agent to follow approximately 10 agents, and be followed by the same number. Therefore, we can expect most agents to have an in-degree value of 10, an out-degree value of 10, and a cumulative-degree value of 20. 
 
 <center>
 <img src='../img/tutorial01/main_stats.png'>
@@ -210,7 +210,7 @@ when you first start up Gnuplot and prior to actually plotting the data.
 <iframe width="560" height="315" src="https://www.youtube.com/embed/XLLcYKKzI2A" frameborder="0" allowfullscreen></iframe>
 </center>
 
-You can also use the data you collected to visualize your simulated network. We will discuss how to do so using [Gephi](http://gephi.github.io/) here.  A more in-depth discussion can be found on the [Visualization](http://docs.hashkat.org/en/latest/visualization/) page. 
+You may also use the data you collected to visualize your simulated network. We will discuss how to do so using [Gephi](http://gephi.github.io/) here.  A more in-depth discussion can be found on the [Visualization](http://docs.hashkat.org/en/latest/visualization/) page. 
 
 Entering Gephi, open the graph file **network.gexf** found in the 'output' directory of your simulation. Press 'OK' for the 'Import report' window that pops up, and you will now see a rough outline of your network. Under the 'Partition' subheading on the left side of the page, press the 'refresh' symbol, and choose the partition parameter 'Label' and click 'Apply'. You are now free to choose a layout for this network directly below the 'Apply' button you just pushed, and can run it for a few seconds. The following visualization was made using the 'Fruchterman Reingold' and 'Clockwise Rotate' layout:
 
