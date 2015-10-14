@@ -92,6 +92,8 @@ When configuration is complete, one runs the simulation:
 
 For now, we will use the default build, and simply demonstrate how to modify configuration. 
 
+To run a second simulation in **#k@** we need to first remove the output from the first simulation.  This is shown in **tutorial01**.
+
 #### How to Run **#k@** For Tutorials
 
 The tutorial files are stored separately.  To do the tutorials, for example **tutorial01**, open:
@@ -112,19 +114,19 @@ This will not affect the main configuration file of **hashkat**.
 <iframe width="560" height="315" src="https://www.youtube.com/embed/jY7m0VDZPjM" frameborder="0" allowfullscreen></iframe>
 </center>
 
-For this first tutorial, we're going to run a simple network using **#k@**.  This network is unrealistic and is used for demonstration purposes only.
+For this first tutorial, we're going to run a simple network.  This network is unrealistic and is used for demonstration purposes only.
 
 If you look into the **hashkat** directory, you will find several different files and directories. For now we are just going to look at **INFILE.yaml**, which is the file we use to configure our simulated network.
 
 We will discuss the configuration parameters throughout these tutorials.  A detailed description of the parameters can be found on the [**Input**](http://docs.hashkat.org/en/latest/input/) page. 
 
-For this tutorial, we will have a constant (unchanging) number of agents (add_rate = 0, n = 1000), one agent_type, and the simulation will run for 100,000 simulated minutes and a maximum of 1 minute real time.  The **tweet** rate was set to 0.0001, while  **retweet**, and **unfollow** rates are set to zero.  Therefore:  **R = 0 + (1000)(0.0001 + 0 + 0) = 0.1**
+For this tutorial, we will have a constant (unchanging) number of agents (add_rate = 0), 1000 initial agents (n = 1000), and one agent_type with a 'tweet' rate of 0.0001 per minute.  The simulation will run for 100,000 simulated minutes or 1 minute real time.  The 'follow', 'retweet', and 'unfollow' rates are set to zero.  Therefore:  **R = 0 + (1000)(0.0001 + 0 + 0) = 0.1**
 
 Run the simulation by typing in the command:
 
-`./run.sh`
+`../run.sh`
 
-You may refer to [**Installation**](http://docs.hashkat.org/en/latest/installation/) for more information on running a simulation for the first time.
+You may refer to [**Installation**](http://docs.hashkat.org/en/latest/installation/) for more information on running a simulation for the first time and using the [command line](ttp://docs.hashkat.org/en/latest/commandline/).
 
 When running this program, you will see something similar to this on the screen:
 
