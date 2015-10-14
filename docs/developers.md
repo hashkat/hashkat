@@ -16,28 +16,26 @@ In **#k@** all potential actions have rates.  The actions are 'add' (to network)
 
 In the [kinetic Monte Carlo (KMC)](https://en.wikipedia.org/wiki/Kinetic_Monte_Carlo) method,  KMC modifies the time increment by the cumulative rate function **R**.  Let me explain.  The way the system tracks all the potential actions that can be taken at a given point in time is by the culmulative rate function **R**, the sum of all the rates within the system.  In broad terms, the **R** function is the sum of the network 'add' rate, and the different agents' 'tweet','follow', and 'retweet' rates:
 
-**R = add_rate + (number of agents) x (tweet_rate + follow_rate + retweet_rate)**
-
-More specifically, for **n** number of agents_types in the system:
+For **n** number of agents_types in the system:
 
 **R = add_rate + (tweet_rate<sub>1</sub> + follow_rate<sub>1</sub> + retweet_rate<sub>1</sub>) + ... + (tweet_rate<sub>n</sub> + follow_rate<sub>n</sub> + retweet_rate<sub>n</sub>)**
 
-The default build of **#k@** permits 200 different agent_types (n = 200).  One may modify the proportions of each agent type, i.e. have 1000 agents of Type 1 (T<sub>1</sub> = 1000), but 10 of Type 2, for a 100:1 ratio Type_1:Type_2.  
+The default build of **#k@** permits 200 different agent_types (n = 200).  One may modify the proportions of each agent type, i.e. have 1000 agents of Type 1 (T<sub>1</sub> = 1000), but 10 of Type 2, for a 100:1 ratio T1:T2.  
 
 Then the **R** function becomes:
  
 **R = add_rate + T<sub>1</sub>(tweet_rate<sub>1</sub> + follow_rate<sub>1</sub> + retweet_rate<sub>1</sub>) + ... + T<sub>n</sub>(tweet_rate<sub>n</sub> + follow_rate<sub>n</sub> + retweet_rate<sub>n</sub>)**
 
-Each separate rate is divided by the culmulate rate **R**, and 'stacked', so that there are a spectrum of actions available in the numerical range 0-1.  
+Each separate rate is divided by the culmulate rate **R**, and 'stacked', so that there are a 'spectrum' of actions available in the numerical range 0-1.  
 
 Example:
 
-At time<sub>0</sub>, there are no agents in the system so the only relevant rate is the **add_rate**.  Let us assume there is a 40% add_rate.  This results, at this time, of the chance of an agent being added in the next time increment of 100%.  
+At time<sub>0</sub>, there are no agents in the system (n = 0) so the only relevant rate is the **add_rate**.  Let us assume there is a 40% add_rate.  This results, at this time, of the chance of an agent being added in the next time increment of 100%.  
 
     R = add_rate + 0 + ... + 0 = 40
     add_rate/R = 40/40 = 1 => 100% chance of adding an agent
  
-At time<sub>1</sub>, there is one agent in the system.  Agent_1 can tweet, but can't follow or retweet because there are no other agents in system.  Let us assume agent_1 has a 10% tweet rate.
+At time<sub>1</sub>, there is one agent in the system (n = 1).  Agent_1 can tweet, but can't follow or retweet because there are no other agents in system.  Let us assume agent_1 has a 10% tweet rate.
 
     R = add_rate + tweet_rate_1
     R = 40 + 10
@@ -49,14 +47,14 @@ Thus there is a smaller chance of adding an agent, athough the add rate has not 
 
 The 'spectrum' of choices is then:
 
-*  0 -> 0.80 add agent
-*  81 -> 1.0 agent_1 tweets. 
+*  0.0 -> 0.80 add agent
+*  0.81 -> 1.0 agent_1 tweets. 
 
 A random number is generated.  If the random number is 0.3 (for example), an agent will be added to the network.
 
 Once the action has been taken, **R** is recalculated.  
 
-With two agents in the system, both may follow, both may tweet, and both may retweet, so rates included in **R** have increased.  Let us assume agent_1 has a 4% retweet rate, and a 3% follow rate, and agent_2 has a 15% tweet rate, a 2% retweet rate, and a 6% follow rate.
+With two agents in the system (n = 2), both may follow, both may tweet, and both may retweet, so rates included in **R** have increased.  Let us assume agent_1 has a 4% retweet rate, and a 3% follow rate, and agent_2 has a 15% tweet rate, a 2% retweet rate, and a 6% follow rate.
 
     R = 40 + (10 + 4 + 3) + (15 + 2 + 6) =  80
 
@@ -70,11 +68,11 @@ The spectrum would then be:
 *  0.9 		-> 0.925 	agent_2 retweets
 *  0.925 	-> 1.0		agent_2 follows
 
-A random number is generated, an action taken, **R** recalculated and the cycle repeats.  As we can see **R** increases rapidly.
+A random number is generated.  Let us assume that number is 0.76.  Then the action taken is that agent_2 tweets.  At this point **R** recalculated, time increments, and the cycle repeats.  As we can see **R** increases rapidly.
 
 #### Time Compression
 
-As the absolute value of R increases (in our example it as gone from 40 to 80), time compresses.
+As the absolute value of R increases (in our example it has gone from 40 to 80), time compresses.
 
 If **use_random_time_increment** in **INFILE.yaml** is enabled, a different random number **r<sub>t</sub>** is generated, and time will move forward by:
 
