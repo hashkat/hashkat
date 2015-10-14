@@ -12,7 +12,7 @@ In the real world, a social network is a set of connections made by agents actin
   
 Within the social network, connected agents receive signals (content) from each other, either in one direction only (Twitter) or bidirectionally (Facebook).  For purpose of these tutorials, language appropriate to Twitter will be used.
 
-The goal of **#k@** is to simulate the growth of social networks and track how signals propagate through them.  
+The goal of **#k@** is to model and simulate the growth of social networks and the propogation of signals within them.  
 
 #### What is **#k@**?
 
