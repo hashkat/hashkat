@@ -56,7 +56,7 @@ For **#k@**, the cumulative rate function **R** is the sum of the network 'add' 
 
 The default build of **#k@** permits 200 different agent_types (**n = 200**).  However, you may wish modify the proportion of each agent_type, i.e. to have 1000 agents of Type_1 (T<sub>1</sub> = 1000), but only 10 of Type_2, for a 100:1 ratio Type_1:Type_2. 
 
-As time increments, a random number **r<sub>1</sub>** is generated. which will determine which actions, of all actions available at that point in time, is taken in the system.  
+As time increments, a random number **r<sub>1</sub>** is generated. which will determine which action, of all actions available at that point in time, is taken in the system.  
 
 If 'use_random_time_increment' in 'INFILE.yaml' is enabled, another random number **r<sub>t</sub>** is generated, and time will move forward by:
 
@@ -70,7 +70,7 @@ If it is not enabled, time will move forward by:
 &Delta;<i>t</i> = 1 / <b>R</b>
 </center>
 
-The **R** will change, reflecting choices that have been made, and the new rates available (i.e. each new agent enters the systems with a set of their own rates).  The cycle will repeat with a new random number generated.
+The **R** will change, reflecting choices that have been made, and new rates in the system (i.e. each new agent enters the systems with a set of their own rates).  The cycle will repeat with a new random number generated.
 
 #### How to Run **#k@** In Tutorial
 
