@@ -48,7 +48,7 @@ At the end of the allotted time, the simulation ceases.  Output files are genera
 
 **Hashkat** takes one action per time increment.  As the network gets larger, the time increment gets smaller, i.e., if a network with one agent takes an action every hour, a network with 60 agents will take an action every minute, and a network with 3600 agents will take an action every second.  This example shows time compression which is dependent on the number of agents.
 
-The [Kinetic Monte Carlo (KMC)](https://en.wikipedia.org/wiki/Kinetic_Monte_Carlo) algorithm compresses the time increment based on the cumulative rate function **R** (the sum of the rates within the system).  The [KMC](http://docs.hashkat.org/en/latest/developers/) algorithm as used by **#k@** is further discussed in **~/hashkat/docs/developers.md**.
+The [Kinetic Monte Carlo (KMC)](https://en.wikipedia.org/wiki/Kinetic_Monte_Carlo) algorithm compresses the time increment based on the cumulative rate function **R** (the sum of the rates within the system).  The algorithm as used by **#k@** is discussed in more detail [here](http://docs.hashkat.org/en/latest/developers/).
 
 For **#k@**, the cumulative rate function **R** is the sum of the network 'add' rate, and the different agents' 'tweet','follow', and 'retweet' rates. Note:  the 'tweet', 'follow', and 'retweet' rates are multiplied by the number of agents of that type in the network.
 
