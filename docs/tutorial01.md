@@ -48,31 +48,22 @@ The output files describe multiple characteristics of the network. The output fi
 
 #### What is the Kinetic Monte Carlo (KMC) Method?
 
+**Hashkat** takes one action per time increment.  As the network gets larger, the time increment gets smaller, i.e., if a network with one agent takes an action every hour, a network with 60 agents will take an action every minute, and a network with 3600 agents will take an action every second.  This example shows time compression which is dependent on the number of agents.
 
-The [Kinetic Monte Carlo (KMC)](https://en.wikipedia.org/wiki/Kinetic_Monte_Carlo) algorithm modifies the time increment of the simulation to be dependent on the cumulative rate function **R** (the sum of the rates within the system).
+The [Kinetic Monte Carlo (KMC)](https://en.wikipedia.org/wiki/Kinetic_Monte_Carlo) algorithm compresses the time increment based on the cumulative rate function **R** (the sum of the rates within the system).  The [KMC algorithm](http://docs.hashkat.org/en/latest/developers/) as used by **#k@** is further discussed in **`/hashkat/
 
-For **#k@**, the cumulative rate function **R** is the sum of the network 'add' rate, and the different agent's 'tweet','follow', and 'retweet' rates. Note:  the 'tweet', 'follow', and 'retweet' rates are multiplied by the number of agents in the network.
+For **#k@**, the cumulative rate function **R** is the sum of the network 'add' rate, and the different agents' 'tweet','follow', and 'retweet' rates. Note:  the 'tweet', 'follow', and 'retweet' rates are multiplied by the number of agents of that type in the network.
 
-
-**R = add_rate + (number of agents) x (tweet_rate + follow_rate + retweet_rate)**
-
-or more specifically, for **n** number of agents_types in the system, the individual agent_type 'tweet', 'follow' and 'retweet' rates are summed.
-
-
-**R = add_rate + (tweet_rate<sub>1</sub> + follow_rate<sub>1</sub> + retweet_rate<sub>1</sub>) + ... + (tweet_rate<sub>n</sub> + follow_rate<sub>n</sub> + retweet_rate<sub>n</sub>)**
-
-The default build of **#k@** permits 200 different agent_types (n = 200).  However, you may wish modify the proportions of each agent type, i.e. to have 1000 agents of type 1 (T<sub>1</sub> = 1000), but only 10 of type 2, for a 100:1 ratio Agent_1:Agent_2.  Then the **R** function becomes:
-A
 **R = add_rate + T<sub>1</sub>(tweet_rate<sub>1</sub> + follow_rate<sub>1</sub> + retweet_rate<sub>1</sub>)+...+T<sub>n</sub>(tweet_rate<sub>n</sub> + follow_rate<sub>n</sub> + retweet_rate<sub>n</sub>)**
 
-At simulated time of 0, a random number **r<sub>1</sub>** is generated. This random number is used to determine all choices at that point in time in the system.  For Agent A, there is a 50:50 chance of a Political or Musical tweet.  If **r<sub>1</sub>** equals, say, 0.40, Agent A will tweet politically, if **r<sub>1</sub>** is 0.60, Agent B will tweet with musical content.
+The default build of **#k@** permits 200 different agent_types (n = 200).  However, you may wish modify the proportions of each agent type, i.e. to have 1000 agents of type 1 (T<sub>1</sub> = 1000), but only 10 of type 2, for a 100:1 ratio Agent_1:Agent_2. 
 
-The culmulative **R** will then change to reflect choices that have been made.  
+At each time , a random number **r<sub>1</sub>** is generated. which will determine which actions, of all actions available at that point in time, is taken in the system.  
 
-If **use_random_time_increment** in **INFILE.yaml** is enabled, another random number **r<sub>2</sub>** is generated, and time will move forward by:
+If **use_random_time_increment** in **INFILE.yaml** is enabled, another random number **r<sub>t</sub>** is generated, and time will move forward by:
 
 <center>
-&Delta;<i>t</i> = -log(<i>r</i><sub>2</sub>) / <b>R</b>
+&Delta;<i>t</i> = -log(<i>r</i><sub>t</sub>) / <b>R</b>
 </center>
 
 If it is not enabled, time will move forward by:
@@ -81,17 +72,35 @@ If it is not enabled, time will move forward by:
 &Delta;<i>t</i> = 1 / <b>R</b>
 </center>
 
-All of the rate functions will then be recalibrated to their new values and this cycle will repeat.
+The culmulative **R** will then change to reflect choices that have been made, and new rates available, and this cycle will repeat.
 
-#### How to Run **#k@**
+#### How to Run **#k@** In Tutorial
 
-**#k@** is written in C++, a compiled (built) language.  First one builds the **#k@** program.  The build defines the **number** of Regions, Ideologies, Agent-types, and Preferences the agents may have in your simulated network.  
+**#k@** is written in C++, a compiled (built) language.  First one builds the **#k@** program.  
 
-Then one configures the network, to give Agents their **particular** Region, Language, tweet Preferences, and rates etc.  Configuration is done in the file **~/hashkat/INFILE.yaml**.
+`./build.sh`
+
+The build defines the **number** of Regions, Ideologies, Agent-types, and Preferences the agents may have in your simulated network.  
+
+Then one configures the network, to give Agents their **particular** Region, Language, tweet Preferences, and rates etc.  Configuration is done in the file 
+
+`~/hashkat/INFILE.yaml`  
+
+When configuration is complete, one runs the program:
+
+`./run.sh`
 
 For now, we will use the default build, and simply demonstrate how to modify configuration.  
 
-Note:  The tutorial files are stored separately and do not affect the main build and configuration files of **hashkat**.
+Note:  The tutorial files are stored separately.  To do the tutorials, for example **tutorial01**, open:
+
+`~/hashkat/docs/tutorial_input_files/tutorial01`
+
+you will see 'tutorial01' contains its own file called 'INFILE.yaml', which is the configuration shown in this tutorial.  To run the tutorial01 configuration, simply enter:
+
+'~/hashkat/run.sh`
+
+This will not affect the main configuration file of **hashkat**.
 
 
 #### Running a Simple Network
@@ -124,13 +133,12 @@ When running this program, you will see something similar to this on the screen:
 
 This gives a list of data at particular points in your simulation.  **Retweets** shows the number of retweets and in brackets beside it the number of **active** tweets.  'Active' tweets have not yet 'decayed' and are still eligible for retweeting. 
 
-
-
 So as we can see, at a simulated time of 99,300 simulated minutes, there were 1,000 agents in the network, 10,000 follows, 0 tweets, 0 retweets, and 0 unfollows.  The cumulative rate function was 0.1, and the real time that elapsed was 2.25 seconds.
 
 Once the simulation is concluded, the real time elapsed of the total analysis will be displayed on the screen in milliseconds.
 
 Looking into the hashkat directory, you will see a **DATA_vs_TIME** file, which contains the chart displayed above at several different simulation times, a **network_state.dat** file which is where your simulation data will be saved to, and the **output** directory, which contains all the data you've accummulated during the simulation. 
+
 #### Output of a Simple Network
 
 <center>
@@ -147,7 +155,7 @@ This lists all the files of information collected from the simulation. Let's loo
 
 `nano main_stats.dat`
 
-**Nano** will display the results of **main_stats.dat** as text. We can see the **in-degree distribution** (an Agent's followers), **out-degree distribution** (whom an Agent follows), and **cumulative-degree distribution** (both an Agent's followers & following) for ALL the agents, by simulated month. 
+**Nano** will display the results of **main_stats.dat** as text. We can see the 'in-degree distribution' (an Agent's followers), 'out-degree distribution' (whom an Agent follows), and 'cumulative-degree distribution' (both an Agent's followers & following) for ALL the agents, by simulated month. 
 
 The agents in this simulation were configured to have a follow rate of 0.0001 follows per simulated minute, so for a simulation of 100,000 simulated minutes, we would expect each agent to follow around 10 other agents, and be followed by about 10 agents. Therefore, we can expect most agents to have an in-degree value of 10, an out-degree value of 10, and a cumlative-degree value of 20. Let's plot and see!
 
