@@ -6,24 +6,28 @@ A brief explanation on restarting a network simulation, this tutorial should tak
 
 ### Run a New Simulation
 
-#### Remove Previous Simulation Data
-
 <center>
 <iframe width="560" height="315" src="https://www.youtube.com/embed/EmRJel-eGmw" frameborder="0" allowfullscreen></iframe>
 </center> 
+
+#### Remove Previous Simulation Data
 
 At the end of [Tutorial 1](http://docs.hashkat.org/en/latest/tutorial01/), we had run a simple network simulation and studied its output. 
 
 It is necessary to discard (or rename) the results of the old simulation to run a new simulation.  The results of the old simulation are found in:
 
 `network_state.dat`
+
 `~/hashkat/output/`
 
-Here we show you how to REMOVE the files, which is permanent.  You may also create a storage directory, and or rename the unwanted files and directories.
+Here we show you how to REMOVE the files, which is permanent.  You may also move the files to a storage directory, and/or rename the unwanted files and directories.
 
 ##### To Remove:
 
+To remove the old output:
+
 `rm network_state.dat`
+
 `rm -r output`
 
 Though not necessary, you can also remove the other files created from running a network simulation by typing in the commands:
@@ -36,9 +40,10 @@ Create a new directory to store your old simulations, for example:
 
 `mkdir ~/hashkat/MyOldSimulations`
 
-because this is off the path, you may simply move the unwanted files & directories and they will be invisible to **hashkat**.
+because this is off the path, you may simply move the unwanted files & directories into 'MyOldSimulations' and they will be invisible to **hashkat**:
 
-'mv ~/hashkat/network_stat.dat ~/hashkat/MyOldSimulations/`
+`mv ~/hashkat/network_stat.dat ~/hashkat/MyOldSimulations/`
+
 `mv -r ~/hashkat/output/ ~/hashkat/output`
 
 If you do this more than once, you will end up with a lot of output directories of the same name in 'MyOldSimulations'.  Therefore you may want to move and rename them.
@@ -50,11 +55,13 @@ You may also simply rename the unwanted files and directories, which will make t
 To copy:
 
 `cp network_state.dat unwanted_network_state.dat`
-'cp -r output unwanted_output`
+
+`cp -r output unwanted_output`
 
 then remove the old file:
 
 `rm network_state.dat`
+
 `rm -r output`
 
 #### Run New Simulation
@@ -83,4 +90,4 @@ It is possible to continue running the same simulation with a new configuration 
 
 With the completion of this second tutorial using **#k@**, you are now familiar with running, stopping, and continuing a new network simulation in any directory. 
 
-Proceed to the next tutorials for a demonstration of the different follow models in **k@**, starting with the [*random* follow model](http://docs.hashkat.org/en/latest/tutorial03/).
+Proceed to the next tutorials for a demonstration of the different follow models in **k@**, starting with the [random follow model](http://docs.hashkat.org/en/latest/tutorial03/).
