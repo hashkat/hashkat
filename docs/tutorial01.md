@@ -92,11 +92,11 @@ When configuration is complete, one runs the simulation:
 
 For now, we will use the default build, and simply demonstrate how to modify configuration. 
 
-To run a second simulation in **#k@** we need to first remove the output from the first simulation.  This is shown in **tutorial01**.
+To run a second simulation in **#k@** we need to first remove the output from the first simulation.  This is shown in **tutorial02**.
 
 #### How to Run **#k@** For Tutorials
 
-The tutorial files are stored separately.  To do the tutorials, for example **tutorial01**, open:
+The tutorial files are stored separately.  To do the simulations shown in the tutorials, for example **tutorial01**, open:
 
 `~/hashkat/docs/tutorial_input_files/tutorial01`
 
@@ -116,11 +116,11 @@ This will not affect the main configuration file of **hashkat**.
 
 For this first tutorial, we're going to run a simple network.  This network is unrealistic and is used for demonstration purposes only.
 
-If you look into the **hashkat** directory, you will find several different files and directories. For now we are just going to look at **INFILE.yaml**, which is the file we use to configure our simulated network.
-
 We will discuss the configuration parameters throughout these tutorials.  A detailed description of the parameters can be found on the [**Input**](http://docs.hashkat.org/en/latest/input/) page. 
 
-For this tutorial, we will have a constant (unchanging) number of agents (add_rate = 0), 1000 initial agents (n = 1000), and one agent_type with a 'tweet' rate of 0.0001 per minute.  The simulation will run for 100,000 simulated minutes or 1 minute real time.  The 'follow', 'retweet', and 'unfollow' rates are set to zero.  Therefore:  **R = 0 + (1000)(0.0001 + 0 + 0) = 0.1**
+For this tutorial, we will have a constant (unchanging) number of agents (add_rate = 0), 1000 initial agents (n = 1000), and one agent_type with a 'tweet' rate of 0.0001 per minute.  The simulation will run for 100,000 simulated minutes or 1 minute real time.  The 'follow', 'retweet', and 'unfollow' rates are set to zero.  Therefore:  
+
+**R = 0 + (1000)(0.0001 + 0 + 0) = 0.1**
 
 Run the simulation by typing in the command:
 
@@ -135,15 +135,19 @@ When running this program, you will see something similar to this on the screen:
 |<sub>9.93e+04</sub>|<sub>1.00e+03</sub>|<sub>1.00e+04</sub>|<sub>0.00e+00</sub>|<sub>0.00e+00(0.00e+00)</sub>|<sub>0.00e+00</sub>|<sub>1.00e-01</sub>|<sub>2.25e+00</sub>|
 
 
-This gives a list of data at particular points in your simulation.  **Retweets** shows the number of retweets and in brackets beside it the number of **active** tweets.  'Active' tweets have not yet 'decayed' and are still eligible for retweeting. 
+This gives a list of data at particular points in your simulation.  We can see both 'Retweets' and a number beside it in brackets.  This is the number of 'active' tweets.  Active tweets are signals that have not yet 'decayed' and are still eligible for retweeting. 
 
 So as we can see, at a simulated time of 99,300 simulated minutes, there were 1,000 agents in the network, 10,000 follows, 0 tweets, 0 retweets, and 0 unfollows.  The cumulative rate function was 0.1, and the real time that elapsed was 2.25 seconds.
 
-Once the simulation is concluded, the real time elapsed of the total analysis will be displayed on the screen in milliseconds.
-
-Looking into the hashkat directory, you will see a **DATA_vs_TIME** file, which contains the chart displayed above at several different simulation times, a **network_state.dat** file which is where your simulation data will be saved to, and the **output** directory, which contains all the data you've accummulated during the simulation. 
+Once the simulation is concluded, output files will be created and the real time elapsed will be displayed on the screen in milliseconds.
 
 #### Output of a Simple Network
+
+The simulation creates several output files including:
+
+`~/hashkat/DATA_vs_TIME`
+`~/hashkat/network_state.dat` 
+`~/haskhat/output directory` 
 
 <center>
 <iframe width="560" height="315" src="https://www.youtube.com/embed/83lnl6UXstQ" frameborder="0" allowfullscreen></iframe>
@@ -159,10 +163,9 @@ This lists all the files of information collected from the simulation. Let's loo
 
 `nano main_stats.dat`
 
-**Nano** will display the results of **main_stats.dat** as text. We can see the 'in-degree distribution' (an Agent's followers), 'out-degree distribution' (whom an Agent follows), and 'cumulative-degree distribution' (both an Agent's followers & following) for ALL the agents, by simulated month. 
+**Nano** will display the contents of **main_stats.dat** as text. We can see the 'in-degree distribution' (an agent's followers), 'out-degree distribution' (those an agent follows), and 'cumulative-degree distribution' (both an agent's followers & following) for ALL the agents, by simulated month. 
 
-The agents in this simulation were configured to have a follow rate of 0.0001 follows per simulated minute, so for a simulation of 100,000 simulated minutes, we would expect each agent to follow around 10 other agents, and be followed by about 10 agents. Therefore, we can expect most agents to have an in-degree value of 10, an out-degree value of 10, and a cumlative-degree value of 20. Let's plot and see!
-
+The agents in this simulation had a follow rate set at 0.0001 per simulated minute.  In 100,000 simulated minutes we would expect each agent to follow approximately 10 agents, and be followed by the same number. Therefore, we can expect most agents to have an in-degree value of 10, an out-degree value of 10, and a cumlative-degree value of 20. Let's plot and see!
 
 <center>
 <img src='../img/tutorial01/main_stats.png'>
@@ -209,7 +212,7 @@ when you first start up Gnuplot and prior to actually plotting the data.
 
 You can also use the data you collected to visualize your simulated network. We will discuss how to do so using [Gephi](http://gephi.github.io/) here.  A more in-depth discussion can be found on the [Visualization](http://docs.hashkat.org/en/latest/visualization/) page. 
 
-Entering Gephi, open the graph file **network.gexf** found in the **output** directory of your simulation. Press 'OK' for the 'Import report' window that pops up, and you will now see a rough outline of your network. Under the 'Partition' subheading on the left side of the page, press the 'refresh' symbol, and choose the partition parameter 'Label' and click 'Apply'. You are now free to choose a layout for this network directly below the 'Apply' button you just pushed, and can run it for a few seconds. The following visualization was made using the 'Fruchterman Reingold' and 'Clockwise Rotate' layout:
+Entering Gephi, open the graph file **network.gexf** found in the 'output' directory of your simulation. Press 'OK' for the 'Import report' window that pops up, and you will now see a rough outline of your network. Under the 'Partition' subheading on the left side of the page, press the 'refresh' symbol, and choose the partition parameter 'Label' and click 'Apply'. You are now free to choose a layout for this network directly below the 'Apply' button you just pushed, and can run it for a few seconds. The following visualization was made using the 'Fruchterman Reingold' and 'Clockwise Rotate' layout:
 
 <center>
 <img src='../img/tutorial01/visualization.png'>
