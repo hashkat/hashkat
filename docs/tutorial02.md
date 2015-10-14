@@ -2,7 +2,7 @@
 
 # Restarting a Network
 
-A brief explanation on restarting a network simulation, this tutorial should take approximately 10 minutes to complete.
+This is a brief explanation of how to restarting a network simulation, or do a second simulation.  This tutorial should take 5 minutes to complete.
 
 ### Run a New Simulation
 
@@ -84,7 +84,7 @@ If you would like to continue this simulation from where you left off, simply ty
 
 again and the simulation will recommence running, if you have time left.  Note: you may increase the maximum simulation time in your 'INFILE.yaml' file and the network simulation will simply continue from where it previously left off.
 
-It is possible to continue running the same simulation with a new configuration in 'INFILE.yaml' but this give complex output data and is discouraged.
+It is possible to continue running the same simulation with a new configuration of 'INFILE.yaml', but this gives complex output data and is discouraged.
 
 #### Next Steps
 
