@@ -2,7 +2,7 @@
 
 # Restarting a Network
 
-This is a brief explanation of how to restarting a network simulation, or do a second simulation.  This tutorial should take 5 minutes to complete.
+This is a brief explanation of how to restart a network simulation, or do a second simulation.  This tutorial should take 5 minutes to complete.
 
 ### Run a New Simulation
 
