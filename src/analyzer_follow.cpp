@@ -276,6 +276,7 @@ struct AnalyzerFollow {
 #else
    int twitter_preferential_follow_method(Agent& e, double time_of_follow) {
        PERF_TIMER();
+       RECORD_STAT(state, e.agent_type, n_preferential_follows);
        int referral_bin = (time_of_follow - e.creation_time ) / (double) APPROX_MONTH;
        double follow_prob = config.referral_rate_function.monthly_rates[referral_bin];
        if (!rng.random_chance(follow_prob)) {
@@ -327,7 +328,6 @@ struct AnalyzerFollow {
                // pull a random agent from whatever bin we landed in and break so we do not continue this loop
                int agent_to_follow = C.agents[rng.rand_int(C.agents.size())];
                Agent& try_agent = network[agent_to_follow];
-               RECORD_STAT(state, e.agent_type, n_preferential_follows);
                return agent_to_follow;
            }
            rand_num -= p;

@@ -123,8 +123,8 @@ void output_network_statistics(AnalysisState& state) {
     if (C.most_popular_tweet_content) {
         most_popular_tweet_content(mpt, network);
     }
-    cout << "\n\n\n\n\n\n\n";
-    n_agents_in_regions(network);
+    // cout << "\n\n\n\n\n\n\n";
+    // n_agents_in_regions(network);
     //fraction_of_connections_distro(network, state, stats);
     //if (C.dd_by_age) {
     //    dd_by_age(network, state, stats);
