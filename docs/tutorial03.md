@@ -2,9 +2,9 @@
 
 # The Random Follow Model
 
-There are six different follow models in **#k@**, to model how agents chose to follow other agents. Each of these follow models will be discussed in their own tutorial, starting with this one relating to the random follow model. The input data used to create the networks will be almost the same for each follow model tutorial, so that the results may be easily compared.  This tutorial should take approximately 20 minutes.
+There are six different follow models in **#k@**, to model how agents chose to follow other agents. Each of these follow models will be discussed in their own tutorial, starting with this one relating to the random follow model. The input data used to create the networks will be almost the same for each follow model tutorial so that the results may be easily compared.  This tutorial should take approximately 20 minutes to complete.
 
-The six **#k@** follow models are:
+The six **hashkat** follow models are:
 
 * Random
 * Twitter_Suggest
@@ -13,7 +13,7 @@ The six **#k@** follow models are:
 * Hashtag
 * Twitter (Combination)
 
-A random follow model is one in which the agents choice of whom to follow is arbitrary, or random.   Our model is based on the work of [Paul Erdos and Alfred Renyi](https://en.wikipedia.org/wiki/Erd%C5%91s%E2%80%93R%C3%A9nyi_model). 
+A random follow model is one in which the agent's choice of whom to follow is arbitrary, or random.   Our model is based on the work of [Paul Erdos and Alfred Renyi](https://en.wikipedia.org/wiki/Erd%C5%91s%E2%80%93R%C3%A9nyi_model). 
 
 The simple network we created in [Tutorial 1](http://docs.hashkat.org/en/latest/tutorial01/) used the random follow model.  In this tutorial we are also going to start configuring the input file to show you how to create your desired network.
 
@@ -23,25 +23,26 @@ For more information on configuring your network, see the [Input](http://docs.ha
 
 ### Constructing The Network
 
+To configure the simulation we will start with Tutorial 1's [INFILE.yaml](https://github.com/hashkat/hashkat/blob/master/docs/tutorial_input_files/tutorial01/INFILE.yaml).  If we have not changed the parameter it may not be shown.
+
 <center>
 <iframe width="560" height="315" src="https://www.youtube.com/embed/xx2-3Lh0Dps" frameborder="0" allowfullscreen></iframe>
 </center>
 
-To configure the simulation we will start with Tutorial 1's [INFILE.yaml](https://github.com/hashkat/hashkat/blob/master/docs/tutorial_input_files/tutorial01/INFILE.yaml).  If we have not changed the parameter it may not be shown below.
-
 This simulation will be short.  We'll keep the number of agents constant by having 1000 initial_agents and 1000 maximum agents ('max_agents'). For speed, we'll lower the max_simulated_time to 1000 minutes and keep the max_real_time at 1 minute. However, we'll set max_analysis_steps at 'unlimited' to obtain the most refined simulation (most detailed focus). 
 
-Enable_interactive mode shall be 'false' (off), so enable_lua_hooks must also be 'false', and the lua_script setting will be ignored by the compiler.  
+Enable_interactive mode shall be 'false' (off), so enable_lua_hooks must also be 'false', and the lua_script setting will be ignored.  
 
 We will set use_barabasi to 'false' therefore barabasi_connections will be ignored by the compiler.  The barabasi_exponent will remain at 1 since this gives the most realistic results.  We will set use_barabasi to 'true' in [Tutorial 4](http://docs.hashkat.org/en/latest/tutorial04/). 
 
-We shall set use_random_time_increment to 'true' for superior results.  use_followback will remain 'false' for simplicity. 
+We shall set use_random_time_increment to 'true' for superior results and use_followback will remain 'false' for simplicity. 
 
-Our follow model is, of course, 'random'. Model_weights are only necessary for the twitter follow model, [Tutorial 8](http://docs.hashkat.org/en/latest/tutorial04/), and will be ignored but we show them here, set at 0, to introduce them. 
+Our follow model is, of course, 'random'. Model_weights are only necessary for the twitter follow model, shown in [Tutorial 8](http://docs.hashkat.org/en/latest/tutorial04/), and will be ignored but we show them here, set at 0, to introduce them. 
 
 We're going to not allow 'unfollowing', so we set stage1_unfollow to 'false' and the 'unfollow_tweet_rate' to an exceptionally high number (i.e. 10,000).  We have set the chance of a hashtag in a tweet at 50%.
 
 The code looks like this:
+
 Note items after **#** are comments to assist the user and are ignored by the compiler.
 
 ```python
@@ -90,10 +91,6 @@ We leave the the output section of **INFILE.yaml** as in Tutorial 1, to produce 
 
 The tweet and retweets rates are as in Tutorial 1, 1 per 100 simulated minutes.  The follow_ranks_threshold and weight entries, Ideologies and Regions sections have also remained the same.
 
-We have added the 'Celebrity' agent type to our input file, by simply copying the 'Standard" agent_type and renaming it.  We will not be adding this agent_type until Tutorial 4 ('add: 0') so configuration can be done later.
-
-We have changed the 'Standard' followback_probability to 0, though this is irrelevant since we have use_followback set to 'false'. This is to give consistency to later tutorials.
-
 
 ```python
 agents:
@@ -132,6 +129,11 @@ agents:
         tweet: {function: constant, value: 0.01}
 ```
 
+We have added the 'Celebrity' agent type to our input file, by simply copying the 'Standard" agent_type and renaming it.  We will not be adding this agent_type until Tutorial 4 ('add: 0') so configuration can be done later.
+
+We have changed the 'Standard' followback_probability to 0, though this is irrelevant since we have use_followback set to 'false'. This is to give consistency to later tutorials.
+
+
 ### Running and Visualizing The Network
 
 <center>
@@ -148,7 +150,7 @@ This a random network, with no clear agent or group of agents being the most pop
 
 ### Network Output
 
-With agents having a follow rate of 1/100 simulated minutes, in a simulation 1000 sim_minutes long, we would expect most agents to have an in_degree of 10 (ten people they follow), and an out_degree of 10 (10 people following them) for a cumulative_degree distribution of 20. 
+With agents having a follow rate of 1/100 simulated minutes, in a simulation 1000 sim_minutes long, we would expect most agents to have an in_degree of 10 (ten people following them), and an out_degree of 10 (10 people they follow) for a cumulative_degree distribution of 20. 
 
 <center>
 <iframe width="560" height="315" src="https://www.youtube.com/embed/b-skHf5rnpk" frameborder="0" allowfullscreen></iframe>
@@ -172,11 +174,13 @@ Giving us:
 
 As we can see, there is a definite peak surrounding 20 degrees, though it seems that more agents happen to have a cumulative-degree just below or just above 20 for this simulation. 
 
-To run the EXACT SAME simulation again, remove the output files **network_state.dat** and **output** from this simulation and run it again.  It will give the EXACT SAME output because the same seed for the random number generator will be used.
+To run the EXACT SAME simulation again, remove the output files **network_state.dat** and **output** from this simulation and run it again.  It will give the same output because the same seed for the random number generator will be used.  
 
 ### Running a Network Simulation with a Random Seed
 
-To run a network simulation with a random seed, thereby giving you a different output each time you run the simulation, when you run the program, type it in with the suffix space-dash-dash rand:
+To run a network simulation to obtain a different output each time you need to use a random seed for the random number generator.
+
+To use a random seed, run the program with this command:
 
 `./run.sh --rand`
 
@@ -190,9 +194,10 @@ Running this network simulation multiple times, each time using  './run.sh --ran
 <img src='../img/tutorial03/cumulative-degree_distribution_random.svg'>
 </center>
 
-As we can see, the cumulative-degree distribution of a random follow model matches the [Poisson Distribution](https://en.wikipedia.org/wiki/Poisson_distribution).
+As we can see, the cumulative-degree distribution of the random follow model matches the [Poisson Distribution](https://en.wikipedia.org/wiki/Poisson_distribution).
 
 To create this plot, we ran three simulations with random seeds and renamed their cumulative-degree distributions as:
+
 * cumulative-degree_distribution_month_000.a
 * cumulative-degree_distribution_month_000.b
 * cumulative-degree_distribution_month_000.c
@@ -214,7 +219,7 @@ We input the following into **Gnuplot**:
 `'cumulative-degree_distribution_month_000.b' title '',`
 `'cumulative-degree_distribution_month_000.c' title ''`
 
-Note: your output will vary, especially if you are using random seeds.
+Note: your output will vary.
 
 ### Next Steps
 
