@@ -21,7 +21,7 @@ The file for configuration is **INFILE.yaml**.  The file we create in this tutor
 
 For more information on configuring your network, see the [Input](http://docs.hashkat.org/en/latest/input/) and [Output](http://docs.hashkat.org/en/latest/output/) pages.
 
-### Constructing The Network
+#### Constructing The Network
 
 To configure the simulation we will start with Tutorial 1's [INFILE.yaml](https://github.com/hashkat/hashkat/blob/master/docs/tutorial_input_files/tutorial01/INFILE.yaml).  If we have not changed the parameter it may not be shown.
 
@@ -127,8 +127,7 @@ agents:
 
 We have added the 'Celebrity' agent_type to our input file, by simply copying the 'Standard" agent_type and renaming it.  We will not be adding this agent_type until Tutorial 4 ('add: 0') so configuration can be done later.  We have changed the 'Standard' followback_probability to 0, though this is irrelevant since we have use_followback set to 'false'. This is to give consistency to later tutorials.
 
-
-### Running and Visualizing The Network
+#### Running and Visualizing The Network
 
 The video below shows you how to save, run and then visualize the output using open license software [Gephi](http://gephi.github.io/).
 
@@ -144,7 +143,7 @@ In **Gephi** we produce a network similar to the one shown below:
 
 This a random network, with no clear agent or group of agents being the most popular.
 
-### Plotting Network Output
+#### Plotting Network Output
 
 To plot the data produced by our simulation, we use open license software [Gnuplot](http://gnuplot.sourceforge.net/).
 
@@ -174,7 +173,7 @@ As we can see, there is a definite peak surrounding 20 degrees, though it seems 
 
 To run the EXACT SAME simulation again, remove the output files **network_state.dat** and **output** from this simulation and run it again.  It will give the same output because the same seed for the random number generator will be used.  
 
-### Running a Network Simulation with a Random Seed
+#### Running a Network Simulation with a Random Seed
 
 To run a network simulation and obtain a different output each time you need to use a random seed for the random number generator.  To use a random seed, run the program with this command:
 
@@ -217,7 +216,7 @@ We entered the following in **Gnuplot**:
 
 Note: your output will vary.
 
-### Next Steps
+#### Next Steps
 
 Try running your own random follow model simulation that is different from the one outlined above, and see what you can create.
 
