@@ -4,7 +4,7 @@
 
 There are six different follow models in **#k@**, to model how agents chose to follow other agents. Each of these follow models will be discussed in their own tutorial, starting with this one relating to the random follow model. The input data used to create the networks will be almost the same for each follow model tutorial so that the results may be easily compared.  This tutorial should take approximately 20 minutes to complete.
 
-The six **hashkat** follow models are:
+The six **k#@** follow models are:
 
 * Random
 * Twitter_Suggest
@@ -42,8 +42,6 @@ Our follow model is, of course, 'random'. Model_weights are only necessary for t
 We're going to not allow 'unfollowing', so we set stage1_unfollow to 'false' and the 'unfollow_tweet_rate' to an exceptionally high number (i.e. 10,000).  We have set the chance of a hashtag in a tweet at 50%.
 
 The code looks like this:
-
-Note items after **#** are comments to assist the user and are ignored by the compiler.
 
 ```python
 analysis:
@@ -84,13 +82,11 @@ analysis:
   use_hashtag_probability:
     0.5
 ```
+Note items after **#** are comments to assist the user and are ignored by the compiler.
 
 Since the number of agents in this simulation will remain constant, the 'add' rate will be 0 (not shown).  We will only use one type of agent, 'Standard'.  The 'Celebrity' agent_type is named but not added ('add: 0').  'Celebrity' agents will be used in [Tutorial 5](http://docs.hashkat.org/en/latest/tutorial05/) and onward.
 
-We leave the the output section of **INFILE.yaml** as in Tutorial 1, to produce as many data files for analysis as possible. 
-
-The tweet and retweets rates are as in Tutorial 1, 1 per 100 simulated minutes.  The follow_ranks_threshold and weight entries, Ideologies and Regions sections have also remained the same.
-
+We leave the the output section of **INFILE.yaml** as in Tutorial 1, to produce as many data files for analysis as possible.  The tweet and retweets rates are as in Tutorial 1, 1 per 100 simulated minutes.  The follow_ranks_threshold and weight entries, Ideologies and Regions sections have also remained the same.
 
 ```python
 agents:
@@ -129,18 +125,18 @@ agents:
         tweet: {function: constant, value: 0.01}
 ```
 
-We have added the 'Celebrity' agent type to our input file, by simply copying the 'Standard" agent_type and renaming it.  We will not be adding this agent_type until Tutorial 4 ('add: 0') so configuration can be done later.
-
-We have changed the 'Standard' followback_probability to 0, though this is irrelevant since we have use_followback set to 'false'. This is to give consistency to later tutorials.
+We have added the 'Celebrity' agent type to our input file, by simply copying the 'Standard" agent_type and renaming it.  We will not be adding this agent_type until Tutorial 4 ('add: 0') so configuration can be done later.  We have changed the 'Standard' followback_probability to 0, though this is irrelevant since we have use_followback set to 'false'. This is to give consistency to later tutorials.
 
 
 ### Running and Visualizing The Network
+
+The video below shows you how to save, run and then visualize the output using open license software [Gephi](http://gephi.github.io/).
 
 <center>
 <iframe width="560" height="315" src="https://www.youtube.com/embed/16tuo4YkVbo" frameborder="0" allowfullscreen></iframe>
 </center>
 
-Running this simulation, and visualizing it, we produce a network similar to the one shown below: 
+In **Gephi** we produce a network similar to the one shown below: 
 
 <center>
 <img src='../img/tutorial03/visualization.png'>
@@ -148,9 +144,11 @@ Running this simulation, and visualizing it, we produce a network similar to the
 
 This a random network, with no clear agent or group of agents being the most popular.
 
-### Network Output
+### Plotting Network Output
 
-With agents having a follow rate of 1/100 simulated minutes, in a simulation 1000 sim_minutes long, we would expect most agents to have an in_degree of 10 (ten people following them), and an out_degree of 10 (10 people they follow) for a cumulative_degree distribution of 20. 
+To plot the data produced by our simulation, we use open license software [Gnuplot](http://gnuplot.sourceforge.net/).
+
+Let us take the example of the culmulative_degree of an agent.  With agents having a follow rate of 1/100 per simulated minute, in a simulation 1000 sim_minutes long, we would expect most agents to have an in_degree of 10 (ten people following them), and an out_degree of 10 (10 people they follow) for a cumulative_degree distribution of 20. 
 
 <center>
 <iframe width="560" height="315" src="https://www.youtube.com/embed/b-skHf5rnpk" frameborder="0" allowfullscreen></iframe>
