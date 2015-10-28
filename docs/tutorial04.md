@@ -2,7 +2,7 @@
 
 # The Twitter_Suggest Follow Model (The Barabasi-Albert Model)
 
-The **twitter_suggest** follow model is based on the [Barabasi-Albert model](https://en.wikipedia.org/wiki/Barab%C3%A1si%E2%80%93Albert_model) with preferential attachment.  Preferential attachment occurs when a resource is distributed according to those who already have more.  Those who have (x) get more (x). In the twitter_suggest follow_model an agent with many followers will get more followers. 
+The **twitter_suggest** follow model is based on the [Barabasi-Albert model](https://en.wikipedia.org/wiki/Barab%C3%A1si%E2%80%93Albert_model) with preferential attachment.  Preferential attachment occurs when a resource is distributed preferentially to those who already have more.  Those who have (x) get more (x). In the twitter_suggest follow_model an agent with many followers will get more followers. 
 
 The twitter_suggest preferential attachment follow model can be implemented three different ways, each of which is outlined below:
 
