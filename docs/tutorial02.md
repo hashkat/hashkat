@@ -70,7 +70,15 @@ You can now run your new simulation by typing in the command:
 
 `./run.sh`
 
+Alternatively, to run a simulation using a random seed for the random number generator, type the command:
+
+`./run.sh --rand`
+
+For this first tutorial, the first command is sufficient.
+
 #### Stopping and Continuing a Simulation
+
+If for whatever reason you would like to stop a simulation midway through, without losing your data, simply press **Ctrl-c**. The simulation will automatically save the information it's collected to the **network_state.dat** file.  
 
 <center>
 <iframe width="560" height="315" src="https://www.youtube.com/embed/-gQ52JW2s-Y" frameborder="0" allowfullscreen></iframe>
@@ -84,7 +92,9 @@ If you would like to continue the simulation from where you left off, simply typ
 
 `./run.sh`
 
-and the simulation will recommence running, if you have time left.  Note: you may increase the maximum simulation time in your 'INFILE.yaml' file and the network simulation will simply continue from where it previously left off.
+Note:  to continue a simulation, do NOT use the random seed command.
+
+The simulation will recommence running if you have time left.  Note: you may increase the maximum simulation time in your 'INFILE.yaml' file and the network simulation will simply continue from where it previously left off.
 
 It is possible to continue running the same simulation with a new configuration of 'INFILE.yaml', but this gives complex output data and is discouraged.
 

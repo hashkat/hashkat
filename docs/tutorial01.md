@@ -80,9 +80,9 @@ The cycle will repeat with a new random number **r<sub>2</sub>** generated.
 
 `./build.sh`
 
-The build defines the **number** of Regions, Ideologies, Agent-types, and Preferences the agents may have in the simulated network.  
+The build defines the **number** of Regions, Ideologies, Agent-types, and Preferences the agents may have in the simulated network.  For now, we will use the default build, and simply demonstrate how to modify configuration. 
 
-Then one configures the network, to give Agents their **particular** Region, Language, tweet Preferences, and rates etc.  Configuration is done in the file 
+After the build one configures the network in **INFILE.yaml** to give Agents their **particular** Region, Language, tweet Preferences, follow rates etc. 
 
 `~/hashkat/INFILE.yaml`  
 
@@ -90,33 +90,29 @@ When configuration is complete, one runs the simulation:
 
 `./run.sh`
 
-For now, we will use the default build, and simply demonstrate how to modify configuration. 
+The simulation generates several output files and a new output directory.  Some of the output files are in **/hashkat/** and some are in **/hashkat/output/**.
 
-To run a second simulation in **#k@** we need to first remove the output from the first simulation.  This is shown in **tutorial02**.
+To run a second simulation in **#k@** we need to remove the output files from the first simulation.  This process is shown in **Tutorial02**.
 
 #### How to Run **#k@** For Tutorials
 
-The tutorial files are stored separately.  To do the simulations shown in the tutorials, for example **tutorial01**, open:
+The files we are using in the tutorials are stored separately.  To do the simulations shown in the tutorials, for example **tutorial01**, open:
 
 `~/hashkat/docs/tutorial_input_files/tutorial01`
 
-you will see 'tutorial01' contains its own file called 'INFILE.yaml', which is the configuration shown in this tutorial.  To run the tutorial01 configuration, simply enter:
+you will see 'tutorial01' contains its own file called 'INFILE.yaml', which is the configuration shown in this tutorial.  To run the tutorial01 configuration, from inside the directory **tutorial_input_files** enter:
 
 '~/hashkat/run.sh`
 
 This will not affect the main configuration file of **hashkat**.
 
-
 #### Running a Simple Network
 
+For this first tutorial, we're going to run a simple network.  We will add configuration parameters as we progress through the tutorials to obtain a robust and complex simulation.  More information about the input parameters is available on the [Input](http://docs.hashkat.org/en/latest/input/) page. 
 
 <center>
 <iframe width="560" height="315" src="https://www.youtube.com/embed/jY7m0VDZPjM" frameborder="0" allowfullscreen></iframe>
 </center>
-
-For this first tutorial, we're going to run a simple network.  This network is unrealistic and is used for demonstration purposes only.
-
-We will explain configuration parameters as we progress through the tutorials, however more information is available on the [**Input**](http://docs.hashkat.org/en/latest/input/) page. 
 
 In this tutorial, we will have a constant (unchanging) number of agents (add_rate = 0), 1000 initial agents (n = 1000), and one agent_type with a 'tweet' rate of 0.0001 per minute.  The simulation will run for 100,000 simulated minutes or 1 minute real time.  The 'follow', 'retweet', and 'unfollow' rates are set to zero.  Therefore:  
 
@@ -143,11 +139,11 @@ Once the simulation is concluded, output files will be created and the real time
 
 #### Output of a Simple Network
 
-The simulation creates several output files in the **hashkat** directory and in a new **output** directory, including:
+The simulation creates several output files in the **hashkat** directory and a new **output** directory also with several data files.  The new files include:
 
 *  `~/hashkat/DATA_vs_TIME`
 *  `~/hashkat/network_state.dat` 
-*  `~/haskhat/output directory` 
+*  `~/haskhat/output/` 
 
 <center>
 <iframe width="560" height="315" src="https://www.youtube.com/embed/83lnl6UXstQ" frameborder="0" allowfullscreen></iframe>

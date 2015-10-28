@@ -73,6 +73,7 @@ analysis:
   use_hashtag_probability:
     0.5
 ```
+Note items after **#** are comments to assist the user and are ignored by the compiler.
 
 In the rates subsection of **INFILE.yaml**, we will change the 'add' rate to 1.0, meaning one agent will be added to the network per simulated minute. 
 
