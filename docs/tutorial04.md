@@ -2,7 +2,7 @@
 
 # The Twitter_Suggest Follow Model (The Barabasi-Albert Model)
 
-Based on the [Barabasi-Albert model](https://en.wikipedia.org/wiki/Barab%C3%A1si%E2%80%93Albert_model), the **twitter_suggest** follow model is based on a **preferential attachment** mechanism.  A preferential attachment mechanism is one where those who have (x) get more (x).  In **#k@** this means an agent with many followers will get more followers, or agents are programmed to follow an agent with the highest in-degree, aka the highest number of followers. 
+Based on the [Barabasi-Albert model](https://en.wikipedia.org/wiki/Barab%C3%A1si%E2%80%93Albert_model), the **twitter_suggest** follow model is based on a **preferential attachment** mechanism.  A preferential attachment mechanism is one where those who have (x) get more (x).  In **#k@** this means an agent with many followers will get more followers. 
 
 The twitter_suggest preferential attachment follow model can be implemented using three different ways, each of which is outlined below:
 
@@ -12,7 +12,7 @@ The twitter_suggest preferential attachment follow model can be implemented usin
 
 ### Classic Barabasi
 
-The Classic Barabasi configuration is one in which new agents to the network make one connection with another agent and no other, unless manipulated to do so by allowing follow_back or following_through_retweets within your simulation.
+The Classic Barabasi configuration is one in which new agents to the network make one connection with another agent and no other. 
 
 #### Constructing The Network
 
@@ -27,10 +27,12 @@ To run the Classic Barabasi configuration, we set:
 * follow_model: twitter_suggest
 * use_barabasi: true
 * barabasi_connections: 1 
+* all agent_type follow_rate:  0
 
 Until now we've had the number of agents within the network remain constant through the simulation.  Now we are going to have the number of agents increase over time, by setting initial_agents to 10, and max_agents to 1000. 
 
-For simplicity, we will only use 'Standard' agent_types. We must set the 'Standard' agent_type's follow rate to 0.0, so that the only manner in which agents are connecting with each other is through the barabasi_connections they are assigned to make.
+For simplicity, we will only use 'Standard' agent_types. We must set the 'Standard' agent_type's follow rate to 0.0, so that the only manner in which agents are connecting with each other is through the barabasi_connections they are assigned to make.  In **#k@** allowing follow_back or following_through_retweets may permit the agent to follow even though their follow_rate is zero.
+
 
 ```python
 analysis:
@@ -80,7 +82,7 @@ rates:
   add: {function: constant, value: 1.0}
 ```
 
-Now we will also look at follow_ranks.  Generally, agents are grouped into 'bins' to simplify graphing and some simulation operations.  Many agents are placed in a bin based on their similarity (ie similar number of tweets, retweets & followers). 
+Now we will also look at follow_ranks.  Generally, agents are grouped into 'bins' to simplify graphing and for data collection.  Many agents are placed in a bin based on their similarity (ie similar number of tweets, retweets & followers). 
 
 The follow_ranks are essential to the twitter_suggest follow model because new following is based on an agent's existing number of followers.  Therefore, we must know the exact number of followers a person has in order to decide if they get new followers.  The follow_rank bins change range, from 0 to maximum, and to increment by 1.  There may still be many agents per bin.
 
@@ -153,14 +155,14 @@ A visualization of this network is shown below:
 <img src='../img/tutorial04_classic_barabasi/visualization.png'>
 </center>
 
-As we can see, we have the much more highly connected agents at the centre of the visualization, and the agents lower in degree on the sides. As expected, by implementing the Classic Barabsi configuration
+As we can see, we have the much more highly connected agents at the centre of the visualization, and the agents lower in degree on the sides. By implementing the Classic Barabsi configuration
 every agent has at least one connection.
 
 ### Non-Classic Barabasi
 
 The Non-Classic Barabasi configuration is exactly the same as the Classic configuration except that the number of connections new agents make when entering the simulation is more than 1.
 
-The *INFILE.yaml* file we will create in this example can be found for reference in the [/hashkat/docs/tutorial_input_files/tutorial04_nonclassic_barabasi](https://github.com/hashkat/hashkat/blob/master/docs/tutorial_input_files/tutorial04_nonclassic_barabasi/INFILE.yaml).
+The **INFILE.yaml** file we will create in this example can be found for reference in the [/hashkat/docs/tutorial_input_files/tutorial04_nonclassic_barabasi](https://github.com/hashkat/hashkat/blob/master/docs/tutorial_input_files/tutorial04_nonclassic_barabasi/INFILE.yaml).
 
 <center>
 <iframe width="560" height="315" src="https://www.youtube.com/embed/JErCat4Qdbw" frameborder="0" allowfullscreen></iframe>
@@ -168,7 +170,7 @@ The *INFILE.yaml* file we will create in this example can be found for reference
 
 #### Constructing The Network
 
-We use the same **INFILE.yaml** as the one created above, except that our barabasi_connections will have a value of 2 instead of 1.
+We use the same **INFILE.yaml** as above except that barabasi_connections is set at 2 instead of 1.
 
 #### Running and Visualizing The Network
 
@@ -178,7 +180,7 @@ Running this network simulation, we produced the visualization shown below:
 <img src='../img/tutorial04_nonclassic_barabasi/visualization.png'>
 </center>
 
-This network similar to the one we produced using the Classic Barabasi configuration, with the more highly connected agents at the centre of the visualization and those less connected on the sides.  However this is a much more connected network since every agent has at least two connections.
+This network similar to the one produced using the Classic Barabasi configuration, with the more highly connected agents at the centre and those less connected on the sides.  However this is a much more connected network since every agent has at least two connections.
 
 ### Other Twitter_Suggest Models
 
@@ -204,15 +206,15 @@ Running **#k@**, we produced the following visualization of this simulation:
 <img src='../img/tutorial04_other/visualization.png'>
 </center>
 
-As we can see, we again have some highly connected agents in the centre of the visualization and less connected agents on the sides. However, as opposed to the Barabasi configurations, there is no set number of connections that every agent has, which explains the presence of agents with 0 connections.
+As we can see, we again have some highly connected agents in the centre of the visualization and less connected agents on the sides. However, as opposed to the Barabasi configurations, there is no set number of connections that every new agent will make, which explains the presence of agents with 0 connections.
 
-Looking into the **Categories_Distro.dat** file, we can see a vast amount of information that includes the following:
+To learn more about this network we look into the **Categories_Distro.dat** file.
 
 <center>
 <img src='../img/tutorial04_other/categories_distro.png'>
 </center>
 
-We can see here that the majority of agents made 10 or fewer tweets. Retweeting was disallowed, so the retweet ranks have zero agents. We can also see how many agents had a certain number of followers in this network simulation. Looking further through this file, we can see that the most followed agent had 86 followers.
+In this file we see that the majority of agents made 10 or fewer tweets. Retweeting was disallowed, so the retweet ranks have zero agents. We also see how many agents had a certain number of followers. Looking further through this file, we can see that the most followed agent had 86 followers.
 
 <center>
 <img src='../img/tutorial04_other/categories_distro1.png'>
@@ -226,4 +228,4 @@ A plot of the follow_ranks up to a follow_rank of 15 is shown below:
 
 #### Next Steps
 
-We have now worked with a few configurations of the **twitter_suggest** follow model.  Proceed to the next tutorial, where we demonstrate the [agent follow_model](http://docs.hashkat.org/en/latest/tutorial05/).
+We have now worked with a few configurations of the **twitter_suggest** preferential attachment follow model.  Proceed to the next tutorial, where we demonstrate the [agent follow_model](http://docs.hashkat.org/en/latest/tutorial05/).
