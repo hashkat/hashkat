@@ -124,7 +124,7 @@ We should obtain the following graph:
 <img src='../img/tutorial04_classic_barabasi/cumulative-degree_distribution_month_000.svg'>
 </center>
 
-We can see that this produces a fairly linear plot with a negative slope.  Agents with few followers are many and agents with many followers would be few. 
+We can see that this produces a fairly linear plot with a negative slope.  Agents with few followers are many and agents with many followers are few. 
 
 Plotting these data points with a line of best fit up to a **log(Cumulative Degree)** of 2.5, we can see that this simulation matches a ['scale-free' network](https://en.wikipedia.org/wiki/Scale-free_network), since the line of best fit  has a slope between -2 to -3.
 
