@@ -191,7 +191,7 @@ We shall now run a **twitter_suggest** follow model network simulation without i
 
 #### Constructing The Network
 
-A twitter_suggest follow model may be implemented without a Barabasi configuration. Set:
+Set:
 
 * use_barabasi: false
 * change 'Standard' agent_type follow_rate to 0.01
