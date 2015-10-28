@@ -12,7 +12,7 @@ The twitter_suggest preferential attachment follow model can be implemented usin
 
 ### Classic Barabasi
 
-The Classic Barabasi configuration is one in which new agents to the network make one connection with another agent and no other. 
+The Classic Barabasi configuration is one in which new agents entering the network make one connection with another agent. To simplify the model, we set follow_rates to zero, so that the only follow decision is made by the entering agent.  It should be noted however that allowing follow_back or following_through_retweets may permit the agent to follow even though their follow_rate is zero.
 
 #### Constructing The Network
 
@@ -29,10 +29,9 @@ To run the Classic Barabasi configuration, we set:
 * barabasi_connections: 1 
 * all agent_type follow_rate:  0
 
-Until now we've had the number of agents within the network remain constant through the simulation.  Now we are going to have the number of agents increase over time, by setting initial_agents to 10, and max_agents to 1000. 
+Until now we've had the number of agents within the network remain constant through the simulation.  Now we will have the number of agents increase over time, by setting initial_agents to 10, and max_agents to 1000. 
 
-For simplicity, we will only use 'Standard' agent_types. We must set the 'Standard' agent_type's follow rate to 0.0, so that the only manner in which agents are connecting with each other is through the barabasi_connections they are assigned to make.  In **#k@** allowing follow_back or following_through_retweets may permit the agent to follow even though their follow_rate is zero.
-
+For simplicity, we will only use 'Standard' agent_types.  It is imperative we set the 'Standard' agent_type's follow_rate to 0.0.
 
 ```python
 analysis:
