@@ -204,15 +204,15 @@ After running **#k@**, we produced the following visualization:
 <img src='../img/tutorial04_other/visualization.png'>
 </center>
 
-As we can see, we have vert highly connected agents in the centre of the visualization and less connected agents on the sides. However, unlike a Barabasi configuration, there is no set number of connections that every new agent must make, which explains the presence of agents with 0 connections at the outside of the circle (on the surface of the sphere).
+As we can see, we have very highly connected agents in the centre of the visualization and less connected agents on the sides. However, unlike a Barabasi configuration, there is no set number of connections that every new agent must make, which explains the presence of agents with 0 connections at the outside of the circle (on the surface of the sphere).
 
-The output from this simulation is stored in the **/hashkat/output/**.  Inside the **Categories_Distro.dat** file.
+The output from this simulation is stored in the **/hashkat/output/** in the **Categories_Distro.dat** file.
 
 <center>
 <img src='../img/tutorial04_other/categories_distro.png'>
 </center>
 
-In this file we see that the majority of agents made 10 or fewer tweets. Retweeting was disallowed, so the retweet ranks have zero agents. We also see how many agents had a certain number of followers. Looking further through this file, we can see that the most followed agent had 86 followers.  We observe the bins above 86 are empty.
+In this file we see that the majority of agents made 10 or fewer tweets. Retweeting was disallowed, so the retweet ranks (bins) have zero agents. We also see how many agents had a certain number of followers. Looking further through this file, we can see that the most followed agent had 86 followers.  We verify this by observing the bins above 86 are empty.
 
 <center>
 <img src='../img/tutorial04_other/categories_distro1.png'>
