@@ -125,7 +125,7 @@ agents:
         tweet: {function: constant, value: 0.01}
 ```
 
-We have added the 'Celebrity' agent type to our input file, by simply copying the 'Standard" agent_type and renaming it.  We will not be adding this agent_type until Tutorial 4 ('add: 0') so configuration can be done later.  We have changed the 'Standard' followback_probability to 0, though this is irrelevant since we have use_followback set to 'false'. This is to give consistency to later tutorials.
+We have added the 'Celebrity' agent_type to our input file, by simply copying the 'Standard" agent_type and renaming it.  We will not be adding this agent_type until Tutorial 4 ('add: 0') so configuration can be done later.  We have changed the 'Standard' followback_probability to 0, though this is irrelevant since we have use_followback set to 'false'. This is to give consistency to later tutorials.
 
 
 ### Running and Visualizing The Network
@@ -176,9 +176,7 @@ To run the EXACT SAME simulation again, remove the output files **network_state.
 
 ### Running a Network Simulation with a Random Seed
 
-To run a network simulation to obtain a different output each time you need to use a random seed for the random number generator.
-
-To use a random seed, run the program with this command:
+To run a network simulation and obtain a different output each time you need to use a random seed for the random number generator.  To use a random seed, run the program with this command:
 
 `./run.sh --rand`
 
@@ -200,7 +198,7 @@ To create this plot, we ran three simulations with random seeds and renamed thei
 * cumulative-degree_distribution_month_000.b
 * cumulative-degree_distribution_month_000.c
 
-We input the following into **Gnuplot**:
+We entered the following in **Gnuplot**:
 
 `poisson( x , mu ) = exp(-mu) * mu**(x) / gamma(x+1)`
 
