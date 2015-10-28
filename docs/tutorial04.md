@@ -2,13 +2,13 @@
 
 # The Twitter_Suggest Follow Model (The Barabasi-Albert Model)
 
-Based on the [Barabasi-Albert model](https://en.wikipedia.org/wiki/Barab%C3%A1si%E2%80%93Albert_model), the **twitter_suggest** follow model is based on a preferential attachment mechanism.  A preferential attachment mechanism is one where those who have (x) get more (x).  In **#k@** this means an agent with many followers will get more followers. 
+The **twitter_suggest** follow model is based on the [Barabasi-Albert model](https://en.wikipedia.org/wiki/Barab%C3%A1si%E2%80%93Albert_model) with preferential attachment for edge creation (in **#k@**, the decision to follow).  A preferential attachment mechanism is one in which a resource is distributing according to who already has the more.  Those who have (x) get more (x).  This has also been described as "the rich get richer".  In the twitter_suggest follow_model an agent with many followers will get more followers. 
 
 The twitter_suggest preferential attachment follow model can be implemented three different ways, each of which is outlined below:
 
 * Classic Barabasi
 * Non-Classic Barabasi
-* Without Barabasi (Other)
+* Other (without Barabasi)
 
 ### Classic Barabasi
 
@@ -226,4 +226,4 @@ A plot of the follow_ranks up to a follow_rank of 15 is shown below:
 
 #### Next Steps
 
-We have now worked with a few configurations of the **twitter_suggest** preferential attachment follow model.  We encourage you to do your own experiments.  In the next tutorial, where we demonstrate the [agent follow_model](http://docs.hashkat.org/en/latest/tutorial05/).
+We have now worked with a few configurations of the **twitter_suggest** preferential attachment follow model.  We encourage you to do your own experiments.  In the next tutorial we demonstrate the [agent follow_model](http://docs.hashkat.org/en/latest/tutorial05/).
