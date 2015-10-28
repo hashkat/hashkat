@@ -12,9 +12,7 @@ The twitter_suggest preferential attachment follow model can be implemented thre
 
 ### Classic Barabasi
 
-The Classic Barabasi configuration is one in which new agents entering the network make one connection with another agent.  The new agent will chose to connect to the agent who already has the most followers.
-
-To simplify the model, we set agent follow_rates to zero, so that the only follow decision in the network is made by the entering agent.  It should be noted that allowing an agent_type to follow_back or following_through_retweets may permit the agent to follow even though their follow_rate is zero.
+The Classic Barabasi configuration is one in which new agents entering the network make one connection with another agent.  The new agent will chose to connect to the agent who already has the most followers.  To simplify the network, we set agent follow_rates to zero, so that the only follow decision in the network is made by the entering agent.  It should be noted that allowing an agent to follow_back or follow_through_retweets may permit the agent to follow even though their follow_rate is zero.
 
 #### Constructing The Network
 
