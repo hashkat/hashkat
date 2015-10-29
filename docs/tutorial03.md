@@ -44,7 +44,7 @@ For this tutorial set:
 * unfollow_tweet_rate: 10000
 * use_hashtag_probability: 0.5
 
-By having initial and maximum agents the same we have caused the network add_rate to be 0.  We will discuss Barabasi options in [Tutorial 4](http://docs.hashkat.org/en/latest/tutorial04/). 
+We will discuss Barabasi options in [Tutorial 4](http://docs.hashkat.org/en/latest/tutorial04/). 
 
 Model_weights are only necessary for the twitter follow_model, shown in [Tutorial 8](http://docs.hashkat.org/en/latest/tutorial04/), and will be ignored but we show them here, set at 0, to introduce them. 
 
