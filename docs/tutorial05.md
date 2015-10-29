@@ -2,7 +2,7 @@
 
 # The Agent Follow Model
 
-The **agent** follow_model is one in which agents follow another agent based on that agent's type, though whom they follow within that agent_type is totally random.  That is, an agent may prefer to follow a 'Celebrity' but which celebrity is left to chance. This is a refinement of the **random** follow_model.
+The **agent** follow_model is one in which agents follow another agent based on that agent's type, though whom they follow within that agent_type is random.  That is, an agent may prefer to follow a 'Celebrity' but which celebrity is left to chance. This is a refinement of the **random** follow_model.
 
 This tutorial should take approximately 10 minutes to complete.
 
@@ -83,9 +83,9 @@ Running this simulation we produced the following network, visualized in using o
 
 As expected, red nodes are clustered in the center, indicating 'Celebrity' agents have more followers than 'Standard' agents.
 
-We can do further analysis of this network through use of the output files that have been created from running this simulation. As we discussed in [Tutorial 1](http://docs.hashkat.org/en/latest/tutorial01/), an agent's cumulative_degree distribution is the total number of connections it has (number of followers and following). We showed how to plot the normalized cumulative_degree distribution probability for all agents in [Tutorial 1](http://docs.hashkat.org/en/latest/tutorial01/). Let's do the same here and also compare the overall normalized cumulative_degree distribution to that of each agent type.
+We may do further analysis of this network through use of the output files that have been created from running this simulation. As we discussed in [Tutorial 1](http://docs.hashkat.org/en/latest/tutorial01/), an agent's cumulative_degree distribution is the total number of connections it has (number of followers and following). We showed how to plot the normalized cumulative_degree distribution probability for all agents in [Tutorial 1](http://docs.hashkat.org/en/latest/tutorial01/). Let's do the same here and also compare the overall normalized cumulative_degree distribution to that of each agent type.
 
-We can plot this using open license software [Gnuplot](http://gnuplot.sourceforge.net/) with the following commands:
+We plot the data using open license software [Gnuplot](http://gnuplot.sourceforge.net/) with the following commands:
 
 `set style fill transparent solid 0.5 noborder`
 

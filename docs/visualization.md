@@ -4,7 +4,7 @@
 
 Here we outline ways in which you can visualize the data you've collected from running **#k@**.
 
-## Gephi
+### Gephi
 
 <center>
 <iframe width="560" height="315" src="https://www.youtube.com/embed/GZYsnLApk24" frameborder="0" allowfullscreen></iframe>
@@ -103,7 +103,7 @@ By left clicking the light bulb button, you can change the background from white
 
 This just scratches the surface of all that you can do using Gephi. Try experimenting with some of its other features and see which configuration of your network visualization you like the best.
 
-## Networkx
+### Networkx
 
 You can also visualize the networks you've created using [Networkx](https://networkx.github.io/). Networkx is a Python language software package that can be used to create, modify, and analyze networks. To install Networkx on to your computer, enter into the command line:
 

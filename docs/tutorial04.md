@@ -2,9 +2,9 @@
 
 # The Twitter_Suggest Follow Model (The Barabasi-Albert Model)
 
-The **twitter_suggest** follow model is based on the [Barabasi-Albert model](https://en.wikipedia.org/wiki/Barab%C3%A1si%E2%80%93Albert_model) with preferential attachment.  Preferential attachment occurs when a resource is distributed preferentially to those who already have more.  Those who have (x) get more (x). In the twitter_suggest follow model an agent with many followers will get more followers. 
+The **twitter_suggest** (or preferential_global) follow model is based on the work of [Barabasi & Albert](https://en.wikipedia.org/wiki/Barab%C3%A1si%E2%80%93Albert_model) with preferential attachment in networks.  Preferential attachment occurs when a resource is distributed preferentially to those who already have more of it.  Those who have (x) get more (x). In the twitter_suggest follow model an agent with many followers will get more followers. 
 
-The twitter_suggest preferential attachment follow model can be implemented three different ways, each of which is outlined below:
+Twitter_suggest may be implemented three different ways, each of which is outlined below:
 
 * Classic Barabasi
 * Non-Classic Barabasi
@@ -12,7 +12,7 @@ The twitter_suggest preferential attachment follow model can be implemented thre
 
 ### Classic Barabasi
 
-The Classic Barabasi configuration is one in which new agents entering the network make one connection with another agent.  The new agent will chose to connect to the agent who already has the most followers.  To simplify the network, we set agent follow_rates to zero, so that the only follow decision in the network is made by the entering agent.  It should be noted that allowing an agent to follow_back or follow_through_retweets may permit the agent to follow even though their follow_rate is zero.
+The Classic Barabasi configuration is one in which new agents entering the network make exactly one connection with another agent.  The new agent will chose to connect to the agent who has the most followers.  To model this we set agent follow_rates to zero, so that the only follow decision in the network is made by the entering agent.  It should be noted that allowing an agent to follow_back or follow_through_retweets may permit the agent to follow even though their follow_rate is zero.
 
 #### Constructing The Network
 

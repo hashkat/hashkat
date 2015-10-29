@@ -8,7 +8,7 @@ The source code for **#k@** can be found in the **src** directory. The file **~/
 
 #### How Does **#k@** Work?  
 
-**Hashkat** is a simulation. Actions have a probability of occurring set by the user.  At each increment in time, a random number is generated which determines which action is taken.  
+**Hashkat** is a simulation of a social worker based on agent (node) actions. Actions have a probability of occurring set by the user.  At each increment in time, a random number is generated which determines which action is taken.  
 
 In **#k@** all potential actions have rates.  The actions are 'add_agent' (to network), and for each agent 'tweet', 'retweet', 'follow', and 'unfollow'.  A further network rate is the 'decay' rate, time after which tweets lose eligibility to be retweeted.
 
@@ -84,6 +84,14 @@ If it is not enabled, time will move forward by:
 
 <center>
 &Delta;<i>t</i> = 1 / <b>R</b>
+</center>
+
+#### Network
+
+In terms of programming, the network is an array of agent structs as shown.
+
+<center>
+<img src='../img/developers/agent_info.jpg'>
 </center>
 
 #### Analyzer Files
