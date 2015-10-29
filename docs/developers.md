@@ -91,7 +91,7 @@ If it is not enabled, time will move forward by:
 In terms of programming, the network is an array of agent structs as shown.
 
 <center>
-<img src='../img/developers/agent_info.jpg'>
+<img src='../img/tutorial01/agent_info.jpg'>
 </center>
 
 #### Analyzer Files
