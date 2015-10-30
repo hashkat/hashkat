@@ -287,7 +287,7 @@ void output_position(Network& network, int n_agents) {
 
     ofstream output2;
     output2.open("output/network.graphml");
-    output2 << "File used to graph the network, where 'nodes' correspond to agents in the network and 'edges' correspond to connections.\n\n";
+    output2 << "# File used to graph the network, where 'nodes' correspond to agents in the network and 'edges' correspond to connections.\n\n";
     int count2 = 0;
     if (n_agents <= 10000) {
         for (int i = 0; i < n_agents; i++) {
