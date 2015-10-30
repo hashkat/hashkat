@@ -175,9 +175,17 @@ Here outlines the following steps on how to install **#k@** on Linux (these inst
 
     `sudo apt-get install gnuplot-x11`
 
-    **gnuplot** is followed by 'dash ex one one' with no space.
+    **gnuplot** is followed by 'dash ex one one' with no space.  
 
-1. It is also recommended to download and install [Gephi](http://gephi.github.io/) from their website to use for visualizations of collected data.
+    With Gnuplot installed, to access it, simply type:
+
+    `plot` 
+
+    at the beginning of the line in the console.  You should be in the same directory as the data files you want to access.
+
+1. It is also recommended to download and install [Gephi](http://gephi.github.io/) from their website to use for visualizations of collected data.  **#k@** automatically produces files with a **.gexf** suffix, suitable for **Gephi**.  To access them with **Gephi**, got into Gephi from the desktop and navigate, within **Gephi**, to the desired file.  
+   
+   On my Ubuntu laptop to start **Gephi**, using a mouse, I go into my home directory, click on **Gephi**, go to the **bin** file, then click on the icon that is labelled simply 'gephi'.
 
 With **#k@** installed on your computer, please proceed to the following pages to learn how to fully utilize this program.
 
