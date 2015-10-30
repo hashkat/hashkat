@@ -284,6 +284,27 @@ void output_position(Network& network, int n_agents) {
         }
     }
     output.close();
+
+    ofstream output2;
+    output2.open("output/network.graphml");
+    output2 << "File used to graph the network, where 'nodes' correspond to agents in the network and 'edges' correspond to connections.\n\n";
+    int count2 = 0;
+    if (n_agents <= 10000) {
+        for (int i = 0; i < n_agents; i++) {
+                Agent& p = network[i];
+                output2 << "<node id=\"" << i << "\" label=\"" << p.agent_type << "\" />\n";
+        }
+        output2 << "</nodes>\n" << "<edges>\n";
+        for (int id = 0; id < n_agents; id++) {
+            for (int id_fol : network.following_set(id).as_vector()) {
+                output2 << "<edge id=\"" << count << "\" source=\"" << id
+                        << "\" target=\"" << id_fol << "\"/>\n";
+                count2++;
+            }
+        }
+        output2 << "</edges>\n" << "</graph>\n" << "</graphml>";
+        output2.close();
+    }
 } 
 
 
