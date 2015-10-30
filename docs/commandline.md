@@ -139,11 +139,15 @@ Entering in the following command will allow you to edit **file_A** (assuming yo
 
 #### Gnuplot
 
-After **Gnuplot** is installed, to access it simply type at the beginning of the line **plot**, for example:
+After **Gnuplot** is installed, to set parameters for your plot, i.e. title, type:
+
+`set title desired_title`
+
+Then to the data, simply type at the beginning of the line **plot**, for example:
 
 `plot desired_file_name` 
 
-You should be in the same directory as the data file you want to access when you do this.
+You should be in the same directory as the data file you want to access.  The exact commands are listed in the tutorials.
 
 #### Tips
 
