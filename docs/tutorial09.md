@@ -2,9 +2,7 @@
 
 # Followback and Follow_Via_Retweet
 
-In the previous tutorials we outlined the follow_models offered by **#k@**, however there are other modes of following outside of a follow_model. These other methods are 'followback' and 'follow_via_retweets'. 
-
-In this tutorial, we will discuss 'followback' and 'follow_via_retweet' and compare a network simulation that does not involve these methods to a network simulation that does.
+In the previous tutorials we outlined the follow_models offered by **#k@**, however there are other modes of following outside of a follow_model. These other methods are 'followback' and 'follow_via_retweets'. In this tutorial, we will discuss 'followback' and 'follow_via_retweet' and compare a network simulation that does not involve these methods to a network simulation that does.
 
 All the files that will be used in this simulation can be found for reference in [/hashkat/docs/tutorials/tutorial09/tutorial09_without_other_follow/](https://github.com/hashkat/hashkat/blob/master/docs/tutorial_input_files/tutorial09_without_other_follow/INFILE.yaml) and [../tutorial09_with_other_follow/](https://github.com/hashkat/hashkat/blob/master/docs/tutorial_input_files/tutorial09_with_other_follow/INFILE.yaml). This tutorial should take approximately 20 minutes to complete.
 
