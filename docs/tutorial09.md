@@ -2,11 +2,11 @@
 
 # Followback and Follow_Via_Retweet
 
-In the previous tutorials we outlined the follow_models offered by **#k@**.  Each produced a vastly different network and had a huge impact on the connections made between agents however there are other modes of following outside of a follow_model. These other methods are 'followback' and 'follow_via_retweets'. 
+In the previous tutorials we outlined the follow_models offered by **#k@**, however there are other modes of following outside of a follow_model. These other methods are 'followback' and 'follow_via_retweets'. 
 
-In this tutorial, we will discuss 'followback' and 'follow_via_retweet' and compare a network simulation that does not involve these follow_methods to a network simulation that does.
+In this tutorial, we will discuss 'followback' and 'follow_via_retweet' and compare a network simulation that does not involve these methods to a network simulation that does.
 
-All the files that will be used in this simulation can be found for reference in [/hashkat/docs/tutorials/tutorial09/tutorial09_without_other_follow/INFILE.yaml](https://github.com/hashkat/hashkat/blob/master/docs/tutorial_input_files/tutorial09_without_other_follow/INFILE.yaml) and [tutorial09_with_other_follow](https://github.com/hashkat/hashkat/blob/master/docs/tutorial_input_files/tutorial09_with_other_follow/INFILE.yaml). This tutorial should take approximately 20 minutes to complete.
+All the files that will be used in this simulation can be found for reference in [/hashkat/docs/tutorials/tutorial09/tutorial09_without_other_follow/](https://github.com/hashkat/hashkat/blob/master/docs/tutorial_input_files/tutorial09_without_other_follow/INFILE.yaml) and [../tutorial09_with_other_follow/](https://github.com/hashkat/hashkat/blob/master/docs/tutorial_input_files/tutorial09_with_other_follow/INFILE.yaml). This tutorial should take approximately 20 minutes to complete.
 
 #### Followback
 
@@ -26,11 +26,9 @@ Followback is be enabled by setting 'use_followback' to true.  Then an agent_typ
 
 #### Constructing a Network Without These Other Follow Methods
 
-We shall now create a network simulation that does not use these follow methods and then one that does.  
+We shall now create a network simulation that does not use these follow methods and then one that does.  For the network without followback or follow_via_retweets we start with the [Tutorial 4](http://docs.hashkat.org/en/latest/tutorial04/) input file for the twitter_suggest (preferential Global) follow model (without Barabasi). 
 
-For the network without followback or follow_via_retweets we start with the [Tutorial 4](http://docs.hashkat.org/en/latest/tutorial04/) input file for the twitter_suggest (preferential Global) follow model (without Barabasi). 
-
-The 'Ontario' region preference class will be changed to the **StandardPref** which enables retweeting (called 'tweet_transmission'). The **StandardPref** preference class will be changed.  The retweet rate ('tweet_transmission') for 'Standard' agents will be changed to 0.1 (10%) for 'plain' and 'same_ideology' tweets and 0.2 (20%) for 'humorous' tweets.  Although listed, the 'tweet_transmission' rate does not matter for the 'Celebrity' or any other agent type (labelled 'else') since there were no agent_types other than 'Standard' in the Tutorial 4 simulation.
+The 'Ontario' region preference class will be changed to the **StandardPref** which enables retweeting (called 'tweet_transmission'). The **StandardPref** preference class will also be changed.  The retweet rate ('tweet_transmission') for 'Standard' agents will be changed to 0.1 (10%) for 'plain' and 'same_ideology' tweets and 0.2 (20%) for 'humorous' tweets.  Although stated below, the 'tweet_transmission' rate does not matter for the 'Celebrity' or any other agent type (labelled 'else') since there were no agent_types other than 'Standard' in the Tutorial 4 simulation.
 
 ```python
 preference_classes:
@@ -65,7 +63,7 @@ We produced the following network with this configuration:
 
 #### Constructing a Network With These Other Follow Methods
 
-We shall now implement followback and follow_via_retweets into a network simulation. Using the [INFILE.yaml](https://github.com/hashkat/hashkat/blob/master/docs/tutorial_input_files/tutorial09_without_other_follow/INFILE.yaml) we just created, we change 'use_followback' to 'true' and the 'Standard' agent_type's 'followback_probability' to 0.44. We will switch 'use_follow_via_retweets' to 'true'. With these follow methods now permitted we shall run and visualize this network simulation and see what we find.
+We shall now implement followback and follow_via_retweets. Using the [INFILE.yaml](https://github.com/hashkat/hashkat/blob/master/docs/tutorial_input_files/tutorial09_without_other_follow/INFILE.yaml) we just created, we change 'use_followback' to 'true' and the 'Standard' agent_type's 'followback_probability' to 0.44. We will switch 'use_follow_via_retweets' to 'true'. With these follow methods now permitted we shall run this network simulation and see what we find.
 
 ```python
 use_followback: 
