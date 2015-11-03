@@ -2,11 +2,11 @@
 
 # A Diverse Network of Agents
 
-**#k@** offers the opportunity for users to create network simulations consisting of a varied set of agents in a diverse world.  The simulated population may be multilingual, multiregional and consisting of agents of different ideologies, follow, tweet and retweet preferences.  While every model is simplified, **#k@** strives to model the complexity and diversity of a social network.
+**#k@** offers the opportunity for users to create network simulations consisting of a varied set of agents in a diverse world.  The simulated population may be multilingual, multiregional and consisting of agents of different ideologies, follow, tweet and retweet preferences.  While every model is simplified, **#k@** strives to model the complexity and diversity of a social network in the real world.
 
 In this tutorial we will show you how to create different regions and agent_types to give you the freedom to create the most realistic network simulation possible. This tutorial should take about 40 minutes to complete.
 
-### What Makes an Agent Unique?
+## What Makes an Agent Unique?
 
 #### Ideology
 
@@ -29,7 +29,9 @@ regions:
     ideology_weights: {Red: 100, Blue: 100, Green: 100, Orange: 100}
 ```
 
-Agents may also follow other agents based on ideology under the 'hashtag' follow_model.  If 'hashtag' follow_model is enabled, and 'care_about_idelogy' under the agent_type is set to 'true' (this permits agents to follow only agents of the same ideology) 
+The ideology weights are normalized, so the proportion of Red agents in Ontario will be 100 divided by the sum of the ideologies (400) or 1/4.
+
+Agents may also follow other agents based on ideology under the 'hashtag' follow_model (or combination/'twitter' follow_model).  To use the hashtag follow_model it must be enabled and 'care_about_ideology' under the agent_type set to 'true'.  This permits agents to follow agents of the same ideology. 
 
 ```python
 agents:
@@ -40,9 +42,7 @@ agents:
 
 #### Language
 
-Agents in **#k@** must speak at least one language, which may be English, French and English, French, or Spanish.
-
-The proportion of agents that speak a particular language is set in the 'regions' section of the configuration file under 'language_weights'.  
+Agents in **#k@** must speak at least one language, which may be English, French and English, French, or Spanish.  The proportion of agents that speak a particular language is set in the 'regions' section of the configuration file under 'language_weights'.  
 
 ```python
 regions:
@@ -53,9 +53,9 @@ regions:
 
 #### Region
 
-A region is the geographical location of an agent. Regions may be named and configured in the 'regions' section of *INFILE.yaml*. The region's **add_weight** determines the proportion of agents in a simulation being from that region. In **#k@** the add_weights of all regions are summed, so Ontario's add weight would be 5/(total add_weights of all regions).  If Ontario is the only region with a non zero add_weight, 100% of agents would be Ontarian, regardless of the actual (positive) number entered.
+A region is the geographical location of an agent. Regions may be named and configured in the 'regions' section of **INFILE.yaml**. The region's **add_weight** determines the proportion of agents in a simulation being from that region. In **#k@** the add_weights of all regions are normalized, so Ontario's add weight would be **5** divided by the sum of the add_weights of all regions.  If Ontario is the only region with a non zero add_weight, 100% of agents will be Ontarian, regardless of the actual number entered.
 
-The proportion of the region's population with a certain ideology (ideology_weights), language (language_weight), and preference class (preference_class_weights) are defined as shown. 
+The proportion of the region's population with a certain ideology, language, and preference class are set as shown. 
 
 ```python
 regions:
@@ -69,7 +69,7 @@ regions:
 
 #### Preference Class
 
-A preference_class defines the probability that the tweets of an agent_type will be retweeted based on its tweet_type.  This is called **tweet_transmission** and is defined in the 'preference_classes' section of **INFILE.yaml**.  
+A preference_class defines the probability that the tweets of an agent will be retweeted based on its tweet_type.  This is called **tweet_transmission** and is defined in the 'preference_classes' section of **INFILE.yaml**.  
 
 In this section we may use the words 'else' to include all unnamed agent_types or 'all' to include all the agent_types without naming them.
 
@@ -93,7 +93,7 @@ preference_classes:
         else: 0.4
 ```
 
-Preference_class_weights are set in the 'regions' section of **INFILE.yaml**.
+Preference_class_weights for the population in a region are set as follows.
 
 ```python
 regions:
@@ -102,13 +102,13 @@ regions:
     preference_class_weights: {NoRetweetPref: 100}
 ```
 
-### Agents
+## Agent Configuration
 
-Agents, the nodes of the graph, are a complex component and require a number of configuration settings.  Agents are defined in the 'agents' section of **INFILE.yaml**.
+Agents, the nodes of the graph, are a complex component of **#k@** and require a number of configuration settings.  Agents are defined in the 'agents' section of **INFILE.yaml**.
 
 #### Agent - Add Weight
 
-Add weight is the proportion with which agents of a particular agent_type are added to the network in comparison with other agent types.  This parameter applies to all simulations.
+Add weight is the proportion in which agents of a particular agent_type are added to the network in comparison with other agent types.  This parameter applies to all simulations.
 
 In **#k@** agent add weights are normalized.  If there are two agent_types, one of add weight 120 and the other of add weight 80, then the first type of agent will be 60% of agents in the network (120/(120+80)) and the second 40% (80/200).
 
@@ -134,7 +134,7 @@ agents:
 
 #### Agent - Tweet Type
 
-Tweet_type outlines the frequency with which agents of a particular agent_type make 'plain', 'ideological', 'humorous', or 'musical' tweets.  In the example below, each tweet_type has a value 1.0.  These values are normalized, so for every tweet the agent makes, there is a 1/4 chance it will be 'plain', 'ideological', 'humorous', or 'musical'.
+Tweet_type the frequency with which agents of a particular agent_type make tweets.  The tweet_types are 'plain', 'ideological', 'humorous', and 'musical'.  In the example below, each tweet_type has a value of 1.0.  These values are normalized, so for every tweet the agent makes, there is a 1/4 chance it will be 'plain', 'ideological', 'humorous', or 'musical'.
 
 ```python
 agents:
@@ -149,7 +149,7 @@ agents:
 
 #### Agent - Followback Probability
 
-Followback_probability is the probability that if an agent is followed, the agent will return the favour and follow the follower. On Twitter experiments have shown this value to be about 44%.
+Followback_probability is the probability that if an agent is followed, the agent will return the favour. On Twitter experiments have shown this value to be about 44%.
 
 ```python
 agents:
@@ -166,11 +166,11 @@ use_followback:
   true        
 ```
 
-### Agent - Hashtag Follow Options
+#### Agent - Hashtag Follow Options
 
 If the **hashtag** follow_model is chosen, agents may follow another agent based on hashtag in a tweet.  Hashtags enable users to connect to a section of the network they may not previously have had a connection with.  
 
-To use the hashtag follow_model or Combination ('Twitter') follow_model, **use_hashtag_probability**'s value must not be zero.  Use_hashtag_probability is a probability from 0 to 1 that a tweet in the system will contain a hashtag.  
+To use the hashtag follow_model or combination ('twitter') follow_model, **use_hashtag_probability**'s value must not be zero.  Use_hashtag_probability is a probability from 0 to 1 that a tweet in the system will contain a hashtag.  
 
 In the agent settings, hashtag_follow_options determine which hashtags a particular agent_type will follow.  Specifically, in **#k@** agents may care to follow agents with hashtag tweets indicating they come from a particular region, or have a certain ideology. 
 
@@ -208,7 +208,7 @@ agents:
         follow: {function: linear, y_intercept: 0.1, slope: 0.1}
 ```
 
-Note: the *add* rate may also be a linear function.
+Note: the **add** rate may also be a linear function.
 
 #### Agent - Tweet Rate
 
@@ -231,18 +231,17 @@ agents:
         tweet: {function: linear, y_intercept: 0.1, slope: 0.1}
 ```
 
-To increase the number of ideologies, regions, preference_classes or agent_types in the simulation, change the value for **N_BIN_IDEOLOGIES**, **N_BIN_REGIONS**, **N_BIN_PREFERENCE_CLASS**, and/or **N_BIN_AGENT_TYPES** in **/hashkat/src/config_static.h** file. 
+To increase the number of ideologies, regions, preference_classes or agent_types in the simulation, change the value for N_BIN_IDEOLOGIES, N_BIN_REGIONS, N_BIN_PREFERENCE_CLASS, and/or N_BIN_AGENT_TYPES in the **../hashkat/src/config_static.h** file. 
 
-Note:  If you change **/src/** files make sure to then rebuild **#k@** by running **build.sh -O** for the changes to take effect.
+Note:  If you change **../src/** files make sure to then rebuild **#k@** by running **build.sh -O** for the changes to take effect.
 
 ## A Complex Simulation
 
-Now that we have seen the agent_type settings, we will create our most complex network simulation yet.  For this network simulation, we would like to have the following:
+Now that we have seen the agent settings, we will create our most complex network simulation yet.  For this network simulation, we would like to have the following:
 
 * constant number of 100 agents
 * maximum simulation time of 1000 simulated minutes
 * maximum real time 10 minutes
-* 'followback' and 'following via retweets' implemented
 * 'twitter' (combination) follow_model implemented, with 'twitter_suggest' (preferential_global) and the 'hashtag' follow_models evenly weighted and other follow_models set to zero
 * stage1_unfollow: false
 * unfollow_tweet_rate: 0.0
@@ -408,11 +407,9 @@ We would also like you to use only the following 5 agent_types with their respec
       tweet: {function: constant, value: 0.12}
 ```
 
-Make sure that your tweet, retweet, and follow ranks have also been updated accordingly to properly account for this network. 
+Make sure that your tweet, retweet, and follow ranks have also been updated to properly account for this network. 
 
-As you've probably noticed, we've set the max_real_time to 10 minutes instead of the usual 1 minute. The simulation should not run for this long, we just want to allow enough time for the simulation to run to completion. When running this simulation on our computer it took approximately 4 minutes for the simulated time to elapse.  
-
-It is not necessary for simulated time to elapse when running a simulation.  You may change the max_real_time to a time of your choosing or press **Ctrl-c** at any time during a simulation to stop it. 
+As you've probably noticed, we've set the max_real_time to 10 minutes instead of the usual 1 minute. The simulation should not run for this long, we just want to allow enough time for the simulation to run to completion. When running this simulation on our computer it took approximately 4 minutes for the simulated time to elapse.  It is not necessary for simulated time to elapse when running a simulation.  You may change the max_real_time to a time of your choosing or press **Ctrl-c** at any time during a simulation to stop it. 
 
 Once you have finished configuring **INFILE.yaml**, run and visualize your network simulation.
 
@@ -454,4 +451,4 @@ As we can see, agents in Ontario, the zeroth region, had 65.0394% of their follo
 
 #### Next Steps
 
-With the completion of this tutorial, you now have knowledge and experience with agent configuration.  In the next [tutorial](http://docs.hashkat.org/en/latest/tutorial13/) we demonstrate more complex situations that may be modelled in **#k@**.
+With the completion of this tutorial, you now have knowledge and experience with agent configuration.  In the next [tutorial](http://docs.hashkat.org/en/latest/tutorial13/) we demonstrate more complex situations that may be modeled in **#k@**.
