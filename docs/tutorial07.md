@@ -2,7 +2,7 @@
 
 # The Hashtag Follow Model
 
-The **hashtag** follow_model is one in which an agent follows another based on hashtags present in tweets.  A hashtag is a searchable attached to signal contents, in Twitter similar to **#topic_of_interest**. 
+The **hashtag** follow_model is one in which an agent follows another based on hashtags present in tweets.  A hashtag is a searchable tag attached to signal contents, in Twitter similar to **#topic_of_interest**. 
 
 #### Constructing The Network
 
@@ -23,7 +23,7 @@ We will let the use_hashtag_probability remain at 0.5 so that 50% of the tweets 
 
 The agent_types section have **hashtag_follow_options**, where agent preferences with regards to hashtags may be set, by marking 'true' for **care_about_region** and/or **care_about_ideology** respectively. 
 
-For this simulation, we will have agents follow agents that share the same ideology, so we input 'true' for **care_about_ideology** and have *care_about_region* remain 'false'. 
+For this simulation, we will have agents follow agents that share the same ideology, so we input 'true' for **care_about_ideology** and have **care_about_region** remain 'false'. 
 
 For simplicity, we will also remove any 'Celebrity' agents from this network simulation by changing the 'Celebrity' add weight to 0.0.
 

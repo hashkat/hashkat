@@ -195,7 +195,7 @@ rates:  add: {function: linear, y_intercept: 1.0, slope: 0.1}
 
 For a linear 'add' function, the slope and y-intercept must be specified.  The classic linear function is **y = ax + b**, where **'a'** is the slope, **'x'** the variable, and **'b'** the y-intercept. 
 
-In **#k@**, the 'y_intercept' is the initial rate at which agents are added (the 'value' of the **constant** function above).  The 'slope' is the rate at which the 'add' rate increases over time, where time ('x') is in simulated months.
+In **#k@**, the 'y_intercept' is the initial rate at which agents are added (the 'value' of the constant function above).  The 'slope' is the rate at which the 'add' rate increases over time, where time ('x') is in simulated months.
 
 The 'follow' and 'retweet' rates work in the same manner.
 
@@ -374,7 +374,7 @@ weights:    {bin_spacing: linear, min: 1, max: 100000, increment: 1}
 
 This rank serves to categorize agents based on the number of followers they have. However the bins are weighted. Here the bins have a weight equal to its corresponding value increased by 1 (assuming the 'bin_spacing' is 'linear' and 'increment' is 1). 
 
-The weights are essential in the **twitter_suggest** and **preferential_agent** follow models, since they are what cause agents with a higher 'in-degree' (number of followers) to have a better chance of being followed than agents with fewer followers. 
+The weights are essential in the **twitter_suggest** (combination) and **preferential_agent** follow models, since they are what cause agents with a higher 'in-degree' (number of followers) to have a better chance of being followed than agents with fewer followers. 
 
 ## Tweet Observations
 
@@ -441,9 +441,9 @@ In **#k@** the number of the attributes are found in the **config_static.h ** fi
 	N_BIN_REGIONS = 3;
 	N_BIN_AGENT_TYPES = 200;
 
-**Language** is also an attribute. It is treated an enumerated class, also in the **src** file.  
+**Language** is also an attribute. It is treated an enumerated class, in the same file.  
 
-If a greater number of, for example, **regions** is desired, the value of the **N_BIN** file must be changed and **#k@** must be rebuilt before the simulation can be run. 
+If a greater number of any BIN is desired, the value of the **N_BIN** file must be changed and **#k@** must be rebuilt before the simulation can be run. 
 
 To build **#k@**, run:
 
