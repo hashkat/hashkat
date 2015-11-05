@@ -234,7 +234,7 @@ struct Analyzer {
     // ROOT ANALYSIS ROUTINE
     /* Run the main analysis routine using this config. */
     void run_network_simulation(Timer& timer) {
-		const char* HEADER = "Simulation Time (min)\t\tUsers\t\tFollows\t\tTweets\t\tRetweets\t\tUnfollows\tR\t\tReal Time (s)";
+		const char* HEADER = "Simulation Time (min)\t\tUsers\t\tFollows\t\tTweets\t\tActive Tweets\t\tRetweets\t\tUnfollows\tR\t\tReal Time (s)";
         if (config.output_stdout_summary)
             cout << HEADER << "\n\n";
         while (sim_time_check() && real_time_check()) {
@@ -630,7 +630,8 @@ struct Analyzer {
             << network.size() << "\t\t"
             << stats.global_stats.n_follows << "\t\t"
             << stats.global_stats.n_tweets << "\t\t"
-            << stats.global_stats.n_retweets << "(" << state.tweet_bank.n_active_tweets() << ")\t\t"
+            << state.tweet_bank.n_active_tweets() << "\t\t"
+            << stats.global_stats.n_retweets << "\t\t"
             << stats.global_stats.n_unfollows << "\t\t"
             << stats.event_rate << "\t\t"
             << timer.get_microseconds()*1e-6 << "\n";
@@ -641,7 +642,8 @@ struct Analyzer {
             << (double) network.size() << "\t"
             << (double) stats.global_stats.n_follows << "\t"
             << (double) stats.global_stats.n_tweets << "\t"
-            << (double) stats.global_stats.n_retweets << "(" << (double) state.tweet_bank.n_active_tweets() << ")\t"
+            << (double) state.tweet_bank.n_active_tweets() << "\t"
+            << (double) stats.global_stats.n_retweets << "\t"
             << (double) stats.global_stats.n_unfollows << "\t"
             << stats.event_rate << "\t"
             << timer.get_microseconds()*1e-6 << "\r";
@@ -650,15 +652,15 @@ struct Analyzer {
     }
     void output_summary_stats(Timer& timer) {
 
-		const char* HEADER = "\n#Simulation Time (min)\t\tUsers\t\tFollows\t\tTweets\t\tRetweets\tUnfollows\tR\tReal Time (s)\n\n";
+		const char* HEADER = "\n#Simulation Time (min)\t\tUsers\t\tFollows\t\tTweets\t\tActive Tweets\t\tRetweets\tUnfollows\tR\tReal Time (s)\n\n";
     
-        if (stats.n_outputs % 10000*STDOUT_OUTPUT_RATE == 0) {
+        if (stats.n_outputs == 0) {
             DATA_TIME << HEADER;
+        }
 
-            if (stats.n_outputs % STDOUT_OUTPUT_RATE == 0) {
-                output_summary_stats(DATA_TIME, true, timer);
-                output_summary_stats(cout, false, timer);
-            }
+        if (stats.n_outputs % STDOUT_OUTPUT_RATE == 0) {
+            output_summary_stats(DATA_TIME, true, timer);
+            output_summary_stats(cout, false, timer);
         }
 
         stats.n_outputs++;
