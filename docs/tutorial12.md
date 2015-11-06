@@ -10,7 +10,9 @@ In this tutorial we will show you how to create different regions and agent_type
 
 #### Ideology
 
-An agent's ideology is the particular dogma that they follow. Ideologies may specified in the 'ideologies' section of the configuration file **INFILE.yaml**.
+An agent's ideology is coded into the signal to represent content.  To the user, they may represent religion, political affiliation, or any social attitude where other agents may agree or disagree, and chose to follow on that basis.  
+
+Ideologies are specified in the 'ideologies' section of the configuration file **INFILE.yaml**.  The default ideologies are listed below.
 
 ```python
 ideologies:
@@ -29,9 +31,9 @@ regions:
     ideology_weights: {Red: 100, Blue: 100, Green: 100, Orange: 100}
 ```
 
-The ideology weights are normalized, so the proportion of Red agents in Ontario will be 100 divided by the sum of the ideologies (400) or 1/4.
-
-Agents may also follow other agents based on ideology under the 'hashtag' follow_model (or combination/'twitter' follow_model).  To use the hashtag follow_model it must be enabled and 'care_about_ideology' under the agent_type set to 'true'.  This permits agents to follow agents of the same ideology. 
+The ideology weights are normalized, so the proportion of Red agents in Ontario will be 100/400 where 400 is the sum of the ideology_weights.
+'
+Agents may follow other agents based on ideology under the 'hashtag' follow_model (or combination/'twitter' follow_model).  The 'hashtag' follow_model must be enabled and 'care_about_ideology' under the agent_type set to 'true'.  This permits agents to follow agents of the same ideology. 
 
 ```python
 agents:
@@ -42,7 +44,7 @@ agents:
 
 #### Language
 
-Agents in **#k@** must speak at least one language, which may be English, French and English, French, or Spanish.  The proportion of agents that speak a particular language is set in the 'regions' section of the configuration file under 'language_weights'.  
+Agents in **#k@** must speak at least one language, which may be English, French and English, French, or Spanish.  The proportion of agents who speak a particular language is set in the 'regions' section of the configuration file under 'language_weights'.  
 
 ```python
 regions:
@@ -69,9 +71,9 @@ regions:
 
 #### Preference Class
 
-A preference_class defines the probability that the tweets of an agent will be retweeted based on its tweet_type.  This is called **tweet_transmission** and is defined in the 'preference_classes' section of **INFILE.yaml**.  
+The preference class determines the probability that the tweets of an agent will be retweeted.  Retweeting is called **tweet_transmission**.  Retweet preference classes may be configured for both tweet_type and agent_type.  
 
-In this section we may use the words 'else' to include all unnamed agent_types or 'all' to include all the agent_types without naming them.
+In this section of the program we may use the word **else** to include all unnamed agent_types or **all** to include all agent_types without naming them.
 
 ```python
 preference_classes:
@@ -106,11 +108,9 @@ regions:
 
 Agents, the nodes of the graph, are a complex component of **#k@** and require a number of configuration settings.  Agents are defined in the 'agents' section of **INFILE.yaml**.
 
-#### Agent - Add Weight
+#### Agent - Weights: add
 
-Add weight is the proportion in which agents of a particular agent_type are added to the network in comparison with other agent types.  This parameter applies to all simulations.
-
-In **#k@** agent add weights are normalized.  If there are two agent_types, one of add weight 120 and the other of add weight 80, then the first type of agent will be 60% of agents in the network (120/(120+80)) and the second 40% (80/200).
+Add_weight is the proportion with which agents of a given agent_type are added to the network.  
 
 ```python 
 agents:
@@ -119,10 +119,11 @@ agents:
       # Weight with which this agent is created
       add: 100.0
 ```
+In **#k@** agent add weights are normalized.  If there are two agent_types, one of add weight 120 and the other of add weight 80, then the first type of agent will be 60% of agents in the network (120/200) and the second 40% (80/200).
 
-#### Agent - Follow Weight
+#### Agent - Weights: follow
 
-Follow weight is the proportion with which agents of a particular agent_type are followed compared to other agent types.  Follow weight is used in the **agent** and **preferential_agent** follow_models.  Follow weights are also normalized.
+Follow weight is the proportion with which agents of a particular agent_type are followed compared to other agent types.  Follow weight is used in the **agent** and **preferential_agent** follow_models.  
 
 ```python
 agents:
@@ -131,6 +132,9 @@ agents:
       # Weight with which this agent is followed in agent follow
       follow: 100.0
 ```
+
+Follow weights are also normalized in **#k@**.
+
 
 #### Agent - Tweet Type
 
@@ -149,7 +153,7 @@ agents:
 
 #### Agent - Followback Probability
 
-Followback_probability is the probability that if an agent is followed, the agent will return the favour. On Twitter experiments have shown this value to be about 44%.
+Followback_probability is the probability that if an agent is followed, the agent will return the favour.  On Twitter experiments have shown this value to be about 44%.
 
 ```python
 agents:
@@ -158,7 +162,7 @@ agents:
     followback_probability: .44
 ```
 
-In order to use followback_probability, **use_followback** must be set to 'true' in the 'analysis' section of **INFILE.yaml**.
+In order to use followback_probability **use_followback** must be set to 'true' in the 'analysis' section of **INFILE.yaml**.
 
 ```python
 analysis:
@@ -198,7 +202,7 @@ agents:
         follow: {function: constant, value: 0.0001}
 ```
 
-For a linear follow rate, the function must be set to 'linear' and a 'slope' and 'y_intercept' specified. The 'y_intercept' is the initial rate of follows per simulated minute and the 'slope' is the amount the rate increases per simulated month.
+For a linear follow rate, the function must be set to 'linear' and a 'slope' and 'y_intercept' specified. The 'y_intercept' is the initial rate of follows per simulated minute (like 'value' above) and the 'slope' is the amount the rate increases per simulated month.
  
 ```pythonn
 agents:
