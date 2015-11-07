@@ -1,29 +1,29 @@
 [hashkat.org](http://hashkat.org)
 
-<span style="color:black; font-family:Georgia; font-size:1.5em;">UNDER DEVELOPMENT</span>
+# Modelling Different Scenarios
 
-# A Complex Network
-
-## Modelling Different Scenarios
-
-Up to this point, we have used ***#k@*** in very abstract terms. Let's use it now to model real life scenarios that can occur in social networks.
+Up to this point, we have demonstrated **#k@** with simple networks. Let's use it now to model real life scenarios that may occur in social networks.
 
 ### Scenario 1 - Organization Rivalry
 
-We have two organizations, *Coke* and *Pepsi*, who are taking full advantage of the access social networks allow them to have with consumers. They have both made accounts on this social network and both currently have zero followers. They have decided to each launch their own marketing campaign to garner as much follows from *Standard* agents in this social network as possible in a span of one week.
+We have created two agent_types to be rival organizations in this simulation, and have named them 'Cola' and 'Peppi'.  Both organizations want to take full advantage of social networks to connect with consumers.  Both organizations have made social media accounts but both currently have zero followers.  Each has decided to launch a marketing campaign to obtain as many 'Standard' followers as possible within one simulated week.
 
-Both *Coke* and *Pepsi* only follow agents that follow them, and they will do so for every single one of their followers. *Pepsi* tweets both *musical* and *humorous* tweets evenly weighted, while *Coke* only tweets humorous tweets, though at a slightly higher *tweet* rate. *Humourous* tweets have a better chance of being retweeted however.
+Both Cola and Peppi only follow agents that follow them, and they will each follow_back 100% of the agents who follow them.
 
-The *INFILE.yaml* used for this scenario can be found in the **docs/tutorial_input_files** directory in **hashkat** under **tutorial13_scenario_1** as well as [here](https://github.com/hashkat/hashkat/blob/master/docs/tutorial_input_files/tutorial13_scenario_1/INFILE.yaml). To find out who wins this competition, copy this input file into your *INFILE.yaml* file run the simulation. Feel free to look through the input file to see what we did to produce this scenario. Due to the complexity of this network, the simulation may run slightly longer than the simulations done in previous tutorials.
+Peppi's' strategy is to tweet both 'musical' and 'humorous' tweets in equal proportions, while Cola tweets only 'humorous' tweets but at a slightly higher rate. Humourous tweets have a better chance of being retweeted however their scope is limited by language, while the scope of 'musical' tweets is unlimited.
 
-#### Coke
+The configuration file for this scenario can be found in the [/hashkat/docs/tutorial_input_files/tutorial13_scenario_1/](https://github.com/hashkat/hashkat/blob/master/docs/tutorial_input_files/tutorial13_scenario_1/INFILE.yaml). 
+
+To find out who wins this competition, copy these agent_types into your **INFILE.yaml** and run the simulation.  
+
+#### Cola
 
 <center>
 <img src='../img/trading_cards/organization_coke_card.jpg'>
 </center>
 
 ```python
-- name: Organization-Coke
+- name: Organization-Cola
   weights:
     # Weight with which this agent is created
     add: 0.5
@@ -46,14 +46,14 @@ The *INFILE.yaml* used for this scenario can be found in the **docs/tutorial_inp
       tweet: {function: constant, value: 0.11}
 ```
 
-#### Pepsi
+#### Peppi
 
 <center>
 <img src='../img/trading_cards/organization_pepsi_card.jpg'>
 </center>
 
 ```python
-- name: Organization-Pepsi
+- name: Organization-Peppi
   weights:
     # Weight with which this agent is created
     add: 0.5
@@ -75,10 +75,13 @@ The *INFILE.yaml* used for this scenario can be found in the **docs/tutorial_inp
       # Rate for tweets from this agent:
       tweet: {function: constant, value: 0.10}
 ```
+Due to the complexity of this network, this simulation may take longer to run than simulations in previous tutorials.
 
 ### Scenario 2 - Different Regions, Different Ideologies
 
-We have two regions in our network, *Canada* and the *USA*, and both are in the midst of a federal election. In both regions, there are two main political parties, *Red* and *Blue*. However, the *Red* party and *Blue* party in *Canada* are vastly different from the *Red* party and *Blue* party in the *USA*. Citizens of these regions have taken to this social network to voice their views on their particular regions' upcoming elections. These citizens can be categorized into 2 main agent types in the social network. These agent types are:
+For this simulation we created two regions, 'Canada' and the 'USA'.  Both regions are in the lead up to a national election, which will take place on the same day. 
+
+In both regions there are two main political parties, 'Red' and 'Blue', however the Red and Blue parties in Canada are vastly different from the Red and Blue parties in the USA.  Citizens of these regions have taken to the social network to voice their views on the upcoming elections. These citizens can be categorized into 2 main agent_types in the social network. These agent_types are:
 
 #### Red
 
@@ -140,10 +143,16 @@ We have two regions in our network, *Canada* and the *USA*, and both are in the 
       tweet: {function: linear, y_intercept: 0.01, slope: 0.001}
 ```
 
-Agents started voicing their views 5 days before the day of their country's federal election, which coincidentally happens to occur in both countries on the very same day, and have been increasing their use of this social network ever since. The *INFILE.yaml* used for this scenario can be found in the **docs/tutorial_input_files** directory in **hashkat** under **tutorial13_scenario_2** as well as [here](https://github.com/hashkat/hashkat/blob/master/docs/tutorial_input_files/tutorial13_scenario_2/INFILE.yaml). Copy this input file into your *INFILE.yaml* file and run the simulation. Feel free to look through the input file to see what we did to produce this scenario. Due to the complexity of this network, the simulation may run slightly longer than the simulations done in previous tutorials. Judging by the number of supporters you will find in the social network, find a way to discover who will most likely win the election in both *Canada* and the *USA*.
+Five days before the national election both agent_types start tweeting ideological content, and increase their use of the social network. The configuration file used for this scenario can be found in [/hashkat/docs/tutorial_input_files/tutorial13_scenario_2/](https://github.com/hashkat/hashkat/blob/master/docs/tutorial_input_files/tutorial13_scenario_2/INFILE.yaml). 
 
-## Moving Forward with ***#k@***
+Remove Cola and Peppi and copy these two regions and agent_types into your **INFILE.yaml** file and run the simulation.  
 
-With the completion of this, the final tutorial, you now have proficency and experience working with all the different implementations and aspects of ***#k@***. However, we have only scratched the surface of all the different applications and utilizations of ***#k@***. From the World Wide Web to a food web, from people to atoms, there is no end to all the entities and situations you can model using ***#k@***. With this in mind, press on and experiment with ***#k@***, and see what you can model using this program.
+#### Pick a Winner
 
-Check out the following pages for further information on some of the components of ***#k@***. Also, please send us your thoughts on ***#k@*** and this documentation on the [**Feedback**](http://docs.hashkat.org/en/latest/feedback/) page. We would love to hear from you!
+Use the output files generated to discover, in each simulation, which agent_type 'won' the most number of followers.
+
+#### Moving Forward
+
+With the completion of this tutorial you now have proficiency and experience working with the different implementations and aspects of **#k@**. However we have only scratched the surface of the different simulations that may be run in **#k@**. From the World Wide Web to an environmental food web, from people to atoms, there is no end to networks that may be modelled with **#k@**. 
+
+The following pages contain further information on some of the components of **#k@**.  Please send us your thoughts on **#k@** and this documentation via [Feedback](http://docs.hashkat.org/en/latest/feedback/). We would love to hear from you!
