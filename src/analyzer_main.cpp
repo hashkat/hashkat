@@ -234,9 +234,17 @@ struct Analyzer {
     // ROOT ANALYSIS ROUTINE
     /* Run the main analysis routine using this config. */
     void run_network_simulation(Timer& timer) {
-		const char* HEADER = "Simulation Time (min)\t\tUsers\t\tFollows\t\tTweets\t\tRetweets\t\tUnfollows\tR\t\tReal Time (s)";
         if (config.output_stdout_summary)
-            cout << HEADER << "\n\n";
+            cout << setw(25)
+            << "Simulation Time (min)" << setw(25)
+            << "Agents" << setw(25)
+            << "Follows" << setw(25)
+            << "Tweets" << setw(25)
+            << "Active Tweets" << setw(25)
+            << "Retweets" << setw(25)
+            << "Unfollows" << setw(25)
+            << "R" << setw(25)
+            << "Real Time (s)" << "\n\n";
         while (sim_time_check() && real_time_check()) {
             if (!interrupt_check()) {
                 interrupt_reset();
@@ -624,41 +632,49 @@ struct Analyzer {
 
     void output_summary_stats(ostream& stream, bool newline, Timer& timer) {
         if (newline) {
-            stream << scientific << setprecision(2)
-            //<< HEADER  
-            << time << "\t\t"
-            << network.size() << "\t\t"
-            << stats.global_stats.n_follows << "\t\t"
-            << stats.global_stats.n_tweets << "\t\t"
-            << stats.global_stats.n_retweets << "(" << state.tweet_bank.n_active_tweets() << ")\t\t"
-            << stats.global_stats.n_unfollows << "\t\t"
-            << stats.event_rate << "\t\t"
+            stream << scientific << setprecision(2) << setw(25)
+            << time << setw(25)
+            << network.size() << setw(25)
+            << stats.global_stats.n_follows << setw(25)
+            << stats.global_stats.n_tweets << setw(25)
+            << state.tweet_bank.n_active_tweets() << setw(25)
+            << stats.global_stats.n_retweets << setw(25)
+            << stats.global_stats.n_unfollows << setw(25)
+            << stats.event_rate << setw(25)
             << timer.get_microseconds()*1e-6 << "\n";
             flush(stream);
         } else {
-            stream << setprecision(2) << scientific
-            << time << "\t"
-            << (double) network.size() << "\t"
-            << (double) stats.global_stats.n_follows << "\t"
-            << (double) stats.global_stats.n_tweets << "\t"
-            << (double) stats.global_stats.n_retweets << "(" << (double) state.tweet_bank.n_active_tweets() << ")\t"
-            << (double) stats.global_stats.n_unfollows << "\t"
-            << stats.event_rate << "\t"
+            stream << setprecision(2) << scientific << setw(25)
+            << time << setw(25)
+            << (double) network.size() << setw(25)
+            << (double) stats.global_stats.n_follows << setw(25)
+            << (double) stats.global_stats.n_tweets << setw(25)
+            << (double) state.tweet_bank.n_active_tweets() << setw(25)
+            << (double) stats.global_stats.n_retweets << setw(25)
+            << (double) stats.global_stats.n_unfollows << setw(25)
+            << stats.event_rate << setw(25)
             << timer.get_microseconds()*1e-6 << "\r";
             flush(stream);
         }
     }
     void output_summary_stats(Timer& timer) {
 
-		const char* HEADER = "\n#Simulation Time (min)\t\tUsers\t\tFollows\t\tTweets\t\tRetweets\tUnfollows\tR\tReal Time (s)\n\n";
-    
-        if (stats.n_outputs % 10000*STDOUT_OUTPUT_RATE == 0) {
-            DATA_TIME << HEADER;
+        if (stats.n_outputs == 0) {
+            DATA_TIME << setw(25)
+            << "#Simulation Time (min)" << setw(25)
+            << "Agents" << setw(25)
+            << "Follows" << setw(25)
+            << "Tweets" << setw(25)
+            << "Active Tweets" << setw(25)
+            << "Retweets" << setw(25)
+            << "Unfollows" << setw(25)
+            << "R" << setw(25)
+            << "Real Time (s)" << "\n\n";
+        }
 
-            if (stats.n_outputs % STDOUT_OUTPUT_RATE == 0) {
-                output_summary_stats(DATA_TIME, true, timer);
-                output_summary_stats(cout, false, timer);
-            }
+        if (stats.n_outputs % STDOUT_OUTPUT_RATE == 0) {
+            output_summary_stats(DATA_TIME, true, timer);
+            output_summary_stats(cout, false, timer);
         }
 
         stats.n_outputs++;

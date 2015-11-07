@@ -4,7 +4,7 @@
 #
 # Attributes for controlling the duration and type of analysis.
 #  initial_agents:
-#    The initial agent amount to create.
+#    The initial number of agents in the network.
 #  max_agents: 
 #    The maximum amount of agents for which to allocate. Once the network
 #    has grown to this amount, the agent add rate will artifically drop to 0.
@@ -22,7 +22,7 @@
 #    Whether interactive mode should be triggered by Ctrl+c or ./scripts/stop.sh (triggers SIGUSR1).
 #  enable_lua_hooks:
 #    Whether to use runtime Lua functions that can react to events. **Slow!**
-#    Hooks are availble for running on every tweet, retweet, follow, etc.
+#    Hooks are available for running on every tweet, retweet, follow, etc.
 #  lua_script:
 #    Script to use to define the behaviour of interactive mode as well as lua hooks.
 #  use_barabasi: 
@@ -40,9 +40,11 @@
 #  model_weights:
 #    The normalized probability of calling each follow model for the 'twitter' follow model.
 #  stage1_unfollow: 
-#    Whether to have an unfollow model assuming constant 'chattiness', compares the chattiness of an agent wrt to the following set.
+#    If set to true, an agent will unfollow a 'chatty' agent if the chatty agents tweets at 
+#    twice the average rate of the other agents the receiving agent follows. Chattiness determined 
+#    relative to the receiving agent.
 #  unfollow_tweet_rate: 
-#    Tweets per simulated minute. Chattiness for which to be considered for unfollow.
+#    Absolute threshold for tweets per minute.  After this point the tweeter will lose a random follower.
 #  use_hashtag_probability:
 #    The probability that tweets will contain a hashtag.
 #################################################################
