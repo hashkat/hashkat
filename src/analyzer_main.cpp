@@ -243,7 +243,7 @@ struct Analyzer {
             << "Active Tweets" << setw(25)
             << "Retweets" << setw(25)
             << "Unfollows" << setw(25)
-            << "R" << setw(25)
+            << "Cumulative-Rate" << setw(25)
             << "Real Time (s)" << "\n\n";
         while (sim_time_check() && real_time_check()) {
             if (!interrupt_check()) {
@@ -660,16 +660,16 @@ struct Analyzer {
     void output_summary_stats(Timer& timer) {
 
         if (stats.n_outputs == 0) {
-            DATA_TIME << setw(25)
-            << "#Simulation Time (min)" << setw(25)
+            DATA_TIME << "#" << setw(25)
+            << "Simulation Time (min)" << setw(25)
             << "Agents" << setw(25)
             << "Follows" << setw(25)
             << "Tweets" << setw(25)
             << "Active Tweets" << setw(25)
             << "Retweets" << setw(25)
             << "Unfollows" << setw(25)
-            << "R" << setw(25)
-            << "Real Time (s)" << "\n\n";
+            << "Cumulative-Rate" << setw(25)
+            << "Real Time (s)" << "\n";
         }
 
         if (stats.n_outputs % STDOUT_OUTPUT_RATE == 0) {
