@@ -6,7 +6,7 @@ The **#k@** project is compatible with both Mac OS X and Linux. We will go over 
 
 Required programs:
 
-*  **Python 2.7**  At present Python3 is not supported.
+*  **Python 2.7**.    At present Python3 is not supported.
 *  [CMake](http://www.cmake.org/) 
 *  [Gnuplot](http://gnuplot.sourceforge.net/)
 *  [Gephi](http://gephi.github.io/)
