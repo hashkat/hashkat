@@ -6,7 +6,13 @@ The **#k@** project is compatible with both Mac OS X and Linux.
 
 We will go over the steps to install **#k@** for each particular operating system below.
 
-**#k@** requires **Python 2.7** to run.  Python3 and above will produce a build error.
+Required programs:
+
+*  **Python 2.7**  At present Python3 is not supported.
+*  [CMake](http://www.cmake.org/) 
+*  [Gnuplot](http://gnuplot.sourceforge.net/)
+*  [Gephi](http://gephi.github.io/)
+*  for Mac OS X, an installer such as [Homebrew](http://brew.sh/)
 
 ## Mac OS X
 
