@@ -6,6 +6,8 @@ The **#k@** project is compatible with both Mac OS X and Linux.
 
 We will go over the steps to install **#k@** for each particular operating system below.
 
+**#k@** requires **Python 2.7** to run.  Python3 and above will produce a build error.
+
 ## Mac OS X
 
 <center>
