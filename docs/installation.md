@@ -2,9 +2,7 @@
 
 # Installation
 
-The **#k@** project is compatible with both Mac OS X and Linux.
-
-We will go over the steps to install **#k@** for each particular operating system below.
+The **#k@** project is compatible with both Mac OS X and Linux. We will go over the steps to install **#k@** for each particular operating system.
 
 Required programs:
 
