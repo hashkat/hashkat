@@ -127,7 +127,7 @@ Here outlines the following steps on how to install **#k@** on Linux (these inst
 
 1. To unpack this tar file, type in the command:
 
-    `tar xzvf hashkat.2015.08.20.tar.gz`
+    `tar -xzvf hashkat.2015.08.20.tar.gz`
 
 1. Once this is completed, look into the list of files in this directory and you will see amongst them:
 

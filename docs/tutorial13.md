@@ -6,24 +6,24 @@ Up to this point, we have demonstrated **#k@** with simple networks. Let's use i
 
 ### Scenario 1 - Organization Rivalry
 
-We have created two agent_types to be rival organizations in this simulation, and have named them 'Cola' and 'Peppi'.  Both organizations want to take full advantage of social networks to connect with consumers.  Both organizations have made social media accounts but both currently have zero followers.  Each has decided to launch a marketing campaign to obtain as many 'Standard' followers as possible within one simulated week.
+We have created two agent_types to be rival organizations in this simulation, and have named them 'Coke' and 'Pepsi'.  Both organizations want to take full advantage of social networks to connect with consumers.  Both organizations have made social media accounts but both currently have zero followers.  Each has decided to launch a marketing campaign to obtain as many 'Standard' followers as possible within one simulated week.
 
-Both Cola and Peppi only follow agents that follow them, and they will each follow_back 100% of the agents who follow them.
+Both Coke and Pepsi only follow agents that follow them, and they will each follow_back 100% of the agents who follow them.
 
-Peppi's' strategy is to tweet both 'musical' and 'humorous' tweets in equal proportions, while Cola tweets only 'humorous' tweets but at a slightly higher rate. Humourous tweets have a better chance of being retweeted however their scope is limited by language, while the scope of 'musical' tweets is unlimited.
+Pepsi's' strategy is to tweet both 'musical' and 'humorous' tweets in equal proportions, while Coke tweets only 'humorous' tweets but at a slightly higher rate. Humourous tweets have a better chance of being retweeted however their scope is limited by language, while the scope of 'musical' tweets is unlimited.
 
 The configuration file for this scenario can be found in the [/hashkat/docs/tutorial_input_files/tutorial13_scenario_1/](https://github.com/hashkat/hashkat/blob/master/docs/tutorial_input_files/tutorial13_scenario_1/INFILE.yaml). 
 
 To find out who wins this competition, copy these agent_types into your **INFILE.yaml** and run the simulation.  
 
-#### Cola
+#### Coke
 
 <center>
 <img src='../img/trading_cards/organization_coke_card.jpg'>
 </center>
 
 ```python
-- name: Organization-Cola
+- name: Organization-Coke
   weights:
     # Weight with which this agent is created
     add: 0.5
@@ -46,14 +46,14 @@ To find out who wins this competition, copy these agent_types into your **INFILE
       tweet: {function: constant, value: 0.11}
 ```
 
-#### Peppi
+#### Pepsi
 
 <center>
 <img src='../img/trading_cards/organization_pepsi_card.jpg'>
 </center>
 
 ```python
-- name: Organization-Peppi
+- name: Organization-Pepsi
   weights:
     # Weight with which this agent is created
     add: 0.5
@@ -145,7 +145,7 @@ In both regions there are two main political parties, 'Red' and 'Blue', however 
 
 Five days before the national election both agent_types start tweeting ideological content, and increase their use of the social network. The configuration file used for this scenario can be found in [/hashkat/docs/tutorial_input_files/tutorial13_scenario_2/](https://github.com/hashkat/hashkat/blob/master/docs/tutorial_input_files/tutorial13_scenario_2/INFILE.yaml). 
 
-Remove Cola and Peppi and copy these two regions and agent_types into your **INFILE.yaml** file and run the simulation.  
+Remove Coke and Pepsi and copy these two regions and agent_types into your **INFILE.yaml** file and run the simulation.  
 
 #### Pick a Winner
 
