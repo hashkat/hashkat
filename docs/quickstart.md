@@ -72,7 +72,13 @@ Note:  There must be EXACTLY 3 Regions but all but one may have add_weight = 0.
 
 All but one of any of the above may be effectively disabled by setting its add_weight to zero.  Put another way, at least one of Ideology, Agent_type, Preference_Class, Language, & Tweet_type must have an add_weight that is not zero. Advanced users may change the maximum numbers permitted in **hashkat/src/config_static.h**.  
 
-Further information is available in [documentation](http://docs.hashkat.org/en/latest/).
+To see (briefly) how it comes together, below is an example of a Region configuration in quickstart_INFILE.yaml.  
+
+<center>
+<img src='../img/quickstart/regions.png'>
+</center>
+
+Sample agent_types and preference_classes are shown at bottom of this document.  Further information is available in [documentation](http://docs.hashkat.org/en/latest/).  
 
 ### Running Hashkat
 
@@ -152,8 +158,22 @@ This will produce a plot of your network and save the plot to **graph.svg**.
 
 See the [visualization tutorial](http://docs.hashkat.org/en/latest/visualization/) for more analysis tools.
 
+### Screenshots
+
+Below is an example of the quickstart_INFILE.yaml agent_type configuration.
+
+<center>
+<img src='../img/quickstart/agents.png'>
+</center>
+
+Below is an example of the quickstart_INFILE.yaml preference_class configuration.
+
+<center>
+<img src='../img/quickstart/preference_class.png'>
+</center>
 
 ### Further Information
 
 Implementation of **#k@** is described more fully in [Input](http://docs.hashkat.org/en/latest/input/) documentation and in detailed [tutorials](http://docs.hashkat.org/en/latest/tutorial01/) with video demonstrations.  A [large network](http://docs.hashkat.org/en/latest/large_network/) using 128 kb of RAM is demonstrated and other [complex](http://docs.hashkat.org/en/latest/tutorial13/) scenarios.  For further information or [feedback](https://github.com/hashkat/hashkat) do not hesitate to contact us.
+
 
