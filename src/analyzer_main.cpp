@@ -93,8 +93,8 @@ struct Analyzer {
 
 	// Categories for tweeting, following, retweeting
     CategoryGrouper& tweet_ranks;
-	CategoryGrouper& follow_ranks;
-	CategoryGrouper& retweet_ranks;
+    CategoryGrouper& follow_ranks;
+    CategoryGrouper& retweet_ranks;
     Add_Rates& add_rates;
     TweetBank& tweet_bank;
     MostPopularTweet& most_pop_tweet;
@@ -105,7 +105,15 @@ struct Analyzer {
 
     // Times the interval between prints to the console
     Timer stdout_milestone_timer;
-    TimePeriodChecker output_time_checker;
+    RealOrSimulatedTimePeriodChecker output_time_checker;
+    static RealOrSimulatedTimePeriodChecker output_time_checker_from_config(ParsedConfig& config) {
+        if (config.summary_output_rate_real_minutes) {
+            return {RealTimePeriodChecker(config.summary_output_rate)};
+        } else {
+            // Simulated time period checker
+            return {TimePeriodChecker(config.summary_output_rate)};
+        }
+    }
 
     ofstream DATA_TIME; // Output file to plot data
 
@@ -127,7 +135,7 @@ struct Analyzer {
             agent_types(state.agent_types), network(state.network),
             tweet_ranks(state.tweet_ranks), follow_ranks(state.follow_ranks), retweet_ranks(state.retweet_ranks),
             rng(state.rng), time(state.time), add_rates(state.config.add_rates), tweet_bank(state.tweet_bank),
-            most_pop_tweet(state.most_pop_tweet), hashtags(state.hashtags), output_time_checker(state.config.summary_output_rate) {
+            most_pop_tweet(state.most_pop_tweet), hashtags(state.hashtags), output_time_checker(output_time_checker_from_config(state.config)) {
 
         // The following allocates a memory chunk proportional to max_agents:
         network.allocate(config.max_agents);
