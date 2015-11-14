@@ -124,7 +124,7 @@ void output_network_statistics(AnalysisState& state) {
         most_popular_tweet_content(mpt, network);
     }
     // cout << "\n\n\n\n\n\n\n";
-    // n_agents_in_regions(network);
+    // print_n_agents_in_regions(network, state);
     //fraction_of_connections_distro(network, state, stats);
     //if (C.dd_by_age) {
     //    dd_by_age(network, state, stats);
@@ -812,13 +812,13 @@ struct holder {
     vector<int> ids;
 };
 
-void n_agents_in_regions(Network& n) {
+static void print_n_agents_in_regions(Network& n, AnalysisState& state) {
     int region_counts[N_BIN_REGIONS] = {0};
     for (int i = 0; i < n.size(); i ++) { 
     	region_counts[n[i].region_bin] ++;
     }
     cout << "REGION BIN COUNTS: ";
-    for (int i = 0; i < N_BIN_REGIONS; i ++) {
+    for (int i = 0; i < state.config.regions.size(); i ++) {
     	cout << region_counts[i] << "\t";
     }
     cout << "\n\n";
@@ -844,26 +844,26 @@ bool region_stats(Network& n, AnalysisState& state) {
         
     }
     double follow_counts[N_BIN_REGIONS] = {};
-    for (int i = 0; i < N_BIN_REGIONS; i ++) {
+    for (int i = 0; i < state.config.regions.size(); i++) {
         int count = 0;
-        for (int j = 0; j < N_BIN_REGIONS; j ++) {
+        for (int j = 0; j < state.config.regions.size(); j++) {
             count += connections[i][j];
         }
         follow_counts[i] = count;
     }
     output << "Connections:\n";
-    for (int i = 0; i < N_BIN_REGIONS; i ++) {
+    for (int i = 0; i < state.config.regions.size(); i++) {
         output << "\t" << i;
     }
     output << "\n";
-    for (int i = 0; i < N_BIN_REGIONS; i ++) {
-        for (int j = 0; j < N_BIN_REGIONS; j ++) {
+    for (int i = 0; i < state.config.regions.size(); i++) {
+        for (int j = 0; j < state.config.regions.size(); j++) {
             if (j == 0) {
                 output << "\n" << i;
             }
             double connections_ratio = (follow_counts[i] == 0 ? 0.0 : connections[i][j] / follow_counts[i]);
             output << "\t" << 100.0 * connections_ratio << "\%";
-            if (j+1 == N_BIN_REGIONS) {
+            if (j+1 == state.config.regions.size()) {
                 output << "\n";
             }
             

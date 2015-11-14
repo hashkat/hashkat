@@ -415,7 +415,7 @@ struct AnalyzerFollow {
        bool ideology_choice = agent_types[e.agent_type].care_about_ideology;
        int default_region = e.region_bin;
        int default_ideology = e.ideology_bin;
-       int agent_to_follow = hashtags.select_agent(rng, region_choice, ideology_choice, default_region, default_ideology);
+       int agent_to_follow = hashtags.select_agent(state, region_choice, ideology_choice, default_region, default_ideology);
        if (agent_to_follow != -1)
            RECORD_STAT(state, e.agent_type, n_hashtag_follows);
        return agent_to_follow;

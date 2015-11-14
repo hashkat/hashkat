@@ -67,6 +67,9 @@ struct Ideology {
 struct Regions {
     std::vector<double> add_probs; // For choosing a region, sums to 1
     std::vector<Region> regions;
+    size_t size() {
+        return regions.size();
+    }
 };
 
 // Config variables, read from INFILE.yaml

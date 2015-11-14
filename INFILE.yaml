@@ -253,13 +253,6 @@ regions:
     ideology_weights: {Red: 100, Blue: 100, Green: 100, Orange: 100}
     language_weights: {English: 0, French: 100, Spanish: 0, French+English: 0}
 
-  - name: Mexico
-    add_weight: 0
-
-    preference_class_weights: {NoRetweetPref: 100}
-    ideology_weights: {Red: 100, Blue: 100, Green: 100, Orange: 100}
-    language_weights: {English: 0, French: 0, Spanish: 100, French+English: 0}
-
 #################################################################
 # >> preference_classes: 
 # The different preference stereotypes that users in the network can have.

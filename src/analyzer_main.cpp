@@ -294,7 +294,7 @@ struct Analyzer {
 
         // Determine abstract location:
         auto& R = state.config.regions;
-        DEBUG_CHECK(R.regions.size() == N_BIN_REGIONS, "Should match!");
+        DEBUG_CHECK(R.regions.size() > N_BIN_REGIONS, "Too many regions!");
         int region_bin = rng.kmc_select(R.add_probs);
         auto& region = R.regions[region_bin];
 
