@@ -1,0 +1,149 @@
+#################################################################
+# Quickstart_INFILE.yaml
+#
+# This contains the core configuration parameters for a user 
+# to create their own simulation. 
+#
+# When complete, save this file as INFILE.yaml and run.
+#
+# More information: http://docs.hashkat.org/en/latest/quickstart
+#################################################################
+
+analysis:
+  initial_agents:	# must be => 1
+    10
+  max_agents: 		# must be => initial_agents
+    100000
+  max_time: 		# simulated minutes
+    100000
+  max_real_time: 	# real minutes, to test set to 1 minute
+    100000
+
+# FOLLOW_MODEL: twitter = combination model
+#   To use a particular model set other model_weights to 0.0. Total model_weights = 1.0.
+
+  follow_model:
+    twitter		
+  model_weights: {random: 0.2, twitter_suggest: 0.2, agent: 0.2, preferential_agent: 0.2, hashtag: 0.2}
+  stage1_unfollow: 
+    true
+  unfollow_tweet_rate: 	
+    10.0	# a number above 10 is effectively 'off', 1.01 to 3.0 is effectively 'on'
+  use_hashtag_probability: 
+    0.3
+
+rates:
+  add: {function: constant, value: 1.0}  # number of new agents added per minute
+
+# IDEOLOGIES: 4 in default build. User may rename the ideology.
+#   All but one ideology may have add_weight = 0.
+
+ideologies:			
+  - name: Red			
+  - name: Blue
+  - name: Green
+  - name: Orange
+
+# REGIONS: must number 3 in default build with total add_weights = 100.
+#   All but one region may have add_weight = 0.  Languages are hard-coded.
+
+regions:		  				
+  - name: user_chosen_name_0	
+    add_weight: 100		
+    preference_class_weights: {user_named_pref_class_0: 100, user_named_pref_class_1: 0}
+    ideology_weights: {Red: 10, Blue: 90, Green: 0, Orange: 0}
+    language_weights: {English: 90, French: 0, Spanish: 0, French+English: 10}
+
+  - name: user_chosen_name_1
+    add_weight: 0
+    preference_class_weights: {user_named_pref_class_0: 100, user_named_pref_class_1: 0}
+    ideology_weights: {Red: 100, Blue: 0, Green: 0, Orange: 0}
+    language_weights: {English: 20, French: 60, Spanish: 5, French+English: 15}
+
+  - name: user_chosen_name_2
+    add_weight: 0
+    preference_class_weights: {user_named_pref_class_0: 100, user_named_pref_class_1: 0}
+    ideology_weights: {Red: 20, Blue: 10, Green: 40, Orange: 30}
+    language_weights: {English: 0, French: 0, Spanish: 100, French+English: 0}
+
+# PREFERENCE_CLASSES: retweet rates based on agent_type & tweet_type.
+#    2 preference classes in default build.  User may reconfigure.
+#    'all' means all agent_types, 'else' means all unnamed agent_types
+#    Tweet_type limits scope of retweet. Plain & humorous limited by language.
+#    Ideology limited by language & region. Musical tweets unlimited in scope,
+
+preference_classes:		
+
+ - name: user_named_pref_class_0
+   tweet_transmission: 
+      plain: # and musical tweets
+        Standard: 0.01
+        Celebrity: 0.02
+        else: 0.01
+      different_ideology: 
+        all: 0.0
+      same_ideology:
+        Standard: 0.01
+        Celebrity: 0.10
+        else: 0.01
+      humorous:
+        Standard: 0.05
+        Celebrity: 0.02
+        else: 0.02
+
+- name: user_named_pref_class_1
+   tweet_transmission: 
+      plain: # and musical tweets
+        Standard: 0.01
+        Celebrity: 0.02
+        else: 0.01
+      different_ideology: 
+        all: 0.00
+      same_ideology:
+        all: 0.02
+      humorous:
+        Standard: 0.05
+        Celebrity: 0.02
+        else: 0.02
+
+# Hashkat permits up to 200 agent types.  
+# Copy the standard type, rename and re-configure.
+# Remember to include new agent_types in Preference_Class & Region configuration.
+# At least one agent_type must have a non-zero add_weight.
+
+agents:			
+  - name: Standard
+    weights:
+      add: 95.0     		
+      follow: 6				# rate this agent is followed by others
+      tweet_type:
+        ideological: 1.0
+        plain: 1.0
+        musical: 1.0
+        humorous: 1.0
+    followback_probability: 0.25	# rate this agent follows agents who follow them
+    hashtag_follow_options:
+      care_about_region: true 		# agent will follow only agents from same region
+      care_about_ideology: false 	# agent will follow only agents with same ideology
+    rates:      
+        follow: {function: constant, value: 0.01}  # rate this agent follows others
+        tweet: {function: constant, value: 0.01} 
+
+- name: Celebrity
+    weights:   
+      add: 5.0
+      follow: 14	# rate normalized with all agent follow weights ie 14/(14+6)
+      tweet_type:
+        ideological: 1.0
+        plain: 1.0
+        musical: 1.0
+        humorous: 1.0
+    followback_probability: .001
+    hashtag_follow_options:
+      care_about_region: false 		
+      care_about_ideology: true 	
+    rates: :
+        follow: {function: constant, value: 0.0001}
+        tweet: {function: constant, value: 0.001}
+
+
