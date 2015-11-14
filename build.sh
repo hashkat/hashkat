@@ -102,6 +102,16 @@ Misc options:
 fi
 
 ###############################################################################
+# Generate INFILE.yaml from DEFAULT.yaml if it's missing.
+# INFILE.yaml is under .gitignore to reflect its per-user usage.
+###############################################################################
+
+if [ ! -f INFILE.yaml ] ; then
+    echo "WARNING: You have no INFILE.yaml, creating one from DEFAULT.yaml"
+    cp DEFAULT.yaml INFILE.yaml
+fi
+
+###############################################################################
 # Eclipse options
 #   --eclipse/-e: Create eclipse project files
 ###############################################################################
@@ -181,16 +191,6 @@ popd
 
 if ! handle_flag "--run" && ! handle_flag "-R" ; then
     exit
-fi
-
-###############################################################################
-# Generate INFILE.yaml from DEFAULT.yaml if it's missing.
-# INFILE.yaml is under .gitignore to reflect its per-user usage.
-###############################################################################
-
-if [ ! -f INFILE.yaml ] ; then
-    echo "WARNING: You have no INFILE.yaml, creating one from DEFAULT.yaml"
-    cp DEFAULT.yaml INFILE.yaml
 fi
 
 ###############################################################################
