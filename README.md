@@ -4,17 +4,15 @@
 A tool and source base for simulations that are designed to mimic the events that occur in social simulations such as Twitter. These events include following, tweeting, retweeting, unfollowing, and agent creation. Agents in our simulations represent users, and the simulation simulates their connections and the information they spread.
 
          ------------------------------------------------------------
-        |  NOTE: you must have cmake, Python 2.x, and a C++ compiler |
+        |  Requires cmake, and a C++ compiler (eg, g++) to build.    |
+        |  Requires Python 2.x installed to run.                     |
         |                                                            |
-        |    TO BUILD: './build.sh -O'                               |
-        |    TO BEGIN SIMULATION: './run.sh'                         |
+        |    To build: './build.sh -O'                               |
+        |    To begin simulation: './run.sh'                         |
         |                                                            |
-        |    TO CREATE DESIRED SIMULATIONS MODIFY                    |
-        |    'INFILE.yaml'.                                          |
+        |    To create desired simulations modify 'INFILE.yaml'.     |
         |                                                            |
-        |    FOR TUTORIALS, SEE 'docs' DIRECTORY.                    |
-        |    ALSO, SEE 'docs' DIRECTORY FOR FULL                     |
-        |    DOCUMENTATION.                                          |
+        |    For documentation and tutorials, see 'docs' directory.  |
          ------------------------------------------------------------
 
 
