@@ -20,7 +20,7 @@ if ($ENV{BUILD_FLAGS})
     add_definitions ($ENV{BUILD_FLAGS})
 endif()
 
-add_definitions ("-DHASHKAT_VERSION=\"$ENV{HASHKAT_VERSION}\"")
+add_definitions ("-DLUA_USE_POSIX" "-Wno-deprecated-declarations" "-DHASHKAT_VERSION=\"$ENV{HASHKAT_VERSION}\"")
 
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
     if ($ENV{BUILD_SANITIZE})

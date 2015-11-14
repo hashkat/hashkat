@@ -86,7 +86,12 @@ if ! handle_flag "--no-generate" ; then
     rm -f *yaml-generated
 
     # We must generate INFILE-generated.yaml from INFILE.yaml
-    python "$HASHKAT/hashkat_pre.py" $args
+    if env python --version 2>&1 | grep 'Python 2\.' > /dev/null ; then
+        env python "$HASHKAT/hashkat_pre.py" $args
+    else
+        echo "#KAT requires Python2.x to run."
+        exit 1
+    fi
 fi
 
 "$HASHKAT/build/src/hashkat" $args

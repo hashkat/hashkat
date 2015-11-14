@@ -35,6 +35,7 @@
 
 #include "dependencies/prettyprint.hpp"
 #include "lcommon/perf_timer.h"
+#include "lcommon/Timer.h"
 
 struct TimeDepBin {
     typedef std::vector<int> Heap;
@@ -140,7 +141,7 @@ private:
     std::vector<TimeDepBin> bins;
 };
 
-// Efficient structure for detecting if we should perform some periodic task
+// Efficient structure for detecting if we should perform some periodic task, in simulated time
 struct TimePeriodChecker {
     TimePeriodChecker(double interval, double start_time = 0) {
         next_check_time = start_time + interval;
@@ -163,5 +164,60 @@ struct TimePeriodChecker {
 private:
     double next_check_time, interval;
 };
+
+// Efficient structure for detecting if we should perform some periodic task, in real time
+struct RealTimePeriodChecker {
+    // Duration is in real-minutes, the standard input configuration
+    RealTimePeriodChecker(double minute_duration) {
+        microsecond_duration = minute_duration * 60 * 1000;
+    }
+    bool has_past() {
+       auto time_elapsed = timer.get_microseconds(); 
+       auto time_diff = time_elapsed + remainder - microsecond_duration;
+       if (time_diff > 0) {
+           timer.start();
+           // Drift the remainder by how far away we were from a microsecond_duration
+           remainder += time_elapsed - microsecond_duration;
+           return true;
+       }
+       return false;
+    }
+
+    READ_WRITE(rw) {
+        rw << microsecond_duration;
+    }
+private:
+    Timer timer;
+    double remainder;
+    double microsecond_duration;
+};
+
+// Is configured to either check a real or simulated period of time.
+struct RealOrSimulatedTimePeriodChecker {
+    RealOrSimulatedTimePeriodChecker(const TimePeriodChecker&     simulated_time_period_checker) : 
+        use_simulated_time(true), 
+        simulated_time_period_checker(simulated_time_period_checker), 
+        real_time_period_checker(0) {
+    }
+    RealOrSimulatedTimePeriodChecker(const RealTimePeriodChecker& real_time_period_checker) : 
+        use_simulated_time(false), 
+        simulated_time_period_checker(0), 
+        real_time_period_checker(real_time_period_checker) {
+    }
+    bool has_past(double t) {
+        return use_simulated_time ? simulated_time_period_checker.has_past(t) : real_time_period_checker.has_past();
+    }
+
+    READ_WRITE(rw) {
+        rw << use_simulated_time;
+        rw.visit(simulated_time_period_checker);
+        rw.visit(real_time_period_checker);
+    }
+private:
+    bool use_simulated_time = true;
+    TimePeriodChecker simulated_time_period_checker;
+    RealTimePeriodChecker real_time_period_checker;
+};
+
 
 #endif

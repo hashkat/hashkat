@@ -24,6 +24,7 @@
 
 #include <cstdio>
 #include <fstream>
+#include <iostream>
 #include <exception>
 
 #include <lcommon/strformat.h>
@@ -201,6 +202,7 @@ static Add_Rates parse_rates_configuration(ParsedConfig& config, const Node& nod
 static void parse_output_configuration(ParsedConfig& config, const Node& node) {
     parse(node, "stdout_basic", config.output_stdout_basic);
     parse(node, "stdout_summary", config.output_stdout_summary);
+    parse(node, "summary_output_rate_real_minutes", config.summary_output_rate_real_minutes);
     parse(node, "summary_output_rate", config.summary_output_rate);
 
     parse(node, "visualize", config.output_visualize);
@@ -445,8 +447,7 @@ static void save_file_contents(ParsedConfig& config, const char* file_name) {
     // Re-read file, this time merely storing its entire contents
     // for sanity-check purposes on network resume:
     fstream file(file_name, fstream::in);
-    string file_contents = "";
-    string line;
+    string file_contents, line;
     while (getline(file, line)) {
         file_contents += line + "\n";
     }
