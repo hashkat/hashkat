@@ -72,15 +72,9 @@ Note:  There must be EXACTLY 3 Regions but all but one may have add_weight = 0.
 
 All but one of any of the above may be effectively disabled by setting its add_weight to zero.  Put another way, at least one of Ideology, Agent_type, Preference_Class, Language, & Tweet_type must have an add_weight that is not zero. Advanced users may change the maximum numbers permitted in **hashkat/src/config_static.h**.  
 
-To see (briefly) how it comes together, below is an example of a Region configuration in quickstart_INFILE.yaml.  
+Further information is available in [documentation](http://docs.hashkat.org/en/latest/).
 
-<center>
-<img src='../img/quickstart/regions.png'>
-</center>
-
-Sample agent_types and preference_classes are shown at bottom of this document.  Further information is available in [documentation](http://docs.hashkat.org/en/latest/).  
-
-### Running Hashkat
+### Running Hashkat For First Time
 
 To run **#k@** the first time you must build it by typing in the command:
 
@@ -94,26 +88,32 @@ Once built, you may run **#k@** by typing in the command:
 
 `./run.sh`
 
-or, with a random seed generator:
-
-`./run.sh --rand`
-
-Each time you run **#k@** it overwrites your output directory, so after your run save your output directory to a new name:
-
-`mv output output_my_simulation`
-
 ### Running Hashkat For Second Time
 
-To run **#k@** a second time, you need to first remove some files:
+To run **#k@** a second time, you need to first remove some files and remove or rename the output directory:
 
+* remove:  DATA_vs_TIME
 * remove:  hashkat/network_state.dat
 * remove:  INFILE.yaml-generated
+* remove or rename:  output directory
 
 The [commands](http://docs.hashkat.org/en/latest/commandline/) are:
+
+    `rm DATA_vs_TIME`
 
     `rm INFILE.yaml-generated`
 
     `rm network_state.dat`
+
+    `rm -r output  (<-to remove | to rename->)  mv output new_name_output`
+
+Once these files are removed, to run the exact same simulation again (will give same output):
+
+`./run.sh`
+
+To run the same simulation with a different random seed (will give different output):  
+
+`./run.sh --rand` 
 
 To change the simulation:
 
@@ -123,9 +123,9 @@ To change the simulation:
 
 ### Hashkat Output
 
-The data collected by **#k@** during the simulation is sent to files stored in the output directory, created fresh with each run.  Information in **#k@** is may be collected by ranks (or bins / buckets) or individually.  It may be collected for the whole run or by time period (ie simulated month).  Output is usually by array number not name.  So languages, for example, will be output as {0,1,2,3} being {English, English+French, French, Spanish}.
+The data collected by **#k@** during the simulation is sent files stored in the output directory which is created fresh with each run. Information in **#k@** is may be collected by ranks (or bins / buckets) or individually.  It may be collected for the whole run or by time period (ie simulated month).  Output is usually by array number not name.  So languages, for example, will be output as {0,1,2,3} being {English, English+French, French, Spanish}.
 
-[Output](http://docs.hashkat.org/en/latest/output/) includes data (**.dat**) files, which may be viewed raw with any text editor, or may be visualized. 
+The data (**.dat**) files  may be viewed raw with any text editor, or may be visualized. [Output](http://docs.hashkat.org/en/latest/output/) includes:
 
 *  Agent_Type_info.dat - one for each agent_type
 *  Categories_Distro.dat
@@ -140,7 +140,7 @@ To create a plot of your network, enter Python from the command line by typing i
 
 `python`
 
-In Python, use [Networkx](https://networkx.github.io/) to create a plot of your network:
+In Python, use [Networkx](https://networkx.github.io/) to create a graph of your network:
 
 ```python
 import matplotlib.pyplot as plt`
@@ -158,22 +158,8 @@ This will produce a plot of your network and save the plot to **graph.svg**.
 
 See the [visualization tutorial](http://docs.hashkat.org/en/latest/visualization/) for more analysis tools.
 
-### Screenshots
-
-Below is an example of the quickstart_INFILE.yaml agent_type configuration.
-
-<center>
-<img src='../img/quickstart/agents.png'>
-</center>
-
-Below is an example of the quickstart_INFILE.yaml preference_class configuration.
-
-<center>
-<img src='../img/quickstart/preference_class.png'>
-</center>
 
 ### Further Information
 
 Implementation of **#k@** is described more fully in [Input](http://docs.hashkat.org/en/latest/input/) documentation and in detailed [tutorials](http://docs.hashkat.org/en/latest/tutorial01/) with video demonstrations.  A [large network](http://docs.hashkat.org/en/latest/large_network/) using 128 kb of RAM is demonstrated and other [complex](http://docs.hashkat.org/en/latest/tutorial13/) scenarios.  For further information or [feedback](https://github.com/hashkat/hashkat) do not hesitate to contact us.
-
 

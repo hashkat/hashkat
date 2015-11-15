@@ -14,30 +14,55 @@ This is a brief explanation of how to restart a network simulation, or do a seco
 
 At the end of [Tutorial 1](http://docs.hashkat.org/en/latest/tutorial01/), we had run a simple network simulation and studied its output. 
 
-It is necessary to rename the output directory before running a new simulation or your data will be over-written and lost.
+It is necessary to discard (or rename) the results of the old simulation to run a new simulation.  The results of the old simulation are found in:
 
+`network_state.dat`
+
+`~/hashkat/output/`
+
+Here we show you how to REMOVE the files, which is permanent.  You may also move the files to a storage directory, and/or rename the unwanted files and directories.
+
+##### To Remove:
+
+To remove the old output:
+
+`rm network_state.dat`
+
+`rm -r output`
+
+Though not necessary, you can also remove the other files created from running a network simulation by typing in the commands:
+
+`rm DATA_vs_TIME`
 
 ##### To Move:
 
-Create a new directory, for example, 'My_Output', to store your old simulation output:
+Create a new directory to store your old simulations, for example:
 
-`mkdir ~/hashkat/My_Output`
+`mkdir ~/hashkat/MyOldSimulations`
 
-You may simply move the unwanted files & directories into 'My_Output' and they will be invisible to **#k@**:
+because this is off the path, you may simply move the unwanted files & directories into 'MyOldSimulations' and they will be invisible to **hashkat**:
 
-`mv ~/hashkat/network_stat.dat ~/hashkat/My_Output/`
+`mv ~/hashkat/network_stat.dat ~/hashkat/MyOldSimulations/`
 
-`mv -r ~/hashkat/output/ ~/hashkat/My_Output/`
+`mv -r ~/hashkat/output/ ~/hashkat/MyOldSimulations/`
+
+If you do this more than once, you will end up with a lot of output directories of the same name in 'MyOldSimulations'.  Therefore you may want to move and rename them.
 
 ##### To Rename:
 
-You may also simply rename the files and directories, which will make them invisible to **#k@**.  You may rename by using the **mv** command.
+You may also simply rename the unwanted files and directories, which will make them invisible to **hashkat**.  You may rename by copying them to a new name, then removing the old name.
 
-To rename:
+To copy:
 
-`mv network_state.dat my_network_state.dat`
+`cp network_state.dat unwanted_network_state.dat`
 
-`mv output my_output`
+`cp -r output unwanted_output`
+
+then remove the old file:
+
+`rm network_state.dat`
+
+`rm -r output`
 
 #### Run New Simulation
 
@@ -45,16 +70,36 @@ You can now run your new simulation by typing in the command:
 
 `./run.sh`
 
-Alternatively, to run a simulation using a random seed, type the command:
+Alternatively, to run a simulation using a random seed for the random number generator, type the command:
 
 `./run.sh --rand`
 
+For this first tutorial, the first command is sufficient.
+
 #### Stopping and Continuing a Simulation
 
-If for whatever reason you would like to stop a simulation midway through, simply press **Ctrl-c**. Unfortunately, under current defaults, your data will be lost.  
+If for whatever reason you would like to stop a simulation midway through, without losing your data, simply press **Ctrl-c**. The simulation will automatically save the information it's collected to the **network_state.dat** file.  
+
+<center>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/-gQ52JW2s-Y" frameborder="0" allowfullscreen></iframe>
+</center>
+
+If for whatever reason you would like to stop a simulation midway through, without losing your data, simply press **Ctrl-c**. The simulation will automatically save the information it's collected to the **network_state.dat** file.  
+
+You may analyze the data you have so far which is in the **DATA_vs_TIME** file and **output** directory. 
+
+If you would like to continue the simulation from where you left off, simply type in:
+
+`./run.sh`
+
+Note:  to continue a simulation, do NOT use the random seed command.
+
+The simulation will recommence running if you have time left.  Note: you may increase the maximum simulation time in your 'INFILE.yaml' file and the network simulation will simply continue from where it previously left off.
+
+It is possible to continue running the same simulation with a new configuration of 'INFILE.yaml', but this gives complex output data and is discouraged.
 
 #### Next Steps
 
-With the completion of this second tutorial using **#k@**, you are now familiar with running and stopping network simulation in any directory. 
+With the completion of this second tutorial using **#k@**, you are now familiar with running, stopping, and continuing a new network simulation in any directory. 
 
 Proceed to the next tutorials for a demonstration of the different follow models in **k@**, starting with the [random follow model](http://docs.hashkat.org/en/latest/tutorial03/).
