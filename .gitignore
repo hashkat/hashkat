@@ -2,6 +2,7 @@ CMakeCache.txt
 CMakeFiles/
 oprofile_data/
 src/tests/INFILE_temporary.yaml
+INFILE.yaml
 INFILE-generated.yaml
 Makefile
 DATA_vs_TIME
@@ -9,12 +10,8 @@ luawrap_tests
 cmake_install.cmake
 CTestTestfile.cmake
 graph*
-main
-socialsim
-src/main
 build
 build/*
-src/socialsim
 callgrind.out.*
 POSITIONS*
 output/*

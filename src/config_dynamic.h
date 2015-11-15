@@ -67,6 +67,9 @@ struct Ideology {
 struct Regions {
     std::vector<double> add_probs; // For choosing a region, sums to 1
     std::vector<Region> regions;
+    size_t size() {
+        return regions.size();
+    }
 };
 
 // Config variables, read from INFILE.yaml
@@ -116,6 +119,7 @@ struct ParsedConfig {
     bool retweet_viz = false;
     bool main_stats = false;
     bool dd_by_follow_model = false;
+    bool summary_output_rate_real_minutes = false;
     double summary_output_rate = 1;
     bool categories_distro = false;
     bool most_popular_tweet_content = false;

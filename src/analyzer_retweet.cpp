@@ -58,9 +58,6 @@ struct AnalyzerRetweet {
         PERF_TIMER();
         TweetBank& tweet_bank = state.tweet_bank;
 
-        double rand_num = rng.rand_real_not0();
-        double rate_total = total_retweet_rate();
-
         Tweet& tweet = tweet_bank.pick_random_weighted(rng);
         UsedAgents& used = tweet.content->used_agents;
 
@@ -74,7 +71,6 @@ struct AnalyzerRetweet {
         if (!used.contains(agent_retweeting)) {
             // Agent has NOT already retweeted this tweet
             used.insert(agent_retweeting);
-            Agent& e = network[agent_retweeting];
             return RetweetChoice(
                 tweet.content->id_original_author,
                 agent_retweeting,

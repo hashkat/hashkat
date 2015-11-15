@@ -2,9 +2,15 @@
 
 # Installation
 
-The **#k@** project is compatible with both Mac OS X and Linux.
+The **#k@** project is compatible with both Mac OS X and Linux. We will go over the steps to install **#k@** for each particular operating system.
 
-We will go over the steps to install **#k@** for each particular operating system below.
+Required programs:
+
+*  **Python 2.7**.    At present Python3 is not supported.
+*  [CMake](http://www.cmake.org/) 
+*  [Gnuplot](http://gnuplot.sourceforge.net/)
+*  [Gephi](http://gephi.github.io/)
+*  for Mac OS X, an installer such as [Homebrew](http://brew.sh/)
 
 ## Mac OS X
 
@@ -121,7 +127,7 @@ Here outlines the following steps on how to install **#k@** on Linux (these inst
 
 1. To unpack this tar file, type in the command:
 
-    `tar xzvf hashkat.2015.08.20.tar.gz`
+    `tar -xzvf hashkat.2015.08.20.tar.gz`
 
 1. Once this is completed, look into the list of files in this directory and you will see amongst them:
 

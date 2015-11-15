@@ -102,6 +102,16 @@ Misc options:
 fi
 
 ###############################################################################
+# Generate INFILE.yaml from DEFAULT.yaml if it's missing.
+# INFILE.yaml is under .gitignore to reflect its per-user usage.
+###############################################################################
+
+if [ ! -f INFILE.yaml ] ; then
+    echo "WARNING: You have no INFILE.yaml, creating one from DEFAULT.yaml"
+    cp DEFAULT.yaml INFILE.yaml
+fi
+
+###############################################################################
 # Eclipse options
 #   --eclipse/-e: Create eclipse project files
 ###############################################################################
@@ -179,6 +189,10 @@ fi
 make -j$((cores+1))
 popd
 
+if ! handle_flag "--run" && ! handle_flag "-R" ; then
+    exit
+fi
+
 ###############################################################################
 # Generating YAML files by expansion of Python
 #   --input <FILE>, the input file to use. Defaults to INFILE.yaml.
@@ -192,8 +206,13 @@ if ! handle_flag "--no-generate" ; then
     # Clear all existing generated YAML files:
     rm -f *yaml-generated
 
-    # We must generate, eg, INFILE.yaml-generated from INFILE.yaml
-    python hashkat_pre.py "$@"
+    # We must generate INFILE-generated.yaml from INFILE.yaml
+    if env python --version 2>&1 | grep 'Python 2\.' > /dev/null ; then
+        env python "$HASHKAT/hashkat_pre.py" $args
+    else
+        echo "#KAT requires Python2.x to run."
+        exit 1
+    fi
 fi
 
 ###############################################################################
@@ -202,10 +221,6 @@ fi
 #   --run/-R: Run after building.
 #   Use '--help' or 'help' for details.
 ###############################################################################
-
-if ! handle_flag "--run" && ! handle_flag "-R" ; then
-    exit
-fi
 
 # If the flag is NOT present, handle ctrl-c
 if ! handle_flag "--no-ctrlc" ; then

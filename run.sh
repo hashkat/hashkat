@@ -73,6 +73,16 @@ if ! handle_flag "--no-ctrlc" ; then
 fi
 
 ###############################################################################
+# Generate INFILE.yaml from DEFAULT.yaml if it's missing.
+# INFILE.yaml is under .gitignore to reflect its per-user usage.
+###############################################################################
+
+if [ ! -f INFILE.yaml ] ; then
+    echo "WARNING: You have no INFILE.yaml, creating one from DEFAULT.yaml"
+    cp DEFAULT.yaml INFILE.yaml
+fi
+
+###############################################################################
 # Generating YAML files by expansion of Python
 #   --input <FILE>, the input file to use. Defaults to INFILE.yaml.
 ###############################################################################
@@ -86,7 +96,12 @@ if ! handle_flag "--no-generate" ; then
     rm -f *yaml-generated
 
     # We must generate INFILE-generated.yaml from INFILE.yaml
-    python "$HASHKAT/hashkat_pre.py" $args
+    if env python --version 2>&1 | grep 'Python 2\.' > /dev/null ; then
+        env python "$HASHKAT/hashkat_pre.py" $args
+    else
+        echo "#KAT requires Python2.x to run."
+        exit 1
+    fi
 fi
 
 "$HASHKAT/build/src/hashkat" $args
