@@ -50,13 +50,19 @@ If you do this more than once, you will end up with a lot of output directories 
 
 ##### To Rename:
 
-You may also simply rename the unwanted files and directories, which will make them invisible to **hashkat**.  You may rename by copying them to a new name, then removing the old name.
+You may also simply rename the unwanted files and directories, which will make them invisible to **hashkat**.  
+
+You may rename a file or directory with the **mv** command:
+
+`mv output my_output`
+
+You may rename by copying them to a new name, then removing the old name.
 
 To copy:
 
 `cp network_state.dat unwanted_network_state.dat`
 
-`cp -r output unwanted_output`
+`cp -r output my_output`
 
 then remove the old file:
 
@@ -92,7 +98,7 @@ If you would like to continue the simulation from where you left off, simply typ
 
 `./run.sh`
 
-Note:  to continue a simulation, do NOT use the random seed command.
+Note:  to continue a simulation, do NOT use the random seed **run** command.
 
 The simulation will recommence running if you have time left.  Note: you may increase the maximum simulation time in your 'INFILE.yaml' file and the network simulation will simply continue from where it previously left off.
 
