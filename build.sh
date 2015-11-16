@@ -156,9 +156,9 @@ if handle_flag "--debug-std" ; then
 fi
 
 # Configure version string
-pushd "$HASHKAT"
-export HASHKAT_VERSION="`git describe --abbrev=0`b`git rev-list HEAD --count`"
-popd
+pushd "$HASHKAT" > /dev/null
+export HASHKAT_VERSION="`git describe --abbrev=0 2>/dev/null`b`git rev-list HEAD --count`"
+popd > /dev/null
 
 # Configure amount of cores used
 if [[ -e /proc/cpuinfo ]] ; then
@@ -181,13 +181,13 @@ mkdir -p output/
 
 echo "Compiling hashkat version $HASHKAT_VERSION"
 mkdir -p build
-pushd build
+pushd build > /dev/null
 cmake .. | colorify '1;33'
 if handle_flag "--clean" ; then
     make clean
 fi
 make -j$((cores+1))
-popd
+popd > /dev/null
 
 if ! handle_flag "--run" && ! handle_flag "-R" ; then
     exit

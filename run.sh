@@ -28,11 +28,6 @@ function handle_flag(){
     return $got # False!
 }
 
-pushd "$HASHKAT"
-# TODO When packaging, this must be replaced with the version string
-export HASHKAT_VERSION="`git describe --abbrev=0`b`git rev-list HEAD --count`"
-popd
-
 ###############################################################################
 #  --tests: Run tests, including functionality equivalent tests (testing
 # against reference files from previous runs), and unit tests.
