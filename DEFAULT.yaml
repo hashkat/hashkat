@@ -119,6 +119,8 @@ output:
     true
   stdout_summary: 
     true
+  summary_output_rate_real_minutes: 
+    false
   summary_output_rate: 
     1
   visualize: 
