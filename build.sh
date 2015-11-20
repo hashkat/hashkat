@@ -120,8 +120,8 @@ fi
 if handle_flag "--eclipse" || handle_flag "-e" ; then
     src=$(pwd)
     rm -f CMakeCache.txt
-    mkdir ../KMCEclipse -p
-    cd ../KMCEclipse
+    mkdir ../hashkat_project -p
+    cd ../hashkat_project
     # Eclipse project creation
     cmake -G"Eclipse CDT4 - Unix Makefiles" $src
     exit

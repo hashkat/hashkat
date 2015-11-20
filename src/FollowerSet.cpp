@@ -53,31 +53,6 @@ int LanguageLayer::classify(Agent& agent) {
 }
 
 /*****************************************************************************
- * as_vector implementation:
- *****************************************************************************/
-
-vector<int> FollowerSet::as_vector() {
-    vector<int> ret;
-
-    // Reach into all the layers:
-    auto& a = followers;
-    for (auto& b : a.sublayers) {
-        for (auto& c : b.sublayers) {
-            for (auto& d : c.sublayers) {
-                for (HashedEdgeSet<int>& set : d.sublayers) {
-                    HashedEdgeSet<int>::iterator iter;
-                    while (set.iterate(iter)) {
-                        ret.push_back(iter.get());
-                    }
-                }
-            }
-        }
-    }
-
-    return ret;
-}
-
-/*****************************************************************************
  * add implementation:
  * The leaf layer inserts to a HashedEdgeSet, while the parent layers
  * delegate insertion to child layers.

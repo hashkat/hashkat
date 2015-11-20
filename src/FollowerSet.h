@@ -26,6 +26,8 @@
 #define FOLLOWERSET_H_
 
 #include <cstdio>
+#include <vector>
+#include <functional>
 #include <cmath>
 #include "util.h"
 
@@ -117,6 +119,7 @@ struct LanguageLayer {
  *****************************************************************************/
 
 struct FollowerSet {
+    const static int MAGIC_CONSTANT_BEFORE_SERIALIZATION = 0xbadbeef;
     typedef LanguageLayer TopLayer;
     typedef TopLayer::Weights Weights;
 
@@ -135,7 +138,30 @@ struct FollowerSet {
         double get_weight(Agent& author, TweetContent& content);
     };
 
-    std::vector<int> as_vector();
+    template <typename Function>
+    void for_each(Function func) {
+        // Reach into all the layers:
+        auto& a = followers;
+        for (auto& b : a.sublayers) {
+            for (auto& c : b.sublayers) {
+                for (auto& d : c.sublayers) {
+                    for (HashedEdgeSet<int>& set : d.sublayers) {
+                        HashedEdgeSet<int>::iterator iter;
+                        while (set.iterate(iter)) {
+                            func(iter.get());
+                        }
+                    }
+                }
+            }
+        }
+    }
+    std::vector<int> as_vector() {
+        std::vector<int> vec;
+        for_each([&](int agent_id) {
+            vec.push_back(agent_id);
+        });
+        return vec;
+    }
 
     /* Returns false if the element already existed */
     bool add(Agent& agent);
@@ -157,22 +183,46 @@ struct FollowerSet {
 
     double determine_tweet_weights(Agent& author, TweetContent& content, WeightDeterminer& determiner, /*Weights placed here: */ Weights& output);
 
+
+    // TODO rename ignore_load_config_check to allow_configuration_modification
+    // or something similar, and fix how strict it is
     READ_WRITE(rw) {
-        // Reach into all the layers:
-        auto& a = followers;
-        for (auto& b : a.sublayers) {
-            for (auto& c : b.sublayers) {
-                for (auto& d : c.sublayers) {
-                    for (HashedEdgeSet<int>& set : d.sublayers) {
-                        set.visit(rw);
-                    }
-                    rw << d.n_elems;
+        rw.checkMagic(MAGIC_CONSTANT_BEFORE_SERIALIZATION);
+        // If we expect to a load a different configuration, do a flexible serialization.
+        if (rw.state.config.ignore_load_config_check) {
+            size_t size_temp = size();
+            rw << size_temp; // Invariant: 'size_temp' now holds the true size of the FollowerSet
+            if (rw.is_reading()) {
+                for (size_t i = 0; i < size_temp; i++) {
+                    int agent_id = -1;
+                    rw << agent_id;
+                    add(rw.state.network[agent_id]);
                 }
-                rw << c.n_elems;
+            } else {
+                size_t n_written = 0;
+                // is writing
+                for_each([&rw, &n_written](int agent_id){
+                    rw << agent_id;
+                    n_written++;
+                });
+                ASSERT(n_written == size_temp, "size error in follower set; detected upon serialization");
             }
-            rw << b.n_elems;
+        } else {
+            // Reach into all the layers:
+            auto& a = followers;
+            for (auto& b : a.sublayers) {
+                for (auto& c : b.sublayers) {
+                    for (auto& d : c.sublayers) {
+                        for (HashedEdgeSet<int>& set : d.sublayers) {
+                            set.visit(rw);
+                        }
+                        rw << d.n_elems;
+                    }
+                    rw << c.n_elems;
+             }
+             rw << a.n_elems;
+             }
         }
-        rw << a.n_elems;
     }
 private:
     // Holds the actual followers:
