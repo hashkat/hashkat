@@ -558,7 +558,7 @@ struct AnalyzerFollow {
 
     // Remove our target from our actor's follows:
     bool had_follower = candidate_followers.remove(network[id_unfollower]);
-		// DEBUG_CHECK(had_follower, "unfollow: Did not exist in follower list");
+		 DEBUG_CHECK(had_follower, "unfollow: Did not exist in follower list");
 
         // Remove our unfollowed person from our target's followers:
 		Agent& e_lost_follower = network[id_unfollower];
@@ -566,7 +566,7 @@ struct AnalyzerFollow {
 #ifdef REFACTORING
         network.disconnect(id_unfollowed, id_unfollower);
 #endif // REFACTORING
-        // DEBUG_CHECK(had_follow, "unfollow: Did not exist in follow list");
+         DEBUG_CHECK(had_follow, "unfollow: Did not exist in follow list");
 		RECORD_STAT(state, e_lost_follower.agent_type, n_unfollows);
 		return true;
 	}
