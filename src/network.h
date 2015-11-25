@@ -378,6 +378,56 @@ public:
 
     std::ostream& print(std::ostream& out) const
     {
+        out << "# Number of Bins: " << bins_.size() << std::endl;
+        out << "# kmax: " << kmax_ << std::endl;
+        out << "# Bins: " << std::endl;
+        out << "#   K        W         N     Agent IDs" << std::endl;
+        out << std::scientific << std::setprecision(2);
+        for (auto i = 0; i < bins_.size(); ++i)
+        {
+            out << std::setfill('0') << std::setw(8) << i
+                << ' ' << std::setw(5) << 0.0 << " ["
+                << std::setw(8) << bins_[i].size() << "]";
+            if (bins_[i].size())
+            {
+                out << ' ';
+                for (auto followee : bins_[i])
+                    out << followee << ',';
+            }
+            out << std::endl;
+        }
+
+        out << "# Maximum Number of Agents: " << max_agents_ << std::endl;
+        out << "# Number of Agents: " << n_agents_ << std::endl;
+        out << "# Network: " << std::endl;
+
+        for (unsigned i = 0; i < n_agents_; ++i)
+        {
+            out << std::setfill('0') << std::setw(8) << i << std::endl;
+
+            out << std::setw(7) << followers_[i].size()
+                << '<';
+            if (followers_[i].size())
+            {
+                out << ' ';
+                for (auto follower : followers_[i])
+                    out << follower << ',';
+            }
+            out << std::endl;
+
+            out << std::setw(7) << followees_[i].size()
+                << '>';
+            if (followees_[i].size())
+            {
+                out << ' ';
+                for (auto following : followees_[i])
+                    out << following << ',';
+            }
+            out << std::endl;
+        }
+        return out;
+    
+
         out << "# Number of Agents: " << n_agents_ << std::endl;
         out << "# Number of Bins: " << bins_.size() << std::endl;
         out << "# Denominator: " << denominator_ << std::endl;

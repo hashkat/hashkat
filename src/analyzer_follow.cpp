@@ -216,7 +216,7 @@ struct AnalyzerFollow {
    }
 #endif  // REFACTORING
 
-#ifdef REFACTORING
+#ifdef REFACTORING2
    int twitter_preferential_follow_method(Agent& e, double time_of_follow)
    {
        PERF_TIMER();
@@ -335,7 +335,7 @@ struct AnalyzerFollow {
        }
        return -1;
    }
-#endif  // REFACTORING
+#endif  // REFACTORING2
 
    int agent_follow_method(Agent& e) {
        PERF_TIMER();
