@@ -415,45 +415,19 @@ public:
             }
             out << std::endl;
 
-            out << std::setw(7) << followees_[i].size()
+            out << std::setw(7) << following_[i].size()
                 << '>';
-            if (followees_[i].size())
+            if (following_[i].size())
             {
                 out << ' ';
-                for (auto following : followees_[i])
+                for (auto following : following_[i])
                     out << following << ',';
             }
             out << std::endl;
         }
         return out;
-    
-
-        out << "# Number of Agents: " << n_agents_ << std::endl;
-        out << "# Number of Bins: " << bins_.size() << std::endl;
-        out << "# Denominator: " << denominator_ << std::endl;
-        out << "\n# Agent Id\tFollowers\tFollowing\tDegree (k)\tCount\tk*Count\tProbability (k*Count/Den)\tFollower Ids\n";
-
-        for (auto i = 0; i < n_agents_; ++i)
-        {
-            out << std::setw(7) << agents_[i].id << ' ';
-            out << std::setw(6) << followers_[i].size() << ' ';
-            out << std::setw(6) << following_[i].size() << ' ';
-            out << std::setw(6) << i+1 << ' ';
-            out << std::setw(6) << bins_[i].size() << ' ';
-            out << std::setw(6)
-                << (double((i+1) * bins_[i].size()) / double(denominator_));
-            out << '\t';
-            for (auto followed : bins_[i])
-                out << followed << ',';
-            out << std::endl;
-            //out << std::setw(6) << log(bins_[i].size()) << ' ';
-            //out << std::setw(6)
-            //    << log((double(i * bins_[i].size()) / double(denominator_)))
-            //    << std::endl;
-        }
-        return out;
     }
-};
+ };
 
 typedef network<std::size_t> Network;
 //typedef network<int> Network;
