@@ -623,7 +623,7 @@ struct Analyzer {
 
     void output_summary_stats(ostream& stream, bool newline, Timer& timer) {
         if (newline) {
-            stream << scientific << setprecision(2) << setw(25)
+            stream << scientific << setprecision(8) << setw(25)
             << time << setw(25)
             << network.size() << setw(25)
             << stats.global_stats.n_follows << setw(25)
