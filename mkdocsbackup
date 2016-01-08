@@ -2,6 +2,7 @@ site_name: docs.hashkat.org
 site_url: http://docs.hashkat.org
 pages:
  - [index.md, Home]
+ - [quickstart.md, Quick Start]
  - [installation.md, Installation]
  - [commandline.md, Using The Command Line]
  - [directory.md, The Hashkat Directory]
