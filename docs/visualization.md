@@ -15,7 +15,9 @@ The network we visualize here is the one created in [Tutorial 5](http://docs.has
 
 #### How to Visualize a Network
 
-Download [Gephi](http://gephi.github.io/) then enter the program and start a **new graph file**.  This documentation refers to **Gephi version 0.8**.  **Gephi 0.9** has a different under interface.  **Gephi 0.9** will open **0.8** files but not vice versa.
+Download [Gephi](http://gephi.github.io/) then enter the program.  NOTE: This documentation refers to **Gephi 0.8**.  
+
+**Gephi 0.9** has a different interface.  **Gephi 0.9** will open **0.8** files but not vice versa.
 
 These are the steps necessary to visualize the networks you've created:
 
@@ -106,13 +108,23 @@ This just scratches the surface of all that you can do using Gephi. Try experime
 
 ### Networkx
 
-You can also visualize the networks you've created using [Networkx](https://networkx.github.io/). Networkx is a Python language software package that can be used to create, modify, and analyze networks. To install Networkx on to your computer, enter into the command line:
+You can also visualize the networks you've created using [Networkx](https://networkx.github.io/). 
+
+[Networkx](https://networkx.github.io/documentation/latest/) is a Python language software package that can be used to create, modify, and analyze networks. To install Networkx on to your computer, enter into the command line:
 
 `pip install networkx`
 
+#### visualize.py
+
+We have pre-prepared a script **/~hashkat/visualize.py** to visualize and analyse your network in Networkx.  Simply enter the following command after running a simulation:
+
+`./visualize.py`
+
+This will produce a plot of your network using Networkx, and will save the plot to **graph.svg**.  This script will also run the analysis functions and algorithms discussed below. 
+
 #### Plotting Your Network
 
-To create a graph of your network after running a simulation using Networkx, enter Python by typing in the command:
+To manually create a Networkx graph of your network after running a simulation, enter Python by typing in the command:
 
 `python`
 
@@ -150,18 +162,6 @@ This will produce a plot similar to the one below:
 <br />
 
 Similar to our visualizations using Gephi, the red nodes in the above graph correspond to agents and the black edges in between them correspond to connections/followings between agents. It is important to note however that there is no way to distinguish between the different agent types via this method.
-
-### NetworkX
-
-You may use Networkx to analyze the network you've created as well. More information on [Networkx](https://networkx.github.io/documentation/latest/) can be found at their website [here](https://networkx.github.io/documentation/latest/).
-
-#### visualize.py
-
-You can visualize and analyze your networks by running the pre-prepared script **/~hashkat/visualize.py** by entering the following command after running a network simulation:
-
-`./visualize.py`
-
-Running this script will produce a plot of your network using Networkx, and will save the plot to **graph.svg**.  This script will also run the analysis functions and algorithms discussed below. 
 
 #### Number of Nodes
  
@@ -237,6 +237,6 @@ nx.average_shortest_path_length(G))
 
 ### Explore
 
-Though we discuss using Gephi in much greater detail in this documentation, you are encouraged to also analyze your networks using [Networkx](https://networkx.github.io/). 
+Though we discuss Gephi in much greater detail in this documentation, you are encouraged to analyze your networks using [Networkx](https://networkx.github.io/).  Other data output files are under development.  If you have a preference please let us know. 
 
 You are encouraged to explore all of Networkx's features and functionalities to understand all the ways in which you can analyze the data you've collected from running **#k@**.
