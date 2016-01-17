@@ -18,7 +18,7 @@ pages:
     - Output: output.md
     - Visualizing Output: visualization.md
     - Developers: developers.md
-    - Glossary: keywords.md, Key Words
+    - Glossary: keywords.md
     - Large Network Example: large_network.md
     - Troubleshooting: troubleshooting.md
 - Tutorials:
