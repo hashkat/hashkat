@@ -1,0 +1,42 @@
+site_name: docs.hashkat.org
+site_url: http://docs.hashkat.org
+site_description: Hashkat supporting documentation.
+site_author: Nick Buhagiar & Linda Kettle
+
+repo_url: https://github.com/hashkat/hashkat
+
+pages:
+- Home: index.md
+- About: about.md
+- Getting Started: 
+    - Installation: installation.md
+    - Using Command Line: commandline.md
+    - Directory: directory.md
+    - Quick Start: quickstart.md
+- User Manual:  
+    - Input: input.md
+    - Output: output.md
+    - Visualizing Output: visualization.md
+    - Developers: developers.md
+    - Glossary: keywords.md
+    - Large Network Example: large_network.md
+    - Troubleshooting: troubleshooting.md
+- Tutorials:
+    - 1 Start: tutorial01.md
+    - 2 Re-Start: tutorial02.md
+    - Follow Models: 
+        - 3 Random (Erdos-Renyi Model): tutorial03.md 
+        - 4 Twitter_Suggest (Barabasi-Albert Model): tutorial04.md
+        - 5 Agent: tutorial05.md
+        - 6 Preferential_Agent: tutorial06.md
+        - 7 Hashtag: tutorial07.md
+        - 8 Twitter (Combination): tutorial08.md
+        - 9 Other Follow Methods: tutorial09.md
+    - 10 Most Popular Tweet: tutorial10.md
+    - 11 Unfollowing: tutorial11.md
+    - 12 Agent Types: tutorial12.md
+    - 13 Complex Network Example: tutorial13.md
+- Contact Us: feedback.md
+- Citation and Licence: citation.md
+
+copyright: Copyright &copy; 2015 <a href="https://github.com/kryczko">Kevin Ryczko</a>, <a href="https://github.com/ludamad">Adam Domurad</a>, <a href="http://faculty.uoit.ca/itamblyn/index.html">Isaac Tamblyn</a>.
