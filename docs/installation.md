@@ -6,12 +6,15 @@ The **#k@** project is compatible with both Mac OS X and Linux. We will go over 
 
 Required programs:
 
-*  **Python 2.7**.    At present Python3 is not supported.
+*  **Python 2.7**.  At present Python 3 is not supported.
 *  [CMake](http://www.cmake.org/) 
+*  for Mac OS X, an installer such as [Homebrew](http://brew.sh/)
+
+Recommended programs:
 *  [Gnuplot](http://gnuplot.sourceforge.net/)
 *  [Gephi](http://gephi.github.io/).  Our documentation is in **Gephi 0.8**.
 *  [Networkx](https://networkx.github.io/)
-*  for Mac OS X, an installer such as [Homebrew](http://brew.sh/)
+
 
 ## Mac OS X
 
@@ -20,7 +23,7 @@ Required programs:
 </center>
 
 
-Here outlines the following steps on how to install **#k@** on Mac OS X:
+The following outlines the installation of **#k@** on Mac OS X:
 
 1. Download the latest build of **#k@** at [hashkat.org](http://hashkat.org) by clicking on 'Latest Build'.
 
@@ -36,7 +39,7 @@ Here outlines the following steps on how to install **#k@** on Mac OS X:
 
     `hashkat.2015.08.20.tar`
 
-    Please note that the date in the file you downloaded may be different from the one above. That's totally fine, it just means that you've downloaded a newer version of ***#k@***!
+    Please note that the date in the file you downloaded may be different from the one above. That's totally fine, it just means that you've downloaded a newer version of **#k@**!
 
 1. To unpack this tar file, type in the command:
 
@@ -72,33 +75,47 @@ Here outlines the following steps on how to install **#k@** on Mac OS X:
 
     `brew install cmake`
 
-1. You must now do a build of **#k@** on your computer by typing in the command:
+1. You must now do a build of **#k@** on your computer.  You may be in the Cmake directory.  You will need to go to the hashkat directory by typing in the commands:
+
+    `cd`
+
+    `cd hashkat`
 
     `./build.sh -O`  
 
-   **build.sh** is followed by 'space dash capital oh'.
+   **build.sh** is followed by 'capital oh'.  The "O" stands for "optimized build" and is optional.
 
-1. You can now run **#k@** in this **hashkat** directory as long as it has *INFILE.yaml* and *run.sh* within in it by typing in the command:
+1. You can now run **#k@** in this **hashkat** directory by typing the command:
 
     `./run.sh`
 
-1. Once you have run **#k@** properly, remove all the network save and analysis files created from this test simulation by typing in the following commands:
+1. In **hashkat** you need to remove (or move) the output files in between simulations or an error will be thrown.  You may remove them by typing in the following commands:
 
     `rm DATA_vs_TIME`
-
-    `rm INFILE.yaml-generated`
 
     `rm network_state.dat`
 
     `rm -r output/`
 
+    PRO TIP:  if your output is worth saving, instead of removing the files, simply move them into the output file, then rename the output file:
+
+    `mv DATA_vs_TIME /output/DATA_vs_TIME`
+
+    `mv network_state.dat /output/network_stat.dat`
+
+    `cp INFILE.yaml /output/INFILE.yaml`
+
+    `mv output output_with_description`
+
+   Note that we are keeping a copy of the configuration INFILE in case we want to re-run the simulation (or remember our input parameters).
+
 1. [Gnuplot](http://gnuplot.sourceforge.net/) is the primary graphing utility used in this documentation. To install **Gnuplot**, type in the command:
 
     `brew install gnuplot -x11`
 
-   **gnuplot** is followed by 'space dash ex one one'
+   **gnuplot** is followed by 'ex one one'
 
-1. It is also recommended to download and install [Gephi](http://gephi.github.io/) from their website to use for visualizations of collected data.
+1. It is also recommended to download and install [Gephi](http://gephi.github.io/) from their website to use for visualizations of collected data.  Our tutorials are illustrated with Gephi 0.8.  **#k@** automatically produces files with a **.gexf** suffix, suitable for Gephi. 
 
 With **#k@** installed on your computer, please proceed to the following pages in the documentation to learn how to fully utilize this program.
 
@@ -108,7 +125,7 @@ With **#k@** installed on your computer, please proceed to the following pages i
 <iframe width="560" height="315" src="https://www.youtube.com/embed/xuQIqFKXI9w" frameborder="0" allowfullscreen></iframe>
 </center>
 
-Here outlines the following steps on how to install **#k@** on Linux (these instructions assume you are using a Debian-based distribution such as Ubuntu, Linux Mint, or Debian):
+The following steps outline how to install **#k@** on Linux (these instructions assume you are using a Debian-based distribution such as Ubuntu, Linux Mint, or Debian):
 
 1. Download the latest build of **#k@** at [hashkat.org](http://hashkat.org) by clicking on 'Latest Build' and then clicking 'Save File' and then 'OK' on the prompt that appears.
 
@@ -124,61 +141,73 @@ Here outlines the following steps on how to install **#k@** on Linux (these inst
 
     `hashkat.2015.08.20.tar.gz`
 
-    Please note that the date in the file you downloaded may be different from the one above. That's totally fine, it just means that you've downloaded a newer version of ***#k@***!
+    Please note that the date in the file you downloaded may be different from the one above. That's totally fine, it just means that you've downloaded a newer version of **#k@**!
 
 1. To unpack this tar file, type in the command:
 
     `tar -xzvf hashkat.2015.08.20.tar.gz`
 
-1. Once this is completed, look into the list of files in this directory and you will see amongst them:
+   This command creates a hashkat directory within the Downloads directory.
+
+1. Once this is completed, list the files in the Downloads directory and you will see amongst them:
 
     `hashkat`
 
-1. For ease of access, move this directory into your 'home' directory by typing in the command:
+1. For ease of access, move this directory into your 'home' directory ('mv old_location new_location') by typing in the command:
 
     `mv ~/Downloads/hashkat  ~/`
 
-1. Now return to your 'home' directory by typing in the command:
+1. To return to your 'home' directory type in the command:
 
-    `cd`
+    `cd ~`
 
-1. Let's now go into the hashkat directory by typing in the command:
+1. Now navigate to the directory where you have stored the Cmake tar file.
 
-    `cd hashkat`
+1. To install the [CMake](http://www.cmake.org/) package, type the following commands:
 
-1. Once in this directory, you can see the list of all the files and directories that compose the **#k@** project by again typing in the command:
-
-    `ls`
-
-1. Enter into the command line the following commands to install the [CMake](http://www.cmake.org/) package and the appropriate tools necessary to build ***#k@***:
+    `tar -xzvf cmake.version.tar.gz`
 
     `sudo apt-get install cmake`
 
     `sudo apt-get install build-essential -y`
 
-    if asked for sudo permission, enter your Linux password.
+    If asked for sudo permission, enter your Linux password.
 
-1. You must now do a build of **#k@** on your computer by typing in the command:
+1. You must now do a build of **#k@** on your computer.  You need to change back to the hashkat directory first:
+
+    `cd ~`
+
+    `cd hashkat`
 
     `./build.sh -O`
 
-   **build.sh** is followed by 'space dash capital oh'.
+   **build.sh** is followed by 'capital oh'.  The "O" stands for "optimized build" and is optional.
 
-1. You can now run **#k@** in this **hashkat** directory as long as it has **INFILE.yaml** and **run.sh** within in it by typing in the command:
+1. You can now run **hashkat** by typing in the command:
 
     `./run.sh`
 
-1. Once you have run **#k@** properly, remove all the network save and analysis files created from this test simulation by typing in the following commands:
+1. In **hashkat** you need to remove the output files in between simulations or an error will be thrown.  You may remove all the network save and analysis files created from this installation by typing in the following commands:
 
     `rm DATA_vs_TIME`
-
-    `rm INFILE.yaml-generated`
 
     `rm network_state.dat`
 
     `rm -r output`
 
-1. [Gnuplot](http://gnuplot.sourceforge.net/) is the primary graphing utility used in this documentation. To install **Gnuplot**, type in the command:
+   PRO TIP:  if your output is worth saving, instead of removing the files, simply move them into the output file, then rename the output file:
+
+    `mv DATA_vs_TIME /output/DATA_vs_TIME`
+
+    `mv network_state.dat /output/network_stat.dat`
+
+    `cp INFILE.yaml /output/INFILE.yaml`
+
+    `mv output output_with_description`
+
+   Note that we are keeping a copy of the configuration INFILE in case we want to re-run the simulation (or remember our input parameters).
+
+1. [Gnuplot](http://gnuplot.sourceforge.net/) is the primary graphing utility used in this documentation. To install **Gnuplot**, from the terminal type in the command:
 
     `sudo apt-get install gnuplot-x11`
 
@@ -190,7 +219,7 @@ Here outlines the following steps on how to install **#k@** on Linux (these inst
 
     at the beginning of the line in the console.  You should be in the same directory as the data files you want to access.
 
-1. It is also recommended to download and install [Gephi](http://gephi.github.io/) from their website to use for visualizations of collected data.  **#k@** automatically produces files with a **.gexf** suffix, suitable for **Gephi**.  To access them with **Gephi**, got into Gephi from the desktop and navigate, within **Gephi**, to the desired file.  
+1. It is also recommended to download and install [Gephi](http://gephi.github.io/) from their website to use for visualizations of collected data.  Our tutorials are illustrated with Gephi 0.8. **#k@** automatically produces files with a **.gexf** suffix, suitable for **Gephi**.  To access them with **Gephi**, got into Gephi from the desktop and navigate, within **Gephi**, to the desired file.  
    
    On my Ubuntu laptop to start **Gephi**, using a mouse, I go into my home directory, click on **Gephi**, go to the **bin** file, then click on the icon that is labelled simply 'gephi'.
 
