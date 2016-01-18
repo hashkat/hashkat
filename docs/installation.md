@@ -11,6 +11,7 @@ Required programs:
 *  for Mac OS X, an installer such as [Homebrew](http://brew.sh/)
 
 Recommended programs:
+
 *  [Gnuplot](http://gnuplot.sourceforge.net/)
 *  [Gephi](http://gephi.github.io/).  Our documentation is in **Gephi 0.8**.
 *  [Networkx](https://networkx.github.io/)
@@ -83,7 +84,7 @@ The following outlines the installation of **#k@** on Mac OS X:
 
     `./build.sh -O`  
 
-   **build.sh** is followed by 'capital oh'.  The "O" stands for "optimized build" and is optional.
+    **build.sh** is followed by 'capital oh'.  The "O" stands for "optimized build" and is optional.
 
 1. You can now run **#k@** in this **hashkat** directory by typing the command:
 
@@ -107,13 +108,13 @@ The following outlines the installation of **#k@** on Mac OS X:
 
     `mv output output_with_description`
 
-   Note that we are keeping a copy of the configuration INFILE in case we want to re-run the simulation (or remember our input parameters).
+    Note that we are keeping a copy of the configuration INFILE in case we want to re-run the simulation (or remember our input parameters).
 
 1. [Gnuplot](http://gnuplot.sourceforge.net/) is the primary graphing utility used in this documentation. To install **Gnuplot**, type in the command:
 
     `brew install gnuplot -x11`
 
-   **gnuplot** is followed by 'ex one one'
+    **gnuplot** is followed by 'ex one one'
 
 1. It is also recommended to download and install [Gephi](http://gephi.github.io/) from their website to use for visualizations of collected data.  Our tutorials are illustrated with Gephi 0.8.  **#k@** automatically produces files with a **.gexf** suffix, suitable for Gephi. 
 
@@ -181,7 +182,7 @@ The following steps outline how to install **#k@** on Linux (these instructions 
 
     `./build.sh -O`
 
-   **build.sh** is followed by 'capital oh'.  The "O" stands for "optimized build" and is optional.
+    **build.sh** is followed by 'capital oh'.  The "O" stands for "optimized build" and is optional.
 
 1. You can now run **hashkat** by typing in the command:
 
@@ -195,7 +196,7 @@ The following steps outline how to install **#k@** on Linux (these instructions 
 
     `rm -r output`
 
-   PRO TIP:  if your output is worth saving, instead of removing the files, simply move them into the output file, then rename the output file:
+    PRO TIP:  if your output is worth saving, instead of removing the files, simply move them into the output file, then rename the output file:
 
     `mv DATA_vs_TIME /output/DATA_vs_TIME`
 
@@ -205,7 +206,7 @@ The following steps outline how to install **#k@** on Linux (these instructions 
 
     `mv output output_with_description`
 
-   Note that we are keeping a copy of the configuration INFILE in case we want to re-run the simulation (or remember our input parameters).
+    Note that we are keeping a copy of the configuration INFILE in case we want to re-run the simulation (or remember our input parameters).
 
 1. [Gnuplot](http://gnuplot.sourceforge.net/) is the primary graphing utility used in this documentation. To install **Gnuplot**, from the terminal type in the command:
 
@@ -221,7 +222,7 @@ The following steps outline how to install **#k@** on Linux (these instructions 
 
 1. It is also recommended to download and install [Gephi](http://gephi.github.io/) from their website to use for visualizations of collected data.  Our tutorials are illustrated with Gephi 0.8. **#k@** automatically produces files with a **.gexf** suffix, suitable for **Gephi**.  To access them with **Gephi**, got into Gephi from the desktop and navigate, within **Gephi**, to the desired file.  
    
-   On my Ubuntu laptop to start **Gephi**, using a mouse, I go into my home directory, click on **Gephi**, go to the **bin** file, then click on the icon that is labelled simply 'gephi'.
+    On my Ubuntu laptop to start Gephi using a mouse, I go into my home directory, click on Gephi, go to the **bin** file, then click on the icon that is labelled simply 'gephi'.
 
 With **#k@** installed on your computer, please proceed to the following pages to learn how to fully utilize this program.
 
