@@ -9,7 +9,8 @@ Required programs:
 *  **Python 2.7**.    At present Python3 is not supported.
 *  [CMake](http://www.cmake.org/) 
 *  [Gnuplot](http://gnuplot.sourceforge.net/)
-*  [Gephi](http://gephi.github.io/)
+*  [Gephi](http://gephi.github.io/).  Our documentation is in **Gephi 0.8**.
+*  [Networkx](https://networkx.github.io/)
 *  for Mac OS X, an installer such as [Homebrew](http://brew.sh/)
 
 ## Mac OS X
