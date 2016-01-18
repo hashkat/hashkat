@@ -6,42 +6,34 @@
 
 Quickstart is intended for users who want to dive in and learn as they go.
 
-#### Required Programs
+**#k@** is built in C++, configured in Python 2.7, then run in C++.  **#k@** is compatible with both Mac OS X and Linux. At present Python 3 & above are not supported.
 
-**#k@** is compatible with both Mac OS X and Linux. Required programs:
+Recommended programs:
 
-*  **Python 2.7**.  At present Python3 & above are not supported.
 *  [CMake](http://www.cmake.org/) 
-*  [Gnuplot](http://gnuplot.sourceforge.net/)
-*  [Gephi](http://gephi.github.io/)
 *  for Mac OS X, an installer such as [Homebrew](http://brew.sh/)
-*  recommended:  [Networkx](https://networkx.github.io/)
+*  [Gnuplot](http://gnuplot.sourceforge.net/)
+*  [Gephi](http://gephi.github.io/). Our documentation is in **version 0.8**
+*  [Networkx](https://networkx.github.io/)
+
+#### Running Hashkat in Ubuntu/Linux
 
 **#k@** is run from the terminal in Ubuntu/Linux.
 
 See also the detailed [installation](http://docs.hashkat.org/en/latest/installation/) instructions.   
 
-#### Build & Configuration Files
+Once in the hashkat directory, build the program.
 
-**#k@** is built in C++, configured in Python, then run in C++.  
+`./build.sh`  or
+`./build.sh -O`  
 
-Navigate to the hashkat directory and build:
+**O** is 'capital Oh'.
 
-`./build.sh`
-
-The configuration file is called:
-
-`INFILE.yaml`
- 
-INFILE.yaml is an exact copy of DEFAULT.yaml.  To create INFILE.yaml type:
+Then configure your desired simulation in Hashkat by by creating a copy of the DEFAULT.yaml file and calling it INFILE.yaml
 
 `cp DEFAULT.yaml INFILE.yaml`
 
-INFILE.yaml contains many parameters, many of which are never changed.  The simplified configuration file is:
-
-`quickstart_INFILE.yaml`
-
-Simply configure quickstart_INFILE.yaml then rename:
+INFILE.yaml contains many parameters, many of which are never changed.  A simplified configuration file is called quickstart_INFILE.yaml.  You may simply configure quickstart_INFILE.yaml then rename it:
 
 `cp quickstart_INFILE.yaml INFILE.yaml`
 
@@ -49,80 +41,44 @@ Any parameters not included in INFILE.yaml will be pulled from DEFAULT.yaml at r
 
 Experienced users may change build parameters in **hashkat/src/config_static.h**.
 
-#### Running Hashkat For First Time
-
-To run **#k@** the first time you must build it by typing in the command:
-
-`./build.sh -O`  
-
-**-0** is 'dash capital oh'.
-
-Once built, you may run **#k@** by typing in the command:
-
-`./run.sh`
-
-#### Running Hashkat For Second Time
-
-To run **#k@** a second time, you need to first remove some files, and remove or rename the output directory:
-
-* remove:  DATA_vs_TIME
-* remove:  hashkat/network_state.dat
-* remove:  INFILE.yaml-generated
-* remove or rename:  output directory
-
-The [commands](http://docs.hashkat.org/en/latest/commandline/) are:
-
-    `rm DATA_vs_TIME`
-
-    `rm INFILE.yaml-generated`
-
-    `rm network_state.dat`
-
-    `rm -r output  (<-to remove | to rename->)  mv output new_name_output`
-
-Once these files are removed, to run the same INFILE.yaml again (will give exact same output):
-
-`./run.sh`
-
-To run the same simulation with a different random seed (will give different output):  
-
-`./run.sh --rand` 
-
-To change the simulation, change INFILE.yaml.
-
 #### Create Your Own Simulation
 
-To create your own network, first configure the network for time and size:
+This information is elaborated in the excellent **Tutorials** and also in the description of **Input**.
 
-*  initial_agent, max_agents, agent add_rate, max_time (simulated time) and max_real_time
-*  add rate
+To create your own network, first configure the network for time and number of agents:
 
-The simulation will run until the smaller of max_time (simulated) or max_real_time elapses.  In a simple simulation the ratio of simulated time to real time can be 900,000:1.  In a complicated simulation the ratio is lower.
+*  initial_agents
+*  max_agents 
+*  max_time (simulated minutes) 
+*  max_real_time (real minutes)
+*  (agent) add_rate
 
-To test your configuration file (Python is white space & case sensitive), run it with max_real_time set at 5 minutes.  Remember to delete the output and other files before running the full simulation.  
+The simulation will run until the lesser of max_time or max_real_time elapses.  The ratio of simulated time to real time can be 500,000:1 or higher.
 
-Next configure how edges are created and destroyed:
+To test your configuration file (Python is white space & case sensitive), run it with max_real_time set at 1 minute to start.  If everything goes well, you may run it for longer.
+
+Remember to delete the output and other files before running the full simulation (see below).  Remember also that some output files will not generate for more than 10K agents.
+
+Next configure how edges (follows) are created and destroyed:
 
 *  true/false:  [follow based on hashtags, follow back](http://docs.hashkat.org/en/latest/tutorial09/), [stage1_unfollow (unfollow for relative tweet rate](http://docs.hashkat.org/en/latest/tutorial11/) 
 *  rates: [unfollow (absolute) tweet rate](http://docs.hashkat.org/en/latest/tutorial11/), [hashtag use](http://docs.hashkat.org/en/latest/tutorial09/)
 *  follow_models:  [random](http://docs.hashkat.org/en/latest/tutorial03/), [twitter_suggest (preferential_global)](http://docs.hashkat.org/en/latest/tutorial04/), [agent](http://docs.hashkat.org/en/latest/tutorial05/), [preferential_agent](http://docs.hashkat.org/en/latest/tutorial06/), [hashtag](http://docs.hashkat.org/en/latest/tutorial07/), [twitter (combination)](http://docs.hashkat.org/en/latest/tutorial08/)
 
-Agents and their signals are coded based on:
+Then configure nodes, or Agents, and their signalling (tweeting) behavior:
 
-*  Ideology: from 1 to 4
+*  Ideology: from 1 to 4 ideologies are permitted in the default build
 *  [Agent_types](http://docs.hashkat.org/en/latest/tutorial12/):  from 1 to 200
 *  Preference_Classes (retweet rates by agent_type & tweet_type): from 1 to 2
-*  Regions:  EXACTLY 3
+*  Regions:  3 (exactly)
 *  Languages (hardcoded): English, English+French, French, Spanish
-*  Tweet_types (hardcoded) : plain, ideological, musical, humorous  
-
-Note:  There must be EXACTLY 3 Regions but all but one may have add_weight = 0. 
-
-Parameter numbers are set in the **BIN** variables in file **hashkat/src/config_static.h**.  If you change the numbers you must re-build **#k@** for the changes to take effect.
+*  Tweet_types (hardcoded) : plain, ideological, musical, humorous   
 
 All but one of any of the above may be effectively disabled by setting its add_weight to zero.  Put another way, at least one of Ideology, Agent_type, Preference_Class, Language, & Tweet_type must have an add_weight that is not zero.
 
-Further information is available in [documentation](http://docs.hashkat.org/en/latest/).     `
+Further information is available in our [documentation](http://docs.hashkat.org/en/latest/).     
+
+Advanced users may change the numbers of Ideologies, Agent Types, Preference Classes and Regions permitted in the **BIN** variables in file **hashkat/src/config_static.h**.  If you change the numbers you must re-build **#k@** for the changes to take effect.`
 
 #### Hashkat Output
 
@@ -134,37 +90,77 @@ Data (**.dat**) files  may be viewed raw with any text editor, or may be visuali
 
 *  Agent_Type_info.dat - one for each agent_type
 *  Categories_Distro.dat
-*  indegree (#follows), outdegree (#followed by) and culmulative degree reports for each agent (each agent has own ID)
+*  indegree (#follows), outdegree (#followed by) and culmulative degree (in + out) reports for each agent (each agent has own ID)
 *  degree distribution by follow_model
 *  statistics re follows, followbacks, hashtags, retweets
-*  most popular tweet contentrs
-*  many others
+*  most popular tweet contents
 
-**#k@** also creates output files that may be viewed & analyzed with other programs.  Files ending **.gexf** are configured to be [visualized](http://docs.hashkat.org/en/latest/visualization/) with [Gephi](http://gephi.github.io/). 
+**#k@** also creates output files that may be viewed & analyzed with other programs provided the number of agents is under 10,000.  
 
-[Networkx](https://networkx.github.io/) may be used to create a graph of your network.  To create a **Networkx** plot, enter Python from the terminal command line by typing:
+Files ending **.gexf** are configured to be [visualized](http://docs.hashkat.org/en/latest/visualization/) with [Gephi](http://gephi.github.io/). 
+
+[Networkx](https://networkx.github.io/) may be used to create a graph of your network with a script pre-prepared in Hashkat.  To create a **Networkx** plot, enter Python from the terminal command line by typing:
 
 `python`
 
 then run:
 
-`../visualize.py`
+`./visualize.py`
 
-This will produce a plot of your network and save the plot to **graph.svg**.  Or, in Python use commands:
+This will produce a plot of your network and save the plot to **graph.svg**.  
 
-```python
-import matplotlib.pyplot as plt`
-import networkx as nx`
-G = nx.read_edgelist('output/network.dat')`
-pos = nx.spring_layout(G,iterations=75)`
-nx.draw(G,pos)`
-plt.show()`
-```
-or other **Networkx** commands.  See the [visualization tutorial](http://docs.hashkat.org/en/latest/visualization/) for more analysis tools.
+See the [visualization tutorial](http://docs.hashkat.org/en/latest/visualization/) for more analysis tools.
+
+#### Running Hashkat For First Time
+
+Once Hashkat has been built, and INFILE.yaml is created to your satisfaction, you may run **#k@** by typing in the command:
+
+`./run.sh`
+
+#### Running Hashkat For Second Time
+
+To run **#k@** a second time, you need to clear some files out of the workspace, either by deleting or renaming them.
+
+The files that need to be moved, renamed or deleted are:
+
+* hashkat/DATA_vs_TIME
+* hashkat/network_state.dat
+* hashkat/output/
+
+#### To Remove
+
+The [commands](http://docs.hashkat.org/en/latest/commandline/) to remove are:
+
+    `rm DATA_vs_TIME`
+
+    `rm INFILE.yaml-generated`
+
+    `rm network_state.dat`
+
+    `rm -r output`
+	
+#### To Move & Rename
+
+I prefer to move the file generated by the run to the output directory, then rename the output directory so I may look at the data latee.  I do this with the commands:
+
+` mv DATA_vs_TIME \output\DATA_vs_TIME`
+` mv network_state.dat \output\network_state.dat
+` cp INFILE.yaml \output\INFILE.yaml`
+` cp \output\ \output_newname\`
+
+Once these files are removed, to run the same INFILE.yaml again (will give exact same output):
+
+`./run.sh`
+
+To run the same simulation with a different random seed (will give different output):  
+
+`./run.sh --rand` 
+
+To change the simulation, change the configuration in INFILE.yaml.
 
 #### Further Information
 
 Implementation of **#k@** is described more fully in [Input](http://docs.hashkat.org/en/latest/input/) documentation and in detailed [tutorials](http://docs.hashkat.org/en/latest/tutorial01/) with video demonstrations.  A [large network](http://docs.hashkat.org/en/latest/large_network/) using 128 kb of RAM is demonstrated and other [complex](http://docs.hashkat.org/en/latest/tutorial13/) scenarios.  For further information or [feedback](https://github.com/hashkat/hashkat) do not hesitate to contact us.
 
-Have fun.
+Have fun!
 
