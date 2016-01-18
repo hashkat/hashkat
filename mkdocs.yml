@@ -2,7 +2,7 @@ site_name: docs.hashkat.org
 site_url: http://docs.hashkat.org
 site_description: Hashkat supporting documentation.
 site_author: Nick Buhagiar & Linda Kettle
-
+theme: flatly
 repo_url: https://github.com/hashkat/hashkat
 
 pages:
