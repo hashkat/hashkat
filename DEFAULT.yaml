@@ -52,7 +52,7 @@
 analysis:
   initial_agents:
     1000
-  max_agents: 
+  max_agents: # for visualization files to generate set max_agent <= 10000
     1000
   max_time: 
     100000
@@ -88,7 +88,7 @@ analysis:
   unfollow_tweet_rate: 
     10000
   use_hashtag_probability:
-    0.5
+    0.2
 
 #################################################################
 # >> rates:
@@ -97,7 +97,7 @@ analysis:
 #################################################################
 
 rates:
-  add: {function: constant, value: 0.0}
+  add: {function: constant, value: 0.0}  
 
 #################################################################
 # >> output:
@@ -240,23 +240,23 @@ regions:
   - name: Ontario
     add_weight: 5
 
-    preference_class_weights: {NoRetweetPref: 100}
+    preference_class_weights: {StandardPref: 100}
     ideology_weights: {Red: 100, Blue: 100, Green: 100, Orange: 100}
-    language_weights: {English: 100, French: 0, Spanish: 0, French+English: 0}
+    language_weights: {English: 100, French+English: 0, French: 0, Spanish: 0}
 
   - name: Quebec
     add_weight: 0
 
-    preference_class_weights: {NoRetweetPref: 100}
+    preference_class_weights: {StandardPref: 100}
     ideology_weights: {Red: 100, Blue: 100, Green: 100, Orange: 100}
-    language_weights: {English: 0, French: 100, Spanish: 0, French+English: 0}
+    language_weights: {English: 0, French+English: 0, French: 100, Spanish: 0}
 
   - name: Mexico
     add_weight: 0
 
-    preference_class_weights: {NoRetweetPref: 100}
+    preference_class_weights: {StandardPref: 100}
     ideology_weights: {Red: 100, Blue: 100, Green: 100, Orange: 100}
-    language_weights: {English: 0, French: 0, Spanish: 100, French+English: 0}
+    language_weights: {English: 0, French+English: 0, French: 0, Spanish: 100}
 
 #################################################################
 # >> preference_classes: 
@@ -281,19 +281,19 @@ preference_classes:
    tweet_transmission: 
       plain: # Also applies to musical tweets
         Standard: 0.01
-        Celebrity: 0.01
+        Celebrity: 0.06
         else: 0.01
       different_ideology: # generally no retweeting of tweets with different ideological content
         Standard: 0.00
-        Celebrity: 0.00
+        Celebrity: 0.01
         else: 0.00
       same_ideology:
         Standard: 0.01
-        Celebrity: 0.01
+        Celebrity: 0.06
         else: 0.01
       humorous:
-        Standard: 0.02
-        Celebrity: 0.02
+        Standard: 0.08
+        Celebrity: 0.06
         else: 0.02
 
  - name: NoRetweetPref
@@ -327,7 +327,7 @@ agents:
   - name: Standard
     weights:
       # Weight with which this agent is created
-      add: 100.0
+      add: 99.0
       # Weight with which this agent is followed in agent follow
       follow: 5
       tweet_type:
@@ -345,3 +345,25 @@ agents:
         follow: {function: constant, value: 0.0001}
         # Rate for tweets from this agent:
         tweet: {function: constant, value: 0.001}
+
+  - name: Celebrity
+    weights:
+      # Weight with which this agent is created
+      add: 1.0
+      # Weight with which this agent is followed in agent follow
+      follow: 50
+      tweet_type:
+        ideological: 1.0
+        plain: 1.0
+        musical: 1.0
+        humorous: 1.0
+    # Probability that following this agent results in a follow-back
+    followback_probability: .001
+    hashtag_follow_options:
+      care_about_region: false # does the agent care about where the agent they will follow is from?
+      care_about_ideology: true # does the agent care about the ideology of the agent they will follow?
+    rates: 
+        # Rate for follows from this agent:
+        follow: {function: constant, value: 0.00001}
+        # Rate for tweets from this agent:
+        tweet: {function: constant, value: 0.0001}
