@@ -40,7 +40,7 @@ The following outlines the installation of **#k@** on Mac OS X:
 
     `hashkat.2015.08.20.tar`
 
-    Please note that the date in the file you downloaded may be different from the one above. That's totally fine, it just means that you've downloaded a newer version of **#k@**!
+    Please note that the date in the file you downloaded may be different from the one above. That's totally fine, it just means that you've downloaded a newer version of **#k@**.
 
 1. To unpack this tar file, type in the command:
 
@@ -90,25 +90,23 @@ The following outlines the installation of **#k@** on Mac OS X:
 
     `./run.sh`
 
-1. In **hashkat** you need to remove (or move) the output files in between simulations or an error will be thrown.  You may remove them by typing in the following commands:
+1. In **hashkat** you need to remove (or move) the network_state and output files between simulations or an error will be thrown.  
 
-    `rm DATA_vs_TIME`
+   You may remove the files by typing the following commands:
 
     `rm network_state.dat`
 
     `rm -r output/`
 
-    PRO TIP:  if your output is worth saving, instead of removing the files, simply move them into the output file, then rename the output file:
-
-    `mv DATA_vs_TIME /output/DATA_vs_TIME`
+    To move the data instead:
 
     `mv network_state.dat /output/network_stat.dat`
 
     `cp INFILE.yaml /output/INFILE.yaml`
 
-    `mv output output_with_description`
+    `mv output output_new_name`
 
-    Note that we are keeping a copy of the configuration INFILE in case we want to re-run the simulation (or remember our input parameters).
+    PRO TIP:  keep a copy of INFILE in case you want to re-run the simulation or remember your input parameters.
 
 1. [Gnuplot](http://gnuplot.sourceforge.net/) is the primary graphing utility used in this documentation. To install **Gnuplot**, type in the command:
 
@@ -116,9 +114,8 @@ The following outlines the installation of **#k@** on Mac OS X:
 
     **gnuplot** is followed by 'ex one one'
 
-1. It is also recommended to download and install [Gephi](http://gephi.github.io/) from their website to use for visualizations of collected data.  Our tutorials are illustrated with Gephi 0.8.  **#k@** automatically produces files with a **.gexf** suffix, suitable for Gephi. 
+1. It is also recommended to download and install [Gephi](http://gephi.github.io/) from their website to use for visualizations of collected data.  For simulations with **max_agents** <= 10000, **#k@** automatically produces files with a **.gexf** suffix, suitable for Gephi visualization.  Our tutorials are illustrated with **Gephi 0.8**.
 
-With **#k@** installed on your computer, please proceed to the following pages in the documentation to learn how to fully utilize this program.
 
 ## Linux
 
@@ -188,17 +185,15 @@ The following steps outline how to install **#k@** on Linux (these instructions 
 
     `./run.sh`
 
-1. In **hashkat** you need to remove the output files in between simulations or an error will be thrown.  You may remove all the network save and analysis files created from this installation by typing in the following commands:
+1. In **hashkat** you need to move or remove the network_state and output files between simulations or an error will be thrown.  
 
-    `rm DATA_vs_TIME`
+   You may remove the files created from the simulation by typing the following commands:
 
     `rm network_state.dat`
 
     `rm -r output`
 
-    PRO TIP:  if your output is worth saving, instead of removing the files, simply move them into the output file, then rename the output file:
-
-    `mv DATA_vs_TIME /output/DATA_vs_TIME`
+   To move the files:
 
     `mv network_state.dat /output/network_stat.dat`
 
@@ -206,7 +201,7 @@ The following steps outline how to install **#k@** on Linux (these instructions 
 
     `mv output output_with_description`
 
-    Note that we are keeping a copy of the configuration INFILE in case we want to re-run the simulation (or remember our input parameters).
+    PRO TIP:  keep a copy of INFILE in case you want to re-run the simulation (or remember your input parameters).
 
 1. [Gnuplot](http://gnuplot.sourceforge.net/) is the primary graphing utility used in this documentation. To install **Gnuplot**, from the terminal type in the command:
 
@@ -220,11 +215,10 @@ The following steps outline how to install **#k@** on Linux (these instructions 
 
     at the beginning of the line in the console.  You should be in the same directory as the data files you want to access.
 
-1. It is also recommended to download and install [Gephi](http://gephi.github.io/) from their website to use for visualizations of collected data.  Our tutorials are illustrated with Gephi 0.8. **#k@** automatically produces files with a **.gexf** suffix, suitable for **Gephi**.  To access them with **Gephi**, got into Gephi from the desktop and navigate, within **Gephi**, to the desired file.  
+1. It is also recommended to download and install [Gephi](http://gephi.github.io/) from their website to use for visualizations of collected data.  For simulations with **max_agents** <= 10000, **#k@** automatically produces files with a **.gexf** suffix, suitable for Gephi visualization.  Our tutorials are illustrated with **Gephi 0.8**.
+  If **max_agents <= 10000** **#k@** automatically produces files with a **.gexf** suffix, suitable for visualization with **Gephi**.  
    
-    On my Ubuntu laptop to start Gephi using a mouse, I go into my home directory, click on Gephi, go to the **bin** file, then click on the icon that is labelled simply 'gephi'.
 
-With **#k@** installed on your computer, please proceed to the following pages to learn how to fully utilize this program.
 
 ## Supplementary Tools
 
