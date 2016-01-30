@@ -22,6 +22,6 @@ do
   $rootdir/verify.py
   cd ..
   # clean up after the tests
-  rm log DATA_vs_TIME INFILE.yaml-generated output/*.dat output/*.gexf 
+  rm log INFILE.yaml-generated output/*.dat output/*.gexf output/DATA_vs_TIME
   cd $rootdir
 done

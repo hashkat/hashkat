@@ -140,7 +140,7 @@ struct Analyzer {
         // The following allocates a memory chunk proportional to max_agents:
         network.allocate(config.max_agents);
 
-        DATA_TIME.open("DATA_vs_TIME");
+        DATA_TIME.open("output/DATA_vs_TIME");
         
         set_initial_agents();
         analyzer_rate_update(state);

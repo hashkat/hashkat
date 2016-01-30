@@ -237,21 +237,21 @@ ideologies:
 #################################################################
 
 regions:
-  - name: Ontario
+  - name: Region0
     add_weight: 5
 
     preference_class_weights: {StandardPref: 100}
     ideology_weights: {Red: 100, Blue: 100, Green: 100, Orange: 100}
     language_weights: {English: 100, French+English: 0, French: 0, Spanish: 0}
 
-  - name: Quebec
+  - name: Region1
     add_weight: 0
 
     preference_class_weights: {StandardPref: 100}
     ideology_weights: {Red: 100, Blue: 100, Green: 100, Orange: 100}
     language_weights: {English: 0, French+English: 0, French: 100, Spanish: 0}
 
-  - name: Mexico
+  - name: Region2
     add_weight: 0
 
     preference_class_weights: {StandardPref: 100}
@@ -260,7 +260,7 @@ regions:
 
 #################################################################
 # >> preference_classes: 
-# The different preference stereotypes that users in the network can have.
+# Retweet styles (rates) that users in the network can have.
 #
 # tweet_transmission:
 #   The transmission probability for tweets made by agents of a particular agent type
@@ -281,14 +281,14 @@ preference_classes:
    tweet_transmission: 
       plain: # Also applies to musical tweets
         Standard: 0.01
-        Celebrity: 0.06
+        Celebrity: 0.05
         else: 0.01
       different_ideology: # generally no retweeting of tweets with different ideological content
-        Standard: 0.00
+        Standard: 0.001
         Celebrity: 0.01
         else: 0.00
       same_ideology:
-        Standard: 0.01
+        Standard: 0.02
         Celebrity: 0.06
         else: 0.01
       humorous:
@@ -326,8 +326,8 @@ preference_classes:
 agents:
   - name: Standard
     weights:
-      # Weight with which this agent is created
-      add: 99.0
+      # Weight with which this agent is created 999/1000
+      add: 99.9
       # Weight with which this agent is followed in agent follow
       follow: 5
       tweet_type:
@@ -336,20 +336,20 @@ agents:
         musical: 1.0
         humorous: 1.0
     # Probability that following this agent results in a follow-back
-    followback_probability: .44
+    followback_probability: .3
     hashtag_follow_options:
       care_about_region: false # does the agent care about where the agent they will follow is from?
       care_about_ideology: false # does the agent care about the ideology of the agent they will follow?
     rates: 
         # Rate for follows from this agent:
-        follow: {function: constant, value: 0.0001}
+        follow: {function: constant, value: 0.00001}
         # Rate for tweets from this agent:
-        tweet: {function: constant, value: 0.001}
+        tweet: {function: constant, value: 0.0001}
 
   - name: Celebrity
     weights:
-      # Weight with which this agent is created
-      add: 1.0
+      # Weight with which this agent is created, 1/1000
+      add: 0.1
       # Weight with which this agent is followed in agent follow
       follow: 50
       tweet_type:
@@ -358,12 +358,12 @@ agents:
         musical: 1.0
         humorous: 1.0
     # Probability that following this agent results in a follow-back
-    followback_probability: .001
+    followback_probability: 0
     hashtag_follow_options:
       care_about_region: false # does the agent care about where the agent they will follow is from?
       care_about_ideology: true # does the agent care about the ideology of the agent they will follow?
     rates: 
         # Rate for follows from this agent:
-        follow: {function: constant, value: 0.00001}
+        follow: {function: constant, value: 0.000001}
         # Rate for tweets from this agent:
-        tweet: {function: constant, value: 0.0001}
+        tweet: {function: constant, value: 0.00001}
