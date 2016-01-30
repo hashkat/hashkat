@@ -98,7 +98,7 @@ The following outlines the installation of **#k@** on Mac OS X:
 
     `rm -r output/`
 
-    To move the data instead:
+   To move the data instead:
 
     `mv network_state.dat /output/network_stat.dat`
 
@@ -106,7 +106,7 @@ The following outlines the installation of **#k@** on Mac OS X:
 
     `mv output output_new_name`
 
-    PRO TIP:  keep a copy of INFILE in case you want to re-run the simulation or remember your input parameters.
+   PRO TIP:  keep a copy of INFILE in case you want to re-run the simulation or remember your input parameters.
 
 1. [Gnuplot](http://gnuplot.sourceforge.net/) is the primary graphing utility used in this documentation. To install **Gnuplot**, type in the command:
 
@@ -201,7 +201,7 @@ The following steps outline how to install **#k@** on Linux (these instructions 
 
     `mv output output_with_description`
 
-    PRO TIP:  keep a copy of INFILE in case you want to re-run the simulation (or remember your input parameters).
+   PRO TIP:  keep a copy of INFILE in case you want to re-run the simulation (or remember your input parameters).
 
 1. [Gnuplot](http://gnuplot.sourceforge.net/) is the primary graphing utility used in this documentation. To install **Gnuplot**, from the terminal type in the command:
 
