@@ -64,7 +64,7 @@ If for whatever reason you would like to stop a simulation midway through, witho
 
 If for whatever reason you would like to stop a simulation midway through, without losing your data, simply press **Ctrl-c**. The simulation will automatically save the information it's collected to the **network_state.dat** file.  
 
-You may analyze the data you have so which includes the **DATA_vs_TIME** file in the **output** directory. 
+You may analyze the data you have so far which includes the **DATA_vs_TIME** file in the **output** directory. 
 
 If you would like to continue the simulation from where you left off, simply type in:
 
