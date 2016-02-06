@@ -32,15 +32,11 @@ To remove the old output:
 
 ##### To Move:
 
-You may simply move the files into the output directory then rename the output directory:
+You may simply MOVE the files into the output directory, then rename the output directory:
  
 `mv network_state.dat /output/network_state.dat`
 
 `mv output new_output`
-
-PRO TIP:  also save a copy of the configuration INFILE in case you need to remember your parameters or re-run the simulation.
-
-`cp INFILE.yaml output/INFILE.yaml`
 
 ###Run New Simulation
 

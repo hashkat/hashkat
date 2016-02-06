@@ -139,11 +139,12 @@ Once the simulation is concluded, output files will be created and the real time
 
 #### Output of a Simple Network
 
-The simulation creates several output files in the **hashkat** directory and a new **output** directory also with several data files.  The new files include:
+The simulation creates several output files, one in the **hashkat** directory and most in a new **output** directory.  The new files include:
 
-*  `~/hashkat/DATA_vs_TIME`
 *  `~/hashkat/network_state.dat` 
-*  `~/haskhat/output/` 
+*  `~/hashkat/output/DATA_vs_TIME`
+
+The configuration file **INFILE.yaml** is also automatically copied into the output directory for future reference.
 
 <center>
 <iframe width="560" height="315" src="https://www.youtube.com/embed/83lnl6UXstQ" frameborder="0" allowfullscreen></iframe>
