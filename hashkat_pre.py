@@ -317,9 +317,13 @@ for val in "max_analysis_steps", "max_time", "max_real_time", "max_agents", "ini
 yaml.dump(CONFIG, open(INPUT_FILE_NAME + "-generated", "w"))
 
 try:
-    os.mkdir('output')
+    os.mkdir('output') 
     print("hashkat_pre.py -- Created an output directory")
+    os.system('cp ./INFILE.yaml ./output/INFILE.yaml')
+    print("hashkat_pre.py -- Copied INFILE.yaml to output directory")
 except OSError:
     print "hashkat_pre.py -- An output directory already exists, leaving it intact"
+
+
 
 print("hashkat_pre.py -- Done generating rates")
