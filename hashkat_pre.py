@@ -130,9 +130,9 @@ def weights_to_probs(weights, map, n):
 
 lang_order = {
     "English" : 0,
-    "French" : 1,
-    "Spanish" : 2,
-    "French+English" : 3
+    "French+English" : 1,
+    "French" : 2,
+    "Spanish" : 3   
 }
 
 lang_n = 4
