@@ -238,7 +238,7 @@ ideologies:
 
 regions:
   - name: Region0
-    add_weight: 5
+    add_weight: 100
 
     preference_class_weights: {StandardPref: 100}
     ideology_weights: {Red: 100, Blue: 100, Green: 100, Orange: 100}
