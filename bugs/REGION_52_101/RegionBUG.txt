@@ -1,0 +1,6 @@
+BUG:  REGION
+
+Error:  52, 101
+
+Hashkat preferentially prefers the zeroth region, and won't configure properly if, for example, Region 1 is set up and Region 0 is not.
+

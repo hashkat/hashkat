@@ -1,0 +1,29 @@
+BUG:  LANGUAGE
+Error:  49, 53, 101, 104, 105
+Enhancement:  80, 94
+
+Definitions:
+
+active Region = region has positive (non zero) add_weight
+
+Problem:
+
+When ENGLISH language is set to zero (language_weight = 0) in every active region, no tweets become ACTIVE, which means no RETWEETS happen.
+
+To recreate this bug, take any INFILE you want - including DEFAULT.
+
+Change ENGLISH language_weight to 0 in all regions that have a positive add_weight.
+
+./run.sh
+
+
+Enhancement:
+
+When rebuilding language, suggest:
+
+- language have generic naming structure (#80) ie A, B, C, A+B, B+C, A+B+C
+- language naming be either modifiable or generic (like ideology)
+
+In general:
+
+- more output on language, region & ideology would make testing & QA easier.

@@ -1,0 +1,15 @@
+BUG:  IDEOLOGY
+
+Error:  79, 92
+
+Definition:
+
+"in the world" = in every positive add_weight region
+
+Description:
+
+If Ideology 0 (RED) is set to 0 add_weight, no retweeting occurs.
+
+To recreate this ideology bug, take any INFILE you want - including DEFAULT.
+
+Change "Red" ideology_weight to 0 in all regions that have a positive add_weight.

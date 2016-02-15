@@ -1,8 +1,7 @@
 #################################################################
 # Quickstart_INFILE.yaml
 #
-# This contains the core configuration parameters for a user 
-# to create their own simulation. 
+# This contains a stripped core configuration without commentary.
 #
 # When complete, save this file as INFILE.yaml and run.
 #
@@ -12,12 +11,12 @@
 analysis:
   initial_agents:	# must be => 1
     10
-  max_agents: 		# must be => initial_agents
+  max_agents: 		# for visualization files to generate max_agents <= 10000
     100000
   max_time: 		# simulated minutes
     100000
-  max_real_time: 	# real minutes, to test set to 1 minute
-    100000
+  max_real_time: 	# real minutes
+    1
 
 # FOLLOW_MODEL: twitter = combination model
 #   To use a particular model set other model_weights to 0.0. Total model_weights = 1.0.
@@ -33,10 +32,12 @@ analysis:
     0.3
 
 rates:
-  add: {function: constant, value: 1.0}  # number of new agents added per minute
+# new agents added per simulated minute, may be set to 0.0, add rates slow tweet generation
+  add: {function: constant, value: 0.01}  
 
 # IDEOLOGIES: 4 in default build. User may rename the ideology.
-#   All but one ideology may have add_weight = 0.
+#   All but one ideology may have add_weight = 0
+#   Output in array order, ie Red = 0, Blue = 1
 
 ideologies:			
   - name: Red			
@@ -44,37 +45,37 @@ ideologies:
   - name: Green
   - name: Orange
 
-# REGIONS: must number 3 in default build with total add_weights = 100.
+# REGIONS: 3 in default build with total add_weights = 100.
 #   All but one region may have add_weight = 0.  Languages are hard-coded.
 
 regions:		  				
-  - name: user_chosen_name_0	
+  - name: region_name_0	
     add_weight: 100		
     preference_class_weights: {user_named_pref_class_0: 100, user_named_pref_class_1: 0}
     ideology_weights: {Red: 10, Blue: 90, Green: 0, Orange: 0}
-    language_weights: {English: 90, French: 0, Spanish: 0, French+English: 10}
+    language_weights: {English: 90, French+English: 10, French: 0, Spanish: 0}
 
-  - name: user_chosen_name_1
+  - name: region_name_1
     add_weight: 0
     preference_class_weights: {user_named_pref_class_0: 100, user_named_pref_class_1: 0}
     ideology_weights: {Red: 100, Blue: 0, Green: 0, Orange: 0}
-    language_weights: {English: 20, French: 60, Spanish: 5, French+English: 15}
+    language_weights: {English: 20, French+English: 15, French: 60, Spanish: 5, }
 
-  - name: user_chosen_name_2
+  - name: region_name_2
     add_weight: 0
     preference_class_weights: {user_named_pref_class_0: 100, user_named_pref_class_1: 0}
     ideology_weights: {Red: 20, Blue: 10, Green: 40, Orange: 30}
-    language_weights: {English: 0, French: 0, Spanish: 100, French+English: 0}
+    language_weights: {English: 0, French+English: 0, French: 0, Spanish: 100}
 
 # PREFERENCE_CLASSES: retweet rates based on agent_type & tweet_type.
 #    2 preference classes in default build.  User may reconfigure.
 #    'all' means all agent_types, 'else' means all unnamed agent_types
-#    Tweet_type limits scope of retweet. Plain & humorous limited by language.
-#    Ideology limited by language & region. Musical tweets unlimited in scope,
+#    Tweet_type limits scope of retweet. Plain & humorous retweeted in same language.
+#    Ideology retweeted if same language & region. Musical tweets unlimited in scope.
 
 preference_classes:		
 
- - name: user_named_pref_class_0
+ - name: pref_class_0
    tweet_transmission: 
       plain: # and musical tweets
         Standard: 0.01
