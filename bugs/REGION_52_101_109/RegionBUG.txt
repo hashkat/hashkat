@@ -1,0 +1,15 @@
+BUG:  REGION
+
+Error:  52, 101, 109
+
+Hashkat preferentially prefers the zeroth region, and won't configure properly if, for example, 
+Region 1 is set up and Region 0 is not.
+
+Hashkat, in a study n_12 random runs of same INFILE, where 100% of population in 2 regions was English (LANG_0)
+of Red Ideology (IDEOLOGY_0), and the population of each region was of equal amount.
+
+Hashkat had 100% of MOST POPULAR TWEETS (which is based on retweets) from REGION_0, although it should have been
+approximately 50-50 Region_0 and Region_1
+
+
+
