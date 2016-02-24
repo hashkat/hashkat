@@ -89,7 +89,7 @@ const int STDOUT_OUTPUT_RATE = 100; // Once per X file outputs
 
 const int N_FOLLOW_MODELS = 5;
 
-const int N_BIN_PREFERENCE_CLASS = 2;
+const int N_BIN_PREFERENCE_CLASS = 4;
 const int N_BIN_AGENT_TYPES = 200;
 const int N_BIN_REGIONS = 3;
 const int N_BIN_IDEOLOGIES = 4;
