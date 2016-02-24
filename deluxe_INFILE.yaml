@@ -1,0 +1,324 @@
+#################################################################
+# deluxe_INFILE.yaml
+#
+# This contains a configuration with 7 agent_types & 4 retweet_classes
+# To remove an agent_type (etc) set the add_weight to zero.
+#
+# When complete, rename this file "INFILE.yaml" and run.
+#
+#################################################################
+
+analysis:
+  initial_agents:	# must be => 1
+    1000
+  max_agents: 		# for visualization files to generate max_agents <= 10000
+    10000
+  max_time: 		# simulated minutes
+    1000000
+  max_real_time: 	# maximum time simulation will run
+    10
+
+# FOLLOW_MODEL: twitter = combination model
+# Total model_weights = 1.0
+
+  follow_model:
+    twitter		
+  model_weights: {random: 0.2, twitter_suggest: 0.2, agent: 0.2, preferential_agent: 0.2, hashtag: 0.2}
+  stage1_unfollow:      # unfollow for relative chattiness compared to receiving agent's group
+    true
+  unfollow_tweet_rate: 	# unfollow for absolute chattiness
+  # a number above 2 is effectively 'off'
+    10.0	
+  use_hashtag_probability: 
+    0.3
+
+rates:
+
+# RATES:  0.017 1/hour, 0.0007 1/day, 0.0001 1/week, 0.000023 1/month
+# new agents added per simulated minute, may be set to 0.0 for a constant number of agents.
+# the higher the add rate the lower the tweet generation rate
+
+  add: {function: constant, value: 0.01}  
+
+# IDEOLOGIES: 
+# 4 in default build. 
+# User may rename the ideology but then ideology must be renamed in REGIONS section
+
+ideologies:			
+  - name: Red			
+  - name: Blue
+  - name: Green
+  - name: Orange
+
+# REGIONS: 
+# 3 in default build.
+# total add_weights = 100.
+# All but one may have add_weight = 0.  
+# Languages names are hard-coded.
+
+regions:		  				
+  - name: region_name_0	
+    add_weight: 100		
+    preference_class_weights: {retweet_standard: 100, retweet_celeb: 0, retweet_humor: 0.0, retweet_ideology: 0.0, retweet_cute-plain: 0.0}
+    ideology_weights: {Red: 100, Blue: 0, Green: 0, Orange: 0}
+    language_weights: {English: 100, French+English: 0, French: 0, Spanish: 0}
+
+  - name: region_name_1
+    add_weight: 0
+    preference_class_weights: {retweet_standard: 100, retweet_celeb: 0, retweet_humor: 0.0, retweet_ideology: 0.0, retweet_cute-plain: 0.0}
+    ideology_weights: {Red: 100, Blue: 0, Green: 0, Orange: 0}
+    language_weights: {English: 0, French+English: 0, French: 100, Spanish: 0 }
+
+  - name: region_name_2
+    add_weight: 0
+    preference_class_weights: {retweet_standard: 100, retweet_celeb: 100, retweet_humor: 0.0, retweet_ideology: 0.0, retweet_cute-plain: 0.0}
+    ideology_weights: {Red: 25, Blue: 25, Green: 25, Orange: 25}
+    language_weights: {English: 0, French+English: 0, French: 0, Spanish: 100}
+
+# PREFERENCE_CLASSES: retweet rates by agent_type & tweet_type.
+# 5 retweet classes
+# may use "all" for all agent_types
+# may use "else" for unnamed agent_types
+
+preference_classes:		
+
+- name: retweet_standard
+   tweet_transmission: 
+      plain: # cute & musical tweets
+        Standard: 0.001
+        Celebrity: 0.002
+        Comic: 0.001
+        Partisan: 0.001
+        Organization: 0.000001
+        Bot: 0.0
+        Government: 0.0001
+      different_ideology: 
+        all:  0.0
+      same_ideology:
+        Standard: 0.002
+        Celebrity: 0.003
+        Comic: 0.001
+        Partisan: 0.003
+        Organization: 0.00001
+        Bot: 0.0
+        Government: 0.0001
+      humorous:
+        Standard: 0.002
+        Celebrity: 0.004
+        Comic: 0.005
+        Partisan: 0.001
+        Organization: 0.0001
+        Bot: 0.0
+        Government: 0.001
+        
+ - name: retweet_celeb  
+ # retweets celebrities 10x as much as any other
+   tweet_transmission: 
+      plain: # cute & musical tweets
+        Celebrity: 0.01
+        else: 0.001
+      different_ideology: 
+        Celebrity: 0.001
+        else: 0.0
+      same_ideology:
+        Celebrity: 0.04
+        else: 0.004
+      humorous:
+        Celebrity: 0.02
+        else: 0.002
+        
+ - name: retweet_humor
+ # retweets humour 10x as much as any other
+   tweet_transmission: 
+      plain: # cute & musical tweets
+        Comic: 0.01
+        else: 0.001
+      different_ideology: 
+        Celebrity: 0.0001
+        else: 0.0
+      same_ideology:
+        Comic: 0.01
+        else: 0.001
+      humorous:
+        Comic: 0.05
+        else: 0.005
+        
+ - name: retweet_ideology
+ # retweets ideology 10x as much as any other
+   tweet_transmission: 
+      plain: # cute & musical tweets
+        Partisan: 0.01
+        else: 0.001
+      different_ideology: 
+        Celebrity: 0.0001
+        else: 0.0
+      same_ideology:
+        Celebrity: 0.05
+        else: 0.005
+      humorous:
+        Celebrity: 0.01
+        else: 0.001
+        
+- name: retweet_cute-plain
+ # retweets inoffensive 10x as much as any other
+ # not much of a retweeter (low rate)
+   tweet_transmission: 
+      plain: # cute & musical tweets
+        all: 0.02
+      different_ideology: 
+        all: 0.0
+      same_ideology:
+        all: 0.01
+      humorous:
+        all: 0.01
+        
+- name: no_retweet
+# does not retweet
+   tweet_transmission: 
+      plain: # cute & musical tweets
+        all: 0.0
+      different_ideology: 
+        all: 0.0
+      same_ideology:
+        all: 0.0
+      humorous:
+        all: 0.0
+        
+# AGENT TYPES:
+# Hashkat permits up to 200 agent types.  
+# Remember to include new agent_types in Preference_Class & Region configuration.
+# At least one agent_type must have a non-zero add_weight.
+# Musical = Cute
+
+agents:			
+  - name: Standard
+    weights:
+      add: 80.0     		
+      follow: 10				        # rate this agent is followed by others
+      tweet_type:
+        ideological: 5.0
+        plain: 85.0
+        musical: 5.0
+        humorous: 5.0
+    followback_probability: 0.40	# rate this agent follows agents who follow them
+    hashtag_follow_options:
+      care_about_region: true 		# agent will follow hashtags from same region
+      care_about_ideology: true 	# agent will follow hashtags with same ideology
+    rates:      
+        follow: {function: constant, value: 0.0001}  # rate this agent follows others
+        tweet: {function: constant, value: 0.0003} 
+
+- name: Celebrity
+# Celebritites are "just like us" except we follow them & they don't follow others
+    weights:   
+      add: 1.0
+      follow: 50	                # rate this agent is followed by others
+      tweet_type:
+        ideological: 5.0
+        plain: 80.0
+        musical: 5.0
+        humorous: 5.0
+    followback_probability: .000001
+    hashtag_follow_options:
+      care_about_region: false 		
+      care_about_ideology: false 	
+    rates: :
+        follow: {function: constant, value: 0.000001}
+        tweet: {function: constant, value: 0.0001}
+        
+- name: Comic
+# Comics tweet humorous content frequently
+    weights:   
+      add: 6.0
+      follow: 20	                # rate this agent is followed by others
+      tweet_type:
+        ideological: 5.0
+        plain: 5.0
+        musical: 5.0
+        humorous: 85.0
+    followback_probability: .0001
+    hashtag_follow_options:
+      care_about_region: true 		
+      care_about_ideology: false 	
+    rates: :
+        follow: {function: constant, value: 0.0001}
+        tweet: {function: constant, value: 0.001}  
+        
+   - name: Partisan
+# Partisans tweet ideological content frequently
+# They follow each other frequently for group power
+    weights:   
+      add: 2.0
+      follow: 10	                # rate this agent is followed by others
+      tweet_type:
+        ideological: 85.0
+        plain: 5.0
+        musical: 5.0
+        humorous: 5.0
+    followback_probability: .3
+    hashtag_follow_options:
+      care_about_region: false 		
+      care_about_ideology: true 	
+    rates: :
+        follow: {function: constant, value: 0.001}
+        tweet: {function: constant, value: 0.001}  
+        
+- name: Organization
+# Organizations only follow back, and follow everyone back.  
+# Their tweet type depends on advertising strategy
+# Here assumed to be "informative" about their product
+    weights:   
+      add: 5.0
+      follow: 5	
+      tweet_type:
+        ideological: 0.0
+        plain: 100.0
+        musical: 0.0
+        humorous: 0.0
+    followback_probability: 1.0
+    hashtag_follow_options:
+      care_about_region: false 		
+      care_about_ideology: false 	
+    rates: :
+        follow: {function: constant, value: 0.0}
+        tweet: {function: constant, value: 0.0001}
+
+- name: Bot
+# Bots gather information on twitter for private purposes.
+# Bots follow and do not tweet or retweet.
+# Bot follows are based on tweet content, modeled with #hashtags
+    weights:   
+      add: 5.0
+      follow: 0	
+      tweet_type:
+        ideological: 0.0
+        plain: 0.0
+        musical: 0.0
+        humorous: 0.0
+    followback_probability: 0.0
+    hashtag_follow_options:
+      care_about_region: true 		
+      care_about_ideology: true 	
+    rates: :
+        follow: {function: constant, value: 0.01}
+        tweet: {function: constant, value: 0.0}
+
+- name: Government
+# Governments network to disseminate information.
+# They do not follow or retweet
+# The occasional government outlet is humorous
+    weights:   
+      add: 1.0
+      follow: 5.0	
+      tweet_type:
+        ideological: 0.0
+        plain: 100.0
+        musical: 0.0
+        humorous: 0.0
+    followback_probability: 0.0
+    hashtag_follow_options:
+      care_about_region: false 		
+      care_about_ideology: false 	
+    rates: :
+        follow: {function: constant, value: 0.0}
+        tweet: {function: constant, value: 0.0007}
