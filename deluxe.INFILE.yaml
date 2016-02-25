@@ -1,0 +1,365 @@
+
+#################################################################
+# >> deluxe.INFILE rename "INFILE.yaml" and run
+#7 agent types, 6 retweet preferences
+#################################################################
+
+analysis:
+  initial_agents:
+    1000
+  max_agents: # for visualization files to generate set max_agent <= 10000
+    1000
+  max_time: 
+    1000000
+  max_analysis_steps: 
+    unlimited
+  max_real_time: 
+    10
+  use_followback: 
+    true        # from literature, it makes sense for a realistic system to have followback enabled
+  use_follow_via_retweets:
+    true
+  follow_model: # See notes above
+    random
+  # model weights ONLY necessary for follow method 'twitter'
+  model_weights: {random: 0.0, twitter_suggest: 0.0, agent: 0.0, preferential_agent: 0.0, hashtag: 0.0}
+  stage1_unfollow: 
+    false
+  unfollow_tweet_rate: 
+    10000
+  use_hashtag_probability:
+    0.2
+
+#################################################################
+# >> rates:  add rate for new agents to system
+#################################################################
+
+rates:
+  add: {function: constant, value: 0.0}  
+
+#################################################################
+# >> output:
+#  if you don't want ability to reconfigure & resume, set to false
+#################################################################
+
+output:
+  save_network_on_timeout: 
+    false
+  load_network_on_startup:
+    false
+  save_file: # File to save to, and load from
+    network_state.dat
+
+#################################################################
+# >> ideologies: 
+# number set in N_BIN_IDEOLOGIES in config_static.h!
+#################################################################
+
+ideologies:
+  - name: Red
+  - name: Blue
+  - name: Green
+  - name: Orange
+
+#################################################################
+# >> regions: 
+# number set in N_BIN_REGIONS in config_static.h
+#################################################################
+
+regions:
+  - name: region_0
+    add_weight: 100
+    preference_class_weights: {retweet_standard: 100, retweet_celeb: 0.0, retweet_humor: 0.0, retweet_ideology: 0.0, retweet_plain: 0.0, no_retweet: 0.0}
+    ideology_weights: {Red: 100, Blue: 0, Green: 0, Orange: 0}
+    language_weights: {English: 100, French+English: 0, French: 0, Spanish: 0}
+
+  - name: region_1
+    add_weight: 0
+    preference_class_weights: {retweet_standard: 100, retweet_celeb: 0.0, retweet_humor: 0.0, retweet_ideology: 0.0, retweet_plain: 0.0, no_retweet: 0.0}
+    ideology_weights: {Red: 100, Blue: 0, Green: 0, Orange: 0}
+    language_weights: {English: 0, French+English: 0, French: 100, Spanish: 0}
+
+  - name: region_2
+    add_weight: 0
+    preference_class_weights: {retweet_standard: 100, retweet_celeb: 0.0, retweet_humor: 0.0, retweet_ideology: 0.0, retweet_plain: 0.0, no_retweet: 0.0}
+    ideology_weights: {Red: 25, Blue: 25, Green: 25, Orange: 25}
+    language_weights: {English: 0, French+English: 0, French: 0, Spanish: 100}
+
+#################################################################
+# >> preference_classes: 
+# number set in N_BIN_PREFERENCE_CLASSES in config_static.h
+#################################################################
+
+preference_classes:
+ - name: retweet_standard
+
+   tweet_transmission:
+      plain: # cute & musical tweets
+        Standard: 0.001
+        Celebrity: 0.003
+        Comic: 0.001
+        Partisan: 0.001
+        Organization: 0.000001
+        Bot: 0.0
+        Government: 0.0001
+      different_ideology:
+        all:  0.0
+      same_ideology:
+        Standard: 0.002
+        Celebrity: 0.003
+        Comic: 0.001
+        Partisan: 0.003
+        Organization: 0.00001
+        Bot: 0.0
+        Government: 0.0001
+      humorous:
+        Standard: 0.002
+        Celebrity: 0.004
+        Comic: 0.005
+        Partisan: 0.001
+        Organization: 0.0001
+        Bot: 0.0
+        Government: 0.001
+
+ - name: retweet_celeb # retweets celebrities 10x as much as any other
+
+   tweet_transmission:
+      plain: # cute & musical tweets
+        Standard: 0.001
+        Celebrity: 0.01
+        Comic: 0.001
+        Partisan: 0.001
+        Organization: 0.0001
+        Bot: 0.0
+        Government: 0.0
+      different_ideology:
+        Standard: 0.0001
+        Celebrity: 0.001
+        Comic: 0.0
+        Partisan: 0.0
+        Organization: 0.0
+        Bot: 0.0
+        Government: 0.0
+      same_ideology:
+        Standard: 0.001
+        Celebrity: 0.01
+        Comic: 0.0
+        Partisan: 0.0
+        Organization: 0.0
+        Bot: 0.0
+        Government: 0.0
+      humorous:
+        Standard: 0.001
+        Celebrity: 0.01
+        Comic: 0.001
+        Partisan: 0.001
+        Organization: 0.002
+        Bot: 0.0
+        Government: 0.0
+        
+ - name: retweet_humor # retweets humour 10x as much as any other
+
+   tweet_transmission:
+      plain: # cute & musical tweets
+        Standard: 0.001
+        Celebrity: 0.001
+        Comic: 0.001
+        Partisan: 0.001
+        Organization: 0.000001
+        Bot: 0.0
+        Government: 0.0001
+      different_ideology:
+        all:  0.00001
+      same_ideology:
+        Standard: 0.001
+        Celebrity: 0.001
+        Comic: 0.01
+        Partisan: 0.001
+        Organization: 0.000001
+        Bot: 0.0
+        Government: 0.0001
+      humorous:
+        Standard: 0.005
+        Celebrity: 0.005
+        Comic: 0.05
+        Partisan: 0.005
+        Organization: 0.00005
+        Bot: 0.0
+        Government: 0.0005
+        
+ - name: retweet_ideology # retweets ideology 10x as much as any other
+
+   tweet_transmission:
+      plain: # cute & musical tweets
+        Standard: 0.001
+        Celebrity: 0.001
+        Comic: 0.001
+        Partisan: 0.001
+        Organization: 0.000001
+        Bot: 0.0
+        Government: 0.0001
+      different_ideology:
+        all:  0.00001
+      same_ideology:
+        Partisan: 0.02
+        else: 0.002
+      humorous:
+        Standard: 0.001
+        Celebrity: 0.001
+        Comic: 0.001
+        Partisan: 0.005
+        Organization: 0.000001
+        Bot: 0.0
+        Government: 0.0002
+
+ - name: retweet_plain # retweets inoffensive 10x as much as any other
+
+   tweet_transmission:
+      plain: # cute & musical tweets
+        all: 0.02
+      different_ideology:
+        all: 0.0
+      same_ideology:
+        all: 0.01
+      humorous:
+        all: 0.01
+        
+ - name: no_retweet
+
+   tweet_transmission:
+      plain: # cute & musical tweets
+        all: 0.0
+      different_ideology:
+        all: 0.0
+      same_ideology:
+        all: 0.0
+      humorous:
+        all: 0.0
+
+#################################################################
+# >> agents: 
+# up to 200 types may be created
+#################################################################
+
+agents:
+
+ - name: Standard
+   weights:
+      add: 80.0
+      follow: 10  # rate this agent is followed by others
+      tweet_type:
+        ideological: 5.0
+        plain: 85.0
+        musical: 5.0
+        humorous: 5.0
+   followback_probability: 0.40
+   hashtag_follow_options:
+     care_about_region: true
+     care_about_ideology: true
+   rates: # rate this agent follows others
+       follow: {function: constant, value: 0.0001}
+       tweet: {function: constant, value: 0.0003}
+ 
+ - name: Celebrity # Celebritites are "just like us" except we follow them & they don't follow others
+   weights:
+     add: 1.0
+     follow: 50
+     tweet_type:
+       ideological: 5.0
+       plain: 80.0
+       musical: 5.0
+       humorous: 5.0
+   followback_probability: .000001
+   hashtag_follow_options:
+     care_about_region: false
+     care_about_ideology: false
+   rates:
+       follow: {function: constant, value: 0.000001}
+       tweet: {function: constant, value: 0.0001}
+
+ - name: Comic # Comics tweet humorous content frequently
+   weights:
+     add: 6.0
+     follow: 20      
+     tweet_type:
+       ideological: 5.0
+       plain: 5.0
+       musical: 5.0
+       humorous: 85.0
+   followback_probability: .01
+   hashtag_follow_options:
+     care_about_region: true
+     care_about_ideology: false
+   rates:
+       follow: {function: constant, value: 0.0001}
+       tweet: {function: constant, value: 0.001}
+
+ - name: Partisan # Partisans tweet ideological content frequently & followback their followers
+   weights:
+     add: 2.0
+     follow: 10
+     tweet_type:
+       ideological: 85.0
+       plain: 5.0
+       musical: 5.0
+       humorous: 5.0
+   followback_probability: 0.1
+   hashtag_follow_options:
+     care_about_region: false
+     care_about_ideology: true
+   rates:
+       follow: {function: constant, value: 0.001}
+       tweet: {function: constant, value: 0.001}
+
+ - name: Organization   # Organizations follow everyone back
+# Their tweet type depends on advertising strategy
+# Here assumed to be "informative" about their product
+   weights:
+     add: 5.0
+     follow: 5.0
+     tweet_type:
+       ideological: 0.0
+       plain: 100.0
+       musical: 0.0
+       humorous: 0.0
+   followback_probability: 1.0
+   hashtag_follow_options:
+     care_about_region: false
+     care_about_ideology: false
+   rates:
+       follow: {function: constant, value: 0.0}
+       tweet: {function: constant, value: 0.0001}
+
+ - name: Bot # Bots follow based on Hashtags, they do not tweet or retweet
+   weights:
+     add: 5.0
+     follow: 0
+     tweet_type:
+       ideological: 0.0
+       plain: 0.0
+       musical: 0.0
+       humorous: 0.0
+   followback_probability: 0.0
+   hashtag_follow_options:
+     care_about_region: true
+     care_about_ideology: true
+   rates:
+       follow: {function: constant, value: 0.01}
+       tweet: {function: constant, value: 0.0}
+
+ - name: Government # Governments do not follow or retweet
+   weights:
+     add: 1.0
+     follow: 5.0
+     tweet_type:
+       ideological: 0.0
+       plain: 99.0
+       musical: 0.0
+       humorous: 1.0
+   followback_probability: 0.0
+   hashtag_follow_options:
+     care_about_region: false
+     care_about_ideology: false
+   rates:
+       follow: {function: constant, value: 0.0}
+       tweet: {function: constant, value: 0.0007}
