@@ -37,6 +37,7 @@
 #include "config_dynamic.h"
 #include "network.h"
 #include "agent.h"
+#include "tweets.h"
 
 #include "DataReadWrite.h"
 #include "TweetBank.h"
@@ -141,6 +142,9 @@ struct AnalysisState {
        - O(log N), weighted selection for a tweet via pick_random_uniform(RNG object) */
 
     TweetBank tweet_bank;
+
+    // old tweets being stored in a vector to be accessed after sim
+    std::vector<Tweet> oldTweets;
 
     /* most_pop_tweet: The most popular tweet, by number of retweets. */
 
