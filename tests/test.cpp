@@ -99,8 +99,7 @@ struct INIT_TEST
     {
         std::string cmd("cd ");
         cmd += folder_ + test;
-        cmd += ";rm -f DATA_vs_TIME network_state.dat INFILE.yaml-generated "
-               "output/*.dat output/*.gexf";
+        cmd += ";rm -f network_state.dat INFILE.yaml-generated output/*.dat output/*.gexf output/DATA_vs_TIME";
         std::system(cmd.c_str());
     }
 

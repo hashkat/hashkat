@@ -1,0 +1,11 @@
+Error:		Tweets with Hashtags not being Retweeted
+Bug:            110
+
+No matter how many times I do simulations in Hashkat, I have never had a tweet with a hashtag be most popular tweet (MPT).
+I therefore suspect that Tweets with hashtags are not being retweeted.
+
+MPT_53 is a study of 53 runs where 49 generated MPT files, 0% contained hashtags 
+although 20% of tweets in system should have had hashtags.
+
+Region_retweet is a study of 12 random runs of same INFILE and of the 12 MPT files, 
+0% contained hashtags although 10% of tweets in system should have had hashtags.

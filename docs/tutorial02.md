@@ -30,53 +30,21 @@ To remove the old output:
 
 `rm -r output`
 
-Though not necessary, you can also remove the other files created from running a network simulation by typing in the commands:
-
-`rm DATA_vs_TIME`
-
 ##### To Move:
 
-Create a new directory to store your old simulations, for example:
+You may simply MOVE the files into the output directory, then rename the output directory:
+ 
+`mv network_state.dat /output/network_state.dat`
 
-`mkdir ~/hashkat/MyOldSimulations`
+`mv output new_output`
 
-because this is off the path, you may simply move the unwanted files & directories into 'MyOldSimulations' and they will be invisible to **hashkat**:
+###Run New Simulation
 
-`mv ~/hashkat/network_stat.dat ~/hashkat/MyOldSimulations/`
-
-`mv -r ~/hashkat/output/ ~/hashkat/MyOldSimulations/`
-
-If you do this more than once, you will end up with a lot of output directories of the same name in 'MyOldSimulations'.  Therefore you may want to move and rename them.
-
-##### To Rename:
-
-You may also simply rename the unwanted files and directories, which will make them invisible to **hashkat**.  
-
-You may rename a file or directory with the **mv** command:
-
-`mv output my_output`
-
-You may rename by copying them to a new name, then removing the old name.
-
-To copy:
-
-`cp network_state.dat unwanted_network_state.dat`
-
-`cp -r output my_output`
-
-then remove the old file:
-
-`rm network_state.dat`
-
-`rm -r output`
-
-#### Run New Simulation
-
-You can now run your new simulation by typing in the command:
+You can now run your new simulation from the same seed, type the command:
 
 `./run.sh`
 
-Alternatively, to run a simulation using a random seed for the random number generator, type the command:
+Alternatively, to run a simulation using a random seed, type the command:
 
 `./run.sh --rand`
 
@@ -92,13 +60,13 @@ If for whatever reason you would like to stop a simulation midway through, witho
 
 If for whatever reason you would like to stop a simulation midway through, without losing your data, simply press **Ctrl-c**. The simulation will automatically save the information it's collected to the **network_state.dat** file.  
 
-You may analyze the data you have so far which is in the **DATA_vs_TIME** file and **output** directory. 
+You may analyze the data you have so far which includes the **DATA_vs_TIME** file in the **output** directory. 
 
 If you would like to continue the simulation from where you left off, simply type in:
 
 `./run.sh`
 
-Note:  to continue a simulation, do NOT use the random seed **run** command.
+Note:  to continue a simulation, do NOT use the random seed **./run.sh --rand** command.
 
 The simulation will recommence running if you have time left.  Note: you may increase the maximum simulation time in your 'INFILE.yaml' file and the network simulation will simply continue from where it previously left off.
 

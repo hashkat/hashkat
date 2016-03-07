@@ -1,0 +1,27 @@
+[hashkat.org](http://hashkat.org)
+
+# IO.CPP Index
+
+For developers:  index of **hashkat/src/io.cpp** which generates the files of the Output directory after a simulation is run.
+
+**Line****File**
+
+212	network.gexf
+279	network.dat
+289	network.graphml
+334	model_match.dat // currently commented out
+362	out-degree_distrubution_month.dat
+363	in-degree_distribution_month.dat
+364	cumulative-degree_distribution_month.dat
+459	agent_percentages.dat
+517	tweets_distro.dat
+518	retweets_distro.dat
+619	filename.c_str()
+691	most_popular_tweet_content.dat
+715	retweet_viz.gexf
+765	main_stat.dat
+832	region_connection_matrix_month.dat
+893     connections_vs_nodes.dat
+953	dd_by_year.dat
+997	dd_by_agent_type.dat
+1045	dd_by_follow_model.dat

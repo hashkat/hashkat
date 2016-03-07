@@ -2,20 +2,22 @@
 
 # Visualization
 
-Here we outline ways in which you can visualize the data you've collected from running **#k@**.
+Here we outline ways in which you can visualize the data output by **#k@**.
 
 ### Gephi
 
 <center>
 <iframe width="560" height="315" src="https://www.youtube.com/embed/GZYsnLApk24" frameborder="0" allowfullscreen></iframe>
 </center> <br /> 
-You can visualize some of the data you have collected using [Gephi](http://gephi.github.io/), the visualization tool primarily used in this documentation. 
+You may visualize the output data using [Gephi](http://gephi.github.io/), the visualization tool primarily used in this documentation.  **Gephi** works best on graphs with a smaller (~1000) number of agents.
 
 The network we visualize here is the one created in [Tutorial 5](http://docs.hashkat.org/en/latest/tutorial05/).
 
 #### How to Visualize a Network
 
-Download [Gephi](http://gephi.github.io/) then enter the program and start a **new file**. 
+Download [Gephi](http://gephi.github.io/) then enter the program.  NOTE: This documentation refers to **Gephi 0.8**.  
+
+**Gephi 0.9** has a different interface.  **Gephi 0.9** will open **0.8** files but not vice versa.
 
 These are the steps necessary to visualize the networks you've created:
 
@@ -57,7 +59,7 @@ These are the steps necessary to visualize the networks you've created:
     This details the number of nodes (agents) in the network and the total number of edges (connections/followings) within it.
 
 
-4. To differentiate between the node types in your system, click the refresh button in the 'Partition' box on the left hand side of the screen and under '---Choose a partition parameter' click 'Label'. This will show each node type numbered by how they were ordered in the input file, their percentage out of the total number of agents, and their corresponding colour in the visualization. An image of this box is shown below
+4. To differentiate between the node types in your system, in **Gephi 0.8**, click the refresh button in the 'Partition' box on the left hand side of the screen and under '---Choose a partition parameter' click 'Label'. This will show each node type numbered by how they were ordered in the input file, their percentage out of the total number of agents, and their corresponding colour in the visualization. An image of this box is shown below
   
     <center>
     <img src="../img/visualization/gephi_label_nodes.png">
@@ -69,6 +71,7 @@ These are the steps necessary to visualize the networks you've created:
     <img src="../img/visualization/gephi_basic_network.png">
     </center> 
 
+	**Gephi 0.9** partition may be found under **Appearance** tab.
     
 5. To modify the layout of your network, go to the 'Layout' window on the left hand side of your page (shown below), choose the layout you would like to use, and press 'Run':
  
@@ -105,40 +108,50 @@ This just scratches the surface of all that you can do using Gephi. Try experime
 
 ### Networkx
 
-You can also visualize the networks you've created using [Networkx](https://networkx.github.io/). Networkx is a Python language software package that can be used to create, modify, and analyze networks. To install Networkx on to your computer, enter into the command line:
+You can also visualize the networks you've created using [Networkx](https://networkx.github.io/). 
+
+[Networkx](https://networkx.github.io/documentation/latest/) is a Python language software package that can be used to create, modify, and analyze networks. To install Networkx on to your computer, enter into the command line:
 
 `pip install networkx`
 
+#### visualize.py
+
+We have pre-prepared a script **/~hashkat/visualize.py** to visualize and analyse your network in Networkx.  Simply enter the following command after running a simulation:
+
+`./visualize.py`
+
+This will produce a plot of your network using Networkx, and will save the plot to **graph.svg**.  This script will also run the analysis functions and algorithms discussed below. 
+
 #### Plotting Your Network
 
-To create a graph of your network after running a simulation using Networkx, enter Python by typing in the command:
+To manually create a Networkx graph of your network after running a simulation, enter Python by typing in the command:
 
 `python`
 
 In Python, type in the following to create a graph of your network:
 
 ```python
-import matplotlib.pyplot as plt`
+import matplotlib.pyplot as plt
 ```
 
 ```python
-import networkx as nx`
+import networkx as nx
 ```
 
 ```python
-G = nx.read_edgelist('output/network.dat')`
+G = nx.read_edgelist('output/network.dat')
 ```
 
 ```python
-pos = nx.spring_layout(G,iterations=75)`
+pos = nx.spring_layout(G,iterations=75)
 ```
 
 ```python
-nx.draw(G,pos)`
+nx.draw(G,pos)
 ```
 
 ```python
-plt.show()`
+plt.show()
 ```
 
 This will produce a plot similar to the one below:
@@ -150,11 +163,7 @@ This will produce a plot similar to the one below:
 
 Similar to our visualizations using Gephi, the red nodes in the above graph correspond to agents and the black edges in between them correspond to connections/followings between agents. It is important to note however that there is no way to distinguish between the different agent types via this method.
 
-#### Analyzing Your Network
-
-You may use Networkx to analyze the network you've created as well. Here we will outline some of the various functions and algorithms you can input into Python after plotting your graph to collect some information on your network. More information on [Networkx](https://networkx.github.io/documentation/latest/) can be found at their website [here](https://networkx.github.io/documentation/latest/).
-
-##### Number of Nodes
+#### Number of Nodes
  
 To ascertain the number of nodes present in your network, type the command:
 
@@ -179,7 +188,7 @@ from operator import itemgetter
 ```
 
 ```python
-sorted(G.degree_iter(),key=itemgetter(1),reverse=True)[0:1])
+sorted(G.degree_iter(),key=itemgetter(1),reverse=(True)[0:1])
 ```
 
 This will print to the screen (though most likely with different values):
@@ -226,14 +235,8 @@ The average shortest path length is the shortest number of edges on average betw
 nx.average_shortest_path_length(G))
 ```
 
-#### visualize.py
+### Explore
 
-You can visualize and analyze your networks in the above manner by running the script in the '/~hashkat/visualize.py', by entering in the command after running a network simulation:
+Though we discuss Gephi in much greater detail in this documentation, you are encouraged to analyze your networks using [Networkx](https://networkx.github.io/).  Other data output files are under development.  If you have a preference please let us know. 
 
-`../visualize.py`
-
-Running this script will not only produce a plot of your network using Networkx, but it will also save that plot to a file named **graph.svg**. This script will also run the analysis functions and algorithms discussed above on your network. 
-
-#### Explore
-
-Though we discuss using Gephi in much greater detail in this documentation, you are encouraged to also analyze your networks using [Networkx](https://networkx.github.io/). You are encouraged to explore all of Networkx's features and functionalities to understand all the ways in which you can analyze the data you've collected from running **#k@**.
+You are encouraged to explore all of Networkx's features and functionalities to understand all the ways in which you can analyze the data you've collected from running **#k@**.

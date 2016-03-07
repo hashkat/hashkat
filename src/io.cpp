@@ -68,7 +68,7 @@ void output_network_statistics(AnalysisState& state) {
             cout << "\nSimulation (Gracefully) Interrupted: ctrl-c was pressed\n";
         } else if (state.end_time >= C.max_sim_time) {
             cout << "\nSimulation Completed: desired duration reached\n";
-//        } else if (network.size() >= C.max_agents) { // AD: No longer an exit condition
+//      } else if (network.size() >= C.max_agents) { // AD: No longer an exit condition
 //            cout << "\nSimulation Completed: desired agent amount reached\n";
         } else if (!analyzer_real_time_check(state)) {
             cout << "\nSimulation Completed: desired wall-clock time reached\n";
@@ -283,7 +283,7 @@ void output_position(Network& network, int n_agents) {
     output << "# Agent ID\tFollower ID\n\n";
     for (int id = 0; id < n_agents; id++) {
         for (int id_fol : network.follower_set(id).as_vector()) {
-            output << id << "\t" << id_fol << "\n";
+            output << id << "\t\t" << id_fol << "\n";
         }
     }
     output.close();
@@ -547,11 +547,11 @@ void tweets_distribution(Network& network, int n_users) {
     }
     tweet_output << "# n_tweets\tdistro\n\n";
     for (int i = 0; i < max_tweets; i ++) {
-        tweet_output << i << "\t" << tweets_distro.at(i) / tweets_sum << "\n";
+        tweet_output << i << "\t\t" << tweets_distro.at(i) / tweets_sum << "\n";
     }
     retweet_output << "# n_retweets\tdistro\n\n";
     for (int i = 0; i < max_retweets; i ++) {
-        retweet_output << i << "\t" << retweets_distro.at(i) / retweets_sum << "\n";
+        retweet_output << i << "\t\t" << retweets_distro.at(i) / retweets_sum << "\n";
     }
     tweet_output.close();
     retweet_output.close();
@@ -666,13 +666,13 @@ static void whos_following_who(AgentTypeVector& types, AgentType& type, Network&
     for (int i = 0; i < types.size(); i ++) {
         output << types[i].name << ": " << who_followers[i] / followers_sum * 100.0 << "   ";
     }
-    output << "\n# degree\tin_degree\tout_degree\tcumulative\tlog(degree)\tlog(in_degree)\tlog(out_degree)\tlog(cumulative)\n\n";
+    output << "\n\ndeg\tin_deg\tout_d\tcum_d\tlog(d)\t\tlg(in)\tlg(out)\tlg(cum)\n\n";
     for (int i = 0; i < max_degree; i++) {
         output << i << "\t"
                 << agent_followers[i] / (double) type.agent_list.size() << "\t"
                 << agent_following[i] / (double) type.agent_list.size() << "\t"
                 << agent_degree[i] / (double) type.agent_list.size()
-                << "\t" << log(i) << "\t"
+                << "\t" << log(i) << "\t\t"
                 << log(agent_followers[i] / (double) type.agent_list.size()) << "\t"
                 << log(agent_following[i] / (double) type.agent_list.size()) << "\t"
                 << log(agent_degree[i] / (double) type.agent_list.size()) << "\n";
@@ -699,8 +699,9 @@ void most_popular_tweet_content(MostPopularTweet& mpt, Network& network) {
         return; // Nothing to see here
     }
 
-    output << "Contains basic information relating to the most retweeted tweet in this network simulation. \n\n"
-           << "Author ID:\t" << id << "\n"
+    output << "Contains basic information relating to the most retweeted tweet in this network simulation. \n"
+           << "Developer:  Nick Buhagiar\n\n"
+	   << "Author ID:\t" << id << "\n"
            << "Author Agent Type:\t" << a.agent_type << "\n"
            << "Author Ideology:\t" << a.ideology_bin << "\n"
            << "Author Region:\t" << a.region_bin << "\n"

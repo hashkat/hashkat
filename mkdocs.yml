@@ -1,30 +1,41 @@
 site_name: docs.hashkat.org
 site_url: http://docs.hashkat.org
+site_description: Hashkat supporting documentation.
+site_author: Nick Buhagiar & Linda Kettle
+
+repo_url: https://github.com/hashkat/hashkat
+
 pages:
- - [index.md, Home]
- - [installation.md, Installation]
- - [commandline.md, Using The Command Line]
- - [directory.md, The Hashkat Directory]
- - [input.md, Input]
- - [output.md, Output]
- - [visualization.md, Visualizing Output]
- - [keywords.md, Key Words]
- - [large_network.md, Large Network Example]
- - [developers.md, For Developers]
- - [troubleshooting.md, Troubleshooting]
- - [tutorial01.md, Tutorial 1 - Getting Started - Part I]
- - [tutorial02.md, Tutorial 2 - Getting Started - Part II]
- - [tutorial03.md, Tutorial 3 - Follow_Model: Random (Erdos-Renyi Model)]
- - [tutorial04.md, Tutorial 4 - Follow_Model: Twitter_Suggest (Preferential_Global, Barabasi-Albert Model)]
- - [tutorial05.md, Tutorial 5 - Follow_Model: Agent]
- - [tutorial06.md, Tutorial 6 - Follow_Model: Preferential_Agent]
- - [tutorial07.md, Tutorial 7 - Follow_Model: Hashtag]
- - [tutorial08.md, Tutorial 8 - Follow_Model: Twitter (Combination)]
- - [tutorial09.md, Tutorial 9 - Follow_via_Retweet, Follow_Back]
- - [tutorial10.md, Tutorial 10 - The Most Popular Tweet]
- - [tutorial11.md, Tutorial 11 - Unfollowing]
- - [tutorial12.md, Tutorial 12 - Agent_Types]
- - [tutorial13.md, Tutorial 13 - Example: A Complex Network]
- - [citation.md, Citation and Licensing]
- - [feedback.md, Feedback]
- - [about.md, About]
+- Home: index.md
+- Getting Started: 
+    - Installation: installation.md
+    - Using Command Line: commandline.md
+    - Directory: directory.md
+    - Quick Start: quickstart.md
+- User Manual:  
+    - About: about.md
+    - Input: input.md
+    - Output: output.md
+    - Visualizing Output: visualization.md
+    - Developers: developers.md
+    - Glossary: keywords.md
+    - Large Network Example: large_network.md
+    - Troubleshooting: troubleshooting.md
+- Tutorials:
+    - 1  Start: tutorial01.md
+    - 2  Re-Start: tutorial02.md
+    - 3  Follow Model - Random (Erdos-Renyi): tutorial03.md 
+    - 4  Follow Model - Twitter_Suggest (Barabasi-Albert preferential attachment): tutorial04.md
+    - 5  Follow Model - Agent: tutorial05.md
+    - 6  Follow Model - Preferential_Agent: tutorial06.md
+    - 7  Follow Model - Hashtag: tutorial07.md
+    - 8  Follow Model - Twitter (Combination): tutorial08.md
+    - 9  Other Follow Methods: tutorial09.md
+    - 10  Most Popular Tweet: tutorial10.md
+    - 11  Unfollowing: tutorial11.md
+    - 12  Agent Types: tutorial12.md
+    - 13  Complex Network Example: tutorial13.md
+- Contact Us: feedback.md
+- Citation and Licence: citation.md
+
+copyright: Copyright &copy; 2015 <a href="https://github.com/kryczko">Kevin Ryczko</a>, <a href="https://github.com/ludamad">Adam Domurad</a>, <a href="http://faculty.uoit.ca/itamblyn/index.html">Isaac Tamblyn</a>.
