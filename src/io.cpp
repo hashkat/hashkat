@@ -140,6 +140,15 @@ void output_network_statistics(AnalysisState& state) {
     if (C.dd_by_follow_model) {
         dd_by_follow_method(network, state, stats);
     }   
+
+    examineTweets(old_tweets);
+}
+
+void examineTweets(vector<Tweet>& old_tweets) {
+    // do something here 
+    for (auto& tweet : old_tweets) {
+        cout << "Tweet lasted: " << tweet.deletion_time - tweet.creation_time << " minutes.\n";
+    }
 }
 
 static void output_stat_calc(const char* name, StatCalc& calc) {
