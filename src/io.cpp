@@ -143,10 +143,73 @@ void output_network_statistics(AnalysisState& state) {
 }
 
 void tweet_info(vector<Tweet>& old_tweets) {
-    
+
+    std::vector<int> authors;
+    std::vector<int> content;
+    std::vector<int> hashtag;
+    std::vector<int> popular_agent;
+    std::vector<int> tweet_generation;
+    double average_time_retweeted, average_tweet_lifetime;    
     ofstream output;
     output.open("output/tweet_info.dat");
-    output << "Contains basic information relating to every tweet within the network simulation. \n\n";
+    output << "Contains basic information relating to every tweet within the network simulation. \n\n" << "Most Common Tweet Info\n\n";
+
+    for (auto& tweet : old_tweets) {
+
+        authors.push_back (tweet.id_tweeter);
+        content.push_back (tweet.content->type);
+        hashtag.push_back (tweet.hashtag);
+        popular_agent.push_back (tweet.id_link);
+        tweet_generation.push_back (tweet.generation);
+        average_time_retweeted += tweet.content->used_agents.size();
+        average_tweet_lifetime += tweet.deletion_time - tweet.creation_time;
+
+    }    
+
+    std::sort(authors.begin(), authors.end());
+    std::sort(content.begin(), content.end());
+    std::sort(hashtag.begin(), hashtag.end());
+    std::sort(popular_agent.begin(), popular_agent.end());
+    std::sort(tweet_generation.begin(), tweet_generation.end());
+
+
+    std::vector<vector<int>> collection = {authors, content, hashtag, popular_agent, tweet_generation};
+    std::vector<int> modes;
+
+
+    for (auto& x : collection) {
+        int value = x[0];
+        int mode = value;
+        int score = 1;
+        int count = 1;
+        for (auto& y : x) {
+            if (y == value) {
+                count++;
+            }
+            else {
+                if (count > score) {
+                    score = count;
+                    mode = value;
+                }
+                count = 1;
+                value = y;
+            }
+        }
+        modes.push_back (mode);
+    }
+
+
+    average_time_retweeted = average_time_retweeted / old_tweets.size();
+    average_tweet_lifetime = average_tweet_lifetime / old_tweets.size();
+
+    output << "Most Common Author ID:\t" << modes[0] << "\n"
+           << "Most Common Tweet Content:\t" << modes[1] << "\n"
+           << "Typical Hashtag Presence:\t" << modes[2] << "\n"
+           << "Most Common Agent Retweeted From:\t" << modes[3] << "\n"
+           << "Most Common Tweet Generation:\t" << modes[4] << "\n"
+           << "Average Number of Times Retweeted:\t" << average_time_retweeted << "\n"
+           << "Average Tweet Lifetime:\t" << average_tweet_lifetime << " minutes.\n\n";
+
     for (auto& tweet : old_tweets) {
         output << "Tweet ID:\t" << tweet.id_tweet << "\n"
                << "Author ID:\t" << tweet.id_tweeter << "\n"
