@@ -145,9 +145,17 @@ void output_network_statistics(AnalysisState& state) {
 void tweet_info(vector<Tweet>& old_tweets) {
     
     ofstream output;
-    output.open("output/tweet_info.dat"); 
+    output.open("output/tweet_info.dat");
+    output << "Contains basic information relating to every tweet within the network simulation. \n\n";
     for (auto& tweet : old_tweets) {
-        output << "Tweet lasted: " << tweet.deletion_time - tweet.creation_time << " minutes.\n";
+        output << "Tweet ID:\t" << tweet.id_tweet << "\n"
+               << "Author ID:\t" << tweet.id_tweeter << "\n"
+               << "Tweet Content:\t" << tweet.content->type << "\n"
+               << "Hashtag Presence:\t" << tweet.hashtag << "\n"
+               << "Retweeted From Agent:\t" << tweet.id_link << "\n"
+               << "Tweet Generation:\t" << tweet.generation << "\n"
+               << "Number of Times Retweeted:\t" << tweet.content->used_agents.size() << "\n"
+               << "Tweet Lifetime:\t" << tweet.deletion_time - tweet.creation_time << " minutes.\n\n";
     }
     output.close();
 
