@@ -52,6 +52,6 @@ void dd_by_age(Network& n, AnalysisState& as, NetworkStats& ns);
 void dd_by_agent(Network& n, AnalysisState& as, NetworkStats& ns);
 void dd_by_follow_method(Network& n, AnalysisState& as, NetworkStats& ns);
 void most_popular_tweet_content(MostPopularTweet& mpt, Network& network);
-void examineTweets(std::vector<Tweet>&);
+void tweet_info(std::vector<Tweet>&);
 void n_agents_in_regions(Network& n);
 #endif

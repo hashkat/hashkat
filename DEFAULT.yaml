@@ -143,6 +143,8 @@ output:
     true
   most_popular_tweet_content:
     true
+  tweet_info:
+    true
 
 #################################################################
 # >> *_ranks:

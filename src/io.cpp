@@ -56,9 +56,7 @@ void output_network_statistics(AnalysisState& state) {
     NetworkStats& stats = state.stats;
     TweetBank& tb = state.tweet_bank;
     MostPopularTweet& mpt = state.most_pop_tweet;
-    // FOR NICK: you want this
     vector<Tweet>& old_tweets = state.oldTweets;
-    // cout << "Size of old tweets: " << old_tweets.size() << "\n";
 
     //brief_agent_statistics(state);
 
@@ -141,14 +139,18 @@ void output_network_statistics(AnalysisState& state) {
         dd_by_follow_method(network, state, stats);
     }   
 
-    examineTweets(old_tweets);
+    tweet_info(old_tweets);
 }
 
-void examineTweets(vector<Tweet>& old_tweets) {
-    // do something here 
+void tweet_info(vector<Tweet>& old_tweets) {
+    
+    ofstream output;
+    output.open("output/tweet_info.dat"); 
     for (auto& tweet : old_tweets) {
-        cout << "Tweet lasted: " << tweet.deletion_time - tweet.creation_time << " minutes.\n";
+        output << "Tweet lasted: " << tweet.deletion_time - tweet.creation_time << " minutes.\n";
     }
+    output.close();
+
 }
 
 static void output_stat_calc(const char* name, StatCalc& calc) {
