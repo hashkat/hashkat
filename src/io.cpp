@@ -150,9 +150,9 @@ void tweet_info(vector<Tweet>& old_tweets) {
     std::vector<int> popular_agent;
     std::vector<int> tweet_generation;
     double average_time_retweeted, average_tweet_lifetime;    
-    ofstream output;
-    output.open("output/tweet_info.dat");
-    output << "Contains basic information relating to every tweet within the network simulation. \n\n" << "Most Common Tweet Info\n\n";
+    ofstream output1, output2;
+    output1.open("output/average_tweet_info.dat");
+    output1 << "#Contains the most common or average info on tweets within the network simulation.\n\n";
 
     for (auto& tweet : old_tweets) {
 
@@ -202,25 +202,39 @@ void tweet_info(vector<Tweet>& old_tweets) {
     average_time_retweeted = average_time_retweeted / old_tweets.size();
     average_tweet_lifetime = average_tweet_lifetime / old_tweets.size();
 
-    output << "Most Common Author ID:\t" << modes[0] << "\n"
-           << "Most Common Tweet Content:\t" << modes[1] << "\n"
-           << "Typical Hashtag Presence:\t" << modes[2] << "\n"
-           << "Most Common Agent Retweeted From:\t" << modes[3] << "\n"
-           << "Most Common Tweet Generation:\t" << modes[4] << "\n"
-           << "Average Number of Times Retweeted:\t" << average_time_retweeted << "\n"
-           << "Average Tweet Lifetime:\t" << average_tweet_lifetime << " minutes.\n\n";
+    output1 << "Most Common Author ID:\t" << modes[0] << "\n"
+            << "Most Common Tweet Content:\t" << modes[1] << "\n"
+            << "Typical Hashtag Presence:\t" << modes[2] << "\n"
+            << "Most Common Agent Retweeted From:\t" << modes[3] << "\n"
+            << "Most Common Tweet Generation:\t" << modes[4] << "\n"
+            << "Average Number of Times Retweeted:\t" << average_time_retweeted << "\n"
+            << "Average Tweet Lifetime (minutes):\t" << average_tweet_lifetime << "\n\n";
+
+    output1.close();
+
+    output2.open("output/tweet_info.dat");
+
+    output2 << "#Contains basic information relating to every tweet and retweet within the network simulation.\n\n"
+            << "Tweet ID\t" << setw(25)
+            << "Author ID\t" << setw(25)
+            << "Tweet Content\t" << setw(25)
+            << "Hashtag Presence\t" << setw(25)
+            << "Retweeted From Agent\t" << setw(25)
+            << "Tweet Generation\t" << setw(25)
+            << "Number of Times Retweeted\t" << setw(25)
+            << "Tweet Lifetime (minutes)\n\n";
 
     for (auto& tweet : old_tweets) {
-        output << "Tweet ID:\t" << tweet.id_tweet << "\n"
-               << "Author ID:\t" << tweet.id_tweeter << "\n"
-               << "Tweet Content:\t" << tweet.content->type << "\n"
-               << "Hashtag Presence:\t" << tweet.hashtag << "\n"
-               << "Retweeted From Agent:\t" << tweet.id_link << "\n"
-               << "Tweet Generation:\t" << tweet.generation << "\n"
-               << "Number of Times Retweeted:\t" << tweet.content->used_agents.size() << "\n"
-               << "Tweet Lifetime:\t" << tweet.deletion_time - tweet.creation_time << " minutes.\n\n";
+        output2 << tweet.id_tweet << "\t" << setw(25)
+                << tweet.id_tweeter << "\t" << setw(25)
+                << tweet.content->type << "\t" << setw(25)
+                << tweet.hashtag << "\t" << setw(25)
+                << tweet.id_link << "\t" << setw(25)
+                << tweet.generation << "\t" << setw(25)
+                << tweet.content->used_agents.size() << "\t" << setw(25)
+                << tweet.deletion_time - tweet.creation_time << "\n";
     }
-    output.close();
+    output2.close();
 
 }
 
