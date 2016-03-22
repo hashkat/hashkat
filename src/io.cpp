@@ -56,6 +56,7 @@ void output_network_statistics(AnalysisState& state) {
     NetworkStats& stats = state.stats;
     TweetBank& tb = state.tweet_bank;
     MostPopularTweet& mpt = state.most_pop_tweet;
+    vector<Tweet>& old_tweets = state.oldTweets;
 
     //brief_agent_statistics(state);
 
@@ -137,6 +138,104 @@ void output_network_statistics(AnalysisState& state) {
     if (C.dd_by_follow_model) {
         dd_by_follow_method(network, state, stats);
     }   
+
+    tweet_info(old_tweets);
+}
+
+void tweet_info(vector<Tweet>& old_tweets) {
+
+    std::vector<int> authors;
+    std::vector<int> content;
+    std::vector<int> hashtag;
+    std::vector<int> popular_agent;
+    std::vector<int> tweet_generation;
+    double average_time_retweeted, average_tweet_lifetime;    
+    ofstream output1, output2;
+    output1.open("output/average_tweet_info.dat");
+    output1 << "#Contains the most common or average info on tweets within the network simulation.\n\n";
+
+    for (auto& tweet : old_tweets) {
+
+        authors.push_back (tweet.id_tweeter);
+        content.push_back (tweet.content->type);
+        hashtag.push_back (tweet.hashtag);
+        popular_agent.push_back (tweet.id_link);
+        tweet_generation.push_back (tweet.generation);
+        average_time_retweeted += tweet.content->used_agents.size();
+        average_tweet_lifetime += tweet.deletion_time - tweet.creation_time;
+
+    }    
+
+    std::sort(authors.begin(), authors.end());
+    std::sort(content.begin(), content.end());
+    std::sort(hashtag.begin(), hashtag.end());
+    std::sort(popular_agent.begin(), popular_agent.end());
+    std::sort(tweet_generation.begin(), tweet_generation.end());
+
+
+    std::vector<vector<int>> collection = {authors, content, hashtag, popular_agent, tweet_generation};
+    std::vector<int> modes;
+
+
+    for (auto& x : collection) {
+        int value = x[0];
+        int mode = value;
+        int score = 1;
+        int count = 1;
+        for (auto& y : x) {
+            if (y == value) {
+                count++;
+            }
+            else {
+                if (count > score) {
+                    score = count;
+                    mode = value;
+                }
+                count = 1;
+                value = y;
+            }
+        }
+        modes.push_back (mode);
+    }
+
+
+    average_time_retweeted = average_time_retweeted / old_tweets.size();
+    average_tweet_lifetime = average_tweet_lifetime / old_tweets.size();
+
+    output1 << "Most Common Author ID:\t" << modes[0] << "\n"
+            << "Most Common Tweet Content:\t" << modes[1] << "\n"
+            << "Typical Hashtag Presence:\t" << modes[2] << "\n"
+            << "Most Common Agent Retweeted From:\t" << modes[3] << "\n"
+            << "Most Common Tweet Generation:\t" << modes[4] << "\n"
+            << "Average Number of Times Retweeted:\t" << average_time_retweeted << "\n"
+            << "Average Tweet Lifetime (minutes):\t" << average_tweet_lifetime << "\n\n";
+
+    output1.close();
+
+    output2.open("output/tweet_info.dat");
+
+    output2 << "#Contains basic information relating to every tweet and retweet within the network simulation.\n\n"
+            << "Tweet ID\t" << setw(25)
+            << "Author ID\t" << setw(25)
+            << "Tweet Content\t" << setw(25)
+            << "Hashtag Presence\t" << setw(25)
+            << "Retweeted From Agent\t" << setw(25)
+            << "Tweet Generation\t" << setw(25)
+            << "Number of Times Retweeted\t" << setw(25)
+            << "Tweet Lifetime (minutes)\n\n";
+
+    for (auto& tweet : old_tweets) {
+        output2 << tweet.id_tweet << "\t" << setw(25)
+                << tweet.id_tweeter << "\t" << setw(25)
+                << tweet.content->type << "\t" << setw(25)
+                << tweet.hashtag << "\t" << setw(25)
+                << tweet.id_link << "\t" << setw(25)
+                << tweet.generation << "\t" << setw(25)
+                << tweet.content->used_agents.size() << "\t" << setw(25)
+                << tweet.deletion_time - tweet.creation_time << "\n";
+    }
+    output2.close();
+
 }
 
 static void output_stat_calc(const char* name, StatCalc& calc) {

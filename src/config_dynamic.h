@@ -123,6 +123,7 @@ struct ParsedConfig {
     double summary_output_rate = 1;
     bool categories_distro = false;
     bool most_popular_tweet_content = false;
+    bool tweet_info = false;
 
     // 'X_category' config options
 

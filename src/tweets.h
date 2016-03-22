@@ -90,6 +90,7 @@ struct Tweet {
 
     // The time the tweet was tweeted
     double creation_time = 0;
+    double deletion_time = 0;
 
     // Based on creation_time and the current time
     // Determines the 'omega' observation PDF dropoff rate of

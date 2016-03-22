@@ -222,6 +222,7 @@ static void parse_output_configuration(ParsedConfig& config, const Node& node) {
     parse(node ,"region_connection_matrix", config.region_connection_matrix);
     parse(node ,"categories_distro", config.categories_distro);
     parse(node ,"most_popular_tweet_content", config.most_popular_tweet_content);
+    parse(node ,"tweet_info", config.tweet_info);
 }
 
 static CategoryGrouper parse_category_thresholds(const Node& node) {
