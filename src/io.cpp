@@ -1,4 +1,27 @@
 /*
+ * This file generates files in the OUTPUT directory after a simulation
+ *
+ * LINE   OUTPUT FILE
+ *
+ * 169    Tweet_info.dat
+ * 340    Network.gexf
+ * 401    Network.dat
+ * 413    Network.graphml
+ * 437    Model_match.dat
+ * 473    Degree_distribution.dat
+ * 558    Categories_distro.dat
+ * 643    Tweets_distro.dat
+ * 644    Retweets_distro.dat
+ * 747    Agent_Type_Info.dat
+ * 822    Most_Popular_Tweet.dat
+ * 850    Retweet_viz.getxf
+ * 902    Main_Stats.dat
+ * 952    Region_Connection_distribution.dat
+ * 1043   Degree_distribution_by_year.dat
+ * 1111   Degree_distribution_by_Agent_type.dat
+ * 1163   Degree_distribution_by_Follow_Model.dat *
+ *
+ *
  * This file is part of the #KAT Social Network Simulator.
  *
  * The #KAT Social Network Simulator is free software: you can redistribute it and/or modify
@@ -45,7 +68,8 @@ using namespace std;
 
 
 // ROOT OUTPUT ROUTINE
-/* After 'analyze', print the results of the computations. */
+// After 'analyze', print the results of the computations.
+
 void output_network_statistics(AnalysisState& state) {
     // uncomment to print performance statistics
     //perf_print_results();
@@ -131,7 +155,7 @@ void output_network_statistics(AnalysisState& state) {
     //    dd_by_age(network, state, stats);
     //}
 
-    //#### This function has already been implemented, it is in agent stats
+    //This function has already been implemented, it is in agent stats
     //if (C.dd_by_agent) {
     //   dd_by_agent(network, state, stats);
     //}
@@ -141,6 +165,8 @@ void output_network_statistics(AnalysisState& state) {
 
     tweet_info(old_tweets);
 }
+
+// TWEET_INFO_DAT
 
 void tweet_info(vector<Tweet>& old_tweets) {
 
@@ -171,11 +197,8 @@ void tweet_info(vector<Tweet>& old_tweets) {
     std::sort(hashtag.begin(), hashtag.end());
     std::sort(popular_agent.begin(), popular_agent.end());
     std::sort(tweet_generation.begin(), tweet_generation.end());
-
-
     std::vector<vector<int>> collection = {authors, content, hashtag, popular_agent, tweet_generation};
     std::vector<int> modes;
-
 
     for (auto& x : collection) {
         int value = x[0];
@@ -198,15 +221,14 @@ void tweet_info(vector<Tweet>& old_tweets) {
         modes.push_back (mode);
     }
 
-
     average_time_retweeted = average_time_retweeted / old_tweets.size();
     average_tweet_lifetime = average_tweet_lifetime / old_tweets.size();
 
-    output1 << "Most Common Author ID:\t" << modes[0] << "\n"
-            << "Most Common Tweet Content:\t" << modes[1] << "\n"
-            << "Typical Hashtag Presence:\t" << modes[2] << "\n"
-            << "Most Common Agent Retweeted From:\t" << modes[3] << "\n"
-            << "Most Common Tweet Generation:\t" << modes[4] << "\n"
+    output1 << "Most Common Author ID:\t\t\t" << modes[0] << "\n"
+            << "Most Common Tweet Content:\t\t" << modes[1] << "\n"
+            << "Probability of Hashtag in Tweet:\t" << modes[2] << "\n"
+            << "Most Commonly Retweeted Agent ID:\t" << modes[3] << "\n"
+            << "Most Common Tweet Generation:\t\t" << modes[4] << "\n"
             << "Average Number of Times Retweeted:\t" << average_time_retweeted << "\n"
             << "Average Tweet Lifetime (minutes):\t" << average_tweet_lifetime << "\n\n";
 
@@ -307,6 +329,7 @@ void brief_agent_statistics(AnalysisState& state) {
             ASSERT(false, "LOGIC ERROR!");
         }
     }
+
     cout << "n_humorous: " << n_humorous << endl
         << "n_musical: " << n_musical << endl
         << "n_ideological: " << n_ideological << endl
@@ -314,7 +337,8 @@ void brief_agent_statistics(AnalysisState& state) {
         << "n_total: " << n_total << endl;
 }
 
-// edgelist created for R (analysis) and python executable (drawing) and gephi outputfile
+// NETWORK.GEXF edgelist for R (analysis), python executable (drawing), and gephi output file
+
 void output_position(Network& network, int n_agents) {
     ofstream output1;
     output1.open("output/network.gexf");
@@ -374,6 +398,8 @@ void output_position(Network& network, int n_agents) {
         output1.close();
     }
 
+// NETWORK.DAT
+
     ofstream output;
     output.open("output/network.dat");
     output << "# Agent ID\tFollower ID\n\n";
@@ -383,6 +409,8 @@ void output_position(Network& network, int n_agents) {
         }
     }
     output.close();
+
+// NETWORK.GRAPHML
 
     ofstream output2;
     output2.open("output/network.graphml");
@@ -406,6 +434,7 @@ void output_position(Network& network, int n_agents) {
     }
 } 
 
+// MODEL_MATCH.DAT
 
 void model_match(Network& network, vector<int> & counts, int max_degree) {
     int sum_k = 0;
@@ -429,6 +458,7 @@ void model_match(Network& network, vector<int> & counts, int max_degree) {
         }
     }
     H *= -1;
+
     /*ofstream output;
     output.open("output/model_match.dat");
     output << "This file is generated to calculate parameters for a general P(k) distribution.\n\n";
@@ -439,6 +469,8 @@ void model_match(Network& network, vector<int> & counts, int max_degree) {
  a given number of people. If you want to use this function, simply put
  P_OUT = 1 in the INFILE. This function will generate an output file that
  can be plotted using gnuplot. */
+
+// DEGREE_DISTRIBUTION.DAT  IN-OUT-CULMULATIVE
 
 void degree_distributions(Network& network,AnalysisState& state) {
     int max_following = 0, max_followers = 0;
@@ -453,9 +485,6 @@ void degree_distributions(Network& network,AnalysisState& state) {
 
     int max_degree = max_following + max_followers;
 
-    // now that we have our boundaries lets plot our degree distributions
-
-    // open some files
     ofstream outdd, indd, cumuldd;//, scaled;
     char out[100], in[100], cumul[100], scale[100];
     sprintf(out, "output/out-degree_distribution_month_%03d.dat", state.n_months());
@@ -473,10 +502,10 @@ void degree_distributions(Network& network,AnalysisState& state) {
     cumuldd.open(cumul_s.c_str());
     //scaled.open(scale_s.c_str());
 
-    outdd << "# This is the out-degree distribution. The data order is:\n# degree, normalized probability, log of degree, log of normalized probability\n\n";
-    indd << "# This is the in-degree distribution. The data order is:\n# degree, normalized probability, log of degree, log of normalized probability\n\n";
-    cumuldd << "# This is the cumulative degree distribution. The data order is:\n# degree, normalized probability, log of degree, log of normalized probability\n\n";
-    //scaled << "# This is the scaled degree distribution. The data order is:\n# degree, normalized probability, log of degree, log of normalized probability\n\n";
+    outdd << "# This is the out-degree distribution. The data order is:\n# degree, normalized probability, log of degree, log of normalized probability\n\n#d\tn.prob\tlog_d\tlog_np\n\n";
+    indd << "# This is the in-degree distribution. The data order is:\n# degree, normalized probability, log of degree, log of normalized probability\n\n#d\tn.prob\tlog_d\tlog_np\n";
+    cumuldd << "# This is the cumulative degree distribution. The data order is:\n# degree, normalized probability, log of degree, log of normalized probability\n\n#d\tn.prob\tlog_d\tlog_np\n\n";
+    //scaled << "# This is the scaled degree distribution. The data order is:\n# degree, normalized probability, log of degree, log of normalized probability\n\n#d\tn.prob\tlog_d\tlog_np\n\n";
 
     //declare and set arrays to 0
     vector<int> out_degree_distro (max_following);
@@ -526,6 +555,8 @@ void degree_distributions(Network& network,AnalysisState& state) {
     //scaled.close();
 }
 
+// CATEGORIES_DISTRO.DAT
+
 int factorial(int input_number) {
     int value = 1;
     for (int i = 1; i <= input_number; i ++) {
@@ -552,7 +583,6 @@ void Categories_Check(CategoryGrouper& tweeting, CategoryGrouper& following, Cat
     output.close();
 }
 
-// produces an output file with agent type statistics, makes sure things are working properly
 void agent_statistics(Network& network, int n_follows, int n_agents, int max_agents, AgentType* agenttype) {
     ofstream output;
     output.open("output/agent_percentages.dat");
@@ -610,7 +640,9 @@ void agent_statistics(Network& network, int n_follows, int n_agents, int max_age
     output.close();
 }
 
-// function to see the distribution of tweets and retweets
+// TWEETS_DISTRO.DAT
+// RETWEETS_DISTRO.DAT
+
 void tweets_distribution(Network& network, int n_users) {
     ofstream tweet_output, retweet_output;
     tweet_output.open("output/tweets_distro.dat");
@@ -654,6 +686,7 @@ void tweets_distribution(Network& network, int n_users) {
 }
 
 // group the quick_rate_check and agent_checks together, they're dependent on one another
+
 bool quick_rate_check(AgentType& et, double& correct_val, int j) {
     double tolerence = 0.05;
     if (j == 1 && abs(correct_val - et.stats.n_follows) / correct_val >= tolerence) {
@@ -701,8 +734,7 @@ bool agent_checks(AgentTypeVector& ets, Network& network, AnalysisState& state, 
             } else if (rate_add != 0 && et.RF[j].function_type == "linear" ) {
                 double correct_val = (0.5 * et.RF[j].y_intercept * rate_add * et.prob_add * state.time * state.time) + 0.25 * et.RF[j].slope * state.n_months() * state.time + 0.3333 * rate_add * et.RF[j].slope * state.n_months() * et.prob_add * state.time * state.time * 0.5 + 0.5 * et.RF[j].y_intercept * state.time - (initial_agents - 1) * initial_agents;
                 final_check += quick_rate_check(et, correct_val, j);
-                check_count ++;
-                
+                check_count ++;             
             } 
         }
     }
@@ -711,6 +743,8 @@ bool agent_checks(AgentTypeVector& ets, Network& network, AnalysisState& state, 
     }
     return false;
 }
+
+// AGENT_TYPE_INFO.DAT
 
 static void whos_following_who(AgentTypeVector& types, AgentType& type, Network& network) {
     string filename = "output/" + type.name + "_info.dat";
@@ -754,15 +788,15 @@ static void whos_following_who(AgentTypeVector& types, AgentType& type, Network&
             followers_sum ++;
         }
     }
-    output << "# Agent percentages following agent type \'" << type.name << "\'\n# ";
+    output << "\n# % of Agent_type following Agent_type \'" << type.name << "\'\n# ";
     for (int i = 0; i < types.size(); i ++) {
         output << types[i].name << ": " << who_following[i] / following_sum * 100.0 << "   ";
     }
-    output << "\n# Agent percentages that agent type \'" << type.name << "\' follows\n# ";
+    output << "\n\n# % of Agent_type that Agent_type \'" << type.name << "\' follows\n# ";
     for (int i = 0; i < types.size(); i ++) {
         output << types[i].name << ": " << who_followers[i] / followers_sum * 100.0 << "   ";
     }
-    output << "\n\ndeg\tin_deg\tout_d\tcum_d\tlog(d)\t\tlg(in)\tlg(out)\tlg(cum)\n\n";
+    output << "\n\ndeg\tin_deg\t\tout_d\t\tcum_d\t\tlog_d\t\tlog_in\t\tlog_out\tlog_cum\n\n";
     for (int i = 0; i < max_degree; i++) {
         output << i << "\t"
                 << agent_followers[i] / (double) type.agent_list.size() << "\t"
@@ -778,11 +812,14 @@ static void whos_following_who(AgentTypeVector& types, AgentType& type, Network&
 
 // function that will plot degree distributions for every agent, and at the top
 // of the files gives you info about the percentage of each agent they are following
+
 void whos_following_who(AgentTypeVector& types, Network& network) {
     for (int i = 0; i < types.size(); i ++ ) {
         whos_following_who(types, types[i], network);
     }
 }
+
+// MOST_POPULAR_TWEET_CONTENT.DAT
 
 void most_popular_tweet_content(MostPopularTweet& mpt, Network& network) {
     int id;
@@ -809,6 +846,8 @@ void most_popular_tweet_content(MostPopularTweet& mpt, Network& network) {
 
     output.close();
 }
+
+// RETWEET_VIZ.GEXF
 
 void visualize_most_popular_tweet(MostPopularTweet& mpt, Network& network) {
     ofstream output;
@@ -860,53 +899,57 @@ void visualize_most_popular_tweet(MostPopularTweet& mpt, Network& network) {
     output.close();
 }
 
+// MAIN_STATS.DAT
+
 void network_statistics(Network& n, NetworkStats& net_stats, AgentTypeVector& etv) {
     ofstream output;
     output.open("output/main_stats.dat");
     output << "--------------------\n| MAIN NETWORK STATS |\n--------------------\n\n";
     output << "USERS\n_____\n\n";
-    output << "Total: " << n.size() << "\n";
+    output << "Total:\t\t" << n.size() << "\n";
     for (auto& et : etv) {
-        output << et.name << ": " << et.agent_list.size() << "\t(" << 100 * et.agent_list.size() / (double)n.size() << "% of total agents)\n";
+        output << et.name << ":\t" << et.agent_list.size() << "\t(" << 100 * et.agent_list.size() / (double)n.size() << "% of total agents)\n";
     }
 
     AgentStats& stats = net_stats.global_stats;
 
     output << "\nTWEETS\n_____\n\n";
-    output << "Total: " << stats.n_tweets << "\n";
+    output << "Total: \t\t" << stats.n_tweets << "\n";
     double hashtag_ratio = (stats.n_tweets == 0 ? 0.0 : stats.n_hashtags / (double) stats.n_tweets);
-    output << "Hashtags: " << stats.n_hashtags << "\t(" << 100*hashtag_ratio << "% of total tweets)\n";
+    output << "Hashtags: \t" << stats.n_hashtags << "\t(" << 100*hashtag_ratio << "% of total tweets)\n";
     for (auto& et : etv) {
         double tweet_ratio = (stats.n_tweets == 0 ? 0.0 : et.stats.n_tweets / (double) stats.n_tweets);
-        output << et.name << ": " << et.stats.n_tweets << "\t("
+        output << et.name << ":\t" << et.stats.n_tweets << "\t("
                << 100*tweet_ratio << "% of total tweets)\n";
     }
     output << "\nRETWEETS\n_______\n\n";
-    output << "Total: " << stats.n_retweets << "\n";
+    output << "Total: \t\t" << stats.n_retweets << "\n";
     for (auto& et : etv) {
         double retweet_ratio = (stats.n_retweets == 0 ? 0.0 : et.stats.n_retweets / (double) stats.n_retweets);
-        output << et.name << ": "
+        output << et.name << ":\t"
                 << et.stats.n_retweets
                 << "\t(" << 100*retweet_ratio << "% of total retweets)\n";
     }
     double total_follow_calls = stats.n_random_follows + stats.n_preferential_follows + stats.n_agent_follows + stats.n_pref_agent_follows + stats.n_retweet_follows + stats.n_hashtag_follows + stats.n_followback;
     output << "\nFOLLOWS\n_______\n\n";
-    output << "Total follows: " << stats.n_follows << "\n";
-    output << "Total follow attempts: " << total_follow_calls << "\n";
-    output << "Random: " << stats.n_random_follows << "\t(" << 100*stats.n_random_follows / total_follow_calls << "% of total follow attempts)\n";
-    output << "Twitter_Suggest: " << stats.n_preferential_follows << "\t(" << 100*stats.n_preferential_follows / total_follow_calls << "% of total follow attempts)\n";
-    output << "Agent: " << stats.n_agent_follows << "\t(" << 100*stats.n_agent_follows / total_follow_calls << "% of total follows attempts)\n";
-    output << "Preferential_Agent: " << stats.n_pref_agent_follows << "\t(" << 100*stats.n_pref_agent_follows / total_follow_calls << "% of total follow attempts)\n";
-    output << "Retweet: " << stats.n_retweet_follows << "\t(" << 100*stats.n_retweet_follows / total_follow_calls << "% of total follows attempts)\n";
-    output << "Hashtag: " << stats.n_hashtag_follows << "\t(" << 100*stats.n_hashtag_follows / total_follow_calls << "% of total follows attempts)\n";
-    output << "Followbacks: " << stats.n_followback << "\t (" << 100*stats.n_followback / total_follow_calls << "% of total follow attempts)\n";
+    output << "Total follows:\t\t"<< stats.n_follows << "\n";
+    output << "Total follow attempts: \t"<< total_follow_calls << "\n";
+    output << "Random: \t\t"<< stats.n_random_follows << "\t(" << 100*stats.n_random_follows / total_follow_calls << "% of total follow attempts)\n";
+    output << "Twitter_Suggest: \t" << stats.n_preferential_follows << "\t(" << 100*stats.n_preferential_follows / total_follow_calls << "% of total follow attempts)\n";
+    output << "Agent: \t\t\t"<< stats.n_agent_follows << "\t(" << 100*stats.n_agent_follows / total_follow_calls << "% of total follows attempts)\n";
+    output << "Preferential_Agent: \t" << stats.n_pref_agent_follows << "\t(" << 100*stats.n_pref_agent_follows / total_follow_calls << "% of total follow attempts)\n";
+    output << "Retweet: \t\t" << stats.n_retweet_follows << "\t(" << 100*stats.n_retweet_follows / total_follow_calls << "% of total follows attempts)\n";
+    output << "Hashtag: \t\t" << stats.n_hashtag_follows << "\t(" << 100*stats.n_hashtag_follows / total_follow_calls << "% of total follows attempts)\n";
+    output << "Followbacks: \t\t" << stats.n_followback << "\t(" << 100*stats.n_followback / total_follow_calls << "% of total follow attempts)\n";
     for (auto& et : etv) {
-        output << et.name << ": "
+        output << et.name << ":\t\t"
                 << et.stats.n_follows << "\t("
                 << 100*et.stats.n_follows / (double) stats.n_follows << "% of total follows)\n";
     }
     output.close();
 }
+
+// REGION_CONNECTION_DISTRIBUTION_MONTH.DAT
 
 struct holder {
     vector<int> ids;
@@ -997,6 +1040,8 @@ void fraction_of_connections_distro(Network& network, AnalysisState& state, Netw
     output.close();  
 }
 
+// DD_BY_YEAR
+
 struct Year {
     vector<int> agent_ids;
     vector<double> dd;
@@ -1059,11 +1104,11 @@ void dd_by_age(Network& n, AnalysisState& as, NetworkStats& ns) {
         }
         output << "\n";
     }
-    output.close();
-    
+    output.close();   
     
 }
 
+// DD_BY_AGENT_TYPE --> STANDARD_INFO.DAT (& other agent_types)
 
 void dd_by_agent(Network& n, AnalysisState& as, NetworkStats& ns) {
     
@@ -1115,6 +1160,8 @@ void dd_by_agent(Network& n, AnalysisState& as, NetworkStats& ns) {
     output.close();
 }
 
+// DD_BY_FOLLOW_MODEL
+
 void dd_by_follow_method(Network& n, AnalysisState& as, NetworkStats& ns) {
     vector<Year> follow_models(N_FOLLOW_MODELS + 2); // + 2 for retweeting and followback
     int max_following = 0, max_followers = 0;
@@ -1144,11 +1191,14 @@ void dd_by_follow_method(Network& n, AnalysisState& as, NetworkStats& ns) {
     ofstream output;
     output.open("output/dd_by_follow_model.dat");
     
-    output << "This is the degree distribution by follow model. The data order is:\n# degree\tlog_of_degree\tRandom-normalized_probability\tRandom-log_of_normalized_probability\t"
-    "Twitter_Suggest-normalized_probability\tTwitter_Suggest-log_of_normalized_probability\t"
-    "Agent-normalized_probability\tAgent-log_of_normalized_probability\tPreferential_Agent-normalized_probability\tPreferential_Agent-log_of_normalized_probability\t"
-    "Hashtag-normalized_probability\tHashtag-log_of_normalized_probability\t"
-    "Twitter-normalized_probability\tTwitter-log_of_normalized_probability\tFollowbacks-normalized_probability\tFollowbacks-log_of_normalized_probability\n\n";
+    output << "This is the degree distribution by follow model. The data order is:\n- degree\n- log_of_degree\n- Random-normalized_probability\n- Random-log_of_normalized_probability"
+    "\n- Twitter_Suggest-normalized_probability\n- Twitter_Suggest-log_of_normalized_probability"
+    "\n- Agent-normalized_probability\n- Agent-log_of_normalized_probability\n- Preferential_Agent-normalized_probability\n- Preferential_Agent-log_of_normalized_probability"
+    "\n- Hashtag-normalized_probability\n- Hashtag-log_of_normalized_probability"
+    "\n- Twitter-normalized_probability\n- Twitter-log_of_normalized_probability\n- Followbacks-normalized_probability\n- Followbacks-log_of_normalized_probability\n"
+    "\nd = degree, N = normalized,  P = probability"
+    "\nR = Random, TS = Twitter Suggest, A = Agent, PA = Preferential Agent, H = Hashtag, Tw = Twitter, FB = Followback\n"
+    "\n#d\tlogD\tRNP\tRlogNP\t\tTSNP\tTSlogNP\tANP\tAlogNP\tPANP\tPAlogNP\tHNP\tHlogNP\tTwNP\tTwlogNP\tFBNP\tFBlogNP\n\n";
 
     for (int i = 0; i < max_degree; i ++) {
         output << i << "\t" << log(i);
