@@ -14,7 +14,7 @@
 <img src='../img/thisishashkat/HASHKAT_Demo_05.png'>
 </center>
 <center>
-<img src='../img/thisishashkat/title_pages_6.png'>
+<img src='../img/thisishashkat/HASHKAT_Demo_06.png'>
 </center>
 <center>
 <img src='../img/thisishashkat/HASHKAT_Demo_07.png'>
@@ -29,7 +29,7 @@
 <img src='../img/thisishashkat/HASHKAT_Demo_10.png'>
 </center>
 <center>
-<img src='../img/thisishashkat/title_pages_11.png'>
+<img src='../img/thisishashkat/HASHKAT_Demo_11.png'>
 </center>
 <center>
 <img src='../img/thisishashkat/HASHKAT_Demo_12.png'>
@@ -53,13 +53,10 @@
 <img src='../img/thisishashkat/HASHKAT_Demo_18.png'>
 </center>
 <center>
-<img src='../img/thisishashkat/title_pages_19.png'>
+<img src='../img/thisishashkat/HASHKAT_Demo_19.png'>
 </center>
 <center>
 <img src='../img/thisishashkat/HASHKAT_Demo_20.png'>
-</center>
-<center>
-<img src='../img/thisishashkat/title_pages_21.png'>
 </center>
 <center>
 <img src='../img/thisishashkat/HASHKAT_Demo_22.png'>
@@ -70,6 +67,4 @@
 <center>
 <img src='../img/thisishashkat/HASHKAT_Demo_24.png'>
 </center>
-<center>
-<img src='../img/thisishashkat/title_pages_19.png'>
-</center>
+
