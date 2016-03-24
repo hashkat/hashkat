@@ -8,6 +8,7 @@ repo_url: https://github.com/hashkat/hashkat
 pages:
 - Home: index.md
 - Getting Started: 
+    - This is Hashkat: thisishashkat.md
     - Installation: installation.md
     - Using Command Line: commandline.md
     - Directory: directory.md
