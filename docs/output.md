@@ -18,6 +18,16 @@ This file outlines the proportion of each agent_type that follow this particular
 <img src='../img/output/agenttype_info_file.png'>
 </center>
 
+#### Average_tweet_info.dat
+
+This file provides information relating to the most commonly tweeted tweet and the most commonly retweeted tweet.  These may be different if, for example, the first author has many followers, but another author has a tweet retweeted many times.
+
+An example of the information stored in this file is shown below:
+
+<center>
+<img src='../img/output/average_tweet_info.png'>
+</center>
+
 #### Categories Distribution
 
 `Categories_Distro.dat`
