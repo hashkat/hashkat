@@ -178,7 +178,7 @@ void tweet_info(vector<Tweet>& old_tweets) {
     double average_time_retweeted, average_tweet_lifetime;    
     ofstream output1, output2;
     output1.open("output/average_tweet_info.dat");
-    output1 << "#Contains information on the most common tweet in the simulation.\n#Generation = length of longest path tweeter -> recipient\n#Generation 0 = original/root, 1 = retweeted one level, 2 = retweeted 2 levels\n\n";
+    output1 << "#Contains network information about tweets in the simulation.\n#Generation = length of longest path tweeter -> recipient\n#Generation 0 = original/root, 1 = retweeted one level, 2 = retweeted 2 levels\n\n";
     for (auto& tweet : old_tweets) {
 
         authors.push_back (tweet.id_tweeter);
@@ -223,11 +223,11 @@ void tweet_info(vector<Tweet>& old_tweets) {
     average_time_retweeted = average_time_retweeted / old_tweets.size();
     average_tweet_lifetime = average_tweet_lifetime / old_tweets.size();
 
-    output1 << "Most Common Tweet Author ID:\t\t\t" << modes[0] << "\n"
-            << "Most Common Tweet_type:\t\t\t\t" << modes[1] << "\n"
-            << "Probability of Hashtag in Tweets:\t\t" << modes[2] << "\n"
-            << "Most Commonly Retweeted Tweet Author ID:\t" << modes[3] << "\n"
-            << "Most Commonly Retweeted Tweet Generation:\t" << modes[4] << "\n"
+    output1 << "Agent ID of Chattiest Tweeter (Tweets & Retweets):\t" << modes[0] << "\n"
+            << "Most Common Tweet_type in system:\t\t\t\t" << modes[1] << "\n"
+            << "Probability of Hashtag in system:\t\t" << modes[2] << "\n"
+            << "Agent ID Most Commonly Retweeted Agent:\t" << modes[3] << "\n"
+            << "Most Common Retweet Generation:\t" << modes[4] << "\n"
             << "Average Number of Times Retweeted:\t\t" << average_time_retweeted << "\n"
             << "Average Tweet Lifetime (minutes):\t\t" << average_tweet_lifetime << "\n\n";
 
