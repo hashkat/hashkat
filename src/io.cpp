@@ -224,12 +224,12 @@ void tweet_info(vector<Tweet>& old_tweets) {
     average_tweet_lifetime = average_tweet_lifetime / old_tweets.size();
 
     output1 << "Agent ID of Chattiest Tweeter (Tweets & Retweets):\t" << modes[0] << "\n"
-            << "Most Common Tweet_type in system:\t\t\t\t" << modes[1] << "\n"
-            << "Probability of Hashtag in system:\t\t" << modes[2] << "\n"
-            << "Agent ID Most Commonly Retweeted Agent:\t" << modes[3] << "\n"
-            << "Most Common Retweet Generation:\t" << modes[4] << "\n"
-            << "Average Number of Times Retweeted:\t\t" << average_time_retweeted << "\n"
-            << "Average Tweet Lifetime (minutes):\t\t" << average_tweet_lifetime << "\n\n";
+            << "Most Common Tweet_type in system:\t\t\t" << modes[1] << "\n"
+            << "Probability of Hashtag in system:\t\t\t" << modes[2] << "\n"
+            << "Agent ID Most Commonly Retweeted:\t\t\t" << modes[3] << "\n"
+            << "Most Common Retweet Generation:\t\t\t\t" << modes[4] << "\n"
+            << "Average Number of Times Retweeted:\t\t\t" << average_time_retweeted << "\n"
+            << "Average Tweet Lifetime (minutes):\t\t\t" << average_tweet_lifetime << "\n\n";
 
     output1.close();
 
