@@ -121,31 +121,27 @@ Musical tweets are so named because they are 'language free' any agent can 'read
 
 ## Unfollowing (Edge Deletion) 
 
-Edge deletion may be enabled in Hashkat. 
-
 In Hashkat, edge deletion (unfollowing) is based on absolute or relative 'chattiness' of an agent.
 
 **Chattiness**:  tweet rate. 
 
-**Absolute chattiness**: if an agent GENERATES tweets in excess of a (user specified) global rate, the generating agent will lose a random follower. 
+**Absolute chattiness**: if an agent GENERATES tweets in excess of a (user specified) global rate, the generating agent will lose a RANDOM follower. 
 
-**Relative chattiness**:  if an agent is RECEIVING tweets from another agent at double the rate the receiving agent usually receives tweets, the receiving agent will unfollow the chatty agent.  The rate that triggers the unfollow is relative to receiving agent.
+**Relative chattiness**:  if an agent is RECEIVING tweets from another agent at double the rate the receiving agent usually receives tweets, the receiving agent will unfollow the chatty agent. 
 
 ## Populations in Regions
 
-<center>
-<img src='../img/thisishashkat/Z_europe.jpg'>
-</center>
-
-Now that we have Agents (nodes), Follows (edges) and Tweets, how do we create a more human social simulation? 
-
-Hashkat adds factors of:
+Now that we have Agents (nodes), Follows (edges) and Tweets, how do we create a more human social simulation?   Hashkat has created Regions, that define the population in terms of:
 
 *  Language
 *  Ideology
 *  Retweet preferences 
 
-Agents are generated within Regions according to specified Region parameters in addition to their agent parameters.
+<center>
+<img src='../img/thisishashkat/Z_europe.jpg'>
+</center>
+
+Agents are generated within Regions according to specified Region parameters in addition to their agent_type parameters.
 
 Let me describe each factor, then I will show how they come together in the creation of Region populations.
 
@@ -233,9 +229,9 @@ Sample code for region configuration is shown below.
 <img src='../img/thisishashkat/REGION_INFILE.png'>
 </center>
 
-By making these different and independent parameters, the diversity of Hashkat agents is greatly increased
+Number of Agent_types = Agent_types x Languages x Ideologies x Preference Classes X Regions
 
-Agent_types x Languages x Ideologies x Preference Classes X Regions
+By making these different and independent parameters, the diversity of Hashkat agents is greatly increased.
 
 <center>
 <img src='../img/thisishashkat/RP_regions.png'>
@@ -265,7 +261,7 @@ Visualization files are created for Python (.py) or open source Gephi (.gexf) fo
 <img src='../img/thisishashkat/OUTPUT.png'>
 </center>
 
-Below is the **main_stats.dat** output file for a small simulation of under 10,000 agents.
+Below is the **main_stats.dat** output file for a small simulation of 10,000 agents.
 
 <center>
 <img src='../img/thisishashkat/S_stats_code.png'>
