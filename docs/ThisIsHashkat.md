@@ -5,18 +5,16 @@
 <img src='../img/thisishashkat/A_social_network.png'>
 </center>
 
-## Graph to Social Network
+## What is a Social Network?
 
-Social networks are graphs where the nodes are to represent humans,‭ ‬or entities capable of choice‭ (‬agents‭)‬,‭ ‬and the edges are created voluntarily by agents according to the agent’s criterion.‭  
+Social networks are graphs where the nodes are intended to represent humans (agents),‭ ‬and edges are created voluntarily by agents according to the agent’s criterion.‭  
 
-Within the social networks,‭ signals‭ ‬are sent‭, received, and then possibly retransmitted.‭  ‬In the Hashkat model,‭ ‬nodes are called‭ “‬agents‭”‬,‭ ‬edges‭ “‬follows‭”‬,‭ ‬signals “‬tweets‭”‬,‭ ‬and retransmitted signals “‬retweets‭”‬.
+Within the social networks,‭ signals‭ ‬are sent‭, received, and retransmitted.‭  ‬In Hashkat,‭ ‬nodes are called‭ “‬agents‭”‬,‭ ‬edges‭ “‬follows‭”‬,‭ ‬signals “‬tweets‭”‬,‭ ‬and retransmitted signals “‬retweets‭”‬.
 
 Hashkat is a light weight,‭ ‬open source social network generator,‭ ‬which can generate graphs of‭ ‬10,000‭ ‬agents in less than‭ ‬2‭ ‬minutes on an ordinary laptop.
 
-To‭  ‬transform a typical graph into a social network,‭  ‬agents need to be conceived in‭ ‬with‭ “‬human‭” ‬parameters,‭ ‬and methods of agent‭ ‬“choice‭” ‬need‭ ‬to be created.‭  ‬Finally,‭ ‬the fundamental element of humans needs to be built in,‭ ‬diversity.
-
 <center>
-<img src='../img/thisishashkat/B_demo_network_agent_follow.png'>
+<img src='../img/thisishashkat/PP_people_globe.jpg'>
 </center>
 
 ## Agents
@@ -28,6 +26,7 @@ The building block of the social network is the agent.
 </center>
 
 Agents are configured with different rates:
+
 *  Add‭ ‬weight:‭  ‬rate the agent is added to network
 *  Follow weight:‭  ‬rate agent‭ ‬IS FOLLOWED BY other agents
 *  Follow rate:‭  ‬rate agent FOLLOWS other agents‭ 
@@ -47,6 +46,7 @@ Rates are normalized,‭ ‬so if a standard agent has an add_weight of‭ ‬50
 The default configuration of Hashkat has two Agent_types pre-configured,‭ ‬Standard and Celebrity.‭  ‬To run a single agent simulation set one add_weight to zero.
 
 The deluxe configuration of Hashkat has seven Agent_types pre-configured:‭ 
+
 *  Standard
 *  Celebrity
 *  Humorist
@@ -75,6 +75,7 @@ Now that we have agents,‭ ‬how do they‭ “‬chose‭” ‬to follow oth
 Hashkat‭ ‬has‭ ‬6‭ ‬Follow‭ ‬Models‭ ‬that‭ ‬specify‭ ‬how‭ ‬edges‭ ‬are‭ ‬created‭ ‬between‭ ‬agents.‭  ‬Each‭ ‬model‭ ‬has‭ ‬a‭ ‬different‭ ‬basis in graph theory.‭  
 
 The models are:
+
 *  Random‭ (‬Erdos‭ –‬Renyi‭)
 *  Preferential Attachment‭ (‬Barabasi-Albert‭)
 *  Agent
@@ -112,6 +113,7 @@ Social networks exist to exchange signals between agents.
 </center>
 
 In Hashkat Agents may create 4 types of tweets:
+
 *  Plain
 *  Ideological
 *  Humorous
@@ -132,12 +134,13 @@ Relative chattiness:  if an agent is RECEIVING tweets from another agent at doub
 ## Populations in Regions
 
 <center>
-<img src='../img/thisishashkat/H_tweet_signal.jpg'>
+<img src='../img/thisishashkat/R_region'>
 </center>
 
 Now that we have Agents (nodes) and Follows (edges) how do we create a more human social simulation? 
 
 Hashkat adds factors of:
+
 *  Language
 *  Ideology
 *  Retweet preferences 
@@ -153,14 +156,17 @@ Let me describe each factor, then I will show how they come together in the crea
 </center>
 
 Hashkat (created in Ontario, Canada, North America) is currently hardcoded with three languages: 
+
 *  English 
 *  French 
 *  Spanish 
 
 plus one bilingual language:
+
 *  French + English 
 
 In the future we will be changing this to:
+
 *  languages A,B,C 
 *  bilingual types AB, BC, AC
 *  trilingual type ABC
@@ -307,12 +313,17 @@ The example shows only Add & Tweet Rates.
 ## Program Flow
 
 For advanced users, the program flow of Hashkat is as follows:
+
 <center>
-<img src='../img/thisishashkat/KMC.png'>
+<img src='../img/thisishashkat/simulation_workflow.jpg'>
 </center>
+
 Hashkat runs very quickly. 10,000 agents may be created within 2 minutes. 
+
 Maximum number of agents, growth rates, and real time limits set in **hashkat/INFILE.yaml** & **hashkat/src/config_static.h**. 
+
 Degree distributions and analysis files produced for every simulation. 
+
 Simulations may be stopped, reconfigured, and restarted. 
 
 ## User POV
@@ -321,21 +332,30 @@ For the general user, interested in generating a social network:
 
 1.  Hashkat is downloaded and installed in **/hashkat/**
 
+
 1.  Gephi and other open source filed downloaded and installed per [Installation documentation](http://docs.hashkat.org/en/latest/installation/)
+
 
 1.  default Hashkat parameters are: ideologies(4), agent_types (200) 
 
+
 1.  In terminal Hashkat is built with command: **./build.sh**
+
 
 1.  **hashkat/Output** directory must be discarded 
 
+
 1.  A default INFILE.yaml is generated **hashkat/INFILE.yaml**
+
 
 1.  The user desired network is configured in **hashkat/INFILE.yaml **
 
+
 1.  The simulation is run in terminal with command:  **./run.sh**
 
+
 1.  **Output** directory with analysis files is generated 
+
 
 1.  **hashkat/Output** directory saved under a different name or discarded before another simulation can be run.
 
