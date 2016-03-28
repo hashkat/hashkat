@@ -10,8 +10,6 @@
 
 Social networks are graphs where the nodes represent humans (or agents),‭ ‬and edges are created voluntarily by agents according to the agent’s criterion.‭  
 
-Within the social network signals‭ ‬are sent‭, received, and retransmitted.‭  ‬In Hashkat,‭ ‬nodes are called‭ “‬agents‭”‬,‭ ‬edges‭ “‬follows‭”‬,‭ ‬signals “‬tweets‭”‬,‭ ‬and retransmitted signals “‬retweets‭”‬.
-
 Hashkat is a light weight,‭ ‬open source social network generator,‭ ‬which can generate graphs of‭ ‬10,000‭ ‬agents in less than‭ ‬2‭ ‬minutes on an ordinary laptop.
 
 <center>
@@ -34,7 +32,7 @@ Agents are configured with different rates:
 *  Tweet rate:‭  ‬rate agent generates tweets
 *  Tweet_type:‭  ‬proportion of tweets of each type agent generates.‭  ‬The‭ ‬4‭ ‬tweet_types are:‭  ‬plain,‭ ‬humorous,‭ ‬ideological‭ & ‬musical.
 *  Followback rate:‭  ‬the rate at which an agent will‭ ‬follow an agent that has followed the agent‭ (‬on Facebook this is‭ ‬100%,‭ ‬all follows are mutual,‭ ‬on Twitter‭ ‬this varies,‭ ‬experimentally shown to be‭ ‬44%‭ ‬for ordinary users‭)‬.
-*  Hashtag:‭  ‬care about region/ideology:‭  ‬if an agent follows another based on a‭ ‬#hashtag in their signal,‭ ‬the agent’s choice to follow may depend on tweeter’s region or ideology.‭ 
+*  Hashtag:‭  ‬care about region/ideology:‭  ‬if an agent follows another based on a‭ ‬#hashtag in their signal,‭ ‬the agent’s choice to follow will depend on tweeter’s region or ideology.‭ 
 
 A‭ ‬sample agent configuration is shown below.‭  
 
@@ -42,7 +40,7 @@ A‭ ‬sample agent configuration is shown below.‭
 <img src='../img/thisishashkat/D_agent_code.png'>
 </center>
 
-Rates are normalized,‭ ‬so if a standard agent has an add_weight of‭ ‬50‭ ‬and a celebrity agent has an add_weight of‭ ‬7,‭ ‬standard agents will be added with p‭ =  ‬50/‭(‬50+7‭) ‬or‭ ‬87.7%‭ ‬of the time.
+Rates are normalized,‭ ‬so if a standard agent has an add_weight of‭ ‬50‭ ‬and a celebrity agent has an add_weight of‭ ‬7,‭ ‬standard agents will be added with ‬50/‭(‬50+7‭) ‬or‭ ‬87.7%‭ ‬of the time.
 
 The default configuration of Hashkat has two Agent_types pre-configured,‭ ‬Standard and Celebrity.‭  ‬To run a single agent simulation set one add_weight to zero.
 
@@ -62,7 +60,8 @@ Users may change any and all parts of any agent configuration.‭
 
 Up to‭ ‬200‭ ‬Agent_types may be configured in the default build of Hashkat,‭ ‬and an unlimited number if the build is reconfigured.
 
-A network is configured in: **hashkat\INFILE.yaml** <= **hashkat\DEFAULT.yaml**
+A network is configured in: **hashkat\INFILE.yaml** which is created from **hashkat\DEFAULT.yaml**
+
 The build parameters may be changed in:  **hashkat\src\config_static.h**
 
 ## Follow‭ ‬Models (Edge Creation)
@@ -73,7 +72,7 @@ Now that we have agents,‭ ‬how do they‭ “‬chose‭” ‬to follow oth
 <img src='../img/thisishashkat/E_follow.jpg'>
 </center>
 
-Hashkat‭ ‬has‭ ‬6‭ ‬Follow‭ ‬Models‭ ‬that‭ ‬specify‭ ‬how‭ ‬edges‭ ‬are‭ ‬created‭ ‬between‭ ‬agents.‭  ‬
+Hashkat‭ ‬has‭ ‬6‭ ‬follow‭ ‬models‭ ‬that‭ ‬specify‭ ‬how‭ ‬edges‭ ‬are‭ ‬created‭ ‬between‭ ‬agents.‭  ‬
 
 Each‭ ‬model‭ ‬has‭ ‬a‭ ‬different‭ ‬basis in graph theory.‭ The models are:
 
@@ -116,17 +115,21 @@ In Hashkat agents may create 4 types of tweets:
 *  Humorous
 *  Musical 
 
-Tweet_type affects retweet rates.
+Tweet_type is hard-coded and affects retweet rates.  
+
+Musical tweets are so named because they are 'language free' any agent can 'read' them.
 
 ## Unfollowing (Edge Deletion) 
 
 Edge deletion may be enabled in Hashkat. 
 
-In Hashkat, edge deletion (unfollowing) is based on absolute or relative 'chattiness' of an agent, where chattiness = tweet rate. 
+In Hashkat, edge deletion (unfollowing) is based on absolute or relative 'chattiness' of an agent.
 
-Absolute chattiness: if an agent GENERATES tweets in excess of a (user specified) global rate, the generating agent will lose a random follower. 
+**Chattiness**:  tweet rate. 
 
-Relative chattiness:  if an agent is RECEIVING tweets from another agent at double the rate the receiving agent usually receives tweets, the receiving agent will unfollow the chatty agent.  The rate that triggers the unfollow is relative to receiving agent.
+**Absolute chattiness**: if an agent GENERATES tweets in excess of a (user specified) global rate, the generating agent will lose a random follower. 
+
+**Relative chattiness**:  if an agent is RECEIVING tweets from another agent at double the rate the receiving agent usually receives tweets, the receiving agent will unfollow the chatty agent.  The rate that triggers the unfollow is relative to receiving agent.
 
 ## Populations in Regions
 
@@ -134,7 +137,7 @@ Relative chattiness:  if an agent is RECEIVING tweets from another agent at doub
 <img src='../img/thisishashkat/Z_europe.jpg'>
 </center>
 
-Now that we have Agents (nodes) and Follows (edges) how do we create a more human social simulation? 
+Now that we have Agents (nodes), Follows (edges) and Tweets, how do we create a more human social simulation? 
 
 Hashkat adds factors of:
 
@@ -142,7 +145,7 @@ Hashkat adds factors of:
 *  Ideology
 *  Retweet preferences 
 
-To agents.  Agents are then generated within Regions according to specified Region parameters.
+Agents are generated within Regions according to specified Region parameters in addition to their agent parameters.
 
 Let me describe each factor, then I will show how they come together in the creation of Region populations.
 
@@ -152,7 +155,7 @@ Let me describe each factor, then I will show how they come together in the crea
 <img src='../img/thisishashkat/L_language.jpg'>
 </center>
 
-Hashkat (created in Ontario, Canada, North America) is currently hardcoded with three languages: 
+Hashkat, created in Ontario, Canada, North America, is currently hardcoded with three languages: 
 
 *  English 
 *  French 
@@ -162,23 +165,17 @@ plus one bilingual language:
 
 *  French + English 
 
-In the future we will be changing this to:
-
-*  languages A,B,C 
-*  bilingual types AB, BC, AC
-*  trilingual type ABC
-
-with user–defined names. 
-
 Tweets are generated in the language of the tweeter.
 
 A receiving agent cannot 'understand' a tweet if it is not generated in a language they speak, unless the tweet_type is 'musical'.
 
-Therefore, an agent will not retransmit a tweet that is not in the same language the receiver speaks.
+An agent will not retransmit a tweet that is not in the same language the receiver speaks, unless it is 'musical'.
 
 ## Ideology
 
-Ideology in Hashkat is conceived of as any belief or defining characteristic. The default ideologies in Hashkat have color names: red, blue, green & orange.  By default there are 4.  Ideologies may be named by the user, and may be unlimited in number.
+Ideology in Hashkat is conceived of as any belief or defining characteristic. 
+
+The default ideologies in Hashkat have color names: red, blue, green & orange.  Ideologies may be named by the user and may be unlimited in number.
 
 <center>
 <img src='../img/thisishashkat/I_ideology.jpg'>
@@ -196,15 +193,15 @@ Agents may chose to retweet signals of the same ideology at a different rate tha
 
 Regardless of ideology, language, region or agent type, persons retransmit different content according to their own views of importance. 
 
-As an example, my uncle and I are both on Twitter.  We share a region, language, ideology and agent_type, yet I retransmit anything containing a cute mammal, while my uncle retransmits political content.  Clearly I will live longer.
+As an example, my uncle and I are both on Twitter.  We share a region, language, ideology and agent_type, yet I retransmit anything containing a cute mammal, while my uncle retransmits political content.  Clearly I will live longer because I have the better zen.
 
 <center>
 <img src='../img/thisishashkat/catchill.jpg'>
 </center>
 
-Retweet preference classes in Hashkat are intended to mimic this different retweeting behavior independent of language, ideology, region or agent_type.
+Retweet preference classes in Hashkat are intended to mimic this different retweeting behavior. 
 
-A preference class defines different retweet rates by tweet_type and by agent_type of the sender.
+A preference class defines different retweet rates by tweet_type and by agent_type of the sender, and is independent of language, ideology, region or agent_type.
 
 The code for a sample preference class is shown below.
 
@@ -220,11 +217,8 @@ The effect of the preference class is to preferentially retweet some types of tw
 
 ## Regions
 
-<center>
-<img src='../img/thisishashkat/RP_regions.jpg'>
-</center>
-
 These three additional characteristics:
+
 *  Language
 *  Ideology
 *  Preference Classes
@@ -233,14 +227,18 @@ are applied to populations in Regions.
 
 Regions are created, then agents are created within the Regions according to agent_type add_weights AND as citizens of the region with appropriate region characteristics applied
 
-By making these different and independent parameters, the diversity of Hashkat agents is greatly increased
-
-Agent_types x Languages x Ideologies x Preference Classes.
-
 Sample code for region configuration is shown below.
 
 <center>
 <img src='../img/thisishashkat/REGION_INFILE.png'>
+</center>
+
+By making these different and independent parameters, the diversity of Hashkat agents is greatly increased
+
+Agent_types x Languages x Ideologies x Preference Classes X Regions
+
+<center>
+<img src='../img/thisishashkat/RP_regions.png'>
 </center>
 
 ## Program Information
@@ -267,7 +265,7 @@ Visualization files are created for Python (.py) or open source Gephi (.gexf) fo
 <img src='../img/thisishashkat/OUTPUT.png'>
 </center>
 
-Below is the **main_stats.dat** output file
+Below is the **main_stats.dat** output file for a small simulation of under 10,000 agents.
 
 <center>
 <img src='../img/thisishashkat/S_stats_code.png'>
@@ -309,7 +307,7 @@ Growth rates and other rates may be constant, linear, or quadratic.
 
 Degree distributions and analysis files produced for every simulation. 
 
-Simulations may be stopped, reconfigured, and restarted. 
+Simulations may be stopped, reconfigured, and restarted, for example, to model changing ideological composition of population. 
 
 Default Hashkat parameters are:  
 
