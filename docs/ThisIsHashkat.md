@@ -2,7 +2,7 @@
 <img src='../img/thisishashkat/title_pages_1.png'>
 </center>
 <center>
-<img src='../img/thisishashkat/A_social_network.png'>
+<img src='../img/thisishashkat/A_social_network.jpg'>
 </center>
 
 ## What is a Social Network?
@@ -13,16 +13,12 @@ Within the social networks,‭ signals‭ ‬are sent‭, received, and retransm
 
 Hashkat is a light weight,‭ ‬open source social network generator,‭ ‬which can generate graphs of‭ ‬10,000‭ ‬agents in less than‭ ‬2‭ ‬minutes on an ordinary laptop.
 
-<center>
-<img src='../img/thisishashkat/PP_people_globe.jpg'>
-</center>
-
 ## Agents
 
 The building block of the social network is the agent.  
 
 <center>
-<img src='../img/thisishashkat/C_agents.jpg'>
+<img src='../img/thisishashkat/PP_people_globe.jpg'>
 </center>
 
 Agents are configured with different rates:
@@ -61,10 +57,10 @@ Users may change any and all parts of any agent configuration.‭
 
 Up to‭ ‬200‭ ‬Agent_types may be configured in the default build of Hashkat,‭ ‬and an unlimited number if the build is reconfigured.
 
-A network is configured in: hashkat\INFILE.yaml = hashkat\DEFAULT.yaml
-The build parameters may be changed in:  hashkat\src\config_static.h
+A network is configured in: **hashkat\INFILE.yaml** <= **hashkat\DEFAULT.yaml**
+The build parameters may be changed in:  **hashkat\src\config_static.h**
 
-## Follow‭ ‬Models (edge creation)
+## Follow‭ ‬Models (Edge Creation)
 
 Now that we have agents,‭ ‬how do they‭ “‬chose‭” ‬to follow other agents‭?
 
@@ -72,9 +68,9 @@ Now that we have agents,‭ ‬how do they‭ “‬chose‭” ‬to follow oth
 <img src='../img/thisishashkat/E_follow.jpg'>
 </center>
 
-Hashkat‭ ‬has‭ ‬6‭ ‬Follow‭ ‬Models‭ ‬that‭ ‬specify‭ ‬how‭ ‬edges‭ ‬are‭ ‬created‭ ‬between‭ ‬agents.‭  ‬Each‭ ‬model‭ ‬has‭ ‬a‭ ‬different‭ ‬basis in graph theory.‭  
+Hashkat‭ ‬has‭ ‬6‭ ‬Follow‭ ‬Models‭ ‬that‭ ‬specify‭ ‬how‭ ‬edges‭ ‬are‭ ‬created‭ ‬between‭ ‬agents.‭  ‬
 
-The models are:
+Each‭ ‬model‭ ‬has‭ ‬a‭ ‬different‭ ‬basis in graph theory.‭ The models are:
 
 *  Random‭ (‬Erdos‭ –‬Renyi‭)
 *  Preferential Attachment‭ (‬Barabasi-Albert‭)
@@ -84,27 +80,23 @@ The models are:
 *  Combination‭ ‬of‭ ‬above‭ (‬called‭ ‬“Twitter‭”‬ in Hashkat‭)
 *  Follow‭ ‬Back
 
-Random: a random choice of whom to follow.
+**Random**: a random choice of whom to follow.
 
-Preferential Attachment: an agent choses to follow the agent‭ ‬in the system‭ ‬with‭ ‬the most‭ ‬followers (highest in-degree).
+**Preferential Attachment**: an agent choses to follow the agent‭ ‬in the system‭ ‬with‭ ‬the most‭ ‬followers (highest in-degree).
 
-Agent: an agent_types is preferred to be followed,‭ ‬for example,‭ ‬Celebrities.‭  ‬At present in Hashkat this is set in‭ ‬the‭ ‬'Follow_weight‭'‬ of the agent type,‭ ‬that is,‭ ‬all agent‭_‬types‭ ‬in‭ ‬the‭ ‬system‭ ‬will prefer to follow Celebrities at the same rate.‭ ‬  Within the agent_type,‭ ‬which specific agent is followed is random.
+**Agent**: an agent_types is preferred to be followed,‭ ‬for example,‭ ‬Celebrities.‭  ‬At present in Hashkat this is set in‭ ‬the‭ ‬'Follow_weight‭'‬ of the agent type,‭ ‬that is,‭ ‬all agent‭_‬types‭ ‬in‭ ‬the‭ ‬system‭ ‬will prefer to follow Celebrities at the same rate.‭ ‬  Within the agent_type,‭ ‬which specific agent is followed is random.
 
-Agent Preferential‭ ‬Attachment: within the agent_type,‭ ‬i.e.‭ ‬Celebrity,‭ ‬the agent will prefer to follow the most popular Celebrity.
+**Agent Preferential‭ ‬Attachment**: within the agent_type,‭ ‬i.e.‭ ‬Celebrity,‭ ‬the agent will prefer to follow the most popular Celebrity.
 
-Hashtag: ‬a user specified‭ ‬proportion of tweets will have‭ ‬#hashtags which show the region‭ ‬and ideology‭ ‬of the tweeter.‭  ‬If randomly presented with a tweet with a hashtag,‭ ‬if an agent‭ ‬“cares about‭”‬ region or ideology,‭ ‬the agent may‭ ‬chose to follow‭ ‬the tweeter if the tweeter is of the SAME region or ideology as the receiving agent.
+**Hashtag**: ‬a user specified‭ ‬proportion of tweets will have‭ ‬#hashtags which show the region‭ ‬and ideology‭ ‬of the tweeter.‭  ‬If randomly presented with a tweet with a hashtag,‭ ‬if an agent‭ ‬“cares about‭”‬ region or ideology,‭ ‬the agent may‭ ‬chose to follow‭ ‬the tweeter if the tweeter is of the SAME region or ideology as the receiving agent.
 
-Combination: a combination of the above follow models may be chosen by the user for network behavior, to model the fundamental characteristic of human groups:  diversity. 
+**Combination**: a combination of the above follow models may be chosen by the user for network behavior, to model the fundamental characteristic of human groups:  diversity. 
 
-Follow-back: the choice to follow another agent based on their choice to follow you.  On Facebook, all follows must be mutual (100% follow-back).  On Twitter, experiments have shown varying rates of follow-back, with normal users following back 44% of the time.  In Hashkat, follow-back rate is set by agent_type, i.e. Celebrities have low follow-back rates.
+**Follow-back**: the choice to follow another agent based on their choice to follow you.  On Facebook, all follows must be mutual (100% follow-back).  On Twitter, experiments have shown varying rates of follow-back, with normal users following back 44% of the time.  In Hashkat, follow-back rate is set by agent_type, i.e. Celebrities have low follow-back rates.
 
 ## Tweet (Signal) Generation 
 
 Now that we have nodes(agents) and edges(follows) what do we do with them?
-
-<center>
-<img src='../img/thisishashkat/G_tweets.jpg'>
-</center>
 
 Social networks exist to exchange signals between agents.    
 
@@ -112,7 +104,7 @@ Social networks exist to exchange signals between agents.
 <img src='../img/thisishashkat/H_tweet_signal.jpg'>
 </center>
 
-In Hashkat Agents may create 4 types of tweets:
+In Hashkat agents may create 4 types of tweets:
 
 *  Plain
 *  Ideological
@@ -121,7 +113,7 @@ In Hashkat Agents may create 4 types of tweets:
 
 Tweet_type affects retweet rates.
 
-## Unfollowing (edge deletion) 
+## Unfollowing (Edge Deletion) 
 
 Edge deletion may be enabled in Hashkat. 
 
@@ -134,7 +126,7 @@ Relative chattiness:  if an agent is RECEIVING tweets from another agent at doub
 ## Populations in Regions
 
 <center>
-<img src='../img/thisishashkat/R_region'>
+<img src='../img/thisishashkat/Z_europe.jpg'>
 </center>
 
 Now that we have Agents (nodes) and Follows (edges) how do we create a more human social simulation? 
@@ -145,9 +137,9 @@ Hashkat adds factors of:
 *  Ideology
 *  Retweet preferences 
 
-To agents, then agents are generated within Regions according to specified Region parameters.. 
+To agents.  Agents are then generated within Regions according to specified Region parameters.
 
-Let me describe each factor, then I will show how they come together in the creation of Regional Populations.
+Let me describe each factor, then I will show how they come together in the creation of Region populations.
 
 ## Language
 
@@ -181,17 +173,13 @@ Therefore, an agent will not retransmit a tweet that is not in the same language
 
 ## Ideology
 
-Ideology in Hashkat is conceived of as any belief and is independent of language, region, agent_type etc.
-
-The default ideologies in Hashkat have color names: red, blue, green & orange.  By default there are 4.
-
-Ideologies may be named by the user, and may be unlimited.
+Ideology in Hashkat is conceived of as any belief or defining characteristic. The default ideologies in Hashkat have color names: red, blue, green & orange.  By default there are 4.  Ideologies may be named by the user, and may be unlimited in number.
 
 <center>
 <img src='../img/thisishashkat/I_ideology.jpg'>
 </center>
 
-If an agent generates tweet with a #hashtag, the tweet will contain the ideology flag of the tweeter.
+If an agent generates tweet with a #hashtag, the tweet will contain the ideology flag (color) of the tweeter.
 
 If an agent generates an ideological tweet, the content will be the color of the tweeter. 
 
@@ -201,22 +189,22 @@ Agents may chose to retweet signals of the same ideology at a different rate tha
 
 ## Retweet Preference Classes
 
-Regardless of ideology, language, region or agent type, persons retransmit different content according to their own views of importance. rates.
+Regardless of ideology, language, region or agent type, persons retransmit different content according to their own views of importance. 
 
-Personally, I retransmit anything containing a cute mammal, while my uncle retransmits political content.  Clearly I will live longer.
+As an example, my uncle and I are both on Twitter.  We share a region, language, ideology and agent_type, yet I retransmit anything containing a cute mammal, while my uncle retransmits political content.  Clearly I will live longer.
 
 <center>
 <img src='../img/thisishashkat/catchill.jpg'>
 </center>
 
-Retweet preference classes in Hashkat are intended to mimic this behavior.  
+Retweet preference classes in Hashkat are intended to mimic this different retweeting behavior independent of language, ideology, region or agent_type.
 
-Different retweet rates may be set, by tweet_type and by agent_type, called a preference class.
+A preference class defines different retweet rates by tweet_type and by agent_type of the sender.
 
-Different preference classes may be created.  Code for a sample preference class is shown below.
+The code for a sample preference class is shown below.
 
 <center>
-<img src='../img/thisishashkat/RETWEET_PREF.jpg'>
+<img src='../img/thisishashkat/RETWEET_PREF.png'>
 </center>
 
 The effect of the preference class is to preferentially retweet some types of tweets.
@@ -228,7 +216,7 @@ The effect of the preference class is to preferentially retweet some types of tw
 ## Regions
 
 <center>
-<img src='../img/thisishashkat/Z_europe.jpg'>
+<img src='../img/thisishashkat/RP_regions.jpg'>
 </center>
 
 These three additional characteristics:
@@ -240,33 +228,23 @@ are applied to populations in Regions.
 
 Regions are created, then agents are created within the Regions according to agent_type add_weights AND as citizens of the region with appropriate region characteristics applied
 
+By making these different and independent parameters, the diversity of Hashkat agents is greatly increased
+
+Agent_types x Languages x Ideologies x Preference Classes.
+
 Sample code for region configuration is shown below.
 
 <center>
 <img src='../img/thisishashkat/REGION_INFILE.png'>
 </center>
 
-Thus, Hashkat ends up with diverse (user-specified) populations to best imitate a social environment.
-
-By making these different and independent parameters, the diversity of Hashkat agents is greatly increased
-
-Agent_types x Languages x Ideologies x Preference Classes.
-
-<center>
-<img src='../img/thisishashkat/RP_regions.png'>
-</center>
-
 ## Program Information
-
-<center>
-<img src='../img/thisishashkat/title_pages_19.png'>
-</center>
 
 Hashkat may be installed on iOS or Linux/Ubuntu systems. 
 
-Code is open source and available on GitHub as [hashkat](https://github.com/hashkat/hashkat) 
+Hashkat is open source and available on GitHub as [hashkat](https://github.com/hashkat/hashkat). 
 
-The program is fully documented with explanation & [tutorials](http://docs.hashkat.org/en/latest/)
+The program is fully documented with explanation & [tutorials](http://docs.hashkat.org/en/latest/).
 
 Hashkat has a C++ engine and Python (v.2.7) configuration INFILE.
 
@@ -304,7 +282,7 @@ Rates for adding agents, tweeting, retweeting, following, being followed, unfoll
 
 At each time increment, a Rate Spectrum is created, a random number is generated, and based on that number, a choice is made. 
 
-The example shows only Add & Tweet Rates. 
+The image below shows a simplified version of this process. 
 
 <center>
 <img src='../img/thisishashkat/KMC.png'>
@@ -322,30 +300,38 @@ Hashkat runs very quickly. 10,000 agents may be created within 2 minutes.
 
 Maximum number of agents, growth rates, and real time limits set in **hashkat/INFILE.yaml** & **hashkat/src/config_static.h**. 
 
+Growth rates and other rates may be constant, linear, or quadratic.  
+
 Degree distributions and analysis files produced for every simulation. 
 
 Simulations may be stopped, reconfigured, and restarted. 
 
+Default Hashkat parameters are:  
+
+*  3 regions
+*  4 ideologies  
+*  6 preference classes 
+*  200 agent_types 
+
+Languages, Tweet_types & Follow Models are hard coded.
+
 ## User POV
 
-For the general user, interested in generating a social network:
+For the general user interested in generating a social network:
 
 1.  Hashkat is downloaded and installed in **/hashkat/**
 
 
-1.  Gephi and other open source filed downloaded and installed per [Installation documentation](http://docs.hashkat.org/en/latest/installation/)
-
-
-1.  default Hashkat parameters are: ideologies(4), agent_types (200) 
+1.  Gephi and other open source files are downloaded and installed per [Installation](http://docs.hashkat.org/en/latest/installation/).
 
 
 1.  In terminal Hashkat is built with command: **./build.sh**
 
 
-1.  **hashkat/Output** directory must be discarded 
+1.  Between runs, the **hashkat/Output** directory must be discarded 
 
 
-1.  A default INFILE.yaml is generated **hashkat/INFILE.yaml**
+1.  A default INFILE.yaml is generated by the build **hashkat/INFILE.yaml**.  
 
 
 1.  The user desired network is configured in **hashkat/INFILE.yaml **
@@ -354,14 +340,15 @@ For the general user, interested in generating a social network:
 1.  The simulation is run in terminal with command:  **./run.sh**
 
 
-1.  **Output** directory with analysis files is generated 
+1.  The **Output** directory with analysis files is generated. 
 
 
-1.  **hashkat/Output** directory saved under a different name or discarded before another simulation can be run.
+1.  The **hashkat/Output** directory must be saved under a different name or discarded before another simulation can be run.
 
 ## Documentation
 
-More information at Hashkat [documentation](http://docs.hashkat.org/en/latest/).
+More information on every aspect of Hashkat is available at our [website](http://docs.hashkat.org/en/latest/).
+
 Documentation by Nick Buhagiar & Linda Kettle.
 
 
