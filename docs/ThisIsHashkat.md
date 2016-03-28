@@ -1,17 +1,22 @@
 <center>
 <img src='../img/thisishashkat/title_pages_1.png'>
 </center>
+
 <center>
 <img src='../img/thisishashkat/A_social_network.jpg'>
 </center>
 
 ## What is a Social Network?
 
-Social networks are graphs where the nodes are intended to represent humans (agents),‭ ‬and edges are created voluntarily by agents according to the agent’s criterion.‭  
+Social networks are graphs where the nodes represent humans (or agents),‭ ‬and edges are created voluntarily by agents according to the agent’s criterion.‭  
 
-Within the social networks,‭ signals‭ ‬are sent‭, received, and retransmitted.‭  ‬In Hashkat,‭ ‬nodes are called‭ “‬agents‭”‬,‭ ‬edges‭ “‬follows‭”‬,‭ ‬signals “‬tweets‭”‬,‭ ‬and retransmitted signals “‬retweets‭”‬.
+Within the social network signals‭ ‬are sent‭, received, and retransmitted.‭  ‬In Hashkat,‭ ‬nodes are called‭ “‬agents‭”‬,‭ ‬edges‭ “‬follows‭”‬,‭ ‬signals “‬tweets‭”‬,‭ ‬and retransmitted signals “‬retweets‭”‬.
 
 Hashkat is a light weight,‭ ‬open source social network generator,‭ ‬which can generate graphs of‭ ‬10,000‭ ‬agents in less than‭ ‬2‭ ‬minutes on an ordinary laptop.
+
+<center>
+<img src='../img/thisishashkat/B_demo_network_agent_follow.png'>
+</center>
 
 ## Agents
 
