@@ -161,7 +161,7 @@ plus one bilingual language:
 
 *  French + English 
 
-Tweets are generated in the language of the tweeter.
+Agents only follow agents who speak the same language they do.  Tweets are generated in the language of the tweeter.  
 
 A receiving agent cannot 'understand' a tweet if it is not generated in a language they speak, unless the tweet_type is 'musical'.
 
