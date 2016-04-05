@@ -118,7 +118,7 @@ struct Tweet {
     READ_WRITE(rw) {
         rw << id_tweet << id_tweeter << id_link << generation;
         rw.visit_smartptr(content);
-        rw << creation_time << retweet_time_bin << hashtag << retweet_next_rebin_time;
+        rw << creation_time << deletion_time << retweet_time_bin << hashtag << retweet_next_rebin_time;
         // NOTE: Relies on FollowerSet::Weights being a 'plain' (pointer-free) object!
         rw << react_weights;
     }
