@@ -18,6 +18,7 @@
 
 #### Documentation and Tutorials
 
-[N. Buhagiar](https://github.com/nbuhagiar) [L. Kettle] (https://github.com/lkettle)
+[N. Buhagiar](https://github.com/nbuhagiar) 
+[L. Kettle](https://github.com/lkettle)
 
 
