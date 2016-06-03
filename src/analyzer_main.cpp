@@ -45,6 +45,7 @@
 #include "dependencies/lcommon/perf_timer.h"
 
 #include "interactive_mode.h"
+#include "FollowerSet.h"
 
 #include <signal.h>
 
@@ -195,6 +196,41 @@ struct Analyzer {
         return (SIGNAL_ATTEMPTS == 0);
     }
 
+    vector<int> zeros(int size) {
+        vector<int> return_vec;
+        for (int i = 0; i < size; i ++) {
+            return_vec.push_back(0);
+        }
+        return return_vec;
+    }
+
+    void fix_agents_upon_resubmission(AnalysisState& state) {
+        Network& n = state.network;
+        auto& R = state.config.regions;
+        cout << "Fixing agents who have changed attributes...\n";
+        vector<int> ids = zeros(n.size());
+        for (int i = 0; i < n.size(); i ++) {
+            Agent& a = n[i];
+            if (!ids[i]) {
+                auto& region = R.regions[a.region_bin];
+                a.language = (Language) rng.kmc_select(region.language_probs);
+                ids[i] ++;
+            }
+            auto temp = network.follower_set(a.id).as_vector();
+            FollowerSet empty_follower_set;
+            a.follower_set = empty_follower_set;
+            for (int j = 0; j < temp.size(); j ++) {
+                Agent& f = n[temp[j]];
+                if (!ids[j]) {
+                    auto& region = R.regions[f.region_bin];
+                    f.language = (Language) rng.kmc_select(region.language_probs);
+                    ids[temp[j]] ++;
+                }
+                analyzer_handle_follow(state, f.id, a.id, 0);
+            }
+        }
+      }
+
     void load_network_state(const char* fname) {
         printf("LOADING NETWORK STATE FROM %s\n", fname);
         DataReader reader(state, fname);
@@ -212,6 +248,7 @@ struct Analyzer {
         state.sync_rates();
 
         lua_hook_load_network(state);
+        fix_agents_upon_resubmission(state);
     }
 
     void save_network_state(const char* fname) {
