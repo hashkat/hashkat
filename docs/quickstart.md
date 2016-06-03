@@ -144,12 +144,12 @@ To create a plot of your network, enter Python from the command line by typing i
 In Python, use [Networkx](https://networkx.github.io/) to create a plot of your network:
 
 ```python
-import matplotlib.pyplot as plt`
-import networkx as nx`
-G = nx.read_edgelist('output/network.dat')`
-pos = nx.spring_layout(G,iterations=75)`
-nx.draw(G,pos)`
-plt.show()`
+import matplotlib.pyplot as plt
+import networkx as nx
+G = nx.read_edgelist('output/network.dat')
+pos = nx.spring_layout(G,iterations=75)
+nx.draw(G,pos)
+plt.show()
 ```
 You may analyze your network (simulation) with **Networkx** from **Python** by running **/~hashkat/visualize.py**:
 
