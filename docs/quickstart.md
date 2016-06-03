@@ -43,7 +43,7 @@ Note:  **Do not change DEFAULT.yaml.**
 
 ### What is Hashkat?
 
-**#k@** simulates an online social network such as Twitter &trade.  In terms of graph theory agents are 'nodes' and follows 'edges'. Agents are created with certain characteristics and added to the network.  Periodically, agents chose to follow other agents.  Periodically, agents signal (tweet) or retransmit received signals (retweet).  Follow behavior may depend on the content of signals received or characteristics of the tweeting agent.  
+**#k@** simulates an online social network such as Twitter(tm).  In terms of graph theory agents are 'nodes' and follows 'edges'. Agents are created with certain characteristics and added to the network.  Periodically, agents chose to follow other agents.  Periodically, agents signal (tweet) or retransmit received signals (retweet).  Follow behavior may depend on the content of signals received or characteristics of the tweeting agent.  
 
 ### Create Your Own Simulation
 
