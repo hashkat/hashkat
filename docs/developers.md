@@ -2,7 +2,7 @@
 
 # Developers
 
-If you are interested in contributing to **#k@**, please check out the latest build of **#k@** at our [github repository](https://github.com/hashkat/hashkat). If you wish to add any developments to **#k@**, feel free to do so, and create a [pull request](https://help.github.com/articles/creating-a-pull-request/), where it will be reviewed and potentially merged in to the **hashkat** repository. We do ask when modifying **#k@**, please respect the [Google C++ Stye Guide](https://google-styleguide.googlecode.com/svn/trunk/cppguide.html).
+If you are interested in contributing to **#k@**, please check out the latest build of **#k@** at our [github repository](https://github.com/hashkat/hashkat). If you wish to add any developments to **#k@**, feel free to do so, and create a [pull request](https://help.github.com/articles/creating-a-pull-request/), where it will be reviewed and potentially merged in to the **hashkat** repository. We do ask when modifying **#k@**, please respect the [Google C++ Style Guide](https://google.github.io/styleguide/cppguide.html).
 
 The source code for **#k@** can be found in the **src** directory. The file **~/hashkat/src/DEVELOPERS.md** briefly details the role of every file and directory in the source code. 
 
