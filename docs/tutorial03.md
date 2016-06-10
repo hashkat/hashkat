@@ -46,7 +46,7 @@ For this tutorial set:
 
 We will discuss Barabasi options in [Tutorial 4](http://docs.hashkat.org/en/latest/tutorial04/). 
 
-Model_weights are only necessary for the twitter follow_model, shown in [Tutorial 8](http://docs.hashkat.org/en/latest/tutorial04/), and will be ignored but we show them here, set at 0, to introduce them. 
+Model_weights are only necessary for the twitter follow_model, shown in [Tutorial 8](http://docs.hashkat.org/en/latest/tutorial08/), and will be ignored but we show them here, set at 0, to introduce them. 
 
 To turn off the 'unfollow_tweet_rate' we set it to an exceptionally high number (i.e. 10,000 per minute).  An agent would have to send 10,000 tweets a minute for another agent to unfollow them..  We have set the chance of a hashtag in a tweet at 50%.
 
