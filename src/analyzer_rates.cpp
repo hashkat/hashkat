@@ -110,8 +110,8 @@ struct AnalyzerRates {
 
     // after every iteration, make sure the rates are updated accordingly
     Rates set_rates(AgentType& et) {
-        double overall_follow_rate = 0, overall_tweet_rate = 0,
-                overall_retweet_rate = 0;
+        double overall_follow_rate = 0, overall_tweet_rate = 0; //,
+                //overall_retweet_rate = 0;
         et.new_agents = et.agent_list.size() - et.agent_cap.back();
         if (config.rate_add == 0) {
             overall_follow_rate += et.agent_list.size() * et.RF[0].monthly_rates[state.n_months()];
