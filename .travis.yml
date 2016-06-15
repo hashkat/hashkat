@@ -1,4 +1,1 @@
 language: cpp
-script:
-  - ./build.sh -O
-  - ./run.sh
