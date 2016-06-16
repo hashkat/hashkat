@@ -20,6 +20,9 @@ if ($ENV{BUILD_FLAGS})
     add_definitions ($ENV{BUILD_FLAGS})
 endif()
 
+# Work-around for Travis CI
+add_definitions( "-DBOOST_NO_CXX11_ALLOCATOR" )
+
 add_definitions ("-DLUA_USE_POSIX" "-Wno-deprecated-declarations" "-DHASHKAT_VERSION=\"$ENV{HASHKAT_VERSION}\"")
 
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
