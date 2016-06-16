@@ -1,0 +1,10 @@
+language: cpp
+
+compiler:
+  - clang
+
+script:
+  - sudo apt-get install cmake
+  - sudo apt-get install build-essential -y
+  - ./build.sh -O
+  - ./run.sh
