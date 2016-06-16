@@ -78,7 +78,7 @@ void output_network_statistics(AnalysisState& state) {
     ParsedConfig& C = state.config;
     AgentTypeVector& et_vec = state.agent_types;
     NetworkStats& stats = state.stats;
-    TweetBank& tb = state.tweet_bank;
+    //TweetBank& tb = state.tweet_bank;
     MostPopularTweet& mpt = state.most_pop_tweet;
     vector<Tweet>& old_tweets = state.oldTweets;
 
