@@ -327,7 +327,6 @@ struct AnalyzerFollow {
                CategoryAgentList& C = follow_ranks.categories[i];
                // pull a random agent from whatever bin we landed in and break so we do not continue this loop
                int agent_to_follow = C.agents[rng.rand_int(C.agents.size())];
-               //Agent& try_agent = network[agent_to_follow];
                return agent_to_follow;
            }
            rand_num -= p;
