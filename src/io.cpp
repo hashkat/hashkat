@@ -104,7 +104,6 @@ void output_network_statistics(AnalysisState& state) {
         }
         cout << "\nCreating analysis files -- press ctrl-c multiple times to abort ... \n";
     }
-    int MAX_AGENTS = C.max_agents;
     double rate_add = C.rate_add;
     int N_AGENTS = network.size();
     int initial_agents = C.initial_agents;
