@@ -450,7 +450,6 @@ struct AnalyzerFollow {
     bool follow_agent(int id_follower, double time_of_follow) {
         Agent& e = network[id_follower];
         int agent_to_follow = -1;
-        //double rand_num = rng.rand_real_not0();
 
         /* Dispatch to the appropriate follower logic: */
         const int follow_model = config.follow_model;
