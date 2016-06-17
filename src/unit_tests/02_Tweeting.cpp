@@ -53,7 +53,6 @@ SUITE(TweetStore) {
                 } else {
                     elemsB.push_back(elem);
                 }
-                int r = vec_tree.pick_random_weighted(rng);
             }
             //vec_tree.print();
             for (int i = 0; i < elemsA.size(); i++) {
