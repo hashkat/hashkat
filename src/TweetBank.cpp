@@ -47,7 +47,6 @@ double TweetRateDeterminer::get_cat_threshold(int bin) {
 
 TweetReactRateVec TweetRateDeterminer::get_rate(const Tweet& tweet, int bin) {
     Agent& agent = state.network[tweet.id_tweeter];
-    Language lang = agent.language;
     FollowerSet& followers = agent.follower_set;
 
     /********************************************************************
