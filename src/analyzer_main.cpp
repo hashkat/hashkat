@@ -437,7 +437,6 @@ struct Analyzer {
 	bool action_retweet(RetweetChoice choice, double time_of_retweet) {
 	    PERF_TIMER();
 		Agent& e_observer = network[choice.id_observer];
-		//Agent& e_author = network[choice.id_author];
 
 		PreferenceClass& obs_pref_class = config.pref_classes[e_observer.preference_class];
 
