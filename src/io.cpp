@@ -868,7 +868,6 @@ void visualize_most_popular_tweet(MostPopularTweet& mpt, Network& network) {
         output << "<viz:size value=\"2.5\"/>\n";
         output << "</node>\n";
         for (int id_fol : network.follower_set(id_used).as_vector()) {
-            Agent& e = network[id_fol];
             output << "<node id=\"" << id_fol << "\" label=\"" << "Non-Retweeters" << "\" >\n";
             output << "<viz:size value=\"2.0\"/>\n";
             output << "</node>\n";
