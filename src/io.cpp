@@ -439,7 +439,6 @@ void model_match(Network& network, vector<int> & counts, int max_degree) {
        sum_k += network.n_followers(i);
        sum_k += network.n_followings(i); 
     }
-    double average_degree = (double)sum_k / (double)network.size();
     double sum_jN = 0;
     for (int j = 0; j < counts.size(); j++) {
         sum_jN += j*counts[j];
