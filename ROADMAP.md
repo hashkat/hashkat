@@ -5,7 +5,7 @@
   
 - [ ] 2. Develop an API (sort of) for `#k@`
   * This shall be used in the _interactive_mode_
-  * Aims to check for the request for after each "n" iterations, query and snd back results
+  * Aims to check for the request for after each "n" iterations, query and send back results
   * Planned to be implemened using Python
   
   
