@@ -1,20 +1,74 @@
---- #k@ / hashkat ---   Kinetic Analysis of Twitter-like networks
-===
-[![Build Status](https://travis-ci.org/hashkat/hashkat.svg?branch=master)](https://travis-ci.org/hashkat/hashkat)
+# #k@ (hashkat) : Kinetic Analysis of Twitter-like networks
 
-A tool and source base for simulations that are designed to mimic the events that occur in social simulations such as Twitter. These events include following, tweeting, retweeting, unfollowing, and agent creation. Agents in our simulations represent users, and the simulation simulates their connections and the information they spread.
+Build Status: [![Build Status](https://travis-ci.org/hashkat/hashkat.svg?branch=master)](https://travis-ci.org/hashkat/hashkat)
 
-         ------------------------------------------------------------
-        |  Requires cmake, and a C++ compiler (eg, g++) to build.    |
-        |  Requires Python 2.x installed to run.                     |
-        |                                                            |
-        |    To build: './build.sh -O'                               |
-        |    To begin simulation: './run.sh'                         |
-        |                                                            |
-        |    To create desired simulations modify 'INFILE.yaml'.     |
-        |                                                            |
-        |    For documentation and tutorials, see 'docs' directory.  |
-         ------------------------------------------------------------
+***
 
+###Description
+`#k@` is a dynamic network simulation tool designed to model the growth of and information propagation through an online social network. It is an agent-based, Kinetic Monte Carlo engine capable of simulating online networks such as Facebook, Twitter, LinkedIn, etc.
 
-[![Documentation Status](https://readthedocs.org/projects/hashkat/badge/?version=latest)](https://readthedocs.org/projects/hashkat/?badge=latest)
+`#k@` incorporates all elements of online social networks including multiple user profiles (e.g. standard users, organizations, celebrities, and bots), user messaging, trending topics, and advertising. Agents within the network make decisions (e.g. follow, unfollow, broadcast, and rebroadcast) based on a variety of user defined constraints on signal propagation to model language, region, ideology, musical interests, and humour.
+
+`#k@` allows for simulation of a realistic online social network, enabling users to test hypotheses for growth mechanisms and scenarios for information propagation. As it solves the forward problem, `#k@` can be used with Big Data analytics tools to test data collection protocols and ensure inverse model validity.
+
+`#k@` is a fully cross-platform tool: it works natively on `Windows 10`, `OS X`, and `Linux` platforms.
+
+[Download the latest version of Hashkat](http://simulator.science.uoit.ca/hashkat.2015.08.20.tar.gz)
+
+***
+
+###How do I quickly build `#k@` and run `#k@` simulations ?
+
+Build Requirements:
+* `CMake`
+* C++ Compiler (for instance: `gcc`/`g++` etc.)
+
+Run Requirements:
+* `Python 2.x`
+
+Data Visualization Requirements (optional):
+* Gnuplot
+* Gephi
+* Networkx
+
+***
+
+1. Clone the `hashkat` reositry locally<br>`git clone https://github.com/hashkat/hashkat`
+2. Go inside the `hashkat` folder (using `cd hashkat`) after you are sure of all the requirements being fulfilled.
+3. Build `hashkat` using `./build.sh -O`
+4. Create simulations using the `DEFAULT.yaml` variable values by running the command `./run.sh`
+
+A sample script can be seen as:
+```
+jigyasa@spin:~/temp$ git clone https://github.com/hashkat/hashkat
+...
+Checking connectivity... done.
+jigyasa@spin:~/temp$ cd hashkat/
+jigyasa@spin:~/temp/hashkat$ ./build.sh -O
+.....
+[100%] Built target hashkat
+jigyasa@spin:~/temp/hashkat$ ./run.sh
+.....
+Simulation Completed: desired simulation time reached
+Analysis complete!
+```
+
+For elaborate runs, refer [docs.hashkat.org](http://docs.hashkat.org/en/latest/) and for visualizing the output, refer [docs.hashkat.org/visualization](http://docs.hashkat.org/en/latest/visualization/)
+
+***
+###Documentation
+`#k@` has built-in documentation web pages. Find detailed information, instructions and tutorials at [docs.hashkat.org](http://docs.hashkat.org/en/latest/)
+<br>Documentation Status: [![Documentation Status](https://readthedocs.org/projects/hashkat/badge/?version=latest)](https://readthedocs.org/projects/hashkat/?badge=latest)
+<br>Check out the [`hashkat/docs`](https://github.com/hashkat/hashkat/tree/master/docs) directory for the source code of the documentation.
+
+***
+
+###Contributing to `#k@`
+
+`#k@` is a community project. We appreciate your enhancement requests as issues and bug-fixes. 
+<br>Feel free to open new ones or fix the existing ones ([hashkat/issues](https://github.com/hashkat/hashkat/issues)).
+
+***
+
+###The Road ahead....
+`#K@` community welcomes all to be a part of it and help us enhance our product. The [ROADMAP](https://github.com/hashkat/hashkat/blob/master/ROADMAP.md) is a list of things we wish to fulfill in the near future.
