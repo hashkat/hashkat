@@ -14,3 +14,5 @@
   
 
 - [ ] 4. Work upon the `Test_Suite` of `#k@` and include them in the [Travis CI Automated Build for Hashkat](https://travis-ci.org/hashkat/hashkat)
+
+- [ ] 5. Add new variables to describe an agent's state viz. `susceptibility_to_ideology_change` and `susceptibility_to_music_change` in order to calculate `Rate of persuasion`
