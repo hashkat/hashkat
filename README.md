@@ -13,7 +13,7 @@ Build Status: [![Build Status](https://travis-ci.org/hashkat/hashkat.svg?branch=
 
 `#k@` is a fully cross-platform tool: it works natively on `Windows 10`, `OS X`, and `Linux` platforms.
 
-[Download the latest version of Hashkat](http://simulator.science.uoit.ca/hashkat.2015.08.20.tar.gz)
+[Download the latest version of Hashkat](https://github.com/hashkat/hashkat/archive/master.zip)
 
 ***
 
