@@ -11,7 +11,7 @@ include_directories(
 	dependencies/boost_1_58_0/
 )
 
-add_definitions(-Wno-sign-compare -Wno-reorder -Wall -Wuninitialized -Wno-deprecated-declarations -std=c++11)
+add_definitions(-Wno-sign-compare -Wno-reorder -Wall -Wuninitialized -Wno-deprecated-declarations -fPIC -std=c++11)
 #add_definitions(-DREFACTORING)
 #add_definitions(-DREFACTORING_DEBUG_OUTPUT)
 
@@ -63,8 +63,27 @@ add_executable(
 	${dependencies_src}
 )
 
+add_library(hashkat-lib
+        SHARED
+	${mersenne_simd_src} 
+	${networksim_src} 
+	${networksim_tests} 
+	${lcommon_src} 
+	${dependencies_src}
+)
+
 target_link_libraries (
 	hashkat 
+	UnitTest++
+	yaml-cpp
+        lualinenoise
+        lua
+        luawrap
+        ${UV_LIBS}
+)
+
+target_link_libraries (
+	hashkat-lib
 	UnitTest++
 	yaml-cpp
         lualinenoise
