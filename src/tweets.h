@@ -27,8 +27,8 @@
 
 #include <vector>
 #include <cstdio>
+#include <memory>
 
-#include "lcommon/smartptr.h"
 #include "mtwist.h"
 
 #include "events.h"
@@ -86,7 +86,7 @@ struct Tweet {
     // The generation of the tweet, 0 if the tweet was original content
     int generation = -1;
     // A tweet is an orignal tweet if tweeter_id == content.author_id
-    smartptr<TweetContent> content;
+    std::shared_ptr<TweetContent> content;
 
     // The time the tweet was tweeted
     double creation_time = 0;
@@ -106,7 +106,7 @@ struct Tweet {
     /* Rates with which this tweet is retweeted: */
     FollowerSet::Weights react_weights;
 
-    explicit Tweet(const smartptr<TweetContent>& content = smartptr<TweetContent>()) {
+    explicit Tweet(const std::shared_ptr<TweetContent>& content = {}) {
         this->content = content;
     }
 
@@ -117,7 +117,7 @@ struct Tweet {
 
     READ_WRITE(rw) {
         rw << id_tweet << id_tweeter << id_link << generation;
-        rw.visit_smartptr(content);
+        rw.visit_shared_ptr(content);
         rw << creation_time << deletion_time << retweet_time_bin << hashtag << retweet_next_rebin_time;
         // NOTE: Relies on FollowerSet::Weights being a 'plain' (pointer-free) object!
         rw << react_weights;
@@ -139,7 +139,7 @@ struct MostPopularTweet {
 };
 
 struct HashtagGroup {
-    // circular buffer with 10 elements
+    // circular buffer with 100 elements
     CircularBuffer<int, 100> circ_buffer;
 };
 
@@ -162,7 +162,6 @@ struct HashTags {
                 // Note: works because HashtagGroup contains no pointers internally:
                 rw << groups;
             }
-
         }
     }
 };

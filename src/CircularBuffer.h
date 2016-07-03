@@ -21,25 +21,11 @@
  * the original authors (Kevin Ryczko & Adam Domurad, Isaac Tamblyn), as well, in the case of a derivation,
  * subsequent authors. 
  */
-
-/*
- * CircularBuffer.h
- *
- *  Created on: Dec 19, 2013
- *      Author: adomurad
- */
-
 #ifndef CIRCULARBUFFER_H_
 #define CIRCULARBUFFER_H_
 
 #include "util.h"
 #include <algorithm>
-
-//** For KR and IT,
-//** **Creating** templates has a cost model that is only beneficial if you understand them
-//** completely & they are definitely not an easy feature to learn.
-//** **Using** them however is very easy and convenient.
-//** Usage comments follow.
 
 // CircularBuffer implements a buffer that deletes the oldest element
 // when capacity is reached. The capacity is given directly in the type,

@@ -212,7 +212,7 @@ struct TweetBank {
     std::vector<Tweet> as_vector() {
         auto vec = tree.as_vector();
         for (int i = 0; i < vec.size(); i++) {
-            DEBUG_CHECK(!vec[i].content.empty(), "Tweet has no content!");
+            DEBUG_CHECK(vec[i].content.get(), "Tweet has no content!");
         }
         return vec;
     }

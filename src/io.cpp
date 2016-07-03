@@ -824,7 +824,7 @@ void most_popular_tweet_content(MostPopularTweet& mpt, Network& network) {
     Tweet& t = mpt.most_popular_tweet;
     id = t.id_tweeter;
     Agent& a = network[id];
-    if (t.content.empty()) {
+    if (!t.content.get()) {
         return; // Nothing to see here
     }
 
@@ -849,7 +849,7 @@ void visualize_most_popular_tweet(MostPopularTweet& mpt, Network& network) {
     ofstream output;
     output.open("output/retweet_viz.gexf");
     Tweet& t = mpt.most_popular_tweet;
-    if (t.content.empty()) {
+    if (!t.content.get()) {
         return; // Nothing to see here
     }
     

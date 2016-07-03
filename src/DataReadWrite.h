@@ -25,13 +25,17 @@
 #ifndef DATAREADWRITE_H_
 #define DATAREADWRITE_H_
 
+/*
+ * Classes for serialization boilerplate reduction.
+ */
+
 #include <cstdio>
 #include <iostream>
+#include <memory>
 
 #include <map>
 
 #include "lcommon/SerializeBuffer.h"
-#include "lcommon/smartptr.h"
 
 #include "util.h"
 
@@ -42,7 +46,7 @@ struct DataWriter {
     DataWriter(AnalysisState& state, const char* file_name) 
         : state(state) {
             FILE* file = fopen(file_name, "wb"); // write-binary
-            buffer.set(new SerializeBuffer(file, SerializeBuffer::OUTPUT, /* Close file: */true));
+            buffer.reset(new SerializeBuffer(file, SerializeBuffer::OUTPUT, /* Close file: */true));
     }
 
     template <typename T>
@@ -65,20 +69,20 @@ struct DataWriter {
     }
 
     template <typename T>
-    void visit_smartptr(const smartptr<T>& obj) {
-        if (obj.empty()) {
+    void visit_shared_ptr(const std::shared_ptr<T>& obj) {
+        if (!obj.get()) {
             *this << (void*)NULL << false;
             return;
         }
         void* raw_ptr = (void*)obj.get();
         bool added = false;
-        if (ptr_map[raw_ptr].empty()) {
+        if (!ptr_map[raw_ptr].get()) {
             added = true;
         }
         *this << raw_ptr << added;
 //        printf("Placing %p add=%d\n", raw_ptr, added);
         if (added) {
-            ptr_map[raw_ptr] = smartptr<void*>(obj);
+            ptr_map[raw_ptr] = (std::shared_ptr<void*>&)(obj);
             obj->visit(*this);
         }
     }
@@ -130,8 +134,8 @@ struct DataWriter {
     }
     AnalysisState& state;
 private:
-    std::map<void*, smartptr<void*>> ptr_map;
-    smartptr<SerializeBuffer> buffer;
+    std::map<void*, std::shared_ptr<void*>> ptr_map;
+    std::shared_ptr<SerializeBuffer> buffer;
 };
 
 /* Passed to objects visit() method during reading: */
@@ -139,7 +143,7 @@ struct DataReader {
     DataReader(AnalysisState& state, const char* file_name) 
         : state(state) {
             FILE* file = fopen(file_name, "rb"); // read-binary
-            buffer.set(new SerializeBuffer(file, SerializeBuffer::INPUT, /* Close file: */true));
+            buffer.reset(new SerializeBuffer(file, SerializeBuffer::INPUT, /* Close file: */true));
     }
 
     template <typename T>
@@ -165,7 +169,7 @@ struct DataReader {
     }
 
     template <typename T>
-    void visit_smartptr(smartptr<T>& obj) {
+    void visit_shared_ptr(std::shared_ptr<T>& obj) {
         void* old_ptr = NULL;
         bool added = false;
         (*this) << old_ptr << added;
@@ -174,12 +178,12 @@ struct DataReader {
 //            printf("Recreating %p\n", old_ptr);
             T val;
             val.visit(*this);
-            obj.set(new T(val));
-            ptr_map[old_ptr] = smartptr<void*>(obj);
+            obj.reset(new T(val));
+            ptr_map[old_ptr] = (std::shared_ptr<void*>&) (obj);
         } else if (old_ptr == NULL) {
-            obj.clear();
+            obj.reset();
         } else {
-            obj = ptr_map[old_ptr];
+            obj = (std::shared_ptr<T>&) ptr_map[old_ptr];
         }
     }
 
@@ -238,8 +242,8 @@ struct DataReader {
     	return *buffer;
     }
 private:
-    std::map<void*, smartptr<void*>> ptr_map;
-    smartptr<SerializeBuffer> buffer;
+    std::map<void*, std::shared_ptr<void*>> ptr_map;
+    std::shared_ptr<SerializeBuffer> buffer;
 };
 
 #define READ_WRITE(rw) \

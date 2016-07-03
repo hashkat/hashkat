@@ -28,11 +28,15 @@
 #include <string>
 #include <map>
 #include <vector>
+#include <memory>
 
 #include <lcommon/Timer.h>
-#include <lcommon/smartptr.h>
 
 #include <dependencies/mtwist.h>
+
+extern "C" {
+#include "capi.h"
+}
 
 #include "config_dynamic.h"
 #include "network.h"
@@ -100,11 +104,15 @@ struct AnalysisState {
     // A back-pointer to the Analyzer structure.
     // Empty if analysis is has not started!
     // Used to call Analyzer methods outside of analyzer_main.cpp.
-    smartptr<Analyzer> analyzer;
+    std::shared_ptr<Analyzer> analyzer;
 
     // The current simulation time
     double time;
     ParsedConfig config;
+
+    // Used for running code on every hashkat event.
+    // This is used to communicate with hashkat during the event loop.
+    EventCallbacks event_callbacks;
 
     // The full contents of the simulated network.
     Network network;
@@ -182,6 +190,8 @@ struct AnalysisState {
         follow_ranks = config.follow_ranks;
         retweet_ranks = config.retweet_ranks;
         agent_types = config.agent_types;
+        // Fill callbacks with NULL
+        memset(&event_callbacks, 0, sizeof(EventCallbacks));
 
         rng.init_genrand(seed);
         time = 0.0;
@@ -245,13 +255,11 @@ struct RetweetChoice {
     int id_link;
     int generation;
 
-    // We could have used 'smartptr', however the tweet is not going anywhere
-    // in the short while we retweet, so a pointer is safe.
-    smartptr<TweetContent>* content;
+    std::shared_ptr<TweetContent>* content;
     RetweetChoice() :
             id_author(-1), id_observer(-1), id_link(-1), generation(-1), content(NULL) {
     }
-    RetweetChoice(int id_author, int id_observer, int id_link, int generation, smartptr<TweetContent>* tweet) :
+    RetweetChoice(int id_author, int id_observer, int id_link, int generation, std::shared_ptr<TweetContent>* tweet) :
             id_author(id_author), id_observer(id_observer), id_link(id_link), generation(generation), content(tweet) {
     }
     bool valid() {
@@ -276,7 +284,6 @@ bool analyzer_real_time_check(AnalysisState& state);
 void analyzer_save_network_state(AnalysisState& state, const char* fname);
 void analyzer_load_network_state(AnalysisState& state, const char* fname);
 bool analyzer_follow_agent(AnalysisState& state, int agent, double time_of_follow);
-
 
 // Implements a follow-back
 bool analyzer_followback(AnalysisState& state, int follower, int followed);

@@ -273,7 +273,7 @@ struct Analyzer {
             << "Unfollows" << setw(25)
             << "Cumulative-Rate" << setw(25)
             << "Real Time (s)" << "\n\n";
-        while (sim_time_check() && real_time_check()) {
+        while (sim_time_check() && real_time_check() && !stats.user_did_exit) {
             if (!interrupt_check()) {
                 interrupt_reset();
                 if (!config.enable_interactive_mode) {
@@ -350,12 +350,12 @@ struct Analyzer {
         return true;
     }
 
-    smartptr<TweetContent> generate_tweet_content(int id_original_author) {
+    shared_ptr<TweetContent> generate_tweet_content(int id_original_author) {
         Agent& e_original_author = network[id_original_author];
         int agent = e_original_author.agent_type;
         AgentType& agent_type = agent_types[agent];
 
-        smartptr<TweetContent> ti(new TweetContent);
+        shared_ptr<TweetContent> ti(new TweetContent);
         ti->id_original_author = id_original_author;
         ti->time_of_tweet = time;
 //        ti->type = agent_type;
@@ -376,7 +376,7 @@ struct Analyzer {
         return rng.random_chance(config.hashtag_prob);
     }
 
-    Tweet generate_tweet(int id_tweeter, int id_link, int generation, const smartptr<TweetContent>& content) {
+    Tweet generate_tweet(int id_tweeter, int id_link, int generation, const std::shared_ptr<TweetContent>& content) {
         PERF_TIMER();
         Agent& e_tweeter = network[id_tweeter];
         Agent& e_author = network[content->id_original_author];
@@ -588,7 +588,7 @@ struct Analyzer {
     }
 
     /***************************************************************************
-     * Helper functions`
+     * Helper functions
      ***************************************************************************/
     
     bool is_following(int& follower, int& followee) {
@@ -709,27 +709,27 @@ struct Analyzer {
 };
 
 bool analyzer_create_agent(AnalysisState& state) {
-    ASSERT(!state.analyzer.empty(), "Analysis is not active!");
+    ASSERT(state.analyzer.get(), "Analysis is not active!");
     return state.analyzer->action_create_agent();
 }
 
 bool analyzer_sim_time_check(AnalysisState& state) {
-    ASSERT(!state.analyzer.empty(), "Analysis is not active!");
+    ASSERT(state.analyzer.get(), "Analysis is not active!");
     return state.analyzer->sim_time_check();
 }
 
 void analyzer_save_network_state(AnalysisState& state, const char* fname) {
-    ASSERT(!state.analyzer.empty(), "Analysis is not active!");
+    ASSERT(state.analyzer.get(), "Analysis is not active!");
     state.analyzer->save_network_state(fname);
 }
 
 void analyzer_load_network_state(AnalysisState& state, const char* fname) {
-    ASSERT(!state.analyzer.empty(), "Analysis is not active!");
+    ASSERT(state.analyzer.get(), "Analysis is not active!");
     state.analyzer->load_network_state(fname);
 }
 
 bool analyzer_real_time_check(AnalysisState& state) {
-    ASSERT(!state.analyzer.empty(), "Analysis is not active!");
+    ASSERT(state.analyzer.get(), "Analysis is not active!");
     return state.analyzer->real_time_check();
 }
 
@@ -739,7 +739,7 @@ void analyzer_main(AnalysisState& state) {
     // from other files, during analysis.
 
     Timer timer;
-    state.analyzer.set(new Analyzer(state)); // Install back-pointer
+    state.analyzer.reset(new Analyzer(state)); // Install back-pointer
 
     if (state.config.handle_ctrlc) {
         signal_handlers_install(state);

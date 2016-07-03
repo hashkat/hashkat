@@ -25,30 +25,45 @@ static void lua_hook(AnalysisState& state, const char* type, int id1 = -1, int i
 // Lua hook implementations. Note that they all follow the same simple structure.
 
 void lua_hook_follow(AnalysisState& state, int id_follower, int id_followed) {
+    if (state.event_callbacks.on_follow) {
+        state.event_callbacks.on_follow(id_follower, id_followed);
+    }
     if (state.config.enable_lua_hooks) {
         lua_hook(state, "on_follow", id_follower, id_followed);
     }
 }
 
 void lua_hook_add(AnalysisState& state, int id) {
+    if (state.event_callbacks.on_add) {
+        state.event_callbacks.on_add(id);
+    }
     if (state.config.enable_lua_hooks) {
         lua_hook(state, "on_add", id);
     }
 }
 
 void lua_hook_unfollow(AnalysisState& state, int id_follower, int id_followed) {
+    if (state.event_callbacks.on_unfollow) {
+        state.event_callbacks.on_unfollow(id_follower, id_followed);
+    }
     if (state.config.enable_lua_hooks) {
         lua_hook(state, "on_unfollow", id_follower, id_followed);
     }
 }
 
 void lua_hook_tweet(AnalysisState& state, int id_tweeter, int id_tweet) {
+    if (state.event_callbacks.on_tweet) {
+        state.event_callbacks.on_tweet(id_tweeter, id_tweet);
+    }
     if (state.config.enable_lua_hooks) {
         lua_hook(state, "on_tweet", id_tweeter, id_tweet);
     }
 }
 
 void lua_hook_exit(AnalysisState& state) {
+    if (state.event_callbacks.on_exit) {
+        state.event_callbacks.on_exit();
+    }
     if (state.config.enable_lua_hooks) {
         lua_hook(state, "on_exit");
     }
@@ -61,18 +76,27 @@ void lua_hook_new_network(AnalysisState& state) {
 }
 
 void lua_hook_load_network(AnalysisState& state) {
+    if (state.event_callbacks.on_load_network) {
+        state.event_callbacks.on_load_network();
+    }
     if (state.config.enable_lua_hooks) {
         lua_hook(state, "on_load_network");
     }
 }
 
 void lua_hook_step_analysis(AnalysisState& state) {
+    if (state.event_callbacks.on_step_analysis) {
+        state.event_callbacks.on_step_analysis();
+    }
     if (state.config.enable_lua_hooks) {
         lua_hook(state, "on_step_analysis");
     }
 }
 
 void lua_hook_save_network(AnalysisState& state) {
+    if (state.event_callbacks.on_save_network) {
+        state.event_callbacks.on_save_network();
+    }
     if (state.config.enable_lua_hooks) {
         lua_hook(state, "on_save_network");
     }

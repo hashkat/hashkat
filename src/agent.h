@@ -28,10 +28,10 @@
 
 #include <string>
 #include <vector>
+#include <memory>
 
 #include "CategoryGrouper.h"
 
-#include "lcommon/smartptr.h"
 #include "mtwist.h"
 
 #include "events.h"
@@ -46,8 +46,7 @@
 // Forward declare, to prevent circular header inclusion:
 struct AnalysisState;
 
-struct Agent
-{
+struct Agent {
     // Storing the id is redundant (since it can be inferred), but provides convenient handling
     int id = -1;
 

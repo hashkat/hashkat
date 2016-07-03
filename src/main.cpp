@@ -47,7 +47,7 @@
 using namespace std;
 
 // Check for a command-line flag
-static bool has_flag(int argc, char** argv, std::string test) {
+bool has_flag(int argc, char** argv, std::string test) {
 	for (int i = 1; i < argc; i++) {
 		if (argv[i] == test) {
 			return true;
@@ -94,17 +94,17 @@ int main(int argc, char** argv) {
         if (has_flag(argc, argv, "--handle-ctrlc")) {
             config.handle_ctrlc = true;
         }
-		// or running analysis:
-		Timer t;
-		int seed = 1;
-		if (has_flag(argc, argv, "--rand")) {
-			time_t t;
-			time(&t);
-			seed = (int)t;
-		}
+        // or running analysis:
+        Timer t;
+        int seed = 1;
+        if (has_flag(argc, argv, "--rand")) {
+                time_t t;
+                time(&t);
+                seed = (int)t;
+        }
 
-		printf("Starting simulation with seed '%d'.\n", seed);
-		AnalysisState analysis_state(config, seed);
+        printf("Starting simulation with seed '%d'.\n", seed);
+        AnalysisState analysis_state(config, seed);
 
         analyzer_main(analysis_state);
         output_network_statistics(analysis_state);
