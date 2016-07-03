@@ -507,7 +507,9 @@ struct Analyzer {
         // Exit case 1:
         // We opt to inform the user of a stagnant network rather than trying continuously:
         if (stats.event_rate == 0) {
-            cout << "ANAMOLY: Stagnant network! Nothing to do. Exiting." << endl;
+            cout << "WARNING: The simulator's total event rate was 0, i.e., it had nothing to do. Conceptually, this is like a network no one uses anymore.\n" << 
+                "This can be intended, for example if the agent add, follow and tweet rates all legitimately drop to 0 at some point in time.\n" <<
+                "More likely, especially if this happened quickly, this is a problem in the configuration file (eg, INFILE.yaml) and the rates there should be reviewed.\n" << endl;
             return false;
         }
 
