@@ -7,18 +7,21 @@
 # functions a user might want to supply.
 #################################################################
 
-#################################################################
-# PLACE CONVENIENCE CONSTANTS FOR INFILE.yaml HERE
-#################################################################
+def expression_expand(expression):
+    # Place convenience constants for INFILE.yaml here
+    # Convenience rates, in minutes
+    minute = 1
+    hour = minute * 60
+    day = 24 * hour
+    year = 365 * day
+    # Very large number representable comfortably as signed 64bit integer:
+    unlimited = 2L**53 
 
-# Convenience rates, in minutes
-minute = 1
-hour = minute * 60
-day = 24 * hour
-year = 365 * day
-
-# Very large number representable comfortably as signed 64bit integer:
-unlimited = 2L**53 
+    # Evaluate the expression with the above constants
+    return eval(expression, {"__builtins": None}, {
+        "minute": minute, "hour": hour, "day": day, "year": year, 
+        "unlimited": unlimited
+    })
 
 #################################################################
 # CEASE PLACING CONVENIENCE CONSTANTS.
@@ -39,15 +42,18 @@ def get_var_arg(test, default_val):
 
 INPUT_FILE_NAME = get_var_arg("--input", "INFILE.yaml")
 
-# this environment variable needs to be set by the user ahead of time
-DEFAULT_FILE_NAME = os.environ['HASHKAT'] + "/DEFAULT.yaml"
+# This environment variable needs can set by the user ahead of time,
+# but defaults to the current directory.
+DEFAULT_FILE_NAME = get_var_arg("--base-input", '')
+if not DEFAULT_FILE_NAME:
+    DEFAULT_FILE_NAME = os.environ['HASHKAT'] + "/DEFAULT.yaml"
 
 print("hashkat_pre.py -- Loading defaults from " + DEFAULT_FILE_NAME)
 print("hashkat_pre.py -- Generating rates for " + INPUT_FILE_NAME)
 
 #################################################################
 # Load the relevant pieces of the config.
-# We will add a 'generated' node to this, and emit it as INFILE-generated.yaml
+# We will add a 'generated' node to this, and emit it as INFILE.yaml-generated
 #################################################################
 
 DEFAULT_CONFIG = yaml.load(open(DEFAULT_FILE_NAME, "r"))
@@ -110,7 +116,7 @@ tweet_obs_resolution_growth_factor = obs_pdf["resolution_growth_factor"]
 tweet_obs_time_span = obs_pdf["time_span"]
 
 if isinstance(tweet_obs_time_span, str): # Allow for time constants
-    tweet_obs_time_span = eval(tweet_obs_time_span)
+    tweet_obs_time_span = expression_expand(tweet_obs_time_span)
 
 pref_classes = CONFIG["preference_classes"]
 
@@ -312,9 +318,10 @@ for elem in obs_function:
 
 for val in "max_analysis_steps", "max_time", "max_real_time", "max_agents", "initial_agents":
     if isinstance(CONFIG["analysis"][val], str):
-        CONFIG["analysis"][val] = eval(CONFIG["analysis"][val])
+        CONFIG["analysis"][val] = expression_expand(CONFIG["analysis"][val])
 
-yaml.dump(CONFIG, open(INPUT_FILE_NAME + "-generated", "w"))
+with open(INPUT_FILE_NAME + "-generated", "w") as f:
+    yaml.dump(CONFIG, f)
 
 try:
     os.mkdir('output') 
