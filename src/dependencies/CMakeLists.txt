@@ -1,4 +1,4 @@
-add_definitions("-w")
+add_definitions("-w -fPIC")
 
 add_subdirectory( "UnitTest++" )
 add_subdirectory( "yaml-cpp" )
