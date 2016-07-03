@@ -36,10 +36,10 @@ function handle_flag(){
 # we have them back in)
 ###############################################################################
 
-if handle_flag "--tests" ; then
-    "$HASHKAT/build/src/test" $args
-    exit
-fi
+#if handle_flag "--tests" ; then
+#    "$HASHKAT/build/src/test" $args
+#    exit
+#fi
 
 ###############################################################################
 # Show help for run.sh options available.
