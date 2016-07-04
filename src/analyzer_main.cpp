@@ -656,7 +656,7 @@ struct Analyzer {
         }
     }
 
-    void emit_tweets() {
+    void emit_tweet_bank() {
         std::ofstream tweet_stream_file;
         tweet_stream_file.open("output/tweet_bank.json");
 
@@ -706,7 +706,7 @@ struct Analyzer {
     }
     void output_summary_stats(Timer& timer) {
 
-        emit_tweets();
+        emit_tweet_bank();
 
         if (stats.n_outputs == 0) {
             DATA_TIME << "#" << setw(25)
