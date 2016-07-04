@@ -656,34 +656,25 @@ struct Analyzer {
         }
     }
 
-    void emit_tweets(ostream& stream, bool newline, Timer& timer) {
+    void emit_tweets() {
         std::ofstream tweet_stream_file;
-        tweet_stream_file.open("tweets.json");
-        if (newline) {
-            tweet_stream_file << scientific << setprecision(8) << setw(25)
-                              << time << setw(25)
-                              << network.size() << setw(25)
-                              << stats.global_stats.n_follows << setw(25)
-                              << stats.global_stats.n_tweets << setw(25)
-                              << state.tweet_bank.n_active_tweets() << setw(25)
-                              << stats.global_stats.n_retweets << setw(25)
-                              << stats.global_stats.n_unfollows << setw(25)
-                              << stats.event_rate << setw(25)
-                              << timer.get_microseconds() * 1e-6 << "\n";
-            tweet_stream_file.close();
-        } else {
-            tweet_stream_file << setprecision(2) << scientific << setw(25)
-                              << time << setw(25)
-                              << (double) network.size() << setw(25)
-                              << (double) stats.global_stats.n_follows << setw(25)
-                              << (double) stats.global_stats.n_tweets << setw(25)
-                              << (double) state.tweet_bank.n_active_tweets() << setw(25)
-                              << (double) stats.global_stats.n_retweets << setw(25)
-                              << (double) stats.global_stats.n_unfollows << setw(25)
-                              << stats.event_rate << setw(25)
-                              << timer.get_microseconds() * 1e-6 << "\r";
-            tweet_stream_file.close();
+        tweet_stream_file.open("tweet_bank.json");
+
+        vector<Tweet> atl = tweet_bank.as_vector();
+
+        tweet_stream_file << "{" << "\n";
+        for (auto& t : atl) {
+            tweet_stream_file << "{" <<
+                              "\"ID:\"" << t.id_tweeter << "\n"
+                              << "\"origID:\"" << t.content->id_original_author << "\n"
+                              << "\"time:\"" << t.creation_time << "\n"
+                              << "\"origTime\"" << t.content->time_of_tweet << "\n"
+                              << "};" << "\n";
         }
+
+        tweet_stream_file << "}" << "\n";
+
+        tweet_stream_file.close();
     }
 
     void output_summary_stats(ostream& stream, bool newline, Timer& timer) {
@@ -715,6 +706,8 @@ struct Analyzer {
     }
     void output_summary_stats(Timer& timer) {
 
+        emit_tweets();
+
         if (stats.n_outputs == 0) {
             DATA_TIME << "#" << setw(25)
                       << "Simulation Time (min)" << setw(25)
@@ -731,9 +724,6 @@ struct Analyzer {
         if (stats.n_outputs % STDOUT_OUTPUT_RATE == 0) {
             output_summary_stats(DATA_TIME, true, timer);
             output_summary_stats(cout, false, timer);
-
-            emit_tweets(DATA_TIME, true, timer);
-            emit_tweets(cout, false, timer);
         }
 
         stats.n_outputs++;
