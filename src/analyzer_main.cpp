@@ -17,14 +17,13 @@
  * Addendum:
  *
  * Under this license, derivations of the #KAT Social Network Simulator typically must be provided in source
- * form. The #KAT Social Network Simulator and derivations thereof may be relicensed by decision of 
+ * form. The #KAT Social Network Simulator and derivations thereof may be relicensed by decision of
  * the original authors (Kevin Ryczko & Adam Domurad, Isaac Tamblyn), as well, in the case of a derivation,
- * subsequent authors. 
+ * subsequent authors.
  */
 
 #include <string>
 #include <cassert>
-#include <iostream>
 #include <fstream>
 #include <vector>
 #include <iomanip>
@@ -64,15 +63,15 @@ static void signal_handler(int __dummy) {
 }
 
 static void signal_handlers_uninstall(AnalysisState& state) {
-   signal(SIGINT, SIG_DFL);
-   signal(SIGUSR1 , SIG_DFL); // For custom interaction
+    signal(SIGINT, SIG_DFL);
+    signal(SIGUSR1 , SIG_DFL); // For custom interaction
 }
 
 static void signal_handlers_install(AnalysisState& state) {
-   if (state.config.handle_ctrlc) {
-       signal(SIGINT, signal_handler);
-   }
-   signal(SIGUSR1, signal_handler); // For custom interaction
+    if (state.config.handle_ctrlc) {
+        signal(SIGINT, signal_handler);
+    }
+    signal(SIGUSR1, signal_handler); // For custom interaction
 }
 
 /* The Analyzer struct encapsulates the many-parameter analyze function, and its state. */
@@ -85,14 +84,14 @@ struct Analyzer {
     AnalysisState& state;
     ParsedConfig& config;
     NetworkStats& stats;
-    
+
     // struct for the agent classes, see network.h for specifications
     AgentTypeVector& agent_types;
 
     // The network state
     Network& network;
 
-	// Categories for tweeting, following, retweeting
+    // Categories for tweeting, following, retweeting
     CategoryGrouper& tweet_ranks;
     CategoryGrouper& follow_ranks;
     CategoryGrouper& retweet_ranks;
@@ -132,17 +131,17 @@ struct Analyzer {
         //** Here, we initialize REFERENCES to the various analysis pieces.
         //** The only way to initialize references is through this construct -- called an 'initializer list'.
         //** This ensures that updates are witnessed in the caller's AnalysisState object.
-            state(state), stats(state.stats), config(state.config),
-            agent_types(state.agent_types), network(state.network),
-            tweet_ranks(state.tweet_ranks), follow_ranks(state.follow_ranks), retweet_ranks(state.retweet_ranks),
-            rng(state.rng), time(state.time), add_rates(state.config.add_rates), tweet_bank(state.tweet_bank),
-            most_pop_tweet(state.most_pop_tweet), hashtags(state.hashtags), output_time_checker(output_time_checker_from_config(state.config)) {
+        state(state), stats(state.stats), config(state.config),
+        agent_types(state.agent_types), network(state.network),
+        tweet_ranks(state.tweet_ranks), follow_ranks(state.follow_ranks), retweet_ranks(state.retweet_ranks),
+        rng(state.rng), time(state.time), add_rates(state.config.add_rates), tweet_bank(state.tweet_bank),
+        most_pop_tweet(state.most_pop_tweet), hashtags(state.hashtags), output_time_checker(output_time_checker_from_config(state.config)) {
 
         // The following allocates a memory chunk proportional to max_agents:
         network.allocate(config.max_agents);
 
         DATA_TIME.open("output/DATA_vs_TIME");
-        
+
         set_initial_agents();
         analyzer_rate_update(state);
         init_referral_rate_function(config);
@@ -151,12 +150,12 @@ struct Analyzer {
         // for now, this function decreases over time by 1 / t
         int projected_months = config.max_sim_time / APPROX_MONTH;
         for (int i = 0; i <= projected_months; i ++) {
-            config.referral_rate_function.monthly_rates.push_back(1.0 / (double) (1+i));
+            config.referral_rate_function.monthly_rates.push_back(1.0 / (double) (1 + i));
         }
     }
     void set_initial_agents() {
         for (int i = 0; i < config.initial_agents; i++) {
-             action_create_agent();
+            action_create_agent();
         }
     }
 
@@ -186,7 +185,7 @@ struct Analyzer {
     }
 
     bool real_time_check() {
-        const int MINUTE_TO_MICROSECOND = 60*1000000LL;
+        const int MINUTE_TO_MICROSECOND = 60 * 1000000LL;
         return (max_sim_timer.get_microseconds() < (config.max_real_time * MINUTE_TO_MICROSECOND));
     }
     void interrupt_reset() {
@@ -229,7 +228,7 @@ struct Analyzer {
                 analyzer_handle_follow(state, f.id, a.id, 0);
             }
         }
-      }
+    }
 
     void load_network_state(const char* fname) {
         printf("LOADING NETWORK STATE FROM %s\n", fname);
@@ -238,7 +237,7 @@ struct Analyzer {
         reader << previous_config_file;
         if (!config.ignore_load_config_check && previous_config_file != config.entire_config_file) {
             error_exit("Error, config file does not exactly match the one being loaded from!\n"
-                    "If you do not care, please set output.ignore_load_config_check to true.\nExiting...");
+                       "If you do not care, please set output.ignore_load_config_check to true.\nExiting...");
         }
         state.visit(reader);
 
@@ -264,15 +263,15 @@ struct Analyzer {
     void run_network_simulation(Timer& timer) {
         if (config.output_stdout_summary)
             cout << setw(25)
-            << "Simulation Time (min)" << setw(25)
-            << "Agents" << setw(25)
-            << "Follows" << setw(25)
-            << "Tweets" << setw(25)
-            << "Active Tweets" << setw(25)
-            << "Retweets" << setw(25)
-            << "Unfollows" << setw(25)
-            << "Cumulative-Rate" << setw(25)
-            << "Real Time (s)" << "\n\n";
+                 << "Simulation Time (min)" << setw(25)
+                 << "Agents" << setw(25)
+                 << "Follows" << setw(25)
+                 << "Tweets" << setw(25)
+                 << "Active Tweets" << setw(25)
+                 << "Retweets" << setw(25)
+                 << "Unfollows" << setw(25)
+                 << "Cumulative-Rate" << setw(25)
+                 << "Real Time (s)" << "\n\n";
         while (sim_time_check() && real_time_check()) {
             if (!interrupt_check()) {
                 interrupt_reset();
@@ -286,9 +285,9 @@ struct Analyzer {
                     break;
                 }
             }
-        	if (!step_analysis(timer)) {
-        	    break;
-        	}
+            if (!step_analysis(timer)) {
+                break;
+            }
         }
         if (config.save_network_on_timeout) {
             save_network_state(config.save_file.c_str());
@@ -341,7 +340,7 @@ struct Analyzer {
 
         lua_hook_add(state, id);
 
-        if (config.use_barabasi){
+        if (config.use_barabasi) {
             // follow so many times depending on setting
             for (int i = 0; i < config.barabasi_connections; i ++) {
                 analyzer_follow_agent(state, id, creation_time);
@@ -371,7 +370,7 @@ struct Analyzer {
         ti->language = lang;
         return ti;
     }
-    
+
     bool include_hashtag() {
         return rng.random_chance(config.hashtag_prob);
     }
@@ -388,8 +387,8 @@ struct Analyzer {
         tweet.id_tweeter = id_tweeter;
         tweet.id_link = id_link;
         tweet.generation = generation;
-        // if this is a hashtag and not a retweet, we have to add the agent id into 
-        // the circular buffer. 
+        // if this is a hashtag and not a retweet, we have to add the agent id into
+        // the circular buffer.
         if (include_hashtag() && generation == 0) {
             RECORD_STAT(state, e_tweeter.agent_type, n_hashtags);
             tweet.hashtag = true;
@@ -411,93 +410,93 @@ struct Analyzer {
         return tweet;
     }
 
-	// function to handle the tweeting
-	bool action_tweet(int id_tweeter) {
-	    PERF_TIMER();
+    // function to handle the tweeting
+    bool action_tweet(int id_tweeter) {
+        PERF_TIMER();
 
-            // This is the agent tweeting
-                    Agent& e = network[id_tweeter];
-            tweet_ranks.categorize(id_tweeter, e.n_tweets);
-            e.n_tweets++;
-            generate_tweet(id_tweeter, id_tweeter, 0, generate_tweet_content(id_tweeter));
-            lua_hook_tweet(state, id_tweeter, e.n_tweets);
-            // Generate the tweet content:
-            // increase the number of tweets the agent had by one
-            if (e.n_tweets / (time - e.creation_time) >= config.unfollow_tweet_rate) {
-                action_unfollow(id_tweeter);
-            }
+        // This is the agent tweeting
+        Agent& e = network[id_tweeter];
+        tweet_ranks.categorize(id_tweeter, e.n_tweets);
+        e.n_tweets++;
+        generate_tweet(id_tweeter, id_tweeter, 0, generate_tweet_content(id_tweeter));
+        lua_hook_tweet(state, id_tweeter, e.n_tweets);
+        // Generate the tweet content:
+        // increase the number of tweets the agent had by one
+        if (e.n_tweets / (time - e.creation_time) >= config.unfollow_tweet_rate) {
+            action_unfollow(id_tweeter);
+        }
 
-            RECORD_STAT(state, e.agent_type, n_tweets);
+        RECORD_STAT(state, e.agent_type, n_tweets);
 
-            return true; // Always succeeds
-	}
+        return true; // Always succeeds
+    }
 
-	// Despite being called action_retweet, may result in follow
-	// depending on probability encoded in PreferenceClass, if not first-generation tweet.
-	bool action_retweet(RetweetChoice choice, double time_of_retweet) {
-	    PERF_TIMER();
-		Agent& e_observer = network[choice.id_observer];
+    // Despite being called action_retweet, may result in follow
+    // depending on probability encoded in PreferenceClass, if not first-generation tweet.
+    bool action_retweet(RetweetChoice choice, double time_of_retweet) {
+        PERF_TIMER();
+        Agent& e_observer = network[choice.id_observer];
 
-		PreferenceClass& obs_pref_class = config.pref_classes[e_observer.preference_class];
+        PreferenceClass& obs_pref_class = config.pref_classes[e_observer.preference_class];
 
         if (config.use_follow_via_retweets) {
-    		if (choice.generation > 0) {
-    		    // Not first-generation tweet? Attempt follow.
-    		    // Note this is not attempted for first-generation tweets because the observer
-    		    // would necessarily be in the authors follower set already.
+            if (choice.generation > 0) {
+                // Not first-generation tweet? Attempt follow.
+                // Note this is not attempted for first-generation tweets because the observer
+                // would necessarily be in the authors follower set already.
                 double val = preferential_weight(state);
                 if (rng.random_chance(val)) {
                     // Return success of follow:
                     RECORD_STAT(state, e_observer.agent_type, n_retweet_follows);
                     return analyzer_handle_follow(state, choice.id_observer, choice.id_author, N_FOLLOW_MODELS + 2);
                 }
-    		}
+            }
         }
 
-		generate_tweet(choice.id_observer, choice.id_link, choice.generation, *choice.content);
+        generate_tweet(choice.id_observer, choice.id_link, choice.generation, *choice.content);
 
         RECORD_STAT(state, e_observer.agent_type, n_retweets);
         e_observer.n_retweets ++;
 
         return true;
-	}
+    }
 
-	// Causes 'id_unfollowed' to lose a follower
-	// Returns true if a follower was removed, false if there was no follower to remove
-	bool action_unfollow(int id_unfollowed) {
-	    PERF_TIMER();
+    // Causes 'id_unfollowed' to lose a follower
+    // Returns true if a follower was removed, false if there was no follower to remove
+    bool action_unfollow(int id_unfollowed) {
+        PERF_TIMER();
 
-		FollowerSet& candidate_followers = network.follower_set(id_unfollowed);
+        FollowerSet& candidate_followers = network.follower_set(id_unfollowed);
 
-		int id_lost_follower = -1; // The agent to unfollow us
-		if (!candidate_followers.pick_random_uniform(rng, id_lost_follower)) {
-		    perf_timer_end("action_unfollow");
-		    return false; // Empty
-		}
+        int id_lost_follower = -1; // The agent to unfollow us
+        if (!candidate_followers.pick_random_uniform(rng, id_lost_follower)) {
+            perf_timer_end("action_unfollow");
+            return false; // Empty
+        }
 
-		DEBUG_CHECK(id_lost_follower != -1, "Should not be -1 after choice!");
+        DEBUG_CHECK(id_lost_follower != -1, "Should not be -1 after choice!");
 
         // Remove our target from our actor's follows:
         bool had_follower = candidate_followers.remove(network[id_lost_follower]);
-		DEBUG_CHECK(had_follower, "unfollow: Did not exist in follower list");
+        DEBUG_CHECK(had_follower, "unfollow: Did not exist in follower list");
 
         // Remove our unfollowed person from our target's followers:
-		Agent& e_lost_follower = network[id_lost_follower];
-		bool had_follow = e_lost_follower.following_set.remove(state, id_unfollowed);
-		DEBUG_CHECK(had_follow, "unfollow: Did not exist in follow list");
+        Agent& e_lost_follower = network[id_lost_follower];
+        bool had_follow = e_lost_follower.following_set.remove(state, id_unfollowed);
+        DEBUG_CHECK(had_follow, "unfollow: Did not exist in follow list");
 
-		lua_hook_unfollow(state, id_lost_follower, id_unfollowed);
-		RECORD_STAT(state, e_lost_follower.agent_type, n_unfollows);
+        lua_hook_unfollow(state, id_lost_follower, id_unfollowed);
+        RECORD_STAT(state, e_lost_follower.agent_type, n_unfollows);
 
-		return true;
-	}
+        return true;
+    }
 
-	// Helper for step_analysis.
-	// Subtracts from a 'double' variable, 'var' by 'increment', and returns the new value.
-	static double subtract_var(double& var, double increment) {
-	    var -= increment;
-	    return var;
-	}
+    // Helper for step_analysis.
+    // Subtracts from a 'double' variable, 'var' by 'increment', and returns the new value.
+    static double subtract_var(double& var, double increment) {
+        var -= increment;
+        return var;
+    }
 
     // Performs one step of the analysis routine.
     // Takes old time, returns new time
@@ -525,8 +524,8 @@ struct Analyzer {
          *
          * The comment use to incorrectly state "At this point, the only logical course is to retry the whole KMC event."
          *
-         * Only, this isn't the case. The correct thing to do is to continue, because KMC is tolerant to 
-         * arbitrarily large 'do-nothing' rate blocks. 
+         * Only, this isn't the case. The correct thing to do is to continue, because KMC is tolerant to
+         * arbitrarily large 'do-nothing' rate blocks.
          *
          * Retrying as we did before (ie, not moving time forward) caused some underestimation in the time of events.
          */
@@ -536,7 +535,7 @@ struct Analyzer {
         lua_hook_step_analysis(state);
 
         // Get a random number within [0,1).
-        double r = rng.rand_real_not0(); // 
+        double r = rng.rand_real_not0(); //
         // Decide what action corresponds to our random number.
         if (subtract_var(r, stats.prob_add) <= ZEROTOL) {
             // The agent creation event
@@ -584,18 +583,18 @@ struct Analyzer {
 
         if (config.output_stdout_summary && output_time_checker.has_past(time)) {
             output_summary_stats(timer);
-        } 
+        }
     }
 
     /***************************************************************************
      * Helper functions`
      ***************************************************************************/
-    
+
     bool is_following(int& follower, int& followee) {
         FollowingSet& fs = network.following_set(follower);
         return fs.contains(followee);
     }
-    
+
     bool is_path(Tweet& tweet, vector<Tweet>& atl) {
         int gen = tweet.generation;
         vector<Tweet> tweet_list;
@@ -612,7 +611,7 @@ struct Analyzer {
         }
         return false;
     }
-    
+
     bool retweet_checks() {
         // atl --- active tweet list
         vector<Tweet> atl = tweet_bank.as_vector();
@@ -621,7 +620,7 @@ struct Analyzer {
             if (tweet.creation_time != tweet.content->time_of_tweet) {
                 if (is_path(tweet, atl)) {
                     return true;
-                } 
+                }
             } else if (tweet.creation_time == tweet.content->time_of_tweet) {
                 return true;
             }
@@ -637,7 +636,7 @@ struct Analyzer {
             UsedAgents& ue = tweet.content->used_agents;
             if (ue.size() > local_max) {
                 if (tweet.creation_time == tweet.content->time_of_tweet)
-                local_max = ue.size();
+                    local_max = ue.size();
                 local_tweet = tweet;
             }
         }
@@ -646,7 +645,7 @@ struct Analyzer {
             most_pop_tweet.most_popular_tweet = local_tweet;
         }
     }
-    
+
     void output_tweets() {
         vector<Tweet> atl = tweet_bank.as_vector();
         ofstream output;
@@ -657,30 +656,60 @@ struct Analyzer {
         }
     }
 
+    void emit_tweets(ostream& stream, bool newline, Timer& timer) {
+        std::ofstream tweet_stream_file;
+        tweet_stream_file.open("tweets.json");
+        if (newline) {
+            tweet_stream_file << scientific << setprecision(8) << setw(25)
+                              << time << setw(25)
+                              << network.size() << setw(25)
+                              << stats.global_stats.n_follows << setw(25)
+                              << stats.global_stats.n_tweets << setw(25)
+                              << state.tweet_bank.n_active_tweets() << setw(25)
+                              << stats.global_stats.n_retweets << setw(25)
+                              << stats.global_stats.n_unfollows << setw(25)
+                              << stats.event_rate << setw(25)
+                              << timer.get_microseconds() * 1e-6 << "\n";
+            tweet_stream_file.close();
+        } else {
+            tweet_stream_file << setprecision(2) << scientific << setw(25)
+                              << time << setw(25)
+                              << (double) network.size() << setw(25)
+                              << (double) stats.global_stats.n_follows << setw(25)
+                              << (double) stats.global_stats.n_tweets << setw(25)
+                              << (double) state.tweet_bank.n_active_tweets() << setw(25)
+                              << (double) stats.global_stats.n_retweets << setw(25)
+                              << (double) stats.global_stats.n_unfollows << setw(25)
+                              << stats.event_rate << setw(25)
+                              << timer.get_microseconds() * 1e-6 << "\r";
+            tweet_stream_file.close();
+        }
+    }
+
     void output_summary_stats(ostream& stream, bool newline, Timer& timer) {
         if (newline) {
             stream << scientific << setprecision(8) << setw(25)
-            << time << setw(25)
-            << network.size() << setw(25)
-            << stats.global_stats.n_follows << setw(25)
-            << stats.global_stats.n_tweets << setw(25)
-            << state.tweet_bank.n_active_tweets() << setw(25)
-            << stats.global_stats.n_retweets << setw(25)
-            << stats.global_stats.n_unfollows << setw(25)
-            << stats.event_rate << setw(25)
-            << timer.get_microseconds()*1e-6 << "\n";
+                   << time << setw(25)
+                   << network.size() << setw(25)
+                   << stats.global_stats.n_follows << setw(25)
+                   << stats.global_stats.n_tweets << setw(25)
+                   << state.tweet_bank.n_active_tweets() << setw(25)
+                   << stats.global_stats.n_retweets << setw(25)
+                   << stats.global_stats.n_unfollows << setw(25)
+                   << stats.event_rate << setw(25)
+                   << timer.get_microseconds() * 1e-6 << "\n";
             flush(stream);
         } else {
             stream << setprecision(2) << scientific << setw(25)
-            << time << setw(25)
-            << (double) network.size() << setw(25)
-            << (double) stats.global_stats.n_follows << setw(25)
-            << (double) stats.global_stats.n_tweets << setw(25)
-            << (double) state.tweet_bank.n_active_tweets() << setw(25)
-            << (double) stats.global_stats.n_retweets << setw(25)
-            << (double) stats.global_stats.n_unfollows << setw(25)
-            << stats.event_rate << setw(25)
-            << timer.get_microseconds()*1e-6 << "\r";
+                   << time << setw(25)
+                   << (double) network.size() << setw(25)
+                   << (double) stats.global_stats.n_follows << setw(25)
+                   << (double) stats.global_stats.n_tweets << setw(25)
+                   << (double) state.tweet_bank.n_active_tweets() << setw(25)
+                   << (double) stats.global_stats.n_retweets << setw(25)
+                   << (double) stats.global_stats.n_unfollows << setw(25)
+                   << stats.event_rate << setw(25)
+                   << timer.get_microseconds() * 1e-6 << "\r";
             flush(stream);
         }
     }
@@ -688,20 +717,23 @@ struct Analyzer {
 
         if (stats.n_outputs == 0) {
             DATA_TIME << "#" << setw(25)
-            << "Simulation Time (min)" << setw(25)
-            << "Agents" << setw(25)
-            << "Follows" << setw(25)
-            << "Tweets" << setw(25)
-            << "Active Tweets" << setw(25)
-            << "Retweets" << setw(25)
-            << "Unfollows" << setw(25)
-            << "Cumulative-Rate" << setw(25)
-            << "Real Time (s)" << "\n";
+                      << "Simulation Time (min)" << setw(25)
+                      << "Agents" << setw(25)
+                      << "Follows" << setw(25)
+                      << "Tweets" << setw(25)
+                      << "Active Tweets" << setw(25)
+                      << "Retweets" << setw(25)
+                      << "Unfollows" << setw(25)
+                      << "Cumulative-Rate" << setw(25)
+                      << "Real Time (s)" << "\n";
         }
 
         if (stats.n_outputs % STDOUT_OUTPUT_RATE == 0) {
             output_summary_stats(DATA_TIME, true, timer);
             output_summary_stats(cout, false, timer);
+
+            emit_tweets(DATA_TIME, true, timer);
+            emit_tweets(cout, false, timer);
         }
 
         stats.n_outputs++;
@@ -754,3 +786,4 @@ void analyzer_main(AnalysisState& state) {
     // Print summary time:
     printf("'analyzer_main' took %.2f milliseconds.\n", timer.get_microseconds() / 1000.0);
 }
+
