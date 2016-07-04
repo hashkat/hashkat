@@ -665,10 +665,10 @@ struct Analyzer {
         tweet_stream_file << "{" << "\n";
         for (auto& t : atl) {
             tweet_stream_file << "{" <<
-                              "\"ID:\"" << t.id_tweeter << ",\n"
-                              << "\"origID:\"" << t.content->id_original_author << ",\n"
-                              << "\"time:\"" << t.creation_time << ",\n"
-                              << "\"origTime\"" << t.content->time_of_tweet << "\n"
+                              "\"ID\":" << t.id_tweeter << ",\n"
+                              << "\"origID\":" << t.content->id_original_author << ",\n"
+                              << "\"time\":" << t.creation_time << ",\n"
+                              << "\"origTime\":" << t.content->time_of_tweet << "\n"
                               << "}," << "\n";
         }
 
