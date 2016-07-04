@@ -29,7 +29,6 @@
 #include <map>
 #include <vector>
 #include <fstream>
-#include <iostream>
 
 #include <lcommon/Timer.h>
 #include <lcommon/smartptr.h>
@@ -43,8 +42,6 @@
 
 #include "DataReadWrite.h"
 #include "TweetBank.h"
-
-using namespace std;
 
 extern volatile int SIGNAL_ATTEMPTS;
 
