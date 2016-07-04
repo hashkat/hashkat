@@ -17,9 +17,9 @@
  * Addendum:
  *
  * Under this license, derivations of the #KAT Social Network Simulator typically must be provided in source
- * form. The #KAT Social Network Simulator and derivations thereof may be relicensed by decision of 
+ * form. The #KAT Social Network Simulator and derivations thereof may be relicensed by decision of
  * the original authors (Kevin Ryczko & Adam Domurad, Isaac Tamblyn), as well, in the case of a derivation,
- * subsequent authors. 
+ * subsequent authors.
  */
 
 #ifndef __ANALYZE_H_
@@ -28,6 +28,8 @@
 #include <string>
 #include <map>
 #include <vector>
+#include <fstream>
+#include <iostream>
 
 #include <lcommon/Timer.h>
 #include <lcommon/smartptr.h>
@@ -41,6 +43,8 @@
 
 #include "DataReadWrite.h"
 #include "TweetBank.h"
+
+using namespace std;
 
 extern volatile int SIGNAL_ATTEMPTS;
 
@@ -126,13 +130,13 @@ struct AnalysisState {
     double end_time;
 
     /* tweet_bank: The central tweeting data-structure.
-   
-     Holds all the incoming 'tweets', abstract packages of information that are 
-     propagated through an agent'network by agent connections. 
-     
-     Those subscribing to (following) another agent are elligible for tweet 
+
+     Holds all the incoming 'tweets', abstract packages of information that are
+     propagated through an agent'network by agent connections.
+
+     Those subscribing to (following) another agent are elligible for tweet
      reaction upon observing their 'feed'
-    
+
      and organizes them into a tree-structure.
      This structure contains rate summaries for each node of the tree, allowing
      for selection via a number of weighted steps.
@@ -150,18 +154,18 @@ struct AnalysisState {
 
     MostPopularTweet most_pop_tweet;
 
-    /* HashTags: 
-     An abstraction of global, topic-oriented discussion lists taking place 
-     in the social network. This can result in information passing across the 
-     entire network. 
-     
+    /* HashTags:
+     An abstraction of global, topic-oriented discussion lists taking place
+     in the social network. This can result in information passing across the
+     entire network.
+
      A small window of 'tweets' are kept for each topic, and every agent has
      a chance of propagating a given tweet in their own immediate network. */
 
     HashTags hashtags;
     std::vector<double> updating_follow_probabilities;
 
-    /* InteractiveModeState: 
+    /* InteractiveModeState:
      State for determining when to begin interactive mode. See above. */
     InteractiveModeState interactive_mode_state;
 
@@ -171,8 +175,13 @@ struct AnalysisState {
      Various statistics gathered for analysis purposes. */
     NetworkStats stats;
 
+    /*
+    Writing out Tweets = in a JSON file
+    */
+    std::ofstream tweet_stream_file {"tweets.json"};
+
     AnalysisState(const ParsedConfig& config, int seed) :
-            config(config), tweet_bank(*this){
+        config(config), tweet_bank(*this) {
         n_follows = 0;
         end_time = 0;
 
@@ -249,10 +258,10 @@ struct RetweetChoice {
     // in the short while we retweet, so a pointer is safe.
     smartptr<TweetContent>* content;
     RetweetChoice() :
-            id_author(-1), id_observer(-1), id_link(-1), generation(-1), content(NULL) {
+        id_author(-1), id_observer(-1), id_link(-1), generation(-1), content(NULL) {
     }
     RetweetChoice(int id_author, int id_observer, int id_link, int generation, smartptr<TweetContent>* tweet) :
-            id_author(id_author), id_observer(id_observer), id_link(id_link), generation(generation), content(tweet) {
+        id_author(id_author), id_observer(id_observer), id_link(id_link), generation(generation), content(tweet) {
     }
     bool valid() {
         return (id_author != -1);
