@@ -658,7 +658,7 @@ struct Analyzer {
 
     void emit_tweets() {
         std::ofstream tweet_stream_file;
-        tweet_stream_file.open("tweet_bank.json");
+        tweet_stream_file.open("output/tweet_bank.json");
 
         vector<Tweet> atl = tweet_bank.as_vector();
 
@@ -669,7 +669,7 @@ struct Analyzer {
                               << "\"origID:\"" << t.content->id_original_author << ",\n"
                               << "\"time:\"" << t.creation_time << ",\n"
                               << "\"origTime\"" << t.content->time_of_tweet << "\n"
-                              << "};" << "\n";
+                              << "}," << "\n";
         }
 
         tweet_stream_file << "}" << "\n";

@@ -175,7 +175,7 @@ struct AnalysisState {
     /*
     Writing out Tweets = in a JSON file
     */
-    std::ofstream tweet_stream_file {"tweet_bank.json"};
+    std::ofstream tweet_stream_file {"output/tweet_bank.json"};
 
     AnalysisState(const ParsedConfig& config, int seed) :
         config(config), tweet_bank(*this) {
