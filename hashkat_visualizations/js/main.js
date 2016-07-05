@@ -35,7 +35,7 @@ if (!Detector.webgl) {
 
 
         xhr = new XMLHttpRequest();
-        xhr.open('GET', './json/test.json', true);
+        xhr.open('GET', './json/newtest.json', true);
         xhr.onreadystatechange = function(e) {
             if (xhr.readyState === 4) {
                 if (xhr.status === 200) {
