@@ -7,6 +7,7 @@
   * This shall be used in the _interactive_mode_
   * Aims to check for the request for after each "n" iterations, query and send back results
   * Planned to be implemened using Python
+  * Reference: [API_plans.md](https://github.com/hashkat/hashkat/blob/master/API_plans.md)
 
 - [ ] 3. Use HTML and JS to create both a stand-alone Electron app and a web site that can control hashkat, either on the same computer or a server. 
 
