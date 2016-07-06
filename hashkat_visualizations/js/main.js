@@ -31,6 +31,11 @@ if (!Detector.webgl) {
         window.setTimeout(settime(globe, i), time);
     }
 
+    for (var i = 0; i < options.length; i++) {
+        var y = document.getElementById('option' + options[i]);
+        y.addEventListener('mouseover', settime(globe, i), false);
+    }
+
     var xhr;
     TWEEN.start();
 
