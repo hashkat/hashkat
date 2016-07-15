@@ -1,17 +1,18 @@
 language: cpp
-
-compiler:
-    clang:
-        - 3.8
-addons:
-   apt:
-     sources:
-       - ubuntu-toolchain-r-test
-       - llvm-toolchain-precise-3.7
-     packages:
-       - clang-3.8
-script:
+matrix:
+  include:
+    - compiler: clang
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+            - llvm-toolchain-precise-3.7
+          packages:
+            - clang-3.7
+      env: CXX=clang++-3.7 CC=clang-3.7
+before_install:
   - sudo apt-get install cmake
   - sudo apt-get install build-essential -y
+script:
   - ./build.sh -O
   - ./run.sh
