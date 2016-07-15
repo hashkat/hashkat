@@ -1,8 +1,15 @@
 language: cpp
 
 compiler:
-  - clang
-
+    clang:
+        - 3.8
+addons:
+   apt:
+     sources:
+       - ubuntu-toolchain-r-test
+       - llvm-toolchain-precise-3.7
+     packages:
+       - clang-3.8
 script:
   - sudo apt-get install cmake
   - sudo apt-get install build-essential -y
