@@ -89,6 +89,11 @@ public:
     }
 
     short start, end;
+
+    template <typename Archive>
+    void serialize(Archive& ar) {
+        ar(buffer);
+    }
 private:
     T buffer[cap + 1]; // Contains sentinel element. Shielded from direct access
 };

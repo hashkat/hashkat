@@ -25,7 +25,7 @@
 #ifndef RATETREE_H_
 #define RATETREE_H_
 
-#include "DataReadWrite.h"
+#include "serialization.h"
 
 // 100 bytes / tweet overhead
 // Make global choice based on tree
@@ -79,11 +79,12 @@ struct RateVec {
         ret.sub(*this);
         return ret;
     }
-    READ_WRITE(rw) {
+    template <typename Archive>
+    void serialize(Archive& ar) {
         for (double& val : tuple) {
-            rw << val;
+            ar(val);
         }
-        rw << tuple_sum;
+        ar(tuple_sum);
     }
 };
 
@@ -105,12 +106,13 @@ struct RateTree {
 
         ref_t children[N_CHILDREN]; // INVALID if not allocated
 
-        READ_WRITE(rw) {
-            rw << parent << depth << is_leaf << is_allocated;
-            data.visit(rw);
-            rates.visit(rw);
+        template <typename Archive>
+    void serialize(Archive& ar) {
+            ar(parent, depth, is_leaf, is_allocated);
+            ar(data);
+            ar(rates);
             for (ref_t& child : children) {
-                rw << child;
+                ar(child);
             }
         }
 
@@ -427,13 +429,12 @@ struct RateTree {
         return n_elems;
     }
 
-    READ_WRITE(rw) {
-        rw << n_elems;
-        rw << free_list; //Freed nodes
-        rw.visit_objs(node_pool);
-        rw.visit_size(vacancy_list);
+    template <typename Archive>
+    void serialize(Archive& ar) {
+        ar(n_elems, free_list); //Freed nodes
+        ar(node_pool, vacancy_list);
         for (auto& list : vacancy_list) {
-            rw << list;
+            ar(list);
         }
         printf("Checking tweet/retweet RateTree structure integrity...\n");
         debug_check_rates();

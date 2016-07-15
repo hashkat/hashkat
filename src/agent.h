@@ -40,19 +40,14 @@
 #include "FollowerSet.h"
 
 #include "tweets.h"
-
-#include "DataReadWrite.h"
+#include "serialization.h"
 
 // Forward declare, to prevent circular header inclusion:
 struct AnalysisState;
 
 struct Agent {
-    // Storing the id is redundant (since it can be inferred), but provides convenient handling
+    // Storing the id is somewhat redundant (since it can be inferred from Agent address), but provides convenient handling
     int id = -1;
-
-    //** AD: The ability to put initializers right in the class
-    //** is new in C++11
-
     int agent_type = -1;
     int preference_class = -1;
     int n_tweets = 0, n_retweets = 0;
@@ -90,25 +85,27 @@ struct Agent {
         }
     }
 
-    PREREAD_WRITE(rw) {
-        rw << id << agent_type << preference_class
-           << n_tweets << n_retweets 
-           << region_bin
-           << ideology_tweet_percent << creation_time
-           << avg_chatiness
-           << language
-           << ideology_bin
-           << chatty_agents;
-        rw.checkMagic(0x4444);
-        // following_set and follower_set are specially handled below
+    template <typename Archive>
+    void serialize(Archive& ar) {
+        ar(NVP(id), NVP(agent_type), NVP(preference_class)
+          , NVP(n_tweets), NVP(n_retweets)
+          , NVP(region_bin)
+          , NVP(ideology_tweet_percent), NVP(creation_time)
+          , NVP(avg_chatiness)
+          , NVP(language)
+          , NVP(ideology_bin)
+          , NVP(chatty_agents)
+          , NVP(following_set)
+          , NVP(follower_set)
+          , NVP(following_method_counts)
+          , NVP(follower_method_counts));
+        check_magic(ar, 0x4444);
     }
 
-    // 'Visits' every node, eg for serialization or testing
-    READ_WRITE(rw) {
-        following_set.visit(rw);
-        follower_set.visit(rw);
+    void post_load(AnalysisState& state) {
+        follower_set.post_load(state);
+        following_set.post_load(state);
     }
-
 };
 
 struct AgentStats {
@@ -118,6 +115,14 @@ struct AgentStats {
     int64 n_agent_follows = 0, n_pref_agent_follows = 0;
     int64 n_retweet_follows = 0, n_hashtag_follows = 0;
     int64 n_hashtags = 0;
+    template <typename Archive>
+    void save(Archive& ar) const {
+        ar.saveBinary(this, sizeof(*this));
+    }
+    template <typename Archive>
+    void load(Archive& ar) {
+        ar.loadBinary(this, sizeof(*this));
+    }
 };
 
 /*
@@ -129,8 +134,8 @@ struct AgentStats {
 
 struct AgentType {
     std::string name;
-    double prob_add = 0; // When a agent is added, how likely is it that it is this agent type ?
-    double prob_follow = 0; // When a agent is followed, how likely is it that it is this agent type ?
+    double prob_add = 0; // When an agent is added, how likely is it that it is this agent type ?
+    double prob_follow = 0; // When an agent is followed, how likely is it that it is this agent type ?
     double prob_followback = 0;
     int new_agents = 0; // the number of new users in this agent type
     Rate_Function RF[number_of_diff_events];
@@ -168,21 +173,22 @@ struct AgentType {
         }
     }
 
-    READ_WRITE(rw) {
-        rw << name << prob_add << prob_follow << prob_followback;
-        rw << new_agents;
+    template <typename Archive>
+    void serialize(Archive& ar) {
+        ar(name, prob_add, prob_follow, prob_followback);
+        ar(new_agents);
         for (auto& rf : RF) {
-            rf.visit(rw);
+            ar(rf);
         }
-        rw << care_about_region << care_about_ideology;
-        rw << agent_cap << agent_list;
-        age_ranks.visit(rw);
-        follow_ranks.visit(rw);
-        rw << updating_probs << stats;
+        ar(care_about_region, care_about_ideology);
+        ar(agent_cap, agent_list);
+        ar(age_ranks);
+        ar(follow_ranks);
+        ar(updating_probs, stats);
         for (auto& ttp : tweet_type_probs) {
-            rw << ttp;
+            ar(ttp);
         }
-    	rw.checkMagic(0x5555);
+    	check_magic(ar, 0x5555);
     }
 };
 

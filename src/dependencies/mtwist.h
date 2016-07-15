@@ -46,10 +46,8 @@
 
 #include <vector>
 
+#include "../util.h" // For DEBUG_CHECK
 #include "dependencies/lcommon/perf_timer.h"
-
-// AD: Intrusive, but had to be done for quick implementation of serialization:
-#include "../DataReadWrite.h"
 
 // Mersenne twister random number generator
 class MTwist {
@@ -92,12 +90,11 @@ public:
     /* generates a random number on [0,1) with 53-bit resolution*/
     double genrand_res53(void);
 
-// AD: Added for Twitter simulation
-
-    /* Grab an integer from 0 to max, non-inclusive (ie appropriate for array lengths). */
+    /* AD: Added for hashkat to generate integers without bias.
+     * Grab an integer from 0 to max, non-inclusive (ie appropriate for array lengths). */
     int rand_int(int max) {
         PERF_TIMER();
-        //AD: Modified to remove modulo-bias problem. Inspired by Java's nextInt implementation.
+        // Avoids the modulo-bias problem. Translation of Java's Random.nextInt implementation.
         int raw = genrand_int31();
 
         if ((max & -max) == max) { // i.e., max is a power of 2
@@ -156,8 +153,9 @@ public:
         return genrand_real1();
     }
 
-    READ_WRITE(rw) {
-        rw << mt << mti;
+    template <typename Archive>
+    void serialize(Archive& ar) {
+        ar(mt, mti);
     }
 private:
     unsigned int mt[N];

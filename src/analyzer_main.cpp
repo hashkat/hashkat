@@ -63,6 +63,14 @@ static void signal_handler(int __dummy) {
     }
 }
 
+static bool ends_with(const std::string& str, const std::string& ending) {
+    if (str.length() >= ending.length()) {
+        return (0 == str.compare (str.length() - ending.length(), ending.length(), ending));
+    } else {
+        return false;
+    }
+}
+
 static void signal_handlers_uninstall(AnalysisState& state) {
    signal(SIGINT, SIG_DFL);
    signal(SIGUSR1 , SIG_DFL); // For custom interaction
@@ -231,16 +239,18 @@ struct Analyzer {
         }
       }
 
-    void load_network_state(const char* fname) {
-        printf("LOADING NETWORK STATE FROM %s\n", fname);
-        DataReader reader(state, fname);
-        string previous_config_file;
-        reader << previous_config_file;
-        if (!config.ignore_load_config_check && previous_config_file != config.entire_config_file) {
+    template <typename Archive>
+    void load_network_state(ifstream& file) {
+        Archive reader {state, file};
+        // Deserialize the INFILE:
+        string saved_config_file = config.entire_config_file;
+        reader(NVP(saved_config_file));
+        if (!config.ignore_load_config_check && saved_config_file != config.entire_config_file) {
             error_exit("Error, config file does not exactly match the one being loaded from!\n"
                     "If you do not care, please set output.ignore_load_config_check to true.\nExiting...");
         }
-        state.visit(reader);
+        // Deserialize the state:
+        reader(NVP(state));
 
         /* Synchronize rates from the loaded configuration.
          * This is done because, although we can load a new configuration,
@@ -251,12 +261,36 @@ struct Analyzer {
         fix_agents_upon_resubmission(state);
     }
 
-    void save_network_state(const char* fname) {
+    void load_network_state(std::string fname) {
+        cout << "LOADING NETWORK STATE FROM " << fname << endl;
+        ifstream file {fname};
+        if (ends_with(fname, ".json")) {
+            load_network_state<JsonReader>(file);
+        } else {
+            load_network_state<BinaryReader>(file);
+        }
+    }
+
+    template <typename Archive>
+    void save_network_state(ofstream& file) {
+        Archive writer {state, file};
         lua_hook_save_network(state);
-        printf("\n\nSAVING NETWORK STATE TO %s\n", fname);
-        DataWriter writer(state, fname);
-        writer << config.entire_config_file;
-        state.visit(writer);
+        // Serialize the INFILE:
+        std::string saved_config_file;
+        writer(NVP(saved_config_file));
+        config.entire_config_file = saved_config_file;
+        // Serialize the state:
+        writer(NVP(state));
+    }
+
+    void save_network_state(std::string fname) {
+        cout << "\n\nSAVING NETWORK STATE TO " << fname << endl;
+        ofstream file {fname}; 
+        if (ends_with(fname, ".json")) {
+            save_network_state<JsonWriter>(file);
+        } else {
+            save_network_state<BinaryWriter>(file);
+        }
     }
 
     // ROOT ANALYSIS ROUTINE
@@ -416,7 +450,7 @@ struct Analyzer {
 	    PERF_TIMER();
 
             // This is the agent tweeting
-                    Agent& e = network[id_tweeter];
+            Agent& e = network[id_tweeter];
             tweet_ranks.categorize(id_tweeter, e.n_tweets);
             e.n_tweets++;
             generate_tweet(id_tweeter, id_tweeter, 0, generate_tweet_content(id_tweeter));

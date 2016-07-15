@@ -32,7 +32,7 @@
 
 #include "RateTree.h"
 
-#include "DataReadWrite.h"
+#include "serialization.h"
 #include "TimeDepBinner.h"
 
 #include "tweets.h"
@@ -132,12 +132,13 @@ struct TimeDepRateTree {
         return tree.pick_random_weighted(rng);
     }
 
-    READ_WRITE(rw) {
-        periodic.visit(rw);
+    template <typename Archive>
+    void serialize(Archive& ar) {
+        ar(NVP(periodic));
         // determiner carries no important state
-        rw << last_rate << initial_resolution << time;
-        tree.visit(rw);
-        binner.visit(rw);
+        ar(NVP(last_rate), NVP(initial_resolution), NVP(time));
+        ar(NVP(tree));
+        ar(NVP(binner));
     }
     int n_bins() {
         return binner.get_bins().size();
@@ -228,9 +229,9 @@ struct TweetBank {
         return tree.get(ref).data;
     }
 
-    READ_WRITE(rw) {
-        tree.visit(rw);
-        rw.check_visit(get_total_rate());
+    template <typename Archive>
+    void serialize(Archive& ar) {
+        tree.serialize(ar);
     }
 };
 

@@ -20,6 +20,11 @@ if ($ENV{BUILD_FLAGS})
     add_definitions ($ENV{BUILD_FLAGS})
 endif()
 
+if ($ENV{NO_WARNINGS})
+    add_definitions ("-w")
+endif()
+
+
 # Work-around for Travis CI
 add_definitions( "-DBOOST_NO_CXX11_ALLOCATOR" )
 

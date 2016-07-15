@@ -5,9 +5,9 @@
 #include "dependencies/mtwist.h"
 #include "lcommon/typename.h"
 #include "lcommon/strformat.h"
-#include "DataReadWrite.h"
+#include "serialization.h"
 
-#include "SerializeBufferFileMock.h"
+#include "CerealArchiveFileMock.h"
 #include <google/sparse_hash_set>
 
 // Trivial hash, for google sparse hash:
@@ -121,18 +121,21 @@ struct HashedEdgeSet {
         hash_impl.set_deleted_key((T) -1);
     }
 
-    READ_WRITE(rw) {
-        rw.checkMagic(0x5a56);
-        if (rw.is_reading()) {
-			clear();
-			hash_impl.read_metadata(&rw.get_buffer());
-			hash_impl.read_nopointer_data(&rw.get_buffer());
-        } else if (rw.is_writing()) {
-			hash_impl.write_metadata(&rw.get_buffer());
-			hash_impl.write_nopointer_data(&rw.get_buffer());
-        }
-        rw.checkMagic(0x5a54);
-    }
+// TODO: Fix and reincorporate if exact binary serialization is desired
+//    template <typename Archive>
+//    void save(Archive& ar) {
+//        check_magic(ar, 0x5a56);
+//        clear();
+//        hash_impl.read_metadata(ar);
+//        hash_impl.read_nopointer_data(ar);
+//    }
+//
+//    template <typename Archive>
+//    void load(Archive& ar) {
+//        check_magic(ar, 0x5a56);
+//        hash_impl.write_metadata(ar);
+//        hash_impl.write_nopointer_data(ar);
+//    }
 
     std::vector<T> as_vector() {
         std::vector<T> ret;
@@ -145,6 +148,25 @@ struct HashedEdgeSet {
         return ret;
     }
 
+    template <typename Archive>
+    void load(Archive& ar) {
+        clear();
+        size_t size;
+        ar( cereal::make_size_tag( (size_t) size ) );
+        for (int i = 0; i < size; i++) {
+            T elem;
+            ar(elem);
+            insert(elem);
+        }
+    }
+    template <typename Archive>
+    void save(Archive& ar) const {
+        auto vec = ((HashedEdgeSet<T>*)this)->as_vector();
+        ar( cereal::make_size_tag( (size_t) vec.size() ) );
+        for (T& elem : vec) {
+            ar(elem);
+        }
+    }
 private:
     typedef google::sparse_hash_set<T, HasherT> HashSet;
     HashSet hash_impl; // If NULL, empty

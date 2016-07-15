@@ -166,7 +166,7 @@ namespace cereal
       //! Saves some binary data, encoded as a base64 string, with an optional name
       /*! This will create a new node, optionally named, and insert a value that consists of
           the data encoded as a base64 string */
-      void saveBinaryValue( const void * data, size_t size, const char * name = nullptr )
+      void saveBinary( const void * data, size_t size, const char * name = nullptr )
       {
         setNextName( name );
         writeName();
@@ -433,7 +433,7 @@ namespace cereal
 
           Note that this follows the same ordering rules specified in the class description in regards
           to loading in/out of order */
-      void loadBinaryValue( void * data, size_t size, const char * name = nullptr )
+      void loadBinary( void * data, size_t size, const char * name = nullptr )
       {
         itsNextName = name;
 

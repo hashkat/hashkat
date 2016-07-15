@@ -43,7 +43,7 @@ extern "C" {
 #include "agent.h"
 #include "tweets.h"
 
-#include "DataReadWrite.h"
+#include "serialization.h"
 #include "TweetBank.h"
 
 extern volatile int SIGNAL_ATTEMPTS;
@@ -62,12 +62,13 @@ struct NetworkStats {
 
     AgentStats global_stats;
 
-    READ_WRITE(rw) {
-        rw << prob_add << prob_follow << prob_retweet << prob_tweet;
-        rw << event_rate << n_steps << n_outputs;
-
+    template <typename Archive>
+    void serialize(Archive& ar) {
+        ar(prob_add, prob_follow, prob_retweet, prob_tweet);
+        ar(event_rate, n_steps, n_outputs);
+        // Don't serialize 'user_did_exit'
         // Valid because only full of primitive types:
-        rw << global_stats << user_did_exit;
+        ar(global_stats, user_did_exit);
     }
 };
 
@@ -221,24 +222,29 @@ struct AnalysisState {
     }
 
     // For network reading/writing:
-    READ_WRITE(rw) {
-        network.visit(rw);
+    template <typename Archive>
+    void serialize(Archive& ar) {
+        ar(NVP(network));
+        ar(NVP(time));
+        // Don't serialize config
+        // Don't serialize event_callbacks
+        // Don't serialize analyzer
 
-        rw << time;
-        rw << updating_follow_probabilities;
+        ar(NVP(tweet_ranks));
+        ar(NVP(follow_ranks));
+        ar(NVP(retweet_ranks));
+        ar(NVP(age_ranks));
+        ar(NVP(tweet_bank));
+        ar(NVP(oldTweets));
+        ar(NVP(stats));
+        ar(NVP(hashtags));
+        ar(NVP(agent_types));
+        ar(NVP(agent_cap));
 
-        rw << agent_cap;
-        rw << n_follows << end_time;
-
-        rng.visit(rw);
-        tweet_ranks.visit(rw);
-        follow_ranks.visit(rw);
-        retweet_ranks.visit(rw);
-        age_ranks.visit(rw);
-        tweet_bank.visit(rw);
-        stats.visit(rw);
-        hashtags.visit(rw);
-        rw.visit_objs(agent_types);
+        ar(NVP(n_follows), NVP(end_time));
+        ar(NVP(updating_follow_probabilities));
+        // Don't serialize interactive_mode_state
+        ar(NVP(rng));
     }
 };
 

@@ -27,7 +27,7 @@
 
 #include "dependencies/google/sparse_hash_set"
 #include "util.h"
-#include "DataReadWrite.h"
+#include "serialization.h"
 
 // 0 - add, 1 - follow, 2 - tweet
 const int number_of_diff_events = 2;
@@ -41,8 +41,9 @@ struct Rate_Function {
         function_type = "not specified";
     }
 
-    READ_WRITE(rw) {
-        rw << function_type << slope << y_intercept << const_val << amplitude << exp_factor << monthly_rates;
+    template <typename Archive>
+    void serialize(Archive& ar) {
+        ar(function_type, slope, y_intercept, const_val, amplitude, exp_factor, monthly_rates);
     }
 };
 

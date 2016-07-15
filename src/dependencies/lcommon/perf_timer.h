@@ -36,7 +36,11 @@ private:
     const char* funcname;
 };
 
+#ifndef NDEBUG
 #define PERF_TIMER() PerfCount __perf_count(FUNCNAME)
+#else
+#define PERF_TIMER() PerfCount __perf_count(FUNCNAME)
+#endif
 
 
 #endif /* LCOMMON_PERF_TIMER_H_ */

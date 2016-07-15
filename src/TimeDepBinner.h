@@ -31,7 +31,7 @@
 
 #include <iostream>
 
-#include "DataReadWrite.h"
+#include "serialization.h"
 
 #include "dependencies/prettyprint.hpp"
 #include "lcommon/perf_timer.h"
@@ -73,8 +73,9 @@ struct TimeDepBin {
         return heap.empty();
     }
 
-    READ_WRITE(rw) {
-        rw << heap;
+    template <typename Archive>
+    void serialize(Archive& ar) {
+        ar(heap);
     }
 private:
     Heap heap;
@@ -116,8 +117,9 @@ public:
         return bins;
     }
 
-    READ_WRITE(rw) {
-        rw.visit_objs(bins);
+    template <typename Archive>
+    void serialize(Archive& ar) {
+        ar(bins);
     }
 private:
 
@@ -158,8 +160,9 @@ struct TimePeriodChecker {
         return true;
     }
 
-    READ_WRITE(rw) {
-        rw << next_check_time << interval;
+    template <typename Archive>
+    void serialize(Archive& ar) {
+        ar(next_check_time, interval);
     }
 private:
     double next_check_time, interval;
@@ -183,13 +186,14 @@ struct RealTimePeriodChecker {
        return false;
     }
 
-    READ_WRITE(rw) {
-        rw << microsecond_duration;
+    template <typename Archive>
+    void serialize(Archive& ar) {
+        ar(microsecond_duration);
     }
 private:
     Timer timer;
-    double remainder;
-    double microsecond_duration;
+    double remainder = 0;
+    double microsecond_duration = 0;
 };
 
 // Is configured to either check a real or simulated period of time.
@@ -208,10 +212,9 @@ struct RealOrSimulatedTimePeriodChecker {
         return use_simulated_time ? simulated_time_period_checker.has_past(t) : real_time_period_checker.has_past();
     }
 
-    READ_WRITE(rw) {
-        rw << use_simulated_time;
-        rw.visit(simulated_time_period_checker);
-        rw.visit(real_time_period_checker);
+    template <typename Archive>
+    void serialize(Archive& ar) {
+        ar(use_simulated_time, simulated_time_period_checker, real_time_period_checker);
     }
 private:
     bool use_simulated_time = true;

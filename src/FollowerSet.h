@@ -106,6 +106,14 @@ struct LanguageLayer {
     struct Weights {
         ChildLayer::Weights subweights[N_SUBLAYERS];
         double weights[N_SUBLAYERS] = {0};
+        template <typename Archive>
+        void save(Archive& ar) const {
+            ar.saveBinary(this, sizeof(*this));
+        }
+        template <typename Archive>
+        void load(Archive& ar) {
+            ar.loadBinary(this, sizeof(*this));
+        }
     };
 
     static int classify(Agent& agent);
@@ -184,49 +192,38 @@ struct FollowerSet {
     double determine_tweet_weights(Agent& author, TweetContent& content, WeightDeterminer& determiner, /*Weights placed here: */ Weights& output);
 
 
-    // TODO rename ignore_load_config_check to allow_configuration_modification
-    // or something similar, and fix how strict it is
-    READ_WRITE(rw) {
-        rw.checkMagic(MAGIC_CONSTANT_BEFORE_SERIALIZATION);
-        // If we expect to a load a different configuration, do a flexible serialization.
-        if (rw.state.config.ignore_load_config_check) {
-            size_t size_temp = size();
-            rw << size_temp; // Invariant: 'size_temp' now holds the true size of the FollowerSet
-            if (rw.is_reading()) {
-                for (size_t i = 0; i < size_temp; i++) {
-                    int agent_id = -1;
-                    rw << agent_id;
-                    add(rw.state.network[agent_id]);
-                }
-            } else {
-                size_t n_written = 0;
-                // is writing
-                for_each([&rw, &n_written](int agent_id){
-                    rw << agent_id;
-                    n_written++;
-                });
-                ASSERT(n_written == size_temp, "size error in follower set; detected upon serialization");
-            }
-        } else {
-            // Reach into all the layers:
-            auto& a = followers;
-            for (auto& b : a.sublayers) {
-                for (auto& c : b.sublayers) {
-                    for (auto& d : c.sublayers) {
-                        for (HashedEdgeSet<int>& set : d.sublayers) {
-                            set.visit(rw);
-                        }
-                        rw << d.n_elems;
-                    }
-                    rw << c.n_elems;
-             }
-             rw << a.n_elems;
-             }
+    // Do a 'flexible' serialization, upholding semantic meaning but not exact binary compability, allowing for reloading differing configs. 
+    // Note that because exact binary compatibility is not held, stopping a network has a reshuffling effect on data.
+    // This does not affect the validity of rates, but does mean that serializing a network does not cause it to resume in exactly the same way.
+    // Restarting a network will, however, be deterministic if done repeatedly.
+    template <typename Archive>
+    void save(Archive& ar) const {
+        ar( cereal::make_size_tag( (size_t) size() ) );
+        size_t n_written = 0; // For debugging
+        ((FollowerSet*)this)->for_each([&ar, &n_written](int agent_id){
+            ar(agent_id);
+            n_written++;
+        });
+        ASSERT(n_written == size(), "size error in follower set; detected upon serialization");
+    }
+
+    template <typename Archive>
+    void load(Archive& ar) {
+        // Helper for deserializing in two phases, to allow for agent population
+        size_t size;
+        ar( cereal::make_size_tag( size ) );
+        serialization_cache = new std::vector<int>(size);
+        for (int& edge : *serialization_cache) {
+            ar(edge);
         }
     }
+
+    void post_load(AnalysisState& state);
 private:
     // Holds the actual followers:
     TopLayer followers;
+    // For serialization:
+    std::vector<int>* serialization_cache;
 };
 
 #endif /* FOLLOWERSET_H_ */

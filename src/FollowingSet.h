@@ -64,10 +64,26 @@ struct FollowingSet {
         return implementation.size();
     }
 
-    READ_WRITE(rw) {
-        implementation.visit(rw);
+    template <typename Archive>
+    void save(Archive& ar) const {
+        ar( cereal::make_size_tag( size() ) );
+        for (int edge : ((FollowingSet*)this)->implementation.as_vector()) {
+            ar(edge);
+        }
     }
 
+    template <typename Archive>
+    void load(Archive& ar) {
+        size_t size;
+        ar( cereal::make_size_tag( size ) );
+        for (size_t i = 0; i < size ; i++) {
+            int edge;
+            ar(edge);
+            implementation.insert(edge);
+        }
+    }
+    void post_load(AnalysisState& state) {
+    }
 private:
     Followings implementation;
 };

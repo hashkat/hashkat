@@ -27,6 +27,7 @@
 #include "lcommon/typename.h"
 #include "lcommon/perf_timer.h"
 
+#include "analyzer.h"
 #include "agent.h"
 
 using namespace std;
@@ -217,6 +218,15 @@ static void print_layer(Layer& layer, int depth) {
 
 void FollowerSet::print() {
     print_layer(followers, 0);
+}
+
+void FollowerSet::post_load(AnalysisState& state) {
+    ASSERT(serialization_cache != NULL, "No serialization cache (from serialize)!");
+    for (int agent_id : *serialization_cache) {
+        add(state.network[agent_id]);
+    }
+    delete serialization_cache;
+    serialization_cache = NULL;
 }
 
 double FollowerSet::determine_tweet_weights(Agent& author, TweetContent& content, WeightDeterminer& d_root, /*Weights placed here:*/ Weights& w_root) {

@@ -39,7 +39,8 @@ struct AnalyzerFollow {
     AnalysisState& state;
     NetworkStats& stats;
     CategoryGrouper& follow_ranks;
-    vector<double>& follow_probabilities, updating_follow_probabilities;
+    vector<double>& follow_probabilities;
+    vector<double>& updating_follow_probabilities;
 
     AgentTypeVector& agent_types;
     MTwist& rng;
@@ -469,7 +470,7 @@ struct AnalyzerFollow {
         } else if (follow_model == HASHTAG_FOLLOW) {
             agent_to_follow = hashtag_follow_method(e);
         } else {
-        	ASSERT(false, "Unknown follow model!");
+            ASSERT(false, "Unknown follow model!");
         }
 
         // if the stage1_follow is set to true in the inputfile

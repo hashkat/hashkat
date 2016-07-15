@@ -1,8 +1,12 @@
 #!/bin/bash
 
+# Default HASHKAT to '.', check if unset (using a BASHism):
 if [ ! "$HASHKAT" ] ; then 
     export HASHKAT=$(dirname "${BASH_SOURCE[0]}") 
 fi
+
+# Good practice -- exit completely on any bad exit code:
+set -e 
 
 ###############################################################################
 # Bash function to check for a flag in 'args' and remove it.

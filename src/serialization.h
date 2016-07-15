@@ -39,64 +39,40 @@
 #include "dependencies/cereal/archives/json.hpp"
 #include "dependencies/cereal/archives/binary.hpp"
 #include "dependencies/cereal/types/vector.hpp"
+#include "dependencies/cereal/types/memory.hpp"
 
 #define NVP CEREAL_NVP
 
 struct AnalysisState;
 
 template <typename Archive>
-struct CerealWriter : public Archive {
-    CerealWriter(AnalysisState& state, std::ostream& stream) : Archive(stream), state(state) {
-    }
-    void check_magic(int num) {
-        (*this)(num);
-    }
-    bool is_reading() { return false; }
-    bool is_writing() { return true; }
-    void raw(T& value) {
-        raw((const char*)&value, sizeof(value));
-    }
-    void raw(const char* data, size_t n) {
-        this->saveBinaryValue(data, n);
-    }
-    template <typename T>
-    CerealWriter<Archive>& operator<<(T& value) {
-        (*this)(value);
-        return *this;
+struct CerealAdapter : public Archive {
+    template <typename Stream>
+    CerealAdapter(AnalysisState& state, Stream& stream) : Archive(stream), state(state) {
     }
     AnalysisState& state;
 };
 
-typedef CerealWriter<cereal::JSONOutputArchive> JsonWriter;
-typedef CerealWriter<cereal::BinaryOutputArchive> BinaryWriter;
+typedef CerealAdapter<cereal::JSONOutputArchive> JsonWriter;
+typedef CerealAdapter<cereal::BinaryOutputArchive> BinaryWriter;
+typedef CerealAdapter<cereal::JSONInputArchive> JsonReader;
+typedef CerealAdapter<cereal::BinaryInputArchive> BinaryReader;
 
 template <typename Archive>
-struct CerealReader : public Archive {
-    CerealReader(AnalysisState& state, std::istream& stream) 
-        : Archive(stream), state(state) {
-    }
-    void check_magic(int check_num) {
-        int num = 0;
-        (*this)(num);
-        assert(check_num == num);
-    }
-    bool is_reading() { return true; }
-    bool is_writing() { return false; }
-    template <typename T>
-    void raw(T& value) {
-        raw((const char*)&value, sizeof(value));
-    }
-    void raw(const char* data, size_t n) {
-        loadBinaryValue(data, n);
-    }
-    template <typename T>
-    CerealReader<Archive>& operator<<(T& value) {
-        ar(value);
-    }
-    AnalysisState& state;
-};
+inline void check_magic(Archive& ar, int check_num) {
+    int old_num = check_num;
+    ar(NVP(check_num));
+    assert(old_num == check_num);
+}
 
-typedef CerealWriter<cereal::JSONInputArchive> JsonReader;
-typedef CerealWriter<cereal::BinaryInputArchive> BinaryReader;
+template <typename Archive>
+inline AnalysisState& get_state(Archive& ar) {
+    return dynamic_cast<CerealAdapter<Archive>&>(ar).state;
+}
+
+template <typename Archive>
+inline AnalysisState& get_state(CerealAdapter<Archive>& ar) {
+    return ar.state;
+}
 
 #endif

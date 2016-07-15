@@ -26,7 +26,7 @@
 #define CATEGORYGROUPER_H_
 
 #include "util.h"
-#include "DataReadWrite.h"
+#include "serialization.h"
 
 #include <vector>
 
@@ -42,8 +42,9 @@ struct Cat {
 		category = g, index = i;
 	}
 
-    READ_WRITE(rw) {
-        rw << category << index;
+    template <typename Archive>
+    void serialize(Archive& ar) {
+        ar(category, index);
     }
 };
 
@@ -61,8 +62,9 @@ struct CategoryAgentList {
 	    return agents[idx];
 	}
 
-	READ_WRITE(rw) {
-	    rw << threshold << prob << agents;
+	template <typename Archive>
+        void serialize(Archive& ar) {
+	    ar(threshold, prob, agents);
 	}
 };
 
@@ -122,9 +124,9 @@ struct CategoryGrouper {
 		return Cat(new_cat, C.agents.size() - 1);
 	}
 
-	READ_WRITE(rw) {
-	    rw.visit_objs(categorizations);
-	    rw.visit_objs(categories);
+	template <typename Archive>
+    void serialize(Archive& ar) {
+	    ar(categorizations, categories);
 	}
 };
 

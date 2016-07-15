@@ -34,7 +34,7 @@
 #include "events.h"
 #include "CircularBuffer.h"
 
-#include "DataReadWrite.h"
+#include "serialization.h"
 
 #include "FollowerSet.h"
 
@@ -50,26 +50,14 @@ struct TweetContent {
     int id_original_author = -1; // The agent that created the original content
     UsedAgents used_agents;
 
-    READ_WRITE(rw) {
+    template <typename Archive>
+    void serialize(Archive& ar) {
         // Save/load scalars:
-        rw << type;
-        rw << time_of_tweet << language << ideology_bin << hashtag_bin << id_original_author;
+        ar(NVP(type));
+        ar(NVP(time_of_tweet), NVP(language), NVP(ideology_bin), NVP(hashtag_bin), NVP(id_original_author));
 
         // Save/load used_agents:
-        used_agents.visit(rw);
-//        if (rw.is_writing()) {
-//            for (int id : used_agents) {
-//                ids.push_back(id);
-//            }
-//        }
-//        rw << ids;
-//        if (rw.is_reading()){
-//            for (int id : ids) {
-//                size_t prev_size = used_agents.size();
-//                used_agents.insert(id);
-//                ASSERT(used_agents.size() > prev_size, "'id' should be unique!");
-//            }
-//        }
+        ar(NVP(used_agents));
     }
 };
 
@@ -115,12 +103,13 @@ struct Tweet {
                 id_tweet, id_tweeter, id_link, content->id_original_author, creation_time);
     }
 
-    READ_WRITE(rw) {
-        rw << id_tweet << id_tweeter << id_link << generation;
-        rw.visit_shared_ptr(content);
-        rw << creation_time << deletion_time << retweet_time_bin << hashtag << retweet_next_rebin_time;
+    template <typename Archive>
+    void serialize(Archive& ar) {
+        ar(id_tweet, id_tweeter, id_link, generation);
+        ar(content);
+        ar(creation_time, deletion_time, retweet_time_bin, hashtag, retweet_next_rebin_time);
         // NOTE: Relies on FollowerSet::Weights being a 'plain' (pointer-free) object!
-        rw << react_weights;
+        ar(react_weights);
     }
 };
 
@@ -132,15 +121,20 @@ struct MostPopularTweet {
     // The max number of retweets for one tweet
     int global_max = 0;
 
-    READ_WRITE(rw) {
-        most_popular_tweet.visit(rw);
-        rw << global_max;
+    template <typename Archive>
+    void serialize(Archive& ar) {
+        ar(most_popular_tweet);
+        ar(global_max);
     }
 };
 
 struct HashtagGroup {
     // circular buffer with 100 elements
     CircularBuffer<int, 100> circ_buffer;
+    template <typename Archive>
+    void serialize(Archive& ar) {
+        ar(NVP(circ_buffer));
+    }
 };
 
 struct HashTags {
@@ -156,11 +150,12 @@ struct HashTags {
 
     int select_agent(AnalysisState& state, bool region_choice, bool ideology_choice, int default_region, int default_ideology); 
 
-    READ_WRITE(rw) {
+    template <typename Archive>
+    void serialize(Archive& ar) {
         for (auto& outer : hashtag_groups) {
             for (auto& groups : outer) {
                 // Note: works because HashtagGroup contains no pointers internally:
-                rw << groups;
+                ar(groups);
             }
         }
     }

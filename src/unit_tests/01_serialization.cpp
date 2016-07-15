@@ -5,7 +5,7 @@
 #include "dependencies/mtwist.h"
 
 #include "config_dynamic.h"
-#include "DataReadWrite.h"
+#include "serialization.h"
 #include "agent.h"
 #include "analyzer.h"
 
@@ -19,12 +19,14 @@ SUITE(serialization) {
         int test_num = 12321, read_val = -1;
         const char* file_name = "output/test_serialize_basics.dat";
         {
-            DataWriter writer(state, file_name);
-            writer << test_num;
+            std::ofstream file(file_name);
+            JsonWriter writer(state, file);
+            writer(NVP(test_num));
         }
         {
-            DataReader reader(state, file_name);
-            reader << read_val;
+            std::ifstream file(file_name);
+            JsonReader reader(state, file);
+            reader(cereal::make_nvp("test_num", read_val));
         }
         CHECK(test_num == read_val);
     }
@@ -51,6 +53,7 @@ SUITE(serialization) {
 //        state.network.n_agents = N_GENERATED; // removed for refactoring
 
         for (int i = 0; i < N_GENERATED; i++) {
+            state.network.grow();
             Agent& e = state.network[i];
             e.id = i;
             e.creation_time = 1;
@@ -69,16 +72,17 @@ SUITE(serialization) {
 
         Agent read;
 
-        const char* file_name = "output/test_serialize_agent.dat";
+        const char* file_name = "output/test_serialize_agent.json";
         {
-            DataWriter writer(state, file_name);
-            test.previsit(writer);
-            test.visit(writer);
+            std::ofstream file(file_name);
+            JsonWriter writer(state, file);
+            writer(test);
         }
         {
-            DataReader reader(state, file_name);
-            read.previsit(reader);
-            read.visit(reader);
+            std::ifstream file(file_name);
+            JsonReader reader(state, file);
+            reader(read);
+            read.post_load(state);
         }
 
         check_eq(test, read);
@@ -91,13 +95,15 @@ SUITE(serialization) {
         }
 
         /*Test network serialization:*/ {
-            DataWriter writer(state, file_name);
-            state.network.visit(writer);
+            std::ofstream file(file_name);
+            JsonWriter writer(state, file);
+            writer(state.network);
         }
         {
-            DataReader reader(state, file_name);
+            std::ifstream file(file_name);
+            JsonReader reader(state, file);
             Network network;
-            network.visit(reader);
+            reader(network);
             CHECK(network.size() == state.network.size());
             CHECK(network.max_size() == state.network.max_size());
             for (int i = 0; i < network.size(); i++) {
