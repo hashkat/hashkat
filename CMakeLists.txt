@@ -24,11 +24,10 @@ if ($ENV{NO_WARNINGS})
     add_definitions ("-w")
 endif()
 
-
 # Work-around for Travis CI
 add_definitions( "-DBOOST_NO_CXX11_ALLOCATOR" )
 
-add_definitions ("-DLUA_USE_POSIX" "-Wno-deprecated-declarations" "-DHASHKAT_VERSION=\"$ENV{HASHKAT_VERSION}\"")
+add_definitions ("-DLUA_USE_POSIX" "-Wno-deprecated-declarations" "-DHASHKAT_VERSION=\"$ENV{HASHKAT_VERSION}\"" -fno-pretty-templates)
 
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
     if ($ENV{BUILD_SANITIZE})

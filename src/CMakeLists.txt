@@ -11,7 +11,7 @@ include_directories(
 	dependencies/boost_1_58_0/
 )
 
-add_definitions(-Wno-sign-compare -Wno-reorder -Wall -Wuninitialized -Wno-deprecated-declarations -fPIC -std=c++11)
+add_definitions(-Wno-sign-compare -Wno-reorder -Wall -Wno-unused-variable  -Wuninitialized -Wno-deprecated-declarations -fPIC -std=c++11)
 #add_definitions(-DREFACTORING)
 #add_definitions(-DREFACTORING_DEBUG_OUTPUT)
 
