@@ -78,7 +78,7 @@ fi
 
 if [ ! -f INFILE.yaml ] ; then
     echo "WARNING: You have no INFILE.yaml, creating one from DEFAULT.yaml"
-    cp DEFAULT.yaml INFILE.yaml
+    cp "$HASHKAT/DEFAULT.yaml" "$HASHKAT/INFILE.yaml"
 fi
 
 ###############################################################################
