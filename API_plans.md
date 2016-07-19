@@ -24,10 +24,7 @@ while True:
 fifo.close()
 ```
 
-
-
 ###On the C++ side 
-
 ```
 void handle_query() {
 	// TODO have incoming_queries ifstream

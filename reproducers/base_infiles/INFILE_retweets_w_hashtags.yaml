@@ -51,15 +51,15 @@
 
 analysis:
   initial_agents:
-    1000
-  max_agents: # for visualization files to generate set max_agent <= 10000
-    1000
+    100
+  max_agents: 
+    100
   max_time: 
-    100000
+    unlimited # Controlled by test
   max_analysis_steps: 
-    unlimited
+    unlimited # Controlled by test
   max_real_time: 
-    1
+    unlimited # Controlled by test
   enable_interactive_mode:
     false
   enable_lua_hooks: # Defined in same file as interactive_mode. Can slow down simulation considerably.
@@ -73,12 +73,12 @@ analysis:
   barabasi_exponent:
     1
   use_random_time_increment: 
-    false
+    true
   use_followback: 
-    false        
+    false        # from literature, it makes sense for a realistic system to have followback enabled
   use_follow_via_retweets:
-    false
-  follow_model: 
+    true
+  follow_model: # See notes above
     random
   # model weights ONLY necessary for follow method 'twitter'
   model_weights: {random: 0.0, twitter_suggest: 0.0, agent: 0.0, preferential_agent: 0.0, hashtag: 0.0}
@@ -88,7 +88,7 @@ analysis:
   unfollow_tweet_rate: 
     10000
   use_hashtag_probability:
-    0.2
+    1.0
 
 #################################################################
 # >> rates:
@@ -122,7 +122,7 @@ output:
   summary_output_rate_real_minutes: 
     false
   summary_output_rate: 
-    1
+    1  
   visualize: 
     false
   agent_stats: 
@@ -142,8 +142,6 @@ output:
   categories_distro:
     false
   most_popular_tweet_content:
-    false
-  tweet_info:
     false
 
 #################################################################
@@ -248,14 +246,19 @@ regions:
 
 #################################################################
 # >> preference_classes: 
-#   Preference Class = set of retweet rates by agent type & tweet type.
-#   tweet_transmission = retweet rate
-#   This determines the proportion of tweets made by this agent type that will be retweeted.
+# Retweet styles (rates) that users in the network can have.
 #
-#   May be specified for each agent type, or with 'else' or 'all'. 
-#   'Else' = all otherwise unnamed agent_types
-#   'All'  = all agent_types
+# tweet_transmission:
+#   The transmission probability for tweets made by agents of a particular agent type
+#   given tweet content and the tweet observation PDF. Effectively, this determines
+#   the proportion (on average) of tweets made by this agent type that will be retweeted.
 #
+#   Can be provided for an agent type, or the keys 'else' or 'all'. 
+#   Both 'else' and 'all' have the functionality of defining the transmission probability
+#   function for all otherwise unspecified agent types.
+#
+#   Transmission probability functions are automatically converted into the necessary tables
+#   using Python. The strings provided can be any valid Python.
 #################################################################
 
 preference_classes:
@@ -266,7 +269,7 @@ preference_classes:
         Standard: 0.01
         Celebrity: 0.05
         else: 0.01
-      different_ideology: 
+      different_ideology: # generally no retweeting of tweets with different ideological content
         Standard: 0.001
         Celebrity: 0.01
         else: 0.00
@@ -279,26 +282,6 @@ preference_classes:
         Celebrity: 0.06
         else: 0.02
 
- - name: NoRetweetPref
-
-   tweet_transmission: 
-      plain: # Also applies to musical tweets
-        Standard: 0
-        Celebrity: 0
-        else: 0
-      different_ideology:
-        Standard: 0
-        Celebrity: 0
-        else: 0
-      same_ideology:
-        Standard: 0
-        Celebrity: 0
-        else: 0
-      humorous:
-        Standard: 0
-        Celebrity: 0
-        else: 0
-
 #################################################################
 # >> agents: 
 #
@@ -309,23 +292,22 @@ preference_classes:
 agents:
   - name: Standard
     weights:
-      # Weight with which this agent is created 
+      # Weight with which this agent is created 999/1000
       add: 100
-      # Weight with which this agent is followed 
-      follow: 5
+      # Weight with which this agent is followed in agent follow
+      follow: 100
       tweet_type:
         ideological: 1.0
         plain: 1.0
         musical: 1.0
         humorous: 1.0
     # Probability that following this agent results in a follow-back
-    followback_probability: .3
+    followback_probability: 0
     hashtag_follow_options:
-      care_about_region: false # does the agent care about where the agent they will follow is from?
+      care_about_region: false #does the agent care about where the agent they will follow is from?
       care_about_ideology: false # does the agent care about the ideology of the agent they will follow?
     rates: 
         # Rate for follows from this agent:
         follow: {function: constant, value: 0.00001}
         # Rate for tweets from this agent:
         tweet: {function: constant, value: 0.0001}
-
