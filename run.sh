@@ -103,4 +103,4 @@ if ! handle_flag "--no-generate" ; then
     fi
 fi
 
-gdb --args "$HASHKAT/build/src/hashkat" $args
+./run.sh "$HASHKAT/build/src/hashkat" $args
