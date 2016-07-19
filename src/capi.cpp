@@ -65,7 +65,7 @@ AnalysisState* hashkat_new_analysis_state(int argc, char** argv) {
     // NOTE: We rely on hashkat_pre.py to create a -generated version of our input file!
     for (int i = 0; i < argc; i++) {
         char* arg = argv[i]; 
-        printf("Argument %d is '%s'.\n", i+1, arg);
+//        printf("Argument %d is '%s'.\n", i+1, arg);
     }
     std::string INFILE = get_var_arg(argc, argv, "--input", "INFILE.yaml");
     INFILE += "-generated";
@@ -96,11 +96,60 @@ void hashkat_install_event_callbacks(AnalysisState* state, EventCallbacks* callb
     state->event_callbacks = *callbacks;
 }
 
-void hashkat_start_analysis(AnalysisState* state) { 
+void hashkat_start_analysis_loop(AnalysisState* state) { 
     analyzer_main(*state);
 }
 void hashkat_finish_analysis(AnalysisState* state) { 
     state->stats.user_did_exit = true;
+}
+
+static const char* copy_str(const char* str, size_t n) {
+    char* new_str = new char[n + 1];
+    memcpy(new_str, str, n + 1);
+    return new_str;
+}
+
+const char* hashkat_dump_stats(AnalysisState* state_ptr) { 
+    AnalysisState& state = *state_ptr;
+    stringstream output;
+    JsonWriter writer {state, output};
+    double time = state.time;
+    int n_agents = state.network.size();
+    state.stats.serialize(writer);
+    writer(NVP(time), NVP(n_agents));
+    string output_str = output.str();
+    return copy_str(output_str.c_str(), output_str.size());
+}
+
+const char* hashkat_dump_state(AnalysisState* state_ptr) { 
+    AnalysisState& state = *state_ptr;
+    stringstream output;
+    JsonWriter writer {state, output};
+    state.serialize(writer);
+    string output_str = output.str();
+    return copy_str(output_str.c_str(), output_str.size());
+}
+
+void hashkat_dump_free(struct AnalysisState* state, const char* dump) {
+    delete[] dump;
+}
+
+const char* hashkat_dump_summary(AnalysisState* state) {
+    stringstream output;
+    JsonWriter writer {*state, output};
+    auto old_tweets = state->oldTweets;
+    auto live_tweets = state->tweet_bank.as_vector();
+    auto n_agents = state->network.size();
+    vector<vector<int>> follower_sets;
+    vector<vector<int>> following_sets;
+    for (Agent& agent : state->network) {
+        follower_sets.push_back(agent.follower_set.as_vector());
+        following_sets.push_back(agent.following_set.as_vector());
+    }
+    writer(NVP(old_tweets), NVP(live_tweets), NVP(n_agents), 
+        NVP(follower_sets), NVP(following_sets));
+    string output_str = output.str();
+    return copy_str(output_str.c_str(), output_str.size());
 }
 
 }

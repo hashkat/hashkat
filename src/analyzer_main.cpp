@@ -490,8 +490,9 @@ struct Analyzer {
 
 		generate_tweet(choice.id_observer, choice.id_link, choice.generation, *choice.content);
 
-        RECORD_STAT(state, e_observer.agent_type, n_retweets);
         e_observer.n_retweets ++;
+        lua_hook_retweet(state, choice.id_observer, e_observer.n_retweets);
+        RECORD_STAT(state, e_observer.agent_type, n_retweets);
 
         return true;
 	}

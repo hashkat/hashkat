@@ -121,22 +121,6 @@ struct HashedEdgeSet {
         hash_impl.set_deleted_key((T) -1);
     }
 
-// TODO: Fix and reincorporate if exact binary serialization is desired
-//    template <typename Archive>
-//    void save(Archive& ar) {
-//        check_magic(ar, 0x5a56);
-//        clear();
-//        hash_impl.read_metadata(ar);
-//        hash_impl.read_nopointer_data(ar);
-//    }
-//
-//    template <typename Archive>
-//    void load(Archive& ar) {
-//        check_magic(ar, 0x5a56);
-//        hash_impl.write_metadata(ar);
-//        hash_impl.write_nopointer_data(ar);
-//    }
-
     std::vector<T> as_vector() {
         std::vector<T> ret;
 
@@ -151,8 +135,8 @@ struct HashedEdgeSet {
     template <typename Archive>
     void load(Archive& ar) {
         clear();
-        size_t size;
-        ar( cereal::make_size_tag( (size_t) size ) );
+        size_t size = 0;
+        ar( cereal::make_size_tag(size) );
         for (int i = 0; i < size; i++) {
             T elem;
             ar(elem);
@@ -164,6 +148,7 @@ struct HashedEdgeSet {
         auto vec = ((HashedEdgeSet<T>*)this)->as_vector();
         ar( cereal::make_size_tag( (size_t) vec.size() ) );
         for (T& elem : vec) {
+            ASSERT(elem != -1, "Woops");
             ar(elem);
         }
     }

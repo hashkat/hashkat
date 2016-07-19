@@ -35,6 +35,7 @@ struct EventCallbacks {
     void (*on_follow)(int id_follower, int id_followed);
     void (*on_unfollow)(int id_follower, int id_followed);
     void (*on_tweet)(int id_tweeter, int id_tweet);
+    void (*on_retweet)(int id_tweeter, int id_tweet);
     void (*on_exit)(void);
     void (*on_step_analysis)(void);
     void (*on_load_network)(void);
@@ -46,8 +47,11 @@ void hashkat_destroy_analysis_state(struct AnalysisState* state);
 void hashkat_install_event_callbacks(struct AnalysisState* state, struct EventCallbacks* callbacks);
 void hashkat_start_analysis_loop(struct AnalysisState* state);
 void hashkat_finish_analysis(struct AnalysisState* state);
-// Must be deleted
-const char* hashkat_dump(struct AnalysisState* state);
+// Must be deleted with hashkat_dump_free
+const char* hashkat_dump_state(struct AnalysisState* state);
+const char* hashkat_dump_stats(struct AnalysisState* state);
+const char* hashkat_dump_summary(struct AnalysisState* state);
+void hashkat_dump_free(struct AnalysisState* state, const char* dump);
 
 // Test bindings:
 #endif /* CAPI_H_ */

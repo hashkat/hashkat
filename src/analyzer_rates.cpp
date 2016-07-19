@@ -50,7 +50,7 @@ struct AnalyzerRates {
     //** Note: Only use reference types here!!
     Network& network;
     ParsedConfig& config;
-    //** Mind the StatE/StatS difference. They are entirely different structs.
+    //** Mind the statE/statS difference. They are entirely different structs.
     AnalysisState& state;
     NetworkStats& stats;
     AgentTypeVector& agent_types;

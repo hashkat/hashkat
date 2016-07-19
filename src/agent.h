@@ -116,12 +116,13 @@ struct AgentStats {
     int64 n_retweet_follows = 0, n_hashtag_follows = 0;
     int64 n_hashtags = 0;
     template <typename Archive>
-    void save(Archive& ar) const {
-        ar.saveBinary(this, sizeof(*this));
-    }
-    template <typename Archive>
-    void load(Archive& ar) {
-        ar.loadBinary(this, sizeof(*this));
+    void serialize(Archive& ar) {
+        ar(NVP(n_follows), NVP(n_followers), NVP(n_tweets), NVP(n_retweets), NVP(n_unfollows));
+        ar(NVP(n_followback));
+        ar(NVP(n_random_follows), NVP(n_preferential_follows));
+        ar(NVP(n_agent_follows), NVP(n_pref_agent_follows));
+        ar(NVP(n_retweet_follows), NVP(n_hashtag_follows));
+        ar(NVP(n_hashtags));
     }
 };
 
@@ -175,16 +176,16 @@ struct AgentType {
 
     template <typename Archive>
     void serialize(Archive& ar) {
-        ar(name, prob_add, prob_follow, prob_followback);
-        ar(new_agents);
+        ar(NVP(name), NVP(prob_add), NVP(prob_follow), NVP(prob_followback));
+        ar(NVP(new_agents));
         for (auto& rf : RF) {
             ar(rf);
         }
-        ar(care_about_region, care_about_ideology);
-        ar(agent_cap, agent_list);
-        ar(age_ranks);
-        ar(follow_ranks);
-        ar(updating_probs, stats);
+        ar(NVP(care_about_region), NVP(care_about_ideology));
+        ar(NVP(agent_cap), NVP(agent_list));
+        ar(NVP(age_ranks));
+        ar(NVP(follow_ranks));
+        ar(NVP(updating_probs), NVP(stats));
         for (auto& ttp : tweet_type_probs) {
             ar(ttp);
         }

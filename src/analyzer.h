@@ -64,11 +64,11 @@ struct NetworkStats {
 
     template <typename Archive>
     void serialize(Archive& ar) {
-        ar(prob_add, prob_follow, prob_retweet, prob_tweet);
-        ar(event_rate, n_steps, n_outputs);
+        ar(NVP(prob_add), NVP(prob_follow), NVP(prob_retweet), NVP(prob_tweet));
+        ar(NVP(event_rate), NVP(n_steps), NVP(n_outputs));
         // Don't serialize 'user_did_exit'
         // Valid because only full of primitive types:
-        ar(global_stats, user_did_exit);
+        ar(NVP(global_stats), NVP(user_did_exit));
     }
 };
 

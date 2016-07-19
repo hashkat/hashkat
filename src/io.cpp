@@ -139,6 +139,7 @@ void output_network_statistics(AnalysisState& state) {
     }
     if (C.main_stats) {
         network_statistics(network, stats, et_vec);
+        tweet_info(old_tweets);
     }
     if (C.region_connection_matrix) {
         region_stats(network, state);
@@ -160,8 +161,6 @@ void output_network_statistics(AnalysisState& state) {
     if (C.dd_by_follow_model) {
         dd_by_follow_method(network, state, stats);
     }   
-
-    tweet_info(old_tweets);
 }
 
 // TWEET_INFO_DAT

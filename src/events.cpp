@@ -60,6 +60,15 @@ void lua_hook_tweet(AnalysisState& state, int id_tweeter, int id_tweet) {
     }
 }
 
+void lua_hook_retweet(AnalysisState& state, int id_tweeter, int id_retweet) {
+    if (state.event_callbacks.on_retweet) {
+        state.event_callbacks.on_retweet(id_tweeter, id_retweet);
+    }
+    if (state.config.enable_lua_hooks) {
+        lua_hook(state, "on_retweet", id_tweeter, id_retweet);
+    }
+}
+
 void lua_hook_exit(AnalysisState& state) {
     if (state.event_callbacks.on_exit) {
         state.event_callbacks.on_exit();

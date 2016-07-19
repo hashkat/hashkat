@@ -92,7 +92,12 @@ public:
 
     template <typename Archive>
     void serialize(Archive& ar) {
-        ar(buffer);
+        size_t size = cap + 1;
+        ar( cereal::make_size_tag(size) );
+        ASSERT(size == cap + 1, "Size not matched.");
+        for (T& elem : buffer) {
+            ar( elem );
+        }
     }
 private:
     T buffer[cap + 1]; // Contains sentinel element. Shielded from direct access

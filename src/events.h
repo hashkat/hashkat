@@ -58,7 +58,8 @@ struct AnalysisState; // Forward declare
 void lua_hook_follow(AnalysisState& state, int id_follower, int id_followed);
 void lua_hook_add(AnalysisState& state, int id_follower);
 void lua_hook_unfollow(AnalysisState& state, int id_follower, int id_followed);
-void lua_hook_tweet(AnalysisState& state, int id_follower, int id_followed);
+void lua_hook_tweet(AnalysisState& state, int id_follower, int id_tweet);
+void lua_hook_retweet(AnalysisState& state, int id_follower, int id_tweet);
 void lua_hook_exit(AnalysisState& state);
 void lua_hook_new_network(AnalysisState& state);
 void lua_hook_step_analysis(AnalysisState& state);
