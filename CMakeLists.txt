@@ -27,7 +27,11 @@ endif()
 # Work-around for Travis CI
 add_definitions( "-DBOOST_NO_CXX11_ALLOCATOR" )
 
-add_definitions ("-DLUA_USE_POSIX" "-Wno-deprecated-declarations" "-DHASHKAT_VERSION=\"$ENV{HASHKAT_VERSION}\"" -fno-pretty-templates)
+# If we're using GCC< use -fno-pretty-templates to generate more readable templated error messages.
+if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
+    add_definitions(-fno-pretty-templates)
+endif()
+add_definitions ("-DLUA_USE_POSIX" "-Wno-deprecated-declarations" "-DHASHKAT_VERSION=\"$ENV{HASHKAT_VERSION}\"") 
 
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
     if ($ENV{BUILD_SANITIZE})
