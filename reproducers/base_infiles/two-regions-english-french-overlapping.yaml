@@ -1,4 +1,3 @@
-
 #################################################################
 # >> analysis:
 #
@@ -53,13 +52,13 @@ analysis:
   initial_agents:
     1000
   max_agents: # for visualization files to generate need max_agent <= 10000
-    10000
+    1000
   max_time: 
-    100000
+    unlimited
   max_analysis_steps: 
     unlimited
   max_real_time: 
-    5
+    unlimited
   enable_interactive_mode:
     false
   enable_lua_hooks: # Defined in same file as interactive_mode. Can slow down simulation considerably.
@@ -87,7 +86,7 @@ analysis:
   unfollow_tweet_rate: 
     10000
   use_hashtag_probability:
-    1.0
+    0.5
 
 #################################################################
 # >> rates:
@@ -246,18 +245,18 @@ regions:
     language_weights: {English: 100, French+English: 0, French: 0, Spanish: 0}
 
   - name: Region1
-    add_weight: 0
+    add_weight: 100
 
     preference_class_weights: {StandardPref: 100}
     ideology_weights: {Red: 100, Blue: 100, Green: 100, Orange: 100}
-    language_weights: {English: 0, French+English: 0, French: 100, Spanish: 0}
+    language_weights: {English: 0, French+English: 100, French: 0, Spanish: 0}
 
-  - name: Region2
-    add_weight: 0
-
-    preference_class_weights: {StandardPref: 100}
-    ideology_weights: {Red: 100, Blue: 100, Green: 100, Orange: 100}
-    language_weights: {English: 0, French+English: 0, French: 0, Spanish: 100}
+#  - name: Region2
+#    add_weight: 100
+#
+#    preference_class_weights: {StandardPref: 100}
+#    ideology_weights: {Red: 100, Blue: 100, Green: 100, Orange: 100}
+#    language_weights: {English: 0, French+English: 0, French: 0, Spanish: 100}
 
 #################################################################
 # >> preference_classes: 
@@ -281,41 +280,21 @@ preference_classes:
 
    tweet_transmission: 
       plain: # Also applies to musical tweets
-        Standard: 0.01
-        Celebrity: 0.05
-        else: 0.01
+        Standard: 0.2
+        Celebrity: 0.2
+        else: 0.2
       different_ideology: # generally no retweeting of tweets with different ideological content
-        Standard: 0.001
-        Celebrity: 0.01
-        else: 0.00
+        Standard: 0.2
+        Celebrity: 0.2
+        else: 0.2
       same_ideology:
-        Standard: 0.02
-        Celebrity: 0.06
-        else: 0.01
+        Standard: 0.2
+        Celebrity: 0.2
+        else: 0.2
       humorous:
-        Standard: 0.08
-        Celebrity: 0.06
-        else: 0.02
-
- - name: NoRetweetPref
-
-   tweet_transmission: 
-      plain: # Also applies to musical tweets
-        Standard: 0
-        Celebrity: 0
-        else: 0
-      different_ideology:
-        Standard: 0
-        Celebrity: 0
-        else: 0
-      same_ideology:
-        Standard: 0
-        Celebrity: 0
-        else: 0
-      humorous:
-        Standard: 0
-        Celebrity: 0
-        else: 0
+        Standard: 0.2
+        Celebrity: 0.2
+        else: 0.2
 
 #################################################################
 # >> agents: 
@@ -365,6 +344,6 @@ agents:
       care_about_ideology: true # does the agent care about the ideology of the agent they will follow?
     rates: 
         # Rate for follows from this agent:
-        follow: {function: constant, value: 0.000001}
+        follow: {function: constant, value: 0.0005}
         # Rate for tweets from this agent:
-        tweet: {function: constant, value: 0.00001}
+        tweet: {function: constant, value: 0.0005}

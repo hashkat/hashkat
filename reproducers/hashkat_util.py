@@ -1,4 +1,4 @@
-import sys, os, simplejson 
+import sys, os, json 
 from infile_util import create_infile
 from cffi import FFI
 
@@ -20,6 +20,7 @@ def to_cstring_array(lst):
 class TestBase:
     GLOBAL_CALLBACK_LIST = [] # Make sure callbacks don't get garbage collected
     FAILED = False
+    args = []
     def finish(self):
         raw_lib.hashkat_finish_analysis(self.state)
     def install_cb(self, sig, cb):
@@ -27,7 +28,12 @@ class TestBase:
             unwrapped = getattr(self, cb)
             def wrapped(*args):
                 try:
-                    return unwrapped(*args)
+                    new_args = []
+                    for arg in args:
+                        if type(arg) is not int:
+                            arg = cstring_to_object(self.state, arg)
+                        new_args.append(arg)
+                    return unwrapped(*new_args)
                 except Exception:
                     import traceback
                     traceback.print_exc()
@@ -35,6 +41,8 @@ class TestBase:
             cdata = ffi.callback(sig)(wrapped)
             setattr(self.callbacks[0], cb, cdata)
             TestBase.GLOBAL_CALLBACK_LIST.append(cdata)
+    def on_exit_all(self):
+        pass
     def infile_setup(self, yaml):
         pass
     def install_callbacks(self):
@@ -42,8 +50,8 @@ class TestBase:
         self.install_cb('void(int)', 'on_add')
         self.install_cb('void(int,int)', 'on_follow')
         self.install_cb('void(int,int)', 'on_unfollow')
-        self.install_cb('void(int,int)', 'on_tweet')
-        self.install_cb('void(int,int)', 'on_retweet')
+        self.install_cb('void(const char*)', 'on_tweet')
+        self.install_cb('void(const char*)', 'on_retweet')
         self.install_cb('void(void)', 'on_exit')
         self.install_cb('void(void)', 'on_step_analysis')
         self.install_cb('void(void)', 'on_save_network')
@@ -54,7 +62,7 @@ class TestBase:
 # infile_setup: Transform the YAML object before serialization
 def hashkat_new_analysis_state(infile_setup, base_infile, args=[]):
     temp_dir, temp_dir_cleanup = create_infile(infile_setup, base_infile)
-    args = to_cstring_array(sys.argv + ['--input', temp_dir + '/INFILE.yaml'] + args)
+    args = to_cstring_array([sys.argv[0], '--input', temp_dir + '/INFILE.yaml'] + args)
     state = raw_lib.hashkat_new_analysis_state(len(args), args)
     def cleanup():
         raw_lib.hashkat_destroy_analysis_state(state)
@@ -66,17 +74,26 @@ def hashkat_start_analysis_loop(state, callbacks):
     raw_lib.hashkat_start_analysis_loop(state)
 
 N_TESTS = 1
-def hashkat_test(test, args=[]):
+def hashkat_test(test, n_times=1):
     global N_TESTS
     test_name = "\"" + test.__class__.__name__.replace('_', ' ') + "\""
     print "-----------------------------------------------------------------------"
     print "Running test " + str(N_TESTS) + ": " + test_name
     print "-----------------------------------------------------------------------"
-    state, cleanup = hashkat_new_analysis_state(test.infile_setup, test.base_infile, args)
-    test.state = state
-    test.install_callbacks()
+    for i in range(n_times):
+        test.iteration = i
+        state, cleanup = hashkat_new_analysis_state(test.infile_setup, test.base_infile, test.args)
+        test.state = state
+        test.install_callbacks()
+        try:
+            hashkat_start_analysis_loop(state, test.callbacks)
+        except AssertionError:
+            import traceback
+            traceback.print_exc()
+            test.FAILED = True
+        cleanup()
     try:
-        hashkat_start_analysis_loop(state, test.callbacks)
+        test.on_exit_all()
     except AssertionError:
         import traceback
         traceback.print_exc()
@@ -89,22 +106,20 @@ def hashkat_test(test, args=[]):
         print "Test " + str(N_TESTS) + " passed: " + test_name 
     print "......................................................................."
     N_TESTS += 1
-    cleanup()
+
+def cstring_to_object(state, raw_string):
+    string = ffi.string(raw_string).replace(': inf', ': "inf"').replace(': nan', ': "nan"') + '}'
+    raw_lib.hashkat_dump_free(state, raw_string)
+    return json.loads(string)
 
 def hashkat_dump_state(state):
     raw_string = raw_lib.hashkat_dump_state(state)
-    string = ffi.string(raw_string).replace(': inf', ': "inf"').replace(': nan', ': "nan"') + '}'
-    raw_lib.hashkat_dump_free(state, raw_string)
-    return simplejson.loads(string)
+    return cstring_to_object(state, raw_string)
 
 def hashkat_dump_summary(state):
     raw_string = raw_lib.hashkat_dump_summary(state)
-    string = ffi.string(raw_string).replace(': inf', ': "inf"').replace(': nan', ': "nan"') + '}'
-    raw_lib.hashkat_dump_free(state, raw_string)
-    return simplejson.loads(string)
+    return cstring_to_object(state, raw_string)
 
 def hashkat_dump_stats(state):
     raw_string = raw_lib.hashkat_dump_stats(state)
-    string = ffi.string(raw_string).replace(': inf', ': "inf"').replace(': nan', ': "nan"') + '}'
-    raw_lib.hashkat_dump_free(state, raw_string)
-    return simplejson.loads(string)
+    return cstring_to_object(state, raw_string)

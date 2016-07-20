@@ -96,12 +96,13 @@ int main(int argc, char** argv) {
         }
         // or running analysis:
         Timer t;
-        int seed = 1;
+        int seed = std::stoi(get_var_arg(argc, argv, "--seed", "1"));
         if (has_flag(argc, argv, "--rand")) {
                 time_t t;
                 time(&t);
                 seed = (int)t;
         }
+
 
         printf("Starting simulation with seed '%d'.\n", seed);
         AnalysisState analysis_state(config, seed);

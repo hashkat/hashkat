@@ -32,6 +32,8 @@
 // 0 - add, 1 - follow, 2 - tweet
 const int number_of_diff_events = 2;
 
+struct Tweet;
+
 struct Rate_Function {
     std::string function_type;
     double slope, y_intercept, const_val, amplitude, exp_factor;
@@ -58,8 +60,8 @@ struct AnalysisState; // Forward declare
 void lua_hook_follow(AnalysisState& state, int id_follower, int id_followed);
 void lua_hook_add(AnalysisState& state, int id_follower);
 void lua_hook_unfollow(AnalysisState& state, int id_follower, int id_followed);
-void lua_hook_tweet(AnalysisState& state, int id_follower, int id_tweet);
-void lua_hook_retweet(AnalysisState& state, int id_follower, int id_tweet);
+void lua_hook_tweet(AnalysisState& state, int id_follower, Tweet& tweet);
+void lua_hook_retweet(AnalysisState& state, int id_follower, Tweet& tweet);
 void lua_hook_exit(AnalysisState& state);
 void lua_hook_new_network(AnalysisState& state);
 void lua_hook_step_analysis(AnalysisState& state);

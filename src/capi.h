@@ -29,13 +29,14 @@
  * This file is consumed by bindings.py (which doesn't understand 'extern "C"'). */
 
 struct AnalysisState;
+struct Tweet;
 
 struct EventCallbacks {
     void (*on_add)(int id);
     void (*on_follow)(int id_follower, int id_followed);
     void (*on_unfollow)(int id_follower, int id_followed);
-    void (*on_tweet)(int id_tweeter, int id_tweet);
-    void (*on_retweet)(int id_tweeter, int id_tweet);
+    void (*on_tweet)(const char* tweet);
+    void (*on_retweet)(const char* tweet);
     void (*on_exit)(void);
     void (*on_step_analysis)(void);
     void (*on_load_network)(void);
@@ -50,6 +51,7 @@ void hashkat_finish_analysis(struct AnalysisState* state);
 // Must be deleted with hashkat_dump_free
 const char* hashkat_dump_state(struct AnalysisState* state);
 const char* hashkat_dump_stats(struct AnalysisState* state);
+const char* hashkat_dump_tweet(struct AnalysisState* state, struct Tweet* tweet);
 const char* hashkat_dump_summary(struct AnalysisState* state);
 void hashkat_dump_free(struct AnalysisState* state, const char* dump);
 

@@ -5,6 +5,8 @@
 #include "util.h"
 
 #include "analyzer.h"
+#include "capi.h"
+#include "tweets.h"
 
 #include <luawrap-lib/include/luawrap/luawrap.h>
 
@@ -51,21 +53,21 @@ void lua_hook_unfollow(AnalysisState& state, int id_follower, int id_followed) {
     }
 }
 
-void lua_hook_tweet(AnalysisState& state, int id_tweeter, int id_tweet) {
+void lua_hook_tweet(AnalysisState& state, int id_tweeter, Tweet& tweet) {
     if (state.event_callbacks.on_tweet) {
-        state.event_callbacks.on_tweet(id_tweeter, id_tweet);
+        state.event_callbacks.on_tweet(hashkat_dump_tweet(&state, &tweet));
     }
     if (state.config.enable_lua_hooks) {
-        lua_hook(state, "on_tweet", id_tweeter, id_tweet);
+        lua_hook(state, "on_tweet", id_tweeter, tweet.id_tweet);
     }
 }
 
-void lua_hook_retweet(AnalysisState& state, int id_tweeter, int id_retweet) {
+void lua_hook_retweet(AnalysisState& state, int id_tweeter, Tweet& tweet) {
     if (state.event_callbacks.on_retweet) {
-        state.event_callbacks.on_retweet(id_tweeter, id_retweet);
+        state.event_callbacks.on_retweet(hashkat_dump_tweet(&state, &tweet));
     }
     if (state.config.enable_lua_hooks) {
-        lua_hook(state, "on_retweet", id_tweeter, id_retweet);
+        lua_hook(state, "on_retweet", id_tweeter, tweet.id_tweet);
     }
 }
 

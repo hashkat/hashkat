@@ -131,6 +131,7 @@ struct AnalysisState {
     std::vector<int> agent_cap;
 
     // Add any values that must be extracted from 'analyze' here.
+    // This will be copied at the end of the simulation, exposing it.
     int n_follows;
     double end_time;
 

@@ -69,6 +69,15 @@ inline bool language_understandable(Language known, Language seen) {
     return (known == LANG_FRENCH_AND_ENGLISH) && (seen != LANG_SPANISH);
 }
 
+inline const char* tweet_type_name(int bin) {
+    if (bin == TWEET_STANDARD) return "TWEET_STANDARD";
+    if (bin == TWEET_IDEOLOGICAL) return "TWEET_IDEOLOGICAL";
+    if (bin == TWEET_MUSICAL) return "TWEET_MUSICAL";
+    if (bin == TWEET_HUMOUROUS) return "TWEET_HUMOUROUS";
+    if (bin == TWEET_IDEOLOGICAL_DIFFERENT) return "TWEET_IDEOLOGICAL_DIFFERENT";
+    return NULL;
+}
+
 inline const char* language_name(int bin) {
     if (bin == LANG_ENGLISH) return "LANG_ENGLISH";
     if (bin == LANG_FRENCH_AND_ENGLISH) return "LANG_FRENCH_AND_ENGLISH";

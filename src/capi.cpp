@@ -76,7 +76,7 @@ AnalysisState* hashkat_new_analysis_state(int argc, char** argv) {
     }
     // or running analysis:
     Timer t;
-    int seed = 1;
+    int seed = std::stoi(get_var_arg(argc, argv, "--seed", "1"));
     if (has_flag(argc, argv, "--rand")) {
             time_t t;
             time(&t);
@@ -133,12 +133,20 @@ const char* hashkat_dump_state(AnalysisState* state_ptr) {
 void hashkat_dump_free(struct AnalysisState* state, const char* dump) {
     delete[] dump;
 }
+}
 
+struct TweetApiProxy {
+    Tweet tweet;
+    template <typename Archive>
+    void serialize(Archive& ar) {
+        tweet.api_serialize(ar);
+    }
+};
+
+extern "C" {
 const char* hashkat_dump_summary(AnalysisState* state) {
     stringstream output;
     JsonWriter writer {*state, output};
-    auto old_tweets = state->oldTweets;
-    auto live_tweets = state->tweet_bank.as_vector();
     auto n_agents = state->network.size();
     vector<vector<int>> follower_sets;
     vector<vector<int>> following_sets;
@@ -146,11 +154,27 @@ const char* hashkat_dump_summary(AnalysisState* state) {
         follower_sets.push_back(agent.follower_set.as_vector());
         following_sets.push_back(agent.following_set.as_vector());
     }
+
+    vector<TweetApiProxy> old_tweets, live_tweets;
+
+    for (auto& t : state->oldTweets) {
+        old_tweets.push_back({t});
+    }
+    for (auto& t : state->tweet_bank.as_vector()) {
+        live_tweets.push_back({t});
+    }
     writer(NVP(old_tweets), NVP(live_tweets), NVP(n_agents), 
         NVP(follower_sets), NVP(following_sets));
     string output_str = output.str();
     return copy_str(output_str.c_str(), output_str.size());
 }
 
+const char* hashkat_dump_tweet(AnalysisState* state, Tweet* tweet) {
+    stringstream output;
+    JsonWriter writer {*state, output};
+    tweet->api_serialize(writer);
+    string output_str = output.str();
+    return copy_str(output_str.c_str(), output_str.size());
+}
 }
 

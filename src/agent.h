@@ -109,7 +109,7 @@ struct Agent {
 };
 
 struct AgentStats {
-    int64 n_follows = 0, n_followers = 0, n_tweets = 0, n_retweets = 0, n_unfollows = 0;
+    int64 n_follows = 0, n_followers = 0, n_tweets = 0, n_original_tweets = 0, n_retweets = 0, n_unfollows = 0;
     int64 n_followback = 0;
     int64 n_random_follows = 0, n_preferential_follows = 0;
     int64 n_agent_follows = 0, n_pref_agent_follows = 0;
@@ -117,7 +117,8 @@ struct AgentStats {
     int64 n_hashtags = 0;
     template <typename Archive>
     void serialize(Archive& ar) {
-        ar(NVP(n_follows), NVP(n_followers), NVP(n_tweets), NVP(n_retweets), NVP(n_unfollows));
+        ar(NVP(n_follows), NVP(n_followers), NVP(n_tweets), 
+           NVP(n_original_tweets), NVP(n_retweets), NVP(n_unfollows));
         ar(NVP(n_followback));
         ar(NVP(n_random_follows), NVP(n_preferential_follows));
         ar(NVP(n_agent_follows), NVP(n_pref_agent_follows));

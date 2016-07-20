@@ -42,6 +42,7 @@ typedef HashedEdgeSet<int> UsedAgents;
 
 // information for when a user tweets
 struct TweetContent {
+    int id = -1;
     TweetType type = (TweetType)-1;
     double time_of_tweet = -1;
     Language language = N_LANGS; // Set to invalid
@@ -103,13 +104,16 @@ struct Tweet {
                 id_tweet, id_tweeter, id_link, content->id_original_author, creation_time);
     }
 
+    // Note: Must be called directly, unlike 'serialize' which is implicitly called when serializing subobjects.
+    void api_serialize(cereal::JSONOutputArchive& ar); 
+
     template <typename Archive>
     void serialize(Archive& ar) {
-        ar(id_tweet, id_tweeter, id_link, generation);
-        ar(content);
-        ar(creation_time, deletion_time, retweet_time_bin, hashtag, retweet_next_rebin_time);
+        ar(NVP(id_tweet), NVP(id_tweeter), NVP(id_link), NVP(generation));
+        ar(NVP(content));
+        ar(NVP(creation_time), NVP(deletion_time), NVP(retweet_time_bin), NVP(hashtag), NVP(retweet_next_rebin_time));
         // NOTE: Relies on FollowerSet::Weights being a 'plain' (pointer-free) object!
-        ar(react_weights);
+        ar(NVP(react_weights));
     }
 };
 
@@ -123,8 +127,8 @@ struct MostPopularTweet {
 
     template <typename Archive>
     void serialize(Archive& ar) {
-        ar(most_popular_tweet);
-        ar(global_max);
+        ar(NVP(most_popular_tweet));
+        ar(NVP(global_max));
     }
 };
 

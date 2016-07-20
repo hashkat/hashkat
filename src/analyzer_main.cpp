@@ -390,6 +390,7 @@ struct Analyzer {
         AgentType& agent_type = agent_types[agent];
 
         shared_ptr<TweetContent> ti(new TweetContent);
+        ti->id = stats.global_stats.n_original_tweets;
         ti->id_original_author = id_original_author;
         ti->time_of_tweet = time;
 //        ti->type = agent_type;
@@ -403,6 +404,7 @@ struct Analyzer {
             lang = rng.random_chance(0.5) ? LANG_ENGLISH : LANG_FRENCH;
         }
         ti->language = lang;
+        RECORD_STAT(state, agent, n_original_tweets);
         return ti;
     }
     
@@ -453,8 +455,8 @@ struct Analyzer {
             Agent& e = network[id_tweeter];
             tweet_ranks.categorize(id_tweeter, e.n_tweets);
             e.n_tweets++;
-            generate_tweet(id_tweeter, id_tweeter, 0, generate_tweet_content(id_tweeter));
-            lua_hook_tweet(state, id_tweeter, e.n_tweets);
+            Tweet tweet = generate_tweet(id_tweeter, id_tweeter, 0, generate_tweet_content(id_tweeter));
+            lua_hook_tweet(state, id_tweeter, tweet);
             // Generate the tweet content:
             // increase the number of tweets the agent had by one
             if (e.n_tweets / (time - e.creation_time) >= config.unfollow_tweet_rate) {
@@ -488,10 +490,10 @@ struct Analyzer {
     		}
         }
 
-		generate_tweet(choice.id_observer, choice.id_link, choice.generation, *choice.content);
+        Tweet tweet = generate_tweet(choice.id_observer, choice.id_link, choice.generation, *choice.content);
 
         e_observer.n_retweets ++;
-        lua_hook_retweet(state, choice.id_observer, e_observer.n_retweets);
+        lua_hook_retweet(state, choice.id_observer, tweet);
         RECORD_STAT(state, e_observer.agent_type, n_retweets);
 
         return true;
