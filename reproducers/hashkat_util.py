@@ -74,13 +74,13 @@ def hashkat_start_analysis_loop(state, callbacks):
     raw_lib.hashkat_start_analysis_loop(state)
 
 N_TESTS = 1
-def hashkat_test(test, n_times=1):
+def hashkat_test(test, n_simulations=1):
     global N_TESTS
     test_name = "\"" + test.__class__.__name__.replace('_', ' ') + "\""
     print "-----------------------------------------------------------------------"
     print "Running test " + str(N_TESTS) + ": " + test_name
     print "-----------------------------------------------------------------------"
-    for i in range(n_times):
+    for i in range(n_simulations):
         test.iteration = i
         state, cleanup = hashkat_new_analysis_state(test.infile_setup, test.base_infile, test.args)
         test.state = state
