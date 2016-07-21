@@ -280,21 +280,13 @@ preference_classes:
 
    tweet_transmission: 
       plain: # Also applies to musical tweets
-        Standard: 0.2
-        Celebrity: 0.2
-        else: 0.2
+        all: 0.2
       different_ideology: # generally no retweeting of tweets with different ideological content
-        Standard: 0.2
-        Celebrity: 0.2
-        else: 0.2
+        all: 0.2
       same_ideology:
-        Standard: 0.2
-        Celebrity: 0.2
-        else: 0.2
+        all: 0.2
       humorous:
-        Standard: 0.2
-        Celebrity: 0.2
-        else: 0.2
+        all: 0.2
 
 #################################################################
 # >> agents: 

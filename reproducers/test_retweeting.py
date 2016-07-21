@@ -29,7 +29,7 @@ def get_tweet_feature_counts(tweets):
     return counts
 
 # Reproducing github issue #109: 
-class Issue109_retweets_should_generate_for_region0(TestBase):
+class Retweets_should_generate_for_region0(TestBase):
     base_infile = "base_infiles/two-regions-english-french-overlapping.yaml"
     def __init__(self):
         self.tweets = {}
@@ -51,9 +51,11 @@ class Issue109_retweets_should_generate_for_region0(TestBase):
         assert reasonably_close(tweet_counts["LANG_ENGLISH"], tweet_counts["LANG_FRENCH"])
         assert retweet_counts["Region1"] > 0
 
+hashkat_test(Retweets_should_generate_for_region0(), n_simulations=1)
+
 # Investigating github issue #110: 
 #   Does using hashtags incorrectly prevent retweets in a bare case?
-class Issue110_hashtags_should_not_prevent_retweets(TestBase):
+class Hashtags_should_not_prevent_retweets(TestBase):
     base_infile = "base_infiles/simple-base.yaml"
     def __init__(self):
         self.steps = 0
@@ -65,9 +67,11 @@ class Issue110_hashtags_should_not_prevent_retweets(TestBase):
         assert int(stats["n_tweets"]) > 0
         assert int(stats["n_retweets"]) > 0
 
+hashkat_test(Hashtags_should_not_prevent_retweets(), n_simulations=1)
+
 # Reproducing github issues #109 & #110 et al.: 
 #   Are retweeted tweets not a representative sample for language, region, and hashtaggedness? 
-class Issue110_tweets_generate_with_expected_attribute_distribution(TestBase):
+class Tweets_generate_with_expected_attribute_distribution(TestBase):
     base_infile = "base_infiles/two-regions-english-french-overlapping.yaml"
     def __init__(self):
         self.tweets = {}
@@ -90,6 +94,4 @@ class Issue110_tweets_generate_with_expected_attribute_distribution(TestBase):
         print "Testing distribution of retweeted tweets:"
         self.test_tweet_distribution(self.retweets)
 
-hashkat_test(Issue109_retweets_should_generate_for_region0(), n_simulations=1)
-hashkat_test(Issue110_hashtags_should_not_prevent_retweets(), n_simulations=1)
-hashkat_test(Issue110_tweets_generate_with_expected_attribute_distribution(), n_simulations=1)
+hashkat_test(Tweets_generate_with_expected_attribute_distribution(), n_simulations=1)

@@ -191,7 +191,6 @@ struct FollowerSet {
 
     double determine_tweet_weights(Agent& author, TweetContent& content, WeightDeterminer& determiner, /*Weights placed here: */ Weights& output);
 
-
     // Do a 'flexible' serialization, upholding semantic meaning but not exact binary compability, allowing for reloading differing configs. 
     // Note that because exact binary compatibility is not held, stopping a network has a reshuffling effect on data.
     // This does not affect the validity of rates, but does mean that serializing a network does not cause it to resume in exactly the same way.

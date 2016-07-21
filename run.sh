@@ -33,6 +33,17 @@ function handle_flag(){
 }
 
 ###############################################################################
+#  --reproducers: Run Python-driven tests that run INFILE's configurations and 
+# perform statistical tests on them.
+###############################################################################
+
+if handle_flag "--reproducers" ; then
+    cd reproducers/
+    python 03*.py
+    exit
+fi
+
+###############################################################################
 #  --tests: Run tests, including functionality equivalent tests (testing
 # against reference files from previous runs), and unit tests.
 #

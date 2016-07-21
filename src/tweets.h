@@ -54,7 +54,7 @@ struct TweetContent {
     template <typename Archive>
     void serialize(Archive& ar) {
         // Save/load scalars:
-        ar(NVP(type));
+        ar(NVP(id), NVP(type));
         ar(NVP(time_of_tweet), NVP(language), NVP(ideology_bin), NVP(hashtag_bin), NVP(id_original_author));
 
         // Save/load used_agents:
