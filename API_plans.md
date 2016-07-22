@@ -26,19 +26,14 @@ fifo.close()
 
 ###On the C++ side 
 ```
-void handle_query() {
-	// TODO have incoming_queries ifstream
-	// TODO have query_results ofstream
-	string line;
-	getline(incoming_queries, line);
-	cout << "Line: " << line << endl;
-	stringstream line_stream(line);
-	JsonReader reader {state, line_stream};
-	Query query; // Some Query object with every field of every query
-	reader(NVP(query));
-	// TODO write line of query result 
-	cout << "Query: " << query.query_type << endl;
-
-}
+See analyzer_api.cpp.
+Queries are read from standard input, with a signal sent to indicate that standard input should be checked.
 ```
+
+Current working features:
+-------------------------
+With enable_query_api enabled in INFILE, run:
+
+echo -e '{"type":"add_tweet_stream","stream_path":"path"}\n' | ./run.sh
+Press ctrl-c during execution to have tweets routed to 'path'.
 

@@ -170,6 +170,7 @@ static void parse_analysis_configuration(ParsedConfig& config, const Node& node)
     parse(node, "max_analysis_steps", max_analysis_steps_holder);
     config.max_analysis_steps = max_analysis_steps_holder;
 
+    parse(node, "enable_query_api", config.enable_query_api); 
     parse(node, "unfollow_tweet_rate", config.unfollow_tweet_rate);
     parse(node, "stage1_unfollow", config.stage1_unfollow);
     parse(node, "use_hashtag_probability", config.hashtag_prob);
@@ -472,6 +473,10 @@ static void check_configuration_integrity(ParsedConfig& config) {
                     "N_BIN_REGIONS", N_BIN_REGIONS, config.regions.regions.size());
     check_integrity("Number of ideologies",
                     "N_BIN_IDEOLOGIES", N_BIN_IDEOLOGIES, config.ideologies.size());
+    if (config.enable_query_api && config.enable_interactive_mode) {
+        printf("Cannot enable both query request mode and interactive mode!\n");
+        throw "Error";
+    }
 }
 
 /***************************************************************************

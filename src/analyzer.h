@@ -301,6 +301,10 @@ void analyzer_main(AnalysisState& state);
 // this returns the total retweet rate
 double analyzer_total_retweet_rate(AnalysisState& state);
 
+// check query API for incoming events 
+void analyzer_api_tweet(AnalysisState& state, Tweet& tweet);
+void analyzer_handle_api_request(AnalysisState& state);
+
 // this is for the retweet agent selection
 RetweetChoice analyzer_select_tweet_to_retweet(AnalysisState& state, SelectionType type);
 

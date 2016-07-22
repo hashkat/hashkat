@@ -310,12 +310,13 @@ struct Analyzer {
         while (sim_time_check() && real_time_check() && !stats.user_did_exit) {
             if (!interrupt_check()) {
                 interrupt_reset();
-                if (!config.enable_interactive_mode) {
+                if (config.enable_query_api) {
+                    analyzer_handle_api_request(state);
+                } else if (!config.enable_interactive_mode) {
                     stats.user_did_exit = true;
                     break;
-                }
-                // Has the user requested an exit?
-                if (!start_interactive_mode(state)) {
+                } else if (!start_interactive_mode(state)) {
+                    // Has the user requested an exit?
                     stats.user_did_exit = true;
                     break;
                 }
@@ -456,6 +457,7 @@ struct Analyzer {
             tweet_ranks.categorize(id_tweeter, e.n_tweets);
             e.n_tweets++;
             Tweet tweet = generate_tweet(id_tweeter, id_tweeter, 0, generate_tweet_content(id_tweeter));
+            analyzer_api_tweet(state, tweet);
             lua_hook_tweet(state, id_tweeter, tweet);
             // Generate the tweet content:
             // increase the number of tweets the agent had by one

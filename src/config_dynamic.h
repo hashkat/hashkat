@@ -26,6 +26,7 @@
 #define CONFIG_DYNAMIC_H_
 
 #include <cmath>
+#include <memory>
 #include "network.h"
 #include "events.h"
 
@@ -92,6 +93,7 @@ struct ParsedConfig {
     bool use_follow_via_retweets = false;
     bool use_barabasi = false;
     bool region_connection_matrix = false;
+    bool enable_query_api = false;
     
     int barabasi_connections = 1;
     double barabasi_exponent = 1;
