@@ -60,6 +60,8 @@ analysis:
     unlimited
   max_real_time: 
     1
+  enable_query_api:
+    true
   enable_interactive_mode:
     false
   enable_lua_hooks: # Defined in same file as interactive_mode. Can slow down simulation considerably.
