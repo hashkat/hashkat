@@ -40,9 +40,15 @@ def get_var_arg(test, default_val):
             return sys.argv[i+1]
     return default_val
 
-# Explicitly don't resolve os.environ['HASHKAT'] if --input argument is present.
-INPUT_FILE_NAME = get_var_arg("--input", None) or (os.environ['HASHKAT'] + "/INFILE.yaml")
+INPUT_FILE_NAME = get_var_arg("--input", "INFILE.yaml")
 
+# This environment variable needs can set by the user ahead of time,
+# but defaults to the current directory.
+DEFAULT_FILE_NAME = get_var_arg("--base-input", '')
+if not DEFAULT_FILE_NAME:
+    DEFAULT_FILE_NAME = os.environ['HASHKAT'] + "/DEFAULT.yaml"
+
+print("hashkat_pre.py -- Loading defaults from " + DEFAULT_FILE_NAME)
 print("hashkat_pre.py -- Generating rates for " + INPUT_FILE_NAME)
 
 #################################################################
@@ -50,7 +56,44 @@ print("hashkat_pre.py -- Generating rates for " + INPUT_FILE_NAME)
 # We will add a 'generated' node to this, and emit it as INFILE.yaml-generated
 #################################################################
 
+DEFAULT_CONFIG = yaml.load(open(DEFAULT_FILE_NAME, "r"))
 CONFIG = yaml.load(open(INPUT_FILE_NAME, "r"))
+
+# Merges all not found in 'dst'
+def merge_part(src, dst, label):
+    if label not in dst:
+        dst[label] = src[label]
+        return
+    else:
+        dst, src = dst[label],src[label]
+    for k in src: 
+        if k not in dst:
+            dst[k] = src[k]
+
+def default_check(src, dst, label):
+    if label not in dst:
+        dst[label] = src[label]
+
+# Merges all not found in 'dst'
+def merge_config(src, dst):
+    # Mimics structure of INFILE.yaml
+    merge_part(src, dst, "analysis")
+    merge_part(src, dst, "rates")
+    merge_part(src, dst, "output")
+    merge_part(src, dst, "tweet_ranks")
+    merge_part(src, dst, "retweet_ranks")
+    merge_part(src, dst, "follow_ranks")
+    merge_part(src, dst, "tweet_observation")
+
+    default_check(src, dst, "ideologies")
+    default_check(src, dst, "regions")
+
+    default_check(src, dst, "preference_classes")
+    default_check(src, dst, "agents")
+    
+merge_config(DEFAULT_CONFIG, CONFIG)
+
+agents = CONFIG["agents"]
 
 #################################################################
 # Both functions are computed from a lookup table generated below.
@@ -226,7 +269,7 @@ def load_relevance_weights():
             retweet_rel = pref["tweet_transmission"][tweet_type]
             # Load all the functions based on the different agent types
             # Defaults to the 'else' node.
-            for e in CONFIG["agents"]:
+            for e in agents:
                 name = e["name"]
                 if name in retweet_rel:
                     func_str = retweet_rel[name]
@@ -287,6 +330,7 @@ try:
     print("hashkat_pre.py -- Copied INFILE.yaml to output directory")
 except OSError:
     print "hashkat_pre.py -- An output directory already exists, leaving it intact"
+
 
 
 print("hashkat_pre.py -- Done generating rates")
