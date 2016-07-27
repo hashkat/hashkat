@@ -23,6 +23,8 @@ class Stagnant_network_exits_correctly(TestBase):
         # Test that a stagnant network does not result in step events at all:
         assert hashkat_dump_stats(self.state)["n_steps"] == 0
 
+hashkat_test(Stagnant_network_exits_correctly())
+
 # Degenerate network: Pure growth. No additions or tweets.
 class Pure_growth_network_grows_correctly(TestBase):
     base_infile = "base_infiles/simple-base.yaml"
@@ -43,6 +45,5 @@ class Pure_growth_network_grows_correctly(TestBase):
         # Test that a network with only addition rates grows 1 user per step: 
         assert stats["n_agents"] == self.AGENTS_TO_GROW
 
-hashkat_test(Stagnant_network_exits_correctly())
 hashkat_test(Pure_growth_network_grows_correctly(AGENTS_TO_GROW = 1000))
 

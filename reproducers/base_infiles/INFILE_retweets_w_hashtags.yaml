@@ -60,6 +60,8 @@ analysis:
     unlimited # Controlled by test
   max_real_time: 
     unlimited # Controlled by test
+  enable_query_api:
+    false
   enable_interactive_mode:
     false
   enable_lua_hooks: # Defined in same file as interactive_mode. Can slow down simulation considerably.

@@ -60,6 +60,8 @@ analysis:
     unlimited # By default, the base infile never ends
   max_real_time: 
     unlimited
+  enable_query_api:
+    false
   enable_interactive_mode:
     false
   enable_lua_hooks: # Defined in same file as interactive_mode. Can slow down simulation considerably.

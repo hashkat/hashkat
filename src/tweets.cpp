@@ -19,10 +19,10 @@ void Tweet::api_serialize(cereal::JSONOutputArchive& ar) {
        NVP(content_type), NVP(language),
        // Twitter API:
        cereal::make_nvp("retweet_count", content->used_agents.size()),
+       cereal::make_nvp("retweet_count", content->used_agents.size()),
        cereal::make_nvp("author_follower_count", get_state(ar).network[content->id_original_author].follower_set.size()),
        NVP(content_type)
     );
-    //.api_serialize(ar);
 }
 
 int HashTags::select_agent(AnalysisState& state, bool region_choice, bool ideology_choice, int default_region, int default_ideology) {
