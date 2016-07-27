@@ -40,11 +40,13 @@ def get_var_arg(test, default_val):
             return sys.argv[i+1]
     return default_val
 
-INPUT_FILE_NAME = get_var_arg("--input", "INFILE.yaml")
-
 # This environment variable needs can set by the user ahead of time,
-# but defaults to the current directory.
-DEFAULT_FILE_NAME = get_var_arg("--base-input", '')
+# but is set if not present to the current directory by run.sh.
+# Explicitly don't resolve os.environ['HASHKAT'] if --input and --base-input arguments are present.
+INPUT_FILE_NAME = get_var_arg("--input", None)
+if not INPUT_FILE_NAME:
+    INPUT_FILE_NAME = os.environ['HASHKAT'] + "/INFILE.yaml"
+DEFAULT_FILE_NAME = get_var_arg("--base-input", None)
 if not DEFAULT_FILE_NAME:
     DEFAULT_FILE_NAME = os.environ['HASHKAT'] + "/DEFAULT.yaml"
 
