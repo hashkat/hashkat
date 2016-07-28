@@ -1036,13 +1036,11 @@ void fraction_of_connections_distro(Network& network, AnalysisState& state, Netw
 
 // DD_BY_YEAR
 
-struct Year {
+struct YearDegreeDistro {
     vector<int> agent_ids;
     vector<double> dd;
     int count = 0;
 };
-
-typedef vector<Year> YearVector;
 
 void dd_by_age(Network& n, AnalysisState& as, NetworkStats& ns) {
     
@@ -1052,7 +1050,7 @@ void dd_by_age(Network& n, AnalysisState& as, NetworkStats& ns) {
         return;
     }
     
-    YearVector years(length);
+    vector<YearDegreeDistro> years(length);
     
     int max_following = 0, max_followers = 0;
     for (int i = 0; i < n.size(); i++) {
@@ -1107,7 +1105,7 @@ void dd_by_age(Network& n, AnalysisState& as, NetworkStats& ns) {
 void dd_by_agent(Network& n, AnalysisState& as, NetworkStats& ns) {
     
     int n_ent_types = as.agent_types.size();
-    vector<Year> agent_types(n_ent_types);
+    vector<YearDegreeDistro> agent_types(n_ent_types);
     
     int max_following = 0, max_followers = 0;
     for (int i = 0; i < n.size(); i++) {
@@ -1129,7 +1127,6 @@ void dd_by_agent(Network& n, AnalysisState& as, NetworkStats& ns) {
         for (int i = 0; i < ent_type.dd.size(); i ++) {
             ent_type.dd[i] = 0;
         }
-        
     }
     
     ofstream output;
@@ -1157,7 +1154,7 @@ void dd_by_agent(Network& n, AnalysisState& as, NetworkStats& ns) {
 // DD_BY_FOLLOW_MODEL
 
 void dd_by_follow_method(Network& n, AnalysisState& as, NetworkStats& ns) {
-    vector<Year> follow_models(N_FOLLOW_MODELS + 2); // + 2 for retweeting and followback
+    vector<YearDegreeDistro> follow_models(N_FOLLOW_MODELS + 2); // + 2 for retweeting and followback
     int max_following = 0, max_followers = 0;
     for (int i = 0; i < n.size(); i++) {
         if (n.n_followings(i) >= max_following) {
@@ -1204,17 +1201,3 @@ void dd_by_follow_method(Network& n, AnalysisState& as, NetworkStats& ns) {
     
     output.close();
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
