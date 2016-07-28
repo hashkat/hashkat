@@ -1154,15 +1154,16 @@ void dd_by_agent(Network& n, AnalysisState& as, NetworkStats& ns) {
 // DD_BY_FOLLOW_MODEL
 
 void dd_by_follow_method(Network& n, AnalysisState& as, NetworkStats& ns) {
-    vector<YearDegreeDistro> follow_models(N_FOLLOW_MODELS + 2); // + 2 for retweeting and followback
+    vector<YearDegreeDistro> follow_models(N_FOLLOW_MODELS);
 
     for (Agent& a : n) {
-        for (int i = 0; i < N_FOLLOW_MODELS + 2; i ++) {
+        for (int i = 0; i < N_FOLLOW_MODELS; i ++) {
+            YearDegreeDistro& model = follow_models[i];
             int degree = a.following_method_counts[i] + a.follower_method_counts[i];
-            if (follow_models[i].dd.size() <= degree) {
-                follow_models[i].dd.resize(degree + 1);
+            if (model.dd.size() <= degree) {
+                model.dd.resize(degree + 1);
             }
-            follow_models[i].dd[degree]++;
+            model.dd[degree]++;
         }
     }
     
@@ -1182,14 +1183,14 @@ void dd_by_follow_method(Network& n, AnalysisState& as, NetworkStats& ns) {
     int i = 0;
     while (true) {
         bool has_data = false;
-        for (YearDegreeDistro& year : follow_models) {
-            if (year.dd.size() > i) {
+        for (YearDegreeDistro& model : follow_models) {
+            if (model.dd.size() > i) {
                 has_data = true;
             }
         }
         output << i << "\t" << log(i);
-        for (YearDegreeDistro& year : follow_models) {
-            double val = year.dd.size() > i ? year.dd[i] : 0;
+        for (YearDegreeDistro& model : follow_models) {
+            double val = model.dd.size() > i ? model.dd[i] : 0;
             output << "\t" << val / n.size() << "\t" << log(val / n.size());
         }
         output << "\n";

@@ -32,15 +32,6 @@
 
 #include "FollowerSet.h"
 
-enum FollowModel {
-    RANDOM_FOLLOW,
-    TWITTER_PREFERENTIAL_FOLLOW,
-    AGENT_FOLLOW,
-    PREFERENTIAL_AGENT_FOLLOW,
-    HASHTAG_FOLLOW,
-    TWITTER_FOLLOW
-};
-
 struct PreferenceClass {
     std::string name;
     // Probability that a tweet reaction results in a follow, rather than a retweet:

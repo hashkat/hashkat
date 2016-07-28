@@ -1,6 +1,7 @@
 CMakeCache.txt
 CMakeFiles/
 oprofile_data/
+reproducers/output
 src/tests/INFILE_temporary.yaml
 INFILE.yaml
 *-generated.yaml

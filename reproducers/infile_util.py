@@ -14,7 +14,8 @@ def create_infile(infile_setup, base_infile):
     with open(infile_loc, 'w') as f:
         yaml.dump(yaml_contents, f)
     process = Popen(["../hashkat_pre.py", 
-        "--input", infile_loc
+        "--input", infile_loc, 
+        '--base-input', 'base_infiles/simple-base.yaml'
     ], stdout=DEVNULL)
     process.wait()
     def cleanup():

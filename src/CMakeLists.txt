@@ -12,7 +12,7 @@ include_directories(
 )
 
 #if ($ENV{FULL_WARNINGS})
-    add_definitions(-Wall -Wno-sign-compare -Wno-reorder -fPIC -std=c++11 -D_GLIBCXX_DEBUG)
+add_definitions(-Wall -Wno-sign-compare -Wno-reorder -Wno-unused-variable -fPIC -std=c++11 -D_GLIBCXX_DEBUG)
     #else()
     #    add_definitions(-Wno-sign-compare -Wno-reorder -Wall -Wno-unused-variable  -Wuninitialized -Wno-deprecated-declarations -fPIC -std=c++11)
     #endif()

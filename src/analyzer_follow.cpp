@@ -75,6 +75,8 @@ struct AnalyzerFollow {
     }
     // Returns true if a follow is added that was not already added
    bool handle_follow(int id_actor, int id_target, int follow_method) {
+       DEBUG_CHECK(follow_method >= 0 && follow_method < N_FOLLOW_MODELS,
+           "Follow method must be a known method other than the compound Twitter model");
        PERF_TIMER();
        Agent& A = network[id_actor];
        Agent& T = network[id_target];
@@ -82,8 +84,8 @@ struct AnalyzerFollow {
        // if the follow is possible
        if (was_added) {
            bool was_added = T.follower_set.add(network[id_actor]);
-           A.follower_method_counts[follow_method] ++;
-           T.following_method_counts[follow_method] ++;
+           A.follower_method_counts[follow_method]++;
+           T.following_method_counts[follow_method]++;
            ASSERT(was_added, "Follow/follower-set asymmetry detected!");
            if (config.stage1_unfollow) {
                update_chatiness(A, id_target);
@@ -292,27 +294,19 @@ struct AnalyzerFollow {
    
    int twitter_follow_model(Agent& e, double time_of_follow) {
        PERF_TIMER();
-       /* different follow models:
-           0 - random follow
-           1 - preferential follow
-           2 - agent type follow
-           3 - preferential agent follow
-           4 - hashtag follow
-           5 - referral follow
-       */
        int follow_method = rng.kmc_select(&config.model_weights[0], N_FOLLOW_MODELS);
-       if (follow_method == 0) {
-           // Random follow method:
+       if (follow_method == RANDOM_FOLLOW) {
            return random_follow_method(e, network.size());
-       } else if (follow_method == 1) {
+       } else if (follow_method == TWITTER_PREFERENTIAL_FOLLOW) {
            return twitter_preferential_follow_method(e, time_of_follow);
-       } else if (follow_method == 2) {
+       } else if (follow_method == AGENT_FOLLOW) {
            return agent_follow_method(e);
-       } else if (follow_method == 3) {
+       } else if (follow_method == PREFERENTIAL_AGENT_FOLLOW) {
            return preferential_agent_follow_method(e);
-       } else {
+       } else if (follow_method == HASHTAG_FOLLOW){
            return hashtag_follow_method(e);
        } 
+       ASSERT(false, "Should not pick ");
        return -1;
     }
     

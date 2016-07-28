@@ -1,6 +1,7 @@
 import sys, os, json 
 from infile_util import create_infile
 from cffi import FFI
+import unittest
 
 ffi = FFI()
 
@@ -17,10 +18,11 @@ def to_cstring(s):
 def to_cstring_array(lst):
     return [to_cstring(s) for s in lst]
 
-class TestBase:
+class HashkatTestCase:
     GLOBAL_CALLBACK_LIST = [] # Make sure callbacks don't get garbage collected
     FAILED = False
     args = []
+    n_runs = 1
     def finish(self):
         raw_lib.hashkat_finish_analysis(self.state)
     def install_cb(self, sig, cb):
@@ -40,10 +42,12 @@ class TestBase:
                     self.FAILED = True
             cdata = ffi.callback(sig)(wrapped)
             setattr(self.callbacks[0], cb, cdata)
-            TestBase.GLOBAL_CALLBACK_LIST.append(cdata)
+            HashkatTestCase.GLOBAL_CALLBACK_LIST.append(cdata)
+    def test_run(self):
+        hashkat_test(self, self.n_runs)
     def on_exit_all(self):
         pass
-    def infile_setup(self, yaml):
+    def on_start(self, yaml):
         pass
     def install_callbacks(self):
         self.callbacks = ffi.new('struct EventCallbacks[1]')
@@ -62,6 +66,7 @@ class TestBase:
 # infile_setup: Transform the YAML object before serialization
 def hashkat_new_analysis_state(infile_setup, base_infile, args=[]):
     temp_dir, temp_dir_cleanup = create_infile(infile_setup, base_infile)
+    # TODO free
     args = to_cstring_array([sys.argv[0], '--input', temp_dir + '/INFILE.yaml'] + args)
     state = raw_lib.hashkat_new_analysis_state(len(args), args)
     def cleanup():
@@ -74,15 +79,17 @@ def hashkat_start_analysis_loop(state, callbacks):
     raw_lib.hashkat_start_analysis_loop(state)
 
 N_TESTS = 1
-def hashkat_test(test, n_simulations=1):
+def hashkat_test(test, n_runs=1):
     global N_TESTS
     test_name = "\"" + test.__class__.__name__.replace('_', ' ') + "\""
     print "-----------------------------------------------------------------------"
     print "Running test " + str(N_TESTS) + ": " + test_name
     print "-----------------------------------------------------------------------"
-    for i in range(n_simulations):
-        test.iteration = i
-        state, cleanup = hashkat_new_analysis_state(test.infile_setup, test.base_infile, test.args)
+    test.on_start_all()
+    for i in range(n_runs):
+        test.runs = i
+        # test.on_start both sets up the test and can mutate the infile object
+        state, cleanup = hashkat_new_analysis_state(test.on_start, test.base_infile, test.args)
         test.state = state
         test.install_callbacks()
         try:
