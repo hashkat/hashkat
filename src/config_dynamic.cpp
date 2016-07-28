@@ -131,12 +131,12 @@ static TweetObservationPDF parse_tweet_obs_pdf(const Node& node) {
 }
 
 static vector<double> parse_follow_weights(const Node& node) {
-    vector<double> weights(N_FOLLOW_MODELS, 0);
-    parse(node, "random", weights[0]);
-    parse(node, "twitter_suggest", weights[1]);
-    parse(node, "agent", weights[2]);
-    parse(node, "preferential_agent", weights[3]);
-    parse(node, "hashtag", weights[4]);
+    vector<double> weights(N_TWITTER_FOLLOW_MODELS, 0);
+    parse(node, "random", weights[RANDOM_FOLLOW]);
+    parse(node, "twitter_suggest", weights[TWITTER_PREFERENTIAL_FOLLOW]);
+    parse(node, "agent", weights[AGENT_FOLLOW]);
+    parse(node, "preferential_agent", weights[PREFERENTIAL_AGENT_FOLLOW]);
+    parse(node, "hashtag", weights[HASHTAG_FOLLOW]);
     double weight_sum = 0;
     for (auto& w : weights) {
         weight_sum += w;

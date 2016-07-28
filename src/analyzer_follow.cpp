@@ -294,7 +294,7 @@ struct AnalyzerFollow {
    
    int twitter_follow_model(Agent& e, double time_of_follow) {
        PERF_TIMER();
-       int follow_method = rng.kmc_select(&config.model_weights[0], N_FOLLOW_MODELS);
+       int follow_method = rng.kmc_select(&config.model_weights[0], N_TWITTER_FOLLOW_MODELS);
        if (follow_method == RANDOM_FOLLOW) {
            return random_follow_method(e, network.size());
        } else if (follow_method == TWITTER_PREFERENTIAL_FOLLOW) {
@@ -387,7 +387,7 @@ struct AnalyzerFollow {
         // now the previous target will follow the previous actor back
         Agent& prev_actor = network[prev_actor_id];
         Agent& prev_target = network[prev_target_id];
-        if (handle_follow(prev_target_id, prev_actor_id,N_FOLLOW_MODELS + 1)) {
+        if (handle_follow(prev_target_id, prev_actor_id, FOLLOW_BACK_FOLLOW)) {
             int et_id = network[prev_actor_id].agent_type;
             AgentType& et = agent_types[et_id];
             et.follow_ranks.categorize(prev_actor_id, prev_actor.follower_set.size());

@@ -47,7 +47,8 @@ enum FollowModel {
     FOLLOW_BACK_FOLLOW,
     RETWEETING_FOLLOW,
     TWITTER_FOLLOW, // Amalgamation of first 5
-    N_FOLLOW_MODELS = TWITTER_FOLLOW // Does not count TWITTER_FOLLOW itself
+    N_FOLLOW_MODELS = TWITTER_FOLLOW, // Does not count TWITTER_FOLLOW itself
+    N_TWITTER_FOLLOW_MODELS = HASHTAG_FOLLOW + 1 // Follows within TWITTER_FOLLOW
 };
 
 enum TweetType {
