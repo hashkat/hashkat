@@ -197,7 +197,7 @@ void tweet_info(vector<Tweet>& old_tweets) {
     std::vector<int> modes;
 
     for (auto& x : collection) {
-        int value = x[0];
+        int value = x.size() > 0 ? x[0] : 0;
         int mode = value;
         int score = 1;
         int count = 1;
