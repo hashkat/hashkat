@@ -576,8 +576,6 @@ struct Analyzer {
          * Retrying as we did before (ie, not moving time forward) caused some underestimation in the time of events.
          */
 
-        bool network_has_changed = false;
-
         lua_hook_step_analysis(state);
 
         // Get a random number within [0,1).
