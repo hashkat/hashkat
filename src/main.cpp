@@ -80,6 +80,7 @@ int main(int argc, char** argv) {
         setvbuf(stdout,NULL,_IONBF,0); // Make stdout unbuffered
         cout.setf(std::ios::unitbuf);
     }
+    setvbuf(stdin,NULL,_IONBF,0);
 
 	if (has_flag(argc, argv, "--tests")) {
 		// running tests:

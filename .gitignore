@@ -3,7 +3,7 @@ CMakeFiles/
 oprofile_data/
 src/tests/INFILE_temporary.yaml
 INFILE.yaml
-INFILE-generated.yaml
+*-generated.yaml
 Makefile
 DATA_vs_TIME
 luawrap_tests

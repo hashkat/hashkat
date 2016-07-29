@@ -177,6 +177,9 @@ struct Analyzer {
      * after the messy configuration and allocation is done.
      * Returns end-time. */
     double main(Timer& timer) {
+        if (config.enable_query_api) {
+            spawn_stdin_command_queueing_thread_for_api();
+        }
         if (config.load_network_on_startup && file_exists(config.save_file)) {
             load_network_state(config.save_file.c_str());
         } else {
@@ -310,9 +313,7 @@ struct Analyzer {
         while (sim_time_check() && real_time_check() && !stats.user_did_exit) {
             if (!interrupt_check()) {
                 interrupt_reset();
-                if (config.enable_query_api) {
-                    analyzer_handle_api_request(state);
-                } else if (!config.enable_interactive_mode) {
+                if (!config.enable_interactive_mode) {
                     stats.user_did_exit = true;
                     break;
                 } else if (!start_interactive_mode(state)) {
@@ -557,6 +558,9 @@ struct Analyzer {
         if (stats.n_steps >= config.max_analysis_steps) {
             return false;
         }
+
+        // Check for incoming api_requests, if enabled.
+        analyzer_handle_outstanding_api_request(state);
 
         /*
          * Fix for Github issue #3:

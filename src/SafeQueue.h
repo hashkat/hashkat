@@ -22,15 +22,45 @@
  * subsequent authors. 
  */
 
-#include "FollowingSet.h"
+// Adapted from http://stackoverflow.com/questions/15278343/c11-thread-safe-queue 
+#ifndef SAFE_QUEUE
+#define SAFE_QUEUE
 
-using namespace std;
+#include <queue>
+#include <mutex>
+#include <condition_variable>
 
-void FollowingSet::print(AnalysisState& S) {
-    if (size() > 0) {
-        printf("[%s] (N_elems %d)\n", "FollowingSet", (int) size());
-        implementation.print();
-    } else {
-        printf("<Empty>\n");
+template <class T>
+class SafeQueue {
+public:
+    void enqueue(T t) {
+        std::lock_guard<std::mutex> lock(m);
+        q.push(t);
+        c.notify_one();
     }
-}
+
+    T dequeue() {
+        std::unique_lock<std::mutex> lock(m);
+        while (q.empty()) {
+            c.wait(lock);
+        }
+        T val = q.front();
+        q.pop();
+        return val;
+    }
+
+    T nonblocking_dequeue() {
+        std::unique_lock<std::mutex> lock(m);
+        if (q.empty()) {
+            return T();
+        }
+        T val = q.front();
+        q.pop();
+        return val;
+    }
+private:
+    std::queue<T> q;
+    mutable std::mutex m;
+    std::condition_variable c;
+};
+#endif

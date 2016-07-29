@@ -114,4 +114,4 @@ if ! handle_flag "--no-generate" ; then
     fi
 fi
 
-"$HASHKAT/build/src/hashkat" $args
+exec "$HASHKAT/build/src/hashkat" $args
