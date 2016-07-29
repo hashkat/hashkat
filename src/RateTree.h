@@ -283,7 +283,6 @@ struct RateTree {
     // Debug methods:
     void debug_check_rates() {
         std::vector<Node*> v = as_node_vector(/*all:*/ true);
-        int occurrences = 0;
         for (int i = 0; i < v.size(); i++) {
             double calc_sum = v[i]->debug_rate_sum(*this);
             double stored_sum = v[i]->rates.tuple_sum;
