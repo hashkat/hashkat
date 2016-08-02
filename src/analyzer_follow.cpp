@@ -291,19 +291,22 @@ struct AnalyzerFollow {
            RECORD_STAT(state, e.agent_type, n_hashtag_follows);
        return agent_to_follow;
    }
-   
-   int twitter_follow_model(Agent& e, double time_of_follow) {
+
+   // Used with the 'twitter' follow model (an option in INFILE.yaml).
+   // Returns the agent followed by a chosen follow model.
+   // 'model_chosen' is updated to the model randomly chosen according to a set of configured weights.
+   int twitter_follow_model(Agent& e, double time_of_follow, /*Updated after call: */ FollowModel& model_chosen) {
        PERF_TIMER();
-       int follow_method = rng.kmc_select(&config.model_weights[0], N_TWITTER_FOLLOW_MODELS);
-       if (follow_method == RANDOM_FOLLOW) {
+       model_chosen = (FollowModel) rng.kmc_select(&config.model_weights[0], N_TWITTER_FOLLOW_MODELS);
+       if (model_chosen == RANDOM_FOLLOW) {
            return random_follow_method(e, network.size());
-       } else if (follow_method == TWITTER_PREFERENTIAL_FOLLOW) {
+       } else if (model_chosen == TWITTER_PREFERENTIAL_FOLLOW) {
            return twitter_preferential_follow_method(e, time_of_follow);
-       } else if (follow_method == AGENT_FOLLOW) {
+       } else if (model_chosen == AGENT_FOLLOW) {
            return agent_follow_method(e);
-       } else if (follow_method == PREFERENTIAL_AGENT_FOLLOW) {
+       } else if (model_chosen == PREFERENTIAL_AGENT_FOLLOW) {
            return preferential_agent_follow_method(e);
-       } else if (follow_method == HASHTAG_FOLLOW){
+       } else if (model_chosen == HASHTAG_FOLLOW){
            return hashtag_follow_method(e);
        } 
        ASSERT(false, "Should not pick ");
@@ -316,7 +319,7 @@ struct AnalyzerFollow {
         int agent_to_follow = -1;
 
         /* Dispatch to the appropriate follower logic: */
-        const int follow_model = config.follow_model;
+        FollowModel follow_model = config.follow_model;
         if (follow_model == RANDOM_FOLLOW) {
             // find a random agent within [0:number of agents - 1]
             agent_to_follow = random_follow_method(e, network.size());
@@ -329,7 +332,7 @@ struct AnalyzerFollow {
         } else if (follow_model == PREFERENTIAL_AGENT_FOLLOW) {
             agent_to_follow = preferential_agent_follow_method(e);
         } else if (follow_model == TWITTER_FOLLOW) {
-            agent_to_follow = twitter_follow_model(e, time_of_follow);
+            agent_to_follow = twitter_follow_model(e, time_of_follow, /*Updated after call: */ follow_model);
         } else if (follow_model == HASHTAG_FOLLOW) {
             agent_to_follow = hashtag_follow_method(e);
         } else {
