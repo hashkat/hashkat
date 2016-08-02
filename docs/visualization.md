@@ -247,7 +247,7 @@ You are encouraged to explore all of Networkx's features and functionalities to 
 [WebGL Globe](https://www.chromeexperiments.com/globe) is an open platform for geographic data visualization.
 
 <center>
-<iframe width="560" height="315" src="https://www.youtube.com/watch?v=PU40COC8L_s" frameborder="0" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/PU40COC8L_s" frameborder="0" allowfullscreen></iframe>
 </center> <br /> 
 
 Here we have visualized user locations and the aggregate tweets on the globe created using the WebGL.
