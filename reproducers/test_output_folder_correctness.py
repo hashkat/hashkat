@@ -16,7 +16,7 @@ RELEVANT_OUTPUT_OPTIONS = [
     "tweet_info"
 ]
 
-# Investigating output folder correctness (eg, issue #32): 
+# Investigating tweet distro normalization in output folder (issue #32): 
 #   Does tweet_distro.dat correctly normalize data?
 #   Does retweet_distro.dat correctly normalize data?
 class Tweet_distro_dat_normalized(HashkatTestCase, unittest.TestCase):
@@ -49,3 +49,28 @@ class Tweet_distro_dat_normalized(HashkatTestCase, unittest.TestCase):
             self.assertTrue(0.95 < sum < 1.05, 
                 "The values in " + dat_path + " should be normalized to sum to 1. Was: " + str(sum))
 
+# Does main_stats.dat correctly record follow attempts when using use_barabasi? (issue #21)
+class Main_stats_dat_correctly_records_barabasi_follow_attempts(HashkatTestCase, unittest.TestCase):
+    base_infile = "base_infiles/two-regions-english-french-overlapping.yaml"
+    use_full_checks = False
+    n_runs = 1
+    # Configure the base configuration
+    def on_start(self, yaml):
+        yaml["analysis"]["max_time"] = 300
+        for option in RELEVANT_OUTPUT_OPTIONS:
+            yaml["output"][option] = True
+        yaml["analysis"]["use_barabasi"] = True
+    # on_exit() cannot be used, as it is invoked before the 
+    # output folders are created.
+    def on_exit_all(self):
+        # Check that the total follow attempts was not less than the total follows.
+        with open('output/main_stats.dat') as dat:
+            for line in dat.readlines():
+                if 'Total follows' in line:
+                    total_follows = int(line.split()[-1])
+                elif 'Total follow attempts' in line:
+                    total_follow_attempts = int(line.split()[-1])
+        print "Total follows: ", total_follows
+        print "Total follow attempts: ", total_follow_attempts
+        self.assertTrue(total_follow_attempts >= total_follows, 
+            "Should not have less follow attempts than follows recorded when using 'use_barabasi: true'!")
