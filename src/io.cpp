@@ -71,8 +71,6 @@ using namespace std;
 // After 'analyze', print the results of the computations.
 
 void output_network_statistics(AnalysisState& state) {
-    // uncomment to print performance statistics
-    //perf_print_results();
 
     Network& network = state.network;
     ParsedConfig& C = state.config;

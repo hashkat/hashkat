@@ -119,6 +119,9 @@ int main(int argc, char** argv) {
 
         printf("Analysis took %.2fms.\n", t.get_microseconds() / 1000.0);
 
+        if (has_flag(argc, argv, "--perf")) {
+            perf_print_results();
+        }
         return 0;
     }
 
