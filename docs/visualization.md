@@ -4,7 +4,7 @@
 
 Here we outline ways in which you can visualize the data output by **#k@**.
 
-### Gephi
+## Gephi
 
 <center>
 <iframe width="560" height="315" src="https://www.youtube.com/embed/GZYsnLApk24" frameborder="0" allowfullscreen></iframe>
@@ -106,7 +106,7 @@ By left clicking the light bulb button, you can change the background from white
 
 This just scratches the surface of all that you can do using Gephi. Try experimenting with some of its other features and see which configuration of your network visualization you like the best.
 
-### Networkx
+## Networkx
 
 You can also visualize the networks you've created using [Networkx](https://networkx.github.io/). 
 
@@ -240,3 +240,35 @@ nx.average_shortest_path_length(G))
 Though we discuss Gephi in much greater detail in this documentation, you are encouraged to analyze your networks using [Networkx](https://networkx.github.io/).  Other data output files are under development.  If you have a preference please let us know. 
 
 You are encouraged to explore all of Networkx's features and functionalities to understand all the ways in which you can analyze the data you've collected from running **#k@**.
+
+
+## WebGL Globe
+
+[WebGL Globe](https://www.chromeexperiments.com/globe) is an open platform for geographic data visualization.
+
+<center>
+<iframe width="560" height="315" src="https://www.youtube.com/watch?v=PU40COC8L_s&feature=youtu.be" frameborder="0" allowfullscreen></iframe>
+</center> <br /> 
+
+Here we have visualized user locations and the aggregate tweets on the globe created using the WebGL.
+
+Soure code : [hashkat/hashkat.github.io/tree/master/hashkat_visualizations](https://github.com/hashkat/hashkat.github.io/tree/master/hashkat_visualizations)
+
+To create a visualization like this, use the above code and make changes as:
+
+- Create a new JSON File similar to [test.json](https://github.com/hashkat/hashkat.github.io/blob/master/hashkat_visualizations/json/test.json) following the format
+```
+var data = [
+    [
+    'seriesA', [ value1, value2, value3, value1, value2, value3, value1, value2, value3,  ... ]
+    ],
+    [
+    'seriesB', [ value1, value2, value3, value1, value2, value3, value1, value2, value3, ... ]
+    ]
+];
+```
+where `value1` is the latitude, `value2` is the longitude and `value3` is the magniude.
+
+- Point to the new JSON file in [main.js#L44](https://github.com/hashkat/hashkat.github.io/blob/master/hashkat_visualizations/js/main.js#L44) and make changes accordingly to files like [index.html](https://github.com/hashkat/hashkat.github.io/blob/master/hashkat_visualizations/index.html) and [main.js](https://github.com/hashkat/hashkat.github.io/blob/master/hashkat_visualizations/js/main.js) depending on the number of options utilized.
+
+_... more details coming soon_
