@@ -15,6 +15,7 @@ void Tweet::api_serialize(cereal::JSONOutputArchive& ar) {
        cereal::make_nvp("has_hashtag", hashtag),
        cereal::make_nvp("retweets_since_origin", generation),
        cereal::make_nvp("author_region", get_state(ar).config.regions.regions[author.region_bin].name),
+       cereal::make_nvp("author_agent_type", get_state(ar).config.agent_types[author.agent_type].name),
        cereal::make_nvp("author_ideology", get_state(ar).config.ideologies[author.ideology_bin].name),
        NVP(content_type), NVP(language),
        // Twitter API:

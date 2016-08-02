@@ -21,7 +21,7 @@ def get_tweet_feature_counts(tweets):
         counts[t] += 1
     for k in tweets:
         v = tweets[k]
-        for key in 'author_region', 'content_type', 'language':
+        for key in 'author_region', 'content_type', 'language', 'author_agent_type':
             add_count(v[key])
         if v['has_hashtag']:
             add_count("with_hashtag")
@@ -96,3 +96,25 @@ class Tweets_generate_with_expected_attribute_distribution(HashkatTestCase, unit
         self.check_tweet_distribution(self.tweets)
         print "Testing distribution of retweeted tweets:"
         self.check_tweet_distribution(self.retweets)
+
+# Reproducing github issue #54:
+#   Do tweets incorrectly generate for 'silenced' agent types (i.e., tweet rate 0)? 
+class Tweets_dont_generate_for_agent_tweet_rate_0(HashkatTestCase, unittest.TestCase):
+    base_infile = "base_infiles/silent-agent-type.yaml"
+    n_runs = 1
+    def on_start_all(self):
+        self.tweets = {}
+    # Configure the base configuration
+    def on_start(self, yaml):
+        yaml["analysis"]["max_time"] = 30000
+    def on_tweet(self, tweet):
+        self.tweets[tweet["content_id"]] = tweet
+    def on_exit_all(self):
+        counts = get_tweet_feature_counts(self.tweets)
+        self.assertTrue(counts["DoesTweet"] > 0, 
+            "Agent type with tweet rate > 0 should tweet.")
+        self.assertTrue(counts["DoesntTweet"] == 0, 
+            "Agent type with tweet rate == 0 should NOT tweet. Had " + str(counts["DoesntTweet"]) + " tweets")
+
+if __name__ == "__main__":
+    unittest.main()
