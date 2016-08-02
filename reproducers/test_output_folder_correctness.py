@@ -28,8 +28,7 @@ class Tweet_distro_dat_normalized(HashkatTestCase, unittest.TestCase):
         yaml["analysis"]["max_time"] = 300000
         for option in RELEVANT_OUTPUT_OPTIONS:
             yaml["output"][option] = True
-    # on_exit() cannot be used, as it is invoked before the 
-    # output folders are created.
+    # on_exit() cannot be used, as it is invoked before the output folders are created.
     def on_exit_all(self):
         for dat_path in 'output/tweets_distro.dat', 'output/retweets_distro.dat':
             sum = 0
@@ -60,8 +59,7 @@ class Main_stats_dat_correctly_records_barabasi_follow_attempts(HashkatTestCase,
         for option in RELEVANT_OUTPUT_OPTIONS:
             yaml["output"][option] = True
         yaml["analysis"]["use_barabasi"] = True
-    # on_exit() cannot be used, as it is invoked before the 
-    # output folders are created.
+    # on_exit() cannot be used, as it is invoked before the output folders are created.
     def on_exit_all(self):
         # Check that the total follow attempts was not less than the total follows.
         with open('output/main_stats.dat') as dat:
@@ -74,3 +72,30 @@ class Main_stats_dat_correctly_records_barabasi_follow_attempts(HashkatTestCase,
         print "Total follow attempts: ", total_follow_attempts
         self.assertTrue(total_follow_attempts >= total_follows, 
             "Should not have less follow attempts than follows recorded when using 'use_barabasi: true'!")
+
+# Does dd_by_follow_model.dat incorrectly record the compound twitter follow model as a single follow model? (issue #44)
+class dd_by_follow_model_dat_correctly_handles_twitter_follow_model(HashkatTestCase, unittest.TestCase):
+    base_infile = "base_infiles/two-regions-english-french-overlapping.yaml"
+    use_full_checks = True # Make sure to try to trip assertions in the code.
+    n_runs = 1
+    # Configure the base configuration
+    def on_start(self, yaml):
+        yaml["analysis"]["max_time"] = 300000
+        for option in RELEVANT_OUTPUT_OPTIONS:
+            yaml["output"][option] = True
+        # Enable the twitter follow model, with equal probability between the various options:
+        yaml["analysis"]["follow_model"] = 'twitter'
+        yaml["analysis"]["model_weights"] = {'random': 1.0, 'twitter_suggest': 1.0, 'agent': 1.0, 'preferential_agent': 1.0, 'hashtag': 1.0}
+    # on_exit() cannot be used, as it is invoked before the output folders are created.
+    def on_exit_all(self):
+        # Check that the total follow attempts was not less than the total follows.
+        with open('output/dd_by_follow_model.dat') as dat:
+            lines = filter(lambda x: len(x) > 0 and x[0].isdigit(), dat.readlines())
+        for line in lines[:5]:
+            # Tricky to test, we test for a problematic string copied from dd_by_follow_model.dat in its first few lines:
+            self.assertTrue(
+                "0	-inf	0	-inf	0	-inf	0	-inf" not in line,
+                "dd_by_follow_model.dat should have output for all follow models.")
+
+if __name__ == "__main__":
+    unittest.main()
