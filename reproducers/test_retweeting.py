@@ -1,6 +1,7 @@
 import unittest
 from collections import defaultdict 
 from hashkat_util import HashkatTestCase, hashkat_dump_summary, hashkat_dump_stats
+from stat_util import stdev
 
 # 'factor': How many times bigger is 'a' than 'b'?
 def reasonably_close(a,b, factor = 1):
@@ -74,10 +75,9 @@ class Hashtags_should_not_prevent_retweets(HashkatTestCase, unittest.TestCase):
         self.assertTrue(int(stats["n_tweets"]) > 0)
         self.assertTrue(int(stats["n_retweets"]) > 0)
 
-class Mean_retweet_time_should_not_affect_retweeting_directly_from_author(HashkatTestCase, unittest.TestCase):
-    '''Generation 1 retweets should not be affected in volume by mean retweet time. 
-       Investigating github issue #43.'''
-
+class Tweets_generate_with_expected_attribute_distribution(HashkatTestCase, unittest.TestCase):
+    '''Reproducing github issues #109 & #110 et al.: 
+       Are retweeted tweets not a representative sample for language, region, and hashtaggedness?'''
     base_infile = "base_infiles/two-regions-english-french-overlapping.yaml"
     n_runs = 1
     def on_start_all(self):
@@ -101,6 +101,114 @@ class Mean_retweet_time_should_not_affect_retweeting_directly_from_author(Hashka
         print "Testing distribution of retweeted tweets:"
         self.check_tweet_distribution(self.retweets)
 
+class Standard_deviation_for_retweet_counts_in_separate_runs_is_not_too_high(HashkatTestCase, unittest.TestCase):
+    '''Reports the standard deviation over 20 seeds of a retweet-enabled network. 
+       A rough comparison to previous network stats is used under the assumption they are correct.'''
+
+    base_infile = "base_infiles/two-regions-english-french-overlapping.yaml"
+    use_full_checks = False
+    n_runs = 20
+    def on_start_all(self):
+        self.initial_retweet_counts = [0 for _ in range(self.n_runs)]
+        self.all_retweet_counts = [0 for _ in range(self.n_runs)]
+    # Configure the base configuration
+    def on_start(self, yaml):
+        self.args = ['--seed', str(self.runs + 1)]
+        # Use a time-frame that allows for a few thousand retweets at least:
+        yaml["analysis"]["max_time"] = 1200000
+        # Make retweets relatively infrequent:
+        tweet_transmission = yaml["preference_classes"][0]["tweet_transmission"]
+        for key in tweet_transmission:
+            tweet_transmission[key] = {"all": 0.1}
+    def on_exit(self):
+        print (self.runs+1), 'initial retweets', self.initial_retweet_counts[self.runs]
+        #print (self.runs+1), 'total retweets', self.all_retweet_counts[self.runs]
+    def on_retweet(self, tweet):
+        if tweet['retweets_since_origin'] == 1:
+            self.initial_retweet_counts[self.runs] += 1
+        self.all_retweet_counts[self.runs] += 1
+    def on_exit_all(self):
+	print "Standard deviation for initial retweet amounts:", stdev(self.initial_retweet_counts)
+	print "Standard deviation for total retweet amounts:", stdev(self.all_retweet_counts)
+        self.assertTrue(stdev(self.initial_retweet_counts) < 2000,
+            "Standard deviation for direct-author-follower retweet counts is much higher than expected.")
+        self.assertTrue(stdev(self.all_retweet_counts) < 3500,
+            "Standard deviation for all retweet counts is much higher than expected.")
+            #print (i+1), 'total retweets', self.all_retweet_counts[i]
+
+class X_end_variable_should_not_affect_direct_follower_retweets(HashkatTestCase, unittest.TestCase):
+    '''Reproducer for #43. Changing the 'time_span' variable in tweet_observation should not always result in exactly the same retweet amount.'''
+
+    base_infile = "base_infiles/two-regions-english-french-overlapping.yaml"
+    use_full_checks = False
+    n_runs = 10
+    def on_start_all(self):
+        self.initial_retweet_counts = [0 for _ in range(self.n_runs)]
+        self.all_retweet_counts = [0 for _ in range(self.n_runs)]
+    # Configure the base configuration
+    def on_start(self, yaml):
+        # Use a time-frame that allows for a few thousand retweets at least:
+        yaml["analysis"]["max_time"] = 1200000
+        # Set up a variable 'x_end', to see its affects on retweeting numbers:
+        yaml["tweet_observation"]["x_end"] = self.runs * 100 + 300
+        # Make retweets relatively infrequent:
+        tweet_transmission = yaml["preference_classes"][0]["tweet_transmission"]
+        for key in tweet_transmission:
+            tweet_transmission[key] = {"all": 0.1}
+    def on_exit(self):
+        print (self.runs+1), 'initial retweets', self.initial_retweet_counts[self.runs]
+        #print (self.runs+1), 'total retweets', self.all_retweet_counts[self.runs]
+    def on_retweet(self, tweet):
+        if tweet['retweets_since_origin'] == 1:
+            self.initial_retweet_counts[self.runs] += 1
+        self.all_retweet_counts[self.runs] += 1
+    def on_exit_all(self):
+        for i in range(self.n_runs):
+            print (i+1), 'initial retweets', self.initial_retweet_counts[i]
+            self.assertTrue( 7500 < self.initial_retweet_counts[i] < 9000,
+                "x_end should produce approximately the same value, between 7500 and 9000 conservatively. Was " + str(self.initial_retweet_counts[i]) + " for " + str(i))
+	print "Standard deviation for initial retweet amounts:", stdev(self.initial_retweet_counts)
+	print "Standard deviation for total retweet amounts:", stdev(self.all_retweet_counts)
+            #print (i+1), 'total retweets', self.all_retweet_counts[i]
+
+class Mean_retweet_time_should_cause_slightly_different_networks(HashkatTestCase, unittest.TestCase):
+    '''Reproducer for #43. Changing the 'time_span' variable in tweet_observation should not always result in exactly the same retweet amount.'''
+
+    base_infile = "base_infiles/two-regions-english-french-overlapping.yaml"
+    use_full_checks = False
+    n_runs = 10
+    def on_start_all(self):
+        self.initial_retweet_counts = [0 for _ in range(self.n_runs)]
+        self.all_retweet_counts = [0 for _ in range(self.n_runs)]
+    # Configure the base configuration
+    def on_start(self, yaml):
+        # Use a time-frame that allows for a few thousand retweets at least:
+        yaml["analysis"]["max_time"] = 900000
+        # Set up a variable time-frame:
+        yaml["tweet_observation"]["time_span"] = str((self.runs + 1) * 2) + " * hour"
+        # Make retweets relatively infrequent:
+        tweet_transmission = yaml["preference_classes"][0]["tweet_transmission"]
+        for key in tweet_transmission:
+            tweet_transmission[key] = {"all": 0.1}
+    def on_exit(self):
+        print (self.runs+1), 'initial retweets', self.initial_retweet_counts[self.runs]
+        print (self.runs+1), 'total retweets', self.all_retweet_counts[self.runs]
+    def on_retweet(self, tweet):
+        if tweet['retweets_since_origin'] == 1:
+            self.initial_retweet_counts[self.runs] += 1
+        self.all_retweet_counts[self.runs] += 1
+    def on_exit_all(self):
+        cmp_amount = self.all_retweet_counts[0]
+        one_differs = False
+        for i in range(self.n_runs):
+            print (i+1), 'initial retweets', self.initial_retweet_counts[i]
+            print (i+1), 'total retweets', self.all_retweet_counts[i]
+            if self.all_retweet_counts[i] != cmp_amount:
+                one_differs = True
+        self.assertTrue(one_differs, 
+            "Changing time_span resulted in exactly the same amount of retweets! This implies exactly the same network is being created regardless of this parameter!")
+
+
 class Tweets_dont_generate_for_agent_tweet_rate_0(HashkatTestCase, unittest.TestCase):
     '''Reproducing github issue #54:
         Do tweets incorrectly generate for 'silenced' agent types (i.e., tweet rate 0)?'''
@@ -120,6 +228,33 @@ class Tweets_dont_generate_for_agent_tweet_rate_0(HashkatTestCase, unittest.Test
             "Agent type with tweet rate > 0 should tweet.")
         self.assertTrue(counts["DoesntTweet"] == 0, 
             "Agent type with tweet rate == 0 should NOT tweet. Had " + str(counts["DoesntTweet"]) + " tweets")
+
+class Tweet_transmission_is_exponential(HashkatTestCase, unittest.TestCase):
+    '''Does changing the tweet_transmission rate increase the amount of tweets exponentially?'''
+
+    base_infile = "base_infiles/two-regions-english-french-overlapping.yaml"
+    n_runs = 15
+    use_full_checks = False
+    def on_start_all(self):
+        self.retweets = defaultdict(int)
+    # Configure the base configuration
+    def on_start(self, yaml):
+        self.args = ['--seed', str(self.runs)]
+        yaml["analysis"]["max_time"] = 1000000
+        tweet_transmission = yaml["preference_classes"][0]["tweet_transmission"]
+        for key in tweet_transmission:
+            tweet_transmission[key]["all"] = (int(self.runs / 5) + 1) / 30.0
+
+    def on_exit(self):
+        stats = hashkat_dump_stats(self.state)
+        self.retweets[int(self.runs / 5)] += int(stats["global_stats"]["n_retweets"])
+    def on_exit_all(self):
+        self.assertTrue(self.retweets[0] > 50)
+        self.assertTrue(self.retweets[1] > self.retweets[0] * 2 )
+        self.assertTrue(self.retweets[2] > self.retweets[1] * 2 )
+        # Test that we correctly exit at EXPECTED_STEPS, as specified by max_analysis_steps:
+#        self.assertTrue(stats["n_steps"] == self.steps)
+#        self.assertTrue(stats["n_steps"] == self.EXPECTED_STEPS )
 
 if __name__ == "__main__":
     unittest.main()
