@@ -2,11 +2,9 @@ import unittest
 from collections import defaultdict
 from hashkat_util import HashkatTestCase, hashkat_dump_state, hashkat_dump_summary,  hashkat_dump_stats
 
-###############################################################################
-## Is the max analysis steps variable honoured?
-###############################################################################
-
 class Max_analysis_steps_is_honoured(HashkatTestCase, unittest.TestCase):
+    '''Is the max analysis steps variable honoured?'''
+
     base_infile = "base_infiles/simple-base.yaml"
     n_runs = 1
     use_full_checks = True
@@ -25,12 +23,9 @@ class Max_analysis_steps_is_honoured(HashkatTestCase, unittest.TestCase):
         self.assertEqual(stats["n_steps"], self.steps)
         self.assertEqual(stats["n_steps"], self.EXPECTED_STEPS )
 
-###############################################################################
-## Does changing the tweet_transmission rate increase the amount of tweets
-## exponentially?
-###############################################################################
-
 class Tweet_transmission_is_exponential(HashkatTestCase, unittest.TestCase):
+    '''Does changing the tweet_transmission rate increase the amount of tweets exponentially?'''
+
     base_infile = "base_infiles/two-regions-english-french-overlapping.yaml"
     n_runs = 15
     use_full_checks = False

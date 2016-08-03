@@ -3,6 +3,21 @@ from infile_util import create_infile
 from cffi import FFI
 import unittest
 
+def monkey_patch_unittest():
+    # Monkey patch for sole test method test_run '__doc__' set from class docstring:
+    class SingleMethodTestCase(unittest.TestCase):
+        def __init__(self, *args, **kwargs):
+            if hasattr(self, 'test_run') and hasattr(self, 'base_infile'):
+                def wrapped_test_run():
+                    HashkatTestCase.test_run(self)
+                # Use the doc string from the class on our new wrapper:
+                wrapped_test_run.__doc__ = (type(self).__doc__ or '') + '\n\nUsing base INFILE: ' + type(self).base_infile
+                # Install as test_run
+                self.test_run = wrapped_test_run
+            super(SingleMethodTestCase, self).__init__(*args, **kwargs)
+    unittest.TestCase = SingleMethodTestCase
+monkey_patch_unittest()
+
 ffi = FFI()
 
 debug_lib = ffi.dlopen('../build/debug/src/libhashkat-lib.so')
@@ -48,6 +63,7 @@ class HashkatTestCase:
             cdata = ffi.callback(sig)(wrapped)
             setattr(self.callbacks[0], cb, cdata)
             HashkatTestCase.GLOBAL_CALLBACK_LIST.append(cdata)
+
     def test_run(self):
         hashkat_test(self)
     def on_exit_all(self):

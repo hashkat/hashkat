@@ -29,8 +29,10 @@ def get_tweet_feature_counts(tweets):
             add_count("without_hashtag")
     return counts
 
-# Reproducing github issue #109: 
 class Retweets_should_not_only_occur_from_region0(HashkatTestCase, unittest.TestCase):
+    ''' Reproducing github issue #109, which noted correctly that retweets had only occurred from region0.
+        Asserts that retweets from other regions occur.'''
+
     base_infile = "base_infiles/two-regions-english-french-overlapping.yaml"
     n_runs = 1
     def on_start_all(self):
@@ -56,9 +58,10 @@ class Retweets_should_not_only_occur_from_region0(HashkatTestCase, unittest.Test
         self.assertTrue(retweet_counts["Region1"] > 0,
             "Retweets should occur from Region1.")
 
-# Investigating github issue #110: 
-#   Does using hashtags incorrectly prevent retweets in a bare case?
 class Hashtags_should_not_prevent_retweets(HashkatTestCase, unittest.TestCase):
+    '''Investigating github issue #110: 
+       Does using hashtags incorrectly prevent retweets in a bare case?'''
+
     base_infile = "base_infiles/simple-base.yaml"
     n_runs = 1
     def on_start_all(self):
@@ -71,9 +74,10 @@ class Hashtags_should_not_prevent_retweets(HashkatTestCase, unittest.TestCase):
         self.assertTrue(int(stats["n_tweets"]) > 0)
         self.assertTrue(int(stats["n_retweets"]) > 0)
 
-# Reproducing github issues #109 & #110 et al.: 
-#   Are retweeted tweets not a representative sample for language, region, and hashtaggedness? 
-class Tweets_generate_with_expected_attribute_distribution(HashkatTestCase, unittest.TestCase):
+class Mean_retweet_time_should_not_affect_retweeting_directly_from_author(HashkatTestCase, unittest.TestCase):
+    '''Generation 1 retweets should not be affected in volume by mean retweet time. 
+       Investigating github issue #43.'''
+
     base_infile = "base_infiles/two-regions-english-french-overlapping.yaml"
     n_runs = 1
     def on_start_all(self):
@@ -97,9 +101,10 @@ class Tweets_generate_with_expected_attribute_distribution(HashkatTestCase, unit
         print "Testing distribution of retweeted tweets:"
         self.check_tweet_distribution(self.retweets)
 
-# Reproducing github issue #54:
-#   Do tweets incorrectly generate for 'silenced' agent types (i.e., tweet rate 0)? 
 class Tweets_dont_generate_for_agent_tweet_rate_0(HashkatTestCase, unittest.TestCase):
+    '''Reproducing github issue #54:
+        Do tweets incorrectly generate for 'silenced' agent types (i.e., tweet rate 0)?'''
+
     base_infile = "base_infiles/silent-agent-type.yaml"
     n_runs = 1
     def on_start_all(self):

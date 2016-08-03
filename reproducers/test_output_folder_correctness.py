@@ -16,10 +16,11 @@ RELEVANT_OUTPUT_OPTIONS = [
     "tweet_info"
 ]
 
-# Investigating tweet distro normalization in output folder (issue #32): 
-#   Does tweet_distro.dat correctly normalize data?
-#   Does retweet_distro.dat correctly normalize data?
 class Tweet_distro_dat_normalized(HashkatTestCase, unittest.TestCase):
+    '''Investigating tweet distro normalization in output folder (issue #32): 
+         Does tweet_distro.dat correctly normalize data?
+         Does retweet_distro.dat correctly normalize data?'''
+
     base_infile = "base_infiles/two-regions-english-french-overlapping.yaml"
     use_full_checks = False
     n_runs = 1
@@ -48,8 +49,9 @@ class Tweet_distro_dat_normalized(HashkatTestCase, unittest.TestCase):
             self.assertTrue(0.95 < sum < 1.05, 
                 "The values in " + dat_path + " should be normalized to sum to 1. Was: " + str(sum))
 
-# Does main_stats.dat correctly record follow attempts when using use_barabasi? (issue #21)
 class Main_stats_dat_correctly_records_barabasi_follow_attempts(HashkatTestCase, unittest.TestCase):
+    '''Does main_stats.dat correctly record follow attempts when using use_barabasi? (issue #21)'''
+
     base_infile = "base_infiles/two-regions-english-french-overlapping.yaml"
     use_full_checks = False
     n_runs = 1
@@ -73,8 +75,9 @@ class Main_stats_dat_correctly_records_barabasi_follow_attempts(HashkatTestCase,
         self.assertTrue(total_follow_attempts >= total_follows, 
             "Should not have less follow attempts than follows recorded when using 'use_barabasi: true'!")
 
-# Does dd_by_follow_model.dat incorrectly record the compound twitter follow model as a single follow model? (issue #44)
 class dd_by_follow_model_dat_correctly_handles_twitter_follow_model(HashkatTestCase, unittest.TestCase):
+    '''Does dd_by_follow_model.dat incorrectly record the compound twitter follow model as a single follow model? (issue #44)'''
+
     base_infile = "base_infiles/two-regions-english-french-overlapping.yaml"
     use_full_checks = True # Make sure to try to trip assertions in the code.
     n_runs = 1

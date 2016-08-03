@@ -2,11 +2,11 @@ import unittest
 from collections import defaultdict
 from hashkat_util import HashkatTestCase, hashkat_dump_state, hashkat_dump_summary,  hashkat_dump_stats
 
-###############################################################################
-## Does stage 1 unfollow cause problems with chatty agents and/or output?
-###############################################################################
-
 class Stage1_unfollow_should_not_create_issues(HashkatTestCase, unittest.TestCase):
+    '''Does stage 1 unfollow cause problems with chatty agents and/or output?
+        The test tries to see if errors occur (as they have in the past).
+        Reproduces github issue #38. '''
+
     base_infile = "base_infiles/three-languages-stage1-unfollow.yaml"
     n_runs = 1
     EXPECTED_STEPS = 10
@@ -22,5 +22,4 @@ class Stage1_unfollow_should_not_create_issues(HashkatTestCase, unittest.TestCas
         # Test that we correctly exit at EXPECTED_STEPS, as specified by max_analysis_steps:
         self.assertEqual(stats["n_steps"], self.steps)
         self.assertEqual(stats["n_steps"], self.EXPECTED_STEPS )
-
 
