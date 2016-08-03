@@ -90,6 +90,7 @@ class TestMethod(EventSource):
                     self.parent._update_active()
 
     def toggle_active(self):
+        return # AD -- hack
         "Toggle the current active status of this test method"
         self.set_active(not self.active)
 
