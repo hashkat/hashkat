@@ -68,7 +68,11 @@ struct AnalyzerRetweet {
             return RetweetChoice();
         }
 
-        if (!used.contains(agent_retweeting)) {
+        // Bug fix for #155:
+        // Do not retweet if was original author.
+        // We could place the original author in used_agents, but this is more efficient.
+        bool was_tweet_author = (tweet.content->id_original_author == agent_retweeting);
+        if (!was_tweet_author && !used.contains(agent_retweeting)) {
             // Agent has NOT already retweeted this tweet
             used.insert(agent_retweeting);
             return RetweetChoice(

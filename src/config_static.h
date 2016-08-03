@@ -104,6 +104,7 @@ const int TIME_CAT_FREQ = 30 * 24 * 60;
 
 // Output frequency:
 const int STDOUT_OUTPUT_RATE = 100; // Once per X file outputs
+const double MINIMUM_TIME_STEP = 1; // We cannot take a time-step more than one second.
 
 /*
  * Parameters for tweet relevance functions

@@ -54,10 +54,14 @@ struct NetworkStats {
     double prob_follow = 0;
     double prob_tweet = 0;
     double prob_retweet = 0;
+    // Used to pad out the rate block for anomalously low event-rate networks.
+    double prob_do_nothing = 0;
 
     double event_rate = 0;
+    // Adjusted event rate is never below 1 / MINIMUM_TIME_STEP.
+    double adjusted_event_rate = 0;
 
-    int n_steps = 0, n_outputs = 0;
+    int n_steps = 0, n_do_nothing_steps = 0, n_outputs = 0;
     bool user_did_exit = false;
 
     AgentStats global_stats;
@@ -65,7 +69,7 @@ struct NetworkStats {
     template <typename Archive>
     void serialize(Archive& ar) {
         ar(NVP(prob_add), NVP(prob_follow), NVP(prob_retweet), NVP(prob_tweet));
-        ar(NVP(event_rate), NVP(n_steps), NVP(n_outputs));
+        ar(NVP(event_rate), NVP(adjusted_event_rate), NVP(n_steps), NVP(n_do_nothing_steps), NVP(n_outputs));
         // Don't serialize 'user_did_exit'
         // Valid because only full of primitive types:
         ar(NVP(global_stats), NVP(user_did_exit));

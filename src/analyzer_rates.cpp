@@ -135,12 +135,15 @@ struct AnalyzerRates {
         config.rate_add = add_rates.RF.monthly_rates[state.n_months()]; 
         double overall_retweet_rate = analyzer_total_retweet_rate(state);
         stats.event_rate = config.rate_add + global.total_rate() + overall_retweet_rate;
+        stats.adjusted_event_rate = std::max(1.0 / MINIMUM_TIME_STEP, stats.event_rate);
 
         // Normalize the rates
-        stats.prob_add = config.rate_add / stats.event_rate;
-        stats.prob_follow = global.overall_follow_rate / stats.event_rate;
-        stats.prob_tweet = global.overall_tweet_rate / stats.event_rate;
-        stats.prob_retweet = overall_retweet_rate / stats.event_rate;
+        stats.prob_add = config.rate_add / stats.adjusted_event_rate;
+        stats.prob_follow = global.overall_follow_rate / stats.adjusted_event_rate;
+        stats.prob_tweet = global.overall_tweet_rate / stats.adjusted_event_rate;
+        stats.prob_retweet = overall_retweet_rate / stats.adjusted_event_rate;
+        // If adjusted_event_rate > event_rate, the remainder goes into the 'do nothing' block.
+        stats.prob_do_nothing = std::max(0.0, (stats.adjusted_event_rate - stats.event_rate) / stats.adjusted_event_rate);
     }
 };
 

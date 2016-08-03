@@ -593,6 +593,11 @@ struct Analyzer {
             if (choice.id_author != -1) {
                 network_has_changed = action_retweet(choice, time);
             }
+        } else if (subtract_var(r, stats.prob_do_nothing) <= ZEROTOL ) {
+            // Do nothing. Only step time forward.
+            step_time(timer);
+            stats.n_do_nothing_steps++;
+            return true;
         } else {
             error_exit("step_analysis: event out of bounds");
         }
@@ -610,10 +615,10 @@ struct Analyzer {
     void step_time(Timer& timer) {
         if (config.use_random_time_increment) {
             // increment by random time
-            double increment = -log(rng.rand_real_not0()) / stats.event_rate;
+            double increment = -log(rng.rand_real_not0()) / stats.adjusted_event_rate;
             time += increment;
         } else {
-            time += 1.0 / stats.event_rate;
+            time += 1.0 / stats.adjusted_event_rate;
         }
 
         if (config.output_stdout_summary && output_time_checker.has_past(time)) {
