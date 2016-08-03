@@ -33,15 +33,40 @@ function handle_flag(){
 }
 
 ###############################################################################
+# Find the preferred executable from our candidates.
+# We prefer same-folder executables first, and then debug and release
+# executables, respectively, from our build folder.
+###############################################################################
+
+bare_executable="$HASHKAT"/hashkat
+release_executable="$HASHKAT"/build/release/src/hashkat
+debug_executable="$HASHKAT"/build/debug/src/hashkat
+
+if [ -x "$bare_executable" ] ; then
+    executable="$bare_executable"
+    echo "Found executable in hashkat folder, running '$executable'."
+elif [ -x "$debug_executable" ] && ! handle_flag "-O" ; then
+    executable="$debug_executable"
+    echo "Found executable built with debug setting (using ./build.sh), running '$executable'. You may explicitly run the release executable with ./run.sh -O."
+elif [ -x "$release_executable" ] ; then
+    executable="$release_executable"
+    echo "Found executable built with release setting (using ./build.sh -O), running '$executable'."
+else
+    echo "Could not find a hashkat executable. You must either run ./build.sh if not yet built, or set HASHKAT environment variable if you have a folder with an executable in mind."
+    exit 1
+fi
+
+###############################################################################
 #  --reproducers: Run Python-driven tests that run INFILE's configurations and 
 # perform statistical tests on them.
 ###############################################################################
 
-if handle_flag "--reproducers" ; then
-    cd reproducers/
-    python 03*.py
-    exit
-fi
+# TODO: consolidate tests
+#if handle_flag "--reproducers" ; then
+#    cd reproducers/
+#    python 03*.py
+#    exit
+#fi
 
 ###############################################################################
 #  --tests: Run tests, including functionality equivalent tests (testing
@@ -114,4 +139,4 @@ if ! handle_flag "--no-generate" ; then
     fi
 fi
 
-exec "$HASHKAT/build/src/hashkat" $args
+exec "$executable" $args

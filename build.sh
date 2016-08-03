@@ -1,12 +1,10 @@
 #!/bin/bash
 
-# Default HASHKAT to '.', check if unset (using a BASHism):
-if [ x"$HASHKAT" = x ] ; then
-    export HASHKAT='.'
-fi
-
 # Good practice -- exit completely on any bad exit code:
 set -e 
+
+# Always build from folder where build.sh is located: 
+cd $(dirname "${BASH_SOURCE[0]}") 
 
 ###############################################################################
 # Helper functions for conditionally coloring text.
@@ -108,7 +106,7 @@ fi
 
 if [ ! -f INFILE.yaml ] ; then
     echo "WARNING: You have no INFILE.yaml, creating one from DEFAULT.yaml"
-    cp "$HASHKAT/DEFAULT.yaml" "$HASHKAT/INFILE.yaml"
+    cp "DEFAULT.yaml" "INFILE.yaml"
 fi
 
 ###############################################################################
@@ -135,9 +133,16 @@ fi
 # These are used to communicate with CMake
 # Each flag has an optional shortform, use whichever is preferred.
 
+build_folder="build/debug"
 if handle_flag "--optimize" || handle_flag "-O" ; then
     export BUILD_OPTIMIZE=1
+    build_folder="build/release"
+elif ! handle_flag "--faster-debug" ; then
+    # Extra debug build flags that hinder debug performance significantly but are good to have by default.
+    # These can be disabled with --faster-debug.
+    export BUILD_FLAGS="$BUILD_FLAGS -D_GLIBCXX_DEBUG"
 fi
+# Run address sanitizer. Substantial overhead. May require library support on some systems.
 if handle_flag "--sanitize" || handle_flag "-S" ; then
     export BUILD_SANITIZE=1
 fi
@@ -145,14 +150,10 @@ if handle_flag "--profile-gen" || handle_flag "--pgen" ; then
     export BUILD_OPTIMIZE=1
     export BUILD_PROF_GEN=1
 fi
-# Use --pgen, and then this flag, with, for optimal performance
+# Use --pgen, and then this flag, for optimal performance
 if handle_flag "--profile-use" || handle_flag "--puse" ; then
     export BUILD_OPTIMIZE=1
     export BUILD_PROF_USE=1
-fi
-# Pick whether to use debug std data-structures for eg std::vector
-if handle_flag "--debug-std" ; then
-    export BUILD_FLAGS="$BUILD_FLAGS -D_GLIBCXX_DEBUG"
 fi
 
 # Configure version string
@@ -180,9 +181,10 @@ cp "./src/gexf.lua" "./.libs/"
 mkdir -p output/
 
 echo "Compiling hashkat version $HASHKAT_VERSION"
-mkdir -p build
-pushd build > /dev/null
-cmake .. | colorify '1;33'
+
+mkdir -p "$build_folder"
+pushd "$build_folder" > /dev/null
+cmake ../.. | colorify '1;33'
 if handle_flag "--clean" ; then
     make clean
 fi
@@ -208,7 +210,7 @@ if ! handle_flag "--no-generate" ; then
 
     # We must generate INFILE-generated.yaml from INFILE.yaml
     if env python --version 2>&1 | grep 'Python 2\.' > /dev/null ; then
-        env python "$HASHKAT/hashkat_pre.py" $args
+        env python "./hashkat_pre.py" $args
     else
         echo "#KAT requires Python2.x to run."
         exit 1
