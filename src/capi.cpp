@@ -59,9 +59,12 @@ AnalysisState* hashkat_new_analysis_state(int argc, char** argv) {
 #endif
     if (has_flag(argc, argv, "--stdout-nobuffer")) {
         // Important mainly for colorization tool
-        setvbuf(stdout,NULL,_IONBF,0); // Make stdout unbuffered
-        cout.setf(std::ios::unitbuf);
+        setvbuf(stdout,NULL,_IONBF, BUFSIZ); // Make stdout unbuffered
+    } else {
+        setvbuf(stdout,NULL,_IOLBF, BUFSIZ); // Make stdout line-buffered
     }
+
+    cout.setf(std::ios::unitbuf);
     // NOTE: We rely on hashkat_pre.py to create a -generated version of our input file!
     for (int i = 0; i < argc; i++) {
         char* arg = argv[i]; 

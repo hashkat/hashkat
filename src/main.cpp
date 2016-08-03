@@ -77,8 +77,9 @@ int main(int argc, char** argv) {
 
     if (has_flag(argc, argv, "--stdout-nobuffer")) {
         // Important mainly for colorization tool
-        setvbuf(stdout,NULL,_IONBF,0); // Make stdout unbuffered
-        cout.setf(std::ios::unitbuf);
+        setvbuf(stdout,NULL,_IONBF, BUFSIZ); // Make stdout unbuffered
+    } else {
+        setvbuf(stdout,NULL,_IOLBF, BUFSIZ); // Make stdout line-buffered
     }
     setvbuf(stdin,NULL,_IONBF,0);
 
