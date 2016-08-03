@@ -76,6 +76,9 @@ struct Agent {
     std::vector<int> following_method_counts = std::vector<int>(N_FOLLOW_MODELS);
     std::vector<int> follower_method_counts = std::vector<int>(N_FOLLOW_MODELS);
 
+    // For streaming agent data in JSON
+    void api_serialize(cereal::JSONOutputArchive& ar, bool serialize_follow_sets = false);
+
     template <typename Archive>
     void serialize(Archive& ar) {
         ar(NVP(id), NVP(agent_type), NVP(preference_class)

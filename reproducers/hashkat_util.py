@@ -132,10 +132,15 @@ def hashkat_start_analysis_loop(state, callbacks):
     current_lib.hashkat_install_event_callbacks(state, callbacks)
     current_lib.hashkat_start_analysis_loop(state)
 
-def cstring_to_object(state, raw_string):
-    string = ffi.string(raw_string).replace(': inf', ': "inf"').replace(': nan', ': "nan"') + '}'
+# TODO: Properly serialize to remove need for re-adding ending
+def cstring_to_object(state, raw_string, ending = '}'):
+    string = ffi.string(raw_string).replace(': inf', ': "inf"').replace(': nan', ': "nan"') + ending
     current_lib.hashkat_dump_free(state, raw_string)
     return json.loads(string)
+
+def hashkat_dump_agents(state, dump_follow_sets=False):
+    raw_string = current_lib.hashkat_dump_agents(state, dump_follow_sets)
+    return cstring_to_object(state, raw_string, ending = ']')
 
 def hashkat_dump_state(state):
     raw_string = current_lib.hashkat_dump_state(state)
