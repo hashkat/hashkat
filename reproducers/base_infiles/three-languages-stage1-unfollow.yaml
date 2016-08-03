@@ -51,7 +51,7 @@ analysis:
   initial_agents:
     1000
   max_agents: 
-    100000
+    10000
   max_time: 
     1000
   max_analysis_steps: 

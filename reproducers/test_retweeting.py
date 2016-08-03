@@ -208,7 +208,6 @@ class Mean_retweet_time_should_cause_slightly_different_networks(HashkatTestCase
         self.assertTrue(one_differs, 
             "Changing time_span resulted in exactly the same amount of retweets! This implies exactly the same network is being created regardless of this parameter!")
 
-
 class Tweets_dont_generate_for_agent_tweet_rate_0(HashkatTestCase, unittest.TestCase):
     '''Reproducing github issue #54:
         Do tweets incorrectly generate for 'silenced' agent types (i.e., tweet rate 0)?'''
