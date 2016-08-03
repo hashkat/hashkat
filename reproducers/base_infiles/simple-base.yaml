@@ -217,9 +217,6 @@ tweet_observation:
 
 ideologies:
   - name: Red
-  - name: Blue
-  - name: Green
-  - name: Orange
 
 #################################################################
 # >> regions: 
@@ -245,7 +242,7 @@ regions:
     add_weight: 100
 
     preference_class_weights: {StandardPref: 100}
-    ideology_weights: {Red: 100, Blue: 100, Green: 100, Orange: 100}
+    ideology_weights: {Red: 100}
     language_weights: {English: 100, French+English: 0, French: 0, Spanish: 0}
 
 #################################################################

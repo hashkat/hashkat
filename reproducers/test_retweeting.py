@@ -1,6 +1,6 @@
 import unittest
 from collections import defaultdict 
-from hashkat_util import HashkatTestCase, hashkat_dump_summary, hashkat_dump_stats
+from hashkat_util import HashkatTestCase, hashkat_dump_summary, hashkat_dump_stats, hashkat_dump_agents
 from stat_util import stdev
 
 # 'factor': How many times bigger is 'a' than 'b'?
@@ -58,6 +58,53 @@ class Retweets_should_not_only_occur_from_region0(HashkatTestCase, unittest.Test
             "English and French tweets should be within 50% of each other.")
         self.assertTrue(retweet_counts["Region1"] > 0,
             "Retweets should occur from Region1.")
+
+class Network_with_3_agents_should_create_2x_retweets(HashkatTestCase, unittest.TestCase):
+    '''Reproducing github issue #155: 
+       Does a network with 3 agents behave correctly?
+       Bugs reproduced:
+           - Retweets can fail to occur reliably if time step too large due to small rate block.
+           - Tweets in a 3 agent network should not have a retweet distance (number of retweets since origin) of more than 2.'''
+
+    base_infile = "base_infiles/simple-base.yaml"
+    n_runs = 1
+    def on_start_all(self):
+        self.retweets = []
+        self.steps = 0
+    # Configure the base configuration
+    def on_start(self, yaml):
+        yaml["analysis"]["max_time"] = 3000000
+        yaml["analysis"]["use_hashtag_probability"] = 0
+        yaml["analysis"]["max_agents"] = yaml["analysis"]["initial_agents"] = 3
+        tweet_transmission = yaml["preference_classes"][0]["tweet_transmission"]
+        for key in tweet_transmission:
+            tweet_transmission[key] = {"all": 1}
+    def on_retweet(self, tweet):
+        self.retweets.append(tweet)
+    def on_exit(self):
+        for agent in hashkat_dump_agents(self.state, dump_follow_sets=True):
+            print '<<' + str(agent["id"]) + '>>'
+            print "Subs: ", agent["following_set"]
+            print "Fans: ", agent["follower_set"]
+            print "Region: ", agent["region"] 
+            print "Ideology: ", agent["ideology"] 
+            print "Language: ", agent["language"] 
+            #print json.dumps(agent, indent=4, sort_keys=True)
+        stats = hashkat_dump_stats(self.state)["global_stats"]
+        self.assertTrue(int(stats["n_followers"]) == 6,
+            "Every agent should have 2 followers, totalling 6.")
+        print "Tweets: ", int(stats["n_tweets"]) 
+        print "Retweets: ", int(stats["n_retweets"]) 
+        max_hop = max(int(rt["retweets_since_origin"]) for rt in self.retweets)
+        for i in range(1, max_hop+1):
+            print "Retweets at follower distance " + str(i) + ": ", sum(1 for rt in self.retweets if int(rt["retweets_since_origin"]) == i)
+        self.assertTrue(max_hop == 2,
+            "Every tweet should be retweeted at most 2 times from origin! Had max follower distance " + str(max_hop) + ", should be 2")
+
+        self.assertTrue(int(stats["n_retweets"]) > 0,
+            "Should have retweets!")
+        self.assertTrue(int(stats["n_retweets"]) <= int(stats["n_tweets"] * 2),
+            "Should not have more than twice as many retweets as tweets!")
 
 class Hashtags_should_not_prevent_retweets(HashkatTestCase, unittest.TestCase):
     '''Investigating github issue #110: 

@@ -235,13 +235,13 @@ class Executor(EventSource):
             return False
 
         elif stopped:
-
-            self.current_test.set_result(
-                status = TestMethod.STATUS_FAIL,
-                output=self.output,
-                error='Test output ended unexpectedly',
-                duration=0,
-            )
+            if self.current_test:
+                self.current_test.set_result(
+                    status = TestMethod.STATUS_FAIL,
+                    output=self.output,
+                    error='Test output ended unexpectedly',
+                    duration=0,
+                )
             # Notify the display to update.
             self.emit('test_end', test_path=self.current_test.path, result=TestMethod.STATUS_FAIL, remaining_time=0)
 

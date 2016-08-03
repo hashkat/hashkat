@@ -17,7 +17,7 @@ void Agent::api_serialize(cereal::JSONOutputArchive& ar, bool serialize_follow_s
        cereal::make_nvp("ideology", get_state(ar).config.ideologies[ideology_bin].name));
  
     if (serialize_follow_sets) {
-        ar(following_set, follower_set);
+        ar(NVP(following_set), NVP(follower_set));
     }
     ar (
        // following_set and follower_set left out for brevity. 
