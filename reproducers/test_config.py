@@ -9,6 +9,8 @@ from hashkat_util import HashkatTestCase, hashkat_dump_state, hashkat_dump_summa
 class Max_analysis_steps_is_honoured(HashkatTestCase, unittest.TestCase):
     base_infile = "base_infiles/simple-base.yaml"
     n_runs = 1
+    use_full_checks = True
+    # Internal test config:
     EXPECTED_STEPS = 10
     def on_start_all(self):
         self.steps = 0
@@ -31,6 +33,7 @@ class Max_analysis_steps_is_honoured(HashkatTestCase, unittest.TestCase):
 class Tweet_transmission_is_exponential(HashkatTestCase, unittest.TestCase):
     base_infile = "base_infiles/two-regions-english-french-overlapping.yaml"
     n_runs = 15
+    use_full_checks = False
     def on_start_all(self):
         self.retweets = defaultdict(int)
     # Configure the base configuration

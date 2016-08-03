@@ -30,7 +30,7 @@ def get_tweet_feature_counts(tweets):
     return counts
 
 # Reproducing github issue #109: 
-class Retweets_should_generate_for_region0(HashkatTestCase, unittest.TestCase):
+class Retweets_should_not_only_occur_from_region0(HashkatTestCase, unittest.TestCase):
     base_infile = "base_infiles/two-regions-english-french-overlapping.yaml"
     n_runs = 1
     def on_start_all(self):
@@ -49,9 +49,12 @@ class Retweets_should_generate_for_region0(HashkatTestCase, unittest.TestCase):
     def on_exit_all(self):
         tweet_counts = get_tweet_feature_counts(self.tweets)
         retweet_counts = get_tweet_feature_counts(self.retweets)
-        self.assertTrue(tweet_counts["Region0"] == 0)
-        self.assertTrue(reasonably_close(tweet_counts["LANG_ENGLISH"], tweet_counts["LANG_FRENCH"]))
-        self.assertTrue(retweet_counts["Region1"] > 0)
+        self.assertTrue(tweet_counts["Region0"] == 0,
+            "Region0 should not retweet in this simulation.")
+        self.assertTrue(reasonably_close(tweet_counts["LANG_ENGLISH"], tweet_counts["LANG_FRENCH"]),
+            "English and French tweets should be within 50% of each other.")
+        self.assertTrue(retweet_counts["Region1"] > 0,
+            "Retweets should occur from Region1.")
 
 # Investigating github issue #110: 
 #   Does using hashtags incorrectly prevent retweets in a bare case?
