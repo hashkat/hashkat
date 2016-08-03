@@ -13,5 +13,8 @@ before_install:
   - sudo apt-get install cmake
   - sudo apt-get install build-essential -y
 script:
+  - CXX=clang++-3.7 CC=clang-3.7 sudo -H pip install cffi pyyaml
+  - CXX=clang++-3.7 CC=clang-3.7 ./build.sh
   - CXX=clang++-3.7 CC=clang-3.7 ./build.sh -O
-  - ./run.sh
+  - cd reproducers
+  - python -m unittest discover 
