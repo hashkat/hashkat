@@ -25,6 +25,8 @@ class HashkatTestCase:
     n_runs = 1
     def finish(self):
         raw_lib.hashkat_finish_analysis(self.state)
+    def on_start_all(self):
+        pass
     def install_cb(self, sig, cb):
         if hasattr(self, cb):
             unwrapped = getattr(self, cb)

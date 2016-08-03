@@ -1,6 +1,6 @@
 import unittest
 from collections import defaultdict
-from hashkat_util import HashkatTest, hashkat_dump_state, hashkat_dump_summary,  hashkat_dump_stats
+from hashkat_util import HashkatTestCase, hashkat_dump_state, hashkat_dump_summary,  hashkat_dump_stats
 
 ###############################################################################
 ## Is the max analysis steps variable honoured?

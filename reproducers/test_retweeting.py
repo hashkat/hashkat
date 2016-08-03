@@ -84,12 +84,12 @@ class Tweets_generate_with_expected_attribute_distribution(HashkatTestCase, unit
         self.tweets[tweet["content_id"]] = tweet
     def on_retweet(self, tweet):
         self.retweets[tweet["content_id"]] = tweet
-    def test_tweet_distribution(self, tweets):
+    def check_tweet_distribution(self, tweets):
         counts = get_tweet_feature_counts(tweets)
         self.assertTrue(reasonably_close(counts["LANG_ENGLISH"], counts["LANG_FRENCH"], 4))
         self.assertTrue(reasonably_close(counts["Region0"], counts["Region1"]))
     def on_exit_all(self):
         print "Testing distribution of all tweets:"
-        self.test_tweet_distribution(self.tweets)
+        self.check_tweet_distribution(self.tweets)
         print "Testing distribution of retweeted tweets:"
-        self.test_tweet_distribution(self.retweets)
+        self.check_tweet_distribution(self.retweets)
