@@ -126,7 +126,6 @@ struct AnalysisState {
     CategoryGrouper tweet_ranks;
     CategoryGrouper follow_ranks;
     CategoryGrouper retweet_ranks;
-    CategoryGrouper age_ranks;
 
     // Our distinct agent classes.
     // Agent probabilities are derived from config,
@@ -238,7 +237,6 @@ struct AnalysisState {
         ar(NVP(tweet_ranks));
         ar(NVP(follow_ranks));
         ar(NVP(retweet_ranks));
-        ar(NVP(age_ranks));
         ar(NVP(tweet_bank));
         ar(NVP(oldTweets));
         ar(NVP(stats));

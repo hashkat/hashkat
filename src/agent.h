@@ -140,8 +140,6 @@ struct AgentType {
     std::vector<int> agent_cap;
     // list of agent ID's
     std::vector<int> agent_list;
-    // categorize the agents by age
-    CategoryGrouper age_ranks;
     CategoryGrouper follow_ranks;
     std::vector<double> updating_probs;
     double tweet_type_probs[N_TWEET_TYPES];
@@ -161,7 +159,6 @@ struct AgentType {
         }
 
         // Created on demand, not data (in other words, do not uncomment):
-        // age_ranks.sync_rates(E.age_ranks);
         follow_ranks.sync_rates(E.follow_ranks);
 
         for (int i = 0; i < N_TWEET_TYPES; i++) {
@@ -178,7 +175,6 @@ struct AgentType {
         }
         ar(NVP(care_about_region), NVP(care_about_ideology));
         ar(NVP(agent_cap), NVP(agent_list));
-        ar(NVP(age_ranks));
         ar(NVP(follow_ranks));
         ar(NVP(updating_probs), NVP(stats));
         for (auto& ttp : tweet_type_probs) {

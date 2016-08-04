@@ -65,13 +65,7 @@ struct AnalyzerRates {
         int n_months = state.n_months();
 
         if (n_months == et.agent_cap.size() || state.time == 0) {
-            // set the thresholds for each agenttype -- they are the same for every agent
-            et.age_ranks.categories.push_back(state.time);
-            // for every agenttype, go through every agent that is of that agenttype and categorize them based on their creation time
-            for (int i = 0; i < et.agent_list.size(); i++) {
-                Agent& e = network[et.agent_list[i]];
-                et.age_ranks.categorize(et.agent_list[i], e.creation_time);
-            }
+            // set the threshold defining this month:
             et.agent_cap.push_back(et.agent_list.size());
             return true;
         }
