@@ -453,23 +453,23 @@ struct Analyzer {
 	bool action_tweet(int id_tweeter) {
 	    PERF_TIMER();
 
-            // This is the agent tweeting
-            Agent& e = network[id_tweeter];
-            tweet_ranks.categorize(id_tweeter, e.n_tweets);
-            e.n_tweets++;
-            Tweet tweet = generate_tweet(id_tweeter, id_tweeter, 0, generate_tweet_content(id_tweeter));
-            analyzer_api_tweet(state, tweet);
-            lua_hook_tweet(state, id_tweeter, tweet);
-            // Generate the tweet content:
-            // increase the number of tweets the agent had by one
-            if (e.n_tweets / (time - e.creation_time) >= config.unfollow_tweet_rate) {
-                action_unfollow(id_tweeter);
-            }
+        // This is the agent tweeting
+        Agent& e = network[id_tweeter];
+        tweet_ranks.categorize(id_tweeter, e.n_tweets);
+        e.n_tweets++;
+        Tweet tweet = generate_tweet(id_tweeter, id_tweeter, 0, generate_tweet_content(id_tweeter));
+        analyzer_api_tweet(state, tweet);
+        lua_hook_tweet(state, id_tweeter, tweet);
+        // Generate the tweet content:
+        // increase the number of tweets the agent had by one
+        if (e.n_tweets / (time - e.creation_time) >= config.unfollow_tweet_rate) {
+            action_unfollow(id_tweeter);
+        }
 
-            RECORD_STAT(state, e.agent_type, n_tweets);
+        RECORD_STAT(state, e.agent_type, n_tweets);
 
-            return true; // Always succeeds
-	}
+        return true; // Always succeeds
+    }
 
 	// Despite being called action_retweet, may result in follow
 	// depending on probability encoded in PreferenceClass, if not first-generation tweet.
@@ -515,19 +515,7 @@ struct Analyzer {
 		    return false; // Empty
 		}
 
-		DEBUG_CHECK(id_lost_follower != -1, "Should not be -1 after choice!");
-
-        // Remove our target from our actor's follows:
-        bool had_follower = candidate_followers.remove(network[id_lost_follower]);
-		DEBUG_CHECK(had_follower, "unfollow: Did not exist in follower list");
-
-        // Remove our unfollowed person from our target's followers:
-		Agent& e_lost_follower = network[id_lost_follower];
-		bool had_follow = e_lost_follower.following_set.remove(state, id_unfollowed);
-		DEBUG_CHECK(had_follow, "unfollow: Did not exist in follow list");
-
-		lua_hook_unfollow(state, id_lost_follower, id_unfollowed);
-		RECORD_STAT(state, e_lost_follower.agent_type, n_unfollows);
+        analyzer_handle_unfollow(state, id_unfollowed, id_lost_follower);
 
 		return true;
 	}

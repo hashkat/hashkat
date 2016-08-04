@@ -1155,27 +1155,14 @@ void dd_by_agent(Network& n, AnalysisState& as, NetworkStats& ns) {
 
 void dd_by_follow_method(Network& n, AnalysisState& as, NetworkStats& ns) {
     vector<YearDegreeDistro> follow_models(N_FOLLOW_MODELS + 2); // + 2 for retweeting and followback
-    int max_following = 0, max_followers = 0;
-    for (int i = 0; i < n.size(); i++) {
-        if (n.n_followings(i) >= max_following) {
-            max_following = n.n_followings(i) + 1;
-        }
-        if (n.n_followers(i) >= max_followers) {
-            max_followers = n.n_followers(i) + 1;
-        }
-    }
-    int max_degree = max_following + max_followers;
-    for (auto& follow_model : follow_models) {
-        follow_model.dd.resize(max_degree);
-        for (int i = 0; i < follow_model.dd.size(); i ++) {
-            follow_model.dd[i] = 0;
-        }
-    }
-    for (int i = 0; i < n.size(); i++) {
-        for (int j = 0; j < N_FOLLOW_MODELS + 2; j ++) {
-            Agent& e = n[i];
-            int degree = e.following_method_counts[j] + e.follower_method_counts[j];
-            follow_models[j].dd[degree] ++; 
+
+    for (Agent& a : n) {
+        for (int i = 0; i < N_FOLLOW_MODELS + 2; i ++) {
+            int degree = a.following_method_counts[i] + a.follower_method_counts[i];
+            if (follow_models[i].dd.size() <= degree) {
+                follow_models[i].dd.resize(degree + 1);
+            }
+            follow_models[i].dd[degree]++;
         }
     }
     
@@ -1191,12 +1178,25 @@ void dd_by_follow_method(Network& n, AnalysisState& as, NetworkStats& ns) {
     "\nR = Random, TS = Twitter Suggest, A = Agent, PA = Preferential Agent, H = Hashtag, Tw = Twitter, FB = Followback\n"
     "\n#d\tlogD\tRNP\tRlogNP\t\tTSNP\tTSlogNP\tANP\tAlogNP\tPANP\tPAlogNP\tHNP\tHlogNP\tTwNP\tTwlogNP\tFBNP\tFBlogNP\n\n";
 
-    for (int i = 0; i < max_degree; i ++) {
+    // Output until no data:
+    int i = 0;
+    while (true) {
+        bool has_data = false;
+        for (YearDegreeDistro& year : follow_models) {
+            if (year.dd.size() > i) {
+                has_data = true;
+            }
+        }
         output << i << "\t" << log(i);
-        for (auto& ent_type : follow_models) {
-            output << "\t" << ent_type.dd[i] / n.size() << "\t" << log(ent_type.dd[i] / n.size());
+        for (YearDegreeDistro& year : follow_models) {
+            double val = year.dd.size() > i ? year.dd[i] : 0;
+            output << "\t" << val / n.size() << "\t" << log(val / n.size());
         }
         output << "\n";
+        if (!has_data) {
+            break;
+        }
+        i++;
     }
     
     output.close();

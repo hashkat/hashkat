@@ -34,6 +34,7 @@ endif()
 add_definitions ("-DLUA_USE_POSIX" "-Wno-deprecated-declarations" "-DHASHKAT_VERSION=\"$ENV{HASHKAT_VERSION}\"") 
 
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+    add_definitions(-DGLIBCXX_DEBUG)
     if ($ENV{BUILD_SANITIZE})
         SET (CMAKE_EXE_LINKER_FLAGS
             -fsanitize=address 

@@ -22,6 +22,7 @@
  * subsequent authors. 
  */
 
+#include <algorithm>
 #include <iostream>
 #include <iomanip>
 
@@ -131,31 +132,6 @@ struct AnalyzerFollow {
        return val;
    }
 
-#ifdef REFACTORING
-   int preferential_barabasi_follow_method()
-   {
-       PERF_TIMER();
-
-       double rand_num = rng.rand_real_not0();
-       auto& bins = network.bins();
-       double den = network.denominator();
-       for (auto i = 0; i <= network.kmax(); ++i)
-       {
-           double probab = (double(i+1) * bins[i].size()) / den;
-           if (rand_num <= probab)
-           {
-               if (!bins[i].empty())
-               {
-                   auto agent_id = bins[i].cbegin();
-                   std::advance(agent_id, rng.rand_int(bins[i].size()));
-                   return *agent_id;
-               }
-           }
-           rand_num -= probab;
-       }
-       return -1;
-   }
-#else
    int preferential_barabasi_follow_method() {
        PERF_TIMER();
 
@@ -177,28 +153,6 @@ struct AnalyzerFollow {
            updating_follow_probabilities[i] /= sum_of_weights;
        }
 
-#ifdef REFACTORING_DEBUG_OUTPUT
-       static unsigned n = 0;
-       std::ostringstream name;
-       name << "output/org/" << std::setfill('0') << std::setw(5) << n++ << ".txt";
-       std::ofstream out(name.str());
-       out << "# Random Number: " << rand_num << std::endl;
-       out << "# Number of Agents: " << network.size() << std::endl;
-       out << "# Denominator: " << sum_of_weights << std::endl;
-       out << "\n# Degree (k)\tCount\tk*Count\tProbability (k*Count/Den)\tAgent Ids\n";
-       for (auto i = 0; i < updating_follow_probabilities.size(); ++i)
-       {
-           out << std::setw(7) << follow_probabilities[i] << ' ';
-           out << std::setw(6) << follow_ranks.categories[i].agents.size() << ' ';
-           out << std::setw(6) << follow_probabilities[i] * follow_ranks.categories[i].agents.size() << ' ';
-           out << std::setw(15) << updating_follow_probabilities[i];
-           out << '\t';
-           for (auto followed : follow_ranks.categories[i].agents)
-               out << followed << ',';
-           out << std::endl;
-       }
-#endif  // REFACTORING_DEBUG_OUTPUT
-
        for (int i = 0; i < updating_follow_probabilities.size(); i++) {
            if (rand_num <= updating_follow_probabilities[i]) {
                // point to the category we landed in
@@ -215,66 +169,7 @@ struct AnalyzerFollow {
        }
        return -1;
    }
-#endif  // REFACTORING
 
-#ifdef REFACTORING2
-   int twitter_preferential_follow_method(Agent& e, double time_of_follow)
-   {
-       PERF_TIMER();
-
-       int referral_bin = (time_of_follow - e.creation_time) / (double)APPROX_MONTH;
-       double follow_prob = config.referral_rate_function.monthly_rates[referral_bin];
-       if (!rng.random_chance(follow_prob))
-           return -1;
-
-       double rand_num = rng.rand_real_not0();
-       double prob_sum = 0;
-
-       for (auto i = 0; i < follow_ranks.categories.size(); ++i)
-           prob_sum += follow_ranks.categories[i].prob
-                     * follow_ranks.categories[i].agents.size();
-
-#ifdef REFACTORING_DEBUG_OUTPUT
-       static unsigned n = 0;
-       std::ostringstream name;
-       name << "output/mine/" << std::setfill('0') << std::setw(5) << n++ << ".txt";
-       std::ofstream out(name.str());
-       out << "# Random Number: " << rand_num << std::endl;
-       out << "# Number of Agents: " << network.size() << std::endl;
-       out << "# Number of Categories: " << follow_ranks.categories.size() << std::endl;
-       out << "# Denominator: " << prob_sum << std::endl;
-       out << "\n# Degree (k)\tCount\tMy Count\tProb\tCount*Prob\tAgent Ids\n";
-       for (auto i = 0; i < follow_ranks.categories.size(); ++i)
-       {
-           out << std::setw(7) << i + 1 << ' ';
-           out << std::setw(6) << follow_ranks.categories[i].agents.size() << ' ';
-           out << std::setw(6) << network.bins()[i].size() << ' ';
-           out << std::setw(6) << follow_ranks.categories[i].prob << ' ';
-           out << std::setw(6) << follow_ranks.categories[i].prob * follow_ranks.categories[i].agents.size() << ' ';
-           out << '\t';
-           for (auto followed : follow_ranks.categories[i].agents)
-               out << followed << ',';
-           out << std::endl;
-       }
-#endif  // REFACTORING_DEBUG_OUTPUT
-
-       for (auto i = 0; i <= network.kmax(); ++i)
-       {
-           auto& cat = follow_ranks.categories[i];
-           double probab = cat.prob
-                         * cat.agents.size()
-                         / prob_sum;
-           if (rand_num <= probab)
-           {
-               auto agent_id = cat.agents[rng.rand_int(cat.agents.size())];
-               RECORD_STAT(state, e.agent_type, n_preferential_follows);
-               return agent_id;
-           }
-           rand_num -= probab;
-       }
-       return -1;
-   }
-#else
    int twitter_preferential_follow_method(Agent& e, double time_of_follow) {
        PERF_TIMER();
        RECORD_STAT(state, e.agent_type, n_preferential_follows);
@@ -297,31 +192,6 @@ struct AnalyzerFollow {
        for (auto& p : updating_probs) {
            p /= prob_sum;
        }
-
-#ifdef REFACTORING_DEBUG_OUTPUT
-       static unsigned n = 0;
-       std::ostringstream name;
-       name << "output/org/" << std::setfill('0') << std::setw(5) << n++ << ".txt";
-       std::ofstream out(name.str());
-       out << "# Random Number: " << rand_num << std::endl;
-       out << "# Number of Agents: " << network.size() << std::endl;
-       out << "# Number of Categories: " << follow_ranks.categories.size() << std::endl;
-       out << "# Denominator: " << prob_sum << std::endl;
-       out << "\n# Degree (k)\tCount\tProb\tCount*Prob\tProbability (Prob*Count/Den)\tAgent Ids\n";
-       for (auto i = 0; i < follow_ranks.categories.size(); ++i)
-       {
-           out << std::setw(7) << i+1 << ' ';
-           out << std::setw(6) << follow_ranks.categories[i].agents.size() << ' ';
-           out << std::setw(6) << follow_ranks.categories[i].prob << ' ';
-           out << std::setw(6) << follow_ranks.categories[i].prob * follow_ranks.categories[i].agents.size() << ' ';
-           out << std::setw(15) << updating_probs[i];
-           out << '\t';
-           for (auto followed : follow_ranks.categories[i].agents)
-               out << followed << ',';
-           out << std::endl;
-       }
-#endif  // REFACTORING_DEBUG_OUTPUT
-
        int i = 0;
        for (auto& p : updating_probs) {
            if (rand_num <= p) {
@@ -335,7 +205,6 @@ struct AnalyzerFollow {
        }
        return -1;
    }
-#endif  // REFACTORING2
 
    int agent_follow_method(Agent& e) {
        PERF_TIMER();
@@ -477,19 +346,15 @@ struct AnalyzerFollow {
         if (config.stage1_unfollow) {
             vector<int>& chatties = e.chatty_agents;
             if (chatties.size() > 0) {
-                int index = rng.rand_int(chatties.size());
-                int agent_unfollowed = chatties[index];
-                if (action_unfollow(agent_unfollowed, id_follower)) {
-                    chatties.erase(chatties.begin() + index);
-                } else {
-                    DEBUG_CHECK(action_unfollow(agent_unfollowed, id_follower), "Error in stage1_unfollow method.");
-                }
+                int id_agent_unfollowed = rng.pick_random_uniform(chatties);
+                // Will remove from chattiness list after unfollow:
+                handle_unfollow(id_agent_unfollowed, id_follower);
             }
         }
 
         // Return 'false' if we were unable to find an agent to follow:
         if (UNLIKELY(agent_to_follow == -1)) {
-        	return false;
+            return false;
         }
 
         bool same_agent = (id_follower == agent_to_follow);
@@ -515,9 +380,6 @@ struct AnalyzerFollow {
                 // We were able to add the follow:
                 et.follow_ranks.categorize(agent_to_follow, target.follower_set.size());
                 follow_ranks.categorize(agent_to_follow, target.follower_set.size());
-#ifdef REFACTORING
-                network.connect(agent_to_follow, id_follower);
-#endif // REFACTORING
 
                 return true;
             }
@@ -532,14 +394,10 @@ struct AnalyzerFollow {
         Agent& prev_actor = network[prev_actor_id];
         Agent& prev_target = network[prev_target_id];
         if (handle_follow(prev_target_id, prev_actor_id,N_FOLLOW_MODELS + 1)) {
-            
             int et_id = network[prev_actor_id].agent_type;
             AgentType& et = agent_types[et_id];
             et.follow_ranks.categorize(prev_actor_id, prev_actor.follower_set.size());
             follow_ranks.categorize(prev_actor_id, prev_actor.follower_set.size());
-#ifdef REFACTORING
-            network.connect(prev_actor_id, prev_target_id);
-#endif // REFACTORING
             RECORD_STAT(state, prev_target.agent_type, n_followback);
             return true;
         }
@@ -547,28 +405,36 @@ struct AnalyzerFollow {
         RECORD_STAT(state, prev_actor.agent_type, n_followers);
         return false; // Return false to signify the network was not mutated.
     }
-        
-	bool action_unfollow(int id_unfollowed, int id_unfollower) {
-	    PERF_TIMER();
 
-		FollowerSet& candidate_followers = network.follower_set(id_unfollowed);
+    void remove_chatty_agent(Agent& unfollowed, Agent& lost_follower) {
+        auto& c = lost_follower.chatty_agents;
+        auto iter = std::find(c.begin(), c.end(), unfollowed.id);
+        bool in_chatty_agents_list = (iter != c.end());
+        if (in_chatty_agents_list) {
+            c.erase(iter);
+        }
+    }
 
-		DEBUG_CHECK(id_unfollower != -1, "Should not be -1 after choice!");
+    bool handle_unfollow(int id_unfollowed, int id_lost_follower) {
+        PERF_TIMER();
 
-    // Remove our target from our actor's follows:
-    bool had_follower = candidate_followers.remove(network[id_unfollower]);
-		 DEBUG_CHECK(had_follower, "unfollow: Did not exist in follower list");
+        DEBUG_CHECK(id_lost_follower != -1, "Should not be invalid agent after unfollow decision!");
+        Agent& unfollowed = network[id_unfollowed], &lost_follower = network[id_lost_follower];
 
-        // Remove our unfollowed person from our target's followers:
-		Agent& e_lost_follower = network[id_unfollower];
-		bool had_follow = e_lost_follower.following_set.remove(state, id_unfollowed);
-#ifdef REFACTORING
-        network.disconnect(id_unfollowed, id_unfollower);
-#endif // REFACTORING
-         DEBUG_CHECK(had_follow, "unfollow: Did not exist in follow list");
-		RECORD_STAT(state, e_lost_follower.agent_type, n_unfollows);
-		return true;
-	}
+        // Remove the lost follower from the unfollowed's follows:
+        bool had_follower = unfollowed.follower_set.remove(lost_follower);
+        DEBUG_CHECK(had_follower, "unfollow: Did not exist in follower list");
+
+        // Remove the lost follower from the unfollowed's followers:
+        bool had_follow = lost_follower.following_set.remove(state, id_unfollowed);
+        DEBUG_CHECK(had_follow, "unfollow: Did not exist in follow list");
+
+        // Remove the unfollowed person from our target's chattiness list, if found there:
+        remove_chatty_agent(unfollowed, lost_follower);
+
+        RECORD_STAT(state, lost_follower.agent_type, n_unfollows);
+        return true;
+    }
 };
 
 double preferential_weight(AnalysisState& state) {
@@ -582,10 +448,10 @@ bool analyzer_handle_follow(AnalysisState& state, int id_actor, int id_target, i
     return analyzer.handle_follow(id_actor, id_target, follow_method);
 }
 
-bool analyzer_handle_unfollow(AnalysisState& state, int id_actor, int id_target) {
+bool analyzer_handle_unfollow(AnalysisState& state, int id_unfollowed, int id_lost_follower) {
     PERF_TIMER();
     AnalyzerFollow analyzer(state);
-    return analyzer.action_unfollow(id_target, id_actor);
+    return analyzer.handle_unfollow(id_unfollowed, id_lost_follower);
 }
 
 bool analyzer_follow_agent(AnalysisState& state, int agent, double time_of_follow) {
