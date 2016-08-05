@@ -152,6 +152,9 @@ struct AgentType {
     std::vector<double> updating_probs;
     double tweet_type_probs[N_TWEET_TYPES];
 
+    //Introducing Susceptibility
+    double susceptibility = -1;
+
     AgentStats stats;
 
     /* Synchronize rates and preferences from a loaded configuration.
