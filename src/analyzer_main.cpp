@@ -562,8 +562,27 @@ struct Analyzer {
         //Handling susceptibility
         if(stats.n_steps % 100 == 0){
             for (Agent& agent : network) {
-                if (agent.susceptibility ...) {
-                change_agent_ideology( agent , /* new ideology bin */ );
+                if (agent.susceptibility == 1.0) {                
+
+                // Looking at the ideology of all of an agent's followings:
+                int counts[N_BIN_IDEOLOGIES];
+                for (int& count : counts) {
+                    count = 0; 
+                    // Counts start at 0
+                }
+                for (int following_id : agent.followings.as_vector()) {
+                    Agent& following = network[following_id];
+                    counts[following.ideology_bin]++;
+                }
+
+                int most_common_ideology = -1;
+                for(int i=0; i<N_BIN_IDEOLOGIES; i++){
+                    if(counts[i] >= most_common_ideology)
+                        most_common_ideology = counts[i];
+                }
+
+                change_agent_ideology(agent, most_common_ideology);
+                // 
                 }
             }
         }
