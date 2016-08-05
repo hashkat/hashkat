@@ -368,3 +368,5 @@ agents:
         follow: {function: constant, value: 0.000001}
         # Rate for tweets from this agent:
         tweet: {function: constant, value: 0.00001}
+    #Introducing susceptibility
+    susceptibility: 1.0

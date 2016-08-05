@@ -560,8 +560,12 @@ struct Analyzer {
         }
 
         //Handling susceptibility
-        if(stats.n_steps % 100 == 0 && stats.susceptibility == 1.0){
-            change_agent_ideology( /* agent */ , /* new ideology bin */ );
+        if(stats.n_steps % 100 == 0){
+            for (Agent& agent : network) {
+                if (agent.susceptibility ...) {
+                change_agent_ideology( agent , /* new ideology bin */ );
+                }
+            }
         }
 
         // Check for incoming api_requests, if enabled.
@@ -756,6 +760,19 @@ struct Analyzer {
 
         stats.n_outputs++;
     }
+
+
+    //Cardinal function handling susceptibility
+    void change_agent_ideology(Agent& agent, int new_ideology_bin) {
+        vector<int> followings = agent.following_set.as_vector();
+        for (int following : followings) {
+            network[following].follower_set.remove(agent);
+        }
+        agent.ideology_bin = new_ideology_bin;
+        for (int following : followings) {
+            network[following].follower_set.add(agent);
+        }
+    }
 };
 
 bool analyzer_create_agent(AnalysisState& state) {
@@ -781,18 +798,6 @@ void analyzer_load_network_state(AnalysisState& state, const char* fname) {
 bool analyzer_real_time_check(AnalysisState& state) {
     ASSERT(state.analyzer.get(), "Analysis is not active!");
     return state.analyzer->real_time_check();
-}
-
-//Cardinal function handling susceptibility
-void change_agent_ideology(Agent& agent, int new_ideology_bin) {
-    vector<int> followings = agent.following_set.as_vector();
-    for (int following : followings) {
-        network[following].follower_set.remove(agent);
-    }
-    agent.ideology_bin = new_ideology_bin;
-    for (int following : followings) {
-        network[following].follower_set.add(agent);
-    }
 }
 
 // Run a network simulation using the given input file's parameters
