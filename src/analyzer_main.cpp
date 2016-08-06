@@ -576,9 +576,12 @@ struct Analyzer {
                 }
 
                 int most_common_ideology = -1;
+                int max_count = -1;
                 for(int i=0; i<N_BIN_IDEOLOGIES; i++){
-                    if(counts[i] >= most_common_ideology)
-                        most_common_ideology = counts[i];
+                    if(counts[i] >= max_count){
+                        max_count = counts[i];
+                        most_common_ideology = i;
+                    }
                 }
 
                 change_agent_ideology(agent, most_common_ideology);
