@@ -564,9 +564,13 @@ struct Analyzer {
         if(stats.n_steps % 10 == 0){
 
             ofstream myfile;
-            myfile.open ("output/change_in_ideologies.dat");
 
-            myfile << "\n\n\nn_steps: " << stats.n_steps;
+            stringstream ss;
+            ss << "output/change_in_ideology_step_" << stats.n_steps << ".dat";
+            string filename = ss.str();
+            myfile.open (filename.c_str());
+
+            myfile << "\nn_steps: " << stats.n_steps;
 
             int old_ideology;
 
@@ -574,7 +578,6 @@ struct Analyzer {
                 if (agent.susceptibility == 1.0) {
 
                     myfile << "\n\nagent_id: " << agent.id;
-                    myfile << "\nagent_ideology_old: " << agent.ideology_bin;
 
                     old_ideology = agent.ideology_bin;                
 
@@ -600,13 +603,10 @@ struct Analyzer {
 
                     change_agent_ideology(agent, most_common_ideology);
 
-                    myfile << "\nmost_common_ideology: " << most_common_ideology;
-
-                    myfile << "\nagent_ideology_new: " << agent.ideology_bin;
-
                 }
 
-                //ASSERT(old_ideology == agent.ideology_bin, "ideology actually changed");
+                myfile << "\nagent_ideology_old: " << old_ideology;
+                myfile << "\nagent_ideology_new: " << agent.ideology_bin;
             }
 
             myfile.close();
