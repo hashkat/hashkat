@@ -579,7 +579,7 @@ struct Analyzer {
                     count = 0; 
                     // Counts start at 0
                 }
-                for (int following_id : agent.follower_set.as_vector()) {
+                for (int following_id : agent.following_set.as_vector()) {
                     Agent& following = network[following_id];
                     counts[following.ideology_bin]++;
                 }
