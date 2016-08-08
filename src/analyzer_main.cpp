@@ -30,6 +30,7 @@
 #include <iomanip>
 #include <cmath>
 #include <deque>
+#include <cassert>
 
 // Local includes:
 #include "analyzer.h"
@@ -560,44 +561,52 @@ struct Analyzer {
         }
 
         //Handling susceptibility
-        if(stats.n_steps % 100 == 0){
+        if(stats.n_steps % 10 == 0){
 
             ofstream myfile;
-            myfile.open ("output/change_in_ideologies.txt");
+            myfile.open ("output/change_in_ideologies.dat");
 
-            myfile << "\n\n\n_steps: " << stats.n_steps;
+            myfile << "\n\n\nn_steps: " << stats.n_steps;
+
+            int old_ideology;
 
             for (Agent& agent : network) {
                 if (agent.susceptibility == 1.0) {
 
-                myfile << "\n\nagent_id: " << agent.id;
-                myfile << "\nagent_ideology_old: " << agent.ideology_bin;                
+                    myfile << "\n\nagent_id: " << agent.id;
+                    myfile << "\nagent_ideology_old: " << agent.ideology_bin;
 
-                // Looking at the ideology of all of an agent's followings:
-                int counts[N_BIN_IDEOLOGIES];
-                for (int& count : counts) {
-                    count = 0; 
-                    // Counts start at 0
-                }
-                for (int following_id : agent.following_set.as_vector()) {
-                    Agent& following = network[following_id];
-                    counts[following.ideology_bin]++;
-                }
+                    old_ideology = agent.ideology_bin;                
 
-                int most_common_ideology = -1;
-                int max_count = -1;
-                for(int i=0; i<N_BIN_IDEOLOGIES; i++){
-                    if(counts[i] >= max_count){
-                        max_count = counts[i];
-                        most_common_ideology = i;
+                    // Looking at the ideology of all of an agent's followings:
+                    int counts[N_BIN_IDEOLOGIES];
+                    for (int& count : counts) {
+                        count = 0; 
+                        // Counts start at 0
                     }
+                    for (int following_id : agent.following_set.as_vector()) {
+                        Agent& following = network[following_id];
+                        counts[following.ideology_bin]++;
+                    }
+
+                    int most_common_ideology = -1;
+                    int max_count = -1;
+                    for(int i=0; i<N_BIN_IDEOLOGIES; i++){
+                        if(counts[i] >= max_count){
+                            max_count = counts[i];
+                            most_common_ideology = i;
+                        }
+                    }
+
+                    change_agent_ideology(agent, most_common_ideology);
+
+                    myfile << "\nmost_common_ideology: " << most_common_ideology;
+
+                    myfile << "\nagent_ideology_new: " << agent.ideology_bin;
+
                 }
 
-                change_agent_ideology(agent, most_common_ideology);
-
-                }
-
-                myfile << "\nagent_ideology_new: " << agent.ideology_bin;
+                //ASSERT(old_ideology == agent.ideology_bin, "ideology actually changed");
             }
 
             myfile.close();
