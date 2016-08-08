@@ -561,8 +561,17 @@ struct Analyzer {
 
         //Handling susceptibility
         if(stats.n_steps % 100 == 0){
+
+            ofstream myfile;
+            myfile.open ("output/change_in_ideologies.txt");
+
+            myfile << "\n\n\n_steps: " << stats.n_steps;
+
             for (Agent& agent : network) {
-                if (agent.susceptibility == 1.0) {                
+                if (agent.susceptibility == 1.0) {
+
+                myfile << "\n\nagent_id: " << agent.id;
+                myfile << "\nagent_ideology_old: " << agent.ideology_bin;                
 
                 // Looking at the ideology of all of an agent's followings:
                 int counts[N_BIN_IDEOLOGIES];
@@ -570,7 +579,7 @@ struct Analyzer {
                     count = 0; 
                     // Counts start at 0
                 }
-                for (int following_id : agent.followings.as_vector()) {
+                for (int following_id : agent.follower_set.as_vector()) {
                     Agent& following = network[following_id];
                     counts[following.ideology_bin]++;
                 }
@@ -585,9 +594,13 @@ struct Analyzer {
                 }
 
                 change_agent_ideology(agent, most_common_ideology);
-                // 
+
                 }
+
+                myfile << "\nagent_ideology_new: " << agent.ideology_bin;
             }
+
+            myfile.close();
         }
 
         // Check for incoming api_requests, if enabled.

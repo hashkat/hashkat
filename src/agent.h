@@ -64,6 +64,9 @@ struct Agent {
 
    // Abstract ideology:
     int ideology_bin = -1;
+
+    //Introducing Susceptibility
+    double susceptibility = 1.0;
     
     // list of flagged chatty people
     std::vector<int> chatty_agents;
@@ -153,7 +156,7 @@ struct AgentType {
     double tweet_type_probs[N_TWEET_TYPES];
 
     //Introducing Susceptibility
-    double susceptibility = -1;
+    double susceptibility = 1.0;
 
     AgentStats stats;
 
