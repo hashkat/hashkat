@@ -91,6 +91,8 @@ analysis:
     10000
   use_hashtag_probability:
     0.2
+  use_susceptibility:
+    false
 
 #################################################################
 # >> rates:

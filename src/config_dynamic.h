@@ -94,6 +94,7 @@ struct ParsedConfig {
     bool use_barabasi = false;
     bool region_connection_matrix = false;
     bool enable_query_api = false;
+    bool use_susceptibility = false;
     
     int barabasi_connections = 1;
     double barabasi_exponent = 1;

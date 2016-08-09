@@ -561,7 +561,7 @@ struct Analyzer {
         }
 
         //Handling susceptibility
-        if(stats.n_steps % 10 == 0){
+        if(config.use_susceptibility == true && stats.n_steps % 10 == 0){
 
             ofstream myfile;
 
