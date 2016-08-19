@@ -357,8 +357,6 @@ static AgentTypeVector parse_agents_configuration(const Node& node) {
         parse(weights, "follow", et.prob_follow);
 		const Node& follow_rate = child["rates"]["follow"];
 		const Node& tweet_rate = child["rates"]["tweet"];
-
-        //Parsing Susceptibility
         parse(child, "susceptibility", et.susceptibility);
 
 		parse_agent_tweet_type_probabilities(et, weights["tweet_type"]);

@@ -30,7 +30,6 @@
 #include <iomanip>
 #include <cmath>
 #include <deque>
-#include <cassert>
 
 // Local includes:
 #include "analyzer.h"
@@ -561,31 +560,30 @@ struct Analyzer {
         }
 
         //Handling susceptibility
-        if(config.use_susceptibility == true && stats.n_steps % 10 == 0){
+        if (config.use_susceptibility && stats.n_steps % 10 == 0){
 
-            ofstream myfile;
+            ofstream change_in_agent_ideology_output_file;
 
             stringstream ss;
             ss << "output/change_in_ideology_step_" << stats.n_steps << ".dat";
             string filename = ss.str();
-            myfile.open (filename.c_str());
+            change_in_agent_ideology_output_file.open (filename.c_str());
 
-            myfile << "\nn_steps: " << stats.n_steps;
-
-            int old_ideology;
+            change_in_agent_ideology_output_file << "\nn_steps: " << stats.n_steps;
 
             for (Agent& agent : network) {
                 if (agent.susceptibility == 1.0) {
 
-                    myfile << "\n\nagent_id: " << agent.id;
+                    change_in_agent_ideology_output_file << "\n\nagent_id: " << agent.id;
 
-                    old_ideology = agent.ideology_bin;                
+                    int old_ideology = agent.ideology_bin;
+
+                    change_in_agent_ideology_output_file << "\nagent_ideology_old: " << old_ideology;               
 
                     // Looking at the ideology of all of an agent's followings:
                     int counts[N_BIN_IDEOLOGIES];
                     for (int& count : counts) {
-                        count = 0; 
-                        // Counts start at 0
+                        count = 0; // Counts start at 0
                     }
                     for (int following_id : agent.following_set.as_vector()) {
                         Agent& following = network[following_id];
@@ -594,8 +592,8 @@ struct Analyzer {
 
                     int most_common_ideology = -1;
                     int max_count = -1;
-                    for(int i=0; i<N_BIN_IDEOLOGIES; i++){
-                        if(counts[i] >= max_count){
+                    for (int i = 0; i < N_BIN_IDEOLOGIES; i++) {
+                        if (counts[i] >= max_count) {
                             max_count = counts[i];
                             most_common_ideology = i;
                         }
@@ -605,11 +603,10 @@ struct Analyzer {
 
                 }
 
-                myfile << "\nagent_ideology_old: " << old_ideology;
-                myfile << "\nagent_ideology_new: " << agent.ideology_bin;
+                change_in_agent_ideology_output_file << "\nagent_ideology_new: " << agent.ideology_bin;
             }
 
-            myfile.close();
+            change_in_agent_ideology_output_file.close();
         }
 
         // Check for incoming api_requests, if enabled.

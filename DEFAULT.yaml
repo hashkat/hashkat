@@ -346,7 +346,7 @@ agents:
         follow: {function: constant, value: 0.00001}
         # Rate for tweets from this agent:
         tweet: {function: constant, value: 0.0001}
-    #Introducing susceptibility
+    #Introducing susceptibility, a factor which determines if the agent shall flip from his/her opinion or not
     susceptibility: 1.0
 
   - name: Celebrity
@@ -370,5 +370,5 @@ agents:
         follow: {function: constant, value: 0.000001}
         # Rate for tweets from this agent:
         tweet: {function: constant, value: 0.00001}
-    #Introducing susceptibility
+    #Introducing susceptibility, a factor which determines if the agent shall flip from his/her opinion or not
     susceptibility: 1.0
