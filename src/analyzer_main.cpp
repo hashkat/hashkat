@@ -559,6 +559,56 @@ struct Analyzer {
             return false;
         }
 
+        //Handling susceptibility
+        if (config.use_susceptibility && stats.n_steps % 10 == 0){
+
+            ofstream change_in_agent_ideology_output_file;
+
+            stringstream ss;
+            ss << "output/change_in_ideology_step_" << stats.n_steps << ".dat";
+            string filename = ss.str();
+            change_in_agent_ideology_output_file.open (filename.c_str());
+
+            change_in_agent_ideology_output_file << "\nn_steps: " << stats.n_steps;
+
+            for (Agent& agent : network) {
+                if (agent.susceptibility == 1.0) {
+
+                    change_in_agent_ideology_output_file << "\n\nagent_id: " << agent.id;
+
+                    int old_ideology = agent.ideology_bin;
+
+                    change_in_agent_ideology_output_file << "\nagent_ideology_old: " << old_ideology;               
+
+                    // Looking at the ideology of all of an agent's followings:
+                    int counts[N_BIN_IDEOLOGIES];
+                    for (int& count : counts) {
+                        count = 0; // Counts start at 0
+                    }
+                    for (int following_id : agent.following_set.as_vector()) {
+                        Agent& following = network[following_id];
+                        counts[following.ideology_bin]++;
+                    }
+
+                    int most_common_ideology = -1;
+                    int max_count = -1;
+                    for (int i = 0; i < N_BIN_IDEOLOGIES; i++) {
+                        if (counts[i] >= max_count) {
+                            max_count = counts[i];
+                            most_common_ideology = i;
+                        }
+                    }
+
+                    change_agent_ideology(agent, most_common_ideology);
+
+                }
+
+                change_in_agent_ideology_output_file << "\nagent_ideology_new: " << agent.ideology_bin;
+            }
+
+            change_in_agent_ideology_output_file.close();
+        }
+
         // Check for incoming api_requests, if enabled.
         analyzer_handle_outstanding_api_request(state);
 
@@ -750,6 +800,19 @@ struct Analyzer {
         }
 
         stats.n_outputs++;
+    }
+
+
+    //Cardinal function handling susceptibility
+    void change_agent_ideology(Agent& agent, int new_ideology_bin) {
+        vector<int> followings = agent.following_set.as_vector();
+        for (int following : followings) {
+            network[following].follower_set.remove(agent);
+        }
+        agent.ideology_bin = new_ideology_bin;
+        for (int following : followings) {
+            network[following].follower_set.add(agent);
+        }
     }
 };
 
