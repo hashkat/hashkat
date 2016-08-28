@@ -97,7 +97,7 @@ double analyzer_total_retweet_rate(AnalysisState& state) {
     AnalyzerRetweet analyzer(state);
     return analyzer.total_retweet_rate();
 }
-RetweetChoice analyzer_select_tweet_to_retweet(AnalysisState& state, SelectionType type) {
+RetweetChoice analyzer_select_tweet_to_retweet(AnalysisState& state) {
     AnalyzerRetweet analyzer(state);
     return analyzer.tweet_to_retweet_selection();
 }

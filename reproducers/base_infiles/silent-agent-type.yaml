@@ -301,7 +301,7 @@ agents:
         # Rate for follows from this agent:
         follow: {function: constant, value: 0.00001}
         # Rate for tweets from this agent:
-        tweet: {function: constant, value: 0.0001}
+        tweet: {function: constant, value: 0.0000}
 
   - name: DoesTweet
     weights:

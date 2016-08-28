@@ -22,4 +22,4 @@ There are also events (on_tweet, on_retweet, on_add). For aid using these, find 
 
 To run tests, use ./run.sh. You can graphically choose what tests to run. You do not need to re-open the runner if you modify tests (but you may need to for completely new tests).
 If dependencies are missing, run:
-    sudo pip install cffi pyyaml
+    sudo pip install cffi pyyaml tkreadonly

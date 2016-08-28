@@ -253,7 +253,6 @@ struct AnalysisState {
 
 enum SelectionType {
     FOLLOW_SELECT,
-    RETWEET_SELECT,
     TWEET_SELECT
 };
 
@@ -309,7 +308,7 @@ void analyzer_handle_outstanding_api_request(AnalysisState& state);
 void spawn_stdin_command_queueing_thread_for_api();
 
 // this is for the retweet agent selection
-RetweetChoice analyzer_select_tweet_to_retweet(AnalysisState& state, SelectionType type);
+RetweetChoice analyzer_select_tweet_to_retweet(AnalysisState& state);
 
 // Create an agent
 bool analyzer_create_agent(AnalysisState& state);

@@ -139,6 +139,11 @@ public:
         return 1.0 - rand_real_not1();
     }
 
+    /* Grab a real number within [0, max) with 53-bit resolution */
+    double rand_real(double max) {
+        return rand_real_not1() * max;
+    }
+
     template <typename T>
     T pick_random_uniform(const std::vector<T>& vec) {
         int n = rand_int(vec.size());

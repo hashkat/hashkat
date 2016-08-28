@@ -21,7 +21,7 @@ monkey_patch_unittest()
 ffi = FFI()
 
 debug_lib = ffi.dlopen('../build/debug/src/libhashkat-lib.so')
-release_lib = ffi.dlopen('../build/release/src/libhashkat-lib.so')
+release_lib = debug_lib # ffi.dlopen('../build/release/src/libhashkat-lib.so')
 
 current_lib = None # Should not call API functions except during test!
 
@@ -125,7 +125,7 @@ def hashkat_new_analysis_state(infile_setup, base_infile, args=[]):
     state = current_lib.hashkat_new_analysis_state(len(args), args)
     def cleanup():
         current_lib.hashkat_destroy_analysis_state(state)
-        temp_dir_cleanup()
+        #temp_dir_cleanup()
     return state, cleanup
 
 def hashkat_start_analysis_loop(state, callbacks):

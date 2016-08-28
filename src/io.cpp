@@ -602,7 +602,7 @@ void agent_statistics(Network& network, int n_follows, int n_agents, int max_age
     }
     output << "\n ****** Info regarding numbers of agent types - BASED ON USER_LISTS ****** \n THIS SHOULD BE THE SAME AS ABOVE \n\n";
     for (int i = 0; i < max_agents; i ++) {
-        output << "Number of agent " << i << " : " << agenttype[i].agent_list.size() << "    Fraction: " << agenttype[i].agent_list.size()/double(n_agents) << "\n";
+        output << "Number of agent " << i << " : " << agenttype[i].agents.agent_ids.size() << "    Fraction: " << agenttype[i].agents.agent_ids.size()/double(n_agents) << "\n";
     }
     output << "\n\n ****** Info regarding following certain agent types - BASED ON NETWORK ARRAY ****** \n\n";
     double sum = 0;
@@ -615,19 +615,19 @@ void agent_statistics(Network& network, int n_follows, int n_agents, int max_age
                << "     Fraction: " << average_followers_from_network[i]/double(n_follows) << "\n";
     }
     for (int i = 0; i < max_agents; i ++){
-        for (int j = 0; j < agenttype[i].agent_list.size(); j++) {
-            Agent& p = network[agenttype[i].agent_list[j]];
+        for (int j = 0; j < agenttype[i].agents.agent_ids.size(); j++) {
+            Agent& p = network[agenttype[i].agents.agent_ids[j]];
             average_followers_from_lists[i] += p.follower_set.size();
         }
     }
     output << "\n\n ****** Info regarding following certain agent types - BASED ON USER_LISTS ****** \n      SHOULD BE THE SAME AS ABOVE\n\n";
     double sum1 = 0;
     for (int i = 0; i < max_agents; i ++) {
-        sum1 += average_followers_from_lists[i] / double(agenttype[i].agent_list.size());
+        sum1 += average_followers_from_lists[i] / double(agenttype[i].agents.agent_ids.size());
     }
     for (int i = 0; i < max_agents; i ++) {
         output << "Average number of follows for agent "
-               << i << ": " << average_followers_from_lists[i]/double(agenttype[i].agent_list.size())
+               << i << ": " << average_followers_from_lists[i]/double(agenttype[i].agents.agent_ids.size())
                << "     Fraction: " << average_followers_from_network[i]/double(n_follows) << "\n";
     }
     output.close();
@@ -705,9 +705,9 @@ bool agent_checks(AgentTypeVector& ets, Network& network, AnalysisState& state, 
     double rate_add = add_rates.RF.monthly_rates[state.n_months()];
     for (auto& et : ets) {
         double add_correct = network.size() * et.prob_add;
-        if (abs(add_correct - et.agent_list.size()) / add_correct >= tolerence) {
+        if (abs(add_correct - et.agents.agent_ids.size()) / add_correct >= tolerence) {
             //cout << "\nNumber of agent type \'" << ets[i].name << "\' is not correct. " << (int) add_correct << " is the right number.\n";
-            //cout << "was: " << ets[i].agent_list.size() << "\n";
+            //cout << "was: " << ets[i].agents.agent_ids.size() << "\n";
             final_check += false;
             check_count ++;
         }
@@ -744,8 +744,8 @@ static void whos_following_who(AgentTypeVector& types, AgentType& type, Network&
     ofstream output;
     output.open(filename.c_str());
     int max_degree = 0;
-    for (int i = 0; i < type.agent_list.size(); i ++) {
-        int degree = network.n_followings(type.agent_list[i]) + network.n_followers(type.agent_list[i]);
+    for (int i = 0; i < type.agents.agent_ids.size(); i ++) {
+        int degree = network.n_followings(type.agents.agent_ids[i]) + network.n_followers(type.agents.agent_ids[i]);
         if (degree > max_degree) {
             max_degree = degree;
         }
@@ -759,8 +759,8 @@ static void whos_following_who(AgentTypeVector& types, AgentType& type, Network&
     vector<int> who_followers(types.size(), 0);
 
     double followers_sum = 0, following_sum = 0;
-    for (int i = 0; i < type.agent_list.size(); i ++) {
-        int id = type.agent_list[i];
+    for (int i = 0; i < type.agents.agent_ids.size(); i ++) {
+        int id = type.agents.agent_ids[i];
         int in_degree = network.n_followers(id);
         int out_degree = network.n_followings(id);
         agent_followers[in_degree] ++;
@@ -792,13 +792,13 @@ static void whos_following_who(AgentTypeVector& types, AgentType& type, Network&
     output << "\n\ndeg\tin_deg\t\tout_d\t\tcum_d\t\tlog_d\t\tlog_in\t\tlog_out\tlog_cum\n\n";
     for (int i = 0; i < max_degree; i++) {
         output << i << "\t"
-                << agent_followers[i] / (double) type.agent_list.size() << "\t"
-                << agent_following[i] / (double) type.agent_list.size() << "\t"
-                << agent_degree[i] / (double) type.agent_list.size()
+                << agent_followers[i] / (double) type.agents.agent_ids.size() << "\t"
+                << agent_following[i] / (double) type.agents.agent_ids.size() << "\t"
+                << agent_degree[i] / (double) type.agents.agent_ids.size()
                 << "\t" << log(i) << "\t\t"
-                << log(agent_followers[i] / (double) type.agent_list.size()) << "\t"
-                << log(agent_following[i] / (double) type.agent_list.size()) << "\t"
-                << log(agent_degree[i] / (double) type.agent_list.size()) << "\n";
+                << log(agent_followers[i] / (double) type.agents.agent_ids.size()) << "\t"
+                << log(agent_following[i] / (double) type.agents.agent_ids.size()) << "\t"
+                << log(agent_degree[i] / (double) type.agents.agent_ids.size()) << "\n";
     }
     output.close();
 }
@@ -900,7 +900,7 @@ void network_statistics(Network& n, NetworkStats& net_stats, AgentTypeVector& et
     output << "USERS\n_____\n\n";
     output << "Total:\t\t" << n.size() << "\n";
     for (auto& et : etv) {
-        output << et.name << ":\t" << et.agent_list.size() << "\t(" << 100 * et.agent_list.size() / (double)n.size() << "% of total agents)\n";
+        output << et.name << ":\t" << et.agents.agent_ids.size() << "\t(" << 100 * et.agents.agent_ids.size() / (double)n.size() << "% of total agents)\n";
     }
 
     AgentStats& stats = net_stats.global_stats;

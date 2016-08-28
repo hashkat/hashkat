@@ -217,10 +217,10 @@ struct AnalyzerFollow {
        for (auto& type : agent_types) {
            if (rand_num <= type.prob_follow) {
                // make sure we're not pulling from an empty list
-               if (type.agent_list.size() != 0) {
+               if (type.agents.agent_ids.size() != 0) {
                    // pull the agent from whatever bin we landed in and break so we dont continue this loop
-                   int n = rng.rand_int(type.agent_list.size());
-                   int agent_to_follow = type.agent_list[n];
+                   int n = rng.rand_int(type.agents.agent_ids.size());
+                   int agent_to_follow = type.agents.agent_ids[n];
                    Agent& try_agent = network[agent_to_follow];
                    if (try_agent.language != e.language) {
                        return -1;

@@ -55,7 +55,7 @@ using namespace std;
 volatile int SIGNAL_ATTEMPTS = 0;
 
 static const int SIGNAL_ATTEMPTS_TO_ABORT = 3;
-// Handler for singals -- sent by eg Ctrl-C on command-line. Allows us to stop our program gracefully!
+// Handler for signals -- sent by eg Ctrl-C on command-line. Allows us to stop our program gracefully!
 static void signal_handler(int __dummy) {
     SIGNAL_ATTEMPTS++;
     if (SIGNAL_ATTEMPTS >= SIGNAL_ATTEMPTS_TO_ABORT) {
@@ -368,7 +368,7 @@ struct Analyzer {
             AgentType& type = agent_types[et];
             if (rand_num <= type.prob_add) {
                 e.agent_type = et;
-                type.agent_list.push_back(id);
+                type.agents.agent_ids.push_back(id);
                 follow_ranks.categorize(id, e.follower_set.size());
                 type.follow_ranks.categorize(id, e.follower_set.size());
                 break;
@@ -565,39 +565,40 @@ struct Analyzer {
          * Retrying as we did before (ie, not moving time forward) caused some underestimation in the time of events.
          */
 
-        bool network_has_changed = false;
+        // Get a random number within [0,1) that aids in our action decision.
+        double r = rng.rand_real_not0();
+
+        if (subtract_var(r, stats.prob_do_nothing) <= ZEROTOL) {
+            // Do nothing. Only step time forward.
+            // Does not count as a real step (i.e., does not trigger action hooks).
+            step_time(timer);
+            stats.n_do_nothing_steps++;
+            return true;
+        }
 
         lua_hook_step_analysis(state);
-
-        // Get a random number within [0,1).
-        double r = rng.rand_real_not0(); // 
         // Decide what action corresponds to our random number.
         if (subtract_var(r, stats.prob_add) <= ZEROTOL) {
             // The agent creation event
-            network_has_changed = action_create_agent();
+            action_create_agent();
         } else if (subtract_var(r, stats.prob_follow) <= ZEROTOL) {
             // The follow event
             int agent = analyzer_select_agent(state, FOLLOW_SELECT);
             if (agent != -1) {
-                network_has_changed = analyzer_follow_agent(state, agent, time);
+                analyzer_follow_agent(state, agent, time);
             }
         } else if (subtract_var(r, stats.prob_tweet) <= ZEROTOL) {
             // The tweet event
             int agent = analyzer_select_agent(state, TWEET_SELECT);
             if (agent != -1) {
-                network_has_changed = action_tweet(agent);
+                action_tweet(agent);
             }
         } else if (subtract_var(r, stats.prob_retweet) <= ZEROTOL ) {
             // The retweet event
-            RetweetChoice choice = analyzer_select_tweet_to_retweet(state, RETWEET_SELECT);
+            RetweetChoice choice = analyzer_select_tweet_to_retweet(state);
             if (choice.id_author != -1) {
-                network_has_changed = action_retweet(choice, time);
+                action_retweet(choice, time);
             }
-        } else if (subtract_var(r, stats.prob_do_nothing) <= ZEROTOL ) {
-            // Do nothing. Only step time forward.
-            step_time(timer);
-            stats.n_do_nothing_steps++;
-            return true;
         } else {
             error_exit("step_analysis: event out of bounds");
         }

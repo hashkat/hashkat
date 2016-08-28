@@ -269,6 +269,7 @@ class Tweets_dont_generate_for_agent_tweet_rate_0(HashkatTestCase, unittest.Test
     def on_tweet(self, tweet):
         self.tweets[tweet["content_id"]] = tweet
     def on_exit_all(self):
+        print hashkat_dump_stats(self.state)
         counts = get_tweet_feature_counts(self.tweets)
         self.assertTrue(counts["DoesTweet"] > 0, 
             "Agent type with tweet rate > 0 should tweet.")

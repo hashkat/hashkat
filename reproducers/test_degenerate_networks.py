@@ -41,8 +41,9 @@ class Pure_growth_network_grows_correctly(HashkatTestCase, unittest.TestCase):
                 agent_type["rates"][rate] = {"function": "constant", "value": 0}
     def on_exit(self):
         stats = hashkat_dump_stats(self.state)
+        print hashkat_dump_stats(self.state)
         # Test that a network with only addition rates grows 1 user per step: 
-        self.assertTrue(stats["n_agents"] == self.AGENTS_TO_GROW,
+        self.assertTrue(int(stats["n_agents"]) == self.AGENTS_TO_GROW,
                 "Should have the maximum amount of agents!")
-        self.assertTrue(stats["global_stats"]["n_tweets"] == 0,
+        self.assertTrue(int(stats["global_stats"]["n_tweets"]) == 0,
                 "Should not have any tweets!")

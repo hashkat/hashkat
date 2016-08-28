@@ -44,104 +44,28 @@ struct AnalyzerSelect {
             config(state.config), agent_types(state.agent_types), rng(state.rng) {
     }
 
-    vector<double>& selection_rate_vector(AgentType& type, SelectionType event) {
-        if (event == FOLLOW_SELECT) {
-            return type.RF[0].monthly_rates;
-        } else if (event == TWEET_SELECT) {
-            return type.RF[1].monthly_rates;
-        }
-        throw "selection_vector: Logic Error";
-    }
-
-    double calc_rate_sum(SelectionType event) {
-        double rate_sum = 0;
-        if (stats.prob_add == 0) {
-            for (AgentType& et : agent_types) {
-                vector<double>& rates = selection_rate_vector(et, event);
-                // TODO Comment Why is state.n_months() used?
-                rate_sum += rates[state.n_months()] * et.prob_add;
-            }
-        } else {
-            for (AgentType& et : agent_types) {
-                vector<double>& rates = selection_rate_vector(et, event);
-                for (int i = 0; i <= state.n_months(); i++) {
-                    // TODO Comment Why is state.n_months() used?
-                    rate_sum += rates[state.n_months()] * et.prob_add;
-                }
-            }
-        }
-        return rate_sum;
-    }
-
-    int CHECK(int agent) {
-        DEBUG_CHECK(network.is_valid_id(agent), "Invalid agent selection!");
-        return agent;
-    }
-
-    int agent_selection(AgentType& et, vector<double>& rates, double& rand_num, double rate_sum) {
-        if (stats.prob_add == 0) {
-            // If add rate is 0, we do not need to consider the different months of user addition
-	    if (et.agent_list.empty()) {
-		return -1;
-            }
-            int agent = rng.pick_random_uniform(et.agent_list);
-            return CHECK(agent);
-        } else {
-            vector<int>& caps = et.agent_cap;
-            int cap_i = caps.size() - 1; // Iterate backwards
-            bool first_month = true;
-            for (int i = 0; i <= state.n_months(); i++) {
-                double adjusted_add_rate = (rates[i] * et.prob_add) / rate_sum;
-                if (rand_num <= adjusted_add_rate) {
-                    if (first_month) {
-                        int agent = -1;
-                        if (state.n_months() == 0) {
-                            if (et.new_agents == 0) {
-                                return -1;
-                            }
-                            agent = et.agent_list[rng.rand_int(et.new_agents)];
-                            DEBUG_CHECK(network.is_valid_id(agent), "Invalid agent selection!");
-                        } else {
-                            if (et.agent_list.empty()) {
-                                return -1;
-                            }
-                            agent = et.agent_list[et.agent_list.size() - 1 - rng.rand_int(et.new_agents)];
-                        }
-                        return CHECK(agent);
-                    } else {
-                        int range_min = caps.at(cap_i), range_max = caps.at(cap_i + 1);
-                        if (range_min == range_max) {
-                            return -1; // Have nothing to choose
-                        }
-                        int agent = et.agent_list[rng.rand_int(range_min, range_max)];
-                        return CHECK(agent);
-                    }
-                }
-                // Since probabilities are not cumulative, we subtract the previous add rates.
-                // This allows us to choose within the appropriate month.
-                rand_num -= adjusted_add_rate;
-                first_month = false;
-                cap_i--;
-            }
-        }
-        return -1;
-    }
-
     int agent_selection(SelectionType event) {
-        double rate_sum = calc_rate_sum(event);
-        double rand_num = rng.rand_real_not0();
-
-        for (int e = 0; e < agent_types.size(); e++) {
-            if (rand_num < agent_types[e].prob_add) {
-                vector<double>& rates = selection_rate_vector(agent_types[e], event);
-                int agent = agent_selection(agent_types[e], rates, rand_num, rate_sum);
-                if (agent != -1) {
-                    return agent;
+        // Depending on the event, use the time-dependent rate functions to
+        // either select the appropriate agent to do a follow or tweet event.
+        double action_prob = event == FOLLOW_SELECT ? stats.prob_follow : /*TWEET_SELECT*/ stats.prob_tweet;
+        // Get the total event rate from the probability, using the total event rate used to calculate it.
+        double total_rate = action_prob * stats.adjusted_event_rate;
+        // Get a random number to decide where we fall in our monthly bins:
+        double rand_num = rng.rand_real(total_rate);
+        // Iterate over the different agent types and their respective monthly categorizations to determine
+        // the appropriate agent to select:
+        int t = 0;
+        for (AgentType& agent_type : state.agent_types) {
+            TimeBinnedAgentList& agents = agent_type.agents;
+            for (int i = 0; i <= agents.last_seen_n_months; i++) {
+                rand_num -= agents.month_rate(agent_type.RF[event], i);
+                if (rand_num < ZEROTOL) {
+                    // Select an agent from the month bin we landed in:
+                    return agents.rate_agent_choice(rng, agent_type.RF[event], /*Month bin: */ i);
                 }
             }
-            rand_num -= agent_types[e].prob_add;
         }
-
+        ASSERT(false, "Could not make agent selection!");
         return -1;
     }
 };
@@ -149,5 +73,5 @@ struct AnalyzerSelect {
 int analyzer_select_agent(AnalysisState& state, SelectionType type) {
     PERF_TIMER();
     AnalyzerSelect analyzer(state);
-    return analyzer.agent_selection(type);
+    return analyzer.agent_selection(type);:1:0828/091435:ERROR:PlatformKeyboardEvent.cpp(117)] Not implemented reached in static
 }
