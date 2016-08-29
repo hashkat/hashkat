@@ -50,6 +50,7 @@ class Retweets_should_not_only_occur_from_region0(HashkatTestCase, unittest.Test
         # Deactivate region 0
         yaml["regions"][0]["add_weight"] = 0
     def on_exit_all(self):
+        print hashkat_dump_stats(self.state)["global_stats"]
         tweet_counts = get_tweet_feature_counts(self.tweets)
         retweet_counts = get_tweet_feature_counts(self.retweets)
         self.assertTrue(tweet_counts["Region0"] == 0,

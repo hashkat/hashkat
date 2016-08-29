@@ -17,10 +17,12 @@
  * Addendum:
  *
  * Under this license, derivations of the #KAT Social Network Simulator typically must be provided in source
- * form. The #KAT Social Network Simulator and derivations thereof may be relicensed by decision of 
+ * form. The #KAT Social Network Simulator and derivations thereof may be relicensed by decision of
  * the original authors (Kevin Ryczko & Adam Domurad, Isaac Tamblyn), as well, in the case of a derivation,
- * subsequent authors. 
+ * subsequent authors.
  */
+
+#include <cmath>
 
 #include "FollowerSet.h"
 
@@ -229,6 +231,37 @@ void FollowerSet::post_load(AnalysisState& state) {
     serialization_cache = NULL;
 }
 
+
+// Reproduces github issue 109.
+// Does the total weight for a subtree of the retweet rates check out?
+// Leaf layer specialization
+static double assert_weight_integrity(LeafLayer::Weights& weights) {
+    double total_weight = 0;
+    for (double weight : weights.weights) {
+        total_weight += weight;
+    }
+    return total_weight;
+}
+
+// Reproduces github issue 109.
+// Does the total weight for a subtree of the retweet rates check out?
+// Parent layer
+template <typename Weights>
+static double assert_weight_integrity(Weights& weights) {
+    double total_weight = 0;
+    // Checks are expensive, only enable in debug mode:
+#ifndef NDEBUG
+    int i = 0;
+    for (double weight : weights.weights) {
+        double total_subweight = assert_weight_integrity(weights.subweights[i]);
+        ASSERT(fabs(weight - total_subweight) <= ZEROTOL, "Weight integrity failed!");
+        total_weight += weight;
+        i++;
+    }
+#endif
+    return total_weight;
+}
+
 double FollowerSet::determine_tweet_weights(Agent& author, TweetContent& content, WeightDeterminer& d_root, /*Weights placed here:*/ Weights& w_root) {
     PERF_TIMER();
     // Weights are assumed to start 0-initialized.
@@ -237,48 +270,55 @@ double FollowerSet::determine_tweet_weights(Agent& author, TweetContent& content
 
     DEBUG_CHECK(content.language != LANG_FRENCH_AND_ENGLISH, "Invalid tweet language!");
 
-    double total = 0;
-    // Language spoken:
-    for (int lang = 0; lang < N_LANGS; lang++) {
+    // Sum over retweet weights of all the language layers and the sublayers contained within
 
-        if (!language_understandable((Language)lang, content.language)) {
+    /* Start language weight sum calculation */
+    double total_lang_weight_sum = 0;
+    // Iterate over all possible spoken languages:
+    for (int i_lang = 0; i_lang < N_LANGS; i_lang++) {
+        if (!language_understandable((Language)i_lang, content.language)) {
             break;
         }
-        double incr0 = 0;
-        auto& f_prefs = f_root.sublayers[lang];
+        /* Start preference class weight sum calculation */
+        double pref_class_weight_sum = 0;
+        auto& f_prefs = f_root.sublayers[i_lang];
+        auto& w_prefs = w_root.subweights[i_lang];
+        // Iterate all the preference class layers:
         for (int i_pref = 0; i_pref < N_BIN_PREFERENCE_CLASS; i_pref++) {
             auto& f_regions = f_prefs.sublayers[i_pref];
-            auto& w_regions = w_root.subweights[i_pref];
-
-            double incr1 = 0;
+            auto& w_regions = w_prefs.subweights[i_pref];
+            /* Start region weight sum calculation */
+            double region_weight_sum = 0;
+            // Iterate all the region layers:
             for (int i_region = 0; i_region < N_BIN_REGIONS; i_region++) {
                 auto& f_bins = f_regions.sublayers[i_region];
                 auto& w_bins = w_regions.subweights[i_region];
-                double incr2 = 0;
+                /* Start leaf weight sum calculation */
+                double leaf_ideo_weight_sum = 0;
+                // Iterate all the leaf ideology layers:
                 for (int i_ideo = 0; i_ideo < N_BIN_IDEOLOGIES; i_ideo++) {
-                    auto& f_leaf = f_bins.sublayers[i_ideo];
-                    auto& w_leaf = w_bins.subweights[i_ideo];
                     TweetType type = content.type;
-
                     if (type == TWEET_IDEOLOGICAL && i_ideo == content.ideology_bin) {
                         type = TWEET_IDEOLOGICAL_DIFFERENT;
                     }
-                    double weight = d_root.weights[i_pref][type][author.agent_type];
-
-                    double incr3 = weight * f_leaf.size();
-                    w_leaf.weights[i_ideo] += incr3;
-                    incr2 += incr3;
+                    // Set the weight in the final layer:
+                    double leaf_weight = d_root.weights[i_ideo][type][author.agent_type] * f_bins.sublayers[i_ideo].size();
+                    leaf_ideo_weight_sum += (w_bins.weights[i_ideo] = leaf_weight);
                 }
-                w_bins.weights[i_region] += incr2;
-                incr1 += incr2;
+                region_weight_sum += (w_regions.weights[i_region] = leaf_ideo_weight_sum);
+                /* End leaf weight sum calculation */
+                assert_weight_integrity(w_regions);
             }
-            w_regions.weights[i_pref] += incr1;
-            incr0 += incr1;
+            pref_class_weight_sum += (w_prefs.weights[i_pref] = region_weight_sum);
+            /* End region weight sum calculation */
+            assert_weight_integrity(w_prefs);
         }
-
-        w_root.weights[lang] += incr0;
-        total += incr0;
+        total_lang_weight_sum += (w_root.weights[i_lang] = pref_class_weight_sum);
+        /* End preference class weight sum calculation */
+        assert_weight_integrity(w_root);
     }
+    /* End language weight sum calculation */
+    DEBUG_CHECK(abs(assert_weight_integrity(w_root) - total_lang_weight_sum) <= ZEROTOL, "Total weight differs");
 
-    return total;
+    return total_lang_weight_sum;
 }

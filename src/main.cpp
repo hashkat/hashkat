@@ -105,7 +105,6 @@ int main(int argc, char** argv) {
                 seed = (int)t;
         }
 
-
         printf("Starting simulation with seed '%d'.\n", seed);
         AnalysisState analysis_state(config, seed);
 

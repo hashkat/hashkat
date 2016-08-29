@@ -21,5 +21,4 @@ The basic structure of an integration test is as follows:
 There are also events (on_tweet, on_retweet, on_add). For aid using these, find tests that use them and print out their arguments.
 
 To run tests, use ./run.sh. You can graphically choose what tests to run. You do not need to re-open the runner if you modify tests (but you may need to for completely new tests).
-If dependencies are missing, run:
-    sudo pip install cffi pyyaml tkreadonly
+If dependencies are missing, run ./install.sh.

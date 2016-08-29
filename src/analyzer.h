@@ -131,7 +131,6 @@ struct AnalysisState {
     // Agent probabilities are derived from config,
     // while the list of users within is derived from
     AgentTypeVector agent_types;
-    std::vector<int> agent_cap;
 
     // Add any values that must be extracted from 'analyze' here.
     // This will be copied at the end of the simulation, exposing it.
@@ -242,7 +241,6 @@ struct AnalysisState {
         ar(NVP(stats));
         ar(NVP(hashtags));
         ar(NVP(agent_types));
-        ar(NVP(agent_cap));
 
         ar(NVP(n_follows), NVP(end_time));
         ar(NVP(updating_follow_probabilities));

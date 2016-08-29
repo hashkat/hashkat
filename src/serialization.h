@@ -35,6 +35,7 @@
 #include <cstdio>
 #include <iostream>
 #include <string>
+#include <sstream>
 
 #include "dependencies/cereal/archives/json.hpp"
 #include "dependencies/cereal/archives/binary.hpp"
@@ -73,6 +74,17 @@ inline AnalysisState& get_state(Archive& ar) {
 template <typename Archive>
 inline AnalysisState& get_state(CerealAdapter<Archive>& ar) {
     return ar.state;
+}
+
+template <typename T>
+inline std::string to_string(AnalysisState& state, const T& data) {
+    std::stringstream stream;
+    {
+        JsonWriter writer { state, stream };
+        writer(NVP(data));
+    }
+    std::string result = stream.str();
+    return result.substr(14, result.size() - 16); // Remove extra object and field specifier
 }
 
 #endif
