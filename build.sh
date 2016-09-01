@@ -188,7 +188,7 @@ cmake ../.. | colorify '1;33'
 if handle_flag "--clean" ; then
     make clean
 fi
-make -j$((cores+1))
+make -j$((cores+1)) hashkat
 popd > /dev/null
 
 if ! handle_flag "--run" && ! handle_flag "-R" ; then

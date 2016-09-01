@@ -60,6 +60,7 @@ struct IdeologyLayer {
 
     struct Weights {
         double weights[N_SUBLAYERS] = {0};
+        double total_weight = 0;
     };
 
     static int classify(Agent& agent);
@@ -74,7 +75,7 @@ struct RegionLayer {
 
     struct Weights {
         ChildLayer::Weights subweights[N_SUBLAYERS];
-        double weights[N_SUBLAYERS] = {0};
+        double total_weight = 0;
     };
 
     static int classify(Agent& agent);
@@ -89,7 +90,7 @@ struct PreferenceClassLayer {
 
     struct Weights {
         ChildLayer::Weights subweights[N_SUBLAYERS];
-        double weights[N_SUBLAYERS] = {0};
+        double total_weight = 0;
     };
 
     static int classify(Agent& agent);
@@ -105,7 +106,8 @@ struct LanguageLayer {
 
     struct Weights {
         ChildLayer::Weights subweights[N_SUBLAYERS];
-        double weights[N_SUBLAYERS] = {0};
+        double total_weight = 0;
+
         template <typename Archive>
         void save(Archive& ar) const {
             ar.saveBinary(this, sizeof(*this));

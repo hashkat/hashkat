@@ -132,15 +132,26 @@ bool FollowerSet::remove(Agent& agent) {
 
 // Leaf layer specialization
 static bool pick_weighted(MTwist& rng, LeafLayer& layer, LeafLayer::Weights& weights, int& id) {
-    int bin = rng.kmc_select(weights.weights, LeafLayer::N_SUBLAYERS);
-    return layer.sublayers[bin].pick_random_uniform(rng, id);
+    int bin = rng.kmc_select(weights.weights, LeafLayer::N_SUBLAYERS, weights.total_weight);
+    bool picked_valid = layer.sublayers[bin].pick_random_uniform(rng, id);
+    bool had_non0 = false;
+    for (double w : weights.weights) {
+        if (w != 0) had_non0 = true;
+    }
+    ASSERT(!(!picked_valid && had_non0), "If weight was not 0, should not pick empty!");
+    return picked_valid;
 }
 
 // Parent layers template
 template <typename Layer>
-static bool pick_weighted(MTwist& rng, Layer& layer, typename Layer::Weights& weights, int& id) {
-    int bin = rng.kmc_select(weights.weights, Layer::N_SUBLAYERS);
-    return pick_weighted(rng, layer.sublayers[bin], weights.subweights[bin], id);
+static bool pick_weighted(MTwist& rng, Layer& layer, typename Layer::Weights& weights, int& id_result) {
+    auto* subweight = rng.general_kmc_select(weights.subweights, Layer::N_SUBLAYERS, weights.total_weight,
+        [](typename Layer::ChildLayer::Weights& subweights) {
+            return subweights.total_weight;
+    });
+    ASSERT(subweight->total_weight > 0, "Picked a 0 weight bin!");
+    int layer_index = (subweight - weights.subweights);
+    return pick_weighted(rng, layer.sublayers[layer_index], *subweight, id_result);
 }
 
 bool FollowerSet::pick_random_weighted(MTwist rng, Weights& weights, int& id) {
@@ -235,31 +246,36 @@ void FollowerSet::post_load(AnalysisState& state) {
 // Reproduces github issue 109.
 // Does the total weight for a subtree of the retweet rates check out?
 // Leaf layer specialization
-static double assert_weight_integrity(LeafLayer::Weights& weights) {
+static void assert_weight_integrity(LeafLayer& layer, LeafLayer::Weights& weights) {
     double total_weight = 0;
     for (double weight : weights.weights) {
         total_weight += weight;
     }
-    return total_weight;
+    if (total_weight > 0) {
+        ASSERT(layer.n_elems > 0, "Should not have weight where we do not have elements!");
+    }
+    ASSERT(fabs(weights.total_weight - total_weight) <= ZEROTOL, "Weight integrity failed!");
 }
 
 // Reproduces github issue 109.
 // Does the total weight for a subtree of the retweet rates check out?
 // Parent layer
-template <typename Weights>
-static double assert_weight_integrity(Weights& weights) {
-    double total_weight = 0;
-    // Checks are expensive, only enable in debug mode:
+template <typename Layer, typename Weights>
+static void assert_weight_integrity(Layer& layer, Weights& weights) {
+    // These checks are somewhat expensive, only enable in debug mode:
 #ifndef NDEBUG
+    double total_weight = 0;
     int i = 0;
-    for (double weight : weights.weights) {
-        double total_subweight = assert_weight_integrity(weights.subweights[i]);
-        ASSERT(fabs(weight - total_subweight) <= ZEROTOL, "Weight integrity failed!");
-        total_weight += weight;
+    for (auto& subweight : weights.subweights) {
+        assert_weight_integrity(layer.sublayers[i], subweight);
+        total_weight += subweight.total_weight;
         i++;
     }
+    ASSERT(fabs(weights.total_weight - total_weight) <= ZEROTOL, "Weight integrity failed!");
+    if (total_weight > 0) {
+        ASSERT(layer.n_elems > 0, "Should not have weight where we do not have elements!");
+    }
 #endif
-    return total_weight;
 }
 
 double FollowerSet::determine_tweet_weights(Agent& author, TweetContent& content, WeightDeterminer& d_root, /*Weights placed here:*/ Weights& w_root) {
@@ -291,8 +307,8 @@ double FollowerSet::determine_tweet_weights(Agent& author, TweetContent& content
             double region_weight_sum = 0;
             // Iterate all the region layers:
             for (int i_region = 0; i_region < N_BIN_REGIONS; i_region++) {
-                auto& f_bins = f_regions.sublayers[i_region];
-                auto& w_bins = w_regions.subweights[i_region];
+                auto& f_ideo = f_regions.sublayers[i_region];
+                auto& w_ideo = w_regions.subweights[i_region];
                 /* Start leaf weight sum calculation */
                 double leaf_ideo_weight_sum = 0;
                 // Iterate all the leaf ideology layers:
@@ -302,23 +318,23 @@ double FollowerSet::determine_tweet_weights(Agent& author, TweetContent& content
                         type = TWEET_IDEOLOGICAL_DIFFERENT;
                     }
                     // Set the weight in the final layer:
-                    double leaf_weight = d_root.weights[i_ideo][type][author.agent_type] * f_bins.sublayers[i_ideo].size();
-                    leaf_ideo_weight_sum += (w_bins.weights[i_ideo] = leaf_weight);
+                    double leaf_weight = d_root.weights[i_ideo][type][author.agent_type] * f_ideo.sublayers[i_ideo].size();
+                    leaf_ideo_weight_sum += (w_ideo.weights[i_ideo] = leaf_weight);
                 }
-                region_weight_sum += (w_regions.weights[i_region] = leaf_ideo_weight_sum);
-                /* End leaf weight sum calculation */
-                assert_weight_integrity(w_regions);
+                region_weight_sum += (w_ideo.total_weight = leaf_ideo_weight_sum);
+                /* End leaf  ideology weight sum calculation */
+                assert_weight_integrity(f_ideo, w_ideo);
             }
-            pref_class_weight_sum += (w_prefs.weights[i_pref] = region_weight_sum);
+            pref_class_weight_sum += (w_regions.total_weight = region_weight_sum);
             /* End region weight sum calculation */
-            assert_weight_integrity(w_prefs);
+            assert_weight_integrity(f_regions, w_regions);
         }
-        total_lang_weight_sum += (w_root.weights[i_lang] = pref_class_weight_sum);
+        total_lang_weight_sum += (w_prefs.total_weight = pref_class_weight_sum);
         /* End preference class weight sum calculation */
-        assert_weight_integrity(w_root);
+        assert_weight_integrity(f_prefs, w_prefs);
     }
     /* End language weight sum calculation */
-    DEBUG_CHECK(abs(assert_weight_integrity(w_root) - total_lang_weight_sum) <= ZEROTOL, "Total weight differs");
-
+    w_root.total_weight = total_lang_weight_sum;
+    assert_weight_integrity(f_root, w_root);
     return total_lang_weight_sum;
 }

@@ -67,6 +67,7 @@ struct AnalyzerRetweet {
         if (!e.follower_set.pick_random_weighted(rng, tweet.react_weights, agent_retweeting)) {
             return RetweetChoice();
         }
+        std::cout << "WHAAAT2" << std::endl;
 
         // Bug fix for #155:
         // Do not retweet if was original author.

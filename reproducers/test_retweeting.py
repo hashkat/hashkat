@@ -46,7 +46,7 @@ class Retweets_should_not_only_occur_from_region0(HashkatTestCase, unittest.Test
     # Configure the base configuration
     def on_start(self, yaml):
         self.args = ["--seed", str(self.runs + 25)]
-        yaml["analysis"]["max_time"] = 300000
+        yaml["analysis"]["max_time"] = 60000
         # Deactivate region 0
         yaml["regions"][0]["add_weight"] = 0
     def on_exit_all(self):
@@ -79,7 +79,7 @@ class Network_with_3_agents_should_create_2x_retweets(HashkatTestCase, unittest.
         yaml["analysis"]["max_agents"] = yaml["analysis"]["initial_agents"] = 3
         tweet_transmission = yaml["preference_classes"][0]["tweet_transmission"]
         for key in tweet_transmission:
-            tweet_transmission[key] = {"all": 1}
+            tweet_transmission[key] = {"all": 1.0}
     def on_retweet(self, tweet):
         self.retweets.append(tweet)
     def on_exit(self):
@@ -283,6 +283,8 @@ class Tweet_transmission_is_exponential(HashkatTestCase, unittest.TestCase):
     base_infile = "base_infiles/two-regions-english-french-overlapping.yaml"
     n_runs = 15
     use_full_checks = False
+    def on_tweet(self, tweet):
+        self.tweets[tweet["content_id"]] = tweet
     def on_start_all(self):
         self.retweets = defaultdict(int)
     # Configure the base configuration
@@ -297,9 +299,14 @@ class Tweet_transmission_is_exponential(HashkatTestCase, unittest.TestCase):
         stats = hashkat_dump_stats(self.state)
         self.retweets[int(self.runs / 5)] += int(stats["global_stats"]["n_retweets"])
     def on_exit_all(self):
-        self.assertTrue(self.retweets[0] > 50)
-        self.assertTrue(self.retweets[1] > self.retweets[0] * 2 )
-        self.assertTrue(self.retweets[2] > self.retweets[1] * 2 )
+        for i in range(3):
+            print i, self.retweets[i]
+        self.assertTrue(self.retweets[0] > 50, 
+            "Should have at least 50 retweets in the first 5 runs totalled")
+        self.assertTrue(self.retweets[1] > self.retweets[0] * 2, 
+            "Should have twice as many retweets in the second set of 5 runs as the first 5")
+        self.assertTrue(self.retweets[2] > self.retweets[1] * 2,
+            "Should have twice as many retweets in the third set of 5 runs as the second 5")
         # Test that we correctly exit at EXPECTED_STEPS, as specified by max_analysis_steps:
 #        self.assertTrue(stats["n_steps"] == self.steps)
 #        self.assertTrue(stats["n_steps"] == self.EXPECTED_STEPS )

@@ -21,7 +21,7 @@ monkey_patch_unittest()
 ffi = FFI()
 
 debug_lib = ffi.dlopen('../build/debug/src/libhashkat-lib.so')
-release_lib = debug_lib # ffi.dlopen('../build/release/src/libhashkat-lib.so')
+release_lib = ffi.dlopen('../build/release/src/libhashkat-lib.so')
 
 current_lib = None # Should not call API functions except during test!
 

@@ -97,10 +97,12 @@ target_link_libraries (
         ${UV_LIBS}
 )
 
-set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/CMakeModules)
-if(CMAKE_COMPILER_IS_GNUCXX)
-    include(CodeCoverage)
-    setup_target_for_coverage(hashkat_coverage hashkat coverage)
+if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+    set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/CMakeModules)
+    if(CMAKE_COMPILER_IS_GNUCXX)
+        include(CodeCoverage)
+        setup_target_for_coverage(hashkat_coverage hashkat coverage)
+    endif()
 endif()
 
 # installing through cmake . && make && sudo make install

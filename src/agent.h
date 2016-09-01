@@ -158,7 +158,7 @@ struct TimeBinnedAgentList {
     }
 
     double month_rate(Rate_Function& rf, int i) {
-        double rate_for_month = rf.monthly_rates[i - last_seen_n_months];
+        double rate_for_month = rf.monthly_rates.at(last_seen_n_months - i);
         Range range = month_range(i);
         return (range.max - range.min) * rate_for_month;
     }

@@ -46,7 +46,7 @@
 
 #include <vector>
 
-#include "../util.h" // For DEBUG_CHECK
+#include "../util.h" // For DEBUG_CHECK and ZEROTOL
 #include "dependencies/lcommon/perf_timer.h"
 
 // Mersenne twister random number generator
@@ -115,21 +115,46 @@ public:
         return rand_int(range) + min;
     }
 
-    // Makes a choice given a profile of probabilities
-    inline int kmc_select(double* start, int len) {
-        double num =  genrand_real1();
+    void debug_check_total_is_correct(double* start, int len, double weight_total) {
+#ifndef NDEBUG
+        double sum = 0;
         for (int i = 0; i < len; i++) {
-            if (num <= start[i]) {
+            sum += start[i];
+        }
+        DEBUG_CHECK(fabs(sum - weight_total) <= ZEROTOL * weight_total,
+             "Rates passed to KMC select were not normalized!");
+#endif
+    }
+    // Makes a choice given a profile of probabilities
+    int kmc_select(double* start, int len, double weight_total = 1.0) {
+        debug_check_total_is_correct(start, len, weight_total);
+        double num = rand_real_not1() * weight_total;
+        for (int i = 0; i < len; i++) {
+            num -= start[i];
+            if (num <= ZEROTOL * weight_total) {
                 return i;
             }
-            num -= start[i];
         }
-        return len - 1; // Assume floating point error
+        ASSERT(false, "Possible floating point error; none of the kmc-select options matched.");
+        return -1;
     }
-    inline int kmc_select(std::vector<double>& probs) {
-        return kmc_select(&probs[0], probs.size());
+    int kmc_select(std::vector<double>& probs, double weight_total = 1.0) {
+        return kmc_select(&probs[0], probs.size(), weight_total);
     }
 
+    // Makes a choice given a profile of probabilities
+    template <typename T, typename WeightFunction>
+    T* general_kmc_select(T* start, int len, double weight_total, const WeightFunction& weight_func) {
+        double num = rand_real_not1() * weight_total;
+        for (int i = 0; i < len; i++) {
+            num -= weight_func(start[i]);
+            if (num <= ZEROTOL * weight_total) {
+                return &start[i];
+            }
+        }
+        ASSERT(false, "Possible floating point error; none of the kmc-select options matched.");
+        return NULL;
+    }
     /* Grab a real number within [0,1) with 53-bit resolution */
     double rand_real_not1() {
         return genrand_res53();

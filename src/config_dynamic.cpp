@@ -532,7 +532,9 @@ static void configure_agent_rates(ParsedConfig& config, AgentType& et, int event
             // gradual rate after the 2 months
             et.RF[event].monthly_rates.push_back(7.44*0.25*5.5360422914604546e-05);
         }
-    } 
+    } else {
+        ASSERT(false, "Unexpected function type for follow rates!");
+    }
 }
 
 
