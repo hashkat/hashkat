@@ -180,7 +180,7 @@ struct FollowerSet {
     bool remove(Agent& agent);
 
     /* Returns an element, provided the given weights */
-    bool pick_random_weighted(MTwist rng, Weights& weights, int& id);
+    bool pick_random_weighted(MTwist rng, Weights& weights, int& id_result);
 
     /* Returns an element, weighing all options equally */
     bool pick_random_uniform(MTwist& rng, int& id);
