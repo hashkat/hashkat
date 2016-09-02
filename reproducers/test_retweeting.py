@@ -123,11 +123,40 @@ class Hashtags_should_not_prevent_retweets(HashkatTestCase, unittest.TestCase):
         self.assertTrue(int(stats["n_tweets"]) > 0)
         self.assertTrue(int(stats["n_retweets"]) > 0)
 
+class Retweets_generate_with_all_french(HashkatTestCase, unittest.TestCase):
+    '''Do retweets generate if a network is only french speakers?'''
+    base_infile = "base_infiles/simple-base.yaml"
+    use_full_checks = False
+    n_runs = 1
+    # Configure the base configuration
+    def on_start(self, yaml):
+        self.tweets = {}
+        self.retweets = {}
+        yaml["analysis"]["max_time"] = 30000
+        for region in yaml["regions"]:
+            region["language_weights"]["English"] = 0
+            region["language_weights"]["French"] = 100
+    def on_tweet(self, tweet):
+        self.tweets[tweet["content_id"]] = tweet
+    def on_retweet(self, tweet):
+        self.retweets[tweet["content_id"]] = tweet
+    def check_tweet_distribution(self, tweets):
+        counts = get_tweet_feature_counts(tweets)
+        print counts["LANG_FRENCH"]
+        self.assertTrue(counts["LANG_FRENCH"] > 0, 
+            "Should have french tweets/retweets!")
+    def on_exit_all(self):
+        print "Testing distribution of all tweets:"
+        self.check_tweet_distribution(self.tweets)
+        print "Testing distribution of retweeted tweets:"
+        self.check_tweet_distribution(self.retweets)
+
 class Tweets_generate_with_expected_attribute_distribution(HashkatTestCase, unittest.TestCase):
     '''Reproducing github issues #109 & #110 et al.: 
        Are retweeted tweets not a representative sample for language, region, and hashtaggedness?'''
     base_infile = "base_infiles/two-regions-english-french-overlapping.yaml"
-    n_runs = 1
+    use_full_checks = False
+    n_runs = 2
     def on_start_all(self):
         self.tweets = {}
         self.retweets = {}
@@ -141,6 +170,8 @@ class Tweets_generate_with_expected_attribute_distribution(HashkatTestCase, unit
         self.retweets[tweet["content_id"]] = tweet
     def check_tweet_distribution(self, tweets):
         counts = get_tweet_feature_counts(tweets)
+        print counts["LANG_ENGLISH"], counts["LANG_FRENCH"]
+        print counts["Region0"], counts["Region1"]
         self.assertTrue(reasonably_close(counts["LANG_ENGLISH"], counts["LANG_FRENCH"], 4))
         self.assertTrue(reasonably_close(counts["Region0"], counts["Region1"]))
     def on_exit_all(self):
@@ -178,9 +209,11 @@ class Standard_deviation_for_retweet_counts_in_separate_runs_is_not_too_high(Has
     def on_exit_all(self):
 	print "Standard deviation for initial retweet amounts:", stdev(self.initial_retweet_counts)
 	print "Standard deviation for total retweet amounts:", stdev(self.all_retweet_counts)
-        self.assertTrue(stdev(self.initial_retweet_counts) < 2000,
+        self.assertTrue(stdev(self.initial_retweet_counts) < 3500,
             "Standard deviation for direct-author-follower retweet counts is much higher than expected.")
-        self.assertTrue(stdev(self.all_retweet_counts) < 3500,
+        self.assertTrue(stdev(self.all_retweet_counts) > 500,
+            "Standard deviation for all retweet counts is much lower than expected.")
+        self.assertTrue(stdev(self.all_retweet_counts) < 5000,
             "Standard deviation for all retweet counts is much higher than expected.")
             #print (i+1), 'total retweets', self.all_retweet_counts[i]
 
@@ -233,7 +266,7 @@ class Mean_retweet_time_should_cause_slightly_different_networks(HashkatTestCase
         # Use a time-frame that allows for a few thousand retweets at least:
         yaml["analysis"]["max_time"] = 900000
         # Set up a variable time-frame:
-        yaml["tweet_observation"]["time_span"] = str((self.runs + 1) * 2) + " * hour"
+        yaml["tweet_observation"]["time_span"] = str((self.runs + 1) * 2)
         # Make retweets relatively infrequent:
         tweet_transmission = yaml["preference_classes"][0]["tweet_transmission"]
         for key in tweet_transmission:
@@ -283,8 +316,6 @@ class Tweet_transmission_is_exponential(HashkatTestCase, unittest.TestCase):
     base_infile = "base_infiles/two-regions-english-french-overlapping.yaml"
     n_runs = 15
     use_full_checks = False
-    def on_tweet(self, tweet):
-        self.tweets[tweet["content_id"]] = tweet
     def on_start_all(self):
         self.retweets = defaultdict(int)
     # Configure the base configuration
@@ -303,10 +334,10 @@ class Tweet_transmission_is_exponential(HashkatTestCase, unittest.TestCase):
             print i, self.retweets[i]
         self.assertTrue(self.retweets[0] > 50, 
             "Should have at least 50 retweets in the first 5 runs totalled")
-        self.assertTrue(self.retweets[1] > self.retweets[0] * 2, 
-            "Should have twice as many retweets in the second set of 5 runs as the first 5")
-        self.assertTrue(self.retweets[2] > self.retweets[1] * 2,
-            "Should have twice as many retweets in the third set of 5 runs as the second 5")
+        self.assertTrue(self.retweets[1] > self.retweets[0] * 1.5, 
+            "Should have >= 1.5x as many retweets in the second set of 5 runs as the first 5")
+        self.assertTrue(self.retweets[2] > self.retweets[1] * 1.5,
+            "Should have >= 1.5x as many retweets in the third set of 5 runs as the second 5")
         # Test that we correctly exit at EXPECTED_STEPS, as specified by max_analysis_steps:
 #        self.assertTrue(stats["n_steps"] == self.steps)
 #        self.assertTrue(stats["n_steps"] == self.EXPECTED_STEPS )
