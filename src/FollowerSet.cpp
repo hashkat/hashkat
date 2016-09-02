@@ -286,6 +286,9 @@ double FollowerSet::determine_tweet_weights(Agent& author, TweetContent& content
 
     DEBUG_CHECK(content.language != LANG_FRENCH_AND_ENGLISH, "Invalid tweet language!");
 
+    if (followers.n_elems == 0) {
+        return 0;
+    }
     // Sum over retweet weights of all the language layers and the sublayers contained within
 
     /* Start language weight sum calculation */
@@ -293,7 +296,7 @@ double FollowerSet::determine_tweet_weights(Agent& author, TweetContent& content
     // Iterate over all possible spoken languages:
     for (int i_lang = 0; i_lang < N_LANGS; i_lang++) {
         if (!language_understandable((Language)i_lang, content.language)) {
-            break;
+            continue;
         }
         /* Start preference class weight sum calculation */
         double pref_class_weight_sum = 0;
