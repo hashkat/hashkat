@@ -1,5 +1,5 @@
 #!/bin/bash
 set -e
-../build.sh
-../build.sh -O
+../build.sh --make-lib
+../build.sh -O --make-lib
 PYTHONPATH='.' python cricket/unittest/__main__.py
