@@ -801,14 +801,14 @@ class destructive_two_d_iterator {
 // The weird mod in the offset is entirely to quiet compiler warnings
 // as is the cast to int after doing the "x mod 256"
 #define PUT_(take_from, offset)  do {                                          \
-  if (fputc(static_cast<int>(((take_from) >> ((offset) % (sizeof(take_from)*8)))\
+  if (sparse_hash_fputc(static_cast<int>(((take_from) >> ((offset) % (sizeof(take_from)*8)))\
                              % 256), fp)                                       \
       == EOF)                                                                  \
     return false;                                                              \
 } while (0)
 
 #define GET_(add_to, offset)  do {                                            \
-  if ((x=getc(fp)) == EOF)                                                    \
+  if ((x=sparse_hash_getc(fp)) == EOF)                                                    \
     return false;                                                             \
   else                                                                        \
     add_to |= (static_cast<size_type>(x) << ((offset) % (sizeof(add_to)*8))); \
@@ -1236,7 +1236,7 @@ class sparsegroup {
     assert(sizeof(settings.num_buckets) == 2);
     PUT_(settings.num_buckets, 8);
     PUT_(settings.num_buckets, 0);
-    if ( !fwrite(bitmap, sizeof(bitmap), 1, fp) )
+    if ( !sparse_hash_fwrite(bitmap, sizeof(bitmap), 1, fp) )
       return false;
     return true;
   }
@@ -1251,7 +1251,7 @@ class sparsegroup {
     GET_(settings.num_buckets, 8);
     GET_(settings.num_buckets, 0);
 
-    if ( !fread(bitmap, sizeof(bitmap), 1, fp) )  return false;
+    if ( !sparse_hash_fread(bitmap, sizeof(bitmap), 1, fp) )  return false;
 
     // We'll allocate the space, but we won't fill it: it will be
     // left as uninitialized raw memory.
@@ -1266,7 +1266,7 @@ class sparsegroup {
   bool write_nopointer_data(OUTPUT* fp) const {
     for ( const_nonempty_iterator it = nonempty_begin();
           it != nonempty_end(); ++it ) {
-      if ( !fwrite(&*it, sizeof(*it), 1, fp) )  return false;
+      if ( !sparse_hash_fwrite(&*it, sizeof(*it), 1, fp) )  return false;
     }
     return true;
   }
@@ -1277,7 +1277,7 @@ class sparsegroup {
   bool read_nopointer_data(INPUT* fp) {
     for ( nonempty_iterator it = nonempty_begin();
           it != nonempty_end(); ++it ) {
-      if ( !fread(reinterpret_cast<void*>(&(*it)), sizeof(*it), 1, fp) )
+      if ( !sparse_hash_fread(reinterpret_cast<void*>(&(*it)), sizeof(*it), 1, fp) )
         return false;
     }
     return true;
@@ -1724,7 +1724,7 @@ class sparsetable {
   bool write_nopointer_data(OUTPUT* fp) const {
     for ( const_nonempty_iterator it = nonempty_begin();
           it != nonempty_end(); ++it ) {
-      if ( !fwrite(&*it, sizeof(*it), 1, fp) )  return false;
+      if ( !sparse_hash_fwrite(&*it, sizeof(*it), 1, fp) )  return false;
     }
     return true;
   }
@@ -1734,7 +1734,7 @@ class sparsetable {
   bool read_nopointer_data(OUTPUT* fp) {
     for ( nonempty_iterator it = nonempty_begin();
           it != nonempty_end(); ++it ) {
-      if ( !fread(reinterpret_cast<void*>(&(*it)), sizeof(*it), 1, fp) )
+      if ( !sparse_hash_fread(reinterpret_cast<void*>(&(*it)), sizeof(*it), 1, fp) )
         return false;
     }
     return true;
