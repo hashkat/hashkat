@@ -955,7 +955,9 @@ namespace cereal
   template <class T> inline
   void CEREAL_LOAD_FUNCTION_NAME( JSONInputArchive & ar, SizeTag<T> & st )
   {
-    ar.loadSize( st.size );
+    size_type size;
+    ar.loadSize( size );
+    st.size = size;
   }
 } // namespace cereal
 
