@@ -1,17 +1,25 @@
 language: cpp
-matrix:
-  include:
-    - compiler: clang
-      addons:
-        apt:
-          sources:
-            - ubuntu-toolchain-r-test
-            - llvm-toolchain-precise-3.7
-          packages:
-            - clang-3.7
-before_install:
-  - sudo apt-get install cmake
-  - sudo apt-get install build-essential -y
+compiler: 
+  - clang
+os:
+  - linux
+  - osx
+addons:
+  apt:
+    # Install clang on Ubuntu.
+    sources:
+      - ubuntu-toolchain-r-test
+      - llvm-toolchain-precise-3.7
+    packages:
+      - clang-3.7
+before_install: 
+  # Install cmake on Ubuntu.
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]] ; then sudo apt-get install cmake ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]] ; then sudo apt-get install build-essential -y ; fi
+  # Install clang-3.7 on OS X. Comes with cmake already.
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]] ; then brew update ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]] ; then brew tap homebrew/versions ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]] ; then brew install llvm37 ; fi
 script:
-  - CXX=clang++-3.7 CC=clang-3.7 ./build.sh -O
+  - CXX=clang++-3.7 CC=clang-3.7 ./build.sh -O 
   - ./run.sh
