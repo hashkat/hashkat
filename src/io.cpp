@@ -1,25 +1,25 @@
 /*
  * This file generates files in the OUTPUT directory after a simulation
  *
- * LINE   OUTPUT FILE
+ * OUTPUT FILES
  *
- * 169    Tweet_info.dat
- * 340    Network.gexf
- * 401    Network.dat
- * 413    Network.graphml
- * 437    Model_match.dat
- * 473    Degree_distribution.dat
- * 558    Categories_distro.dat
- * 643    Tweets_distro.dat
- * 644    Retweets_distro.dat
- * 747    Agent_Type_Info.dat
- * 822    Most_Popular_Tweet.dat
- * 850    Retweet_viz.getxf
- * 902    Main_Stats.dat
- * 952    Region_Connection_distribution.dat
- * 1043   Degree_distribution_by_year.dat
- * 1111   Degree_distribution_by_Agent_type.dat
- * 1163   Degree_distribution_by_Follow_Model.dat *
+ * tweet_info.dat
+ * network.gexf
+ * network.dat
+ * network.graphml
+ * model_match.dat
+ * degree_distribution.dat
+ * categories_distro.dat
+ * tweets_distro.dat
+ * retweets_distro.dat
+ * agent_type_info.dat
+ * most_popular_tweet_content.dat
+ * retweet_viz.getxf
+ * main_stats.dat
+ * region_Connection_distribution.dat
+ * degree_distribution_by_year.dat
+ * degree_distribution_by_agent_type.dat
+ * degree_distribution_by_follow_model.dat *
  *
  *
  * This file is part of the #KAT Social Network Simulator.
@@ -197,7 +197,7 @@ void tweet_info(vector<Tweet>& old_tweets) {
     std::vector<int> modes;
 
     for (auto& x : collection) {
-        int value = x[0];
+        int value = x.empty() ? 0 : x[0];
         int mode = value;
         int score = 1;
         int count = 1;
