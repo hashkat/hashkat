@@ -45,7 +45,7 @@ def get_var_arg(test, default_val):
 # Explicitly don't resolve os.environ['HASHKAT'] if --input and --base-input arguments are present.
 INPUT_FILE_NAME = get_var_arg("--input", None)
 if not INPUT_FILE_NAME:
-    INPUT_FILE_NAME = os.environ['HASHKAT'] + "/INFILE.yaml"
+    INPUT_FILE_NAME = "./INFILE.yaml"
 DEFAULT_FILE_NAME = get_var_arg("--base-input", None)
 if not DEFAULT_FILE_NAME:
     DEFAULT_FILE_NAME = os.environ['HASHKAT'] + "/DEFAULT.yaml"
@@ -332,7 +332,5 @@ try:
     print("hashkat_pre.py -- Copied INFILE.yaml to output directory")
 except OSError:
     print "hashkat_pre.py -- An output directory already exists, leaving it intact"
-
-
 
 print("hashkat_pre.py -- Done generating rates")

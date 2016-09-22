@@ -106,9 +106,9 @@ fi
 # INFILE.yaml is under .gitignore to reflect its per-user usage.
 ###############################################################################
 
-if [ ! -f INFILE.yaml ] ; then
+if [ ! -f "$HASHKAT/INFILE.yaml" ] ; then
     echo "WARNING: You have no INFILE.yaml, creating one from DEFAULT.yaml"
-    cp DEFAULT.yaml INFILE.yaml
+    cp "$HASHKAT/DEFAULT.yaml" "$HASHKAT/INFILE.yaml"
 fi
 
 ###############################################################################
@@ -155,10 +155,10 @@ if handle_flag "--debug-std" ; then
     export BUILD_FLAGS="$BUILD_FLAGS -D_GLIBCXX_DEBUG"
 fi
 
+# Switch to HASHKAT directory for build 
+cd "$HASHKAT"
 # Configure version string
-pushd "$HASHKAT" > /dev/null
 export HASHKAT_VERSION="`git describe --abbrev=0 2>/dev/null`b`git rev-list HEAD --count`"
-popd > /dev/null
 
 # Configure amount of cores used
 if [[ -e /proc/cpuinfo ]] ; then
