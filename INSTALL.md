@@ -1,8 +1,12 @@
-# Installation
+# INSTALLATION GUIDE
 
-The ***#k@*** project is compatible with both Mac OS X and Linux.
+The ***#k@*** project is compatible with Mac OS X, Linux and Microsoft Windows.
 
-We will go over the steps to install ***#k@*** for each particular operating system below.
+We will go over the steps to install ***#k@*** for each particular operating system:
+* [Mac OS X](macosx)
+* [Linux](linux)
+
+***
 
 ## Mac OS X
 
