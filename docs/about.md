@@ -14,6 +14,8 @@
 
 [A. Domurad](https://github.com/ludamad)
 
+[J. Grover](https://github.com/jig08)
+
 [I. Tamblyn](https://github.com/itamblyn) - [Info](http://faculty.uoit.ca/itamblyn/)
 
 #### Documentation and Tutorials
