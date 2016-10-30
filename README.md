@@ -81,6 +81,6 @@ For elaborate runs, refer [docs.hashkat.org](http://docs.hashkat.org/en/latest/)
 
 This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the `GNU General Public License` for more details.
 
-You should have received a copy of the [GNU General Public License v3](https://github.com/hashkat/hashkat/blob/master/LICENSE) along with this program. If not, see [gnu.org/licenses](http://www.gnu.org/licenses/).
+You should have received a copy of the [GNU General Public License v3](https://github.com/hashkat/hashkat/blob/master/LICENSE.md) along with this program. If not, see [gnu.org/licenses](http://www.gnu.org/licenses/).
 
 ![GNU GPL](https://www.gnu.org/graphics/gplv3-88x31.png)
