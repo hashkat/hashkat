@@ -1,6 +1,6 @@
 from collections import defaultdict
 import unittest
-from hashkat_util import TestBase, hashkat_test, hashkat_dump_state, hashkat_dump_summary,  hashkat_dump_stats
+from hashkat_util import hashkat_test, hashkat_dump_state, hashkat_dump_summary,  hashkat_dump_stats
 from memory_util import memory
 
 class Memory_usage_over_time(unittest.TestCase):
