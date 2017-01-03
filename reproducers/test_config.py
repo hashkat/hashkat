@@ -1,8 +1,8 @@
 import unittest
 from collections import defaultdict
-from hashkat_util import HashkatTestCase, hashkat_dump_state, hashkat_dump_summary, hashkat_dump_stats, hashkat_dump_agents
+from hashkat_util import HashkatTestCase, hashkat_dump_state, hashkat_dump_summary, hashkat_dump_stats, hashkat_dump_agents, KnownFailingTest
 
-class Max_analysis_steps_is_honoured(HashkatTestCase, unittest.TestCase):
+class Max_analysis_steps_is_honoured(HashkatTestCase, KnownFailingTest):
     '''Is the max analysis steps variable honoured?'''
 
     base_infile = "base_infiles/simple-base.yaml"

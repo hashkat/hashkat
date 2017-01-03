@@ -9,7 +9,10 @@ if [ x"$HASHKAT" = x ] ; then
     export HASHKAT='.'
 fi
 
-ABS_HASHKAT=$(readlink -f "$HASHKAT")
+function realpath() {
+    python -c 'import os, sys; print os.path.realpath(sys.argv[1])' $1
+}
+ABS_HASHKAT=$(realpath "$HASHKAT")
 
 # Good practice -- exit completely on any bad exit code:
 set -e 

@@ -1,6 +1,6 @@
 import unittest
 from collections import defaultdict 
-from hashkat_util import HashkatTestCase, hashkat_dump_summary, hashkat_dump_stats
+from hashkat_util import HashkatTestCase, hashkat_dump_state, hashkat_dump_summary, hashkat_dump_stats, hashkat_dump_agents, KnownFailingTest
 
 # Which options should we turn on to get full output?
 RELEVANT_OUTPUT_OPTIONS = [
@@ -16,7 +16,7 @@ RELEVANT_OUTPUT_OPTIONS = [
     "tweet_info"
 ]
 
-class Tweet_distro_dat_normalized(HashkatTestCase, unittest.TestCase):
+class Tweet_distro_dat_normalized(HashkatTestCase, KnownFailingTest):
     '''Investigating tweet distro normalization in output folder (issue #32): 
          Does tweet_distro.dat correctly normalize data?
          Does retweet_distro.dat correctly normalize data?'''

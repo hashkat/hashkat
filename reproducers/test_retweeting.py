@@ -1,6 +1,6 @@
 import unittest
 from collections import defaultdict 
-from hashkat_util import HashkatTestCase, hashkat_dump_summary, hashkat_dump_stats, hashkat_dump_agents
+from hashkat_util import HashkatTestCase, hashkat_dump_summary, hashkat_dump_stats, hashkat_dump_agents, KnownFailingTest
 from stat_util import stdev
 
 # 'factor': How many times bigger is 'a' than 'b'?
@@ -217,7 +217,7 @@ class Standard_deviation_for_retweet_counts_in_separate_runs_is_not_too_high(Has
             "Standard deviation for all retweet counts is much higher than expected.")
             #print (i+1), 'total retweets', self.all_retweet_counts[i]
 
-class X_end_variable_should_not_affect_direct_follower_retweets(HashkatTestCase, unittest.TestCase):
+class X_end_variable_should_not_affect_direct_follower_retweets(HashkatTestCase, KnownFailingTest):
     '''Reproducer for #43. Changing the 'time_span' variable in tweet_observation should not always result in exactly the same retweet amount.'''
 
     base_infile = "base_infiles/two-regions-english-french-overlapping.yaml"
@@ -252,7 +252,7 @@ class X_end_variable_should_not_affect_direct_follower_retweets(HashkatTestCase,
 	print "Standard deviation for total retweet amounts:", stdev(self.all_retweet_counts)
             #print (i+1), 'total retweets', self.all_retweet_counts[i]
 
-class Mean_retweet_time_should_cause_slightly_different_networks(HashkatTestCase, unittest.TestCase):
+class Mean_retweet_time_should_cause_slightly_different_networks(HashkatTestCase, KnownFailingTest):
     '''Reproducer for #43. Changing the 'time_span' variable in tweet_observation should not always result in exactly the same retweet amount.'''
 
     base_infile = "base_infiles/two-regions-english-french-overlapping.yaml"

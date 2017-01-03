@@ -1,5 +1,5 @@
 import unittest
-from hashkat_util import HashkatTestCase, hashkat_dump_state, hashkat_dump_summary,  hashkat_dump_stats
+from hashkat_util import HashkatTestCase, hashkat_dump_state, hashkat_dump_summary, hashkat_dump_stats, hashkat_dump_agents, KnownFailingTest
 
 class Stagnant_network_exits_correctly(HashkatTestCase, unittest.TestCase):
     '''Test a stagnant network. No non-zero rates. Should exit immediately.'''

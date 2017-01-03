@@ -1,20 +1,32 @@
 language: cpp
-matrix:
-  include:
-    - compiler: clang
-      addons:
-        apt:
-          sources:
-            - ubuntu-toolchain-r-test
-            - llvm-toolchain-precise-3.7
-          packages:
-            - clang-3.7
-before_install:
-  - sudo apt-get install cmake
-  - sudo apt-get install build-essential -y
-script:
+compiler: 
+  - clang
+os:
+  - linux
+  - osx
+addons:
+  apt:
+    # Install clang on Ubuntu.
+    sources:
+      - ubuntu-toolchain-r-test
+      - llvm-toolchain-precise-3.7
+    packages:
+      - clang-3.7
+before_install: 
+  # Install cmake on Ubuntu.
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]] ; then sudo apt-get install cmake ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]] ; then sudo apt-get install build-essential -y ; fi
+  # Install clang-3.7 on OS X. Comes with cmake already.
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]] ; then brew update ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]] ; then brew tap homebrew/versions ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]] ; then brew install llvm37 ; fi
+  # Install packages for hashkat integration tests.
   - CXX=clang++-3.7 CC=clang-3.7 sudo -H pip install cffi pyyaml
-  - CXX=clang++-3.7 CC=clang-3.7 ./build.sh
-  - CXX=clang++-3.7 CC=clang-3.7 ./build.sh -O
+script:
+  - "echo TravisCI: Doing hashkat dry run:"
+  - CXX=clang++-3.7 CC=clang-3.7 ./build.sh -O 
+  - ./run.sh
+  - "echo TravisCI: Running hashkat integration tests:"
   - cd reproducers
-  - python -m unittest discover 
+  # Pass compiler flags, as run_expected_to_pass_tests will compile hashkat specially for testing purposes:
+  - CXX=clang++-3.7 CC=clang-3.7 ./run_expected_to_pass_tests.sh

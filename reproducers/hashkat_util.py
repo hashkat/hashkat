@@ -20,8 +20,17 @@ monkey_patch_unittest()
 
 ffi = FFI()
 
-debug_lib = ffi.dlopen('../debug_build/src/libhashkat-lib.so')
-release_lib = ffi.dlopen('../release_build/src/libhashkat-lib.so')
+KnownFailingTest = unittest.TestCase if not os.getenv("SKIP_KNOWN_FAILURES") else object
+if sys.platform == "linux" or sys.platform == "linux2":
+    SHARED_LIB_SUFFIX = '.so'
+elif sys.platform == "darwin":
+    SHARED_LIB_SUFFIX = '.dylib'
+elif sys.platform == "win32":
+    SHARED_LIB_SUFFIX = '.dll'
+else:
+    raise Error("Unrecognized platform " + sys.platform + "!")
+debug_lib = ffi.dlopen('../debug_build/src/libhashkat-lib' + SHARED_LIB_SUFFIX)
+release_lib = ffi.dlopen('../release_build/src/libhashkat-lib' + SHARED_LIB_SUFFIX)
 
 current_lib = None # Should not call API functions except during test!
 
