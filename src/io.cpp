@@ -170,7 +170,7 @@ void tweet_info(vector<Tweet>& old_tweets) {
     std::vector<int> hashtag;
     std::vector<int> popular_agent;
     std::vector<int> tweet_generation;
-    double average_time_retweeted, average_tweet_lifetime;    
+    double average_time_retweeted = 0, average_tweet_lifetime = 0;
     ofstream output1, output2;
     output1.open("output/average_tweet_info.dat");
     output1 << "#Contains network information about tweets in the simulation.\n#Generation = length of longest path tweeter -> recipient\n#Generation 0 = original/root, 1 = retweeted one level, 2 = retweeted 2 levels\n\n";
