@@ -13,7 +13,7 @@ include_directories(
 
 #if ($ENV{FULL_WARNINGS})
 #add_definitions(-Wall -Wno-sign-compare -Wno-reorder -Wno-unused-variable -fPIC -std=c++11 -D_GLIBCXX_DEBUG)
-add_definitions(-Wall -Wno-sign-compare -Wno-reorder -Wno-unused-variable -fPIC -std=c++11)
+add_definitions(-Wall -Wno-sign-compare -Wno-reorder -Wno-unused-variable -Wno-terminate -fPIC -std=c++11)
     #else()
     #    add_definitions(-Wno-sign-compare -Wno-reorder -Wall -Wno-unused-variable  -Wuninitialized -Wno-deprecated-declarations -fPIC -std=c++11)
     #endif()
@@ -97,13 +97,13 @@ target_link_libraries (
         ${UV_LIBS}
 )
 
-if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-    set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/CMakeModules)
-    if(CMAKE_COMPILER_IS_GNUCXX)
-        include(CodeCoverage)
-        setup_target_for_coverage(hashkat_coverage hashkat coverage)
-    endif()
-endif()
+#if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+#    set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/CMakeModules)
+#    if(CMAKE_COMPILER_IS_GNUCXX)
+#        include(CodeCoverage)
+#        setup_target_for_coverage(hashkat_coverage hashkat coverage)
+#    endif()
+#endif()
 
 # installing through cmake . && make && sudo make install
 #install (TARGETS hashkat DESTINATION bin)
