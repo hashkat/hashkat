@@ -1,12 +1,25 @@
 #!/bin/bash
 
-# Default HASHKAT to '.', check if unset (using a BASHism):
+# Default HASHKAT to script folder, check if unset (using a BASHism):
 if [ ! "$HASHKAT" ] ; then 
     export HASHKAT=$(dirname "${BASH_SOURCE[0]}") 
 fi
+# If current folder is unknown, default to current folder.
+if [ x"$HASHKAT" = x ] ; then
+    export HASHKAT='.'
+fi
+
 
 # Good practice -- exit completely on any bad exit code:
 set -e 
+
+if [ x"$BUILD_FOLDER" == x ] ; then
+    build_folder="build"
+else
+    build_folder="$BUILD_FOLDER"
+fi
+
+export PYTHONDONTWRITEBYTECODE=1 # Turn off .pyc files, more annoying than useful
 
 ###############################################################################
 # Bash function to check for a flag in 'args' and remove it.
@@ -31,30 +44,6 @@ function handle_flag(){
     args="$new_args"
     return $got # False!
 }
-
-###############################################################################
-# Find the preferred executable from our candidates.
-# We prefer same-folder executables first, and then debug and release
-# executables, respectively, from our build folder.
-###############################################################################
-
-bare_executable="$HASHKAT"/hashkat
-release_executable="$HASHKAT"/build/release/src/hashkat
-debug_executable="$HASHKAT"/build/debug/src/hashkat
-
-if [ -x "$bare_executable" ] ; then
-    executable="$bare_executable"
-    echo "Found executable in hashkat folder, running '$executable'."
-elif [ -x "$debug_executable" ] && ! handle_flag "-O" ; then
-    executable="$debug_executable"
-    echo "Found executable built with debug setting (using ./build.sh), running '$executable'. You may explicitly run the release executable with ./run.sh -O."
-elif [ -x "$release_executable" ] ; then
-    executable="$release_executable"
-    echo "Found executable built with release setting (using ./build.sh -O), running '$executable'."
-else
-    echo "Could not find a hashkat executable. You must either run ./build.sh if not yet built, or set HASHKAT environment variable if you have a folder with an executable in mind."
-    exit 1
-fi
 
 ###############################################################################
 #  --reproducers: Run Python-driven tests that run INFILE's configurations and 
@@ -113,8 +102,8 @@ fi
 ###############################################################################
 
 if [ ! -f INFILE.yaml ] ; then
-    echo "WARNING: You have no INFILE.yaml, creating one from DEFAULT.yaml"
-    cp "$HASHKAT/DEFAULT.yaml" "$HASHKAT/INFILE.yaml"
+    echo "WARNING: You have no INFILE.yaml, creating one from \"$HASHKAT/DEFAULT.yaml\""
+    cp "$HASHKAT/DEFAULT.yaml" "INFILE.yaml"
 fi
 
 ###############################################################################
@@ -139,4 +128,9 @@ if ! handle_flag "--no-generate" ; then
     fi
 fi
 
-exec "$executable" $args
+executable="$HASHKAT/$build_folder/src/hashkat"
+if [ ! -f "$executable" ] ; then
+   echo "Could not find a hashkat executable at \"$executable\". You must either run \"$HASHKAT/build.sh\" if not yet built, or set the HASHKAT environment variable if you have a different folder in mind."
+else 
+    exec "$executable" $args
+fi

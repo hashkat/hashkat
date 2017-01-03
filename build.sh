@@ -1,10 +1,18 @@
 #!/bin/bash
 
+# Default HASHKAT to script folder, check if unset (using a BASHism):
+if [ x"$HASHKAT" = x ] ; then
+    export HASHKAT=$(dirname "${BASH_SOURCE[0]}")
+fi
+# If current folder is unknown, default to current folder.
+if [ x"$HASHKAT" = x ] ; then
+    export HASHKAT='.'
+fi
+
+ABS_HASHKAT=$(readlink -f "$HASHKAT")
+
 # Good practice -- exit completely on any bad exit code:
 set -e 
-
-# Always build from folder where build.sh is located: 
-cd $(dirname "${BASH_SOURCE[0]}") 
 
 ###############################################################################
 # Helper functions for conditionally coloring text.
@@ -104,9 +112,9 @@ fi
 # INFILE.yaml is under .gitignore to reflect its per-user usage.
 ###############################################################################
 
-if [ ! -f INFILE.yaml ] ; then
+if [ ! -f "$HASHKAT/INFILE.yaml" ] ; then
     echo "WARNING: You have no INFILE.yaml, creating one from DEFAULT.yaml"
-    cp "DEFAULT.yaml" "INFILE.yaml"
+    cp "$HASHKAT/DEFAULT.yaml" "$HASHKAT/INFILE.yaml"
 fi
 
 ###############################################################################
@@ -133,10 +141,14 @@ fi
 # These are used to communicate with CMake
 # Each flag has an optional shortform, use whichever is preferred.
 
-build_folder="build/debug"
+if [ x"$BUILD_FOLDER" == x ] ; then
+    build_folder="build"
+else
+    build_folder="$BUILD_FOLDER"
+fi
+
 if handle_flag "--optimize" || handle_flag "-O" ; then
     export BUILD_OPTIMIZE=1
-    build_folder="build/release"
 elif ! handle_flag "--faster-debug" ; then
     # Extra debug build flags that hinder debug performance significantly but are good to have by default.
     # These can be disabled with --faster-debug.
@@ -150,16 +162,17 @@ if handle_flag "--profile-gen" || handle_flag "--pgen" ; then
     export BUILD_OPTIMIZE=1
     export BUILD_PROF_GEN=1
 fi
-# Use --pgen, and then this flag, for optimal performance
+# Use --pgen, and then this flag, for optimal performance.
+# Compared to the gain from debug => release, the gain is minor.
 if handle_flag "--profile-use" || handle_flag "--puse" ; then
     export BUILD_OPTIMIZE=1
     export BUILD_PROF_USE=1
 fi
 
+# Switch to HASHKAT directory for build
+cd "$HASHKAT"
 # Configure version string
-pushd "$HASHKAT" > /dev/null
 export HASHKAT_VERSION="`git describe --abbrev=0 2>/dev/null`b`git rev-list HEAD --count`"
-popd > /dev/null
 
 # Configure amount of cores used
 if [[ -e /proc/cpuinfo ]] ; then
@@ -180,11 +193,10 @@ cp "./src/gexf.lua" "./.libs/"
 # Ensure folder exists for output
 mkdir -p output/
 
-echo "Compiling hashkat version $HASHKAT_VERSION"
-
+echo "Compiling hashkat version $HASHKAT_VERSION in \"$build_folder\""
 mkdir -p "$build_folder"
 pushd "$build_folder" > /dev/null
-cmake ../.. | colorify '1;33'
+cmake "$ABS_HASHKAT" | colorify '1;33'
 if handle_flag "--clean" ; then
     make clean
 fi
@@ -214,7 +226,7 @@ if ! handle_flag "--no-generate" ; then
 
     # We must generate INFILE-generated.yaml from INFILE.yaml
     if env python --version 2>&1 | grep 'Python 2\.' > /dev/null ; then
-        env python "./hashkat_pre.py" $args
+        env python "$HASHKAT/hashkat_pre.py" $args
     else
         echo "#KAT requires Python2.x to run."
         exit 1
@@ -270,5 +282,5 @@ elif handle_flag "--valgrind" || handle_flag "--vprof"; then
     showOutput
 else
     # Normal execution
-    build/src/hashkat $args
+    "$build_folder"/src/hashkat $args
 fi
