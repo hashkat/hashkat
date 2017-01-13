@@ -87,6 +87,8 @@ analysis:
     0.001
   use_hashtag_probability:
     0.5
+  use_susceptibility:
+    false
 
 #################################################################
 # >> rates:
@@ -341,6 +343,7 @@ agents:
         follow: {function: linear, y_intercept: 0.001, slope: 0.001}
         # Rate for tweets from this agent:
         tweet: {function: linear, y_intercept: 0.001, slope: 0.001}
+    susceptibility: 1.0
 
   - name: Celebrity
     weights:
@@ -363,6 +366,7 @@ agents:
         follow: {function: linear, y_intercept: 0.00001, slope: 0.00001}
         # Rate for tweets from this agent:
         tweet: {function: linear, y_intercept: 0.001, slope: 0.001}
+    susceptibility: 1.0
 
   - name: Bot
     weights:
@@ -385,6 +389,7 @@ agents:
         follow: {function: linear, y_intercept: 0.001, slope: 0.001}
         # Rate for tweets from this agent:
         tweet: {function: linear, y_intercept: 0.00001, slope: 0.00001}
+    susceptibility: 1.0
 
   - name: Organization
     weights:
@@ -407,3 +412,4 @@ agents:
         follow: {function: linear, y_intercept: 0.001, slope: 0.001}
         # Rate for tweets from this agent:
         tweet: {function: linear, y_intercept: 0.0001, slope: 0.0001}
+    susceptibility: 1.0

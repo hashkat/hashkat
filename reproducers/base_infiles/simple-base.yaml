@@ -91,6 +91,8 @@ analysis:
     10000
   use_hashtag_probability:
     0.2
+  use_susceptibility:
+    false
 
 #################################################################
 # >> rates:
@@ -307,4 +309,5 @@ agents:
         follow: {function: constant, value: 0.0001}
         # Rate for tweets from this agent:
         tweet: {function: constant, value: 0.0001}
+    susceptibility: 1.0
 

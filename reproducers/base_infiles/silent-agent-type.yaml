@@ -89,6 +89,8 @@ analysis:
     10000
   use_hashtag_probability:
     0
+  use_susceptibility:
+    false
 
 #################################################################
 # >> rates:
@@ -302,6 +304,7 @@ agents:
         follow: {function: constant, value: 0.00001}
         # Rate for tweets from this agent:
         tweet: {function: constant, value: 0.0000}
+    susceptibility: 1.0
 
   - name: DoesTweet
     weights:
@@ -321,3 +324,4 @@ agents:
         follow: {function: constant, value: 0.0001}
         # Rate for tweets from this agent:
         tweet: {function: constant, value: 0.0001}
+    susceptibility: 1.0
