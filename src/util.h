@@ -55,7 +55,11 @@ inline static void error_exit(const std::string& msg) {
     }
 
 // Checks that are turned off in release mode:
+#ifndef NDEBUG
 #define DEBUG_CHECK ASSERT
+#else
+#define DEBUG_CHECK(expr, msg)
+#endif
 
 // XXX: NB: Not true for all compilers.
 typedef int int32;

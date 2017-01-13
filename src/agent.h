@@ -42,6 +42,8 @@
 #include "tweets.h"
 #include "serialization.h"
 
+#include "lcommon/Range.h"
+
 // Forward declare, to prevent circular header inclusion:
 struct AnalysisState;
 
@@ -76,17 +78,11 @@ struct Agent {
     FollowerSet follower_set;
 
     // these store how someone followed you, or how you followed someone
-    std::vector<int> following_method_counts;
-    std::vector<int> follower_method_counts;
+    std::vector<int> following_method_counts = std::vector<int>(N_FOLLOW_MODELS);
+    std::vector<int> follower_method_counts = std::vector<int>(N_FOLLOW_MODELS);
 
-    Agent() {
-        following_method_counts.resize(N_FOLLOW_MODELS + 2);
-        follower_method_counts.resize(N_FOLLOW_MODELS + 2);
-        for (int i = 0; i < N_FOLLOW_MODELS + 2; i ++) {
-            following_method_counts[i] = 0;
-            follower_method_counts[i] = 0;
-        }
-    }
+    // For streaming agent data in JSON
+    void api_serialize(cereal::JSONOutputArchive& ar, bool serialize_follow_sets = false);
 
     template <typename Archive>
     void serialize(Archive& ar) {
@@ -130,27 +126,88 @@ struct AgentStats {
     }
 };
 
+/* Stores an agent ID list for an agent type, along with 
+ * the categorization into different time bins.
+ */
+struct TimeBinnedAgentList {
+    // The agents in this agent type:
+    std::vector<int> agent_ids;
+    // The max index of agents for each discrete value of time (i.e., monthly bins)
+    // in 'agent_ids'. Implicitly partitions 'agent_ids' into time sections.
+    std::vector<int> agent_ids_time_caps;
+    size_t last_seen_n_months = 0;
+
+    // Update the month categorizations, returning whether a month was made:
+    bool update_month(size_t n_months) {
+        this->last_seen_n_months = n_months;
+        bool made_new_month = false;
+        while (n_months > agent_ids_time_caps.size()) { 
+            // set the threshold defining this month:
+            agent_ids_time_caps.push_back(agent_ids.size());
+            made_new_month = true;
+        }
+        return made_new_month;
+    }
+
+    template <typename Archive>
+    void serialize(Archive& ar) {
+        ar(NVP(agent_ids), NVP(agent_ids_time_caps), NVP(last_seen_n_months));
+    }
+
+    Range month_range(int i) {
+        size_t previous_cap = (i == 0) ? 0 : agent_ids_time_caps[i - 1];
+        size_t current_cap = (i == last_seen_n_months) ? agent_ids.size() : agent_ids_time_caps[i];
+        return Range(previous_cap, current_cap);
+    }
+
+    double month_rate(Rate_Function& rf, int i) {
+        double rate_for_month = rf.monthly_rates.at(last_seen_n_months - i);
+        Range range = month_range(i);
+        return (range.max - range.min) * rate_for_month;
+    }
+
+    double total_rate(Rate_Function& rf) {
+        double rate_sum = 0.0;
+        for (int i = 0; i <= last_seen_n_months; i++) {
+            rate_sum += month_rate(rf, i);
+        }
+        return rate_sum;
+    }
+
+    int rate_month_choice(MTwist& rng, Rate_Function& rf) {
+        double rate_sum = total_rate(rf) * rng.rand_real_not1();
+        for (int i = 0; i <= last_seen_n_months; i++) {
+            rate_sum -= month_rate(rf, i);
+            if (rate_sum < ZEROTOL) {
+                return i;
+            }
+        }
+        ASSERT(false, "Should choose one of the months!");
+        return -1;
+    }
+
+    int rate_agent_choice(MTwist& rng, Rate_Function& rf, int month_id) {
+//        int i = rate_month_choice(rng, rf);
+        size_t previous_cap = (month_id == 0) ? 0 : agent_ids_time_caps[month_id - 1];
+        size_t current_cap = (month_id == last_seen_n_months) ? agent_ids.size() : agent_ids_time_caps[month_id];
+        return agent_ids[rng.rand_int(previous_cap, current_cap)];
+    }
+};
+
 /*
  * An agent type is a static class of agent, determined at creation.
  * Agent types are intended to represent different kinds of network participants,
  *
  * For a network like Twitter, example agent types include 'Standard User', 'Celebrity', etc.
  */
-
 struct AgentType {
     std::string name;
     double prob_add = 0; // When an agent is added, how likely is it that it is this agent type ?
     double prob_follow = 0; // When an agent is followed, how likely is it that it is this agent type ?
     double prob_followback = 0;
-    int new_agents = 0; // the number of new users in this agent type
     Rate_Function RF[number_of_diff_events];
     bool care_about_region = false, care_about_ideology = false;
-    // number of agents for each discrete value of the rate(time)
-    std::vector<int> agent_cap;
-    // list of agent ID's
-    std::vector<int> agent_list;
-    // categorize the agents by age
-    CategoryGrouper age_ranks;
+    TimeBinnedAgentList agents;
     CategoryGrouper follow_ranks;
     std::vector<double> updating_probs;
     double tweet_type_probs[N_TWEET_TYPES];
@@ -173,7 +230,6 @@ struct AgentType {
         }
 
         // Created on demand, not data (in other words, do not uncomment):
-        // age_ranks.sync_rates(E.age_ranks);
         follow_ranks.sync_rates(E.follow_ranks);
 
         for (int i = 0; i < N_TWEET_TYPES; i++) {
@@ -184,13 +240,11 @@ struct AgentType {
     template <typename Archive>
     void serialize(Archive& ar) {
         ar(NVP(name), NVP(prob_add), NVP(prob_follow), NVP(prob_followback));
-        ar(NVP(new_agents));
         for (auto& rf : RF) {
             ar(rf);
         }
         ar(NVP(care_about_region), NVP(care_about_ideology));
-        ar(NVP(agent_cap), NVP(agent_list));
-        ar(NVP(age_ranks));
+        ar(NVP(agents));
         ar(NVP(follow_ranks));
         ar(NVP(updating_probs), NVP(stats));
         for (auto& ttp : tweet_type_probs) {

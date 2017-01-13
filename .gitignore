@@ -1,6 +1,7 @@
 CMakeCache.txt
 CMakeFiles/
 oprofile_data/
+reproducers/output
 src/tests/INFILE_temporary.yaml
 INFILE.yaml
 *-generated.yaml
@@ -11,7 +12,8 @@ cmake_install.cmake
 CTestTestfile.cmake
 graph*
 build
-build/*
+debug_build
+release_build
 callgrind.out.*
 POSITIONS*
 output/*

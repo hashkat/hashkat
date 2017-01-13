@@ -67,12 +67,7 @@ TweetReactRateVec TweetRateDeterminer::get_rate(const Tweet& tweet, int bin) {
     // Assumption: react_weights is initialized to the appropriate
     // weights for this tweet.
 
-    double weight_sum = 0;
-    for (double d : tweet.react_weights.weights) {
-        weight_sum += d;
-    }
-
-    return TweetReactRateVec(obs_prob * weight_sum);
+    return TweetReactRateVec(obs_prob * tweet.react_weights.total_weight);
 }
 
 /*

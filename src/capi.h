@@ -52,6 +52,7 @@ void hashkat_finish_analysis(struct AnalysisState* state);
 const char* hashkat_dump_state(struct AnalysisState* state);
 const char* hashkat_dump_stats(struct AnalysisState* state);
 const char* hashkat_dump_tweet(struct AnalysisState* state, struct Tweet* tweet);
+const char* hashkat_dump_agents(struct AnalysisState* state, int dump_follow_sets);
 const char* hashkat_dump_summary(struct AnalysisState* state);
 void hashkat_dump_free(struct AnalysisState* state, const char* dump);
 

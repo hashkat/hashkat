@@ -61,27 +61,14 @@ struct AnalyzerRates {
             config(state.config), agent_types(state.agent_types), add_rates(state.config.add_rates) {
     }
 	
-    bool create_new_month_if_needed(AgentType& et) {
-        int n_months = state.n_months();
-
-        if (n_months == et.agent_cap.size() || state.time == 0) {
-            // set the thresholds for each agenttype -- they are the same for every agent
-            et.age_ranks.categories.push_back(state.time);
-            // for every agenttype, go through every agent that is of that agenttype and categorize them based on their creation time
-            for (int i = 0; i < et.agent_list.size(); i++) {
-                Agent& e = network[et.agent_list[i]];
-                et.age_ranks.categorize(et.agent_list[i], e.creation_time);
-            }
-            et.agent_cap.push_back(et.agent_list.size());
-            return true;
-        }
-        return false;
+    bool create_new_months_if_needed(AgentType& et) {
+        return et.agents.update_month(state.n_months());
     }
 
     void create_new_months_if_needed() {
         bool crossed_month = false;
         for (auto& et : agent_types) {
-            crossed_month |= create_new_month_if_needed(et);
+            crossed_month |= create_new_months_if_needed(et);
         }
 
         if (crossed_month && config.degree_distributions) {
@@ -91,34 +78,16 @@ struct AnalyzerRates {
             if (config.region_connection_matrix) {
                 region_stats(network, state);
             }
-            
-
             //fraction_of_connections_distro(network, state, stats);
             
             //cout << "\nNumber of Months = " << state.n_months() << "\n\n";
         }
     }
 
-    void update_rate(AgentType& et, vector<double>& vec, double& rate) {
-        int n_months = state.n_months();
-        // Iterate two vectors in opposite directions
-        rate += et.new_agents * vec[0];
-        for (int i = 1, e_i = n_months; i <= n_months; i++, e_i--) {
-            rate += vec[i] * (et.agent_cap[e_i] - et.agent_cap[e_i - 1]);
-        }
-    }
-
     // after every iteration, make sure the rates are updated accordingly
-    Rates set_rates(AgentType& et) {
-        double overall_follow_rate = 0, overall_tweet_rate = 0;
-        et.new_agents = et.agent_list.size() - et.agent_cap.back();
-        if (config.rate_add == 0) {
-            overall_follow_rate += et.agent_list.size() * et.RF[0].monthly_rates[state.n_months()];
-            overall_tweet_rate += et.agent_list.size() * et.RF[1].monthly_rates[state.n_months()];
-        } else {
-            update_rate(et, et.RF[0].monthly_rates, overall_follow_rate);
-            update_rate(et, et.RF[1].monthly_rates, overall_tweet_rate);
-        }
+    Rates get_rates(AgentType& et) {
+        double overall_follow_rate = et.agents.total_rate(et.RF[0]);
+        double overall_tweet_rate = et.agents.total_rate(et.RF[1]);
         return Rates(overall_follow_rate, overall_tweet_rate);
     }
 
@@ -126,21 +95,23 @@ struct AnalyzerRates {
         create_new_months_if_needed();
         
         Rates global(0, 0);
-        for (auto& et : agent_types) {
-            set_rates (et);
-            Rates rates = set_rates(et);
+        for (AgentType& et : agent_types) {
+            Rates rates = get_rates(et);
             global.add(rates); // Sum the rates
         }
         update_retweets(state);
         config.rate_add = add_rates.RF.monthly_rates[state.n_months()]; 
         double overall_retweet_rate = analyzer_total_retweet_rate(state);
         stats.event_rate = config.rate_add + global.total_rate() + overall_retweet_rate;
+        stats.adjusted_event_rate = std::max(1.0 / MINIMUM_TIME_STEP, stats.event_rate);
 
         // Normalize the rates
-        stats.prob_add = config.rate_add / stats.event_rate;
-        stats.prob_follow = global.overall_follow_rate / stats.event_rate;
-        stats.prob_tweet = global.overall_tweet_rate / stats.event_rate;
-        stats.prob_retweet = overall_retweet_rate / stats.event_rate;
+        stats.prob_add = config.rate_add / stats.adjusted_event_rate;
+        stats.prob_follow = global.overall_follow_rate / stats.adjusted_event_rate;
+        stats.prob_tweet = global.overall_tweet_rate / stats.adjusted_event_rate;
+        stats.prob_retweet = overall_retweet_rate / stats.adjusted_event_rate;
+        // If adjusted_event_rate > event_rate, the remainder goes into the 'do nothing' block.
+        stats.prob_do_nothing = std::max(0.0, (stats.adjusted_event_rate - stats.event_rate) / stats.adjusted_event_rate);
     }
 };
 

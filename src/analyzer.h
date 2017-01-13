@@ -54,10 +54,14 @@ struct NetworkStats {
     double prob_follow = 0;
     double prob_tweet = 0;
     double prob_retweet = 0;
+    // Used to pad out the rate block for anomalously low event-rate networks.
+    double prob_do_nothing = 0;
 
     double event_rate = 0;
+    // Adjusted event rate is never below 1 / MINIMUM_TIME_STEP.
+    double adjusted_event_rate = 0;
 
-    int n_steps = 0, n_outputs = 0;
+    int n_steps = 0, n_do_nothing_steps = 0, n_outputs = 0;
     bool user_did_exit = false;
 
     AgentStats global_stats;
@@ -65,7 +69,7 @@ struct NetworkStats {
     template <typename Archive>
     void serialize(Archive& ar) {
         ar(NVP(prob_add), NVP(prob_follow), NVP(prob_retweet), NVP(prob_tweet));
-        ar(NVP(event_rate), NVP(n_steps), NVP(n_outputs));
+        ar(NVP(event_rate), NVP(adjusted_event_rate), NVP(n_steps), NVP(n_do_nothing_steps), NVP(n_outputs));
         // Don't serialize 'user_did_exit'
         // Valid because only full of primitive types:
         ar(NVP(global_stats), NVP(user_did_exit));
@@ -122,13 +126,11 @@ struct AnalysisState {
     CategoryGrouper tweet_ranks;
     CategoryGrouper follow_ranks;
     CategoryGrouper retweet_ranks;
-    CategoryGrouper age_ranks;
 
     // Our distinct agent classes.
     // Agent probabilities are derived from config,
     // while the list of users within is derived from
     AgentTypeVector agent_types;
-    std::vector<int> agent_cap;
 
     // Add any values that must be extracted from 'analyze' here.
     // This will be copied at the end of the simulation, exposing it.
@@ -234,13 +236,11 @@ struct AnalysisState {
         ar(NVP(tweet_ranks));
         ar(NVP(follow_ranks));
         ar(NVP(retweet_ranks));
-        ar(NVP(age_ranks));
         ar(NVP(tweet_bank));
         ar(NVP(oldTweets));
         ar(NVP(stats));
         ar(NVP(hashtags));
         ar(NVP(agent_types));
-        ar(NVP(agent_cap));
 
         ar(NVP(n_follows), NVP(end_time));
         ar(NVP(updating_follow_probabilities));
@@ -251,7 +251,6 @@ struct AnalysisState {
 
 enum SelectionType {
     FOLLOW_SELECT,
-    RETWEET_SELECT,
     TWEET_SELECT
 };
 
@@ -284,7 +283,7 @@ void analyzer_rate_update(AnalysisState& state);
 // Follow a specific user
 bool analyzer_handle_follow(AnalysisState& state, int id_actor, int id_target, int follow_method);
 double preferential_weight(AnalysisState& state);
-bool analyzer_handle_unfollow(AnalysisState& state, int id_target, int id_actor);
+bool analyzer_handle_unfollow(AnalysisState& state, int id_unfollowed, int id_lost_follower);
 
 bool analyzer_sim_time_check(AnalysisState& state);
 bool analyzer_real_time_check(AnalysisState& state);
@@ -307,7 +306,7 @@ void analyzer_handle_outstanding_api_request(AnalysisState& state);
 void spawn_stdin_command_queueing_thread_for_api();
 
 // this is for the retweet agent selection
-RetweetChoice analyzer_select_tweet_to_retweet(AnalysisState& state, SelectionType type);
+RetweetChoice analyzer_select_tweet_to_retweet(AnalysisState& state);
 
 // Create an agent
 bool analyzer_create_agent(AnalysisState& state);

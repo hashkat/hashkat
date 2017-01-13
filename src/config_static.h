@@ -38,6 +38,19 @@
  * Configurable values that must be available at compile time for efficiency reasons.
  */
 
+enum FollowModel {
+    RANDOM_FOLLOW,
+    TWITTER_PREFERENTIAL_FOLLOW,
+    AGENT_FOLLOW,
+    PREFERENTIAL_AGENT_FOLLOW,
+    HASHTAG_FOLLOW,
+    FOLLOW_BACK_FOLLOW,
+    RETWEETING_FOLLOW,
+    TWITTER_FOLLOW, // Amalgamation of first 5
+    N_FOLLOW_MODELS = TWITTER_FOLLOW, // Does not count TWITTER_FOLLOW itself
+    N_TWITTER_FOLLOW_MODELS = HASHTAG_FOLLOW + 1 // Follows within TWITTER_FOLLOW
+};
+
 enum TweetType {
     TWEET_STANDARD,
     TWEET_IDEOLOGICAL,
@@ -91,12 +104,11 @@ const int TIME_CAT_FREQ = 30 * 24 * 60;
 
 // Output frequency:
 const int STDOUT_OUTPUT_RATE = 100; // Once per X file outputs
+const double MINIMUM_TIME_STEP = 1; // We cannot take a time-step more than one second.
 
 /*
  * Parameters for tweet relevance functions
  */
-
-const int N_FOLLOW_MODELS = 5;
 
 const int N_BIN_PREFERENCE_CLASS = 6;
 const int N_BIN_AGENT_TYPES = 200;

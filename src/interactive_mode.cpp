@@ -95,10 +95,10 @@ struct InteractiveModeBindings {
         // Output from stats:
         auto& S = state->stats;
         G["rate_total"] = S.event_rate;
-        G["rate_add"] = S.event_rate * S.prob_add;
-        G["rate_follow"] = S.event_rate * S.prob_follow;
-        G["rate_retweet"] = S.event_rate * S.prob_retweet;
-        G["rate_tweet"] = S.event_rate * S.prob_tweet;
+        G["rate_add"] = S.adjusted_event_rate * S.prob_add;
+        G["rate_follow"] = S.adjusted_event_rate * S.prob_follow;
+        G["rate_retweet"] = S.adjusted_event_rate * S.prob_retweet;
+        G["rate_tweet"] = S.adjusted_event_rate * S.prob_tweet;
 
         G["total_followings"] = S.global_stats.n_follows;
         G["total_followers"] = S.global_stats.n_followers;

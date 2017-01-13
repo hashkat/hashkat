@@ -47,6 +47,7 @@
 #include "interactive_mode.h"
 #include "FollowerSet.h"
 
+
 #include <signal.h>
 
 using namespace std;
@@ -54,7 +55,7 @@ using namespace std;
 volatile int SIGNAL_ATTEMPTS = 0;
 
 static const int SIGNAL_ATTEMPTS_TO_ABORT = 3;
-// Handler for singals -- sent by eg Ctrl-C on command-line. Allows us to stop our program gracefully!
+// Handler for signals -- sent by eg Ctrl-C on command-line. Allows us to stop our program gracefully!
 static void signal_handler(int __dummy) {
     SIGNAL_ATTEMPTS++;
     if (SIGNAL_ATTEMPTS >= SIGNAL_ATTEMPTS_TO_ABORT) {
@@ -367,7 +368,7 @@ struct Analyzer {
             AgentType& type = agent_types[et];
             if (rand_num <= type.prob_add) {
                 e.agent_type = et;
-                type.agent_list.push_back(id);
+                type.agents.agent_ids.push_back(id);
                 follow_ranks.categorize(id, e.follower_set.size());
                 type.follow_ranks.categorize(id, e.follower_set.size());
                 break;
@@ -453,23 +454,23 @@ struct Analyzer {
 	bool action_tweet(int id_tweeter) {
 	    PERF_TIMER();
 
-            // This is the agent tweeting
-            Agent& e = network[id_tweeter];
-            tweet_ranks.categorize(id_tweeter, e.n_tweets);
-            e.n_tweets++;
-            Tweet tweet = generate_tweet(id_tweeter, id_tweeter, 0, generate_tweet_content(id_tweeter));
-            analyzer_api_tweet(state, tweet);
-            lua_hook_tweet(state, id_tweeter, tweet);
-            // Generate the tweet content:
-            // increase the number of tweets the agent had by one
-            if (e.n_tweets / (time - e.creation_time) >= config.unfollow_tweet_rate) {
-                action_unfollow(id_tweeter);
-            }
+        // This is the agent tweeting
+        Agent& e = network[id_tweeter];
+        tweet_ranks.categorize(id_tweeter, e.n_tweets);
+        e.n_tweets++;
+        Tweet tweet = generate_tweet(id_tweeter, id_tweeter, 0, generate_tweet_content(id_tweeter));
+        analyzer_api_tweet(state, tweet);
+        lua_hook_tweet(state, id_tweeter, tweet);
+        // Generate the tweet content:
+        // increase the number of tweets the agent had by one
+        if (e.n_tweets / (time - e.creation_time) >= config.unfollow_tweet_rate) {
+            action_unfollow(id_tweeter);
+        }
 
-            RECORD_STAT(state, e.agent_type, n_tweets);
+        RECORD_STAT(state, e.agent_type, n_tweets);
 
-            return true; // Always succeeds
-	}
+        return true; // Always succeeds
+    }
 
 	// Despite being called action_retweet, may result in follow
 	// depending on probability encoded in PreferenceClass, if not first-generation tweet.
@@ -488,7 +489,7 @@ struct Analyzer {
                 if (rng.random_chance(val)) {
                     // Return success of follow:
                     RECORD_STAT(state, e_observer.agent_type, n_retweet_follows);
-                    return analyzer_handle_follow(state, choice.id_observer, choice.id_author, N_FOLLOW_MODELS + 2);
+                    return analyzer_handle_follow(state, choice.id_observer, choice.id_author, RETWEETING_FOLLOW);
                 }
     		}
         }
@@ -515,19 +516,7 @@ struct Analyzer {
 		    return false; // Empty
 		}
 
-		DEBUG_CHECK(id_lost_follower != -1, "Should not be -1 after choice!");
-
-        // Remove our target from our actor's follows:
-        bool had_follower = candidate_followers.remove(network[id_lost_follower]);
-		DEBUG_CHECK(had_follower, "unfollow: Did not exist in follower list");
-
-        // Remove our unfollowed person from our target's followers:
-		Agent& e_lost_follower = network[id_lost_follower];
-		bool had_follow = e_lost_follower.following_set.remove(state, id_unfollowed);
-		DEBUG_CHECK(had_follow, "unfollow: Did not exist in follow list");
-
-		lua_hook_unfollow(state, id_lost_follower, id_unfollowed);
-		RECORD_STAT(state, e_lost_follower.agent_type, n_unfollows);
+        analyzer_handle_unfollow(state, id_unfollowed, id_lost_follower);
 
 		return true;
 	}
@@ -626,33 +615,39 @@ struct Analyzer {
          * Retrying as we did before (ie, not moving time forward) caused some underestimation in the time of events.
          */
 
-        bool network_has_changed = false;
+        // Get a random number within [0,1) that aids in our action decision.
+        double r = rng.rand_real_not0();
+
+        if (subtract_var(r, stats.prob_do_nothing) <= ZEROTOL) {
+            // Do nothing. Only step time forward.
+            // Does not count as a real step (i.e., does not trigger action hooks).
+            step_time(timer);
+            stats.n_do_nothing_steps++;
+            return true;
+        }
 
         lua_hook_step_analysis(state);
-
-        // Get a random number within [0,1).
-        double r = rng.rand_real_not0(); // 
         // Decide what action corresponds to our random number.
         if (subtract_var(r, stats.prob_add) <= ZEROTOL) {
             // The agent creation event
-            network_has_changed = action_create_agent();
+            action_create_agent();
         } else if (subtract_var(r, stats.prob_follow) <= ZEROTOL) {
             // The follow event
             int agent = analyzer_select_agent(state, FOLLOW_SELECT);
             if (agent != -1) {
-                network_has_changed = analyzer_follow_agent(state, agent, time);
+                analyzer_follow_agent(state, agent, time);
             }
         } else if (subtract_var(r, stats.prob_tweet) <= ZEROTOL) {
             // The tweet event
             int agent = analyzer_select_agent(state, TWEET_SELECT);
             if (agent != -1) {
-                network_has_changed = action_tweet(agent);
+                action_tweet(agent);
             }
         } else if (subtract_var(r, stats.prob_retweet) <= ZEROTOL ) {
             // The retweet event
-            RetweetChoice choice = analyzer_select_tweet_to_retweet(state, RETWEET_SELECT);
+            RetweetChoice choice = analyzer_select_tweet_to_retweet(state);
             if (choice.id_author != -1) {
-                network_has_changed = action_retweet(choice, time);
+                action_retweet(choice, time);
             }
         } else {
             error_exit("step_analysis: event out of bounds");
@@ -671,10 +666,10 @@ struct Analyzer {
     void step_time(Timer& timer) {
         if (config.use_random_time_increment) {
             // increment by random time
-            double increment = -log(rng.rand_real_not0()) / stats.event_rate;
+            double increment = -log(rng.rand_real_not0()) / stats.adjusted_event_rate;
             time += increment;
         } else {
-            time += 1.0 / stats.event_rate;
+            time += 1.0 / stats.adjusted_event_rate;
         }
 
         if (config.output_stdout_summary && output_time_checker.has_past(time)) {

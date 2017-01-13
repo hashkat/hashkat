@@ -1,12 +1,25 @@
 #!/bin/bash
 
-# Default HASHKAT to '.', check if unset (using a BASHism):
+# Default HASHKAT to script folder, check if unset (using a BASHism):
 if [ ! "$HASHKAT" ] ; then 
     export HASHKAT=$(dirname "${BASH_SOURCE[0]}") 
 fi
+# If current folder is unknown, default to current folder.
+if [ x"$HASHKAT" = x ] ; then
+    export HASHKAT='.'
+fi
+
 
 # Good practice -- exit completely on any bad exit code:
 set -e 
+
+if [ x"$BUILD_FOLDER" == x ] ; then
+    build_folder="build"
+else
+    build_folder="$BUILD_FOLDER"
+fi
+
+export PYTHONDONTWRITEBYTECODE=1 # Turn off .pyc files, more annoying than useful
 
 ###############################################################################
 # Bash function to check for a flag in 'args' and remove it.
@@ -37,11 +50,12 @@ function handle_flag(){
 # perform statistical tests on them.
 ###############################################################################
 
-if handle_flag "--reproducers" ; then
-    cd reproducers/
-    python 03*.py
-    exit
-fi
+# TODO: consolidate tests
+#if handle_flag "--reproducers" ; then
+#    cd reproducers/
+#    python 03*.py
+#    exit
+#fi
 
 ###############################################################################
 #  --tests: Run tests, including functionality equivalent tests (testing
@@ -88,8 +102,8 @@ fi
 ###############################################################################
 
 if [ ! -f INFILE.yaml ] ; then
-    echo "WARNING: You have no INFILE.yaml, creating one from DEFAULT.yaml"
-    cp "$HASHKAT/DEFAULT.yaml" "$HASHKAT/INFILE.yaml"
+    echo "WARNING: You have no INFILE.yaml, creating one from \"$HASHKAT/DEFAULT.yaml\""
+    cp "$HASHKAT/DEFAULT.yaml" "INFILE.yaml"
 fi
 
 ###############################################################################
@@ -114,4 +128,9 @@ if ! handle_flag "--no-generate" ; then
     fi
 fi
 
-exec "$HASHKAT/build/src/hashkat" $args
+executable="$HASHKAT/$build_folder/src/hashkat"
+if [ ! -f "$executable" ] ; then
+   echo "Could not find a hashkat executable at \"$executable\". You must either run \"$HASHKAT/build.sh\" if not yet built, or set the HASHKAT environment variable if you have a different folder in mind."
+else 
+    exec "$executable" $args
+fi

@@ -1,9 +1,18 @@
 #!/bin/bash
 
-# Default HASHKAT to '.', check if unset (using a BASHism):
+# Default HASHKAT to script folder, check if unset (using a BASHism):
+if [ x"$HASHKAT" = x ] ; then
+    export HASHKAT=$(dirname "${BASH_SOURCE[0]}")
+fi
+# If current folder is unknown, default to current folder.
 if [ x"$HASHKAT" = x ] ; then
     export HASHKAT='.'
 fi
+
+function realpath() {
+    python -c 'import os, sys; print os.path.realpath(sys.argv[1])' $1
+}
+ABS_HASHKAT=$(realpath "$HASHKAT")
 
 # Good practice -- exit completely on any bad exit code:
 set -e 
@@ -135,9 +144,20 @@ fi
 # These are used to communicate with CMake
 # Each flag has an optional shortform, use whichever is preferred.
 
+if [ x"$BUILD_FOLDER" == x ] ; then
+    build_folder="build"
+else
+    build_folder="$BUILD_FOLDER"
+fi
+
 if handle_flag "--optimize" || handle_flag "-O" ; then
     export BUILD_OPTIMIZE=1
+elif ! handle_flag "--faster-debug" ; then
+    # Extra debug build flags that hinder debug performance significantly but are good to have by default.
+    # These can be disabled with --faster-debug.
+    export BUILD_FLAGS="$BUILD_FLAGS -D_GLIBCXX_DEBUG"
 fi
+# Run address sanitizer. Substantial overhead. May require library support on some systems.
 if handle_flag "--sanitize" || handle_flag "-S" ; then
     export BUILD_SANITIZE=1
 fi
@@ -145,17 +165,14 @@ if handle_flag "--profile-gen" || handle_flag "--pgen" ; then
     export BUILD_OPTIMIZE=1
     export BUILD_PROF_GEN=1
 fi
-# Use --pgen, and then this flag, with, for optimal performance
+# Use --pgen, and then this flag, for optimal performance.
+# Compared to the gain from debug => release, the gain is minor.
 if handle_flag "--profile-use" || handle_flag "--puse" ; then
     export BUILD_OPTIMIZE=1
     export BUILD_PROF_USE=1
 fi
-# Pick whether to use debug std data-structures for eg std::vector
-if handle_flag "--debug-std" ; then
-    export BUILD_FLAGS="$BUILD_FLAGS -D_GLIBCXX_DEBUG"
-fi
 
-# Switch to HASHKAT directory for build 
+# Switch to HASHKAT directory for build
 cd "$HASHKAT"
 # Configure version string
 export HASHKAT_VERSION="`git describe --abbrev=0 2>/dev/null`b`git rev-list HEAD --count`"
@@ -179,14 +196,18 @@ cp "./src/gexf.lua" "./.libs/"
 # Ensure folder exists for output
 mkdir -p output/
 
-echo "Compiling hashkat version $HASHKAT_VERSION"
-mkdir -p build
-pushd build > /dev/null
-cmake .. | colorify '1;33'
+echo "Compiling hashkat version $HASHKAT_VERSION in \"$build_folder\""
+mkdir -p "$build_folder"
+pushd "$build_folder" > /dev/null
+cmake "$ABS_HASHKAT" | colorify '1;33'
 if handle_flag "--clean" ; then
     make clean
 fi
-make -j$((cores+1))
+if handle_flag "--make-lib" ; then
+    make -j$((cores+1)) hashkat-lib
+else
+    make -j$((cores+1)) hashkat
+fi
 popd > /dev/null
 
 if ! handle_flag "--run" && ! handle_flag "-R" ; then
@@ -264,5 +285,5 @@ elif handle_flag "--valgrind" || handle_flag "--vprof"; then
     showOutput
 else
     # Normal execution
-    build/src/hashkat $args
+    "$build_folder"/src/hashkat $args
 fi

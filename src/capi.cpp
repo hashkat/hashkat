@@ -59,9 +59,12 @@ AnalysisState* hashkat_new_analysis_state(int argc, char** argv) {
 #endif
     if (has_flag(argc, argv, "--stdout-nobuffer")) {
         // Important mainly for colorization tool
-        setvbuf(stdout,NULL,_IONBF,0); // Make stdout unbuffered
-        cout.setf(std::ios::unitbuf);
+        setvbuf(stdout,NULL,_IONBF, BUFSIZ); // Make stdout unbuffered
+    } else {
+        setvbuf(stdout,NULL,_IOLBF, BUFSIZ); // Make stdout line-buffered
     }
+
+    cout.setf(std::ios::unitbuf);
     // NOTE: We rely on hashkat_pre.py to create a -generated version of our input file!
     for (int i = 0; i < argc; i++) {
         char* arg = argv[i]; 
@@ -142,6 +145,15 @@ struct TweetApiProxy {
         tweet.api_serialize(ar);
     }
 };
+ 
+struct AgentApiProxy {
+    Agent* agent; 
+    bool dump_follow_sets;
+    template <typename Archive>
+    void serialize(Archive& ar) {
+        agent->api_serialize(ar, dump_follow_sets);
+    }
+};
 
 extern "C" {
 const char* hashkat_dump_summary(AnalysisState* state) {
@@ -173,6 +185,19 @@ const char* hashkat_dump_tweet(AnalysisState* state, Tweet* tweet) {
     stringstream output;
     JsonWriter writer {*state, output};
     tweet->api_serialize(writer);
+    string output_str = output.str();
+    return copy_str(output_str.c_str(), output_str.size());
+}
+
+const char* hashkat_dump_agents(AnalysisState* state, int dump_follow_sets) {
+    stringstream output;
+    JsonWriter writer {*state, output};
+    auto n_agents = state->network.size();
+    writer( cereal::make_size_tag(n_agents));
+    for (Agent& agent : state->network) {
+        AgentApiProxy proxy {&agent, dump_follow_sets != 0};
+        writer(proxy);
+    }
     string output_str = output.str();
     return copy_str(output_str.c_str(), output_str.size());
 }
