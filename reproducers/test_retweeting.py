@@ -252,7 +252,7 @@ class X_end_variable_should_not_affect_direct_follower_retweets(HashkatTestCase,
 	print "Standard deviation for total retweet amounts:", stdev(self.all_retweet_counts)
             #print (i+1), 'total retweets', self.all_retweet_counts[i]
 
-class Mean_retweet_time_should_cause_slightly_different_networks(HashkatTestCase, KnownFailingTest):
+class Mean_retweet_time_should_cause_slightly_different_networks(HashkatTestCase):
     '''Reproducer for #43. Changing the 'time_span' variable in tweet_observation should not always result in exactly the same retweet amount.'''
 
     base_infile = "base_infiles/two-regions-english-french-overlapping.yaml"

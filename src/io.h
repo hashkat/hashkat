@@ -31,14 +31,14 @@
 #include "network.h"
 
 
-void output_position(Network& network, int end_time);
+void output_position(Network& network);
 void brief_agent_statistics(AnalysisState& state);
 void output_network_statistics(AnalysisState& state);
 
 int factorial(int input_number);
 void Categories_Check(CategoryGrouper& tweeting, CategoryGrouper& following, CategoryGrouper& retweeting);
 void agent_statistics(Network& network,int n_follows, int n_agents, int max_agents, AgentType* agenttype);
-void tweets_distribution(Network& network, int n_users);
+void tweets_distribution(Network& network);
 int rand_int(int max);
 void degree_distributions(Network& network, AnalysisState& state);
 bool quick_rate_check(AgentTypeVector& ets, double& correct_val, int& i, int& j);

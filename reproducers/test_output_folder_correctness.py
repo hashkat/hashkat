@@ -16,7 +16,7 @@ RELEVANT_OUTPUT_OPTIONS = [
     "tweet_info"
 ]
 
-class Tweet_distro_dat_normalized(HashkatTestCase, KnownFailingTest):
+class Tweet_distro_dat_normalized(HashkatTestCase):
     '''Investigating tweet distro normalization in output folder (issue #32): 
          Does tweet_distro.dat correctly normalize data?
          Does retweet_distro.dat correctly normalize data?'''

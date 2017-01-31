@@ -103,19 +103,18 @@ void output_network_statistics(AnalysisState& state) {
         cout << "\nCreating analysis files -- press ctrl-c multiple times to abort ... \n";
     }
     double rate_add = C.rate_add;
-    int N_AGENTS = network.size();
     int initial_agents = C.initial_agents;
 
     // Depending on our INFILE/configuration, we may output various analysis
     if (C.output_visualize) {
-        output_position(network, N_AGENTS);
+        output_position(network);
     }
     /* ADD FUNCTIONS THAT RUN AFTER NETWORK IS BUILT HERE */
     if (C.categories_distro) {
         Categories_Check(state.tweet_ranks, state.follow_ranks, state.retweet_ranks);
     }
     if (C.output_tweet_analysis) {
-        tweets_distribution(network, N_AGENTS);
+        tweets_distribution(network);
     }
     // Better to manually check distributions, for low network sizes this will most likely throw an error
     /*if (agent_checks(et_vec, network, state, state.config.add_rates, initial_agents)) {
@@ -333,7 +332,9 @@ void brief_agent_statistics(AnalysisState& state) {
 
 // NETWORK.GEXF edgelist for R (analysis), python executable (drawing), and gephi output file
 
-void output_position(Network& network, int n_agents) {
+void output_position(Network& network) {
+    static const int OUTPUT_THRESHOLD = 10000;
+    int n_agents = network.size();
     ofstream output1;
     output1.open("output/network.gexf");
     output1 << "<gexf version=\"1.2\">\n"
@@ -344,7 +345,8 @@ void output_position(Network& network, int n_agents) {
             << "<graph mode=\"static\" defaultedgetype=\"directed\">\n"
             << "<nodes>\n";
     int count = 0;
-    if (n_agents <= 10000) {
+    // Only output position for small networks:
+    if (n_agents <= OUTPUT_THRESHOLD) {
         for (int i = 0; i < n_agents; i++) {
                 Agent& p = network[i];
                 output1 << "<node id=\"" << i << "\" label=\"" << p.agent_type << "\" />\n";
@@ -359,9 +361,7 @@ void output_position(Network& network, int n_agents) {
         }
         output1 << "</edges>\n" << "</graph>\n" << "</gexf>";
         output1.close();
-    }
-
-    else {
+    } else {
         MTwist rng;
         rng.init_genrand(/* Fixed seed */ 2);
         int fraction_users = 10000;
@@ -636,17 +636,22 @@ void agent_statistics(Network& network, int n_follows, int n_agents, int max_age
 // TWEETS_DISTRO.DAT
 // RETWEETS_DISTRO.DAT
 
-void tweets_distribution(Network& network, int n_users) {
+template <typename T> 
+static T sum(const vector<T>& vec) {
+    T ret = 0;
+    for (T val : vec) {
+        ret += val;
+    }
+    return ret;
+}
+
+void tweets_distribution(Network& network) {
     ofstream tweet_output, retweet_output;
     tweet_output.open("output/tweets_distro.dat");
     retweet_output.open("output/retweets_distro.dat");
 
     int max_tweets = 0, max_retweets = 0;
-    double tweets_sum = 0, retweets_sum = 0;
-    for (int i = 0; i < n_users; i ++) {
-        Agent& e = network[i];
-        tweets_sum += e.n_tweets;
-        retweets_sum += e.n_retweets;
+    for (Agent& e : network) {
         if (e.n_tweets > max_tweets) {
             max_tweets = e.n_tweets;
         }
@@ -654,25 +659,21 @@ void tweets_distribution(Network& network, int n_users) {
             max_retweets = e.n_retweets;
         }
     }
-    vector<int> tweets_distro (max_tweets + 1), retweets_distro (max_retweets + 1);
-    for (int i = 0; i < max_tweets; i ++) {
-        tweets_distro[i] = 0;
-    }
-    for (int i = 0; i < max_retweets; i ++) {
-        retweets_distro[i] = 0;
-    }
-    for (int i = 0; i < n_users; i ++) {
-        Agent& e = network[i];
+    vector<int> tweets_distro (max_tweets + 1);
+    vector<int> retweets_distro (max_retweets + 1);
+    for (Agent& e : network) {
         tweets_distro.at(e.n_tweets) ++;
         retweets_distro.at(e.n_retweets) ++;
     }
+    int tweets_sum = sum(tweets_distro);
+    int retweets_sum = sum(retweets_distro);
     tweet_output << "# n_tweets\tdistro\n\n";
-    for (int i = 0; i < max_tweets; i ++) {
-        tweet_output << i << "\t\t" << tweets_distro.at(i) / tweets_sum << "\n";
+    for (int i = 0; i <= max_tweets; i ++) {
+        tweet_output << i << "\t\t" << double(tweets_distro.at(i)) / tweets_sum << "\n";
     }
     retweet_output << "# n_retweets\tdistro\n\n";
-    for (int i = 0; i < max_retweets; i ++) {
-        retweet_output << i << "\t\t" << retweets_distro.at(i) / retweets_sum << "\n";
+    for (int i = 0; i <= max_retweets; i ++) {
+        retweet_output << i << "\t\t" << double(retweets_distro.at(i)) / retweets_sum << "\n";
     }
     tweet_output.close();
     retweet_output.close();

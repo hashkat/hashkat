@@ -240,7 +240,7 @@ def compute_tweet_obs():
         #obs /= full_int
         rates.append(obs)
         spans.append(res)
-        bounds.append(bound)
+        bounds.append(x_bound_to_time_bound(bound))
 
         prev_bound = bound # Set current bound to new previous
         res *= tweet_obs_resolution_growth_factor # Increase the resolution by the growth factor
