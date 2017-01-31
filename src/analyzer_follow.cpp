@@ -355,7 +355,7 @@ struct AnalyzerFollow {
         }
 
         bool same_agent = (id_follower == agent_to_follow);
-        bool same_language = (e.language == network[agent_to_follow].language);
+        bool same_language = language_understandable(e.language, network[agent_to_follow].language);
         // check and make sure we are not following ourself, or we are following agent -1
         if (LIKELY(!same_agent && same_language)) {
             perf_timer_begin("AnalyzerFollower.follow_agent(handle_follow)");
