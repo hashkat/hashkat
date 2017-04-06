@@ -129,6 +129,10 @@ output:
     1
   visualize: 
     true
+  # Toggles detailed statistics on tweets.
+  # WARNING: Uses memory proportional to total tweets ever made.
+  full_tweet_stats: 
+    false 
   agent_stats: 
     true
   degree_distributions: 

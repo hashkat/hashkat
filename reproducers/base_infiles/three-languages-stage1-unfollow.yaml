@@ -125,6 +125,8 @@ output:
     true
   agent_stats: 
     true
+  full_tweet_stats:
+    true
   degree_distributions: 
     true
   tweet_analysis: 

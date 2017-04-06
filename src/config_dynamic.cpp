@@ -209,6 +209,7 @@ static void parse_output_configuration(ParsedConfig& config, const Node& node) {
 
     parse(node, "visualize", config.output_visualize);
     parse(node, "agent_stats", config.agent_stats);
+    parse(node, "full_tweet_stats", config.full_tweet_stats);
 
     parse(node, "save_network_on_timeout", config.save_network_on_timeout);
     parse(node, "load_network_on_startup", config.load_network_on_startup);

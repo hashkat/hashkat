@@ -155,8 +155,9 @@ struct AnalysisState {
 
     TweetBank tweet_bank;
 
-    // old tweets being stored in a vector to be accessed after sim
-    std::vector<Tweet> oldTweets;
+    // Old tweets, collected in TweetBank.cpp (if config.full_tweet_stats is set)
+    // Used for output files in io.cpp if used.
+    std::vector<Tweet> old_tweets;
 
     /* most_pop_tweet: The most popular tweet, by number of retweets. */
 
@@ -237,7 +238,7 @@ struct AnalysisState {
         ar(NVP(follow_ranks));
         ar(NVP(retweet_ranks));
         ar(NVP(tweet_bank));
-        ar(NVP(oldTweets));
+        ar(NVP(old_tweets));
         ar(NVP(stats));
         ar(NVP(hashtags));
         ar(NVP(agent_types));

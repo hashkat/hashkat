@@ -70,12 +70,15 @@ TweetReactRateVec TweetRateDeterminer::get_rate(const Tweet& tweet, int bin) {
     return TweetReactRateVec(obs_prob * tweet.react_weights.total_weight);
 }
 
-/*
 void appendOldTweet(AnalysisState& state, Tweet& t) {
-    t.deletion_time = state.time;
-    state.oldTweets.push_back(t);
+    // Only keep track of tweets if we are going to use 
+    // the information for later output (io.cpp)
+    if (state.config.full_tweet_stats) {
+        t.deletion_time = state.time;
+        state.old_tweets.push_back(t);
+    }
 }
-*/
+
 bool TimeDepRateTree::ElementChecker::check(ref_t id) {
     AnalysisState& state = tree.determiner.state;
     Tweet& t = tree.get(id).data;
@@ -86,7 +89,7 @@ bool TimeDepRateTree::ElementChecker::check(ref_t id) {
         if (t.retweet_time_bin >= tree.n_bins()) {
             //                    printf("BOOTING NODE %d AT BIN %d\n", id,  t.retweet_time_bin);
             // Here is the hook, the tweet with id = id is about to be kicked
-            // appendOldTweet(state, t);
+            appendOldTweet(state, t);
             tree.tree.remove(id);
         } else {
             //                    printf("MOVING TO BIN %d\n", t.retweet_time_bin);

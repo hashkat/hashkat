@@ -131,6 +131,8 @@ output:
     false
   agent_stats: 
     false
+  full_tweet_stats:
+    false
   degree_distributions: 
     false
   tweet_analysis: 

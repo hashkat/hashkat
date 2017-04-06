@@ -167,15 +167,11 @@ const char* hashkat_dump_summary(AnalysisState* state) {
         following_sets.push_back(agent.following_set.as_vector());
     }
 
-    vector<TweetApiProxy> old_tweets, live_tweets;
-
-    for (auto& t : state->oldTweets) {
-        old_tweets.push_back({t});
-    }
+    vector<TweetApiProxy> live_tweets;
     for (auto& t : state->tweet_bank.as_vector()) {
         live_tweets.push_back({t});
     }
-    writer(NVP(old_tweets), NVP(live_tweets), NVP(n_agents), 
+    writer(NVP(live_tweets), NVP(n_agents), 
         NVP(follower_sets), NVP(following_sets));
     string output_str = output.str();
     return copy_str(output_str.c_str(), output_str.size());

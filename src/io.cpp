@@ -77,7 +77,7 @@ void output_network_statistics(AnalysisState& state) {
     AgentTypeVector& et_vec = state.agent_types;
     NetworkStats& stats = state.stats;
     MostPopularTweet& mpt = state.most_pop_tweet;
-    vector<Tweet>& old_tweets = state.oldTweets;
+    vector<Tweet>& old_tweets = state.old_tweets;
 
     //brief_agent_statistics(state);
 
@@ -136,6 +136,10 @@ void output_network_statistics(AnalysisState& state) {
     }
     if (C.main_stats) {
         network_statistics(network, stats, et_vec);
+    }
+    // Only output tweet data files if they were collected
+    // during execution:
+    if (C.full_tweet_stats) {
         tweet_info(old_tweets);
     }
     if (C.region_connection_matrix) {

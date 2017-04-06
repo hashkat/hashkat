@@ -91,6 +91,10 @@ struct ParsedConfig {
     double barabasi_exponent = 1;
     
     bool agent_stats = false;
+    // Controls whether tweet output files are generated.
+    // WARNING, having this option turned on requires memory 
+    // proportional to the amount of tweets.
+    bool full_tweet_stats = false;
     bool stage1_unfollow = false;
     double hashtag_prob = 0;
     FollowModel follow_model = RANDOM_FOLLOW;
