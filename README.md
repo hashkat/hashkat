@@ -4,7 +4,7 @@ Build Status: [![Build Status](https://travis-ci.org/hashkat/hashkat.svg?branch=
 
 ***
 
-###Description
+### Description
 `#k@` is a dynamic network simulation tool designed to model the growth of and information propagation through an online social network. It is an agent-based, Kinetic Monte Carlo engine capable of simulating online networks such as Facebook, Twitter, LinkedIn, etc.
 
 `#k@` incorporates all elements of online social networks including multiple user profiles (e.g. standard users, organizations, celebrities, and bots), user messaging, trending topics, and advertising. Agents within the network make decisions (e.g. follow, unfollow, broadcast, and rebroadcast) based on a variety of user defined constraints on signal propagation to model language, region, ideology, musical interests, and humour.
@@ -17,7 +17,7 @@ Build Status: [![Build Status](https://travis-ci.org/hashkat/hashkat.svg?branch=
 
 ***
 
-###How do I quickly build `#k@` and run `#k@` simulations ?
+### How do I quickly build `#k@` and run `#k@` simulations ?
 
 Build Requirements:
 * `CMake`
@@ -56,26 +56,26 @@ Analysis complete!
 For elaborate runs, refer [docs.hashkat.org](http://docs.hashkat.org/en/latest/) and for visualizing the output, refer [docs.hashkat.org/visualization](http://docs.hashkat.org/en/latest/visualization/)
 
 ***
-###Documentation
+### Documentation
 `#k@` has built-in documentation web pages. Find detailed information, instructions and tutorials at [docs.hashkat.org](http://docs.hashkat.org/en/latest/)
 <br>Documentation Status: [![Documentation Status](https://readthedocs.org/projects/hashkat/badge/?version=latest)](https://readthedocs.org/projects/hashkat/?badge=latest)
 <br>Check out the [`hashkat/docs`](https://github.com/hashkat/hashkat/tree/master/docs) directory for the source code of the documentation.
 
 ***
 
-###Contributing to `#k@`
+### Contributing to `#k@`
 
 `#k@` is a community project. We appreciate your enhancement requests as issues and bug-fixes. 
 <br>Feel free to open new ones or fix the existing ones ([hashkat/issues](https://github.com/hashkat/hashkat/issues)).
 
 ***
 
-###The Road ahead....
+### The Road ahead....
 `#K@` community welcomes all to be a part of it and help us enhance our product. The [ROADMAP](https://github.com/hashkat/hashkat/blob/master/ROADMAP.md) is a list of things we wish to fulfill in the near future.
 
 ***
 
-###LICENSE
+### LICENSE
 
 `#K@` is a free software: you can redistribute it and/or modify it under the terms of the `GNU General Public License` as published by the `Free Software Foundation`, either version 3 of the License, or (at your option) any later version.
 
