@@ -72,7 +72,9 @@ struct NetworkStats {
         ar(NVP(event_rate), NVP(adjusted_event_rate), NVP(n_steps), NVP(n_do_nothing_steps), NVP(n_outputs));
         // Don't serialize 'user_did_exit'
         // Valid because only full of primitive types:
-        ar(NVP(global_stats), NVP(user_did_exit));
+        // ar(NVP(global_stats), NVP(user_did_exit));
+        ar(NVP(global_stats));
+
     }
 };
 
