@@ -2,6 +2,8 @@
 
 # Input
 
+Hello world
+
 This page lists all user modifiable configurations in the input file **INFILE.yaml**. 
 
 ## Analysis
